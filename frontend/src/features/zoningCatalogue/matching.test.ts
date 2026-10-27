@@ -3,7 +3,7 @@ import { BUILDING_PROGRAMS, DISTRICT_RULES, matchBuilding, matchCatalogue, parse
 import { ZONING_CATALOGUE_BUILDINGS } from './ZoningCatalogueCard';
 import type { ZoneInspection } from './types';
 import catalogue from '@/features/referenceLayers/calgaryBylawCatalogue.json';
-import { OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS } from '@/features/pickPlace/assetRegistry';
+import { OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, LOCAL_TOWER_ASSETS } from '@/features/pickPlace/assetRegistry';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from '@/features/pickPlace/claudeBuildingRelease';
 import release from '@/data/claudeBuildingRelease.json';
 
@@ -13,8 +13,8 @@ const result = (variant: string, designation: string) => matchBuilding(model(var
 
 describe('catalogue zoning screening', () => {
   it('retains every reviewed exact building programme while adding only the explicit release cohort', () => {
-    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + CLAUDE_BUILDING_RELEASE_ASSETS.length);
-    const releaseIds = new Set(release.entries.map(entry => entry.asset_id));
+    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + LOCAL_TOWER_ASSETS.length);
+    const releaseIds = new Set([...release.entries.map(entry => entry.asset_id),...LOCAL_TOWER_ASSETS.map(asset=>asset.id)]);
     const reviewed = ZONING_CATALOGUE_BUILDINGS.filter(asset => !releaseIds.has(asset.id));
     expect(Object.keys(BUILDING_PROGRAMS).sort()).toEqual(reviewed.map(a => a.model.variantId).sort());
     for (const a of reviewed) expect(BUILDING_PROGRAMS[a.model.variantId].revision).toBe(a.model.revision);

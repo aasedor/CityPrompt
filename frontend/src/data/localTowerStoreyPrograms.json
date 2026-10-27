@@ -1,0 +1,61 @@
+{
+  "schema": "cityprompt.local-tower-storeys@1",
+  "programmes": [
+    {
+      "assetId": "clay_blue_glass_office_tower",
+      "variantId": "glass_tower_blue_reflective",
+      "sourceRevision": "glass_tower_podium_modern-clay-v003",
+      "nativeWidthM": 32.1200008392334,
+      "nativeDepthM": 30.074999809265137,
+      "storeyProgram": {
+        "id": "blue-glass-office-storey-program-v001", "mode": "repeat_authored_floor",
+        "nativeStoreys": 25, "minStoreys": 15, "maxStoreys": 40,
+        "podiumStoreys": 3, "podiumHeightM": 15, "repeatedStoreyHeightM": 3.5, "roofHeightM": 7
+      }
+    },
+    {
+      "assetId": "claude_trial_plus15_glass_office_tower",
+      "variantId": "plus15_contemporary_glass",
+      "sourceRevision": "clay-plus15-glass-office-tower-clay-v006",
+      "nativeWidthM": 52, "nativeDepthM": 83,
+      "storeyProgram": {
+        "id": "plus15-glass-office-storey-program-v001", "mode": "repeat_authored_floor",
+        "nativeStoreys": 17, "minStoreys": 10, "maxStoreys": 35,
+        "podiumStoreys": 1, "podiumHeightM": 14, "repeatedStoreyHeightM": 3.65, "roofHeightM": 10.26
+      }
+    },
+    {
+      "assetId": "claude_trial_slab_balcony_tower",
+      "variantId": "midcentury_concrete_slab",
+      "sourceRevision": "clay-slab-balcony-tower-clay-v007",
+      "nativeWidthM": 37.357473373413086, "nativeDepthM": 37.20000076293945,
+      "storeyProgram": {
+        "id": "slab-balcony-storey-program-v001", "mode": "repeat_authored_floor",
+        "nativeStoreys": 13, "minStoreys": 8, "maxStoreys": 30,
+        "podiumStoreys": 3, "podiumHeightM": 10.5, "repeatedStoreyHeightM": 2.95, "roofHeightM": 7
+      }
+    },
+    {
+      "assetId": "clay_twisting_glass_sky_garden_tower",
+      "variantId": "glass_tower_twisted",
+      "sourceRevision": "glass-tower-twisted-clay-v005",
+      "nativeWidthM": 43.4902229309082, "nativeDepthM": 44.0266170501709,
+      "storeyProgram": {
+        "id": "glass_tower_twisted-authored-heights-v001", "mode": "select_authored_assembly",
+        "nativeStoreys": 40, "minStoreys": 20, "maxStoreys": 40, "supportedStoreys": [20, 30, 40],
+        "podiumStoreys": 2, "podiumHeightM": 14, "repeatedStoreyHeightM": 3.4, "roofHeightM": 4.5
+      }
+    },
+    {
+      "assetId": "showcase_tower",
+      "variantId": "art_deco_cream_terracotta",
+      "sourceRevision": "showcase-tower-clay-v005",
+      "nativeWidthM": 32.779998779296875, "nativeDepthM": 29.31721782684326,
+      "storeyProgram": {
+        "id": "art_deco_cream_terracotta-authored-heights-v001", "mode": "select_authored_assembly",
+        "nativeStoreys": 17, "minStoreys": 17, "maxStoreys": 35, "supportedStoreys": [17, 25, 35],
+        "podiumStoreys": 2, "podiumHeightM": 7.2, "repeatedStoreyHeightM": 3.4, "roofHeightM": 10.4
+      }
+    }
+  ]
+}

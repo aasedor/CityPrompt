@@ -5,7 +5,7 @@ import {
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, LOCAL_TOWER_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
@@ -123,7 +123,7 @@ const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansi
     archetype_id: String(asset.properties.development_archetype_id ?? asset.properties.road_archetype_id ?? asset.properties.green_space_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id,
   })),
-  ...[...LOCAL_TEACHING_BUILDINGS, ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS].map(asset => ({ domain: 'building',
+  ...[...LOCAL_TEACHING_BUILDINGS, ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...LOCAL_TOWER_ASSETS].map(asset => ({ domain: 'building',
     archetype_id: String(asset.properties.development_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id }))]);
 /** Supplemental choices must share the reviewed registry's exact identity and

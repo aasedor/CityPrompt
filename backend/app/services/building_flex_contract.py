@@ -17,6 +17,15 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
 MANIFEST = ROOT / "seed/model-library/rlasm-architectural-clay/house-flex-pilot-v001.json"
+TOWER_CONTRACTS = ROOT / "frontend/src/data/localTowerStoreyPrograms.json"
+
+
+@lru_cache(maxsize=1)
+def _tower_contracts() -> dict[str, dict[str, Any]]:
+    payload = json.loads(TOWER_CONTRACTS.read_text(encoding="utf-8"))
+    if payload.get("schema") != "cityprompt.local-tower-storeys@1":
+        raise ValueError("Unknown tower programme schema")
+    return {row["storeyProgram"]["id"] + "-native-footprint": row for row in payload["programmes"]}
 
 
 def trusted_building_footprint_target(properties: dict[str, Any]) -> tuple[float, float] | None:
@@ -28,6 +37,28 @@ def trusted_building_footprint_target(properties: dict[str, Any]) -> tuple[float
     footprint contract grants neither module availability nor publication.
     """
 
+    declared = properties.get("building_footprint_program_id")
+    tower = _tower_contracts().get(declared) if isinstance(declared, str) and declared.endswith("-native-footprint") else None
+    if tower:
+        if (properties.get("pick_place_asset") != tower["assetId"]
+            or properties.get("development_selected_variant_id") != tower["variantId"]
+            or properties.get("pick_place_model_revision") != tower["sourceRevision"]):
+            raise ValueError("The selected building revision is not part of this tower programme")
+        try:
+            scale = float(properties["building_footprint_scale"])
+            floors = float(properties.get("floor_count", properties.get("floors")))
+            height = float(properties.get("development_height_override_m", properties.get("height_m", properties.get("height"))))
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ValueError("The tower scale, storeys or height is missing or invalid") from exc
+        program = tower["storeyProgram"]
+        expected = program["podiumHeightM"] + (floors-program["podiumStoreys"]) * program["repeatedStoreyHeightM"] + program["roofHeightM"]
+        if (not math.isfinite(scale) or scale != 1
+            or not math.isfinite(floors) or not floors.is_integer()
+            or not program["minStoreys"] <= floors <= program["maxStoreys"]
+            or ("supportedStoreys" in program and floors not in program["supportedStoreys"])
+            or not math.isfinite(height) or abs(height-expected) > 0.05):
+            raise ValueError("The tower dimensions are outside its authored storey programme")
+        return tower["nativeWidthM"], tower["nativeDepthM"]
     if properties.get("building_footprint_program_id") != "brick-podium-condo-native-footprint-v001":
         return trusted_house_footprint_target(properties)
     if (

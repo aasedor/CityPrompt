@@ -1,8 +1,9 @@
 {
   "schema": "cityprompt.planning-history@1",
-  "asOf": "2026-10-25",
+  "asOf": "2026-10-27",
   "scope": "Undergraduate historical interpretation; eras overlap and indicate design associations,not construction dates.",
   "evidence": {
+    "localTowerSupplement": "2026-10-27: exact glass_tower_twisted reference and native model inspected in the scoped tower derivative review; approximate contemporary design association added for local discovery.",
     "sourceCommit": "e2f4793e438d86c7c20a13b434828306f28153c0",
     "baseAuditSha256": "a15a239fb77fb98550db150f63257a08530fcc7089c8838685617a353a3e859c",
     "baseInventorySha256": "a8248ac3486dba78d3164015899dc6d1cb255f39e2879c47ec889331543a3cbb",
@@ -2445,6 +2446,22 @@
       "designEvidence": "A 25-storey blue glass office tower with a glazed lobby, entrance canopy and rooftop crown.",
       "referenceReviewed": true,
       "priorStyleConfidence": "High"
+    },
+    "clay_twisting_glass_sky_garden_tower": {
+      "eraIds": ["contemporary"],
+      "designPeriod": "Contemporary sculptural glass-tower reference",
+      "eraRationale": "A design association based on rotating floor plates and a planted sky garden; this is not a construction date.",
+      "canadianContext": "Compare employment concentration, public entrances and the relationship between shared open space and the street.",
+      "internationalContext": "Sculptural towers are international design references; a distinctive silhouette does not establish a planning ideology.",
+      "sourceIds": ["canadian_modern", "riba_mod"],
+      "placementId": "clay_twisting_glass_sky_garden_tower",
+      "domain": "building", "archetypeId": "glass_tower_podium_modern", "variantId": "glass_tower_twisted",
+      "modelMethod": "RLASM 6.1", "modelRevision": "glass-tower-twisted-clay-v005",
+      "status": "classified", "profileId": "glass_office", "formId": "office_tower",
+      "styleIds": ["contemporary"], "planningIds": [], "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "The locked reference and exact native model show rotating glazed floor plates, a trussed lobby, planted transfer garden and rooftop crown.",
+      "referenceReviewed": true, "priorStyleConfidence": "Moderate"
     },
     "clay_vancouver_balcony_podium_tower": {
       "eraIds": [

@@ -22,6 +22,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ .
 COPY seed/model-library/rlasm-architectural-clay/house-flex-pilot-v001.json /app/seed/model-library/rlasm-architectural-clay/house-flex-pilot-v001.json
+COPY frontend/src/data/localTowerStoreyPrograms.json /app/frontend/src/data/localTowerStoreyPrograms.json
 
 # Copy startup script and make executable
 COPY backend/scripts/start.sh /start.sh

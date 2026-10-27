@@ -67,14 +67,16 @@ describe('release candidate native placement contracts (not browser acceptance)'
         expect(width).toBeGreaterThanOrEqual(native.width + 3 - 1e-6);
         expect(depth).toBeGreaterThanOrEqual(native.depth + 3 - 1e-6);
         expect(placementPlanRequest(asset, draft.width, draft.depth)).toMatchObject({
-          target_width_m: width, target_depth_m: depth, target_floors: entry.native_floors,
+          target_width_m: asset.footprintProgram?.editable === false ? native.width : width,
+          target_depth_m: asset.footprintProgram?.editable === false ? native.depth : depth, target_floors: entry.native_floors,
           archetype_id: entry.variant_id, native_home_plot: false, allow_forced_fit: false,
         });
         const properties = placementProperties(asset, 1097, rectangleAt(center, width, depth));
         expect(properties.model_native_dimensions_m).toEqual(expectedDimensions);
         expect(properties.pick_place_model_revision).toBe(entry.candidate);
         const contract = nativeBuildingContract({ properties });
-        expect(contract).toMatchObject({ revision: entry.candidate, rigid: true, heightM: native.height, storeys: entry.native_floors });
+        expect(contract).toMatchObject({ revision: entry.candidate,
+          rigid: entry.variant_id !== 'art_deco_cream_terracotta', heightM: native.height, storeys: entry.native_floors });
         expect(contract?.asset.nativeDimensions).toEqual(expectedDimensions);
       }
       // These are compiler request/metadata contracts. Actual GLB instance

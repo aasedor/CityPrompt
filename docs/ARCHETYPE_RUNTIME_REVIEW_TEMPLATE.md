@@ -17,6 +17,7 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 - Vacant test site, protected reference, disposable test project:
 - Mixed-scene project and separate oversized-candidate project, if applicable:
 - Supported plot dimensions, axes/base datum, reshape/repetition behavior:
+- Authored storey programme: exact source/module hashes, shared whole-source origin, complete-assembly bounds centre, native-lock flag, and any bounded uniform-scale opt-in:
 - Supported terrain modes and connection capabilities:
 - Public-realm detail: metric plant height/footprint, paving scale, instance/texture budgets, and native close/aerial evidence:
 - Replacement furniture: complete mesh envelope/base datum, legacy-asset flag independence, component and in-site evidence:
@@ -95,6 +96,7 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Save/reload/reopen; exact persisted identity | NOT TESTED | |
 | Generate to 3D: panel recipe matches locked compiler; reload and inspect visible models | NOT TESTED | |
 | Supported storey edit: plan and saved-zone compilation agree | NOT TESTED | Distinguish model footprint from reserved placement plot. Bind both request and final server target to the exact variant/revision/programme; test finite range, Retry, Undo/Redo and reopen with the compiled geometry. Planning success alone cannot pass this row. |
+| Storey source frame and complete-model centring | NOT TESTED | Measure the whole source centre. Repeated modules share one rotated/scaled origin offset; complete native-locked assemblies centre by whole bounds even in module delivery format. Preserve bounded house opt-ins. Verify actual row metadata, rotated plots, native → alternate → native, unit vertical scale and reopen. |
 | Capture blocked while stale, then succeeds | NOT TESTED | |
 | Site landscape compatibility | NOT TESTED | Continuous custom base stays below the archetype; trees respect complete plot and access. Move or route/variant edit invalidates; Undo/Redo/reload/export retain the correct result. Verify surrounding-tile colour feathering and ground-height seams separately. Custom artwork cannot cover objects or export before loading. |
 | Student-authored placement and connections | NOT TESTED | |

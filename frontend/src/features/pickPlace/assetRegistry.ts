@@ -14,6 +14,7 @@ import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
 import manualStreets from '@/data/streetManual.json';
 import { reviewedAssetClassification } from './catalogueClassification';
+import { localTowerStoreyMetadata } from './localTowerStoreyPrograms';
 import { LOCAL_CLAUDE_SAVED_ASSETS } from './claudeAssetLocalTrial';
 import { LOCAL_TEACHING_BUILDINGS } from './localTeachingBuildings';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
@@ -61,6 +62,8 @@ export interface PlaceAsset extends AssetRecord {
     podiumHeightM: number;
     repeatedStoreyHeightM: number;
     roofHeightM: number;
+    /** Complete authored options may deliberately omit intermediate counts. */
+    supportedStoreys?: number[];
   };
   /** A reviewed, uniform horizontal scale band for the complete authored
    * assembly.  The parcel remains unchanged and Z is never scaled. */
@@ -246,6 +249,8 @@ export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
 
 export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
 export function withStoreyMetadata(asset: CatalogueAsset, localTowerPilot = import.meta.env.DEV): CatalogueAsset {
+  const localTower = localTowerPilot ? localTowerStoreyMetadata(asset) : undefined;
+  if (localTower) return localTower;
   if (localTowerPilot && asset.kind === 'object' && asset.id === 'claude_trial_brick_podium_condo_tower'
     && asset.model.variantId === 'brick_podium_glass_tower' && asset.model.revision === 'clay-brick-podium-condo-tower-clay-v006') {
     return { ...asset, footprintProgram: {
@@ -324,7 +329,9 @@ export function courtOnlySportsAssets(localPilots: boolean): PlaceAsset[] {
   }));
 }
 export const COURT_ONLY_SPORT_ASSETS = courtOnlySportsAssets(import.meta.env.DEV);
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+export const LOCAL_TOWER_ASSETS = import.meta.env.DEV ? CATALOGUE_BUILDING_ASSETS.filter(asset =>
+  asset.id === 'clay_twisting_glass_sky_garden_tower') : [];
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...LOCAL_TOWER_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.
@@ -402,6 +409,11 @@ export function validateRegistry(assets: CatalogueAsset[]): string[] {
             || program.minStoreys < 1
             || program.minStoreys > program.nativeStoreys
             || program.nativeStoreys > program.maxStoreys
+            || (program.supportedStoreys && (!program.supportedStoreys.length
+              || !program.supportedStoreys.includes(program.nativeStoreys)
+              || new Set(program.supportedStoreys).size !== program.supportedStoreys.length
+              || program.supportedStoreys.some(count => !Number.isInteger(count)
+                || count < program.minStoreys || count > program.maxStoreys)))
             || !Number.isFinite(programmeHeight)
             || !Number.isFinite(nativeHeight)
             || Math.abs(programmeHeight - nativeHeight) > 0.05

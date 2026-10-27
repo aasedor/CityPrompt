@@ -190,6 +190,18 @@ Exercise the finite range, Retry, Undo/Redo and reopen after real compilation.
 The [Brick Podium pilot](STUDENT_REVIEW_TOWERS_COURTS_2026-10-26.md) reproduced
 this distinction with a 54 × 44 m model inside a 57 × 47 m plot.
 
+For authored storey programmes, measure the whole source's horizontal centre
+and carry that same frame through every podium/floor/roof module. Rotate and
+scale the shared origin offset once with the stack; independently centring
+narrower floors or an asymmetric bridge moves their intended contacts. A
+complete selected assembly instead uses whole-model bounds centring, including
+when its delivery format is `architectural_clay_module_v1`. Require the
+planner's explicit native lock for that path; repeated stacks retain their
+shared frame, and bounded house programmes retain their explicit uniform-scale
+opt-in. Test actual installed-row metadata through planning and rendering,
+native → alternate → native, rotated plots, unit vertical scale and reopen.
+See [the local tower review](TOWER_STOREY_OPTIONS_LOCAL_REVIEW_2026-10-27.md).
+
 For each pilot, test a level case, a slope, an edge/unsupported case with
 recovery, and an edit while ground is pending. Keep the matrix finite. Shared
 algorithm tests may be cited across candidates when the implementation is

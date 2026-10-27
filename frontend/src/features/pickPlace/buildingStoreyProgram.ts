@@ -22,6 +22,7 @@ export function storeyProgramSupports(
   return Number.isInteger(parsedStoreys)
     && parsedStoreys >= program.minStoreys
     && parsedStoreys <= program.maxStoreys
+    && (!program.supportedStoreys || program.supportedStoreys.includes(parsedStoreys))
     && Number.isFinite(parsedHeight)
     && Math.abs(parsedHeight - storeyProgramHeight(program, parsedStoreys)) <= 0.05;
 }

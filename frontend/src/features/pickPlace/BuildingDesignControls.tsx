@@ -85,6 +85,12 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
     setFootprintScale(String(native?.kind === 'object' && native.footprintProgram ? native.footprintProgram.defaultScale : 1));
     setHeightEdited(false);
   };
+  const changeStoreys = (value: string) => {
+    setFloors(value);
+    setHeight(String(storeyProgram ? storeyProgramHeight(storeyProgram, Number(value))
+      : Number(value) * (variant?.suggestedFloorHeight ?? choice?.option.suggestedFloorHeight ?? 3.2)));
+    setHeightEdited(true);
+  };
   return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={async event => {
     event.preventDefault(); if (!valid || !choice || disabled || pending.current) return;
     const changedType = choiceId !== initialChoice?.id || variantId !== savedProperties.development_selected_variant_id;
@@ -154,15 +160,14 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
       {choice?.option.variants?.map(v => <option value={v.id} key={v.id}>{v.label}</option>)}
     </select></label>}
     <div className="grid grid-cols-2 gap-2">
-      <label className="text-xs font-semibold">Storeys<input type="number" min={storeyProgram?.minStoreys ?? 1} max={storeyProgram?.maxStoreys ?? 100} value={floors}
-        readOnly={storeyProgram?.mode === 'fixed_authored_assembly'} aria-readonly={storeyProgram?.mode === 'fixed_authored_assembly'} onChange={e => {
-        const nextStoreys = Number(e.target.value);
-        setFloors(e.target.value);
-        setHeight(String(storeyProgram
-          ? storeyProgramHeight(storeyProgram, nextStoreys)
-          : nextStoreys * (variant?.suggestedFloorHeight ?? choice?.option.suggestedFloorHeight ?? 3.2)));
-        setHeightEdited(true);
-      }} className={`${field} ${storeyProgram?.mode === 'fixed_authored_assembly' ? 'bg-slate-100' : ''}`} /></label>
+      <label className="text-xs font-semibold">Storeys{storeyProgram?.supportedStoreys
+        ? <select value={floors} onChange={e=>changeStoreys(e.target.value)} className={field}>
+          {!storeyProgram.supportedStoreys.includes(Number(floors)) && <option value={floors} disabled>Saved: {floors}</option>}
+          {storeyProgram.supportedStoreys.map(count=><option key={count} value={count}>{count}</option>)}
+        </select>
+        : <input type="number" min={storeyProgram?.minStoreys ?? 1} max={storeyProgram?.maxStoreys ?? 100} value={floors}
+          readOnly={storeyProgram?.mode === 'fixed_authored_assembly'} aria-readonly={storeyProgram?.mode === 'fixed_authored_assembly'}
+          onChange={e=>changeStoreys(e.target.value)} className={`${field} ${storeyProgram?.mode === 'fixed_authored_assembly' ? 'bg-slate-100' : ''}`} />}</label>
       <label className="text-xs font-semibold">Height (m)<input type="number" min="0.1" max="1000" step="any" value={height}
         readOnly={Boolean(storeyProgram)} aria-readonly={Boolean(storeyProgram)}
         onChange={e => { setHeight(e.target.value); setHeightEdited(true); }} className={`${field} ${storeyProgram ? 'bg-slate-100' : ''}`} /></label>
@@ -179,7 +184,7 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
       ? storeyProgram.mode === 'fixed_authored_assembly'
         ? `This exact model is currently available at ${storeyProgram.nativeStoreys} ${storeyProgram.nativeStoreys === 1 ? 'storey' : 'storeys'}.`
         : storeyProgram.mode === 'select_authored_assembly'
-        ? `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys. Each choice uses a complete authored house with its walls, openings and roof intact.`
+        ? `Choose ${storeyProgram.supportedStoreys?.join(', ') ?? `${storeyProgram.minStoreys}–${storeyProgram.maxStoreys}`} storeys. Each choice uses a complete authored building with its walls, openings and roof intact.`
         : `Choose ${storeyProgram.minStoreys}–${storeyProgram.maxStoreys} storeys.${storeyProgram.recommendedMinStoreys && storeyProgram.recommendedMinStoreys !== storeyProgram.minStoreys ? ` Recommended: ${storeyProgram.recommendedMinStoreys}–${storeyProgram.recommendedMaxStoreys ?? storeyProgram.maxStoreys}.` : ''} The podium and roof stay complete while authored floors repeat at full proportions.`
       : 'Your footprint stays in place. Unsupported sizes use design massing.'}</p>
     {runtimeError && <p role="alert" className="text-xs text-amber-900">{runtimeError}</p>}

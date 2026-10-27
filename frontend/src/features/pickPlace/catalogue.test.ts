@@ -17,7 +17,7 @@ describe('native catalogue placement contracts', () => {
     const fixed = coordinates[2];
     const resized = resizeRectangleCorner(coordinates, 0, fixed, asset);
     const dimensions = rectangleDimensions(resized);
-    if (asset.properties.validation_fixed_fixture === true || asset.id === 'claude_trial_brick_podium_condo_tower') {
+    if (asset.properties.validation_fixed_fixture === true || asset.footprintProgram?.editable === false) {
       expect(resized).toEqual(coordinates);
     } else {
       expect(dimensions.width).toBeCloseTo(asset.minWidth, 3);

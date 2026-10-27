@@ -9,6 +9,10 @@ const pilotIds = [
 ] as const;
 
 describe('authored low-rise footprint programs', () => {
+  it('retains full source dimensions for a unit-scale tower target independently of its larger plot',()=>{
+    const tower=placeAsset('showcase_tower');
+    expect(footprintProgramTarget(tower.footprintProgram!)).toEqual({widthM:32.779998779296875,depthM:29.31721782684326,scale:1});
+  });
   it.each(pilotIds)('uses a uniform 85–115 percent scale band for %s', assetId => {
     const asset = placeAsset(assetId);
     const program = asset.footprintProgram!;

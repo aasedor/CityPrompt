@@ -14,6 +14,20 @@ beforeEach(()=>{vi.mocked(legoAssemblyApi.plan).mockReset().mockResolvedValue({}
 const zone = { id: 'home', zone_type: 'building', coordinates: [[0, 0], [1, 0], [1, 1], [0, 1]],
   properties: placementProperties(placeAsset('infill_home')) } as SiteZone;
 
+it('offers only complete landmark tower choices and checks the chosen model before saving',async()=>{
+  const tower=placeAsset('showcase_tower'), onSave=vi.fn();
+  render(<BuildingDesignControls zone={{...zone,properties:placementProperties(tower)}} disabled={false} onSave={onSave}/>);
+  const storeys=screen.getByLabelText('Storeys') as HTMLSelectElement;
+  expect(storeys.tagName).toBe('SELECT');
+  expect(Array.from(storeys.options).map(option=>option.value)).toEqual(['17','25','35']);
+  fireEvent.change(storeys,{target:{value:'25'}});
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('95.8');
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  await waitFor(()=>expect(onSave).toHaveBeenCalledWith(expect.objectContaining({floor_count:25,height_m:95.8})));
+  expect(legoAssemblyApi.plan).toHaveBeenCalledWith(expect.objectContaining({target_floors:25,
+    target_width_m:32.779998779296875,target_depth_m:29.31721782684326,model_revision:tower.model.revision}));
+});
+
 it('does not apply a saved lighting-card ID as an exact architectural variant',()=>{
   const onSave=vi.fn();
   render(<BuildingDesignControls zone={{...zone,properties:{development_subcategory:'halifax_painted_clapboard_row',
@@ -211,7 +225,7 @@ it('changes a bungalow footprint without changing its selected two-storey height
   const bungalow = placeAsset('trial_postwar_bungalow');
   const onSave = vi.fn();
   render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(bungalow) }} disabled={false} onSave={onSave} />);
-  screen.getByText(/Each choice uses a complete authored house/);
+  screen.getByText(/Each choice uses a complete authored building/);
   fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '2' } });
   fireEvent.change(screen.getByLabelText('Building footprint (%)'), { target: { value: '115' } });
   expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('9.29');

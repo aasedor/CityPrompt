@@ -19,9 +19,10 @@ export function footprintProgramTarget(
 ): { widthM: number; depthM: number; scale: number } {
   const parsed = Number(scale);
   const safeScale = footprintProgramSupports(program, parsed) ? parsed : program.defaultScale;
+  const fixed = program.minScale === program.maxScale;
   return {
-    widthM: Math.round(program.nativeWidthM * safeScale * 10000) / 10000,
-    depthM: Math.round(program.nativeDepthM * safeScale * 10000) / 10000,
+    widthM: fixed ? program.nativeWidthM * safeScale : Math.round(program.nativeWidthM * safeScale * 10000) / 10000,
+    depthM: fixed ? program.nativeDepthM * safeScale : Math.round(program.nativeDepthM * safeScale * 10000) / 10000,
     scale: safeScale,
   };
 }

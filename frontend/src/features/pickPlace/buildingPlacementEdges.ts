@@ -40,7 +40,8 @@ export function buildingEdgeContract(zone: PlacedZone) {
     // Match the compiler's 0.1 m targets and five-decimal uniform XY scale.
     scale=Math.round(Math.min(Math.round(w*10)/10/row.nativeWidthM,Math.round(d*10)/10/row.nativeDepthM,fit.maxScale)*1e5)/1e5;
   }
-  return {...row, width:row.nativeWidthM*scale, depth:row.nativeDepthM*scale};
+  return {...row, storeyProgram:asset.storeyProgram ?? null, footprintProgram:asset.footprintProgram ?? null,
+    width:row.nativeWidthM*scale, depth:row.nativeDepthM*scale};
 }
 
 /** Local -Y is the authored front. The plot remains the compilation/ground

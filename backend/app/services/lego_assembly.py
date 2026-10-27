@@ -783,8 +783,15 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     )
     if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT and not authored_storey_program:
         return True
+    fixed_authored_assembly = (
+        module.role == "assembled" and not module.repeatable_z
+        and module.delivery_format == RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT
+        and placement_mode == "authored_storey_program"
+        and placement.get("continuous_resize_allowed") is False
+        and not authored_storey_program
+    )
     fixed_non_resizable = placement_mode == "fixed_landmark" and placement.get("continuous_resize_allowed") is False
-    return bool(fixed_non_resizable or footprint_mode == "select_and_place" or footprint.get("polygonFit") is False)
+    return bool(fixed_authored_assembly or fixed_non_resizable or footprint_mode == "select_and_place" or footprint.get("polygonFit") is False)
 
 
 # Streetwall repeat: bars validate against the same relaxed band multi-wing
@@ -1640,6 +1647,26 @@ def _plan_vertical_assembly_core(
             add_level(crown, "crown", request.target_floors - 1)
         add_level(roof, "roof", request.target_floors)
 
+        # Modules clipped from a source retain its common modelling origin.
+        # Centre that whole source envelope once, rather than independently
+        # centring narrow floors or leaving an asymmetric bridge offset.
+        origins = []
+        for module, _, _, _ in levels:
+            contract = module.placement_contract or {}
+            raw = contract.get("source_frame_origin_xy_m", [0.0, 0.0]) if contract.get("mode") == "authored_storey_program" else [0.0, 0.0]
+            try:
+                if not isinstance(raw, (list, tuple)) or len(raw) != 2:
+                    raise ValueError("Expected two source-frame coordinates")
+                origin = tuple(float(value) for value in raw)
+                if not all(math.isfinite(value) for value in origin):
+                    raise ValueError("Source-frame coordinates must be finite")
+            except (ValueError, TypeError) as exc:
+                raise AssemblyPlanningError("Invalid authored stack source frame", code="family_incompatible") from exc
+            origins.append(origin)
+        if len(set(origins)) != 1:
+            raise AssemblyPlanningError("Authored stack modules do not share one source frame", code="family_incompatible")
+        origin_x, origin_y = origins[0]
+
         instances: list[dict[str, Any]] = []
         # Keep every selected module inside the segment while applying one
         # common horizontal scale to the complete stack. Scaling each level by
@@ -1657,6 +1684,9 @@ def _plan_vertical_assembly_core(
             for segment in segments
         ]
         for segment, contain_scale in zip(segments, segment_contain_scales, strict=True):
+            angle = math.radians(float(segment["rotation_degrees"]))
+            offset_x = (origin_x * math.cos(angle) - origin_y * math.sin(angle)) * contain_scale
+            offset_y = (origin_x * math.sin(angle) + origin_y * math.cos(angle)) * contain_scale
             for module, role, level, level_z in levels:
                 instances.append(
                     {
@@ -1670,8 +1700,8 @@ def _plan_vertical_assembly_core(
                         "level": level,
                         "segment_id": segment["id"],
                         "position": [
-                            round(float(segment["centre_x_m"]), 4),
-                            round(float(segment["centre_y_m"]), 4),
+                            round(float(segment["centre_x_m"]) - offset_x, 4),
+                            round(float(segment["centre_y_m"]) - offset_y, 4),
                             round(level_z, 4),
                         ],
                         "rotation_degrees": float(segment["rotation_degrees"]),

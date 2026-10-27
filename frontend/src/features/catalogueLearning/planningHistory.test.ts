@@ -112,7 +112,7 @@ describe('historical planning interpretation', () => {
       { id: 'postwar', label: 'Postwar expansion · c. 1945–1975' },
     ]);
     expect(availableEras([bungalow], 'street_pathway')).toEqual([]);
-    expect(Object.keys(historyData.lessons)).toHaveLength(196);
+    expect(Object.keys(historyData.lessons)).toHaveLength(197);
     expect(CANONICAL_CHOICES.filter(choice => !historyForChoice(choice))).toEqual([]);
     expect(CANONICAL_CHOICES.some(choice => choice.id.includes('bauhaus_workshop'))).toBe(false);
   });

@@ -1,4 +1,10 @@
 {
+  "clay_twisting_glass_sky_garden_tower": {
+    "label": "Twisting glass tower with sky garden",
+    "description": "A sculptural glass tower with rotating floor plates, a trussed lobby, a planted sky garden and a rooftop crown.",
+    "styleIds": ["contemporary"],
+    "searchTags": ["building", "office", "tower", "twisting", "sky garden"]
+  },
   "validation_timber_sanctuary_church_glazed_gable": {
     "label": "Timber Sanctuary Church",
     "description": "A timber sanctuary with a tall glazed gable, exposed frames and a low community annex. A level entrance leads to a central aisle between pews.",
