@@ -1,7 +1,7 @@
 # Barcelona passatge (covered passage) (RLASM v6.1 architectural clay)
 
 Candidate K5 of wave K of 2026-10-23, one of five catalogue additions the user asked for
-(all four variants of the climbing wall building, and the covered passage); a street or path option, not a building. State: **stopped at v003 by the stopping rule (the upper-bay finding survived two targeted fixes); v002 (0 P0 / 2 P1) is the candidate, not keeper-approved**. Nothing here is keeper-approved,
+(all four variants of the climbing wall building, and the covered passage); a street or path option, not a building. State: **PASS_ZERO_P0_P1 at v006 (independent review, after the user reopened the family to keep trying until it passes); v006 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -69,8 +69,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v005
+## Open blockers after v006 (passed)
 
-Candidate: `clay-barcelona-passatge-clay-v005.glb`. The v005 independent review (`evidence/v005/independent-review.md`) left these P0/P1 findings open:
+Candidate: `clay-barcelona-passatge-clay-v006.glb`. The v006 independent review (`evidence/v006/independent-review.md`) left these P0/P1 findings open:
 
-- **P1** (facade_close, architecture_close, front, interior, south_portal, glass_close): Between the arches, the cream stone pilasters run unbroken from the floor through the arch tier to the modillion cornice. The stepped rib corbels sit on cream stone at mid-arch height, so the upper tier reads as alternating cream and brick bands. In the locked front (right facade around the CAFE DEL PASSATGE bay,... Likely fix: Stop the stone pilasters (with a small capital or console) at the top of the shop entablature or balcony belt. Change the arch-tier pier faces between the arches to the facade brick colour, leaving the stepped arch...
+- **P0** (—): None found. Likely fix: —
+- **P1** (—): None found. The v005 P1 is resolved. In facade_close and architecture_close the paneled cream pilasters stop under the shop entablature, and the piers through the arch tier are brick up to the modillion cornice. The source front crops (both facades) show the same: brick piers and brick arch rings above the stone... Likely fix: —
