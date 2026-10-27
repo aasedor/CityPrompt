@@ -12,8 +12,11 @@ describe('three additional native street programs', () => {
     const buildingReleaseIds = new Set(CLAUDE_BUILDING_RELEASE_ASSETS.map(a => a.id));
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building' && !buildingReleaseIds.has(a.id))).toHaveLength(79);
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building')).toHaveLength(97);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space' && a.model.method !== 'fixed_public_realm_v1')).toHaveLength(38);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space')).toHaveLength(41);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space' && a.model.method !== 'fixed_public_realm_v1' && !a.properties.court_only_native)).toHaveLength(38);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.properties.court_only_native).map(a => a.model.variantId).sort()).toEqual([
+      'court_only_basketball_v1', 'court_only_beach_volleyball_v1', 'court_only_pickleball_v1', 'court_only_tennis_v1',
+    ]);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space')).toHaveLength(45);
     const fixed = CATALOGUE_ASSETS.filter(a => a.model.method === 'fixed_public_realm_v1');
     expect(fixed).toHaveLength(12);
     expect(fixed.filter(a => a.kind === 'object' && a.zoneType === 'road')).toHaveLength(9);

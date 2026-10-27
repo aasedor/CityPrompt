@@ -9,7 +9,14 @@ it('provides resolvable placement for every eligible park variant without certif
     for (const variant of choice.option.variants ?? [undefined]) {
       const asset = canonicalParkAsset({ choice, variant });
       expect(placeAsset(asset.id)).toBe(asset);
-      expect(assetForZone({ properties: placementProperties(asset) })).toBe(asset);
+      const resolved = assetForZone({ properties: placementProperties(asset) });
+      if (asset.properties.pick_place_flexible_park) {
+        const registered = choice.placements.find(placement => placement.model.variantId === asset.model.variantId
+          && placement.properties.pick_place_flexible_park === asset.properties.pick_place_flexible_park);
+        expect(registered).toBeDefined();
+        expect(resolved).toBe(registered);
+        expect(resolved?.properties.green_space_archetype_id).toBe(asset.properties.green_space_archetype_id);
+      } else expect(resolved).toBe(asset);
       expect(asset.model.method).toBe('canonical_design');
       expect(asset.properties.public_realm_lego).toBeUndefined();
     }

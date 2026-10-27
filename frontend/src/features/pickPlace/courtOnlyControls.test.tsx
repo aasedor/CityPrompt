@@ -11,15 +11,18 @@ import { PlacementPalette } from './PlacementPalette';
 afterEach(cleanup);
 const asset = placeAsset('native-park:court_only_basketball_v1--native-v1');
 
-it('finds and places all four court-only designs through the actual student catalogue', () => {
+it.each([
+  ['Basketball court', 'basketball'], ['Tennis court', 'tennis'],
+  ['Pickleball court', 'pickleball'], ['Beach volleyball court', 'beach_volleyball'],
+])('finds and places the court-only design under %s through the actual student catalogue', (label, variant) => {
   const onPick=vi.fn();
   render(<PlacementPalette selected={null} onPick={onPick} onPickCanonical={vi.fn()}
     onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}/>);
   fireEvent.click(screen.getByRole('button',{name:'Parks'}));
   fireEvent.change(screen.getByLabelText('Search objects or district code'),{target:{value:'court only'}});
   expect(screen.getAllByRole('article')).toHaveLength(4);
-  fireEvent.click(screen.getByRole('button',{name:/^Basketball court only.*Choose & place/i}));
-  expect(onPick).toHaveBeenCalledWith(asset.id);
+  fireEvent.click(screen.getByRole('button',{name:`${label} · Choose & place`}));
+  expect(onPick).toHaveBeenCalledWith(`native-park:court_only_${variant}_v1--native-v1`);
 });
 
 it('offers rotation with disabled court dimensions before placement', () => {

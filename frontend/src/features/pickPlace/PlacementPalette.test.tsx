@@ -107,7 +107,10 @@ describe('student asset browsing', () => {
       fireEvent.click(screen.getByText('Show more choices', { selector: 'button' }));
     }
     expect(screen.getAllByRole('article')).toHaveLength(count('park_plaza'));
-    expect(catalogue.CLASSROOM_CHOICES.every(choice => choice.placements.length === 1 && choice.option.variants?.length === 1)).toBe(true);
+    for (const choice of catalogue.CLASSROOM_CHOICES) {
+      expect(choice.option.variants?.map(variant => variant.id).sort()).toEqual(choice.placements.map(asset => asset.model.variantId).sort());
+      if (!choice.groupedVariants) expect(choice.placements).toHaveLength(1);
+    }
   });
   it('shows the active native street width and marks only the selected street card', () => {
     const onPickStreet = vi.fn();

@@ -5,7 +5,7 @@ import { CANONICAL_CHOICES } from './canonicalCatalogue';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { PICKER_HERO_IMAGES, pickerHeroImage } from './pickerHeroImages';
 import curatedHeroes from '@/data/catalogueHeroImages.json';
-import { CATALOGUE_ASSETS } from './assetRegistry';
+import { CATALOGUE_ASSETS, COURT_ONLY_SPORT_ASSETS } from './assetRegistry';
 
 describe('classroom picker hero views', () => {
   it('recovers from a missing hero and keeps placement usable when all exact images fail', () => {
@@ -26,7 +26,15 @@ describe('classroom picker hero views', () => {
   it('covers every active placement with an exact curated image and keeps future fallbacks usable', () => {
     const classroomHeroes = Object.entries(PICKER_HERO_IMAGES).filter(([, url]) => url.includes('/classroom-heroes/'));
     const placements = new Set(CANONICAL_CHOICES.flatMap(choice => choice.placements.map(asset => asset.id)));
-    expect(Object.keys(curatedHeroes).sort()).toEqual([...placements].sort());
+    // Court-only children intentionally show their exact native previews.
+    // Grouping keeps those models discoverable without claiming hero artwork.
+    const nativePreviewIds = new Set(COURT_ONLY_SPORT_ASSETS.map(asset => asset.id));
+    expect(Object.keys(curatedHeroes).sort()).toEqual([...placements].filter(id => !nativePreviewIds.has(id)).sort());
+    for (const asset of COURT_ONLY_SPORT_ASSETS) {
+      expect(placements.has(asset.id)).toBe(true);
+      expect(asset.thumbnail).toMatch(/^\/archetypes\/openspaces\/court-only-[^/]+\/preview\.png$/);
+      expect(pickerHeroImage(asset.id, asset.thumbnail)).toBe(asset.thumbnail);
+    }
     expect(classroomHeroes.filter(([id]) => !placements.has(id))).toEqual([]);
     for (const [id, url] of classroomHeroes) {
       expect(url).toMatch(/^\/archetypes\/(buildings|openspaces|streets)\/classroom-heroes\/[^/]+\.webp$/);
