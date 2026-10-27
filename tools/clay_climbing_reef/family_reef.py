@@ -2123,16 +2123,16 @@ ARCH_HB, ARCH_SKEW = 1.2, .12                       # the head is a flattened ha
 # the dimples round the plateau edge.
 SHOULDER_PX = [(560, 172), (530, 265), (705, 255), (320, 322), (390, 322), (377, 365), (780, 320), (425, 507), (515, 610),
                (675, 690), (805, 535), (875, 515), (280, 510), (925, 370)]
-PK_N = 44                                           # segments round each pocket mouth
+PK_N = 36                                           # segments round each pocket mouth
 PK_FILLET = .10                                     # the lower and side lips roll down into the cup over this depth (m)
 PK_UNDERCUT = .20                                   # the upper inner wall runs this fraction beyond the mouth, under the lip
 PK_UPPER = .40                                      # the upper half of the cup is this much deeper than the lower floor
 PK_ECC = .24                                        # the cup's inner rings (and darkest shades) sit this much low
 # Rings of each pocket patch, outside in: (radius factor, kind). 'skin' rings lie on the shell, 'fillet' rolls the lower
 # lip down, 'mouth' is the lip line (crisp only along the upper lip), 'cup' rings go down into the bowl.
-PK_RINGS = ((1.22, 'skin'), (1.13, 'skin'), (1.06, 'fillet'), (1.0, 'mouth'), (.97, 'cup'), (.93, 'cup'), (.88, 'cup'),
-            (.82, 'cup'), (.75, 'cup'), (.67, 'cup'), (.58, 'cup'), (.48, 'cup'), (.37, 'cup'), (.25, 'cup'), (.12, 'cup'))
-PK_SHADE = 'abcdefghijkl'                           # cup ring pair (mouth inwards) -> graded shade of the rim band
+PK_RINGS = ((1.22, 'skin'), (1.13, 'skin'), (1.06, 'fillet'), (1.0, 'mouth'), (.96, 'cup'), (.90, 'cup'), (.83, 'cup'),
+            (.74, 'cup'), (.63, 'cup'), (.50, 'cup'), (.36, 'cup'), (.20, 'cup'))
+PK_SHADE = 'abcdefghi'                              # cup ring pair (mouth inwards) -> graded shade of the rim band
 
 
 def entrance_clearance(p):
@@ -2457,7 +2457,7 @@ def shell_mesh(shell, Pi, pk):
     return obj, kept
 
 
-SHADES = tuple(zip('abcdefghijkl', [round(.92 ** (k + 1), 3) for k in range(12)]))   # graded shades of each band in a cup
+SHADES = tuple(zip('abcdefghi', [round(.90 ** (k + 1), 3) for k in range(9)]))   # graded shades of each band in a cup
 for _r in [r for r in PALETTE if r.startswith('reef') and r[4:].isdigit()]:
     for _s, _f in SHADES:
         PALETTE[_r + _s] = tuple(round(v * _f, 4) for v in PALETTE[_r])
@@ -2595,12 +2595,12 @@ def skylights():
     """Each skylight: a rigid white collar standing level on its pad (12 cm proud, 22 cm wide), seated down through the
     shell to 5 cm above the inner skin (the cut's own wall shows below it inside), and a low glazed lens dome on it,
     open underneath so the hall sees the glazing."""
-    n, prof = 36, [(1, 0), (.93, .30), (.78, .58), (.55, .82), (.28, .96), (.0, 1)]
+    n, prof = 28, [(1, 0), (.93, .30), (.78, .58), (.55, .82), (.28, .96), (.0, 1)]
     for j, (((x, y), R, zc)) in enumerate(PADS):
         top = zc + .12; bot = zc - T + .05
         rim = annulus(f'Skylight collar {j}', (x, y, 0.0), (0, 0, 1), R - .04, R + .22, bot, top, 'rim', 'skylights', n)
         liner = annulus(f'Skylight reveal liner {j}', (x, y, 0.0), (0, 0, 1), R - .07, R - .035, zc - T - .03, top - .02,
-                        'liner', 'skylights', 32)                    # the full-depth reveal, seen from the hall
+                        'liner', 'skylights', 24)                    # the full-depth reveal, seen from the hall
         for p in liner.data.polygons:
             p.use_smooth = abs(p.normal.z) < .5
         crisp(liner)
@@ -2957,7 +2957,7 @@ def planting(beds):
     rnd = random.Random(5); fields = [_PkNoise(91 + 17 * i, 2 * math.pi / 3.2) for i in range(len(mix))]
     for j, g in enumerate(beds):
         reg = kit.register_bed(pk_region(g))
-        spacing = .68 if g.centroid.distance(_pksh.Point(0, 0)) < RING_R0 else 1.3
+        spacing = .68 if g.centroid.distance(_pksh.Point(0, 0)) < RING_R0 else 1.45
         for x, y in pk_scatter(reg, spacing, margin=PK_CLEAR, seed=40 + j):
             order = sorted(range(len(mix)), key=lambda i: -(fields[i](x, y) + 1.4 * math.log(mix[i][1])))
             for i in order[:2]:
