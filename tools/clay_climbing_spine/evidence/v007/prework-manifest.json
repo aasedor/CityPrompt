@@ -1,0 +1,450 @@
+{
+  "candidate": "clay-climbing-spine-clay-v007",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-climbing-spine",
+  "variant_id": "clay-climbing-spine-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "climbing_wall_building/variant_2 (The Spine: bronze glass tower with a full-height sculpted climbing strip)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 52.0,
+      "depth": 27.0,
+      "height": 65.8
+    },
+    "observed_storeys": 15,
+    "storey_programme": "double-height retail base, thirteen floors of offices and apartments, a glazed roof amenity storey",
+    "plan": "52 m by 27 m tower (top view, fitted to all three views) with an 18.2 m wide, 3.5 m deep notch in the street front holding the 7.4 m climbing spine",
+    "facade": "dark bronze glass curtain wall: vision glass over dark spandrels, bronze fins at 1.9 m on the street and rear faces, fins at 1.0 m with sunshade bars on the side faces",
+    "spine": "light warm-grey sculpted precast climbing strip from the plaza to 5.7 m above the roof, carved into vertical flakes and ledges with holds; six rest-station balconies on its east side",
+    "base": "double-height retail base: white canopy over the west shopfronts, glazed lobby and shops east of the spine",
+    "roof": "U-shaped paved terrace with planting beds and granite boulders inside a coped parapet; a glazed amenity block with plant on its roof over the north half",
+    "streetscape": "plaza with a boulder garden at the spine foot, a second planter, street-tree pits and lamp posts; side streets west and east, a street in front",
+    "levels_m": [
+      8.0,
+      11.8,
+      15.6,
+      19.4,
+      23.2,
+      27.0,
+      30.799999999999997,
+      34.599999999999994,
+      38.4,
+      42.199999999999996,
+      46.0,
+      49.8,
+      53.599999999999994,
+      57.4
+    ],
+    "roof_m": {
+      "terrace": 57.4,
+      "parapet": 58.5,
+      "spine": 63.1,
+      "amenity_roof": 65.8
+    },
+    "inferred": "interiors, the north face and the north half of the side faces follow the visible grammar; the catalogue text says 20-35 storeys, the pixels show fifteen; metric dimensions are authored teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "flat terrace roof inside a coped parapet; glazed amenity block with a flat plant roof",
+    "datum_m": 57.4,
+    "crowns_m": [
+      58.5,
+      63.1,
+      65.8
+    ]
+  },
+  "identity_contract": {
+    "owner": "bronze glass tower with a full-height sculpted concrete climbing spine in a street-front notch, stacked rest-station balconies and a boulder roof terrace"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: dark bronze glass and fins, light warm-grey sculpted concrete, copper and timber balcony edges, white canopy and coping, granite boulders, grey pavers",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 15,
+    "ground": "shops and the climbing gym lobby",
+    "upper": "offices and apartments",
+    "roof": "terrace and amenity room"
+  },
+  "contact_contract": [
+    "Grade-zero plaza, sidewalks and streets",
+    "Tower, spine and canopy from grade",
+    "Balconies carried by the spine, the notch wall and the east wing",
+    "Terrace, boulders and beds on the roof slab inside the parapet"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        68.7,
+        -134.3,
+        55.0
+      ],
+      "target": [
+        -3.1,
+        -0.8,
+        28.7
+      ],
+      "lens": 50.1,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        81.8,
+        -171.9,
+        127.5
+      ],
+      "target": [
+        -22.6,
+        36.9,
+        6.8
+      ],
+      "lens": 68.6,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        70.0,
+        -95.0,
+        120.0
+      ],
+      "target": [
+        0.0,
+        -2.0,
+        25.0
+      ],
+      "lens": 34.0,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        -0.4,
+        -66.0,
+        279.2
+      ],
+      "target": [
+        -0.6,
+        -21.7,
+        111.4
+      ],
+      "lens": 98.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -82.0,
+        2.0,
+        78.0
+      ],
+      "target": [
+        -26.0,
+        0.0,
+        34.0
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        88.0,
+        -14.0,
+        80.0
+      ],
+      "target": [
+        26.0,
+        0.0,
+        33.0
+      ],
+      "lens": 20,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        8.0,
+        74.0,
+        112.0
+      ],
+      "target": [
+        0.0,
+        13.5,
+        27.0
+      ],
+      "lens": 21,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        62.0,
+        78.0,
+        110.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        28.0
+      ],
+      "lens": 34.0,
+      "whole": false
+    },
+    {
+      "name": "boulder_garden",
+      "location": [
+        13.0,
+        -36.0,
+        6.5
+      ],
+      "target": [
+        1.5,
+        -17.0,
+        1.2
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "rest_balconies",
+      "location": [
+        30.0,
+        -50.0,
+        30.0
+      ],
+      "target": [
+        9.0,
+        -13.5,
+        31.0
+      ],
+      "lens": 50,
+      "whole": false
+    },
+    {
+      "name": "roof_terrace",
+      "location": [
+        -38.0,
+        -34.0,
+        76.0
+      ],
+      "target": [
+        -9.0,
+        -5.0,
+        58.9
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "retail_base",
+      "location": [
+        -12.5,
+        -26.6,
+        3.2
+      ],
+      "target": [
+        -16.0,
+        -13.5,
+        4.4
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -16.5,
+        -50.0,
+        30.0
+      ],
+      "target": [
+        -16.5,
+        -13.5,
+        30.0
+      ],
+      "lens": 42,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        10.0,
+        -27.0,
+        22.0
+      ],
+      "target": [
+        2.3,
+        -12.4,
+        24.0
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        19.0,
+        -24.0,
+        21.0
+      ],
+      "target": [
+        19.0,
+        -13.5,
+        21.5
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -23.0,
+        -11.9,
+        28.7
+      ],
+      "target": [
+        -11.0,
+        -7.5,
+        28.6
+      ],
+      "lens": 18,
+      "whole": false
+    },
+    {
+      "name": "rooftop_plant",
+      "location": [
+        32.0,
+        26.0,
+        88.0
+      ],
+      "target": [
+        -1.0,
+        4.0,
+        65.8
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "east_facade",
+      "location": [
+        44.0,
+        -30.0,
+        30.0
+      ],
+      "target": [
+        26.0,
+        0.0,
+        30.0
+      ],
+      "lens": 24,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "boulder_garden",
+    "rest_balconies",
+    "roof_terrace",
+    "retail_base",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "interior",
+    "rooftop_plant",
+    "east_facade"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_2.png",
+        "path": "sources/front.png",
+        "bytes": 1420825,
+        "sha256": "6dc35f50b0835b370396357f550a80eb18d643d80a90e72941b3c4f4c21f256e"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_2_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 905088,
+        "sha256": "a5a39a8c97f8f831f1538eec96e967d4be10dcb3e96d89196c18e58f75c349e6"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_2_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 840417,
+        "sha256": "9239bd487ba29a757dded892881ae4d6754d61b59709e81b01d172d25849496d"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_3.png",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_spine.py",
+        "sha256": "ebb99aeec56da479cf49d52486485a8cbe795aa0bc95e4e105b65f7f8e62720a"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "af2dc463b1acf4214771337e52c947b5b4370e205ad3cafa71be086f104a0a75"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "4bf285269e8cbe2b0c9b373b05a365d386c8e6cf49acd3e2e23d45c2a875a247"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-27T06:38:31.844397+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

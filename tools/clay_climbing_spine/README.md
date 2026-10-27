@@ -72,6 +72,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v006
+## Open blockers after v007
 
-Candidate: `clay-climbing-spine-clay-v001.glb`. None: the v006 independent review returned zero P0 and zero P1. Its P2 polish items are in `evidence/v006/independent-review.md`.
+Candidate: `clay-climbing-spine-clay-v007.glb`. The v007 independent review (`evidence/v007/independent-review.md`) left these P0/P1 findings open:
+
+- **P1** (front, front_corner, aerial, architecture_close, rest_balconies, roof_terrace, phone-01): The spine shaft reads as crumpled paper or a low-poly triangle mesh. Its relief is shallow and its highlights are flat: luminance std/mean is 0.13–0.15 in front/front_corner and 0.10 in architecture_close, against 0.25–0.29 on the source spine, and the 95th-percentile luminance is only about 11 levels above the... Likely fix: Keep the straight envelope, but recess the base plane so blocks can stand 0.4–1.0 m proud. Merge the facets of each block into 2–4 large planar cleave faces, and cut 6–10 continuous vertical fissures 0.2–0.4 m deep...
+- **P1** (front, front_corner, aerial, boulder_garden, phone-01): The six rest stations sit about one storey too low against the base. In render front and front_corner, the lowest station's slab lies on the retail storefront head and canopy line, 0.1–0.2 storey above it. In both sources it sits one full dark-glazed office storey above the storefront head, with the deep entrance... Likely fix: Reduce the base head to about two office storeys plus mezzanine, so the storefront is about 2.5 office storeys tall as in the source. Then place the stations so the lowest has one full glazed office storey below it...
