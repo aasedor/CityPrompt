@@ -2210,128 +2210,125 @@ ND = _PkNoise(404, 1.0)
 
 
 FOOT = 8.0                                                            # the lower two storeys become a rough rock mass
-CORE_D = .6                                                           # the prism core sits this far inside the envelope
-MARGIN = .3                                                           # facets start this far from each front arris (inside the arris posts)
 
 
-def _poisson(rnd, w, h, r, tries=6000):
-    pts = []
-    cell = r / math.sqrt(2); grid = {}
-    for _ in range(tries):
-        x, y = rnd.uniform(0, w), rnd.uniform(0, h)
-        gi, gj = int(x / cell), int(y / cell)
-        if any(grid.get((gi + a, gj + b)) and (grid[(gi + a, gj + b)][0] - x) ** 2 + (grid[(gi + a, gj + b)][1] - y) ** 2 < r * r
-               for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2)):
-            continue
-        grid[(gi, gj)] = (x, y); pts.append((x, y))
-    return pts
+def _rock_rows(rnd):
+    """Rows of the fractured-rock lattice as (r, kind): plain rows 0.4-1.7 m apart, and every 2-4 m a dominant
+    ledge made of an undercut row 0.14 m under a proud lip row."""
+    rows, r, nxt = [(0., 'p')], 0., rnd.uniform(4.5, 6.)
+    while r < SPTOP - .5:
+        r = min(SPTOP, r + rnd.uniform(.4, 1.7))
+        if r >= nxt and r < SPTOP - 2.5:
+            while rows[-1][0] > nxt - .5 and rows[-1][0] > 0:
+                rows.pop()
+            rows += [(nxt - .14, 'u'), (nxt, 'l')]
+            r, nxt = nxt, nxt + rnd.uniform(2., 4.)
+        elif r < SPTOP - .3:
+            rows.append((r, 'p'))
+    rows.append((SPTOP, 'p'))
+    return rows
 
 
-def facet_cells(w, h, seed, r=1.15, stretch=1.3):
-    """Cleaved-rock facets for one spine face (v006, read off the source front and oblique): a Voronoi tiling of
-    the face (w across, h tall) into cells about 0.5-2 m, slightly taller than wide, clipped to the face."""
-    from scipy.spatial import Voronoi
-    rnd = random.Random(seed)
-    pts = [(x, y * stretch) for x, y in _poisson(rnd, w, h, r)]
-    big = 4 * (w + h * stretch)
-    pts += [(-big, -big), (big, -big), (big, big), (-big, big)]
-    vor = Voronoi(pts)
-    rect = _PkPolygon([(0, 0), (w, 0), (w, h), (0, h)])
-    cells = []
-    for i in range(len(pts) - 4):
-        reg = vor.regions[vor.point_region[i]]
-        if -1 in reg or not reg:
-            continue
-        poly = _PkPolygon([(vor.vertices[k][0], vor.vertices[k][1] / stretch) for k in reg]).intersection(rect)
-        if poly.is_empty or poly.area < .02 or poly.geom_type != 'Polygon':
-            continue
-        cells.append(list(poly.exterior.coords)[:-1])
-    return cells
-
-
-def facet_face(V, F, light, dark, origin, tang, out, w, h, seed, z_lo=0.):
-    """Add one carved face: every cell is a short prism from the buried core plane up to its own tilted, flat-shaded
-    top plane 0.05-0.55 m inside the envelope (below the foot the tops push up to ~0.9 m outside it, so the lower
-    storeys read as a heavier rock mass). Tops take the stone, the step walls between cells the darker stone."""
-    rnd = random.Random(seed + 1)
-    for poly in facet_cells(w, h, seed):
-        uc = sum(p[0] for p in poly) / len(poly); zc = sum(p[1] for p in poly) / len(poly) + z_lo
-        foot = max(0., 1 - zc / FOOT)
-        a = rnd.uniform(-.5, -.1) + foot * rnd.uniform(.35, 1.0)
-        gu, gz = rnd.uniform(-.5, .5), rnd.uniform(-.45, .45)
-        ds = [a + gu * (p[0] - uc) + gz * (p[1] + z_lo - zc) for p in poly]
-        lo_d, hi_d = (-.55, -.05) if foot == 0 else (-.55, -.05 + .95 * foot)
-        span = max(ds) - min(ds)
-        if span > .001 and (min(ds) < lo_d or max(ds) > hi_d):            # keep the plane inside the band, still planar
-            k = min(1., (hi_d - lo_d) / span)
-            ds = [a + (d - a) * k for d in ds]
-            shift = max(0., lo_d - min(ds)) - max(0., max(ds) - hi_d)
-            ds = [d + shift for d in ds]
-        n = len(poly); o = len(V)
-        for (u, z), d in zip(poly, ds):
-            V.append(tuple(origin[c] + tang[c] * u + out[c] * d for c in range(2)) + (z + z_lo,))
-        for (u, z) in poly:
-            V.append(tuple(origin[c] + tang[c] * u + out[c] * (-CORE_D - .02) for c in range(2)) + (z + z_lo,))
-        cen = [sum(V[o + i][c] for i in range(n)) / n for c in range(3)]
-        def outward(f, ref):
-            a, b2, c = V[f[0]], V[f[1]], V[f[2]]
-            nn = ((b2[1] - a[1]) * (c[2] - a[2]) - (b2[2] - a[2]) * (c[1] - a[1]), (b2[2] - a[2]) * (c[0] - a[0]) - (b2[0] - a[0]) * (c[2] - a[2]),
-                  (b2[0] - a[0]) * (c[1] - a[1]) - (b2[1] - a[1]) * (c[0] - a[0]))
-            return f if sum(nn[q] * ref[q] for q in range(3)) >= 0 else f[::-1]
-        F.append(outward(list(range(o, o + n)), (out[0], out[1], 0.))); light.append(len(F) - 1)
-        for i in range(n):
-            j = (i + 1) % n
-            wall = [o + i, o + n + i, o + n + j, o + j]
-            mid = [(V[o + i][q] + V[o + j][q]) / 2 for q in range(3)]
-            F.append(outward(wall, tuple(mid[q] - cen[q] for q in range(3)))); dark.append(len(F) - 1)
+def _rock_cols(rnd, Ls, W):
+    """Lattice columns over the unrolled exposed perimeter, 0.5-1.6 m apart, pinned at both notch edges and on
+    both arrises so the two faces fold along one shared crisp line."""
+    cols = []
+    for a, b in ((0., Ls), (Ls, Ls + W), (Ls + W, 2 * Ls + W)):
+        n = max(2, round((b - a) / 1.05))
+        w = [rnd.uniform(.5, 1.5) for _ in range(n)]
+        acc = 0.
+        for k in range(n):
+            cols.append(a + (b - a) * acc / sum(w)); acc += w[k]
+    cols.append(2 * Ls + W)
+    return cols
 
 
 def spine():
-    """The climbing spine (v006): a straight-edged prism whose front and side faces are covered in chunky angular
-    cleaved-rock facets 0.5-2 m in many orientations, plain margins on the front arrises, a plain band under the cap,
-    a rougher, wider rock mass over the lower two storeys with boulders heaped against it."""
-    W = SPX[1] - SPX[0]; Ls = YN - SPY0
-    V, F, light, dark = [], [], [], []
-    top = SPTOP - 1.0
-    facet_face(V, F, light, dark, (SPX[0] + MARGIN, SPY0), (1, 0), (0, -1), W - 2 * MARGIN, top, 61)
-    facet_face(V, F, light, dark, (SPX[0], SPY0 + MARGIN), (0, 1), (-1, 0), Ls - MARGIN, top, 62)
-    facet_face(V, F, light, dark, (SPX[1], SPY0 + MARGIN), (0, 1), (1, 0), Ls - MARGIN, top, 63)
-    out_faces = [tuple(f) for f in F]
-    me = C.bpy.data.meshes.new('Climbing spine cleaved facets mesh'); me.from_pydata(V, [], out_faces)
-    o = C.bpy.data.objects.new('Climbing spine cleaved facets', me); C.bpy.context.collection.objects.link(o)
-    me.materials.append(C.MATS['rock']); me.materials.append(C.MATS['rock2']); C.tag(o, 'rock', 'climbing spine')
-    ds = set(dark)
-    for poly in me.polygons:
-        poly.material_index = 1 if poly.index in ds else 0
+    """The climbing spine (v006): one continuous fractured-rock mass inside a straight prism outline. A jittered
+    lattice of irregular facets (0.3-2 m, adjoining without gaps, 0.1-0.5 m deep) whose rows run on the diagonal; a
+    few dominant cleavage ledges every 2-4 m, each a proud lip over an undercut that throws a shadow band, the slab
+    above it leaning back to the next ledge. Rock runs right to both arrises; over the lower two storeys the mass is
+    pushed out ~0.9 m and boulders are heaped on it."""
+    rnd = random.Random(71)
+    Ls = YN - SPY0; W = SPX[1] - SPX[0]; S_ = 2 * Ls + W
+    cols, rows = _rock_cols(rnd, Ls, W), _rock_rows(rnd)
+    edges = {0, len(cols) - 1}
+    arris = {i for i, s in enumerate(cols) if abs(s - Ls) < 1e-6 or abs(s - Ls - W) < 1e-6}
+    ledges = [r for r, k in rows if k == 'l']
+
+    def zof(r, s):                                                       # rows rise to the east on a varying slope
+        sig = .3 + .15 * (.5 + .5 * ND(r * .08, 3.1))
+        return r + sig * (s - S_ / 2) * _smooth01((r - .5) / 7.) * _smooth01((SPTOP - .5 - r) / 7.)
+
+    def xy(s, d):                                                        # perimeter point pushed d inward
+        if s <= Ls:
+            return SPX[0] - d, YN - s
+        if s >= Ls + W:
+            return SPX[1] + d, SPY0 + (s - Ls - W)
+        return SPX[0] + (s - Ls), SPY0 - d
+
+    grid, front = [], []
+    for ri, (r, kind) in enumerate(rows):
+        below = max([l for l in ledges if l <= r + 1e-6] or [0.])
+        above = min([l for l in ledges if l > r + 1e-6] or [SPTOP])
+        t = (r - below) / max(.1, above - below)
+        line = []
+        for ci, s in enumerate(cols):
+            fixed = ci in edges or ci in arris
+            ss = s if fixed else s + rnd.uniform(-.28, .28) * min(cols[ci + 1] - s, s - cols[ci - 1])
+            rr = r if kind != 'p' or ri in (0, len(rows) - 1) else \
+                r + rnd.uniform(-.3, .3) * min(r - rows[ri - 1][0], rows[ri + 1][0] - r)
+            z = max(0., min(SPTOP, zof(rr, ss)))
+            die = _smooth01(.5 + 1.6 * NC(ss * .22, r * .37))             # ledges strengthen and die out along their run
+            if kind == 'l':
+                d = -rnd.uniform(.0, .07) - .25 * (1 - die)
+            elif kind == 'u':
+                d = -rnd.uniform(.3, .5) * (.45 + .55 * die)
+            else:
+                d = -(.12 + .16 * t) + rnd.uniform(-.2, .2)
+            d = max(-.5, min(-.0, d)) * (1 - _smooth01((z - (SPTOP - 1.3)) / 1.0))
+            wn = _smooth01(ss / .8) * _smooth01((S_ - ss) / .8)
+            foot = max(0., 1 - z / FOOT)
+            d = wn * d + wn * foot * (.55 + .35 * NB(ss * .5, 1.7))     # (positive = pushed out at the foot)
+            if ci in arris:                                              # the shared arris point sits on the mitre
+                x, y = (SPX[0] - d, SPY0 - d) if abs(s - Ls) < 1e-6 else (SPX[1] + d, SPY0 - d)
+            else:
+                x, y = xy(ss, d)
+            line.append((x, y, z))
+            if Ls + .4 < ss < Ls + W - .4 and kind == 'p' and 9.6 < z < SPTOP - 2.2:
+                front.append((x, y, z))
+        grid.append(line)
+    nc = len(cols)
+    V = [v for line in grid for v in line]
+    F = []
+    for i in range(len(rows) - 1):
+        for j in range(nc - 1):
+            a, b, c, e = i * nc + j, i * nc + j + 1, (i + 1) * nc + j + 1, (i + 1) * nc + j
+            F += [(a, b, c), (a, c, e)] if rnd.random() < .5 else [(a, b, e), (b, c, e)]
+    top = len(V); V += [(SPX[1], SPY1, SPTOP), (SPX[0], SPY1, SPTOP), (SPX[1], SPY1, 0.), (SPX[0], SPY1, 0.)]
+    bot0, topr = 0, (len(rows) - 1) * nc
+    F.append(tuple(topr + j for j in range(nc)) + (top, top + 1))       # roof cap of the rock (under the concrete cap)
+    F.append((top + 3, top + 2) + tuple(bot0 + j for j in range(nc - 1, -1, -1)))
+    o = C.mesh('Climbing spine fractured rock', V, F, 'rock', 'climbing spine')
+    for poly in o.data.polygons:
         poly.use_smooth = False
-    # core, plain arris margins, plain upper sides and the plain band under the cap
     b = Batch()
-    b.box('rock', (SPX[0] + SPX[1]) / 2, (SPY0 + CORE_D + YN) / 2, top / 2, W - 2 * CORE_D, YN - SPY0 - CORE_D + .02, top)
-    for x0, s in ((SPX[0], 1), (SPX[1], -1)):                         # plain square arris posts: straight arrises
-        b.box('rock', x0 + s * (CORE_D + .02) / 2, SPY0 + (CORE_D + .02) / 2, top / 2, CORE_D + .02, CORE_D + .02, top)
-    b.box('rock', (SPX[0] + SPX[1]) / 2, (YN + SPY1) / 2, SPTOP / 2, W, SPY1 - YN, SPTOP)
-    b.box('rock', (SPX[0] + SPX[1]) / 2, (SPY0 + YN) / 2, (top + SPTOP) / 2, W, YN - SPY0 - .002, SPTOP - top)
     b.box('concrete', (SPX[0] + SPX[1]) / 2, (SPY0 + SPY1) / 2, SPTOP + .06, W + .12, SPY1 - SPY0 + .12, .12)
     for k in range(1, 4):                                                # cap joints (top view)
         b.box('core', SPX[0] + W * k / 4, (SPY0 + SPY1) / 2, SPTOP + .1205, .03, SPY1 - SPY0 + .1, .003)
-    b.flush('spine core and cap')
+    b.flush('spine cap')
     # Large rounded-angular boulders heaped against the foot (source front and oblique).
-    for k, (x, y, rx, ry, rz, lean) in enumerate(((SPX[0] + .3, SPY0 - 1.0, 1.35, 1.1, 2.2, .1), (SPX[0] + 2.6, SPY0 - 1.3, 1.1, .95, 1.5, 0.),
-                                                   (SPX[1] - .4, SPY0 - 1.1, 1.25, 1.05, 1.9, .15), (SPX[0] - .5, SPY0 + 1.2, .95, .85, 1.4, .1),
-                                                   (SPX[1] + .4, SPY0 + 1.0, .9, .8, 1.3, 0.))):
+    for k, (x, y, rx, ry, rz, lean) in enumerate(((SPX[0] + .3, SPY0 - 1.3, 1.35, 1.1, 2.2, .1), (SPX[0] + 2.6, SPY0 - 1.6, 1.1, .95, 1.5, 0.),
+                                                   (SPX[1] - .4, SPY0 - 1.4, 1.25, 1.05, 1.9, .15), (SPX[0] - .9, SPY0 + 1.2, .95, .85, 1.4, .1),
+                                                   (SPX[1] + .8, SPY0 + 1.0, .9, .8, 1.3, 0.))):
         stone(f'Spine foot boulder {k}', x, y, .12, rx, ry, rz, k, rot=k * 1.9, tilt=lean)
-    # Holds: about 40 sparse holds on cell tops, varied size and tint.
-    rnd = random.Random(31)
+    # Holds: about 40 sparse holds set on lattice points of the front, varied size and tint.
+    hrnd = random.Random(31)
     hb = Batch()
-    n = 0
-    while n < 40:
-        u, z = rnd.uniform(.5, W - .5), rnd.uniform(9.6, top - 1.0)
-        d = rnd.uniform(.08, .3)
-        r = rnd.uniform(.05, .1)
-        y = SPY0 + d
-        hb.beam('hold' if rnd.random() < .6 else 'hold2', (SPX[0] + u, y + .3, z), (SPX[0] + u, y - r, z + rnd.uniform(-.03, .05)),
-                r * rnd.uniform(1.2, 2.0), r * rnd.uniform(.9, 1.4))
-        n += 1
+    for x, y, z in hrnd.sample(front, min(40, len(front))):
+        r = hrnd.uniform(.05, .1)
+        hb.beam('hold' if hrnd.random() < .6 else 'hold2', (x, y + .05, z), (x, y - r, z + hrnd.uniform(-.03, .05)),
+                r * hrnd.uniform(1.2, 2.0), r * hrnd.uniform(.9, 1.4))
     hb.flush('spine holds')
 
 
