@@ -1,0 +1,4643 @@
+{
+  "candidate": "clay-climbing-spine-clay-v006",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 864,
+    "vertices": 435037,
+    "polygons": 420421,
+    "triangles": 420421,
+    "path": "clay-climbing-spine-clay-v006-authoring.blend",
+    "bytes": 9583652,
+    "sha256": "f8ab9cc47f376e0144be5b3a826dbef2a850f1ea5a7ba6bdfbb0cc5240855016"
+  },
+  "runtime": {
+    "path": "clay-climbing-spine-clay-v006.glb",
+    "bytes": 3200344,
+    "sha256": "c46df5864d11a8bacd054334254fc983a7e06d000e8a2c534a52948e105a55c0",
+    "meshes": 67,
+    "materials": 58,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 509,
+    "vertices": 435037,
+    "polygons": 420421,
+    "triangles": 420421
+  },
+  "original_bounds_m": [
+    [
+      -95.0,
+      -76.5,
+      0.0
+    ],
+    [
+      95.0,
+      92.0,
+      98.05999755859375
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -95.0,
+      -76.5,
+      0.0
+    ],
+    [
+      95.0,
+      92.0,
+      98.05999755859375
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 52.0,
+    "depth": 27.0,
+    "height": 65.8
+  },
+  "native_dimensions_m": {
+    "width": 190.0,
+    "depth": 168.5,
+    "height": 98.05999755859375
+  },
+  "native_bottom_center_m": [
+    0.0,
+    7.75,
+    0.0
+  ],
+  "source_components_by_role": {
+    "glass": 23,
+    "spandrel": 15,
+    "bronze": 11,
+    "frame": 21,
+    "rock": 1,
+    "hold": 1,
+    "hold2": 1,
+    "concrete": 9,
+    "coping": 11,
+    "canopy": 1,
+    "copper": 1,
+    "timber": 22,
+    "hardware": 3,
+    "steel": 4,
+    "interior": 9,
+    "floor": 14,
+    "core": 2,
+    "roof": 2,
+    "membrane": 1,
+    "metal": 2,
+    "duct": 1,
+    "paver": 7,
+    "paver2": 3,
+    "kerb": 6,
+    "asphalt": 4,
+    "line": 1,
+    "mulch": 1,
+    "brick2": 1,
+    "tan": 1,
+    "white": 1,
+    "ctxglass": 1,
+    "lamp": 24,
+    "tree": 10,
+    "tree2": 10,
+    "bark": 40,
+    "trim": 96,
+    "blue": 16,
+    "soffit": 1,
+    "ctxroof": 1,
+    "bedgreen": 2,
+    "crown": 4,
+    "plaza": 2,
+    "pk_leaf_dark": 4,
+    "pk_yellow": 2,
+    "pk_yellow2": 2,
+    "pk_mulch": 6
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/boulder_garden.png",
+    "renders/rest_balconies.png",
+    "renders/roof_terrace.png",
+    "renders/retail_base.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/interior.png",
+    "renders/rooftop_plant.png",
+    "renders/east_facade.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Tower floors, core and partitions inside the curtain wall",
+      "roof_m": 57.4
+    },
+    {
+      "name": "Spine, tower faces and canopy from grade; balconies carried by the spine, notch wall and east wing",
+      "top_m": 65.8
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "south west wing floor 0",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 8.75,
+      "width": 19.060000000000002,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 1",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 12.55,
+      "width": 19.060000000000002,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 2",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 16.35,
+      "width": 19.060000000000002,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 3",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 20.15,
+      "width": 19.060000000000002,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 4",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 23.95,
+      "width": 19.060000000000002,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 5",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 27.75,
+      "width": 19.060000000000002,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 6",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 31.549999999999997,
+      "width": 19.060000000000002,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 7",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 35.349999999999994,
+      "width": 19.060000000000002,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 8",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 39.15,
+      "width": 19.060000000000002,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 9",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 42.949999999999996,
+      "width": 19.060000000000002,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 10",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 46.75,
+      "width": 19.060000000000002,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 11",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 50.55,
+      "width": 19.060000000000002,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south west wing floor 12",
+      "face": "south front west wing",
+      "u": -16.35,
+      "z": 54.349999999999994,
+      "width": 19.060000000000002,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west shopfronts bay 0",
+      "face": "south front west wing",
+      "u": -22.1,
+      "z": 0.15,
+      "width": 6.559999999999998,
+      "height": 7.3,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "west shopfronts bay 1",
+      "face": "south front west wing",
+      "u": -16.1,
+      "z": 0.15,
+      "width": 4.159999999999999,
+      "height": 7.3,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "west shopfronts bay 2",
+      "face": "south front west wing",
+      "u": -11.5,
+      "z": 0.15,
+      "width": 3.7600000000000007,
+      "height": 7.3,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "west shopfronts bay 3",
+      "face": "south front west wing",
+      "u": -7.85,
+      "z": 0.15,
+      "width": 2.26,
+      "height": 7.3,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "south east wing floor 0",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 8.75,
+      "width": 14.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 1",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 12.55,
+      "width": 14.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 2",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 16.35,
+      "width": 14.26,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 3",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 20.15,
+      "width": 14.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 4",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 23.95,
+      "width": 14.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 5",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 27.75,
+      "width": 14.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 6",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 31.549999999999997,
+      "width": 14.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 7",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 35.349999999999994,
+      "width": 14.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 8",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 39.15,
+      "width": 14.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 9",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 42.949999999999996,
+      "width": 14.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 10",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 46.75,
+      "width": 14.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 11",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 50.55,
+      "width": 14.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "south east wing floor 12",
+      "face": "south front east wing",
+      "u": 18.75,
+      "z": 54.349999999999994,
+      "width": 14.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east lobby bay 0",
+      "face": "south front east wing",
+      "u": 13.45,
+      "z": 0.15,
+      "width": 3.8600000000000003,
+      "height": 7.3,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "east lobby bay 1",
+      "face": "south front east wing",
+      "u": 17.9,
+      "z": 0.15,
+      "width": 3.7600000000000007,
+      "height": 7.3,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "east lobby bay 2",
+      "face": "south front east wing",
+      "u": 23.0,
+      "z": 0.15,
+      "width": 5.160000000000003,
+      "height": 7.3,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -13.5,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "notch west return floor 0",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 8.75,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 1",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 12.55,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 2",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 16.35,
+      "width": 3.26,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 3",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 20.15,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 4",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 23.95,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 5",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 27.75,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 6",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 31.549999999999997,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 7",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 35.349999999999994,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 8",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 39.15,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 9",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 42.949999999999996,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 10",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 46.75,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 11",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 50.55,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return floor 12",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 54.349999999999994,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west return base",
+      "face": "notch west return",
+      "u": -11.45,
+      "z": 0.15,
+      "width": 3.2,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -6.699999809265137,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "notch east return floor 0",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 8.75,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 1",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 12.55,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 2",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 16.35,
+      "width": 3.26,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 3",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 20.15,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 4",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 23.95,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 5",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 27.75,
+      "width": 3.26,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 6",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 31.549999999999997,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 7",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 35.349999999999994,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 8",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 39.15,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 9",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 42.949999999999996,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 10",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 46.75,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 11",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 50.55,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return floor 12",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 54.349999999999994,
+      "width": 3.26,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east return base",
+      "face": "notch east return",
+      "u": 11.45,
+      "z": 0.15,
+      "width": 3.2,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        11.5,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shops and lobby"
+    },
+    {
+      "id": "notch west back floor 0",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 8.75,
+      "width": 5.11,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 1",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 12.55,
+      "width": 5.11,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 2",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 16.35,
+      "width": 5.11,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 3",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 20.15,
+      "width": 5.11,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 4",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 23.95,
+      "width": 5.11,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 5",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 27.75,
+      "width": 5.11,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 6",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 31.549999999999997,
+      "width": 5.11,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 7",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 35.349999999999994,
+      "width": 5.11,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 8",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 39.15,
+      "width": 5.11,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 9",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 42.949999999999996,
+      "width": 5.11,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 10",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 46.75,
+      "width": 5.11,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 11",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 50.55,
+      "width": 5.11,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back floor 12",
+      "face": "notch back",
+      "u": -4.025,
+      "z": 54.349999999999994,
+      "width": 5.11,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch west back base",
+      "face": "notch back",
+      "u": -4.05,
+      "z": 0.15,
+      "width": 5.000000000000001,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "climbing gym"
+    },
+    {
+      "id": "notch east back floor 0",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 8.75,
+      "width": 5.31,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 1",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 12.55,
+      "width": 5.31,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 2",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 16.35,
+      "width": 5.31,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 3",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 20.15,
+      "width": 5.31,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 4",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 23.95,
+      "width": 5.31,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 5",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 27.75,
+      "width": 5.31,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 6",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 31.549999999999997,
+      "width": 5.31,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 7",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 35.349999999999994,
+      "width": 5.31,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 8",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 39.15,
+      "width": 5.31,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 9",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 42.949999999999996,
+      "width": 5.31,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 10",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 46.75,
+      "width": 5.31,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 11",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 50.55,
+      "width": 5.31,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "notch east back floor 12",
+      "face": "notch back",
+      "u": 8.725,
+      "z": 54.349999999999994,
+      "width": 5.31,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "climbing gym entrance",
+      "face": "notch back",
+      "u": 8.924999999999999,
+      "z": 0.15,
+      "width": 3.4,
+      "height": 7.1,
+      "kind": "glazed door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "climbing gym"
+    },
+    {
+      "id": "east face floor 0",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 8.75,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 1",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 12.55,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 2",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 16.35,
+      "width": 26.46,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 3",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 20.15,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 4",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 23.95,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 5",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 27.75,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 6",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 31.549999999999997,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 7",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 35.349999999999994,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 8",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 39.15,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 9",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 42.949999999999996,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 10",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 46.75,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 11",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 50.55,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face floor 12",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 54.349999999999994,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "east face base glazing",
+      "face": "east face",
+      "u": 0.15000000000000036,
+      "z": 0.15,
+      "width": 25.5,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shops"
+    },
+    {
+      "id": "west face floor 0",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 8.75,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 1",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 12.55,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 2",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 16.35,
+      "width": 26.46,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 3",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 20.15,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 4",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 23.95,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 5",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 27.75,
+      "width": 26.46,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 6",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 31.549999999999997,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 7",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 35.349999999999994,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 8",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 39.15,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 9",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 42.949999999999996,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 10",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 46.75,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 11",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 50.55,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face floor 12",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 54.349999999999994,
+      "width": 26.46,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "west face base glazing",
+      "face": "west face",
+      "u": -0.15000000000000036,
+      "z": 0.15,
+      "width": 25.5,
+      "height": 7.1,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        -26.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shops"
+    },
+    {
+      "id": "north face floor 0",
+      "face": "north face",
+      "u": 0.0,
+      "z": 8.75,
+      "width": 51.16,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 1",
+      "face": "north face",
+      "u": 0.0,
+      "z": 12.55,
+      "width": 51.16,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 2",
+      "face": "north face",
+      "u": 0.0,
+      "z": 16.35,
+      "width": 51.16,
+      "height": 2.749999999999999,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 3",
+      "face": "north face",
+      "u": 0.0,
+      "z": 20.15,
+      "width": 51.16,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 4",
+      "face": "north face",
+      "u": 0.0,
+      "z": 23.95,
+      "width": 51.16,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 5",
+      "face": "north face",
+      "u": 0.0,
+      "z": 27.75,
+      "width": 51.16,
+      "height": 2.750000000000001,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 6",
+      "face": "north face",
+      "u": 0.0,
+      "z": 31.549999999999997,
+      "width": 51.16,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 7",
+      "face": "north face",
+      "u": 0.0,
+      "z": 35.349999999999994,
+      "width": 51.16,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 8",
+      "face": "north face",
+      "u": 0.0,
+      "z": 39.15,
+      "width": 51.16,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 9",
+      "face": "north face",
+      "u": 0.0,
+      "z": 42.949999999999996,
+      "width": 51.16,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 10",
+      "face": "north face",
+      "u": 0.0,
+      "z": 46.75,
+      "width": 51.16,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 11",
+      "face": "north face",
+      "u": 0.0,
+      "z": 50.55,
+      "width": 51.16,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north face floor 12",
+      "face": "north face",
+      "u": 0.0,
+      "z": 54.349999999999994,
+      "width": 51.16,
+      "height": 2.7499999999999973,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "offices and apartments"
+    },
+    {
+      "id": "north base glazing",
+      "face": "north face",
+      "u": -12.0,
+      "z": 0.15,
+      "width": 10.0,
+      "height": 3.6,
+      "kind": "storefront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.18,
+      "pane_inset_m": 0.217,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "lobby"
+    },
+    {
+      "id": "north service door",
+      "face": "north face",
+      "u": 6.0,
+      "z": 0.15,
+      "width": 4.2,
+      "height": 4.0,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.2,
+      "pane_inset_m": 0.23700000000000002,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "loading"
+    },
+    {
+      "id": "amenity front glazing",
+      "face": "amenity block front",
+      "u": -1.0500000000000007,
+      "z": 57.949999999999996,
+      "width": 33.800000000000004,
+      "height": 1.9,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        -3.799999952316284,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "roof amenity room"
+    },
+    {
+      "id": "amenity west glazing",
+      "face": "amenity block west",
+      "u": -4.85,
+      "z": 57.949999999999996,
+      "width": 16.4,
+      "height": 1.9,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        -18.100000381469727,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "roof amenity room"
+    },
+    {
+      "id": "amenity east glazing",
+      "face": "amenity block east",
+      "u": 4.85,
+      "z": 57.949999999999996,
+      "width": 16.4,
+      "height": 1.9,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "roof amenity room"
+    },
+    {
+      "id": "amenity north glazing",
+      "face": "north face",
+      "u": 1.0500000000000007,
+      "z": 57.949999999999996,
+      "width": 33.5,
+      "height": 1.9,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.07,
+      "pane_inset_m": 0.10700000000000001,
+      "face_origin": [
+        0.0,
+        13.5,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "roof amenity room"
+    }
+  ],
+  "authoring_modules": {
+    "boulders": [
+      "Stone prototype 0",
+      "Stone prototype 1",
+      "Stone prototype 2",
+      "Stone prototype 3",
+      "Stone prototype 4",
+      "Stone prototype 5"
+    ],
+    "site": [
+      "Plaza",
+      "Notch paving",
+      "West sidewalk",
+      "East sidewalk",
+      "North service court",
+      "South street",
+      "West street",
+      "East street",
+      "North lane",
+      "Far south sidewalk",
+      "Far west sidewalk",
+      "Far east sidewalk",
+      "North far walk"
+    ],
+    "paving": [
+      "paving kerb",
+      "paving line",
+      "paving paver2"
+    ],
+    "street trees": [
+      "Young tree trunk",
+      "Young tree limb",
+      "Young tree limb.001",
+      "Young tree limb.002",
+      "Young tree trunk.001",
+      "Young tree limb.003",
+      "Young tree limb.004",
+      "Young tree limb.005",
+      "Young tree trunk.002",
+      "Young tree limb.006",
+      "Young tree limb.007",
+      "Young tree limb.008",
+      "Young tree trunk.003",
+      "Young tree limb.009",
+      "Young tree limb.010",
+      "Young tree limb.011",
+      "Young tree trunk.004",
+      "Young tree limb.012",
+      "Young tree limb.013",
+      "Young tree limb.014",
+      "Young tree trunk.005",
+      "Young tree limb.015",
+      "Young tree limb.016",
+      "Young tree limb.017",
+      "Young tree trunk.006",
+      "Young tree limb.018",
+      "Young tree limb.019",
+      "Young tree limb.020",
+      "Young tree trunk.007",
+      "Young tree limb.021",
+      "Young tree limb.022",
+      "Young tree limb.023",
+      "Young tree trunk.008",
+      "Young tree limb.024",
+      "Young tree limb.025",
+      "Young tree limb.026",
+      "Young tree trunk.009",
+      "Young tree limb.027",
+      "Young tree limb.028",
+      "Young tree limb.029"
+    ],
+    "garden planting": [
+      "Young tree crown",
+      "Young tree crown.001",
+      "Young tree crown.002",
+      "Young tree crown.003",
+      "Young tree crown.004",
+      "Young tree crown.005",
+      "Young tree crown.006",
+      "Young tree crown.007",
+      "Young tree crown.008",
+      "Young tree crown.009",
+      "Young tree crown.010",
+      "Young tree crown.011",
+      "Young tree crown.012",
+      "Young tree crown.013",
+      "Young tree crown.014",
+      "Young tree crown.015",
+      "Young tree crown.016",
+      "Young tree crown.017",
+      "Young tree crown.018",
+      "Young tree crown.019"
+    ],
+    "tree pits": [
+      "tree pits kerb",
+      "tree pits mulch"
+    ],
+    "street lamps": [
+      "Lamp post",
+      "Lamp base",
+      "Lamp head",
+      "Lamp lens",
+      "Lamp post.001",
+      "Lamp base.001",
+      "Lamp head.001",
+      "Lamp lens.001",
+      "Lamp post.002",
+      "Lamp base.002",
+      "Lamp head.002",
+      "Lamp lens.002",
+      "Lamp post.003",
+      "Lamp base.003",
+      "Lamp head.003",
+      "Lamp lens.003",
+      "Lamp post.004",
+      "Lamp base.004",
+      "Lamp head.004",
+      "Lamp lens.004",
+      "Lamp post.005",
+      "Lamp base.005",
+      "Lamp head.005",
+      "Lamp lens.005",
+      "Lamp post.006",
+      "Lamp base.006",
+      "Lamp head.006",
+      "Lamp lens.006",
+      "Lamp post.007",
+      "Lamp base.007",
+      "Lamp head.007",
+      "Lamp lens.007"
+    ],
+    "beds": [
+      "Plaza bed A kerb",
+      "Plaza bed A soil",
+      "Plaza bed B kerb",
+      "Plaza bed B soil",
+      "Plaza bed G3 kerb",
+      "Plaza bed G3 soil",
+      "Plaza bed G4 kerb",
+      "Plaza bed G4 soil",
+      "Terrace bed L kerb",
+      "Terrace bed L soil",
+      "Terrace bed R kerb",
+      "Terrace bed R soil"
+    ],
+    "planting": [
+      "Plaza bed A groundcover",
+      "Plaza bed B groundcover",
+      "Plaza bed G3 groundcover",
+      "Plaza bed G4 groundcover",
+      "Terrace bed L groundcover",
+      "Terrace bed L groundcover dots pk_yellow",
+      "Terrace bed L groundcover dots pk_yellow2",
+      "Terrace bed R groundcover",
+      "Terrace bed R groundcover dots pk_yellow",
+      "Terrace bed R groundcover dots pk_yellow2",
+      {
+        "planting_kit": true,
+        "instancing": true,
+        "plants": 169,
+        "instance_nodes": 418,
+        "prototypes": {
+          "sp_fountain_grass": 44,
+          "sp_shrub_dark": 16,
+          "sp_shrub": 42,
+          "sp_feather_reed": 23,
+          "sp_blue_fescue": 29,
+          "sp_shrub_b": 15
+        },
+        "clearance_violations": 0,
+        "rejected": 699
+      }
+    ],
+    "context": [
+      "context tan",
+      "context ctxroof",
+      "context ctxglass",
+      "context brick2",
+      "context white"
+    ],
+    "envelope": [
+      "south west wing carrier",
+      "south east wing carrier",
+      "notch west return carrier",
+      "notch east return carrier",
+      "notch west back carrier",
+      "notch east back carrier",
+      "east face carrier",
+      "west face carrier",
+      "north face carrier",
+      "north parapet east",
+      "north parapet west",
+      "amenity front carrier",
+      "amenity west carrier",
+      "amenity east carrier",
+      "amenity north carrier"
+    ],
+    "south west wing": [
+      "south front west wing south west wing frame",
+      "south front west wing south west wing glass",
+      "south front west wing south west wing bronze"
+    ],
+    "south west wing storefront": [
+      "south front west wing south west wing storefront frame",
+      "south front west wing south west wing storefront glass",
+      "south front west wing south west wing storefront hardware",
+      "south front west wing south west wing storefront concrete"
+    ],
+    "south east wing": [
+      "south front east wing south east wing frame",
+      "south front east wing south east wing glass",
+      "south front east wing south east wing bronze"
+    ],
+    "south east wing storefront": [
+      "south front east wing south east wing storefront frame",
+      "south front east wing south east wing storefront glass",
+      "south front east wing south east wing storefront hardware",
+      "south front east wing south east wing storefront concrete"
+    ],
+    "base": [
+      "East lobby base head"
+    ],
+    "notch west return": [
+      "notch west return notch west return frame",
+      "notch west return notch west return glass",
+      "notch west return notch west return bronze"
+    ],
+    "notch west return base": [
+      "notch west return notch west return base frame",
+      "notch west return notch west return base glass"
+    ],
+    "notch east return": [
+      "notch east return notch east return frame",
+      "notch east return notch east return glass",
+      "notch east return notch east return bronze"
+    ],
+    "notch east return base": [
+      "notch east return notch east return base frame",
+      "notch east return notch east return base glass"
+    ],
+    "notch west back": [
+      "notch back notch west back frame",
+      "notch back notch west back glass"
+    ],
+    "notch west back base": [
+      "notch back notch west back base frame",
+      "notch back notch west back base glass"
+    ],
+    "notch east back": [
+      "notch back notch east back frame",
+      "notch back notch east back glass"
+    ],
+    "notch east base": [
+      "notch back notch east base frame",
+      "notch back notch east base glass"
+    ],
+    "east face": [
+      "east face east face frame",
+      "east face east face glass",
+      "east face east face bronze"
+    ],
+    "east face base": [
+      "east face east face base frame",
+      "east face east face base glass"
+    ],
+    "west face": [
+      "west face west face frame",
+      "west face west face glass",
+      "west face west face bronze"
+    ],
+    "west face base": [
+      "west face west face base frame",
+      "west face west face base glass"
+    ],
+    "north face": [
+      "north face north face frame",
+      "north face north face glass",
+      "north face north face bronze"
+    ],
+    "north base": [
+      "north face north base frame",
+      "north face north base glass",
+      "north face north base metal",
+      "north face north base steel"
+    ],
+    "north parapet east": [
+      "north face north parapet east bronze"
+    ],
+    "north parapet west": [
+      "north face north parapet west bronze"
+    ],
+    "amenity front": [
+      "amenity block front amenity front glass",
+      "amenity block front amenity front crown",
+      "amenity block front amenity front frame"
+    ],
+    "amenity west": [
+      "amenity block west amenity west glass",
+      "amenity block west amenity west crown",
+      "amenity block west amenity west frame"
+    ],
+    "amenity east": [
+      "amenity block east amenity east glass",
+      "amenity block east amenity east crown",
+      "amenity block east amenity east frame"
+    ],
+    "amenity north": [
+      "north face amenity north glass",
+      "north face amenity north crown"
+    ],
+    "amenity roof": [
+      "amenity roof roof",
+      "amenity roof membrane",
+      "amenity roof coping",
+      "amenity roof concrete",
+      "amenity roof metal",
+      "amenity roof hardware",
+      "amenity roof duct",
+      "amenity roof steel"
+    ],
+    "corner posts": [
+      "corner posts bronze"
+    ],
+    "parapet coping": [
+      "parapet coping coping"
+    ],
+    "terrace guard": [
+      "terrace guard glass",
+      "terrace guard steel"
+    ],
+    "parapet liners": [
+      "parapet liners concrete"
+    ],
+    "climbing spine": [
+      "Climbing spine fractured rock"
+    ],
+    "spine cap": [
+      "spine cap concrete",
+      "spine cap core"
+    ],
+    "spine holds": [
+      "spine holds hold2",
+      "spine holds hold"
+    ],
+    "balconies": [
+      "balconies concrete",
+      "balconies timber",
+      "balconies copper",
+      "balconies soffit",
+      "balconies steel"
+    ],
+    "canopy": [
+      "canopy canopy",
+      "canopy bronze",
+      "canopy coping"
+    ],
+    "inside": [
+      "Ground floor slab",
+      "Floor slab 0",
+      "Floor slab 1",
+      "Floor slab 2",
+      "Floor slab 3",
+      "Floor slab 4",
+      "Floor slab 5",
+      "Floor slab 6",
+      "Floor slab 7",
+      "Floor slab 8",
+      "Floor slab 9",
+      "Floor slab 10",
+      "Floor slab 11",
+      "Floor slab 12",
+      "Floor slab 13"
+    ],
+    "core": [
+      "Core"
+    ],
+    "partitions": [
+      "partitions interior"
+    ],
+    "office furniture": [
+      "Desk surface",
+      "Desk leg",
+      "Desk leg.001",
+      "Desk leg.002",
+      "Desk leg.003",
+      "Monitor base",
+      "Monitor stem",
+      "Monitor",
+      "Chair seat",
+      "Chair back",
+      "Chair leg",
+      "Chair leg.001",
+      "Chair leg.002",
+      "Chair leg.003",
+      "Desk surface.001",
+      "Desk leg.004",
+      "Desk leg.005",
+      "Desk leg.006",
+      "Desk leg.007",
+      "Monitor base.001",
+      "Monitor stem.001",
+      "Monitor.001",
+      "Chair seat.001",
+      "Chair back.001",
+      "Chair leg.004",
+      "Chair leg.005",
+      "Chair leg.006",
+      "Chair leg.007",
+      "Desk surface.002",
+      "Desk leg.008",
+      "Desk leg.009",
+      "Desk leg.010",
+      "Desk leg.011",
+      "Monitor base.002",
+      "Monitor stem.002",
+      "Monitor.002",
+      "Chair seat.002",
+      "Chair back.002",
+      "Chair leg.008",
+      "Chair leg.009",
+      "Chair leg.010",
+      "Chair leg.011",
+      "Desk surface.003",
+      "Desk leg.012",
+      "Desk leg.013",
+      "Desk leg.014",
+      "Desk leg.015",
+      "Monitor base.003",
+      "Monitor stem.003",
+      "Monitor.003",
+      "Chair seat.003",
+      "Chair back.003",
+      "Chair leg.012",
+      "Chair leg.013",
+      "Chair leg.014",
+      "Chair leg.015",
+      "Desk surface.004",
+      "Desk leg.016",
+      "Desk leg.017",
+      "Desk leg.018",
+      "Desk leg.019",
+      "Monitor base.004",
+      "Monitor stem.004",
+      "Monitor.004",
+      "Chair seat.004",
+      "Chair back.004",
+      "Chair leg.016",
+      "Chair leg.017",
+      "Chair leg.018",
+      "Chair leg.019",
+      "Desk surface.005",
+      "Desk leg.020",
+      "Desk leg.021",
+      "Desk leg.022",
+      "Desk leg.023",
+      "Monitor base.005",
+      "Monitor stem.005",
+      "Monitor.005",
+      "Chair seat.005",
+      "Chair back.005",
+      "Chair leg.020",
+      "Chair leg.021",
+      "Chair leg.022",
+      "Chair leg.023",
+      "Desk surface.006",
+      "Desk leg.024",
+      "Desk leg.025",
+      "Desk leg.026",
+      "Desk leg.027",
+      "Monitor base.006",
+      "Monitor stem.006",
+      "Monitor.006",
+      "Chair seat.006",
+      "Chair back.006",
+      "Chair leg.024",
+      "Chair leg.025",
+      "Chair leg.026",
+      "Chair leg.027",
+      "Desk surface.007",
+      "Desk leg.028",
+      "Desk leg.029",
+      "Desk leg.030",
+      "Desk leg.031",
+      "Monitor base.007",
+      "Monitor stem.007",
+      "Monitor.007",
+      "Chair seat.007",
+      "Chair back.007",
+      "Chair leg.028",
+      "Chair leg.029",
+      "Chair leg.030",
+      "Chair leg.031"
+    ],
+    "living furniture": [
+      "Sofa grounded foot",
+      "Sofa grounded foot.001",
+      "Sofa grounded foot.002",
+      "Sofa grounded foot.003",
+      "Sofa plinth",
+      "Sofa seat",
+      "Sofa back",
+      "Sofa arm",
+      "Sofa arm.001",
+      "Coffee table",
+      "Coffee table leg",
+      "Coffee table leg.001",
+      "Coffee table leg.002",
+      "Coffee table leg.003",
+      "Sofa grounded foot.004",
+      "Sofa grounded foot.005",
+      "Sofa grounded foot.006",
+      "Sofa grounded foot.007",
+      "Sofa plinth.001",
+      "Sofa seat.001",
+      "Sofa back.001",
+      "Sofa arm.002",
+      "Sofa arm.003",
+      "Coffee table.001",
+      "Coffee table leg.004",
+      "Coffee table leg.005",
+      "Coffee table leg.006",
+      "Coffee table leg.007"
+    ],
+    "lobby": [
+      "Gym reception"
+    ],
+    "terrace paving": [
+      "terrace paving paver"
+    ],
+    "terrace joints": [
+      "terrace joints paver2"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-27T05:51:39.735433+00:00",
+  "delivery_and_render_seconds": 7446.960762227,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}
