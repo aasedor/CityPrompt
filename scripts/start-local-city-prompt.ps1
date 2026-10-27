@@ -47,8 +47,34 @@ function Wait-Until {
     throw "Timed out waiting for $Description after $StartupTimeoutSeconds seconds."
 }
 
+function Get-RuntimePublicRoot {
+    if ($env:CITYPROMPT_PUBLIC_DIR) { return $env:CITYPROMPT_PUBLIC_DIR }
+    $profilePath = Join-Path $repoRoot 'artifacts/local-runtime.json'
+    if (Test-Path -LiteralPath $profilePath) {
+        $profile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
+        if ($profile.schema -ne 'cityprompt.local-runtime@1') { throw 'Invalid local runtime profile.' }
+        if ($profile.publicDir) {
+            if (-not [System.IO.Path]::IsPathRooted($profile.publicDir) -or -not (Test-Path -LiteralPath $profile.publicDir -PathType Container)) {
+                throw 'Local runtime profile needs an existing absolute publicDir path.'
+            }
+            return $profile.publicDir
+        }
+    }
+    return Join-Path $frontendRoot 'public'
+}
+
+function Get-RuntimeGitUpstream {
+    try {
+        $upstream = ((git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null) | Out-String).Trim()
+        if ($LASTEXITCODE -eq 0) { return $upstream }
+    }
+    catch { # An unpublished local branch has no upstream; use the normal LFS fallback.
+    }
+    return $null
+}
+
 function Get-UnhydratedRuntimeLfsAssets {
-    $publicRoot = Join-Path $frontendRoot 'public'
+    $publicRoot = Get-RuntimePublicRoot
     $parkKitRoot = Join-Path $publicRoot 'park-kits'
     $candidateFiles = if (Test-Path -LiteralPath $parkKitRoot) {
         @(Get-ChildItem -LiteralPath $parkKitRoot -Recurse -File -Filter '*.glb')
@@ -86,6 +112,21 @@ function Ensure-RuntimeLfsAssets {
         return
     }
 
+    $runtimePublicRoot = Get-RuntimePublicRoot
+    if ([System.IO.Path]::GetFullPath($runtimePublicRoot) -ne [System.IO.Path]::GetFullPath((Join-Path $frontendRoot 'public'))) {
+        # Vite's asset guard serves exact verified LFS cache bytes from this
+        # shared runtime. Audit its actual catalogue instead of hydrating every
+        # historical image angle in an unrelated worktree.
+        $previousPublicRoot = $env:CITYPROMPT_PUBLIC_DIR
+        try {
+            $env:CITYPROMPT_PUBLIC_DIR = $runtimePublicRoot
+            & node (Join-Path $frontendRoot 'scripts/check-catalogue-delivery.mjs') --report (Join-Path $artifactRoot 'catalogue-delivery.json')
+            if ($LASTEXITCODE -ne 0) { throw 'Runtime catalogue assets failed exact-byte verification.' }
+        }
+        finally { $env:CITYPROMPT_PUBLIC_DIR = $previousPublicRoot }
+        return
+    }
+
     $pointers = @(Get-UnhydratedRuntimeLfsAssets)
     if ($pointers.Count -eq 0) {
         return
@@ -101,11 +142,11 @@ function Ensure-RuntimeLfsAssets {
     # copy that archive into dist. The browser directly consumes park kits and
     # shared landscape components and authoritative catalogue image roots.
     $include = 'frontend/public/park-kits/**/*.glb,frontend/public/native-park-assets/**,frontend/public/street-kits/**,frontend/public/landscape-pilots/**/*.glb,frontend/public/archetypes/buildings/**,frontend/public/archetypes/openspaces/**,frontend/public/archetypes/streets/**'
-    $upstream = ((git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null) | Out-String).Trim()
+    $upstream = Get-RuntimeGitUpstream
     Write-Host "Hydrating $($pointers.Count) Git LFS catalogue/model assets..."
     Push-Location $repoRoot
     try {
-        if ($LASTEXITCODE -eq 0 -and $upstream.Contains('/')) {
+        if ($upstream -and $upstream.Contains('/')) {
             $slash = $upstream.IndexOf('/')
             $remote = $upstream.Substring(0, $slash)
             $branch = $upstream.Substring($slash + 1)
@@ -131,8 +172,11 @@ function Ensure-RuntimeLfsAssets {
 }
 
 function Test-DockerReady {
-    docker version --format '{{.Server.Version}}' 2>$null | Out-Null
-    return $LASTEXITCODE -eq 0
+    try {
+        docker version --format '{{.Server.Version}}' 2>$null | Out-Null
+        return $LASTEXITCODE -eq 0
+    }
+    catch { return $false }
 }
 
 function Ensure-DockerDesktop {
@@ -159,15 +203,33 @@ function Get-ContainerName {
 function Test-ContainerRunning {
     param([Parameter(Mandatory)][string]$Name)
 
-    $running = docker inspect $Name --format '{{.State.Running}}' 2>$null
-    return $LASTEXITCODE -eq 0 -and $running -eq 'true'
+    try {
+        $running = docker inspect $Name --format '{{.State.Running}}' 2>$null
+        return $LASTEXITCODE -eq 0 -and $running -eq 'true'
+    }
+    catch { return $false }
 }
 
 function Ensure-Infrastructure {
     $required = @('devplatform-db', 'devplatform-redis', 'devplatform-minio')
+    $profilePath = Join-Path $repoRoot 'artifacts/local-runtime.json'
+    $usesProfileContainers = $false
+    if (Test-Path -LiteralPath $profilePath) {
+        $profile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
+        if ($profile.infrastructureContainers) {
+            $required = @($profile.infrastructureContainers)
+            if ($required.Count -ne 3 -or @($required | Where-Object { $_ -isnot [string] -or $_ -notmatch '^[a-zA-Z0-9][a-zA-Z0-9_.-]+$' }).Count -gt 0) {
+                throw 'Local runtime profile must name the three existing database, Redis and storage containers.'
+            }
+            $usesProfileContainers = $true
+        }
+    }
     $missing = @($required | Where-Object { -not (Get-ContainerName -Name $_) })
 
     if ($missing.Count -gt 0) {
+        if ($usesProfileContainers) {
+            throw "Runtime data containers are missing: $($missing -join ', '). Restore them before starting this worktree."
+        }
         Write-Host "Creating missing local infrastructure: $($missing -join ', ')"
         Push-Location $repoRoot
         try {
@@ -188,11 +250,11 @@ function Ensure-Infrastructure {
         }
     }
 
-    Wait-Until -Description 'PostgreSQL health' -Condition {
-        (docker inspect devplatform-db --format '{{.State.Health.Status}}' 2>$null) -eq 'healthy'
-    }
-    Wait-Until -Description 'Redis health' -Condition {
-        (docker inspect devplatform-redis --format '{{.State.Health.Status}}' 2>$null) -eq 'healthy'
+    foreach ($name in $required) {
+        Wait-Until -Description "$name health" -Condition {
+            $health = docker inspect $name --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}running{{end}}' 2>$null
+            $LASTEXITCODE -eq 0 -and $health -in @('healthy', 'running')
+        }
     }
 }
 

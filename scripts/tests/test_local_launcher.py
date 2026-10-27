@@ -12,7 +12,7 @@ POWERSHELL = shutil.which('pwsh') or shutil.which('powershell')
 
 @unittest.skipUnless(POWERSHELL, 'PowerShell is required for launcher lifecycle tests')
 class LocalLauncherTests(unittest.TestCase):
-    def run_launcher(self, body):
+    def run_launcher(self, body, powershell=POWERSHELL):
         with tempfile.TemporaryDirectory() as directory:
             quote = lambda value: str(value).replace("'", "''")
             setup = f"""
@@ -33,7 +33,7 @@ $queueDeclaration=$ast.EndBlock.Statements | Where-Object {{
 if($queueDeclaration) {{Invoke-Expression $queueDeclaration.Extent.Text}}
 $KeepBackend=$false
 """
-            result = subprocess.run([POWERSHELL, '-NoProfile', '-NonInteractive', '-Command', setup + body],
+            result = subprocess.run([powershell, '-NoProfile', '-NonInteractive', '-Command', setup + body],
                                     capture_output=True, text=True, encoding='utf-8')
             self.assertEqual(result.returncode, 0, result.stderr)
             return json.loads(result.stdout.strip())
@@ -55,6 +55,67 @@ $script:launch|ConvertTo-Json -Compress
         self.assertEqual(launch['window'], 'Hidden')
         self.assertEqual(Path(launch['directory']), ROOT / 'backend')
         self.assertTrue(any('celery-worker.pid' in argument for argument in arguments))
+
+    def test_docker_not_started_is_a_false_probe_not_a_terminating_native_error(self):
+        ready = self.run_launcher("""
+function docker { & powershell -NoProfile -Command "[Console]::Error.WriteLine('Docker engine is not running'); exit 1" }
+Test-DockerReady | ConvertTo-Json -Compress
+""", powershell=shutil.which('powershell') or POWERSHELL)
+        self.assertFalse(ready)
+
+    def test_branch_without_upstream_uses_the_normal_lfs_fallback(self):
+        upstream = self.run_launcher("""
+function git { & powershell -NoProfile -Command "[Console]::Error.WriteLine('fatal: no upstream configured'); exit 128" }
+Get-RuntimeGitUpstream | ConvertTo-Json -Compress
+""")
+        self.assertIsNone(upstream)
+
+    def test_absent_optional_docker_worker_is_a_false_probe(self):
+        running = self.run_launcher("""
+function docker { & powershell -NoProfile -Command "[Console]::Error.WriteLine('error: no such object'); exit 1" }
+Test-ContainerRunning -Name 'absent-worker' | ConvertTo-Json -Compress
+""", powershell=shutil.which('powershell') or POWERSHELL)
+        self.assertFalse(running)
+
+    def test_runtime_lfs_inventory_uses_the_public_directory_served_by_vite(self):
+        root = self.run_launcher("""
+$profileRoot=Join-Path $artifactRoot 'served-public'
+New-Item -ItemType Directory -Path $profileRoot | Out-Null
+$repoRoot=$artifactRoot
+$frontendRoot=Join-Path $repoRoot 'frontend'
+New-Item -ItemType Directory -Path (Join-Path $repoRoot 'artifacts') | Out-Null
+@{schema='cityprompt.local-runtime@1';publicDir=$profileRoot}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $repoRoot 'artifacts/local-runtime.json')
+Get-RuntimePublicRoot | ConvertTo-Json -Compress
+""")
+        self.assertEqual(Path(root).name, 'served-public')
+
+    def test_reboot_starts_the_runtime_profiles_existing_data_containers(self):
+        started = self.run_launcher("""
+$repoRoot=$artifactRoot
+New-Item -ItemType Directory -Path (Join-Path $repoRoot 'artifacts') | Out-Null
+@{schema='cityprompt.local-runtime@1';infrastructureContainers=@('isolated-db','isolated-redis','isolated-media')}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $repoRoot 'artifacts/local-runtime.json')
+function Get-ContainerName {param($Name) return $Name}
+function Test-ContainerRunning {param($Name) return $false}
+function Write-Host {}
+function Wait-Until {}
+$script:started=@()
+function docker {if($args[0] -eq 'start') {$script:started+=$args[1]};$global:LASTEXITCODE=0}
+Ensure-Infrastructure
+$script:started|ConvertTo-Json -Compress
+""")
+        self.assertEqual(started, ['isolated-db', 'isolated-redis', 'isolated-media'])
+
+    def test_external_runtime_assets_use_exact_catalogue_audit_not_unrelated_lfs_pull(self):
+        checked = self.run_launcher("""
+$frontendRoot=Join-Path $repoRoot 'frontend'
+function Get-RuntimePublicRoot {return 'C:/existing-hydrated-runtime'}
+function Get-UnhydratedRuntimeLfsAssets {throw 'Do not require historical unused angles'}
+function node {$script:auditArgs=@($args);$global:LASTEXITCODE=0}
+Ensure-RuntimeLfsAssets
+$script:auditArgs|ConvertTo-Json -Compress
+""")
+        self.assertEqual(Path(checked[0]).name, 'check-catalogue-delivery.mjs')
+        self.assertIn('--report', checked)
 
     def test_ping_from_an_unrelated_worker_cannot_qualify_missing_queues(self):
         for reported_pid, queues, expected in [
