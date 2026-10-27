@@ -49,8 +49,8 @@ DOMES_PX = [(603, 428, 40), (620, 212, 22), (613, 305, 19), (680, 312, 19), (550
             (830, 398, 23), (347, 413, 23), (450, 442, 19), (573, 560, 19), (653, 549, 19), (610, 632, 23)]
 GAPS = (113.0, 41.5, -44.7, -137.0)                 # curb gaps (degrees about the origin) where the shell paths arrive
 ENTRANCES = (-135.0, -50.0, 45.0, 132.0)            # arched entrances at the foot of the four bays (searched to the bay minima)
-PALETTE = dict(reef0=(.008, .11, .14), reef1=(.01, .10, .13), reef2=(.01, .17, .22), reef3=(.0, .33, .40), reef4=(.0, .42, .48),
-    reef5=(.12, .55, .58), reef6=(.22, .62, .64), reef7=(.48, .72, .74), reef8=(.46, .70, .72), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
+PALETTE = dict(reef0=(.008, .11, .14), reef1=(0.001, 0.130, 0.204), reef2=(0.004, 0.249, 0.364), reef3=(0.000, 0.536, 0.667), reef4=(0.000, 0.667, 0.775),
+    reef5=(0.271, 0.875, 0.911), reef6=(0.371, 0.954, 0.975), reef7=(0.786, 1.000, 1.000), reef8=(0.706, 1.000, 1.000), reef_inner=(.52, .66, .63), rim=(.93, .93, .91), glass=(.30, .36, .40), dome=(.58, .64, .68), tint=(.025, .03, .035),
     frame=(.10, .13, .14), hardware=(.06, .06, .06), floor=(.20, .25, .30), mat=(.11, .17, .26), interior=(.70, .70, .66),
     apron=(.72, .55, .34), curb=(.78, .62, .42), liner=(.62, .76, .73), shellpath=(.95, .94, .91), shell2=(.80, .76, .70), shell3=(.97, .96, .94), concrete=(.50, .48, .44), lawn=(.20, .31, .10),
     mulch=(.22, .15, .09), hold_r=(.72, .10, .08), hold_y=(.90, .70, .10), hold_b=(.08, .22, .62), hold_p=(.42, .16, .55),
@@ -1938,7 +1938,7 @@ NT = 256                                            # shell segments round the o
 # shoulder, roll-over, gently domed plateau (front, oblique).
 PROFILE = [(.975, 0.0), (.986, .35), (.995, .9), (1.0, 1.6), (.998, 2.6), (.99, 3.5), (.975, 4.3), (.955, 4.9),
            (.925, 5.45), (.88, 5.95), (.82, 6.3), (.74, 6.55), (.62, 6.72), (.48, 6.82), (.32, 6.88), (.16, 6.9), (0., 6.9)]
-BANDS = (.8, 1.6, 2.4, 3.2, 4.1, 4.95, 6.45)        # contour band edges (profile heights): darkest base .. roof seafoam
+BANDS = (.7, 1.4, 2.3, 3.2, 4.6, 5.7, 6.5)        # contour band edges (profile heights): darkest base .. roof seafoam
 ROLES = ('reef1', 'reef2', 'reef3', 'reef4', 'reef5', 'reef6', 'reef7', 'reef8')
 TUCK = PROFILE[0][0]                                # base ring: fraction of the outline radius
 INNER = len(ROLES)                                  # material slot of the inner skin
