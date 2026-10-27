@@ -50,7 +50,7 @@ PALETTE = dict(glass=(.13, .10, .075), spandrel=(.10, .085, .07), bronze=(.50, .
     rock=(.76, .65, .50), rock2=(.60, .51, .38), hold=(.46, .42, .38), hold2=(.58, .53, .47), concrete=(.82, .80, .78), coping=(.88, .87, .84),
     canopy=(.90, .89, .86), stone=(.70, .68, .64), copper=(.66, .38, .20), timber=(.62, .45, .28), hardware=(.18, .18, .19),
     steel=(.55, .55, .55), interior=(.80, .76, .68), floor=(.48, .43, .36), core=(.66, .64, .60), roof=(.86, .86, .84),
-    membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.66, .63, .57), granite2=(.60, .57, .51), granite3=(.72, .69, .63),
+    membrane=(.80, .80, .78), metal=(.70, .71, .72), duct=(.76, .77, .78), granite=(.58, .55, .49), granite2=(.52, .49, .44), granite3=(.64, .61, .55),
     paver=(.70, .69, .66), paver2=(.62, .61, .58), kerb=(.76, .75, .72), asphalt=(.25, .25, .26), line=(.86, .85, .80),
     mulch=(.26, .20, .14), brick=(.62, .44, .30), brick2=(.52, .30, .22), tan=(.74, .62, .46), white=(.84, .83, .80),
     ctxglass=(.36, .44, .50), lamp=(.22, .22, .23), tree=(.24, .38, .16), tree2=(.30, .44, .19), bark=(.30, .23, .16))
@@ -2211,7 +2211,7 @@ ND = _PkNoise(404, 1.0)
 
 FOOT = 8.0                                                            # the lower two storeys become a rough rock mass
 CORE_D = .6                                                           # the prism core sits this far inside the envelope
-MARGIN = .25                                                          # plain strip along each front arris (straight arrises)
+MARGIN = .3                                                           # facets start this far from each front arris (inside the arris posts)
 
 
 def _poisson(rnd, w, h, r, tries=6000):
@@ -2307,10 +2307,8 @@ def spine():
     # core, plain arris margins, plain upper sides and the plain band under the cap
     b = Batch()
     b.box('rock', (SPX[0] + SPX[1]) / 2, (SPY0 + CORE_D + YN) / 2, top / 2, W - 2 * CORE_D, YN - SPY0 - CORE_D + .02, top)
-    for x0, s in ((SPX[0], 1), (SPX[1], -1)):
-        C.prism(f'Spine arris {s:+d}', [(x0, SPY0), (x0 + s * MARGIN, SPY0), (x0 + s * MARGIN, SPY0 + CORE_D + .01),
-                                         (x0 + s * CORE_D + s * .01, SPY0 + CORE_D + .01), (x0 + s * CORE_D + s * .01, SPY0 + MARGIN), (x0, SPY0 + MARGIN)][::s],
-                'z', 0., top, 'rock', 'climbing spine')
+    for x0, s in ((SPX[0], 1), (SPX[1], -1)):                         # plain square arris posts: straight arrises
+        b.box('rock', x0 + s * (CORE_D + .02) / 2, SPY0 + (CORE_D + .02) / 2, top / 2, CORE_D + .02, CORE_D + .02, top)
     b.box('rock', (SPX[0] + SPX[1]) / 2, (YN + SPY1) / 2, SPTOP / 2, W, SPY1 - YN, SPTOP)
     b.box('rock', (SPX[0] + SPX[1]) / 2, (SPY0 + YN) / 2, (top + SPTOP) / 2, W, YN - SPY0 - .002, SPTOP - top)
     b.box('concrete', (SPX[0] + SPX[1]) / 2, (SPY0 + SPY1) / 2, SPTOP + .06, W + .12, SPY1 - SPY0 + .12, .12)
@@ -2409,7 +2407,7 @@ def cleft_boulder(name, cx, cy, z0, rx, ry, rz, seed, role='granite', sink=.15, 
 STONES = []
 
 
-def lumpy_boulder(name, seed, role, lat=6, lon=10, cuts=2):
+def lumpy_boulder(name, seed, role, lat=5, lon=8, cuts=3):
     """Unit granite boulder (v006): a lumpy, slightly squashed sphere (2 wide, 1 tall, base at 0) of broad flat facets,
     with two planar cleavage cuts; rounded overall mass, no pointed apex."""
     rnd = random.Random(seed); nz = _PkNoise(seed, 1.0)
@@ -2419,12 +2417,12 @@ def lumpy_boulder(name, seed, role, lat=6, lon=10, cuts=2):
         for j in range(lon if 0 < i < lat else 1):
             ph = 2 * math.pi * (j + (.5 if i % 2 else 0.)) / lon
             ux, uy, uz = math.sin(th) * math.cos(ph), math.sin(th) * math.sin(ph), math.cos(th)
-            k = 1 + .17 * nz(ux * 1.7, uy * 1.7, uz * 1.7)
+            k = 1 + .24 * nz(ux * 1.9, uy * 1.9, uz * 1.9)
             pts.append([ux * k, uy * k * rnd.uniform(.9, 1.0), .5 + .5 * uz * k])
     for _ in range(cuts):
         ph = rnd.uniform(0, 2 * math.pi); el = rnd.uniform(-.1, .5)
         n = (math.cos(ph) * math.cos(el), math.sin(ph) * math.cos(el), math.sin(el))
-        off = rnd.uniform(.62, .8)
+        off = rnd.uniform(.5, .72)
         for p in pts:
             q = p[0] * n[0] + p[1] * n[1] + (p[2] - .5) * n[2] - off
             if q > 0:
@@ -2640,8 +2638,8 @@ def terrace():
         xo = X0 if side < 0 else X1
         for dx, dy, rx, ry, rz, k in cluster:
             x, y = xo - side * dx, Y0 + dy
-            stone(f'Terrace boulder {n}', x, y, seat(x, y), rx, ry, rz, k, rot=(n * 1.37) % math.pi, tilt=.26 if k == 5 else .08 if k == 3 else 0.)
-            kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, max(rx, ry) * 1.05, max(rx, ry) * 1.05)), rz)
+            stone(f'Terrace boulder {n}', x, y, seat(x, y), rx * 1.2, ry * 1.2, rz * 1.6, k, rot=(n * 1.37) % math.pi, tilt=.26 if k == 5 else .08 if k == 3 else 0.)
+            kit.add_obstacle(_PkPolygon(pk_ellipse(x, y, max(rx, ry) * 1.26, max(rx, ry) * 1.26)), rz)
             n += 1
     fill_beds(kit, P, beds, soil, 55, spacing=.72)
     for k, poly in beds.items():
