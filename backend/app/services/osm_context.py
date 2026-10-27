@@ -5,6 +5,7 @@ Takes a polygon, buffers it by ~50m, and queries the Overpass API for
 buildings, roads, water, and parks within the buffered area.
 """
 
+import asyncio
 import logging
 import math
 from datetime import datetime, timezone
@@ -96,9 +97,11 @@ DEFAULT_FEATURE_CAPS = {"buildings": 50, "roads": 50, "water": 20, "parks": 20}
 class OSMContextFetcher:
     """Fetches OSM features within a buffered polygon."""
 
-    def __init__(self, timeout: float = 30.0, feature_caps: dict[str, int] | None = None):
+    def __init__(self, timeout: float = 30.0, feature_caps: dict[str, int] | None = None,
+                 endpoints: tuple[str, ...] | None = None):
         self.timeout = timeout
         self.feature_caps = {**DEFAULT_FEATURE_CAPS, **(feature_caps or {})}
+        self.endpoints = endpoints or (OVERPASS_URL,)
 
     async def fetch(self, polygon: Polygon, buffer_m: float = 50) -> dict[str, Any]:
         """Fetch OSM features for the given polygon + buffer.
@@ -126,13 +129,39 @@ out skel qt;
 """
 
         # overpass-api.de rejects default library User-Agents with 406.
-        headers = {"User-Agent": "CityPrompt/1.0 (urban planning site context)"}
+        headers = {"User-Agent": "CityPrompt/1.0 (urban planning site context)", "Accept": "application/json"}
         async with httpx.AsyncClient(timeout=self.timeout, headers=headers) as client:
-            resp = await client.post(OVERPASS_URL, data={"data": query})
-            resp.raise_for_status()
-            data = resp.json()
-
-        return self._parse_response(data, polygon)
+            for index, endpoint in enumerate(self.endpoints):
+                try:
+                    # HTTPX budgets each I/O operation separately. Bound the
+                    # whole response too so a trickling primary leaves time
+                    # for an independent mirror within the caller's deadline.
+                    try:
+                        resp = await asyncio.wait_for(
+                            client.post(endpoint, data={"data": query}), timeout=self.timeout)
+                    except TimeoutError as exc:
+                        raise httpx.ReadTimeout("Map provider exceeded its time limit.",
+                            request=httpx.Request("POST", endpoint)) from exc
+                    resp.raise_for_status()
+                    try:
+                        data = resp.json()
+                    except ValueError as exc:
+                        raise httpx.DecodingError("Map provider returned an invalid response.", request=resp.request) from exc
+                    # Overpass can return HTTP 200 with partial/empty data and a
+                    # timeout remark. It cannot certify that no roads exist.
+                    if not isinstance(data, dict) or not isinstance(data.get("elements"), list) or data.get("remark"):
+                        raise httpx.DecodingError("Map provider returned incomplete data.", request=resp.request)
+                    parsed = self._parse_response(data, polygon)
+                    parsed["provider_url"] = endpoint
+                    return parsed
+                except httpx.HTTPStatusError as exc:
+                    if exc.response.status_code not in {429, 500, 502, 503, 504} or index == len(self.endpoints) - 1:
+                        raise
+                except (httpx.TransportError, httpx.DecodingError):
+                    if index == len(self.endpoints) - 1:
+                        raise
+                logger.warning("Map provider %s unavailable; trying the next read-only mirror", endpoint)
+        raise RuntimeError("No map provider was configured")
 
     def _parse_response(self, data: dict[str, Any], original_polygon: Polygon) -> dict[str, Any]:
         """Parse Overpass JSON response into categorized feature lists."""
