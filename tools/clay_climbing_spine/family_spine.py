@@ -47,7 +47,7 @@ SIDE = 4.5                                            # side sidewalks
 EPS = .002
 FLOORS = [BASE + FH * i for i in range(NF)]
 PALETTE = dict(glass=(.13, .10, .075), spandrel=(.10, .085, .07), bronze=(.50, .34, .17), frame=(.20, .16, .12),
-    rock=(.98, .77, .50), rock2=(.62, .46, .30), hold=(.46, .42, .38), hold2=(.58, .53, .47), concrete=(.82, .80, .78), coping=(.88, .87, .84),
+    rock=(.98, .67, .38), rock2=(.55, .37, .22), hold=(.46, .42, .38), hold2=(.58, .53, .47), concrete=(.82, .80, .78), coping=(.88, .87, .84),
     canopy=(.90, .89, .86), stone=(.70, .68, .64), copper=(.70, .32, .15), timber=(.62, .45, .28), hardware=(.18, .18, .19),
     steel=(.55, .55, .55), interior=(.80, .76, .68), floor=(.48, .43, .36), core=(.66, .64, .60), roof=(.86, .86, .84),
     membrane=(.80, .80, .78), metal=(.52, .53, .54), duct=(.60, .61, .62), granite=(.58, .55, .49), granite2=(.52, .49, .44), granite3=(.64, .61, .55),
@@ -1907,7 +1907,7 @@ from scipy.spatial import ConvexHull as _Hull
 
 PALETTE.update(trim=(.30, .28, .26), blue=(.20, .26, .32), wall=(.80, .78, .74), soffit=(.76, .60, .40), ctxroof=(.55, .53, .50),
                bedgreen=(.27, .33, .20), crown=(.30, .21, .13), plaza=(.62, .60, .56),
-               footrock=(.62, .60, .55), footrock2=(.56, .54, .50), rockdeep=(.28, .21, .15))
+               footrock=(.62, .60, .55), footrock2=(.56, .54, .50), rockdeep=(.20, .14, .09))
 pk_palette(PALETTE)
 KIT = None
 PROTOS = None
@@ -2322,7 +2322,7 @@ def _rock_object(name, grid, F, roles, extra=()):
         dn = min((abs(cx - SPX[0]), (1, 0)), (abs(cx - SPX[1]), (1, 0)), (abs(cy - SPY0), (0, 1)), (abs(cy - SPY1), (0, 1)))[1]
         n = poly.normal
         c = abs(n[0] * dn[0] + n[1] * dn[1])
-        k = 2 if (c < .42 or n[2] < -.5) else 1 if c < .87 else 0
+        k = 2 if (c < .55 or n[2] < -.45) else 1 if c < .9 else 0
         poly.material_index = k; count[k] += 1
     return o, V, count
 
@@ -2364,20 +2364,24 @@ def spine():
         return FOOT
     # Shaft and crown.
     fis_at = [sE0 + .3 + (Lf - .5 - sE0 - .3) * rnd.uniform(.3, .7)]
-    fis_at += [Lf + W * q + rnd.uniform(-.3, .3) for q in (.16, .39, .61, .84)]
+    q = Lf + rnd.uniform(.5, 1.3)                                        # front: irregular gaps 1.2-3.2 m
+    while q < Lf + W - .6:
+        fis_at.append(q); q += rnd.uniform(1.2, 3.2)
     fis_at += [Lf + W + .5 + (sE1 - .3 - Lf - W - .5) * rnd.uniform(.3, .7)]
     fis_at += [sE1 + 1.6, 2 * Lf + W + W * .45]                        # crown: east side behind the notch, and back
+    fdeep = [rnd.uniform(.12, .34) for _ in fis_at]                      # each fissure its own depth and width
+    fwide = [rnd.uniform(.09, .18) for _ in fis_at]
     pins = list(corners) + [sE0, sE1] + knots
-    for f in fis_at:
-        pins += [f - .13, f, f + .13]
+    for f, w in zip(fis_at, fwide):
+        pins += [f - w, f, f + w]
     cols, fixed = _cols(rnd, P, pins, .62)
-    wobble, centre = {}, set()
+    wobble, centre, fcol = {}, set(), {}
     for n, f in enumerate(fis_at):
         for ci, s in enumerate(cols):
-            if abs(s - f) < .2:
+            if abs(s - f) < fwide[n] + 1e-6:
                 wobble[ci] = n
                 if abs(s - f) < 1e-6:
-                    centre.add(ci)
+                    centre.add(ci); fcol[ci] = n
     rows, r = [FOOT], FOOT
     while r < SPTOP - .5:
         r += rnd.uniform(.45, 1.1)
@@ -2391,7 +2395,8 @@ def spine():
             return 0.
         d = _depth(B, s, z, .8)
         if ci in centre:                                                 # deep runs and shallower stretches
-            d = max(-.85, d - (.3 if NC(ci * 2.3, z * .11) > -.25 else .1))
+            n = fcol[ci]                                                 # deep runs that fade out and return
+            d = max(-.85, d - fdeep[n] * _smooth01(.5 + 1.4 * NC(n * 2.3, z * .09)))
         return d * wn(s, z) * cap(z)
     crown_from = next(i for i, r in enumerate(rows) if r >= ROOF - .9)
     ncol = len(cols)
@@ -2972,8 +2977,20 @@ def context():
     b.flush('context')
 
 
+SUN = dict(strength=2.0, color=(1.0, .86, .66), source=(-150.0, -45.0, 62.0))    # v008: warm low key from the west-south-west (~22 deg)
+
+
+def sun():
+    """Review lighting only (lights are not exported): a warm sun low from the south-west, as in the sources."""
+    C.bpy.ops.object.light_add(type='SUN', location=SUN['source'])
+    o = C.bpy.context.object; o.name = 'QA sun'
+    o.data.energy = SUN['strength']; o.data.color = SUN['color']; o.data.angle = math.radians(1.5)
+    C.look_at(o, (0.0, 0.0, 0.0))
+
+
 def build():
     global KIT, PROTOS
+    sun()
     KIT = PlantKit('planting', instancing=INSTANCING)
     PROTOS = protos(KIT)
     stone_protos()
