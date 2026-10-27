@@ -3,6 +3,20 @@ import {fireEvent,render,screen} from '@testing-library/react';
 import {describe,it,expect,vi} from 'vitest';
 import {VideoRouteEditor} from './VideoRouteEditor';
 describe('camera route editing',()=>{
+  it('explains the missing finish point and cannot finish a one-point route',()=>{
+    const close=vi.fn();
+    render(<VideoRouteEditor points={[{x:.2,y:.3}]} onChange={vi.fn()} onClose={close}/>);
+    expect(screen.getByRole('button',{name:'Done'})).toBeDisabled();
+    expect(screen.getByRole('status')).toHaveTextContent('Add a finish point');
+    fireEvent.click(screen.getByRole('button',{name:'Done'}));
+    expect(close).not.toHaveBeenCalled();
+    const target=screen.getByLabelText('Camera route drawing area');
+    vi.spyOn(target,'getBoundingClientRect').mockReturnValue({left:0,top:0,width:100,height:100} as DOMRect);
+    fireEvent.click(target,{clientX:60,clientY:70});
+    expect(screen.getByRole('button',{name:'Done'})).toBeEnabled();
+    fireEvent.click(screen.getByRole('button',{name:'Done'}));
+    expect(close).toHaveBeenCalledOnce();
+  });
   it('draws a replacement route, undoes edits, and restores the original when cancelled',()=>{
     const change=vi.fn(),close=vi.fn(),points=[{x:.2,y:.3},{x:.6,y:.7}];
     render(<VideoRouteEditor points={points} onChange={change} onClose={close}/>);

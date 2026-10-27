@@ -31,9 +31,10 @@ export function VideoRouteEditor({points,onChange,onClose,disabled=false}:{point
       <button type="button" className={button} disabled={disabled||!history.length} onClick={()=>{
         const previous=history[history.length-1];setHistory(history.slice(0,-1));setDraft(previous);onChange(previous);setSelected(null);
       }}>Undo route edit</button>
-      <button type="button" className={button} disabled={disabled} onClick={onClose}>Done</button>
+      <button type="button" className={button} disabled={disabled||draft.length<2} onClick={onClose}>Done</button>
       <button type="button" className={button} disabled={disabled} onClick={()=>{onChange(original);onClose();}}>Cancel route edits</button>
       <p className="w-full text-[11px] text-white">{selected===null?'Click to add points. Select a numbered point, then click its new position.':'Click the new position for the selected point.'} {draft.length}/24 points.</p>
+      {draft.length<2&&<p role="status" className="w-full text-xs text-[#c9ff3d]">{draft.length===0?'Add a start point, then a finish point.':'Add a finish point away from the first marker. Click a numbered point to select and move it.'}</p>}
     </div>
   </div>;
 }
