@@ -82,9 +82,9 @@ def manifest(version):
         elif c['name'] == 'rear_side':
             c.update(location=(62.0, 78.0, 110.0), target=(0.0, 0.0, 28.0), lens=34.0, whole=False)
         elif c['name'] == 'right_side':                                  # over the low white block across the east street, south of the glass tower
-            c.update(location=(88.0, -14.0, 60.0), target=(X1, 0.0, 32.0), lens=20, whole=False)   # amenity roof and spine cap ~10% under the top edge
+            c.update(location=(88.0, -14.0, 80.0), target=(X1, 0.0, 33.0), lens=20, whole=False)   # amenity roof and spine cap ~10% under the top edge
         elif c['name'] == 'left_side':                                   # over the walk-ups across the west street
-            c.update(location=(-82.0, 2.0, 56.0), target=(X0, 0.0, 33.0), lens=20, whole=False)
+            c.update(location=(-82.0, 2.0, 78.0), target=(X0, 0.0, 34.0), lens=20, whole=False)
         elif c['name'] == 'rear':                                        # over the white mid-rise to the north
             c.update(location=(8.0, 74.0, 112.0), target=(0.0, Y1, 27.0), lens=21, whole=False)
     return dict(candidate=f'{SLUG}-clay-v{version:03d}', method=C.METHOD,
