@@ -13,12 +13,14 @@ unit on its roof; a four-storey east block with a membrane roof, skylights and p
 oblique). On the south front the pool block shows a projecting white frame box holding two storeys of glass ribbons
 over a recessed glazed ground floor with two pairs of entrance doors (front, oblique).
 Beside it stands the climbing wall: a hollow, open-topped shell of honey-toned cross-laminated timber in folded
-(origami) planes, 21 m tall. Its foot stands on the plaza up to 9 m in front of the facade; it leans east as it rises,
-meeting the parapet of the pool block at a fold and reaching a rectangular rim, 13 m by 10 m with a light timber
-fascia, that cantilevers about 10 m over the plaza and the ground-floor facade beside the pool block. The south-west
-face is two facets (a sunlit upper facet over a lower one), the south face is a triangle widening from its foot, and
+(origami) planes, about 20.5 m tall. It stands on a broad base on the plaza just east of the doors, reaching about
+6 m in front of the facade; its bottom edge runs low and nearly level east before rising to a low east corner, and it
+leans east as it rises, meeting the parapet of the pool block at a fold and reaching a rectangular rim, 13 m by 10 m
+with a pale timber fascia, that cantilevers over the plaza and the white facade east of the base. The south-west
+face is two facets (a sunlit upper facet over a lower one), the south face widens from the base to the rim, and
 the east face overhangs the white facade below; dark and white climbing holds dot the faces, densest on the south
-face, with three climbers (front, oblique, top). The open top shows the inner walls with white holds (top, front).
+face, with three climbers (front, oblique, top). The open top shows a box of four planar inner walls with white holds
+on the north and south walls and a dark crash-mat floor (top, front).
 A grey granite plaza with two raised planters of tall ornamental grasses lies to the south; a concrete west sidewalk
 with street trees and lamp posts, a west street with crossings, an east street with parked cars, and brick mid-rise
 blocks and taller residential blocks around (front, oblique, top).
@@ -43,17 +45,21 @@ PH_TOP, PH_PARA = 19.0, 19.4                          # penthouse roof, parapet
 EB_TOP, EB_PARA = 18.2, 18.6                          # east block roof, parapet
 BOXX1 = -12.6                                         # the south frame box spans X0..BOXX1
 FY = -17.8                                            # the climbing shell's back plane (laps 10 cm into the facade)
-RIM = 21.0                                            # rim top of the climbing shell
-# The climbing shell's outer corners (triangulated from the front and oblique views and the top view).
-SH = dict(G=(-14.8, FY, 0.0), BW=(-15.6, -20.0, 0.0), BF=(-12.9, -20.7, 0.0), BN0=(-12.4, FY, 0.0),
-          BS=(-2.5, -26.6, 6.0), BN=(-0.5, FY, 7.5),
-          KW=(-11.1, FY, PARA), KX=(-6.3, -27.35, PARA),
-          RNW=(-7.26, FY, RIM), RSW=(-6.04, -26.71, RIM), RSE=(6.22, -27.72, RIM), RNE=(4.37, FY, RIM))
+RIM = 20.45                                           # rim top of the climbing shell
+# The climbing shell's outer corners, fitted so the shell's projected silhouette matches the colour-segmented shell in
+# the locked front and oblique views (and the top view as a weaker term) through the fitted cameras.
+SH = dict(G=(-14.74, FY, 0.0), BW=(-17.24, -23.1, 0.0), BF=(-12.34, -24.42, 0.0), BN0=(-12.4, FY, 0.0),
+          BS=(-5.67, -27.02, 1.06), BN=(-0.5, FY, 7.5),
+          KW=(-10.66, FY, PARA), KX=(-1.59, -28.39, 15.54),
+          RNW=(-8.0, FY, RIM), RSW=(-6.04, -26.71, RIM), RSE=(7.03, -27.73, RIM), RNE=(5.28, FY, RIM))
+RIM_CAP = .45                                         # rim cap width (outer face to the inner box wall)
+PIT_FLOOR = 14.0                                      # crash-mat floor of the inner box (the top view shows it)
+PIT_SHIFT, PIT_SCALE = (-2.0, 2.0), .55               # the box's floor loop: the inner rim loop scaled and shifted
 SHELL_T = .35                                         # CLT shell thickness
 TOP = RIM + .1
 EPS = .002
 PALETTE = dict(wall=(.86, .85, .82), precast=(.90, .89, .86), concrete2=(.70, .70, .68), frame=(.22, .24, .26),
-    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.75, .36, .073), timber2=(.86, .55, .19),
+    glass=(.15, .21, .25), interior=(.82, .79, .72), floor=(.60, .57, .52), timber=(.75, .36, .073), timber2=(.88, .62, .40),
     timber_in=(.67, .31, .062), shade=(.36, .36, .36), hold=(.10, .10, .11), hold_w=(.91, .90, .86), mat=(.17, .19, .23), shirt=(.20, .60, .70),
     skin=(.78, .60, .47), harness=(.12, .12, .14), paving=(.53, .54, .55), paving2=(.43, .44, .45), trough=(.72, .80, .82), granite=(.60, .60, .59),
     deck=(.80, .74, .64), coping=(.88, .86, .80), water=(.08, .52, .66), water2=(.06, .38, .50), membrane=(.86, .86, .84),
@@ -69,7 +75,7 @@ def manifest(version):
         ('wall_base_contact', (-25.0, -28.0, 1.7), (-11.0, -23.5, 1.4), 24),     # the shell's foot on the plaza
         ('rim_interior', (-1.0, -38.0, 42.0), (0.0, -22.6, 9.0), 38),            # down into the open top
         ('pool_deck', (-16.5, -16.0, 16.7), (-14.0, 6.0, 15.4), 22),             # the deck, pool, loungers and garden
-        ('facade_close', (-31.0, -14.75, 11.5), (X0, -14.75, 9.5), 40),               # a west bay through both upper storeys
+        ('facade_close', (-31.0, -13.1, 11.5), (X0, -13.1, 9.5), 40),                 # a west bay through both upper storeys
         ('architecture_close', (-31.0, -29.0, 11.5), (-20.5, Y0, 11.0), 38),     # the frame box corner and parapet band
         ('glass_close', (-17.8, -26.5, 9.4), (-17.8, Y0, 9.4), 38),              # the glass ribbons in the frame box
         ('interior', (-18.5, -12.3, 1.7), (-18.5, Y0, 2.4), 20),                 # the lobby looking out to the plaza
@@ -101,8 +107,8 @@ def manifest(version):
         measurement_contract=dict(dimensions_m=dict(width=X1 - X0, depth=Y1 - Y0, height=RIM),
             observed_storeys=3, storey_programme='three-storey pool block (lobby, gym floors) with a one-storey penthouse lounge and a four-storey east block',
             plan='39 m by 36 m corner building (top view) on a south plaza, a west street and an east street; the climbing shell stands on the plaza at the south front',
-            facade='white precast: west front of ten bays of tall recessed windows between fins and spandrels over a recessed glazed ground floor; south front: a projecting white frame box of two glass ribbons over recessed ground-floor glazing with two pairs of doors; a deep parapet band; white facade with glass ribbons under the overhang',
-            climbing_wall='hollow open-topped shell of honey CLT in folded planes: compact foot on the plaza just east of the doors, soffit rising east to an airborne point about two storeys up, south-west face in two facets with a fold at the parapet, triangular south face, overhanging east face, light timber rim fascia, dark and white holds, three climbers',
+            facade='white precast: west front of eleven bays (twelve fins; counted in the locked front and oblique) of tall recessed windows between fins and spandrels over a recessed glazed ground floor; south front: a projecting white frame box of two glass ribbons over recessed ground-floor glazing with two pairs of doors; a deep parapet band; white facade with glass ribbons under the overhang',
+            climbing_wall='hollow open-topped shell of honey CLT in folded planes, its silhouette fitted to the shell segmented in the locked front and oblique views: broad base on the plaza just east of the doors, bottom edge low and nearly level east to a low east corner, south-west face in two facets with a fold at the parapet, south face widening to the rim, overhanging east face, pale timber rim fascia, an inner box of four planar walls over a dark crash-mat floor, dark and white holds, three climbers',
             roof='pool deck with an infinity pool along the west edge, glass balustrades, loungers and a roof garden of planters and small trees; penthouse with a glazed pool side and an air-handling unit; east block membrane roof with skylights and plant',
             streetscape='granite plaza with two raised planters of ornamental grasses and steps to the south sidewalk; west sidewalk with street trees in pits and lamp posts; west and east streets with crossings and parked cars; brick mid-rise and residential blocks around',
             levels_m=[G0, F2, F3, F4, DECK], roof_m=dict(parapet=PARA, penthouse=PH_TOP, east_block=EB_TOP, rim=RIM),
@@ -111,7 +117,7 @@ def manifest(version):
         identity_contract=dict(owner='white precast and glass recreation centre with a rooftop infinity pool and a dramatic faceted honey-timber climbing wall leaning out over its granite plaza'),
         material_contract=dict(profile='source-palette clay: white precast, dark glazing frames, honey CLT with a lighter rim fascia, dark and white holds, turquoise water, grey granite and pavers', textured_keeper=False),
         programme_contract=dict(storeys=3, ground='lobby and climbing gym entrance', upper='gym floors, penthouse lounge, pool deck'),
-        contact_contract=['Grade-zero plaza, sidewalks and streets', 'Climbing shell foot sunk into the plaza and its back plane lapped into the facade', 'Precast walls from grade', 'Pool deck and roofs inside parapets'],
+        contact_contract=['Grade-zero plaza, sidewalks and streets', 'Climbing shell base sunk into the plaza and its back plane lapped into the facade', 'Precast walls from grade', 'Pool deck and roofs inside parapets'],
         runtime_contract=dict(scale='fixed_native_only', installation='not installed', review='NOT TESTED'),
         camera_roster=cams, mandatory_review_views=[c['name'] for c in cams])
 # ---- shared clay helpers (copied into each wave C family; kept identical) ----
@@ -1979,7 +1985,8 @@ def door_pair(b, axis, c, out, s, z0, z1, d):
 
 
 # ---------------------------------------------------------------- precast fronts
-def precast_front(b, axis, c, out, lo, hi, bays, levels, top, ground=True, fin_w=.55, ground_d=.6, room=4.2, cop_dz=0.0):
+def precast_front(b, axis, c, out, lo, hi, bays, levels, top, ground=True, fin_w=.55, ground_d=.6, room=4.2, cop_dz=0.0,
+                  fin_d=.42, span_d=.38):
     """White precast front: full-height fins at the bay lines, spandrel bands at each floor, a parapet band up to
     `top`, tall recessed windows between them; a recessed glazed ground floor behind square columns. levels =
     [F2, F3, ...]; the last level is the base of the parapet band. cop_dz lowers this front's coping where it overlaps
@@ -1989,11 +1996,11 @@ def precast_front(b, axis, c, out, lo, hi, bays, levels, top, ground=True, fin_w
     zb = levels[-1]
     for k, s in enumerate(fins):
         s0, s1 = max(lo, s - fin_w / 2), min(hi, s + fin_w / 2)
-        fbox(b, 'precast', axis, c, out, s0, s1, levels[0] - .57, zb + .02, -.25, .42)
+        fbox(b, 'precast', axis, c, out, s0, s1, levels[0] - .57, zb + .02, -.25, fin_d)
         if ground:
             fbox(b, 'precast', axis, c, out, s0 + .02, s1 - .02, 0.0, levels[0] - .5, -ground_d - .05, .08)
     for z in levels[:-1]:                                      # spandrels end 2 cm inside the end fins (no shared end faces)
-        fbox(b, 'precast', axis, c, out, lo + .02, hi - .02, z - .55, z + .25, -.25, .38)
+        fbox(b, 'precast', axis, c, out, lo + .02, hi - .02, z - .55, z + .25, -.25, span_d)
     fbox(b, 'precast', axis, c, out, lo - .02, hi + .02, zb, top - .05, -.25, .30)
     fbox(b, 'coping', axis, c, out, lo - .04, hi + .04, top - .06 + cop_dz, top + cop_dz, -.3, .34)
     for j, z in enumerate(levels[:-1]):
@@ -2027,7 +2034,7 @@ def fronts():
     """West, north and east precast fronts; the pool block's south frame box; the white south front under the
     climbing shell's overhang."""
     b = Batch()
-    precast_front(b, 'y', X0, -1, Y0, Y1, 13, [F2, F3, F4], PARA)                                        # west front (13 bays)
+    precast_front(b, 'y', X0, -1, Y0, Y1, 11, [F2, F3, F4], PARA, fin_w=.42, fin_d=.33, span_d=.27)     # west front (11 bays)
     precast_front(b, 'y', X1, 1, Y0, Y1, 10, [F2, F3, F4, EB_TOP], EB_PARA)                              # east front (4 storeys)
     precast_front(b, 'x', Y1, 1, X0, XE, 8, [F2, F3, F4], PARA, cop_dz=-.01)                            # north front, pool block
     precast_front(b, 'x', Y1, 1, XE, X1, 3, [F2, F3, F4, EB_TOP], EB_PARA, cop_dz=-.01)                  # north front, east block
@@ -2235,8 +2242,8 @@ def lounger(b, x, y, z, face):
 
 
 def penthouse():
-    """One-storey penthouse: glazed to the pool deck at its south end, solid white with a door to the north; flat
-    roof with a parapet, an air-handling unit with a fan and small plant."""
+    """One-storey penthouse: glazed to the pool deck at its south end, solid white to the north with a dark door in its
+    west wall onto the deck; flat roof with a parapet, an air-handling unit with a fan and small plant."""
     b = Batch()
     ax, c, o = 'y', XP0, -1
     fbox(b, 'precast', ax, c, o, PY0, Y1, DECK - .3, DECK + .1, -.3, .05)                             # base kerb
@@ -2246,8 +2253,8 @@ def penthouse():
     fbox(b, 'coping', ax, c, o, PY0 - .05, Y1, PH_PARA - .06, PH_PARA, -.35, .3)
     glazed(b, ax, c, o, PY0 + 1.2, 2.6, DECK + .1, PH_TOP - .32, 2.2, d=-.15)
     fbox(b, 'interior', ax, c, o, PY0 + 1.3, 2.5, DECK, PH_TOP - .3, -6.2, -6.0)
-    b.box('frame', -1.5, Y1 + .1, DECK + 1.45, 1.2, .08, 2.7)                                           # door on the north end
-    b.box('hardware', -1.05, Y1 + .16, DECK + 1.1, .05, .05, .15)
+    fbox(b, 'frame', ax, c, o, 5.0, 6.3, DECK + .1, DECK + 2.75, -.02, .05)                           # door in the solid west wall
+    fbox(b, 'hardware', ax, c, o, 5.2, 5.28, DECK + 1.05, DECK + 1.25, .05, .1)
     # Other walls: south (set back from the front), north (on the north front), east (over the east block roof).
     b.box('precast', (XP0 + XE) / 2, PY0 + .13, (DECK - .3 + PH_TOP - .3) / 2, XE - XP0 - .02, .3, PH_TOP - DECK)
     b.box('precast', (XP0 + XE) / 2, PY0 + .1, (PH_TOP - .32 + PH_PARA - .05) / 2, XE - XP0 + .02, .4, PH_PARA - .05 - PH_TOP + .32)
@@ -2357,32 +2364,53 @@ def shell_frame():
     return tris, inner
 
 
+def pit_loops():
+    """The inner box seen through the open top: the inner rim loop (the rim loop offset RIM_CAP inward, mitred) at RIM
+    and the floor loop at PIT_FLOOR (that loop scaled PIT_SCALE about its centroid and shifted by PIT_SHIFT). Each wall
+    joins two parallel edges, so the four inner walls are planes running parallel to the rim."""
+    rim = _pksh.Polygon([SH[k][:2] for k in RIM_LOOP])
+    off = list(rim.buffer(-RIM_CAP, join_style=2).exterior.coords)[:-1]
+    inner = [min(off, key=lambda q: (q[0] - SH[k][0]) ** 2 + (q[1] - SH[k][1]) ** 2) for k in RIM_LOOP]
+    cx = sum(q[0] for q in inner) / 4; cy = sum(q[1] for q in inner) / 4
+    floor = [(cx + (q[0] - cx) * PIT_SCALE + PIT_SHIFT[0], cy + (q[1] - cy) * PIT_SCALE + PIT_SHIFT[1]) for q in inner]
+    return [(q[0], q[1], RIM) for q in inner], [(q[0], q[1], PIT_FLOOR) for q in floor]
+
+
+def pit_loop_at(z):
+    top, bot = pit_loops()
+    u = (RIM - z) / (RIM - PIT_FLOOR)
+    return [(a[0] + (e[0] - a[0]) * u, a[1] + (e[1] - a[1]) * u) for a, e in zip(top, bot)]
+
+
 def shell():
-    """The hollow, open-topped CLT climbing shell: outer folded planes, the inner surface offset 35 cm, a level rim cap
-    and a light timber fascia applied 4 cm proud around the top of the three street faces."""
-    tris, inner = shell_frame()
+    """The hollow, open-topped CLT climbing shell: the outer folded planes, a level rim cap, an inner box of four planar
+    walls down to a dark crash-mat floor, and a pale timber fascia applied 4 cm proud around the top of the three
+    street faces."""
+    tris, _ = shell_frame()
+    top, bot = pit_loops()
     keys = list(SH)
-    V = [SH[k] for k in keys] + [inner[k] for k in keys]
-    io = len(keys)
-    F = []; roles = []
-    for t, n in tris:
-        F.append(tuple(keys.index(k) for k in t))
-        F.append(tuple(io + keys.index(k) for k in reversed(t)))
-    caps = []
+    V = [SH[k] for k in keys] + top + bot
+    it, ib = len(keys), len(keys) + 4
+    out_f = [tuple(keys.index(k) for k in t) for t, n in tris]
+    def facing(f, want):                              # wind the polygon so its normal agrees with `want`
+        a, b_, c = (V[i] for i in f[:3])
+        return f if _d(_x(_v(a, b_), _v(a, c)), want) > 0 else tuple(reversed(f))
+    caps, walls_, pit = [], [], []
+    cx = sum(q[0] for q in top) / 4; cy = sum(q[1] for q in top) / 4
     for i in range(4):
-        a, e = RIM_LOOP[i], RIM_LOOP[(i + 1) % 4]
-        caps.append((keys.index(a), keys.index(e), io + keys.index(e), io + keys.index(a)))
-    # outer and inner surfaces as separate role meshes (outer honey, inner a touch lighter), rim cap in the fascia tone
-    out_f = [f for k, f in enumerate(F) if k % 2 == 0]
-    in_f = [f for k, f in enumerate(F) if k % 2 == 1]
-    obj = C.mesh('Climbing shell CLT', V, out_f + in_f + caps, 'timber', 'climbing shell')
+        j = (i + 1) % 4
+        ka, ke = keys.index(RIM_LOOP[i]), keys.index(RIM_LOOP[j])
+        caps.append(facing((ka, ke, it + j, it + i), (0.0, 0.0, 1.0)))
+        mx = (top[i][0] + top[j][0]) / 2; my = (top[i][1] + top[j][1]) / 2
+        walls_.append(facing((it + i, it + j, ib + j, ib + i), (cx - mx, cy - my, 0.0)))
+    pit.append(facing((ib, ib + 1, ib + 2, ib + 3), (0.0, 0.0, 1.0)))
+    obj = C.mesh('Climbing shell CLT', V, out_f + walls_ + pit + caps, 'timber', 'climbing shell')
     for p in obj.data.polygons:                                        # folded CLT planes: flat shaded
         p.use_smooth = False
-    for p in obj.data.polygons:                                        # inner faces and the rim cap get their own tones
-        if p.index >= len(out_f) + len(in_f):
-            p.material_index = 2
+        if p.index >= len(out_f) + 5:
+            p.material_index = 2                                       # rim cap in the fascia tone
         elif p.index >= len(out_f):
-            p.material_index = 1
+            p.material_index = 1                                       # inner box walls and floor
     obj.data.materials.append(C.MATS['timber_in']); obj.data.materials.append(C.MATS['timber2'])
     # Fascia: 0.55 m plates on the south-west upper facet, the south face and the east face, 4 cm proud, ends lapped.
     b = Batch()
@@ -2401,21 +2429,14 @@ def shell():
         V2.extend(tuple(q[i] + n[i] * .045 for i in range(3)) for q in quad)
         F2_.extend([(o, o + 1, o + 2, o + 3), (o + 7, o + 6, o + 5, o + 4), (o, o + 4, o + 5, o + 1), (o + 1, o + 5, o + 6, o + 2),
                     (o + 2, o + 6, o + 7, o + 3), (o + 3, o + 7, o + 4, o + 0)])
-    # The hollow's floor: a crash mat on the inner foot.
-    fl = [inner[k] for k in ('G', 'BN0', 'BF', 'BW')]
-    cx = sum(p[0] for p in fl) / 4; cy = sum(p[1] for p in fl) / 4
-    mat = [(cx + (p[0] - cx) * .97, cy + (p[1] - cy) * .97) for p in fl]
     b.flush('climbing shell fascia')
-    C.prism('Climbing shell crash mat', mat, 'z', fl[0][2] - .02, fl[0][2] + .45, 'mat', 'climbing shell')
-    # The lean hides the foot from above, so a padded bouldering deck spans the hollow at 5.5 m: its dark mat is what
-    # the top view sees through the rim. Its outline is the inner surface's section at that height, grown 10 cm so its
-    # edges bury in the CLT.
-    zm = 5.5
-    hull = surface_section(inner, zm - .35).intersection(surface_section(inner, zm + .1)).buffer(.08, join_style=2)
-    C.prism('Climbing shell bouldering deck', list(hull.exterior.coords)[:-1][::-1] if hull.exterior.is_ccw is False else list(hull.exterior.coords)[:-1],
-            'z', zm - .35, zm + .1, 'mat', 'climbing shell')
-    C.CONTACTS.append(dict(name='Climbing shell: foot sunk 15 cm into the plaza, back plane lapped 10 cm into the facade', rim_m=RIM))
-    return tris, inner
+    # The crash mat filling the box floor: its top follows the walls' section 35 cm up, grown 3 cm so its edges bury in
+    # the sloping CLT walls (no seam), its base sunk 5 cm into the floor.
+    mat = _pksh.Polygon(pit_loop_at(PIT_FLOOR + .35)).buffer(.03, join_style=2)
+    pts = list(mat.exterior.coords)[:-1]
+    C.prism('Climbing shell crash mat', pts if mat.exterior.is_ccw else pts[::-1], 'z', PIT_FLOOR - .05, PIT_FLOOR + .35, 'mat', 'climbing shell')
+    C.CONTACTS.append(dict(name='Climbing shell: base sunk 15 cm into the plaza, back plane lapped 10 cm into the facade', rim_m=RIM))
+    return tris, (top, bot)
 
 
 def tri_point(a, b_, c, u, v):
@@ -2492,12 +2513,16 @@ def holds(tris, inner):
             scatter(P, n, 60, .15, zmin=.4, big=1.35)                                              # dark-dominant
         elif names in ({'BW', 'BF', 'KX'}, {'KW', 'KX', 'RSW'}, {'BW', 'KX', 'KW'}):      # west flare: white holds along
             scatter(P, n, 14, .85, band=lambda p: fold_dist(p) < 2.6, zmin=.4, big=1.4)   # the west/south fold
-    for t, n in tris:                                                                   # inner faces near the rim
-        names = set(t)
-        if names & set(RIM_LOOP):
-            P = [inner[k] for k in t]
-            ni = (-n[0], -n[1], -n[2])
-            scatter(P, ni, 10, .85, zmin=RIM - 7.0, zmax=RIM - .9)
+    top, bot = inner                                                                    # white holds on the inner box's
+    cx = sum(q[0] for q in top) / 4; cy = sum(q[1] for q in top) / 4                    # north and south walls
+    for i, j in ((3, 0), (1, 2)):                                                       # RNE-RNW (north), RSW-RSE (south)
+        quad = (top[i], top[j], bot[j], bot[i])
+        n = _n(_x(_v(quad[0], quad[1]), _v(quad[0], quad[3])))
+        mx = (top[i][0] + top[j][0]) / 2; my = (top[i][1] + top[j][1]) / 2
+        if _d(n, (cx - mx, cy - my, 0.0)) < 0:
+            n = (-n[0], -n[1], -n[2])
+        for P in ((quad[0], quad[1], quad[2]), (quad[0], quad[2], quad[3])):
+            scatter(P, n, 9, .9, zmin=PIT_FLOOR + 1.2, zmax=RIM - .8)
     b.flush('climbing holds')
     return placed
 
@@ -2521,17 +2546,17 @@ def inside_xz(tri, x, z, m=0.0):
     return all(v >= m for v in s) or all(v <= -m for v in s)
 
 
-CLIMBERS = ((-2.6, 11.2, 'shirt', 0), (-.6, 10.6, 'shirt', 1), (-2.4, 14.4, 'harness', 2))
+CLIMBERS = ((-8.3, 10.4, 'shirt', 0), (-6.5, 8.0, 'shirt', 1), (-4.7, 7.6, 'harness', 2))   # at the source's three climbers (front view rays)
 POSES = (((-.4, .95), (.38, .8), (-.32, -1.35), (.36, -1.2)),       # reaching
          ((-.3, 1.0), (.45, .55), (-.35, -1.3), (.55, -.8)),        # high step
          ((-.42, .85), (.4, .95), (-.28, -1.4), (.3, -1.3)))         # resting on straight arms
 
 
 def climbers(tris):
-    """Three climbers on the south face (cyan, cyan and dark tops), each on a facet with room around it: a torso and
-    head 45 cm off the face, arms and legs bent out from the face at elbow and knee, and every hand and foot closing on
-    a hold on that facet (the holds are placed at the hand and foot points)."""
-    south = [(t, n) for t, n in tris if set(t) in ({'BF', 'BS', 'KX'}, {'KX', 'BS', 'RSE'}, {'KX', 'RSE', 'RSW'})]
+    """Three climbers (cyan, cyan and dark tops), one high on the south-west facet and two lower on the south face, each
+    on a facet with room around it: a torso and head 45 cm off the face, arms and legs bent out from the face at elbow
+    and knee, and every hand and foot closing on a hold on that facet (the holds are placed at the hand and foot points)."""
+    south = [(t, n) for t, n in tris if set(t) in ({'BW', 'KX', 'KW'}, {'BF', 'BS', 'KX'}, {'KX', 'BS', 'RSE'}, {'KX', 'RSE', 'RSW'})]
     rnd = random.Random(31)
     b = Batch()
     for (x0, z0, shirt, k) in CLIMBERS:
@@ -2630,7 +2655,7 @@ def site():
     # Tree pits, lamp posts, bollards, a bin.
     for x, y in TREE_PITS:
         b.box('soil', x, y, .152, 1.4, 1.4, .01)
-    for x, y in ((-27.3, -21.2), (-27.3, -1.7), (-27.3, 18.0), (-12.8, -34.6), (2.0, -34.6), (20.0, 4.0)):
+    for x, y in ((-27.3, -21.2), (-27.3, -1.7), (-27.3, 18.0), (-19.5, -37.8), (13.8, -37.8), (20.0, 4.0)):   # on the walks, clear of the beds
         cyl(b, 'hardware', x, y, .15, 5.6, .07, 8)
         b.box('hardware', x, y, 5.75, .34, .34, .3)
         b.box('paint', x, y, 5.55, .28, .28, .14)
@@ -2711,14 +2736,17 @@ def walls(poly, wall, z0, z1, role='granite'):
 
 
 def planting():
-    """Raised granite planters of feather-reed grass with straw plumes on the plaza, a low green bed along the east
-    sidewalk, and grasses in the roof garden planters (shared planting kit, linked instances)."""
+    """Raised granite planters filled with dense, tall straw-coloured feather-reed and switch grass on the plaza (a straw
+    ground under them, no green), a low green bed along the east sidewalk, and yellow-green grasses and shrubs over a
+    mulch ground in the roof garden planters (shared planting kit, linked instances)."""
     global KIT
     kit = KIT = PlantKit('planting', instancing=True)
     reed = arching_grass(kit, 'ov_feather_reed', blades=58, height=.85, width=.018, role='pk_straw', crown_role='pk_straw',
                          plume_role='pk_plume', plumes=9, plume_height=1.3, seed=91)
     fountain = arching_grass(kit, 'ov_fountain_grass', blades=60, height=.6, width=.019, crown_role='pk_blade', seed=81)
     low = arching_grass(kit, 'ov_edge_grass', blades=36, height=.3, width=.013, role='pk_blade', crown_role='pk_blade', seed=101)
+    switch = arching_grass(kit, 'ov_switch_grass', blades=56, height=.75, width=.017, role='pk_straw', crown_role='pk_straw',
+                           plume_role='pk_plume', plumes=6, plume_height=1.05, seed=95)
     shrub = shrub_mass(kit, 'ov_shrub', radius=.5, height=.7, lobes=6, seed=122)
     rnd = random.Random(5)
     b = Batch()
@@ -2731,9 +2759,10 @@ def planting():
         inner = _PkPolygon(poly).buffer(-.1, join_style=2)
         C.prism(f'Planter {i} soil', list(inner.exterior.coords)[:-1], 'z', .1, soil - .03, 'soil', 'planters')
         reg = kit.register_bed(pk_region(poly, wall))
-        groundcover(f'Planter {i} groundcover', poly, soil, kerb=wall, height=.05, bump=.02, wave=.7, grid=.5, seed=40 + i)
-        mix = (reed, reed, fountain) if i < 2 else (shrub, low, low)
-        for x, y in pk_scatter(reg, .41 if i < 2 else .5, margin=PK_CLEAR, seed=60 + i):
+        groundcover(f'Planter {i} groundcover', poly, soil, kerb=wall, height=.05, bump=.02, wave=.7, grid=.5, seed=40 + i,
+                    role='pk_straw' if i < 2 else 'pk_groundcover')
+        mix = (reed, reed, switch) if i < 2 else (shrub, low, low)
+        for x, y in pk_scatter(reg, .32 if i < 2 else .5, margin=PK_CLEAR, seed=60 + i):
             p = mix[rnd.randrange(len(mix))]
             s = rnd.uniform(.95, 1.2) if p is reed else rnd.uniform(.9, 1.15)
             kit.place_in(p, x, y, soil, rnd.uniform(0, math.tau), s, region=reg, shrink=(1., .85, .7, .55, .45),
@@ -2745,9 +2774,10 @@ def planting():
         soil = DECK + .62
         b.box('soil', (x0 + x1) / 2, (y0 + y1) / 2, DECK + .3, x1 - x0 - .2, y1 - y0 - .2, .6)
         reg = kit.register_bed(pk_region(poly, .25))
-        groundcover(f'Roof garden {i} groundcover', poly, soil, kerb=.25, height=.05, bump=.02, wave=.7, grid=.5, seed=70 + i)
-        for x, y in pk_scatter(reg, .65, margin=PK_CLEAR, seed=80 + i):
-            p = (fountain, reed, low)[rnd.randrange(3)]
+        groundcover(f'Roof garden {i} groundcover', poly, soil, kerb=.25, height=.05, bump=.02, wave=.7, grid=.5, seed=70 + i,
+                    role='pk_mulch')
+        for x, y in pk_scatter(reg, .5, margin=PK_CLEAR, seed=80 + i):
+            p = (fountain, fountain, reed, shrub)[rnd.randrange(4)]
             kit.place_in(p, x, y, soil, rnd.uniform(0, math.tau), rnd.uniform(1.0, 1.35), region=reg, shrink=(1., .8, .6))
     b.flush('planters')
     kit.flush()

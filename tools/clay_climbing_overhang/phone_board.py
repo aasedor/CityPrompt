@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
-PAIRS = [('front', 'front.png', 'Locked front'), ('oblique', 'front_corner.png', 'Locked oblique'), ('top', 'aerial.png', 'Locked top')]
-BASE = ['left_side', 'right_side', 'rear', 'rear_side', 'top']
+PAIRS = [('front', 'front.png', 'Locked front'), ('oblique', 'front_corner.png', 'Locked oblique'), ('top', 'top.png', 'Locked top')]
+BASE = ['left_side', 'right_side', 'rear', 'rear_side', 'aerial']
 
 
 def fit(img, w, h):
@@ -47,7 +47,7 @@ def main():
         cells += [(src[role], text), (root / 'renders' / render, 'Render ' + render[:-4])]
     boards = [board(root / 'boards' / 'phone-01-source-vs-render.png', entry['archetype_id'] + ' - source vs render', cells)]
     roster = [c['name'] for c in json.loads((root / 'prework-manifest.json').read_text())['camera_roster']]
-    names = [n for n in roster if n not in ('front', 'front_corner', 'aerial') + tuple(BASE)] + BASE
+    names = [n for n in roster if n not in ('front', 'front_corner', 'top') + tuple(BASE)] + BASE
     detail = [(root / 'renders' / (n + '.png'), n) for n in names if (root / 'renders' / (n + '.png')).is_file()]
     for k in range(0, len(detail), 6):
         boards.append(board(root / 'boards' / f'phone-{2 + k // 6:02d}-details.png', entry['archetype_id'] + f' - details {k // 6 + 1}', detail[k:k + 6]))
