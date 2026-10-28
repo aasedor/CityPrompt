@@ -31,6 +31,7 @@ import { assetForZone } from '@/features/pickPlace/catalogue';
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { projectedFrameFraction, projectFrameRoofHeight } from './projectFrameHeight';
 import { findUnobstructedProjectFrame } from './projectFrameObstruction';
+import { PLAN_VIEW_FOV_DEGREES, WORKING_VIEW_FOV_DEGREES, distanceForFieldOfView, setWorkingCameraProjection, syncPlanCameraClipping, syncPlanCameraFog } from './planViewCamera';
 import { initialContextCameraIsPaused, watchInitialProjectContext } from './initialProjectContextWatch';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
 import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
@@ -681,6 +682,7 @@ interface GlobeCameraPose {
   surfacePos: THREE.Vector3;
   normal: THREE.Vector3;
   cameraUp?: THREE.Vector3;
+  planView?: boolean;
 }
 
 function applyCameraPoseToCamera(
@@ -688,6 +690,7 @@ function applyCameraPoseToCamera(
   pose: GlobeCameraPose,
   controls?: { pivotPoint?: THREE.Vector3; update?: () => void } | null,
 ) {
+  setWorkingCameraProjection(camera, pose.planView === true, pose.cameraPos.distanceTo(pose.surfacePos));
   camera.position.copy(pose.cameraPos);
   camera.up.copy(pose.cameraUp ?? pose.normal);
   camera.lookAt(pose.surfacePos);
@@ -1149,19 +1152,21 @@ function FallbackPlaneSync({
     useFallbackPlane?: boolean;
   } | null>;
 }) {
-  const { camera } = useThree();
+  const { camera, scene } = useThree();
 
   useEffect(() => {
     let rafId = 0;
 
     const updateFallbackPlane = () => {
       syncGlobeControlsFallbackPlane(controlsRef.current, camera);
+      if (controlsRef.current?.pivotPoint) syncPlanCameraClipping(camera, camera.position.distanceTo(controlsRef.current.pivotPoint));
+      syncPlanCameraFog(camera, scene.fog);
       rafId = window.requestAnimationFrame(updateFallbackPlane);
     };
 
     updateFallbackPlane();
     return () => window.cancelAnimationFrame(rafId);
-  }, [camera, controlsRef]);
+  }, [camera, controlsRef, scene]);
 
   return null;
 }
@@ -1688,7 +1693,7 @@ export function GlobeSitePlannerMap({
   const [walkLiftLabel, setWalkLiftLabel] = useState<string|null>(null);
   const [walkHasBuildingEntrance, setWalkHasBuildingEntrance] = useState(false);
   const [walkBuildingZoneId, setWalkBuildingZoneId] = useState<string | null>(null);
-  const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
+  const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null; projection: ReturnType<typeof applyStreetCameraProjection> } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
   const [showMapCleanup, setShowMapCleanup] = useState(false);
   const [cleanupPicking, setCleanupPicking] = useState(false);
@@ -2274,12 +2279,7 @@ export function GlobeSitePlannerMap({
     };
   }, [focusLatitude, focusLongitude, getCanvasViewportSize, raycastLngLat]);
 
-  const applyCameraPose = useCallback((pose: {
-    cameraPos: THREE.Vector3;
-    surfacePos: THREE.Vector3;
-    normal: THREE.Vector3;
-    cameraUp?: THREE.Vector3;
-  }) => {
+  const applyCameraPose = useCallback((pose: GlobeCameraPose) => {
     const camera = cameraRef.current;
     if (!camera) return;
 
@@ -2327,7 +2327,8 @@ export function GlobeSitePlannerMap({
     // single-building frame can approach the model while still fitting its roof.
     const minimumHeightM = renderZones.length === 1 && isBuildingZoneType(renderZones[0].zone_type ?? '')
       ? 8 : PROJECT_FRAME_MIN_HEIGHT_M;
-    const cameraFov = camera instanceof THREE.PerspectiveCamera ? camera.fov : 75;
+    // Focus returns to the regular oblique working lens, including from plan mode.
+    const cameraFov = WORKING_VIEW_FOV_DEGREES;
     let heightM = estimateProjectFrameHeight(
       spanM,
       cameraFov,
@@ -2484,6 +2485,7 @@ export function GlobeSitePlannerMap({
       camera.position.copy(saved.position);
       camera.quaternion.copy(saved.quaternion);
       camera.up.copy(saved.up);
+      restoreStreetCameraProjection(camera, saved.projection);
       camera.updateMatrixWorld();
       if (saved.pivot && controls?.pivotPoint) controls.pivotPoint.copy(saved.pivot);
     }
@@ -2503,7 +2505,9 @@ export function GlobeSitePlannerMap({
     endBuildingInspection();
     setBuildingWalkingDoorsOpen(true);
     walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
-      up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
+      up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null,
+      projection: camera instanceof THREE.PerspectiveCamera ? { fov: camera.fov, near: camera.near } : null };
+    setWorkingCameraProjection(camera, false);
     if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
     if (globeControlsRef.current) globeControlsRef.current.enabled = false;
     markUserInteracted();
@@ -5356,9 +5360,13 @@ export function GlobeSitePlannerMap({
             const [lng, lat] = hit.lngLat;
             const surface = new THREE.Vector3();
             WGS84_ELLIPSOID.getCartographicToPosition(lat * DEG_TO_RAD, lng * DEG_TO_RAD, hit.height, surface);
-            const nextPitch = cameraElevation >= 85 ? DEFAULT_INITIAL_CAMERA_PITCH_DEGREES : 0;
-            const height = Math.max(20, camera.position.distanceTo(surface) * Math.cos(nextPitch * DEG_TO_RAD));
-            applyCameraPose(computeCameraPose(lat, lng, height, hit.height, nextPitch));
+            const planView = cameraElevation < 85;
+            const nextPitch = planView ? 0 : DEFAULT_INITIAL_CAMERA_PITCH_DEGREES;
+            const currentFov = camera instanceof THREE.PerspectiveCamera ? camera.fov : WORKING_VIEW_FOV_DEGREES;
+            const nextDistance = distanceForFieldOfView(camera.position.distanceTo(surface), currentFov,
+              planView ? PLAN_VIEW_FOV_DEGREES : WORKING_VIEW_FOV_DEGREES);
+            const height = Math.max(20, nextDistance * Math.cos(nextPitch * DEG_TO_RAD));
+            applyCameraPose({ ...computeCameraPose(lat, lng, height, hit.height, nextPitch), planView });
             hasAppliedSettledViewRef.current = true;
             setIsInitialCameraApplied(true);
             revealCanvasAfterPose();
