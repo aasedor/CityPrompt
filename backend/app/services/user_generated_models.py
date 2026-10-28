@@ -9,7 +9,7 @@ from fastapi import HTTPException
 from geoalchemy2.shape import to_shape
 from shapely.errors import GEOSException
 from shapely.geometry import Polygon
-from sqlalchemy import select
+from sqlalchemy import or_, select
 from starlette.concurrency import run_in_threadpool
 
 from app.core.config import get_settings
@@ -21,7 +21,7 @@ def is_user_generated(building: Building) -> bool:
     reused = specs.get('user_generated_model') or {}
     if reused:
         return reused.get('catalogue_entry') is True
-    return bool(specs.get('photo_generation') or building.generation_engine in ('meshy', 'tripo'))
+    return bool(specs.get('imported_glb') or specs.get('photo_generation') or building.generation_engine in ('meshy', 'tripo'))
 
 
 def source_footprint_dimensions(building: Building) -> tuple[float, float] | None:
@@ -50,14 +50,15 @@ def generated_entry(building: Building) -> dict:
     specs = building.specifications or {}
     references = (specs.get('photo_generation') or {}).get('reference_keys') or []
     preview = (specs.get('user_generated_model') or {}).get('preview_url')
-    dimensions = source_footprint_dimensions(building)
+    imported = specs.get('imported_glb') or {}
+    dimensions = (imported['width_m'], imported['depth_m']) if imported.get('width_m') and imported.get('depth_m') else source_footprint_dimensions(building)
     return {'id': str(building.id), 'project_id': str(building.project_id),
             'name': building.name or 'My generated building',
             'preview_url': preview or (f'/api/v1/files/{references[0]}' if references else building.preview_url),
             'model_url': building.model_url,
             'floor_count': building.floor_count, 'height_meters': float(building.height_meters or 6),
             'width_m': dimensions[0] if dimensions else 12, 'depth_m': dimensions[1] if dimensions else 16,
-            'size_estimated': dimensions is None}
+            'size_estimated': dimensions is None, 'source_kind': 'imported_glb' if imported else 'generated'}
 
 
 def copy_generated_file(source: str, destination: str) -> str:
@@ -86,7 +87,7 @@ async def attach_generated_model(db, zone, user, source_id):
     except ValueError:
         raise HTTPException(status_code=422, detail='Choose a valid user generated model.') from None
     result = await db.execute(select(Building).join(Project, Building.project_id == Project.id).where(
-        Building.id == source_id, Project.owner_id == user.id))
+        Building.id == source_id, or_(Project.owner_id == user.id, Project.id == getattr(zone, 'project_id', None))))
     source = result.scalar_one_or_none()
     if not source or not is_user_generated(source):
         raise HTTPException(status_code=404, detail='This user generated model is not in your account.')
@@ -105,16 +106,21 @@ async def attach_generated_model(db, zone, user, source_id):
         generation_engine=source.generation_engine, height_meters=source.height_meters,
         floor_count=source.floor_count, floor_height_meters=source.floor_height_meters,
         specifications={'user_generated_model': {'version': 1, 'source_building_id': str(source.id),
-            'catalogue_entry': False, 'model_url': model_url}})
+            'catalogue_entry': False, 'model_url': model_url},
+            **({'imported_glb': (source.specifications or {})['imported_glb']} if (source.specifications or {}).get('imported_glb') else {})})
     db.add(building)
     await db.flush()
     zone.building_id = building.id
     zone.building_ids = [str(building.id)]
     zone.name = source.name
-    zone.properties = {**(zone.properties or {}), 'user_generated_source_id': str(source.id),
-        'native_plot_axes': True,
-        'height': float(source.height_meters or 6), 'floor_count': source.floor_count or 2,
-        'floors': source.floor_count or 2}
+    properties = {**(zone.properties or {}), 'user_generated_source_id': str(source.id),
+        'native_plot_axes': True, 'height': float(source.height_meters or 6)}
+    if (source.specifications or {}).get('imported_glb') and source.floor_count is None:
+        properties.pop('floor_count', None)
+        properties.pop('floors', None)
+    else:
+        properties.update(floor_count=source.floor_count or 2, floors=source.floor_count or 2)
+    zone.properties = properties
     return building
 
 

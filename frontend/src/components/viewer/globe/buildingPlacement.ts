@@ -114,7 +114,7 @@ export function computeModelPlacement(
   // swizzle, model X lands on ENU East and model Z on ENU -North.
   const modelLong = Math.max(modelSize.x, modelSize.z);
   const modelShort = Math.min(modelSize.x, modelSize.z);
-  if (!(modelLong > 1e-3) || !(modelShort > 1e-6)) return null;
+  if (![modelSize.x, modelSize.y, modelSize.z].every(value => Number.isFinite(value) && value > 0)) return null;
 
   // Height-anchored, parcel-clamped: Meshy normalizes every model to roughly
   // a unit cube regardless of the footprint the prompt asks for, so pure
@@ -123,13 +123,13 @@ export function computeModelPlacement(
   // miniature). Anchoring to the building's target height makes the block a
   // uniform streetwall; contain-fit remains as the never-overhang clamp.
   const containFit = Math.min(frame.longDim / modelLong, frame.shortDim / modelShort);
-  const heightFit = heightMeters && heightMeters > 0 && modelSize.y > 1e-3
+  const heightFit = heightMeters && Number.isFinite(heightMeters) && heightMeters > 0
     ? heightMeters / modelSize.y
     : null;
-  const scale = Math.min(
-    Math.max(heightFit !== null ? Math.min(heightFit, containFit) : containFit, 0.01),
-    1000,
-  );
+  // Native units can be arbitrarily small or large. Physical height and parcel
+  // containment define the scale; absolute clamps silently change that size.
+  const scale = heightFit !== null ? Math.min(heightFit, containFit) : containFit;
+  if (!Number.isFinite(scale) || scale <= 0) return null;
 
   const modelAxisAngle = modelSize.x >= modelSize.z ? 0 : -Math.PI / 2;
   const yawRad = frame.bearingRad - modelAxisAngle + (rotationDegrees ?? 0) * DEG_TO_RAD;

@@ -1277,7 +1277,7 @@ export function ProjectViewPage() {
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
               streetInPlacement
               advancedSlot={<div ref={setMapToolsTarget} className="grid gap-2" aria-label="3D viewing tools" />}
-              placementSlot={<PlacementPalette primaryAction={<div className="grid gap-2">
+              placementSlot={<PlacementPalette projectId={id} primaryAction={<div className="grid gap-2">
                 <div ref={setWalkControlTarget} />
                 <button type="button"
                   onClick={async () => {

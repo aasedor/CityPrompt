@@ -23,7 +23,7 @@ export function CatalogueCategoryTiles({ domain, choices, onChoose, onBrowseAll,
         <div className="flex w-full justify-center transition-transform duration-200 motion-safe:group-hover:-translate-y-1"><CatalogueCategoryIllustration id={group.id} /></div>
         <span className="mt-1 text-sm font-extrabold leading-snug">{group.label}</span>
       </button>)}
-      {onGenerated && <button type="button" onClick={onGenerated} className="flex min-h-44 flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-[#232323] bg-white p-4 text-sm font-bold hover:bg-lime-50"><Sparkles size={42} aria-hidden="true"/>Your generated buildings</button>}
+      {onGenerated && <button type="button" onClick={onGenerated} className="flex min-h-44 flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-[#232323] bg-white p-4 text-sm font-bold hover:bg-lime-50"><Sparkles size={42} aria-hidden="true"/>Your models</button>}
     </div>
   </div>;
 }

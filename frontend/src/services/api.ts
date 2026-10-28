@@ -1340,9 +1340,18 @@ export interface UserGeneratedBuilding {
   id: string; project_id: string; name: string; preview_url: string | null;
   model_url: string; floor_count: number | null; height_meters: number;
   width_m: number; depth_m: number; size_estimated: boolean;
+  source_kind?: 'generated' | 'imported_glb';
 }
 
 export const modelLibraryApi = {
+  importGlb: async (projectId: string, file: File, name: string, units: string, targetHeight?: number): Promise<UserGeneratedBuilding> => {
+    const body = new FormData();
+    body.append('file', file); body.append('name', name); body.append('units', units);
+    if (targetHeight !== undefined) body.append('target_height_m', String(targetHeight));
+    const { data } = await api.post(`/api/v1/model-library/projects/${projectId}/import-glb`, body,
+      { headers: { 'Content-Type': 'multipart/form-data' }, timeout: 120_000 });
+    return data;
+  },
   userGenerated: async (): Promise<UserGeneratedBuilding[]> => {
     const { data } = await api.get('/api/v1/model-library/user-generated');
     return data;

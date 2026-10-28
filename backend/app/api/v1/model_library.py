@@ -8,7 +8,8 @@ import uuid
 
 import boto3
 from botocore.config import Config
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
+from starlette.concurrency import run_in_threadpool
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -32,6 +33,41 @@ from app.schemas.schemas import (
 
 router = APIRouter()
 settings = get_settings()
+
+
+@router.post('/projects/{project_id}/import-glb', status_code=201)
+async def import_glb(
+    project_id: uuid.UUID,
+    file: UploadFile = File(...),
+    name: str = Form('', max_length=120),
+    units: str = Form('metres'),
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+    target_height_m: float | None = Form(None, ge=.25, le=500),
+):
+    from app.services.glb_import import MAX_GLB_BYTES, inspect_glb, store_glb
+    from app.services.user_generated_models import generated_entry
+    await check_project_permission(project_id, user, db, required='editor')
+    filename = (file.filename or '').replace('\\', '/').rsplit('/', 1)[-1]
+    if not filename.lower().endswith('.glb'):
+        raise HTTPException(422, 'Choose a .glb building model.')
+    payload = await file.read(MAX_GLB_BYTES + 1)
+    measurements = await run_in_threadpool(inspect_glb, payload, units, target_height_m)
+    building_id = uuid.uuid4()
+    key = f'projects/{project_id}/models/{building_id}_imported.glb'
+    try:
+        await run_in_threadpool(store_glb, key, payload)
+    except Exception as exc:
+        raise HTTPException(503, 'The model could not be saved. Keep this window open and try again.') from exc
+    building = Building(id=building_id, project_id=project_id,
+        name=name.strip() or filename[:-4][:120] or 'Imported building',
+        generation_engine='imported_glb', generation_status='completed',
+        model_url=f'/api/v1/files/{key}', height_meters=measurements['height_meters'],
+        specifications={'imported_glb': {**measurements, 'filename': filename[:255], 'uploaded_by': str(user.id)}})
+    db.add(building)
+    await db.flush()
+    await db.commit()
+    return generated_entry(building)
 
 
 @router.get('/user-generated')

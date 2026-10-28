@@ -207,7 +207,7 @@ function BuildingModelInstance({
   const bbox = useMemo(() => new THREE.Box3().setFromObject(scene), [scene]);
   const size = useMemo(() => bbox.getSize(new THREE.Vector3()), [bbox]);
   const center = useMemo(() => bbox.getCenter(new THREE.Vector3()), [bbox]);
-  const preserveSourceMaterials = building.generation_engine?.toLowerCase() === 'rlasm';
+  const preserveSourceMaterials = ['rlasm', 'imported_glb'].includes(building.generation_engine?.toLowerCase() ?? '');
 
   const cloned = useMemo(() => {
     const prepared = prepareArchitecturalClone(scene, {

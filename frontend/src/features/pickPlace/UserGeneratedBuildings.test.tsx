@@ -29,7 +29,7 @@ it('separates private creations in the building category and selects a reusable 
 it('shows an actionable empty category without sample models from other accounts', async () => {
   list.mockResolvedValue([]);
   render(<UserGeneratedBuildings query="" onPick={vi.fn()} />);
-  expect(await screen.findByText(/No user generated buildings yet/)).toBeTruthy();
+  expect(await screen.findByText(/No models yet. Use Import GLB/)).toBeTruthy();
 });
 
 it('recovers a failed listing and searches only the returned personal models', async () => {
@@ -38,6 +38,6 @@ it('recovers a failed listing and searches only the returned personal models', a
   fireEvent.click(await screen.findByRole('button', { name: 'Try again' }));
   expect(await screen.findByText('My red house')).toBeTruthy();
   rerender(<UserGeneratedBuildings query="absent" onPick={vi.fn()} />);
-  expect(screen.getByText('No generated buildings match your search.')).toBeTruthy();
+  expect(screen.getByText('No models match your search.')).toBeTruthy();
   await waitFor(() => expect(list).toHaveBeenCalledTimes(2));
 });

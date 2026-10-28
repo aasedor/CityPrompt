@@ -17,21 +17,21 @@ export function UserGeneratedBuildings({ query, onPick }: { query: string; onPic
     }).catch(() => { if (!cancelled) setStatus('failed'); });
     return () => { cancelled = true; };
   }, [userId, attempt]);
-  if (status === 'loading') return <p role="status" className="p-4 text-sm">Loading your generated buildings…</p>;
+  if (status === 'loading') return <p role="status" className="p-4 text-sm">Loading your models…</p>;
   if (status === 'failed') return <div role="alert" className="p-4 text-sm">Your models could not be loaded.
     <button className="ml-2 min-h-11 underline" onClick={() => setAttempt(value => value + 1)}>Try again</button></div>;
   const matches = models.filter(model => model.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
   return <div>
-    <p className="mb-3 text-sm text-slate-600">Completed AI models from your projects. Reusing a model costs no generation credits.</p>
-    {!models.length ? <p className="p-4 text-sm">No user generated buildings yet. Draw a building footprint, then use Generate 3D and upload your photos. Completed models appear here.</p>
-      : !matches.length ? <p className="p-4 text-sm">No generated buildings match your search.</p>
+    <p className="mb-3 text-sm text-slate-600">Your imported GLBs and completed AI models. Reusing a model costs no generation credits.</p>
+    {!models.length ? <p className="p-4 text-sm">No models yet. Use Import GLB to add your own building, or generate a building from photos. Your completed models appear here.</p>
+      : !matches.length ? <p className="p-4 text-sm">No models match your search.</p>
       : <div className="grid items-start gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {matches.map(model => <article key={model.id} className="overflow-hidden rounded-xl border border-slate-300 bg-white">
           <button onClick={() => onPick(model)} className="w-full text-left hover:bg-lime-50">
             <GeneratedPreview source={model.preview_url ? resolveApiFileUrl(model.preview_url) : null} />
             <div className="space-y-2 p-3">
               <h3 className="font-bold">{model.name}</h3>
-              <p className="text-xs text-slate-600">User generated · AI concept model{model.floor_count ? ` · ${model.floor_count} storeys` : ''}</p>
+              <p className="text-xs text-slate-600">{model.source_kind==='imported_glb'?'Imported GLB':'User generated · AI concept model'}{model.floor_count ? ` · ${model.floor_count} storeys` : ''}</p>
               <p className="min-h-11 rounded-lg bg-[#c9ff3d] px-3 py-3 text-center text-sm font-bold">Choose & place</p>
             </div>
           </button>
