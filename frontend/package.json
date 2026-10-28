@@ -64,6 +64,7 @@
     "@types/three": "^0.170.0",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "esbuild": "0.25.12",
     "eslint": "^9.39.5",
     "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^17.11.0",

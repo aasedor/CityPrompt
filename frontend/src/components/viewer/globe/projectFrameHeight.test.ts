@@ -30,6 +30,14 @@ describe('project camera framing height', () => {
     expect(PROJECT_FRAME_MIN_HEIGHT_M).toBe(70);
   });
 
+  it('allows a single small building to fill the view without the whole-site height floor', () => {
+    const height = estimateProjectFrameHeight(26, 75, 60, 0.7, 8);
+    expect(height).toBeGreaterThanOrEqual(8);
+    expect(height).toBeLessThan(25);
+    // Whole-site callers retain their established safety margin.
+    expect(estimateProjectFrameHeight(26)).toBe(70);
+  });
+
   it('backs away monotonically for larger extents and tighter frame targets', () => {
     expect(estimateProjectFrameHeight(2_000)).toBeGreaterThan(
       estimateProjectFrameHeight(1_000),

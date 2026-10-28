@@ -39,6 +39,7 @@ export function estimateProjectFrameHeight(
   verticalFovDeg = 75,
   pitchFromNadirDeg = 60,
   targetFraction = PROJECT_FRAME_TARGET_FRACTION,
+  minimumHeightM = PROJECT_FRAME_MIN_HEIGHT_M,
 ): number {
   const safeSpan = Math.max(30, Number.isFinite(spanM) ? spanM : 30);
   const safeFov = Math.min(150, Math.max(10, verticalFovDeg));
@@ -64,6 +65,6 @@ export function estimateProjectFrameHeight(
   ) / Math.max(0.01, visibleSpanPerHeight);
   return Math.min(
     PROJECT_FRAME_MAX_HEIGHT_M,
-    Math.max(PROJECT_FRAME_MIN_HEIGHT_M, height),
+    Math.max(minimumHeightM, height),
   );
 }

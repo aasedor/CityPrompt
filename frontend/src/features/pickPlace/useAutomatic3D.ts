@@ -81,6 +81,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
     && !(zone.zone_type === 'building' && nativeBuildingUrl(zone)));
 
   useEffect(() => {
+    const hiddenLayers = new Set<string>(JSON.parse(visibilityKey));
     if (state.current.projectId !== projectId) {
       state.current = { projectId, busy: false, completed: '', failed: '', force: false };
       setStatus('idle'); setMessage('');
@@ -106,14 +107,14 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           // Hidden alternatives must never occupy or invalidate its landscape.
           const currentZones = (client.getQueryData<SiteZone[]>(['site-zones', projectId]) ?? latest.current)
             .filter(zone => !zone.id.startsWith('temp-'))
-            .filter(zone => !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
+            .filter(zone => !hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
           const sources = currentZones.filter(physicalZone);
           const scope = currentZones.filter(physicalScopeZone);
           const currentBoundary = deriveCityPromptWorkflow(currentZones).activeBoundary;
           if (!sources.length) return { result: { plannedMasses: 0 }, readiness: null };
           const result = await compileMixedCommunity3D(sources, undefined, {
             includeResidualLandscape: automaticSiteTreesEnabled(currentBoundary),
-            scopeMode: visibility?.hiddenLayers.size ? 'selection' : 'project',
+            scopeMode: hiddenLayers.size ? 'selection' : 'project',
             scopeZoneIds: scope.map(zone => zone.id),
           });
           const saved = await siteZonesApi.list(projectId);
@@ -126,7 +127,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           }
           client.setQueryData(['site-zones', projectId], saved);
           const savedVisible = saved.filter(zone => !zone.id.startsWith('temp-')
-            && !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
+            && !hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
           return { result, readiness: deriveCityPromptWorkflow(savedVisible) };
         });
         // Object compilation can commit new Building representations while an
@@ -168,7 +169,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
       }
     }, 700);
     return () => window.clearTimeout(timer);
-  }, [projectId, key, compiled, eligible, saving, client, attempt, candidates.length]);
+  }, [projectId, key, visibilityKey, compiled, eligible, saving, client, attempt, candidates.length]);
 
   const currentAssetError = assetError?.projectId === projectId && zones.some(zone=>zone.id===assetError?.zoneId && (assetError.kind==='street'?nativeStreetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===assetError.revision) ? assetError : null;
   const visibleStatus = currentAssetError ? 'error' : eligible && !compiled && candidates.length > 0 && status !== 'error' ? 'updating' : status;

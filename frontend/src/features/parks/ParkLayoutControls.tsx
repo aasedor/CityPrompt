@@ -29,12 +29,12 @@ export function parkLayoutProposal(zone:SiteZone,layout:NativeParkLayout,zones:S
 export function ParkLayoutControls({zone,zones,disabled,onSave}:{zone:SiteZone;zones:SiteZone[];disabled:boolean;
   onSave:(data:{coordinates:number[][];properties:SiteZoneProperties})=>Promise<unknown>}) {
   const current=readNativePark(zone);
-  const choices=isFlexiblePark(zone.properties) ? [] : nativeParkLayouts.filter(p=>p.variantId===zone.properties?.green_space_selected_variant_id && p.status==='pilot');
+  const choices=useMemo(()=>isFlexiblePark(zone.properties) ? [] : nativeParkLayouts.filter(p=>p.variantId===zone.properties?.green_space_selected_variant_id && p.status==='pilot'),[zone.properties]);
   const [selected,setSelected]=useState(current?.layout.id??choices[0]?.id??'');
   const [preview,setPreview]=useState(false),[saving,setSaving]=useState(false),[error,setError]=useState('');
   useEffect(()=>{
     setSelected(current?.layout.id??choices[0]?.id??'');setPreview(false);setError('');
-  },[zone.id,current?.layout.id]);
+  },[zone.id,current?.layout.id,choices]);
   const layout=choices.find(p=>p.id===selected);
   const proposal=useMemo(()=>layout?parkLayoutProposal(zone,layout,zones):null,[zone,zones,layout]);
   if(!choices.length)return null;

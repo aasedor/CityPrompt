@@ -35,6 +35,7 @@ def test_linked_worktree_resolves_primary_checkout_shared_env(tmp_path):
 def test_production_rejects_default_jwt_secret():
     with pytest.raises(ValueError, match="JWT_SECRET_KEY"):
         Settings(
+            _env_file=None,
             app_env="production",
             app_debug=False,
             jwt_secret_key="change-this-in-production",
@@ -45,6 +46,7 @@ def test_production_rejects_default_jwt_secret():
 def test_production_rejects_localhost_cors_origin():
     with pytest.raises(ValueError, match="ALLOWED_ORIGINS"):
         Settings(
+            _env_file=None,
             app_env="production",
             app_debug=False,
             jwt_secret_key="safe-production-secret",
@@ -55,6 +57,7 @@ def test_production_rejects_localhost_cors_origin():
 def test_production_rejects_debug_mode():
     with pytest.raises(ValueError, match="APP_DEBUG"):
         Settings(
+            _env_file=None,
             app_env="production",
             app_debug=True,
             jwt_secret_key="safe-production-secret",
@@ -64,6 +67,7 @@ def test_production_rejects_debug_mode():
 
 def test_production_accepts_explicit_safe_origin():
     settings = Settings(
+        _env_file=None,
         app_env="production",
         app_debug=False,
         jwt_secret_key="safe-production-secret",
@@ -77,6 +81,7 @@ def test_production_accepts_explicit_safe_origin():
 
 def test_production_accepts_render_worker_env_contract():
     settings = Settings(
+        _env_file=None,
         app_env="production",
         app_debug=False,
         jwt_secret_key="safe-production-secret",
@@ -99,7 +104,7 @@ def test_production_accepts_render_worker_env_contract():
 
 
 def test_development_keeps_localhost_cors_regex():
-    settings = Settings(app_env="development")
+    settings = Settings(_env_file=None, app_env="development")
 
     assert settings.is_production is False
     assert settings.cors_allow_origin_regex is not None

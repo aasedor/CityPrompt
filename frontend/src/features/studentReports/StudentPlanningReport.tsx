@@ -232,8 +232,6 @@ function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = 
         choice, rationale, follow_through: followThrough, expected_revision: report.response_revision,
       });
       if (lifetime === lifecycle.current && sequence === requestSequence.current) setReport(next);
-    } catch (err) {
-      throw err;
     } finally {
       if (lifetime === lifecycle.current) {
         setSaving(false);

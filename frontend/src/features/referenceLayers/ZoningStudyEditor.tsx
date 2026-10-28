@@ -103,7 +103,7 @@ export default function ZoningStudyEditor({ projectId, accountId, boundaryId, bo
     if(!active) return;
     setNewType(active.custom?CUSTOM_ZONE:active.district?.designation??'R-CG');
     if(active.custom){setCustomName(active.label);setCustomColour(active.color);}
-  },[active?.id,active?.custom,active?.district?.designation]);
+  },[active]);
   const outer=active?.rings[0]?.slice(0,-1)??[];
   const dirty=useMemo(()=>JSON.stringify(slot.zones)!==slot.baseline||slot.opacity!==slot.baselineOpacity,[slot.zones,slot.baseline,slot.opacity,slot.baselineOpacity]);
   const latestSlots=useRef(slots);

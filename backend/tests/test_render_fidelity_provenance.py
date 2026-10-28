@@ -319,6 +319,7 @@ async def test_direct_endpoint_freezes_server_plan_before_provider_and_returns_s
             side_effect=[
                 SimpleNamespace(scalars=lambda: SimpleNamespace(all=lambda: [zone])),
                 SimpleNamespace(scalars=lambda: SimpleNamespace(all=lambda: [building])),
+                SimpleNamespace(scalar_one_or_none=lambda: SimpleNamespace(metadata_={})),
             ]
         )
     )

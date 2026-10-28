@@ -667,7 +667,7 @@ export function GlobeEditMode({
     renderedCoords,
     rotationHandle,
     setControlsEnabled,
-    zone.id,
+    zone,
   ]);
 
   // Start dragging a vertex

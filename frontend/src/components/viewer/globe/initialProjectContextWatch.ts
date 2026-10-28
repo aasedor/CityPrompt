@@ -26,7 +26,6 @@ export function watchInitialProjectContext(options: InitialProjectContextWatchOp
   const maxChecks = options.maxChecks ?? 60, maxAdjustments = options.maxAdjustments ?? 3;
   let checks = 0, adjustments = 0, disposed = false;
   let pending: ReturnType<typeof setTimeout> | undefined;
-  let deadline: ReturnType<typeof setTimeout> | undefined;
   const stop = () => {
     if (disposed) return;
     disposed = true;
@@ -48,7 +47,7 @@ export function watchInitialProjectContext(options: InitialProjectContextWatchOp
     if (pending === undefined) pending = setTimeout(check, delay);
   }
   source.addEventListener('tile-visibility-change', changed);
-  deadline = setTimeout(stop, options.durationMs ?? 120000);
+  const deadline = setTimeout(stop, options.durationMs ?? 120000);
   changed();
   return stop;
 }

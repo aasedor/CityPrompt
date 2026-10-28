@@ -30,7 +30,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   vi.stubGlobal("fetch", fetchMap);
 });
-function wrapper({ children }: { children: React.ReactNode }) {
+function TestWrapper({ children }: { children: React.ReactNode }) {
   const [client] = useState(
     () => new QueryClient({ defaultOptions: { queries: { retry: false } } }),
   );
@@ -54,7 +54,7 @@ function App() {
 describe("City-wide plan maps", () => {
   it('defaults to vectors, shares the transit download, and restores PDF comparison per project', async () => {
     const { result, rerender } = renderHook(({ project }) => useCityPolicyMaps(project), {
-      initialProps: { project: 'vector-pilot' }, wrapper,
+      initialProps: { project: 'vector-pilot' }, wrapper: TestWrapper,
     });
     act(() => result.current.setEnabled('ctp-2', true));
     await waitFor(() => expect(result.current.layers.find(l => l.map.id === 'ctp-2')?.vectorData).toEqual(transitSnapshot));
@@ -81,7 +81,7 @@ describe("City-wide plan maps", () => {
 
   it('retries a failed vector snapshot without switching to the PDF', async () => {
     fetchMap.mockRejectedValueOnce(new Error('Offline'));
-    const { result } = renderHook(() => useCityPolicyMaps('retry-vector'), { wrapper });
+    const { result } = renderHook(() => useCityPolicyMaps('retry-vector'), { wrapper: TestWrapper });
     act(() => result.current.setEnabled('mdp-2', true));
     await waitFor(() => expect(result.current.layers[1].error).toBe(true));
     act(() => result.current.retry('mdp-2'));
@@ -100,7 +100,7 @@ describe("City-wide plan maps", () => {
     expect(screen.getByText('Published PDF reference legend')).toBeInTheDocument();
   });
   it("offers all 20 policy maps plus two transit service layers, excludes removed CTP 4, and explains each policy map with its exact source page before loading artwork", () => {
-    render(<App />, { wrapper });
+    render(<App />, { wrapper: TestWrapper });
     expect(screen.getAllByRole("switch", { hidden: true })).toHaveLength(22);
     expect(CITY_PLAN_MAPS.some((map) => map.id === "ctp-4")).toBe(false);
     for (const map of CITY_PLAN_MAPS) {
@@ -127,7 +127,7 @@ describe("City-wide plan maps", () => {
   it("fetches only enabled maps and preserves independent opacity, project preferences and hide-all", async () => {
     const { result, rerender } = renderHook(
       ({ project }) => useCityPolicyMaps(project),
-      { initialProps: { project: "one" }, wrapper },
+      { initialProps: { project: "one" }, wrapper: TestWrapper },
     );
     expect(fetchMap).not.toHaveBeenCalled();
     act(() => result.current.setEnabled("mdp-1", true));
@@ -166,7 +166,7 @@ describe("City-wide plan maps", () => {
   it("can recover a missing map and failed tile without changing other map choices", async () => {
     fetchMap.mockRejectedValueOnce(new Error("Offline"));
     const { result } = renderHook(() => useCityPolicyMaps("pilot"), {
-      wrapper,
+      wrapper: TestWrapper,
     });
     act(() => result.current.setFormat('mdp-2', 'pdf'));
     act(() => result.current.setEnabled("mdp-2", true));
@@ -205,7 +205,7 @@ describe("City-wide plan maps", () => {
 it('adds eight separately toggleable proposed Calgary Plan maps without replacing current maps',async()=>{
   expect(CITY_PLAN_MAPS.filter(m=>m.group==='Calgary Plan')).toHaveLength(8);
   expect(CITY_PLAN_MAPS.filter(m=>m.group==='MDP')).toHaveLength(6);
-  const {result}=renderHook(()=>useCityPolicyMaps('draft-maps'),{wrapper});
+  const {result}=renderHook(()=>useCityPolicyMaps('draft-maps'),{wrapper: TestWrapper});
   expect(result.current.layers.filter(l=>l.map.group==='Calgary Plan').every(l=>!l.enabled)).toBe(true);
   act(()=>result.current.setEnabled('calgary-plan-1',true));
   act(()=>result.current.setOpacity('calgary-plan-1',.35));

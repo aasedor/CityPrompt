@@ -179,6 +179,7 @@ async def test_stale_ground_rejects_before_provider_configuration_reservation_or
         result = MagicMock()
         result.scalars.return_value.all.return_value = items
         results.append(result)
+    results.append(SimpleNamespace(scalar_one_or_none=lambda: SimpleNamespace(metadata_={})))
     db = SimpleNamespace(execute=AsyncMock(side_effect=results))
     reservation, provider = AsyncMock(), AsyncMock()
     monkeypatch.setattr(endpoint, "get_settings", lambda: SimpleNamespace(

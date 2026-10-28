@@ -2323,12 +2323,17 @@ export function GlobeSitePlannerMap({
     const spanNorthM = (maxLat - minLat) * 111320;
     const spanEastM = (maxLng - minLng) * 111320 * Math.cos(centerLat * DEG_TO_RAD);
     const spanM = Math.max(spanNorthM, spanEastM, 30);
+    // A whole-site safety floor leaves house-sized imports tiny. An explicit
+    // single-building frame can approach the model while still fitting its roof.
+    const minimumHeightM = renderZones.length === 1 && isBuildingZoneType(renderZones[0].zone_type ?? '')
+      ? 8 : PROJECT_FRAME_MIN_HEIGHT_M;
     const cameraFov = camera instanceof THREE.PerspectiveCamera ? camera.fov : 75;
     let heightM = estimateProjectFrameHeight(
       spanM,
       cameraFov,
       DEFAULT_INITIAL_CAMERA_PITCH_DEGREES,
       PROJECT_FRAME_TARGET_FRACTION,
+      minimumHeightM,
     );
     const samples = renderZones.flatMap(zone => {
       const nativeHeight = assetForZone({ properties: zone.properties ?? {} })?.nativeDimensions?.[2];
@@ -2354,7 +2359,7 @@ export function GlobeSitePlannerMap({
       const frac = projectedFrameFraction(points, width, viewportH);
       if (!Number.isFinite(frac) || frac <= 0) return false;
       if (Math.abs(frac - TARGET) < 0.03) break;
-      heightM = Math.min(Math.max(heightM * (frac / TARGET), PROJECT_FRAME_MIN_HEIGHT_M), PROJECT_FRAME_MAX_HEIGHT_M);
+      heightM = Math.min(Math.max(heightM * (frac / TARGET), minimumHeightM), PROJECT_FRAME_MAX_HEIGHT_M);
     }
     const pose = computeCameraPose(centerLat, centerLng, heightM,
       terrainElevationRef.current + tallest / 2, DEFAULT_INITIAL_CAMERA_PITCH_DEGREES);
@@ -4538,10 +4543,10 @@ export function GlobeSitePlannerMap({
   }, [zoningInspection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
   useEffect(() => {
     if (policyMap?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) policyMap.clearSelection();
-  }, [policyMap?.selected, policyMap?.clearSelection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
+  }, [policyMap, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
   useEffect(() => {
     if (cityPolicyMaps?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) cityPolicyMaps.clearSelection();
-  }, [cityPolicyMaps?.selected, cityPolicyMaps?.clearSelection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
+  }, [cityPolicyMaps, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
 
   // Effects restart on Fast Refresh even when R3F keeps the same canvas.
   useEffect(() => {

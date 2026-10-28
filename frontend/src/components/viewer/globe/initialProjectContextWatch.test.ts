@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { initialContextCameraIsPaused, watchInitialProjectContext } from './initialProjectContextWatch';
 import { findUnobstructedProjectFrame } from './projectFrameObstruction';
 
-const visibilityEvents = () => new THREE.EventDispatcher<{ 'tile-visibility-change': {} }>();
+const visibilityEvents = () => new THREE.EventDispatcher<{ 'tile-visibility-change': object }>();
 afterEach(() => { vi.useRealTimers(); });
 
 describe('bounded initial project context watch', () => {

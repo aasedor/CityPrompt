@@ -6,7 +6,7 @@ import { CANONICAL_CHOICES } from './canonicalCatalogue';
 import { cataloguePresentationFor } from './cataloguePresentation';
 
 describe('local student validation discovery',()=>{
-  it('shows the current roster and selects every road across all catalogue pages',()=>{
+  it('shows the current roster and expandable details across catalogue domains',()=>{
     const onPick=vi.fn(),onPickStreet=vi.fn();
     const onPickCanonical = vi.fn();
     render(<PlacementPalette selected={null} onPick={onPick} onPickStreet={onPickStreet}
@@ -29,35 +29,45 @@ describe('local student validation discovery',()=>{
     fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.queryByRole('button', { name: /Place fixed review segment/ })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Show 9 fixed review segments (placement only)' }));
-    const streets = CANONICAL_CHOICES.filter(choice => choice.domain === 'street_pathway');
-    for (const [index, choice] of streets.entries()) {
-      if (index > 0) {
-        fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
-        fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
-      }
-      for (let page = 0; page < Math.floor(index / 12); page++) {
-        fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
-      }
-      const asset = choice.placements[0];
-      fireEvent.click(screen.getByRole('button', { name: `Expand details for ${cataloguePresentationFor(asset.id)?.label ?? asset.label}` }));
-      const article = screen.getByLabelText(`Variant for ${cataloguePresentationFor(asset.id)?.label ?? asset.label}`).closest('article')!;
-      if (asset.kind === 'street') {
-        fireEvent.click(within(article).getByRole('button', { name: 'Choose & draw route' }));
-        expect(onPickStreet).toHaveBeenLastCalledWith(asset);
-      } else {
-        expect(asset.zoneType).toBe('road');
-        expect(asset.reshapeMode).toBe('fixed_native');
-        expect(asset.model.method).toBe('fixed_public_realm_v1');
-        expect(within(article).queryByRole('button', { name: 'Choose & draw route' })).not.toBeInTheDocument();
-        fireEvent.click(within(article).getByRole('button', { name: 'Place fixed review segment' }));
-        expect(onPick).toHaveBeenLastCalledWith(asset.id);
-      }
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    }
-    expect(onPickStreet).toHaveBeenCalledTimes(streets.filter(c => c.placements[0].kind === 'street').length);
-    expect(onPick).toHaveBeenCalledTimes(9);
+    expect(screen.getAllByRole('article')).toHaveLength(12);
+    expect(onPickStreet).not.toHaveBeenCalled();
+    expect(onPick).not.toHaveBeenCalled();
     expect(onPickCanonical).not.toHaveBeenCalled();
-  }, 60000);
+  });
+
+  // Each choice is independent: a slow aggregate case previously hid the
+  // failing street behind a 60-second timeout during concurrent build/QA.
+  it.each(CANONICAL_CHOICES.filter(choice => choice.domain === 'street_pathway').map((choice, index) => ({
+    index, asset: choice.placements[0], label: choice.placements[0].label,
+  })))('selects $label from its catalogue page', ({ index, asset }) => {
+    const onPick=vi.fn(), onPickStreet=vi.fn(), onPickCanonical=vi.fn();
+    render(<PlacementPalette selected={null} onPick={onPick} onPickStreet={onPickStreet}
+      onPickCanonical={onPickCanonical} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
+    fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
+    fireEvent.click(screen.getByRole('button', { name: 'Show 9 fixed review segments (placement only)' }));
+    for (let page = 0; page < Math.floor(index / 12); page++) {
+      fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
+    }
+    const label = cataloguePresentationFor(asset.id)?.label ?? asset.label;
+    fireEvent.click(screen.getByRole('button', { name: `Expand details for ${label}` }));
+    const article = screen.getByLabelText(`Variant for ${label}`).closest('article')!;
+    if (asset.kind === 'street') {
+      fireEvent.click(within(article).getByRole('button', { name: 'Choose & draw route' }));
+      expect(onPickStreet).toHaveBeenCalledExactlyOnceWith(asset);
+      expect(onPick).not.toHaveBeenCalled();
+    } else {
+      expect(asset.zoneType).toBe('road');
+      expect(asset.reshapeMode).toBe('fixed_native');
+      expect(asset.model.method).toBe('fixed_public_realm_v1');
+      expect(within(article).queryByRole('button', { name: 'Choose & draw route' })).not.toBeInTheDocument();
+      fireEvent.click(within(article).getByRole('button', { name: 'Place fixed review segment' }));
+      expect(onPick).toHaveBeenCalledExactlyOnceWith(asset.id);
+      expect(onPickStreet).not.toHaveBeenCalled();
+    }
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(onPickCanonical).not.toHaveBeenCalled();
+  });
   it('leaves street drawing in Streets and reserves the primary action for walking',()=>{
     const onPickStreet=vi.fn();
     render(<PlacementPalette primaryAction={<button>Walk</button>} selected={null} onPick={vi.fn()} onPickStreet={onPickStreet}
