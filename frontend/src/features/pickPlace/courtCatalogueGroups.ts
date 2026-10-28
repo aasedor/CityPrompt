@@ -8,6 +8,10 @@ const SPORTS = [
   { parent: 'beach_volleyball_courts', label: 'Beach volleyball court', aliases: ['beach_volleyball_courts', 'court_only_beach_volleyball'] },
 ];
 
+export function courtSportGroup(archetypeId: unknown) {
+  return SPORTS.find(sport=>sport.aliases.includes(String(archetypeId)));
+}
+
 /** Discovery groups exact choices; native saved identities and model bindings
  * remain the registry objects. Only available variants enter the grouped card. */
 export function groupCourtCatalogueChoices(choices: CanonicalChoice[]): CanonicalChoice[] {

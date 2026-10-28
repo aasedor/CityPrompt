@@ -42,7 +42,7 @@ it('offers repeat and rotation without misleading outline or resize controls aft
   expect(screen.getByLabelText('Rotation (degrees)')).toBeEnabled();
   expect(screen.getByRole('button',{name:'Place another'})).toBeEnabled();
   expect(screen.queryByRole('combobox',{name:'Park outline'})).toBeNull();
-  expect(screen.queryByRole('combobox',{name:'Park layout'})).toBeNull();
+  expect(screen.getByRole('combobox',{name:'Park layout'})).toHaveValue('court_only_basketball_v1--native-v1');
   expect(screen.queryByText(/Enlarging the parcel/)).toBeNull();
   expect(screen.queryByRole('button',{name:'Terrace & path'})).toBeNull();
 });
