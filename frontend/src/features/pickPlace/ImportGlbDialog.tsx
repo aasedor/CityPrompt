@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Upload } from 'lucide-react';
 import { StudioDialog } from '@/features/projects/StudioControls';
 import { modelLibraryApi, type UserGeneratedBuilding } from '@/services/api';
@@ -12,6 +12,7 @@ export function ImportGlbDialog({ projectId, onImported, onClose }: {
   const [height,setHeight] = useState('');
   const [busy,setBusy] = useState(false);
   const [error,setError] = useState('');
+  const close = useCallback(() => { if (!busy) onClose(); }, [busy,onClose]);
   const choose = (next?: File) => {
     setFile(null); setError('');
     if (!next) return;
@@ -31,13 +32,17 @@ export function ImportGlbDialog({ projectId, onImported, onClose }: {
     } finally { setBusy(false); }
   };
   const field='mt-1 min-h-11 w-full rounded-lg border border-slate-400 bg-white p-2 text-slate-950';
-  return <StudioDialog title="Import your building" onClose={() => { if (!busy) onClose(); }}>
+  return <StudioDialog title="Import your building" layout="compact" onClose={close}>
     <form className="space-y-4 text-slate-900" onSubmit={event => { event.preventDefault(); void submit(); }}>
-      <p className="text-sm">Use your own 3D building. Its geometry and materials are saved with this project. Importing uses no generation credits.</p>
+      <p className="text-sm">Upload your building, then click your site to place it.</p>
       <label className="block text-sm font-semibold">GLB building file
         <input className={field} type="file" accept=".glb" disabled={busy} onChange={event => choose(event.target.files?.[0])}/>
       </label>
-      {file && <p className="text-sm"><strong>{file.name}</strong> · {(file.size/1024/1024).toFixed(1)} MB</p>}
+      <p className="text-xs text-slate-600">Free · .glb files up to 50 MB</p>
+      {file && <p className="break-words text-sm"><strong>{file.name}</strong> · {(file.size/1024/1024).toFixed(1)} MB</p>}
+      <details className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+        <summary className="cursor-pointer text-sm font-semibold">Size &amp; name (optional)</summary>
+        <div className="mt-3 space-y-3">
       <label className="block text-sm font-semibold">Building name (optional)
         <input className={field} value={name} maxLength={120} disabled={busy} onChange={event => setName(event.target.value)}/>
       </label>
@@ -50,14 +55,14 @@ export function ImportGlbDialog({ projectId, onImported, onClose }: {
       <label className="block text-sm font-semibold">Building height (m, optional)
         <input className={field} type="number" min="0.25" max="500" step="any" placeholder="Use the file’s size" value={height} disabled={busy} onChange={event => setHeight(event.target.value)}/>
       </label>
-      <p className="text-xs text-slate-600">For models made at an arbitrary scale, enter the real building height. The whole model scales evenly, keeping its proportions.</p>
-      <p className="text-xs text-slate-600">Export a static, Y-up GLB with textures embedded. Maximum 50 MB and one million triangles. Starting footprint: 2–100 m per side. We measure the building, centre it and put its base on the ground.</p>
-      <p className="text-sm">After importing, review the preview size and click your site to place it. You can rotate it before placement.</p>
+      <p className="text-xs text-slate-600">The filename supplies the name and the file supplies the size. Change the units or enter the real height if the size needs adjusting. Proportions stay the same.</p>
+        </div>
+      </details>
       {error && <p role="alert" className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
       {busy && <p role="status" aria-live="polite" className="text-sm">Importing and checking your building…</p>}
       <div className="flex gap-2">
         <button type="button" disabled={busy} onClick={onClose} className="min-h-11 rounded-lg border border-slate-500 px-4">Cancel</button>
-        <button type="submit" disabled={!file || busy} className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-4 font-bold disabled:opacity-50"><Upload size={20} aria-hidden="true"/>{busy?'Importing…':'Import & place'}</button>
+        <button type="submit" disabled={!file || busy} className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-4 font-bold disabled:opacity-50"><Upload size={20} aria-hidden="true"/>{busy?'Uploading…':'Upload'}</button>
       </div>
     </form>
   </StudioDialog>;

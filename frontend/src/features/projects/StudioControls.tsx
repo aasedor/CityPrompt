@@ -63,7 +63,7 @@ export function StudioSaveStatus({ saving, draftCount, loadError, onRetry, onRel
 
 export function StudioDialog({ title, onClose, children, layout = 'default', expanded = false, onToggleExpand }: {
   title: string; onClose: () => void; children: ReactNode;
-  layout?: 'default' | 'catalogue'; expanded?: boolean; onToggleExpand?: () => void;
+  layout?: 'default' | 'catalogue' | 'compact'; expanded?: boolean; onToggleExpand?: () => void;
 }) {
   const panel = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -87,7 +87,7 @@ export function StudioDialog({ title, onClose, children, layout = 'default', exp
   return createPortal(<div className={`fixed inset-0 z-[220] flex items-center justify-center bg-slate-950/60 backdrop-blur-sm ${expanded ? '' : catalogue ? 'p-2 sm:p-4' : 'p-3 sm:p-6'}`} onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <div ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-label={title} className={`${catalogue
       ? `flex w-full flex-col overflow-hidden ${expanded ? 'h-dvh max-w-none' : 'h-[94dvh] max-w-[1500px] rounded-2xl'}`
-      : 'max-h-[94dvh] w-full max-w-5xl overflow-y-auto rounded-2xl'} bg-white shadow-2xl outline-none`}>
+      : `max-h-[94dvh] w-full ${layout === 'compact' ? 'max-w-md' : 'max-w-5xl'} overflow-y-auto rounded-2xl`} bg-white shadow-2xl outline-none`}>
       <header className={`sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-white ${catalogue ? 'px-4 py-2' : 'px-5 py-3'}`}>
         <h1 className="text-lg font-semibold text-slate-900">{title}</h1>
         <div className="flex items-center gap-1">
@@ -100,7 +100,7 @@ export function StudioDialog({ title, onClose, children, layout = 'default', exp
         <button onClick={onClose} aria-label={`Close ${title.toLowerCase()}`} className="flex h-11 w-11 items-center justify-center rounded-lg text-slate-700 hover:bg-slate-100"><X size={22} /></button>
         </div>
       </header>
-      <div className={catalogue ? 'min-h-0 flex-1 p-3 sm:p-4' : 'p-3 sm:p-6'}>{children}</div>
+      <div className={catalogue ? 'min-h-0 flex-1 p-3 sm:p-4' : layout === 'compact' ? 'p-4' : 'p-3 sm:p-6'}>{children}</div>
     </div>
   </div>, document.body);
 }

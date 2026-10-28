@@ -11,6 +11,29 @@ const model = { id:'imported', project_id:'project', name:'My building', preview
   width_m:12, depth_m:20, height_meters:9, floor_count:null, size_estimated:false, source_kind:'imported_glb' as const };
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 
+it('keeps keyboard focus while editing the optional building name', () => {
+  render(<ImportGlbDialog projectId="project" onImported={vi.fn()} onClose={vi.fn()}/>);
+  fireEvent.click(screen.getByText('Size & name (optional)'));
+  const name=screen.getByLabelText('Building name (optional)');
+  name.focus();
+  fireEvent.change(name,{target:{value:'S'}});
+  expect(name).toHaveFocus();
+});
+
+it('uploads with the file defaults while optional name and size controls stay tucked away', async () => {
+  upload.mockResolvedValue(model);
+  const pick=vi.fn();
+  render(<ImportGlbDialog projectId="project" onImported={pick} onClose={vi.fn()}/>);
+  expect(screen.getByLabelText('Building name (optional)')).not.toBeVisible();
+  expect(screen.getByLabelText('Model units')).not.toBeVisible();
+  expect(screen.getByLabelText('Building height (m, optional)')).not.toBeVisible();
+  const file=new File(['glTF'],'my-building.glb');
+  fireEvent.change(screen.getByLabelText('GLB building file'),{target:{files:[file]}});
+  fireEvent.click(screen.getByRole('button',{name:'Upload'}));
+  await waitFor(()=>expect(pick).toHaveBeenCalledWith(model));
+  expect(upload).toHaveBeenCalledExactlyOnceWith('project',file,'','metres',undefined);
+});
+
 it('puts a prominent import action directly above Walk and opens the import dialog', () => {
   render(<PlacementPalette projectId="project" selected={null} onPick={vi.fn()} onPickCanonical={vi.fn()} onPickGenerated={vi.fn()}
     onCancel={vi.fn()} onRetry={vi.fn()} status="ready" message="" primaryAction={<button>Walk</button>} />);
@@ -26,10 +49,11 @@ it('uploads chosen units then hands the measured private model to click placemen
   render(<ImportGlbDialog projectId="project" onImported={pick} onClose={vi.fn()}/>);
   const file=new File(['glTF'],'my-building.glb');
   fireEvent.change(screen.getByLabelText('GLB building file'),{target:{files:[file]}});
+  fireEvent.click(screen.getByText('Size & name (optional)'));
   fireEvent.change(screen.getByLabelText('Model units'),{target:{value:'millimetres'}});
   fireEvent.change(screen.getByLabelText('Building name (optional)'),{target:{value:'My building'}});
   fireEvent.change(screen.getByLabelText('Building height (m, optional)'),{target:{value:'9'}});
-  fireEvent.click(screen.getByRole('button',{name:'Import & place'}));
+  fireEvent.click(screen.getByRole('button',{name:'Upload'}));
   await waitFor(()=>expect(pick).toHaveBeenCalledWith(model));
   expect(upload).toHaveBeenCalledWith('project',file,'My building','millimetres',9);
 });
@@ -39,12 +63,13 @@ it('retains the selected file and units after a failed upload and allows a delib
   const pick=vi.fn();render(<ImportGlbDialog projectId="project" onImported={pick} onClose={vi.fn()}/>);
   const file=new File(['glTF'],'house.glb');
   fireEvent.change(screen.getByLabelText('GLB building file'),{target:{files:[file]}});
+  fireEvent.click(screen.getByText('Size & name (optional)'));
   fireEvent.change(screen.getByLabelText('Model units'),{target:{value:'feet'}});
-  fireEvent.click(screen.getByRole('button',{name:'Import & place'}));
+  fireEvent.click(screen.getByRole('button',{name:'Upload'}));
   expect(await screen.findByRole('alert')).toHaveTextContent('could not be saved');
   expect(screen.getByLabelText('Model units')).toHaveValue('feet');
   expect(screen.getByText('house.glb')).toBeVisible();expect(pick).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole('button',{name:'Import & place'}));
+  fireEvent.click(screen.getByRole('button',{name:'Upload'}));
   await waitFor(()=>expect(pick).toHaveBeenCalledWith(model));
 });
 
@@ -52,7 +77,7 @@ it('blocks a wrong file type or oversized file before starting a request', () =>
   render(<ImportGlbDialog projectId="project" onImported={vi.fn()} onClose={vi.fn()}/>);
   fireEvent.change(screen.getByLabelText('GLB building file'),{target:{files:[new File(['bad'],'drawing.txt')]}});
   expect(screen.getByRole('alert')).toHaveTextContent('.glb');
-  expect(screen.getByRole('button',{name:'Import & place'})).toBeDisabled();
+  expect(screen.getByRole('button',{name:'Upload'})).toBeDisabled();
   const huge=new File(['glTF'],'huge.glb');Object.defineProperty(huge,'size',{value:50*1024*1024+1});
   fireEvent.change(screen.getByLabelText('GLB building file'),{target:{files:[huge]}});
   expect(screen.getByRole('alert')).toHaveTextContent('50 MB');expect(upload).not.toHaveBeenCalled();
