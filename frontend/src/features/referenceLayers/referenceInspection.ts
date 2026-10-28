@@ -11,7 +11,7 @@ export function resolveReferenceSelection(selection: ReferenceSelection | null, 
 
 /** Transport batches retain stable feature indices. Their explicit raycast is
  * used because overlays intentionally opt out of ordinary R3F selection. */
-export function pickReferenceFeature(root: THREE.Group | null, ray: THREE.Raycaster, layers: ReferenceLayer[]): ReferenceSelection | null {
+export function pickReferenceFeature(root: THREE.Group | null, ray: THREE.Raycaster, layers: ReferenceLayer[], options: {pointsOnly?:boolean} = {}): ReferenceSelection | null {
   if (!root) return null;
   const hits: THREE.Intersection[] = [];
   root.updateWorldMatrix(true, true);
@@ -26,6 +26,7 @@ export function pickReferenceFeature(root: THREE.Group | null, ray: THREE.Raycas
   for (const hit of hits) {
     const id = hit.object.userData.transportIds?.[hit.instanceId ?? hit.faceIndex ?? -1];
     if (typeof id !== 'string' || !/^\d+:(point|line):\d+$/.test(id)) continue;
+    if (options.pointsOnly && !/^\d+:point:\d+$/.test(id)) continue;
     const layerId = String(hit.object.userData.cityPolicyId).slice('reference:'.length);
     const layer = layers.find(item => item.id === layerId);
     if (!layer) continue;

@@ -4485,11 +4485,11 @@ export function GlobeSitePlannerMap({
 
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
-  // Inspect in the canvas capture phase. Authored objects take priority over
-  // reference maps; authoring, navigation drags and other picking modes win.
+  // Explicit reference pins take priority over design meshes beneath them.
+  // Area/line maps remain behind authored geometry; drawing and drags win.
   handlePolicyClickRef.current = (event: MouseEvent) => {
     if (event.button !== 0 || !policyInspectionAllowed({
-      enabled: Boolean(zoningInspection || (policyMap?.enabled && policyMap.opacity > 0) || cityPolicyMaps?.layers.some(layer=>layer.enabled && layer.opacity>0)), opacity: 1, paused: interactionPaused,
+      enabled: Boolean(referenceLayers.some(layer=>layer.opacity>0) || zoningInspection || (policyMap?.enabled && policyMap.opacity > 0) || cityPolicyMaps?.layers.some(layer=>layer.enabled && layer.opacity>0)), opacity: 1, paused: interactionPaused,
       drawing: hasDrawingTool, placing: Boolean(placementDraft), measuring: measureModeActive,
       streetView: streetViewPegman !== null, dragged: draggedSincePointerDownRef.current,
     })) return false;
@@ -4498,6 +4498,12 @@ export function GlobeSitePlannerMap({
     const rect = canvas.getBoundingClientRect();
     const x=((event.clientX-rect.left)/rect.width)*2-1, y=-((event.clientY-rect.top)/rect.height)*2+1;
     zoningRaycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+    const referencePin = !zoningInspection?.editing && pickReferenceFeature(referenceOverlayGroup.current, zoningRaycaster, referenceLayers, {pointsOnly:true});
+    if (referencePin) {
+      setReferenceSelection(referencePin);
+      ignoreNextCanvasClickRef.current=false; markUserInteracted(); setSelectedBuildingId(null); onZoneSelected(null);
+      zoningInspection?.select(null); policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return true;
+    }
     // Reference-map inspection runs before R3F's click handlers. Resolve the
     // student's actual geometry first, otherwise even an elevated tower click
     // opens the district underneath it and clears the model selection.
