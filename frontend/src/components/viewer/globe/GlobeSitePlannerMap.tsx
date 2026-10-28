@@ -4621,6 +4621,7 @@ export function GlobeSitePlannerMap({
           const cvs = gl.domElement;
           cvs.setAttribute('role', 'application');
           cvs.setAttribute('aria-label', '3D city map');
+          cvs.tabIndex = 0;
 
           // Remove previous listeners first (React StrictMode / hot-reload safety)
           if (cleanupCanvasListenersRef.current) {
@@ -4658,6 +4659,9 @@ export function GlobeSitePlannerMap({
           };
 
           const handlePointerDown = (e: PointerEvent) => {
+            // Drawing shortcuts must return to the map after changing a form
+            // control such as the public-road snapping checkbox.
+            cvs.focus({ preventScroll: true });
             entrancePointerHitRef.current=null;
             markUserInteracted();
             pointerDownRef.current = { x: e.clientX, y: e.clientY };

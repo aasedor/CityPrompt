@@ -6,6 +6,7 @@ import { placementProblem } from './geometry';
 import { streetRouteProblem } from './streetPlacement';
 import { snapStreetToBoundary } from './streetBoundarySnapping';
 import { BRT_VARIANT } from '@/components/viewer/globe/brtStreetProgram';
+import { streetConnectionProblem } from './streetConnectionProblem';
 
 const sx = 111320 * Math.cos(51 * Math.PI / 180);
 const ll = (x: number, y: number) => [-114 + x / sx, 51 + y / 111320];
@@ -43,6 +44,23 @@ describe('street boundary entrances', () => {
     expect(draft).toEqual(streetDrawingGeometry(points, props, [site]));
     expect(placementProblem(draft.coordinates, [], site)).toBeNull();
     expect(streetRouteProblem(draft.coordinates, 20, draft.properties.plan_route_controls as number[][])).toBeNull();
+  });
+  it('keeps an almost-normal road straight across slightly skewed site edges so its middle can host junctions', () => {
+    const site = { ...boundary, coordinates: [[0, 0], [150, 2], [150, 77], [0, 75]].map(([x,y]) => ll(x,y)) };
+    const asset = STREET_ASSETS.find(row => row.model.variantId === 'student_quiet_residential_street_v1')!;
+    const points = [ll(85, 6), ll(85, 71)];
+    const result = streetDrawingGeometry(points, asset.properties, [site]);
+    const controls = result.properties.plan_route_controls as number[][];
+    expect(controls).toHaveLength(2);
+    expect(xy(controls[0])[0]).toBeCloseTo(85, 5);
+    expect(xy(controls[1])[0]).toBeCloseTo(85, 5);
+    expect(placementProblem(result.coordinates, [], site)).toBeNull();
+    expect(streetRouteProblem(result.coordinates, 18, controls)).toBeNull();
+    const host = { id:'host', zone_type:'road', ...result } as SiteZone;
+    for (const far of [ll(128, 63), ll(128, 13)]) {
+      const branch = streetDrawingGeometry([ll(85, 38), far], asset.properties, [site,host]);
+      expect(streetConnectionProblem({id:'branch',zone_type:'road',...branch} as SiteZone,[host])).toBeNull();
+    }
   });
   it('retains strict containment for remote clicks, narrow corners, parallel routes and short approaches', () => {
     for (const points of [[ll(-10, 100), ll(150, 100)], [ll(0, 0), ll(150, 150)],
