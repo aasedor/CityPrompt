@@ -17,7 +17,6 @@
  */
 
 import {
-  Component,
   Suspense,
   useCallback,
   useContext,
@@ -96,6 +95,8 @@ import {
   direct3DInstanceUserData,
   direct3DZoneInstanceDescriptor,
 } from './direct3dCapture';
+import { BuildingModelBoundary } from './BuildingModelBoundary';
+import { buildingAssetRevision } from '@/features/pickPlace/buildingAssetRecovery';
 
 const DEG_TO_RAD = Math.PI / 180;
 // Same convention as GlobeBuildingModelsLayer: above depthTest-false road
@@ -172,22 +173,6 @@ interface GlobeLegoAssemblyLayerProps {
 
 /** useGLTF throws on bad/missing modules; Suspense doesn't catch errors.
  *  Fallback is null so the zone prism (or Meshy model) simply stays visible. */
-class SilentLegoBoundary extends Component<{
-  children: ReactNode;
-  fallback?: ReactNode;
-}, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-  componentDidCatch(error: unknown) {
-    console.warn('[GlobeLego] module failed to load', error);
-  }
-  render() {
-    return this.state.failed ? (this.props.fallback ?? null) : this.props.children;
-  }
-}
-
 type GlobeBuildingEntry = {
   building: Building;
   ring: number[][];
@@ -465,7 +450,6 @@ function LegoStackInstance({
   const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
   const preserveSourceMaterials = isArchitecturalClayPlan(recipe);
   const landscapeGround = useBuildingLandscapeGround(zone);
-  const landscapePlacement = useMemo(() => zone ? reviewBuildingLandscapePlacement(zone, building) : null, [zone, building]);
 
   const sceneByUrl = useMemo(
     () => indexRenderableLegoScenes(urls, gltfs),
@@ -483,8 +467,9 @@ function LegoStackInstance({
       .map((instance, index) => {
         const scene = sceneByUrl.get(resolveApiFileUrl(instance.model_url));
         if (!scene) return null;
-        const landscape = zone && isNativeClayPlan(recipe) && recipe.instances.length === 1
-          ? prepareReviewBuildingLandscape(scene, zone, landscapeGround, landscapePlacement) : null;
+        const landscape = zone && isArchitecturalClayPlan(recipe)
+          ? prepareReviewBuildingLandscape(scene, zone, landscapeGround,
+            reviewBuildingLandscapePlacement(zone, building, scene, index)) : null;
         const prepared = prepareArchitecturalClone(landscape?.clone ?? scene, {
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
@@ -504,7 +489,7 @@ function LegoStackInstance({
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
-  }, [maxAnisotropy, preserveSourceMaterials, recipe, sceneByUrl, urls, zone, landscapeGround, landscapePlacement]);
+  }, [maxAnisotropy, preserveSourceMaterials, recipe, sceneByUrl, urls, zone, landscapeGround, building]);
   useEffect(() => retainResourceForDeferredDisposal(modules, values => values.forEach(({ landscape }) => {
     landscape?.ownedGeometries.forEach(geometry => geometry.dispose());
     landscape?.ownedMaterials.forEach(material => material.dispose());
@@ -995,7 +980,8 @@ export function GlobeLegoAssemblyLayer({
           />;
         }
         return (
-          <SilentLegoBoundary key={building.id} fallback={massing}>
+          <BuildingModelBoundary key={`${building.id}:${JSON.stringify(recipe)}:${zone ? buildingAssetRevision(zone) : ''}`} zone={zone}
+            request={uniqueModuleUrls(recipe).map(url => resolveApiFileUrl(url))} fallback={massing}>
             <Suspense fallback={massing}>
               <LegoStackInstance
                 building={building}
@@ -1015,7 +1001,7 @@ export function GlobeLegoAssemblyLayer({
                 incompleteFallback={massing}
               />
             </Suspense>
-          </SilentLegoBoundary>
+          </BuildingModelBoundary>
         );
       })}
     </>

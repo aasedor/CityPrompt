@@ -1,4 +1,4 @@
-import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
@@ -27,6 +27,10 @@ import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianC
 import { useBuildingEntranceApproach, BuildingEntranceApproachMesh } from './BuildingEntranceApproaches';
 import { computeFootprintFrame } from './buildingPlacement';
 import { entranceReviewRevision, type BuildingEntranceReview } from './buildingEntranceReview';
+import { BuildingModelBoundary } from './BuildingModelBoundary';
+import { buildingAssetRevision } from '@/features/pickPlace/buildingAssetRecovery';
+import { useThree } from '@react-three/fiber';
+import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 
 type BuildingClick = (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
 
@@ -53,17 +57,13 @@ function PendingGroundIssue({ zone, reason, report }: { zone: SiteZone; reason: 
 
 /** Isolated local-review GLB. A bad candidate leaves a visible fallback and
  * never takes down the project view or another building. */
-class ReviewBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() { return { failed: true }; }
-  render() { return this.state.failed ? this.props.fallback : this.props.children; }
-}
-
 function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuildingClick }: {
   url: string; zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter; onBuildingClick?: BuildingClick;
 }) {
   const frameRef = useRef<THREE.Group>(null);
-  const { scene } = useGLTF(url);
+  const gl = useThree(state => state.gl);
+  const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
+  const { scene } = useGLTF(url, true, true, extendLoader);
   const landscapeGround = useBuildingLandscapeGround(zone);
   const landscape = useMemo(() => prepareReviewBuildingLandscape(scene, zone, landscapeGround), [scene, zone, landscapeGround]);
   useEffect(() => retainResourceForDeferredDisposal(landscape, value => {
@@ -173,7 +173,7 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIss
   if (!url) return isLocalTeachingBuilding(zone)
     ? <PendingGroundIssue zone={zone} reason="review_model_revision_unavailable" report={onGroundingIssue}/>
     : null;
-  return <ReviewBoundary key={url} fallback={<>
+  return <BuildingModelBoundary key={url + buildingAssetRevision(zone)} request={url} zone={zone} fallback={<>
     <PendingGroundIssue zone={zone} reason="review_model_unavailable" report={onGroundingIssue}/>
     <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>
       <mesh name="review-building-error" userData={{ reviewBuildingStatus: 'error' }} position={[0, 0, 4]}>
@@ -188,5 +188,5 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIss
         </mesh>
       </EastNorthUpFrame>
     </>}><BuildingGLB url={url} zone={zone} zones={zones} terrainHeight={terrainHeight}
-      onGroundingIssue={onGroundingIssue} onBuildingClick={onBuildingClick}/></Suspense></ReviewBoundary>;
+      onGroundingIssue={onGroundingIssue} onBuildingClick={onBuildingClick}/></Suspense></BuildingModelBoundary>;
 }

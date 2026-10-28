@@ -8,9 +8,11 @@ import { computeLegoStackYaw, extractLegoRecipe, legoInstanceTransform } from '.
 import { computeFootprintFrame } from './buildingPlacement';
 import { metersPerDegLon, METERS_PER_DEG_LAT } from '../mapEngine/geoUtils';
 import { getResidualLandscapeRecipe, residualLandscapeBounds } from './residualLandscape';
+import { assetForZone } from '@/features/pickPlace/catalogue';
 
 type GroundFinish = { boundary: SiteZone; texture: THREE.Texture | null };
 type NativeRect = readonly [number, number, number, number];
+type GroundContract = { centre: readonly [number, number]; paths: NativeRect[]; curbs: NativeRect[]; foundationOnly?: boolean };
 const rectangle = ([x0, z0, x1, z1]: NativeRect): Pair[] => [[x0, z0], [x1, z0], [x1, z1], [x0, z1], [x0, z0]];
 
 /** Measured from the v010 authoring script's site(), porch_and_stair() and
@@ -24,12 +26,40 @@ const CITY_HALL_GROUND = {
   curbs: [[-30.5, 28.88, 25.5, 29], [-27.5, -25, -27.38, 35]] as NativeRect[],
 };
 
+/** v006 site() uses a 7 m display road south/west of the hotel. That road is
+ * part of its source illustration, rather than a student-authored street.
+ * Keep its 3 m walks, narrower rear/east paths and the porte-cochere approach.
+ * Dimensions are from the locked family_hotel_baronial.py at 0dea20a092. */
+const RAILWAY_HOTEL_GROUND = {
+  centre: [-2, 3] as const,
+  beds: [] as NativeRect[],
+  paths: [[-15.1, 29, -8.1, 39], [-34, 29, 37, 32], [-34, -33, -31, 29],
+    [29, -27, 31, 29], [-31, -27, 31, -25]] as NativeRect[],
+  curbs: [[-34, 31.88, 37, 32], [-34, -33, -33.88, 32]] as NativeRect[],
+};
+
 export function reviewBuildingLandscapeContract(zone: Pick<SiteZone, 'properties'>) {
   const p = zone.properties;
+  if (p?.development_selected_variant_id === 'scottish_baronial_granite_tower'
+    && p.pick_place_model_revision === 'clay-baronial-railway-hotel-clay-v006') return RAILWAY_HOTEL_GROUND;
   return p?.building_archetype_id === 'montreal_second_empire_civic'
     && p.development_selected_variant_id === 'montreal_civic_city_hall'
     && p.pick_place_model_revision === 'clay-second-empire-city-hall-clay-v010'
     ? CITY_HALL_GROUND : null;
+}
+
+/** Only registered, revision-resolved RLASM buildings opt into foundation
+ * finishing. Uploaded models, unknown saved revisions and architectural paving
+ * never acquire this policy by colour or a loose material-name match. */
+function groundContract(source: THREE.Object3D | undefined, zone: SiteZone): GroundContract | null {
+  const hall = reviewBuildingLandscapeContract(zone);
+  if (hall) return hall;
+  const asset = assetForZone(zone);
+  if (!source || !asset || asset.model.method !== 'RLASM 6.1') return null;
+  const bounds = new THREE.Box3().setFromObject(source, true);
+  if (bounds.isEmpty()) return null;
+  return { centre: [(bounds.min.x + bounds.max.x) / 2, (bounds.min.z + bounds.max.z) / 2],
+    paths: [], curbs: [], foundationOnly: true };
 }
 
 export interface ReviewBuildingLandscapePlacement {
@@ -41,29 +71,32 @@ export interface ReviewBuildingLandscapePlacement {
 /** Use the same saved placement as the compiled renderer. The backend can
  * turn a fixed landmark by 90 degrees when a plot becomes deeper than wide;
  * neither its lawn phase nor its beds may assume that plot yaw is model yaw. */
-export function reviewBuildingLandscapePlacement(zone: SiteZone, building?: Building): ReviewBuildingLandscapePlacement | null {
-  const contract = reviewBuildingLandscapeContract(zone), frame = computeFootprintFrame(zone.coordinates);
+export function reviewBuildingLandscapePlacement(zone: SiteZone, building?: Building, source?: THREE.Object3D,
+  instanceIndex = 0): ReviewBuildingLandscapePlacement | null {
+  const contract = groundContract(source, zone), frame = computeFootprintFrame(zone.coordinates);
   if (!contract || !frame) return null;
   let yaw = rectangleDimensions(zone.coordinates).degrees * Math.PI / 180;
   const instanceMatrix = new THREE.Matrix4();
   const originOffset = new THREE.Matrix4();
   if (building) {
     const recipe = extractLegoRecipe(building);
-    if (!recipe || !isNativeClayPlan(recipe) || recipe.instances.length !== 1) return null;
+    if (!recipe || !recipe.instances[instanceIndex]) return null;
     const authored = preservesAuthoredPlotAxes(zone.properties) ? authoredHomePlotFrame(zone.coordinates) : undefined;
     yaw = authored ? authored.yawRad + (building.rotation_degrees ?? 0) * Math.PI / 180
       : computeLegoStackYaw(frame.bearingRad, recipe.target, building.rotation_degrees);
-    const transform = legoInstanceTransform(recipe.instances[0]);
+    const transform = legoInstanceTransform(recipe.instances[instanceIndex]);
     instanceMatrix.compose(new THREE.Vector3(...transform.position),
       new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), transform.rotationYRad),
       new THREE.Vector3(...transform.scale));
     originOffset.makeTranslation(...frame.rectCenterLocal, 0);
   }
+  const centred = !building || isNativeClayPlan(extractLegoRecipe(building)!);
   return { origin: [frame.centroidLng, frame.centroidLat], matrix: originOffset
     .multiply(new THREE.Matrix4().makeRotationZ(yaw))
     .multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2))
     .multiply(instanceMatrix)
-    .multiply(new THREE.Matrix4().makeTranslation(-contract.centre[0], 0, -contract.centre[1])) };
+    .multiply(centred ? new THREE.Matrix4().makeTranslation(-contract.centre[0],
+      source ? -new THREE.Box3().setFromObject(source, true).min.y : 0, -contract.centre[1]) : new THREE.Matrix4()) };
 }
 
 /** Prepare an owned runtime clone. Only explicit near-grade ground materials
@@ -71,13 +104,14 @@ export function reviewBuildingLandscapePlacement(zone: SiteZone, building?: Buil
  * Split broad ground triangles at path edges, so a large source triangle can
  * carry both the site lawn and a continuous paved entrance approach. */
 export function prepareReviewBuildingLandscape(source: THREE.Object3D, zone: SiteZone,
-  ground: GroundFinish | null, placement = reviewBuildingLandscapePlacement(zone)): {
+  ground: GroundFinish | null, placement = reviewBuildingLandscapePlacement(zone, undefined, source)): {
     clone: THREE.Object3D; ownedGeometries: THREE.BufferGeometry[]; ownedMaterials: THREE.Material[];
   } {
   const clone = source.clone(true), ownedGeometries: THREE.BufferGeometry[] = [], ownedMaterials: THREE.Material[] = [];
-  const contract = reviewBuildingLandscapeContract(zone);
+  const contract = groundContract(source, zone);
   if (!contract || !ground?.texture || !placement) return { clone, ownedGeometries, ownedMaterials };
-  const paths = polygonClipping.union([rectangle(contract.paths[0])], ...contract.paths.slice(1).map(r => [rectangle(r)]));
+  const paths = contract.paths.length
+    ? polygonClipping.union([rectangle(contract.paths[0])], ...contract.paths.slice(1).map(r => [rectangle(r)])) : null;
   const texture = ground.texture;
   const grass = new THREE.MeshStandardMaterial({ map: texture, roughness: 1, side: THREE.DoubleSide });
   grass.name = 'site-matched-authored-ground';
@@ -96,8 +130,15 @@ export function prepareReviewBuildingLandscape(source: THREE.Object3D, zone: Sit
   clone.traverse(object => {
     const mesh = object as THREE.Mesh;
     if (!mesh.isMesh || Array.isArray(mesh.material)) return;
+    if (contract.foundationOnly) {
+      if (mesh.material.name !== 'CLAY_FOUNDATION') return;
+      const bounds = new THREE.Box3().setFromObject(mesh, true);
+      // The complete mesh must be a shallow ground pad. Shared foundation
+      // materials on steps, walls, raised terraces and roofs stay architectural.
+      if (bounds.min.y < -.0001 || bounds.max.y > .3501) return;
+    }
     const curb = mesh.material.name === 'CLAY_STONE';
-    const limit = curb ? .1201 : mesh.material.name === 'CLAY_FOUNDATION' ? .1501
+    const limit = contract.foundationOnly ? .3501 : curb ? .1201 : mesh.material.name === 'CLAY_FOUNDATION' ? .1601
       : mesh.material.name === 'CLAY_CONCRETE' || mesh.material.name === 'CLAY_PLANTING' ? .0401 : null;
     if (limit === null) return;
     const original = mesh.geometry, index = original.getIndex(), p = original.getAttribute('position');
@@ -136,6 +177,7 @@ export function prepareReviewBuildingLandscape(source: THREE.Object3D, zone: Sit
         append(native, 0); continue;
       }
       changed = true;
+      if (!paths) { append(native, 1); continue; }
       const flat = Math.max(...native.map(v => v.y)) - Math.min(...native.map(v => v.y)) < .00001;
       if (!flat) { append(native, 1); continue; }
       const ring: Pair[] = [...native.map(v => [v.x, v.z] as Pair), [native[0].x, native[0].z]];

@@ -91,6 +91,8 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Edit during pending ground / tile refinement | NOT TESTED | |
 | Delete / Undo / Redo; referenced route target | NOT TESTED | |
 | Interrupted navigation or measurement | NOT TESTED | |
+| Interrupted building asset download; Retry after an unrelated save | NOT TESTED | Bounded automatic retry; actual cache reload; preserved source identity; no proxy reported as detailed-ready. |
+| Embedded display slab / street on prepared ground | NOT TESTED | Check both GLB-owned ground and runtime foundation, native and repeated podiums; retain entrance paving, architectural materials, complete bounds and source bytes. |
 | Failed/conflicting save; retry without lost edits | NOT TESTED | |
 | Boundary exclusion: readable object labels and unchanged saved geometry | NOT TESTED | |
 | Save/reload/reopen; exact persisted identity | NOT TESTED | |

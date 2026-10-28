@@ -11,7 +11,8 @@ import { compileMixedCommunity3D } from '@/features/legoAssembly/communityCompil
 import { deriveCityPromptWorkflow } from '@/features/workflow/cityPromptWorkflow';
 import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import { representationNotice } from './representationNotice';
-import { nativeBuildingUrl } from './nativeBuildingContract';
+import { nativeBuildingContract, nativeBuildingUrl } from './nativeBuildingContract';
+import { buildingAssetRevision, retryBuildingAssets } from './buildingAssetRecovery';
 import { automaticSiteTreesEnabled } from '@/features/siteLandscape/automaticSiteTrees';
 
 const physicalZone = (zone: SiteZone) => resolveCommunity3DKind(zone) !== null && !zone.id.startsWith('temp-');
@@ -45,7 +46,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   const [status, setStatus] = useState<'idle'|'updating'|'ready'|'error'>('idle');
   const [message, setMessage] = useState('');
   const [attempt, setAttempt] = useState(0);
-  const [assetError, setAssetError] = useState<{projectId:string|undefined;zoneId:string;revision:string;message:string;kind:'park'|'street'}|null>(null);
+  const [assetError, setAssetError] = useState<{projectId:string|undefined;zoneId:string;revision:string;message:string;kind:'park'|'street'|'building'}|null>(null);
   const state = useRef({ projectId, busy: false, completed: '', failed: '', force: false });
   const latest = useRef(zones);
   // Local drafts may be invalid or rejected. They remain in the editor, but
@@ -55,13 +56,14 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   useEffect(()=>{
     const onAssetError=(event:Event)=>{
       const detail=(event as CustomEvent<{zoneId:string;revision:string;message:string}>).detail;
-      const kind=event.type==='cityprompt:native-street-error'?'street':'park';
-      if(!detail || !latest.current.some(zone=>zone.id===detail.zoneId && (kind==='street'?nativeStreetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===detail.revision))return;
+      const kind=event.type==='cityprompt:native-street-error'?'street':event.type==='cityprompt:native-building-error'?'building':'park';
+      if(!detail || !latest.current.some(zone=>zone.id===detail.zoneId && (kind==='street'?nativeStreetRevision(zone):kind==='building'?buildingAssetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===detail.revision))return;
       setAssetError({projectId,...detail,kind});
     };
     window.addEventListener('cityprompt:native-park-error',onAssetError);
     window.addEventListener('cityprompt:native-street-error',onAssetError);
-    return()=>{window.removeEventListener('cityprompt:native-park-error',onAssetError);window.removeEventListener('cityprompt:native-street-error',onAssetError);};
+    window.addEventListener('cityprompt:native-building-error',onAssetError);
+    return()=>{window.removeEventListener('cityprompt:native-park-error',onAssetError);window.removeEventListener('cityprompt:native-street-error',onAssetError);window.removeEventListener('cityprompt:native-building-error',onAssetError);};
   },[projectId]);
   const candidates = persistedZones.filter(physicalZone);
   const scopeZones = persistedZones.filter(physicalScopeZone);
@@ -79,6 +81,9 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   const compiled = deriveCityPromptWorkflow(persistedZones).sceneReady;
   const canRefreshDetail = candidates.some(zone => getCommunity3DMeta(zone)?.generator === 'planned_massing'
     && !(zone.zone_type === 'building' && nativeBuildingUrl(zone)));
+  const hasInstalledMassingUpgrade = candidates.some(zone => zone.zone_type === 'building'
+    && getCommunity3DMeta(zone)?.generator === 'planned_massing' && nativeBuildingContract(zone)
+    && !nativeBuildingUrl(zone));
 
   useEffect(() => {
     const hiddenLayers = new Set<string>(JSON.parse(visibilityKey));
@@ -95,7 +100,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
       return;
     }
     if (!projectId || !eligible || saving || run.busy) return;
-    if (!run.force && compiled && (run.completed === key || !run.completed)) {
+    if (!run.force && compiled && (run.completed === key || (!run.completed && !hasInstalledMassingUpgrade))) {
       run.completed = key; run.failed = ''; setStatus('ready'); setMessage(''); return;
     }
     if (run.failed === key) return;
@@ -169,10 +174,10 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
       }
     }, 700);
     return () => window.clearTimeout(timer);
-  }, [projectId, key, visibilityKey, compiled, eligible, saving, client, attempt, candidates.length]);
+  }, [projectId, key, visibilityKey, compiled, eligible, saving, client, attempt, candidates.length, hasInstalledMassingUpgrade]);
 
-  const currentAssetError = assetError?.projectId === projectId && zones.some(zone=>zone.id===assetError?.zoneId && (assetError.kind==='street'?nativeStreetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===assetError.revision) ? assetError : null;
+  const currentAssetError = assetError?.projectId === projectId && zones.some(zone=>zone.id===assetError?.zoneId && (assetError.kind==='street'?nativeStreetRevision(zone):assetError.kind==='building'?buildingAssetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===assetError.revision) ? assetError : null;
   const visibleStatus = currentAssetError ? 'error' : eligible && !compiled && candidates.length > 0 && status !== 'error' ? 'updating' : status;
   return { status: visibility?.comparingPlans ? 'error' : visibleStatus, message: visibility?.comparingPlans ? 'Choose one scenario in Layers to update its 3D scene.' : currentAssetError?.message ?? (visibleStatus === 'updating' ? 'Your placed objects are being updated.' : visibleStatus === 'ready' ? representationNotice(candidates) : message), busy: !visibility?.comparingPlans && visibleStatus === 'updating', canRefreshDetail,
-    retry: () => { setAssetError(null); clearFailedNativeParkLoads(); clearFailedNativeStreetLoads(); state.current.failed = ''; state.current.completed = ''; state.current.force = true; setAttempt(value => value + 1); } };
+    retry: () => { setAssetError(null); clearFailedNativeParkLoads(); clearFailedNativeStreetLoads(); retryBuildingAssets(); state.current.failed = ''; state.current.completed = ''; state.current.force = true; setAttempt(value => value + 1); } };
 }

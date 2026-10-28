@@ -10,6 +10,7 @@ import { nativeParkLayouts, nativeParkProperties } from '@/features/parks/native
 import { rectangleAt } from './geometry';
 import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import streetRecipes from '@/components/viewer/globe/__fixtures__/classroomStreetRecipes.json';
+import { placeAsset, placementProperties } from './catalogue';
 vi.mock('@/features/legoAssembly/communityCompiler',()=>({compileMixedCommunity3D:vi.fn()}));
 vi.mock('@/services/api',()=>({siteZonesApi:{list:vi.fn()},getApiErrorMessage:(e:Error)=>e.message}));
 vi.mock('@/store/undoActions',()=>({advanceDerivedZoneRevision:vi.fn()}));
@@ -18,6 +19,34 @@ const boundary=(state:'compiled'|'stale'):SiteZone=>({id:'boundary',project_id:'
 const wrapper=({children}:{children:ReactNode})=><QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}>{children}</QueryClientProvider>;
 const advance=()=>act(async()=>{await vi.advanceTimersByTimeAsync(750)});
 describe('automatic placement compilation',()=>{
+  it('upgrades an older saved massing recipe once when its exact catalogue model is installed',async()=>{
+    const asset=placeAsset('clay_vancouver_balcony_podium_tower');
+    const saved=zone(0,true);
+    const massing={...saved,properties:{...placementProperties(asset),community_3d:{
+      schema_version:1,state:'compiled',kind:'building',generator:'planned_massing',compiled_at:'now',source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64),
+    }}} as SiteZone;
+    vi.mocked(siteZonesApi.list).mockResolvedValue([massing]);
+    const {unmount}=renderHook(()=>useAutomatic3D('p',[massing],false),{wrapper});
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    await advance();
+    expect(compileMixedCommunity3D).toHaveBeenCalledOnce();
+    unmount();
+  });
+  it('surfaces a failed detailed building and lets Retry restart its loader',async()=>{
+    const saved=zone(0,true);
+    const {result,unmount}=renderHook(()=>useAutomatic3D('p',[saved],false),{wrapper});
+    await advance();
+    const retried=vi.fn(); window.addEventListener('cityprompt:retry-native-buildings',retried);
+    act(()=>window.dispatchEvent(new CustomEvent('cityprompt:native-building-error',{detail:{
+      zoneId:saved.id,revision:JSON.stringify([saved.updated_at,saved.properties?.pick_place_model_revision ?? null]),message:'Building model interrupted. Retry 3D update.',
+    }})));
+    expect(result.current.status).toBe('error');
+    expect(result.current.message).toMatch(/Building model interrupted/);
+    act(()=>result.current.retry());
+    expect(retried).toHaveBeenCalledOnce();
+    window.removeEventListener('cityprompt:retry-native-buildings',retried);unmount();
+  });
   it('clears a failed added object after undo restores the already compiled scene',async()=>{
     const ready=zone(0,true);
     const broken={...zone(2),id:'broken'};

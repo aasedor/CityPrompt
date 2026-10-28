@@ -11,6 +11,8 @@ const mocks = vi.hoisted(() => ({ gltf: vi.fn(), display: vi.fn(), verified: vi.
   readWalking: vi.fn(), mountWalking: vi.fn(), mountInspection: vi.fn() }));
 vi.mock('@/features/legoAssembly/buildingInspection', () => ({ mountBuildingInspection: mocks.mountInspection }));
 vi.mock('@react-three/drei', () => ({ useGLTF: mocks.gltf }));
+vi.mock('@react-three/fiber', () => ({useThree: (select: (state: {gl: object})=>unknown)=>select({gl:{}})}));
+vi.mock('@/lib/ktx2GltfLoader', () => ({createKtx2LoaderExtension:()=>()=>{}}));
 vi.mock('3d-tiles-renderer/r3f', () => ({ EastNorthUpFrame: ({ children, height }: { children: React.ReactNode; height: number }) =>
   <div data-testid="frame" data-height={height}>{children}</div> }));
 vi.mock('./SharedSiteGroundProvider', () => ({ useSharedSiteGround: mocks.display, useSharedSiteGroundVerification: mocks.verified }));

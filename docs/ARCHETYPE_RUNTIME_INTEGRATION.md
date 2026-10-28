@@ -84,6 +84,15 @@ runtime acceptance and publication status separate from successful installation.
 
 ### Site landscape compatibility
 
+Audit the GLB's own near-grade meshes as well as the runtime foundation. A
+landscaped runtime pad can still be hidden by an embedded grey display slab or
+source-illustration street. Finish only revision-resolved, explicitly identified
+ground geometry; preserve real paving, stairs, roofs, source bytes and bounds.
+Check complete native models and repeated-storey podiums separately. A failed
+building download must recover through the advertised Retry action after an
+unrelated save, without claiming a persistent massing proxy is detailed-ready.
+See [the October 28 building repair](BUILDING_MODEL_GROUND_REPAIR_2026-10-28.md).
+
 Every new building, street and park must work with the shared
 [Generate 3D Site Landscape feature](SITE_LANDSCAPE_2026-09-20.md). Declare the
 complete occupied plot and use the shared building-approach / park-access route

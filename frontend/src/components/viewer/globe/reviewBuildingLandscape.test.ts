@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { rectangleAt } from '@/features/pickPlace/geometry';
 import { prepareReviewBuildingLandscape } from './reviewBuildingLandscape';
+import { placeAsset, placementProperties } from '@/features/pickPlace/catalogue';
 
 const zone: SiteZone = { id: 'hall', project_id: 'qa', color: '#ffffff', sort_order: 0, created_at: '', updated_at: '',
   zone_type: 'building', coordinates: rectangleAt([-114, 51], 66, 64, 0),
@@ -38,6 +39,36 @@ function materialAt(scene: THREE.Object3D, x: number, z: number) {
 }
 
 describe('authored city hall ground finish', () => {
+  it('replaces the hotel’s baked-in perimeter road but keeps its measured entrance and walking strips paved', () => {
+    const hotel={...zone,properties:placementProperties(placeAsset('claude_scottish_baronial_hotel'))};
+    const source=new THREE.Group(), concrete=new THREE.MeshStandardMaterial(); concrete.name='CLAY_CONCRETE';
+    const road=new THREE.Mesh(new THREE.BoxGeometry(78,.008,7),concrete);road.position.set(-2,.004,35.5);
+    source.add(road);
+    const texture=new THREE.Texture();
+    const result=prepareReviewBuildingLandscape(source,hotel,{boundary,texture});
+    expect((materialAt(result.clone,20,36) as THREE.MeshStandardMaterial).map).toBe(texture);
+    expect(materialAt(result.clone,-11.6,36)).toBe(concrete);
+  });
+  it('matches a registered tower foundation to the site without recolouring its stone steps or roof', () => {
+    const asset = placeAsset('clay_vancouver_balcony_podium_tower');
+    const tower = { ...zone, properties: placementProperties(asset) };
+    const source = new THREE.Group();
+    const foundation = new THREE.MeshStandardMaterial({color:'#aaa'}); foundation.name='CLAY_FOUNDATION';
+    const pad = new THREE.Mesh(new THREE.BoxGeometry(48,.2,40),foundation); pad.position.y=.1;
+    const stone = new THREE.MeshStandardMaterial(); stone.name='CLAY_STONE';
+    const steps = new THREE.Mesh(new THREE.BoxGeometry(3,.4,3),stone); steps.position.set(0,.4,17);
+    const roof = new THREE.Mesh(new THREE.BoxGeometry(30,.2,20),foundation); roof.position.y=80;
+    source.add(pad,steps,roof);
+    const texture = new THREE.Texture();
+    const result = prepareReviewBuildingLandscape(source,tower,{boundary,texture});
+    expect((materialAt(result.clone,22,0) as THREE.MeshStandardMaterial).map).toBe(texture);
+    expect(materialAt(result.clone,0,17)).toBe(stone);
+    expect((result.clone.children[2] as THREE.Mesh).geometry).toBe(roof.geometry);
+    expect((result.clone.children[2] as THREE.Mesh).material).toBe(foundation);
+    expect(pad.material).toBe(foundation);
+    expect(foundation.map).toBeNull();
+    expect(new THREE.Box3().setFromObject(result.clone)).toEqual(new THREE.Box3().setFromObject(source));
+  });
   it('removes the broad grey surround while retaining the measured entrance approach', () => {
     const { scene, texture } = fixture();
     const result = prepareReviewBuildingLandscape(scene, zone, { boundary, texture });
