@@ -48,8 +48,8 @@ export function snapStreetJunctionPlacement(zone: SiteZone, zones: SiteZone[], i
       const a=target[i-1],b=target[i],dx=b[0]-a[0],dy=b[1]-a[1],length=Math.hypot(dx,dy);
       if(length<1)continue;
       const hostAngle=Math.atan2(dy,dx),center:Point=[(own[0][0]+own[1][0])/2,(own[0][1]+own[1][1])/2];
-      for(const step of [0,1,2,3,4,5,6,7]) {
-        const delta=normalAngle(hostAngle+step*Math.PI/4-angle);
+      for(const degrees of [0,30,45,60,90,120,135,150,180,210,225,240,270,300,315,330]) {
+        const delta=normalAngle(hostAngle+degrees*Math.PI/180-angle);
         if(Math.abs(delta)>5*Math.PI/180)continue;
         add(rotate(delta,center),host);
       }

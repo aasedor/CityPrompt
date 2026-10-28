@@ -12,11 +12,43 @@ import { detectConnectedStreetIntersections } from '@/components/viewer/globe/st
 import { buildSectionJunctionGeometry, resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJunctionGeometry';
 import { CLASSROOM_CHOICES } from './canonicalCatalogue';
 import savedGreenway from './__fixtures__/savedGreenwayJunction.json';
+import stressGreenway from './__fixtures__/studentStressGreenway.json';
+import { pointInPark } from '@/components/viewer/globe/neighborhoodParkLayout';
 const ll=(x:number,y:number)=>[-114+x/metersPerDegLon(51),51+y/METERS_PER_DEG_LAT];
 const site={id:'site',zone_type:'site_boundary',coordinates:rectangleAt(ll(0,0),200,200)} as SiteZone;
 const asset=CALGARY_LOCAL_PLACEMENT,width=asset.sectionWidth;
 const street=(x:number):SiteZone=>{const points=[ll(x,-40),ll(x,40)];return {id:'road',zone_type:'road',project_id:'',color:'',sort_order:0,created_at:'',updated_at:'',coordinates:bufferLineToPolygon(points,width),properties:{...asset.properties,plan_centerline:points,plan_route_controls:points,public_realm_lego:{schema_version:1,family_id:'street_local_public_realm',family_version:1,kind:'street',generator:'street_section',archetype_id:'calgary_local',variant_id:'calgary_local_v0',profile_id:'calgary-local-v1',profile_version:1,appearance_kit_id:'calgary_contemporary_native',target:{target_type:'street_segment',row_width_m:16},catalog_fingerprint:'a'.repeat(64),capability_fingerprint:'b'.repeat(64),recipe_hash:'c'.repeat(64)}}};};
 describe('street full-width boundary placement',()=>{
+ it('joins near the end of the browser stress-test greenway without fabricating a fourth arm',()=>{
+  const host={...street(0),...stressGreenway} as SiteZone;
+  const asset=CLASSROOM_CHOICES.flatMap(c=>c.placements).find(a=>a.model.variantId==='student_separated_walking_cycling_greenway_v1')!;
+  const end=host.properties!.plan_route_controls as number[][];
+  const anchor=end[end.length-1],sx=metersPerDegLon(anchor[1]);
+  const points=[[anchor[0]+62/sx,anchor[1]+10.5/METERS_PER_DEG_LAT],[anchor[0]+.5/sx,anchor[1]+10.5/METERS_PER_DEG_LAT]];
+  const draft={...host,id:'draft-street',...streetDrawingGeometry(points,asset.properties,[host])};
+  expect(streetConnectionProblem(draft,[host])).toBeNull();
+  const network=[host,draft],nodes=detectConnectedStreetIntersections(network,true);
+  expect(nodes).toHaveLength(1);
+  expect(nodes[0].armCount).toBe(3);
+  const layout=resolveStreetJunctionLayout(nodes[0],network)!;
+  expect(layout).not.toBeNull();
+  expect(layout.surfaceFootprint?.length).toBeGreaterThan(0);
+  const geometry=buildSectionJunctionGeometry(layout);
+  const positions=geometry.promenadePaving.getAttribute('position');
+  expect(positions.count).toBeGreaterThan(0);
+  expect(positions.getZ(0)).toBeCloseTo(.025,6);
+  const local=(p:number[])=>({x:(p[0]-nodes[0].longitude)*metersPerDegLon(nodes[0].latitude),y:(p[1]-nodes[0].latitude)*METERS_PER_DEG_LAT});
+  const corridors=network.map(zone=>zone.coordinates.map(local));
+  for(let i=0;i<positions.count;i+=3) {
+   const x=(positions.getX(i)+positions.getX(i+1)+positions.getX(i+2))/3;
+   const y=(positions.getY(i)+positions.getY(i+1)+positions.getY(i+2))/3;
+   expect(corridors.some(ring=>pointInPark({x,y},ring))).toBe(true);
+   const ax=positions.getX(i+1)-positions.getX(i),ay=positions.getY(i+1)-positions.getY(i);
+   const bx=positions.getX(i+2)-positions.getX(i),by=positions.getY(i+2)-positions.getY(i);
+   expect(ax*by-ay*bx).toBeGreaterThan(0);
+  }
+  Object.values(geometry).forEach(mesh=>mesh.dispose());
+ });
  it('recognises the locked saved greenway as a junction graph axis',()=>{
   const host={...street(0),...savedGreenway.host} as SiteZone;
   const draft={...street(0),...savedGreenway.draft} as SiteZone;
@@ -86,7 +118,7 @@ describe('street full-width boundary placement',()=>{
   expect(JSON.stringify(host)).toBe(before);
  });
  it('recovers a crossing just below the supported angle only after complete geometry validation',()=>{
-  const host=street(0),angle=46*Math.PI/180;
+  const host=street(0),angle=61*Math.PI/180;
   const points=[ll(-45*Math.cos(angle),-45*Math.sin(angle)),ll(45*Math.cos(angle),45*Math.sin(angle))];
   const candidate={...street(0),id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
   expect(streetConnectionProblem(candidate,[host])).toBeTruthy();

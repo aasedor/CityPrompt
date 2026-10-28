@@ -20,6 +20,17 @@ const street = (id: string, points: number[][]): SiteZone => ({ id, project_id: 
 const main = street('main', [[-50, 0], [50, 0]]);
 
 describe('student street endpoint snapping', () => {
+  it('uses physical approach clearance at an acute angle rather than scaling the fixed margin twice',()=>{
+    const host=street('acute-host',[[-35,0],[35,0]]);
+    const raw=[[43.3,25],[0,-1]].map(ll);
+    const line=snapStreetEnds(raw,[host],undefined,16);
+    expect(line).not.toBe(raw);
+    expect(xy(line[1])[1]).toBeCloseTo(0,4);
+    const branch=street('branch',line.map(xy)),network=[host,branch];
+    const nodes=detectConnectedStreetIntersections(network,true);
+    expect(nodes).toHaveLength(1);
+    expect(resolveStreetJunctionLayout(nodes[0],network)).not.toBeNull();
+  });
   it('snaps a canal connection to its outer bank without painting a node across water',()=>{
     const asset=STREET_ASSETS.find(a=>a.model.variantId==='amsterdam_gracht_v1')!;
     const points=[[0,0],[0,160]].map(ll);

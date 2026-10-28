@@ -11,6 +11,7 @@ import manualStreets from '@/data/streetManual.json';
 import { publicRealmTrialAsset } from './publicRealmTrial';
 import { nativeStreetPilotForZone } from './nativeStreetPilot';
 import { isSpecialistStreet } from './specialistStreetProgram';
+import { isFlushPedestrianStreet, MIN_STREET_JUNCTION_ANGLE, STREET_JUNCTION_ANGLE_EPSILON } from './streetJunctionPolicy';
 
 interface LocalPoint {
   x: number;
@@ -22,6 +23,7 @@ interface StreetAxis {
   widthM: number;
   points: LocalPoint[];
   supportedV1: boolean;
+  flushPedestrian: boolean;
 }
 
 interface NodeCandidate {
@@ -239,6 +241,7 @@ function detectStreetIntersections(
     return [{
       zoneId: zone.id,
       widthM: native?.dimensions[0] ?? effectiveRoadWidth(zone.properties),
+      flushPedestrian: isFlushPedestrianStreet(zone, preview),
       supportedV1: centerlineAnchorsJunction && (native?.kind === 'street' || nativePilot !== undefined || manualDraft || ((props?.road_archetype_id === 'calgary_collector'
         && props.road_selected_variant_id === 'calgary_collector_v0'
         && effectiveRoadWidth(zone.properties) === 20
@@ -271,7 +274,7 @@ function detectStreetIntersections(
           const b1 = second.points[b + 1];
           const bBearing = Math.atan2(b1.y - b0.y, b1.x - b0.x);
           const crossingAngle = undirectedAngleDistance(aBearing, bBearing);
-          if (crossingAngle < Math.PI / 6 || crossingAngle > Math.PI * 5 / 6) continue;
+          if (crossingAngle < MIN_STREET_JUNCTION_ANGLE - STREET_JUNCTION_ANGLE_EPSILON) continue;
           const crossing = segmentIntersection(a0, a1, b0, b1);
           if (crossing) {
             candidates.push({ x: crossing.x, y: crossing.y, zoneIds: [first.zoneId, second.zoneId], crossing: true });
@@ -337,7 +340,7 @@ function detectStreetIntersections(
         const secondBearing = Math.atan2(after.y - point.y, after.x - point.x);
         return angleDistance(firstBearing, secondBearing) > Math.PI / 180;
       });
-      if (bendsInsideNode) return [];
+      if (bendsInsideNode && !axes.filter(item => cluster.zoneIds.has(item.zoneId)).every(item => item.flushPedestrian)) return [];
       let best: ReturnType<typeof closestPointOnSegment> & { segmentIndex: number } | null = null;
       for (let index = 0; index < axis.points.length - 1; index += 1) {
         const closest = closestPointOnSegment(cluster, axis.points[index], axis.points[index + 1]);
@@ -386,7 +389,7 @@ function detectStreetIntersections(
     const axisA = orientations[0];
     const axisB = orientations.find((candidate) => {
       const separation = undirectedAngleDistance(axisA.bearing, candidate.bearing);
-      return separation >= Math.PI / 6 && separation <= Math.PI * 5 / 6;
+      return separation >= MIN_STREET_JUNCTION_ANGLE - STREET_JUNCTION_ANGLE_EPSILON;
     });
     if (!axisB) return [];
     const orthogonal = Math.abs(undirectedAngleDistance(axisA.bearing, axisB.bearing) - Math.PI / 2) <= Math.PI / 180;

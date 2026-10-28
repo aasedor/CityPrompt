@@ -114,7 +114,8 @@ interface RouteSegment {
 export function placeNativeStreetModules(
   pilot: NativeStreetPilot,
   route: StreetRouteStation[],
-  junctions: Array<{ x: number; y: number; clearanceM: number }> = [],
+  junctions: Array<{ x: number; y: number; clearanceM: number;
+    overlapsFootprint?: (points: Array<{x:number;y:number}>) => boolean }> = [],
   stops:BrtStop[] = [],
 ): NativeStreetPose[] {
   const segments: RouteSegment[] = [];
@@ -136,7 +137,7 @@ export function placeNativeStreetModules(
       ? [{ x: segment.from.x, y: segment.from.y, clearanceM: pilot.widthM / 2 + 4 }]
       : [];
   });
-  const clearances = [...junctions, ...bendClearances];
+  const clearances: typeof junctions = [...junctions, ...bendClearances];
   const isBrt = pilot.id===BRT_VARIANT;
   const isTram = pilot.id===TRAM_VARIANT;
   const specialist = isSpecialistStreet(pilot.id);
@@ -184,6 +185,8 @@ export function placeNativeStreetModules(
     const minY=Math.min(...corners.map(p=>p.y)), maxY=Math.max(...corners.map(p=>p.y));
     const rotation=segment.angle-Math.PI/2, c=Math.cos(rotation), s=Math.sin(rotation);
     if (!specialist && item.kind!=='station_program' && item.kind!=='showcase_tram_stop' && clearances.some(node => {
+      if (node.overlapsFootprint) return node.overlapsFootprint(
+        [[minX,minY],[maxX,minY],[maxX,maxY],[minX,maxY]].map(([px,py])=>({x:x+px*c-py*s,y:y+px*s+py*c})));
       const dx=node.x-x,dy=node.y-y,nx=dx*c+dy*s,ny=-dx*s+dy*c;
       const distance=Math.hypot(nx-Math.max(minX,Math.min(maxX,nx)),ny-Math.max(minY,Math.min(maxY,ny)));
       return distance<Math.max(node.clearanceM,pilot.widthM/2+4);

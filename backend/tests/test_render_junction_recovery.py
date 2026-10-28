@@ -1,5 +1,8 @@
 """Student image renders must not be blocked by advisory junction geometry."""
 import uuid
+import math
+import json
+from pathlib import Path
 
 import pytest
 from fastapi import HTTPException
@@ -77,6 +80,33 @@ def test_verified_image_junction_keeps_topology():
     junction = next(item for item in inventory if item["zone_id"] is None)
     assert junction["junction_geometry_verified"] is True
     assert junction["junction_topology"] == topology.model_dump()
+
+
+@pytest.mark.parametrize('degrees', [30, 37, 60, 90, 120, 143, 150])
+@pytest.mark.parametrize('arms', [3, 4])
+def test_angled_junction_capture_matches_the_browser(degrees, arms):
+    streets = _tee_street_zones()
+    sx = 111320 * math.cos(math.radians(51.04))
+    angle = math.radians(degrees)
+    far = [100 * math.cos(angle), 100 * math.sin(angle)]
+    ll = lambda p: [-114.08 + p[0] / sx, 51.04 + p[1] / 111320]
+    streets[1].properties['plan_centerline'] = [ll([0, 0] if arms == 3 else [-v for v in far]), ll(far)]
+    assert api._validate_junction_topology(streets, streets, _junction_topology(streets, arms=arms))
+
+
+def test_bent_greenway_capture_matches_the_saved_browser_stress_case():
+    raw = json.loads((Path(__file__).parents[2] / 'frontend/src/features/pickPlace/__fixtures__/studentStressGreenway.json').read_text(encoding='utf-8-sig'))
+    streets = _tee_street_zones()
+    streets[0].properties = raw['properties']
+    end = raw['properties']['plan_route_controls'][-1]
+    sx = 111320 * math.cos(math.radians(end[1]))
+    longitude, latitude = end[0], end[1] + 10.5 / 111320
+    # The exact final host segment slopes slightly; intersect that axis.
+    a, b = api._collapse_straight_street_stations(raw['properties']['plan_centerline'])[-2:]
+    longitude = a[0] + (latitude-a[1])/(b[1]-a[1])*(b[0]-a[0])
+    streets[1].properties = {**raw['properties'], 'plan_centerline': [[longitude, latitude], [longitude+62/sx, latitude]]}
+    topology = _junction_topology(streets, longitude=longitude, latitude=latitude)
+    assert api._validate_junction_topology(streets, streets, topology)
 
 
 def test_narrow_path_cannot_be_omitted_from_verified_junction():

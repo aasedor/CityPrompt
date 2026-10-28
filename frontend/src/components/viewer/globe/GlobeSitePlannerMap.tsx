@@ -5157,9 +5157,9 @@ export function GlobeSitePlannerMap({
 
       {activeSitePlannerTool === 'road' && !interactionPaused && !captureOverlaysHidden && <aside aria-label="Public road suggestions"
         className="absolute right-3 top-28 z-40 max-w-64 rounded-lg border border-cyan-500 bg-white p-3 text-xs text-slate-900 shadow-lg">
-        <label className="flex min-h-8 items-center gap-2 font-semibold"><input type="checkbox" checked={publicRoadSnapEnabled}
+        <label className="flex min-h-8 items-center gap-2 font-semibold"><input type="checkbox" checked={publicRoadSnapSupported && publicRoadSnapEnabled} disabled={!publicRoadSnapSupported}
           onChange={event => setPublicRoadSnapEnabled(event.target.checked)} />Snap to nearby public roads</label>
-        {!publicRoadSnapSupported ? <p>This street needs a specialist connection. Automatic public-road snapping is unavailable.</p>
+        {!publicRoadSnapSupported ? <p>This design does not connect automatically to public motor roads. Connections to your own streets and paths still snap.</p>
           : !publicRoadSnapEnabled ? <p>Public-road snapping off. Site-edge snapping remains available.</p>
           : publicRoadContext.isFetching ? <p role="status">Loading nearby roads… You can keep drawing.</p>
           : publicRoadContext.isError ? <><p>Nearby roads could not load. Keep drawing or try again.</p><button className="min-h-9 underline"

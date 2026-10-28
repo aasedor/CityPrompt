@@ -729,15 +729,13 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         return False
     if persisted_variant_id and persisted_variant_id != recipe_variant_id:
         return False
-    # Exact registered surface pathways participate in pedestrian T/X joins
-    # in streetGraphIntersections.ts. The old vehicle-width/name filter rejected
-    # all five of them, even with a current, hash-locked compiled recipe.
+    # Exact native identities participate independently of a legacy semantic
+    # name such as multi_use_trail. Recipe locks above remain authoritative.
     if any(
         capability.family_id == recipe.get("family_id")
         and selection.variant_id == recipe_variant_id
         and selection.archetype_id == recipe_archetype_id
         and selection.compatibility.nominal_row_width_m is not None
-        and selection.compatibility.nominal_row_width_m < 5
         and abs(_effective_street_width(zone) - selection.compatibility.nominal_row_width_m) < 1e-6
         for capability in native_street_runtime_capabilities()
         for selection in capability.selections
@@ -837,6 +835,10 @@ def _street_sources_form_junction(
     """Independently reconstruct arm count and the exact captured node anchor."""
     if len(street_zones) < 2:
         return False
+    from app.services.native_street_candidate_contract import flush_native_street_junction_levels
+    flush_levels = flush_native_street_junction_levels()
+    levels = [flush_levels.get((zone.properties or {}).get('road_selected_variant_id')) for zone in street_zones]
+    flush_pedestrian = all(level is not None for level in levels) and max(levels) - min(levels) <= .005
     geographic_axes: list[dict[str, object]] = []
     for zone in sorted(street_zones, key=lambda item: str(item.id)):
         centerline = _street_zone_centerline(zone)
@@ -899,7 +901,7 @@ def _street_sources_form_junction(
                         first_bearing,
                         second_bearing,
                     )
-                    if crossing_angle < math.pi / 6 or crossing_angle > math.pi * 5 / 6:
+                    if crossing_angle < math.pi / 6 - 1e-4:
                         continue
                     intersection = _segment_intersection(
                         first_start,
@@ -912,6 +914,7 @@ def _street_sources_form_junction(
                             {
                                 "x": intersection[0],
                                 "y": intersection[1],
+                                "crossing": True,
                                 "zone_ids": {
                                     str(first["zone_id"]),
                                     str(second["zone_id"]),
@@ -956,6 +959,15 @@ def _street_sources_form_junction(
 
     clusters: list[dict[str, object]] = []
     for candidate in candidates:
+        # Match the browser: nearby bend projections cannot pull a real axis
+        # intersection away from either route or manufacture a second node.
+        if not candidate.get('crossing') and any(
+            other.get('crossing') and other['zone_ids'] == candidate['zone_ids']
+            and math.hypot(float(other['x'])-float(candidate['x']), float(other['y'])-float(candidate['y']))
+            <= max(float(axis['width']) for axis in axes if str(axis['zone_id']) in candidate['zone_ids'])
+            for other in candidates
+        ):
+            continue
         cluster = next(
             (
                 item
@@ -1018,7 +1030,7 @@ def _street_sources_form_junction(
                     break
             if bend_inside_node:
                 break
-        if bend_inside_node:
+        if bend_inside_node and not flush_pedestrian:
             continue
         arms: list[dict[str, object]] = []
         contributing_zone_ids: set[str] = set()
@@ -1109,9 +1121,9 @@ def _street_sources_form_junction(
         separation = _undirected_angle_distance(orientations[0], orientations[1])
         if topology is not None:
             sine = math.sin(separation)
-            if sine < math.sqrt(0.5) - 0.001:
+            if sine < .5 - 1e-4:
                 continue
-            if any(
+            if not (bend_inside_node and flush_pedestrian) and any(
                 arm["reach"] + 0.01
                 < max(
                     other["width"] / 2 + 4
@@ -1121,7 +1133,7 @@ def _street_sources_form_junction(
                 for arm in grouped_arms
             ):
                 continue
-            # The compiled renderer owns 45–135 degree section joins as well
+            # The compiled renderer owns 30–150 degree section joins as well
             # as square T/X nodes. The server must independently accept that
             # same bounded geometry or a valid skew capture always 409s.
             # Require every authored arm to stay straight at the anchor; a

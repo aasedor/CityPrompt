@@ -7,6 +7,17 @@ const main = nativeStreetPilot('student_main_street_v1')!;
 const market = nativeStreetPilot('student_market_street_v1')!;
 
 describe('candidate native street modules on route geometry', () => {
+  it('clears full occupied furniture bounds against an elongated junction footprint',()=>{
+    const pilot=nativeStreetPilot('student_separated_walking_cycling_greenway_v1')!;
+    const route=[{x:-50,y:0},{x:50,y:0}];
+    const before=placeNativeStreetModules(pilot,route);
+    const overlapsFootprint=(points:Array<{x:number;y:number}>)=>Math.max(...points.map(p=>p.x))>10&&Math.min(...points.map(p=>p.x))<20;
+    const clearing=[{x:0,y:0,clearanceM:0,overlapsFootprint}];
+    const after=placeNativeStreetModules(pilot,route,clearing);
+    expect(before.some(p=>p.x>10&&p.x<20)).toBe(true);
+    expect(after.some(p=>p.x>10&&p.x<20)).toBe(false);
+    expect(after.some(p=>p.x>30)).toBe(true);
+  });
   it('retains every native Main and Market component, including both end lanterns', () => {
     for (const pilot of [main,market]) {
       const poses=placeNativeStreetModules(pilot,[{x:0,y:0},{x:0,y:pilot.fixtureLengthM}]);

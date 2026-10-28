@@ -40,6 +40,27 @@ _APPEARANCE_BY_FINISH = {
 
 
 @lru_cache(maxsize=1)
+def flush_native_street_junction_levels() -> dict[str, float]:
+    """Mirror native section classification for exact car-free surface joins."""
+    rows = json.loads((Path(__file__).resolve().parents[1] / 'data/nativeStreetPilots.json').read_text(encoding='utf-8'))
+    allowed = {selection.variant_id for capability in native_street_runtime_capabilities() for selection in capability.selections}
+    result = {}
+    for row in rows:
+        program = row.get('program')
+        if row['id'] not in allowed or not program or row['id'] == 'student_main_street_v1':
+            continue
+        bands = row['sections']
+        narrow = program['adapter'] == 'narrow-pathway-v1'
+        if not narrow and any('parking' in band['name'] or (band['material'] == 'asphalt'
+                and not any(name in band['name'] for name in ('walk', 'furniture'))) for band in bands):
+            continue
+        if narrow or any(any(name in band['name'] for name in ('walk', 'furniture'))
+                or band['material'] not in ('asphalt', 'cycle', 'soil', 'grass') for band in bands):
+            result[row['id']] = float(program['baseLiftM'])
+    return result
+
+
+@lru_cache(maxsize=1)
 def native_street_runtime_capabilities() -> tuple[PublicRealmFamilyCapability, ...]:
     data_dir = Path(__file__).resolve().parents[1] / "data"
     roster = json.loads((data_dir / "classroomStarter.json").read_text(encoding="utf-8"))

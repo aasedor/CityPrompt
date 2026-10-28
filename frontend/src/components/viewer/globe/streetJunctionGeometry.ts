@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import polygonClipping from 'polygon-clipping';
 import type { SiteZone } from '@/types';
 import { collapseStraightStreetStations, extractZoneCenterline, effectiveRoadWidth } from '@/utils/roadGeometry';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
@@ -6,6 +7,7 @@ import type { ConnectedStreetIntersection } from './streetGraphIntersections';
 import { resolvePilotStreetSectionProfile } from './streetSectionProfiles';
 import { getStreetNetworkGroundMeta } from './streetNetworkGroundTexture';
 import { nativeStreetPilotForZone } from './nativeStreetPilot';
+import { isFlushPedestrianStreet, MIN_STREET_JUNCTION_SINE, STREET_JUNCTION_ANGLE_EPSILON } from './streetJunctionPolicy';
 import {
   PUBLIC_REALM_STREET_ROAD_SURFACE_LIFT_METERS as ROAD_Z,
   PUBLIC_REALM_STREET_SIDEWALK_SURFACE_LIFT_METERS as WALK_Z,
@@ -32,18 +34,30 @@ export interface StreetJunctionLayout {
   /** A pedestrian approach stays paved, without a zebra/curb-ramp crossing
    * across its own promenade. Motor approaches retain their crossings. */
   pedestrianAxes?: [boolean, boolean];
+  /** Exact corridor union clipped to the junction, in the sheared node frame.
+   * Flush pedestrian bends keep their real outline instead of a straight box. */
+  surfaceFootprint?: number[][][][];
+  surfaceLiftM?: number;
 }
 
-/** A bounded section join with 45–135 degree approaches. Reviewed network atlases retain
+/** A bounded section join with 30–150 degree approaches. Reviewed network atlases retain
  * their existing ground ownership; this helper never silently replaces them. */
 export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, zones: SiteZone[]): StreetJunctionLayout | null {
   if (node.approachSides[0].length !== 2) return null;
   const angleB = node.axisBBearingRad - node.axisABearingRad;
   const sine = Math.abs(Math.sin(angleB));
-  if (sine < Math.SQRT1_2 - .001) return null;
+  if (sine < MIN_STREET_JUNCTION_SINE - STREET_JUNCTION_ANGLE_EPSILON) return null;
   const shear = node.orthogonal ? 0 : Math.cos(angleB) / Math.sin(angleB);
   const connected = zones.filter((zone) => node.zoneIds.includes(zone.id));
   if (connected.length !== node.zoneIds.length || connected.some((zone) => getStreetNetworkGroundMeta(zone))) return null;
+  const flushBend = connected.every(zone => isFlushPedestrianStreet(zone, true))
+    && connected.some(zone => {
+      const route = collapseStraightStreetStations(extractZoneCenterline(zone));
+      return route.slice(1,-1).some(point => Math.hypot(
+        (point[0]-node.longitude)*metersPerDegLon(node.latitude),
+        (point[1]-node.latitude)*METERS_PER_DEG_LAT) <= effectiveRoadWidth(zone.properties)/2+4);
+    });
+  if (flushBend) return resolveFlushPedestrianJunction(node, connected, shear, sine);
   const roads = [0, 0];
   const pedestrianAxes = [false, false];
   const sections: Array<JunctionSection | undefined> = [undefined, undefined];
@@ -111,8 +125,9 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
     // A car-free separated greenway has a real off-centre cycle track. Keep
     // that band in place; only motor sections require a central carriageway.
     if (high <= low || (!pedestrianPilot && (low >= 0 || high <= 0))) return null;
-    const section = { low, high, raised: profile.renderCurbs, roadZ: drive[0].liftM,
-      edgeZ: profile.renderCurbs ? WALK_Z : (profile.bands.find((band) => band.kind === 'shoulder')?.liftM ?? drive[0].liftM) };
+    const nativeLevel = nativePilot?.program?.baseLiftM;
+    const section = { low, high, raised: profile.renderCurbs, roadZ: nativeLevel ?? drive[0].liftM,
+      edgeZ: nativeLevel ?? (profile.renderCurbs ? WALK_Z : (profile.bands.find((band) => band.kind === 'shoulder')?.liftM ?? drive[0].liftM)) };
     const previous = sections[axis];
     // Opposing fragments must agree; a change in width needs a transition.
     if (previous && (Math.abs(previous.low - low) > 0.05 || Math.abs(previous.high - high) > 0.05
@@ -137,6 +152,39 @@ export function resolveStreetJunctionLayout(node: ConnectedStreetIntersection, z
       { minX: -rowB, maxX: rowB, minY: sidesB.includes(-1) ? -rowA - 4 : 0, maxY: sidesB.includes(1) ? rowA + 4 : 0 },
     ],
   };
+}
+
+/** Join actual car-free corridor polygons. The same bounds clip old surfaces
+ * and furniture; the union restores every paved part, with no invented fourth
+ * arm, widened parcel or straightened saved route. */
+function resolveFlushPedestrianJunction(node: ConnectedStreetIntersection, zones: SiteZone[], shear: number, sine: number): StreetJunctionLayout | null {
+  const bearing = node.axisABearingRad, cos = Math.cos(bearing), sin = Math.sin(bearing);
+  const local = (point: number[]): [number, number] => {
+    const x = (point[0] - node.longitude) * metersPerDegLon(node.latitude);
+    const y = (point[1] - node.latitude) * METERS_PER_DEG_LAT;
+    const v = -x * sin + y * cos;
+    return [x * cos + y * sin - shear * v, v];
+  };
+  const rowA = node.axisAHalfWidthM, rowB = node.axisBHalfWidthM / sine;
+  const orientation = Math.sin(node.axisBBearingRad - bearing) >= 0 ? 1 : -1;
+  const sidesB = node.approachSides[1].map(side => side * orientation as -1 | 1);
+  const bounds = [
+    { minX: -rowB - 4, maxX: rowB + 4, minY: -rowA, maxY: rowA },
+    { minX: -rowB, maxX: rowB, minY: sidesB.includes(-1) ? -rowA - 4 : 0, maxY: sidesB.includes(1) ? rowA + 4 : 0 },
+  ];
+  const corridors = zones.map(zone => [zone.coordinates.map(local)] as polygonClipping.Polygon);
+  const boxes = bounds.map(r => [[[r.minX,r.minY],[r.maxX,r.minY],[r.maxX,r.maxY],[r.minX,r.maxY],[r.minX,r.minY]]] as polygonClipping.Polygon);
+  const surfaceFootprint = polygonClipping.intersection(polygonClipping.union(corridors[0], ...corridors.slice(1)),
+    polygonClipping.union(boxes[0], ...boxes.slice(1)));
+  if (!surfaceFootprint.length) return null;
+  const levels = zones.map(zone => nativeStreetPilotForZone(zone,true)?.program?.baseLiftM
+    ?? resolvePilotStreetSectionProfile(zone)!.bands.find(band => band.kind === 'path' || band.kind === 'sidewalk')!.liftM);
+  if (Math.max(...levels)-Math.min(...levels) > .005) return null;
+  const surfaceLiftM = Math.max(...levels);
+  return { bearing, shear, rowA, rowB, roadA: rowA, roadB: rowB, sidesB, bounds,
+    surfaceZoneId: zones[0].id, pedestrianAxes: [true,true], surfaceFootprint, surfaceLiftM,
+    sections: [{low:-rowA,high:rowA,raised:false,roadZ:surfaceLiftM,edgeZ:surfaceLiftM},
+      {low:-rowB,high:rowB,raised:false,roadZ:surfaceLiftM,edgeZ:surfaceLiftM}] };
 }
 
 function inside(x: number, y: number, rect: JunctionRect): boolean {
@@ -216,6 +264,31 @@ export function buildStreetJunctionSurface(layout: StreetJunctionLayout): { pave
 /** One connected surface, crossings and real openings for metric catalogue
  * streets. Flush shared surfaces do not acquire fictitious raised sidewalks. */
 export function buildSectionJunctionGeometry(layout: StreetJunctionLayout) {
+  if (layout.surfaceFootprint) {
+    const positions: number[] = [];
+    for (const polygon of layout.surfaceFootprint) {
+      const rings = polygon.map(ring => ring.slice(0,-1).map(([x,y]) => new THREE.Vector2(x,y)));
+      const vertices = rings.flat();
+      for (const face of THREE.ShapeUtils.triangulateShape(rings[0], rings.slice(1))) {
+        const [a,b,c] = face.map(i => vertices[i]);
+        const area = (b.x-a.x)*(c.y-a.y)-(b.y-a.y)*(c.x-a.x);
+        if (Math.abs(area)<1e-6) continue;
+        const order = area < 0 ? [a,c,b] : [a,b,c];
+        for (const p of order) {
+          const x = p.x + (layout.shear ?? 0)*p.y;
+          positions.push(x*Math.cos(layout.bearing)-p.y*Math.sin(layout.bearing),
+            x*Math.sin(layout.bearing)+p.y*Math.cos(layout.bearing),layout.surfaceLiftM!);
+        }
+      }
+    }
+    const make = (values: number[]) => {
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute('position',new THREE.Float32BufferAttribute(values,3));
+      geometry.setAttribute('uv',new THREE.Float32BufferAttribute(values.flatMap((_,i)=>i%3===0?[values[i],values[i+1]]:[]),2));
+      geometry.computeVertexNormals(); geometry.computeBoundingSphere(); return geometry;
+    };
+    return { pavement:make([]),sidewalks:make([]),curbs:make([]),crosswalks:make([]),curbRamps:make([]),tactilePads:make([]),promenadePaving:make(positions) };
+  }
   const [a, b] = layout.sections!;
   const { rowA, rowB, sidesB, bounds, bearing } = layout;
   const xs = [...new Set([-rowB - 4, -rowB, b.low, 0, b.high, rowB, rowB + 4])].sort((x, y) => x - y);
@@ -326,6 +399,16 @@ export function streetJunctionContainsPoint(layout: StreetJunctionLayout, x: num
   const localX = x * Math.cos(layout.bearing) + y * Math.sin(layout.bearing) - (layout.shear ?? 0) * localY;
   return layout.bounds.some(rect => localX >= rect.minX - padding && localX <= rect.maxX + padding
     && localY >= rect.minY - padding && localY <= rect.maxY + padding);
+}
+
+/** Complete occupied module rectangle against the actual sheared patch. */
+export function streetJunctionOverlapsFootprint(layout: StreetJunctionLayout, points: Array<{x:number;y:number}>, centerX=0, centerY=0): boolean {
+  const ring = points.map(point => {
+    const x=point.x-centerX,y=point.y-centerY;
+    const v=-x*Math.sin(layout.bearing)+y*Math.cos(layout.bearing);
+    return [x*Math.cos(layout.bearing)+y*Math.sin(layout.bearing)-(layout.shear??0)*v,v] as [number,number];
+  });
+  return layout.bounds.some(r => polygonClipping.intersection([ring],[[[r.minX,r.minY],[r.maxX,r.minY],[r.maxX,r.maxY],[r.minX,r.maxY]]]).length>0);
 }
 
 type Vertex = Record<string, number[]>;
