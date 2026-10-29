@@ -5,7 +5,7 @@ import {
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, MANUAL_STREET_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, GENERATED_BUILDING_ADDITIONS, MANUAL_STREET_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
@@ -74,7 +74,20 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
 }
 
 // Local validation roster: no legacy variants or generic massing fallbacks in discovery.
-const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries]);
+// Generated additions use the same exact-variant card and placement path as the
+// curated roster, without replacing its existing reference images or bindings.
+const curatedEntries = [...validation.entries, ...expansion.entries];
+const registeredDesigns = new Set(curatedEntries.map(entry => `${entry.domain}:${entry.archetype_id}:${entry.variant_id}`));
+const generatedBuildingEntries = GENERATED_BUILDING_ADDITIONS.filter(asset => {
+  const key = `building:${asset.properties.development_archetype_id}:${asset.model.variantId}`;
+  if (registeredDesigns.has(key)) return false;
+  registeredDesigns.add(key);
+  return true;
+}).map(asset => ({
+  domain: 'building', archetype_id: String(asset.properties.development_archetype_id),
+  variant_id: asset.model.variantId, placement_id: asset.id,
+}));
+const resolvedRoster = resolveCatalogueRoster([...curatedEntries, ...generatedBuildingEntries]);
 export const CANONICAL_CHOICES = resolvedRoster.choices;
 export const UNAVAILABLE_CATALOGUE_ENTRIES = resolvedRoster.unavailable;
 /** Exact starter variants only. Parent cards must not quietly expose their other
