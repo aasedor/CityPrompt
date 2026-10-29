@@ -26,4 +26,5 @@ def test_exact_native_runtime_capability_is_available():
     assert selected.archetype_id=='elevated_garden_rail'
     assert selected.compatibility.nominal_row_width_m==26
     assert selected.compatibility.min_length_m==48
-    assert selected.compatibility.max_length_m==288
+    # Repeated native modules use the 2 km authoring envelope.
+    assert selected.compatibility.max_length_m==2000

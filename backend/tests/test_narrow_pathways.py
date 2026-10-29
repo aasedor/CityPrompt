@@ -16,7 +16,7 @@ PATHS = [row for row in json.loads(DATA.read_text(encoding='utf-8'))
 
 @pytest.mark.parametrize('row', PATHS, ids=lambda row: row['id'])
 def test_pathway_recipe_roundtrip_and_width_lock(row):
-    for length in [2, 35, 300]:
+    for length in [2, 35, 300, 2000]:
         recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=row['sourceArchetypeId'], variant_id=row['id'],
             target=StreetSegmentTarget(row_width_m=row['widthM'], length_m=length)))
@@ -24,7 +24,7 @@ def test_pathway_recipe_roundtrip_and_width_lock(row):
         assert recipe.variant_id == row['id']
         assert recipe.target.row_width_m == row['widthM']
         assert f"program:{row['programSha256']}" in recipe.component_set_ids
-    for width,length in [(5,35),(row['widthM'],1),(row['widthM'],301)]:
+    for width,length in [(5,35),(row['widthM'],1),(row['widthM'],2001)]:
         with pytest.raises(PublicRealmPlanningError):
             plan_public_realm_recipe(PublicRealmPlanRequest(
                 archetype_id=row['sourceArchetypeId'],variant_id=row['id'],

@@ -27,14 +27,14 @@ def test_sidewalk_recipe_roundtrip_and_bounds(key, width):
     assert row['program']['adapter'] == 'narrow-pathway-v1'
     assert row['program']['preparedLevelOnly'] is True
     assert row['program']['minLengthM'] == max(2, width)
-    for length in [max(2, width), 35, 300]:
+    for length in [max(2, width), 35, 300, 2000]:
         recipe = plan_public_realm_recipe(PublicRealmPlanRequest(
             archetype_id=row['sourceArchetypeId'], variant_id=key,
             target=StreetSegmentTarget(row_width_m=width, length_m=length)))
         assert public_realm_recipe_identity(recipe) is not None
         assert recipe.variant_id == key
         assert f"program:{row['programSha256']}" in recipe.component_set_ids
-    for wrong_width, length in [(width + .1, 35), (width, max(2, width) - .1), (width, 301)]:
+    for wrong_width, length in [(width + .1, 35), (width, max(2, width) - .1), (width, 2001)]:
         with pytest.raises(PublicRealmPlanningError):
             plan_public_realm_recipe(PublicRealmPlanRequest(
                 archetype_id=row['sourceArchetypeId'], variant_id=key,
