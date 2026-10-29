@@ -127,6 +127,39 @@ async def execute(fixture, attempt):
 
 
 @pytest.mark.asyncio
+async def test_credit_admission_preserves_real_trial_slot_and_existing_recovery(isolated):
+    from app.services.render_trial import TRIAL_KEY
+    f = isolated
+    trial = {'user_id': str(f.user.id), 'image_limit': 1, 'video_limit': 0,
+             'image_requests': {}, 'video_requests': {}}
+    async with f.sessions() as db:
+        user = await db.get(User, f.user.id)
+        user.render_credits, user.credits_reset_at = 0, jobs.now()
+        (await db.get(Project, f.project.id)).metadata_ = {TRIAL_KEY: trial}
+        await db.commit()
+    with pytest.raises(HTTPException) as rejected:
+        await submit(f, 'unaffordable')
+    assert rejected.value.status_code == 403
+    async with f.sessions() as db:
+        assert (await db.get(Project, f.project.id)).metadata_[TRIAL_KEY] == trial
+        assert not list((await db.scalars(select(RenderAttempt))).all())
+        assert not list((await db.scalars(select(RenderAuditLog))).all())
+        (await db.get(User, f.user.id)).render_credits = 1000
+        await db.commit()
+    assert f.evidence == {}
+    f.delivered.assert_not_awaited(); f.provider.assert_not_awaited()
+    accepted = await submit(f, 'affordable')
+    async with f.sessions() as db:
+        user = await db.get(User, f.user.id)
+        assert user.render_credits == 1000  # Admission did not charge.
+        assert list((await db.get(Project, f.project.id)).metadata_[TRIAL_KEY]['image_requests']) == ['affordable']
+        user.render_credits = 0
+        await db.commit()
+    assert (await submit(f, 'affordable')).id == accepted.id
+    f.provider.assert_not_awaited(); f.delivered.assert_awaited_once()
+
+
+@pytest.mark.asyncio
 async def test_duplicate_submissions_and_deliveries_call_provider_once(isolated):
     f = isolated
     key = str(uuid.uuid4())

@@ -388,6 +388,16 @@ def estimate_direct_3d_token_cost(
     return max(DIRECT_3D_MIN_TOKEN_COST, estimated) * PAID_IMAGE_CREDIT_MULTIPLIERS[model]
 
 
+def minimum_direct_3d_token_cost(model: PaidImageModel) -> int:
+    """Minimum supported capture, without optional ID/control attachments.
+
+    1024 x 640 attains the provider's 655,360-pixel floor with valid aspect
+    and 16-pixel edges. Normalization and the reservation formula stay shared.
+    """
+    width, height = _normalized_dimensions(1024, 640)
+    return estimate_direct_3d_token_cost(width, height, object_id_attached=False, model=model)
+
+
 def _decode_base64_payload(value: str, *, label: str) -> bytes:
     payload = value.split(",", 1)[1] if "," in value[:128] else value
     try:

@@ -4,8 +4,11 @@ The database is the outbox. Duplicate Redis deliveries can claim only a queued
 row. A running row is NEVER queued again, including after a worker crash.
 """
 
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 import logging
+from threading import BoundedSemaphore
 import uuid
 
 from fastapi import HTTPException
@@ -13,7 +16,8 @@ from sqlalchemy import select, text, update
 
 from app.core.config import get_settings
 from app.core.image_models import image_provider_key
-from app.core.security import check_project_permission
+from app.core.security import check_project_permission, is_admin_or_above
+from app.core.render_credits import effective_render_credit_balance
 from app.models.models import RenderAuditLog, User
 from app.models.render_attempt import RenderAttempt
 from app.schemas.direct_3d_render import Direct3DRenderRequest, Direct3DRenderResponse
@@ -25,6 +29,12 @@ from app.services.render_trial import reserve_image_trial_slot
 logger = logging.getLogger(__name__)
 ACTIVE = ("queued", "running")
 QUEUE_LOCK = 23_140_785_570_740
+# No event-loop-bound global semaphore: API tests and workers use different
+# loops. The thread gate also bounds queued image payloads and survives cancel.
+_ADMISSION_PREPARATION_POOL = ThreadPoolExecutor(max_workers=2, thread_name_prefix="image-admission")
+# Permit a classroom burst to wait for the two CPU workers, while bounding the
+# total retained requests. The actual image queue keeps its independent cap.
+_ADMISSION_PREPARATION_SLOTS = BoundedSemaphore(64)
 
 
 def now():
@@ -41,16 +51,62 @@ def describe_attempt(attempt):
     }
 
 
+def _estimate_admission_tokens(req):
+    if isinstance(req, VideoAppearanceRequest):
+        from app.services.video_appearance import GUIDE_CREDIT_COST
+        return GUIDE_CREDIT_COST
+    from app.services.direct_3d_render import (
+        Direct3DValidationError, prepare_direct_3d_capture, estimate_direct_3d_token_cost,
+    )
+    try:
+        capture = prepare_direct_3d_capture(req)
+    except Direct3DValidationError as exc:
+        raise HTTPException(400, str(exc)) from exc
+    return estimate_direct_3d_token_cost(
+        capture.normalized_beauty.width, capture.normalized_beauty.height,
+        object_id_attached=capture.normalized_object_id is not None,
+        instance_id_attached=capture.normalized_instance_id is not None,
+        control_bundle_version=req.control_bundle_version, model=req.model,
+    )
+
+
+async def _prepare_admission_tokens(req):
+    if isinstance(req, VideoAppearanceRequest):
+        return _estimate_admission_tokens(req)
+    if not _ADMISSION_PREPARATION_SLOTS.acquire(blocking=False):
+        raise HTTPException(429, "Image validation is busy. No credits were charged. Try again shortly.")
+    try:
+        future = _ADMISSION_PREPARATION_POOL.submit(_estimate_admission_tokens, req)
+    except BaseException:
+        _ADMISSION_PREPARATION_SLOTS.release()
+        raise
+    # Release when the actual thread finishes, even if its HTTP caller cancels.
+    future.add_done_callback(lambda _future: _ADMISSION_PREPARATION_SLOTS.release())
+    return await asyncio.shield(asyncio.wrap_future(future))
+
+
+def _check_credit_admission(user, token_cost):
+    """Check the fresh balance under lock without charging or persisting reset.
+
+    The worker still reserves credits atomically immediately before dispatch.
+    """
+    if is_admin_or_above(user):
+        return
+    balance = effective_render_credit_balance(user, at=now())
+    if balance < token_cost:
+        raise HTTPException(403, f"Not enough tokens. This image costs {token_cost} tokens "
+                            f"but you have {balance}. Tokens reset weekly.")
+
+
 async def submit_attempt(db, user, req: Direct3DRenderRequest | VideoAppearanceRequest, key: str):
     settings = get_settings()
     await check_project_permission(req.project_id, user, db, required="editor")
+    user_id = user.id
     payload = req.model_dump(mode="json")
     fingerprint = revision_sha256(payload)
-    # Admission + idempotency are one global, short transaction. Only 16 active
-    # jobs are allowed; image bodies live in private object storage, not rows.
-    await db.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": QUEUE_LOCK})
+    # Recover existing jobs without capture work or waiting for global admission.
     existing = await db.scalar(select(RenderAttempt).where(
-        RenderAttempt.user_id == user.id, RenderAttempt.idempotency_key == key,
+        RenderAttempt.user_id == user_id, RenderAttempt.idempotency_key == key,
     ))
     if existing:
         if existing.request_sha256 != fingerprint:
@@ -61,6 +117,25 @@ async def submit_attempt(db, user, req: Direct3DRenderRequest | VideoAppearanceR
         raise HTTPException(503, "AI image generation is paused. Exact 3D images remain available.")
     if not image_provider_key(settings, req.model):
         raise HTTPException(503, "Image generation is not configured")
+    # Permission/identity lookups opened a read transaction. Return its pool
+    # connection before waiting for CPU preparation. Rollback expires user
+    # fields, so retain only the immutable ID and refresh under admission lock.
+    await db.rollback()
+    # Expensive decoding/control validation runs off-loop before QUEUE_LOCK.
+    token_cost = await _prepare_admission_tokens(req)
+    # Admission + idempotency are one global, short transaction. A duplicate
+    # may have committed while this request prepared its capture; re-read it.
+    await db.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": QUEUE_LOCK})
+    await db.refresh(user, with_for_update=True)
+    await check_project_permission(req.project_id, user, db, required="editor")
+    existing = await db.scalar(select(RenderAttempt).where(
+        RenderAttempt.user_id == user_id, RenderAttempt.idempotency_key == key,
+    ))
+    if existing:
+        if existing.request_sha256 != fingerprint:
+            raise HTTPException(409, "This request key already belongs to a different image. Recover the original attempt.")
+        await db.commit()
+        return existing
     active = list((await db.scalars(select(RenderAttempt).where(RenderAttempt.status.in_(ACTIVE)))).all())
     own = next((item for item in active if item.user_id == user.id), None)
     if own:
@@ -68,6 +143,7 @@ async def submit_attempt(db, user, req: Direct3DRenderRequest | VideoAppearanceR
                                  "message": "An image is already queued or running. Recover that attempt first."})
     if len(active) >= settings.direct_3d_queue_limit or sum(item.project_id == req.project_id for item in active) >= settings.direct_3d_project_queue_limit:
         raise HTTPException(429, "The image queue is full. Your credits have not been charged. Try later.")
+    _check_credit_admission(user, token_cost)
     attempt = RenderAttempt(
         id=uuid.uuid4(), user_id=user.id, project_id=req.project_id,
         idempotency_key=key, request_sha256=fingerprint, status="queued",

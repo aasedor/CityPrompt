@@ -27,7 +27,10 @@ export function isLocalImageModel(model: string): model is LocalImageModel {
 export type ImageModelChoice = ImageEngine | 'compare-all-three';
 export type ImageModelAvailability = {
   default_model: OpenAIImageModel;
-  models: Array<{ id: ImageEngine; available: boolean | null }>;
+  /** Server-effective weekly balance; absent on older servers. */
+  credit_balance?: number;
+  credit_exempt?: boolean;
+  models: Array<{ id: ImageEngine; available: boolean | null; minimum_credit_cost?: number }>;
 };
 
 export function imageModelsForChoice(choice: ImageModelChoice): ImageEngine[] {

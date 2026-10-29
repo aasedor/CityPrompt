@@ -4,8 +4,10 @@ import { DEFAULT_OPENAI_IMAGE_MODEL, PAID_IMAGE_MODELS, isLocalImageModel, type 
 import { comfyTrialsApi } from '@/services/comfyTrials';
 import { readStoredRenderDraft } from './renderDraftStorage';
 
-export function useImageModelChoice({ compareByDefault = true, projectId, allowLocal = true }: { compareByDefault?: boolean; projectId?: string; allowLocal?: boolean } = {}) {
-  const [availability, setAvailability] = useState<ImageModelAvailability | null>(null);
+export function useImageModelChoice({ compareByDefault = true, projectId, allowLocal = true, accountRevision }: { compareByDefault?: boolean; projectId?: string; allowLocal?: boolean; accountRevision?: string } = {}) {
+  const [discovery, setDiscovery] = useState<{ accountRevision?: string; value: ImageModelAvailability } | null>(null);
+  // Never expose a previous account/balance quote while the replacement loads.
+  const availability = discovery?.accountRevision === accountRevision ? discovery?.value ?? null : null;
   const key = projectId ? `cityprompt:render-draft:${projectId}` : '';
   const initial = useMemo(() => {
     try {
@@ -30,10 +32,10 @@ export function useImageModelChoice({ compareByDefault = true, projectId, allowL
       ? comfyTrialsApi.presets().then(result => result.presets.filter(p => p.kind === 'image' && isLocalImageModel(p.id)).map(p => ({ id: p.id as 'flux-klein' | 'qwen-image', available: p.available }))).catch(() => [])
       : Promise.resolve([]);
     void Promise.all([rendersApi.imageModels().catch(() => ({ default_model: DEFAULT_OPENAI_IMAGE_MODEL, models: [] } as ImageModelAvailability)), local]).then(([result, models]) => {
-      if (active) setAvailability({ ...result, models: [...result.models, ...models] });
+      if (active) setDiscovery({ accountRevision, value: { ...result, models: [...result.models, ...models] } });
     });
     return () => { active = false; };
-  }, [allowLocal]);
+  }, [allowLocal, accountRevision]);
   const allAvailable = ['gpt-image-2', 'gpt-image-2.5-flare', 'gpt-image-2.5-sunburst'].every(
     (id) => availability?.models.some((model) => model.id === id && model.available === true),
   );

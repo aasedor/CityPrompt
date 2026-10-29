@@ -32,6 +32,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.schemas.render_media import SavedRenderResponse
 from app.core.config import get_settings
+from app.core.render_credits import WEEKLY_TOKEN_ALLOWANCE as _WEEKLY_TOKEN_ALLOWANCE
 from app.core.image_models import DEFAULT_OPENAI_IMAGE_MODEL, OPENAI_IMAGE_CREDIT_MULTIPLIERS, NANO_BANANA_MODEL
 from app.core.database import get_db
 from app.core.security import (
@@ -354,7 +355,6 @@ _MODEL_TOKEN_COST: dict[str, int] = {
     **{model: 13 * multiplier for model, multiplier in OPENAI_IMAGE_CREDIT_MULTIPLIERS.items()},
 }
 _DEFAULT_TOKEN_COST = 13  # fallback
-_WEEKLY_TOKEN_ALLOWANCE = 1000
 
 
 def _utc_day_start(now: datetime | None = None) -> datetime:
@@ -953,11 +953,22 @@ async def _refund_render(db, user, reservation):
 @router.get("/image-models")
 async def image_models(user: User = Depends(require_auth)):
     from app.services.image_model_availability import get_image_model_availability
+    from app.core.render_credits import effective_render_credit_balance
+    from app.services.direct_3d_render import minimum_direct_3d_token_cost
 
     settings = get_settings()
     # Show the configured pause before a student prepares a costly capture.
-    return await get_image_model_availability(settings.openai_api_key if settings.direct_3d_images_enabled else "",
+    availability = await get_image_model_availability(settings.openai_api_key if settings.direct_3d_images_enabled else "",
         settings.gemini_api_key if settings.direct_3d_images_enabled else "")
+    # Account data must never enter discovery's shared provider cache. These
+    # are affordability floors; exact capture pricing is checked at admission.
+    return {
+        **availability,
+        "credit_balance": effective_render_credit_balance(user),
+        "credit_exempt": is_admin_or_above(user),
+        "models": [{**model, "minimum_credit_cost": minimum_direct_3d_token_cost(model["id"])}
+                   for model in availability["models"]],
+    }
 
 
 @router.post("/generate", response_model=RenderResponse)

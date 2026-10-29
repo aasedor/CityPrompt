@@ -269,7 +269,8 @@ async def test_google_queue_admission_does_not_require_openai(monkeypatch):
     ):
         monkeypatch.setattr(attempts, name, AsyncMock())
     attempt = await attempts.submit_attempt(
-        db, SimpleNamespace(id=uuid.UUID(int=2)), request, "test-google-only"
+        db, SimpleNamespace(id=uuid.UUID(int=2), role="editor", render_credits=1000,
+                            credits_reset_at=None), request, "test-google-only"
     )
     assert attempt.model == "gemini-nano-banana-2.1"
     attempts.write_evidence.assert_awaited_once()
