@@ -438,7 +438,7 @@ export function ProjectViewPage() {
           parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
         ?? placementProblem(footprint, siteZones,
           publicRoadConnectionFits(zone, footprint, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId,
-          { allowStreetIntersections: isFixedSectionStreet(zone) });
+          { allowStreetIntersections: isFixedSectionStreet(zone), properties:streetUpdate?.properties ?? zone.properties });
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
     return handleZoneUpdated(zoneId, coordinates) !== false;
@@ -1220,7 +1220,7 @@ export function ProjectViewPage() {
                   parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
                   ?? placementProblem(coordinates, siteZones,
                     publicRoadConnectionFits({ zone_type: type, properties }, coordinates, getActiveSiteBoundary(siteZones))
-                      ? null : getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true });
+                      ? null : getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true, properties });
                 if (problem) { toast.error(problem, {id:'street-route-validation',position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);
@@ -1421,7 +1421,7 @@ export function ProjectViewPage() {
                 ?? streetConnectionProblem(copy, siteZones)
                 ?? nativeStreetRouteProblem(copy, boundary)
                 ?? streetRouteProblem(copy.coordinates, Number(copy.properties.width), parsePersistedCenterline(copy.properties.plan_route_controls) ?? undefined)
-                ?? placementProblem(copy.coordinates, siteZones, boundary, undefined, { allowStreetIntersections: true });
+                ?? placementProblem(copy.coordinates, siteZones, boundary, undefined, { allowStreetIntersections: true, properties:copy.properties });
               if (problem) throw new Error(problem);
               const created = await createZone.mutateAsync(copy);
               selectZone(created.id);
@@ -1437,7 +1437,7 @@ export function ProjectViewPage() {
                 parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)
                 ?? placementProblem(data.coordinates, siteZones,
                   publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id,
-                  { allowStreetIntersections: true });
+                  { allowStreetIntersections: true, properties:data.properties });
               if (problem) { toast.error(problem); return; }
               updateZone.mutate({ zoneId: selectedZone.id, data,
                 previousData: { coordinates: selectedZone.coordinates, properties: selectedZone.properties } });

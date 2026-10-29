@@ -440,6 +440,17 @@ other properties that may be actual compiler inputs.
 
 ## Streets and paths
 
+Simple `narrow-pathway-v1` walking finishes are nonexclusive relative to building
+and park plots. Test both drawing orders: neither plot collision checks nor
+synthetic street reservations may move or reject an otherwise valid ground path.
+Pass the candidate's exact properties through create, reshape, duplicate and
+section-change validation. Keep site containment, recipe identity and motor-road
+junction protections. Seat path finishes at the shared public-realm surface datum
+so shallow building ground caps cannot bury an entrance approach; retain normal
+depth testing against walls, stairs and raised amenities. This does not approve
+routes through physical obstacles or demonstrate accessible grade continuity.
+See the [28 October pathway review](GROUND_PATHWAY_OVERLAP_REVIEW_2026-10-28.md).
+
 For reusable placeholder vegetation, use `GlobeLandscapeTreeStand` and its
 metric species profiles. The [lightweight crown recipe and Currie check](LIGHTWEIGHT_TREES_2026-09-20.md)
 describe a branching-crown pilot awaiting user visual acceptance; palms and park-owned GLB trees remain separate

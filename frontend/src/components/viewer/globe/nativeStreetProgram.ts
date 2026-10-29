@@ -4,6 +4,7 @@ import { stationNormals } from './streetMesh3D';
 import { buildBrtStreetProgram, type BrtStop } from './brtStreetProgram';
 import { buildSpecialistStreetProgram, CANAL_VARIANT, BRIDGE_VARIANT, specialistRouteProblem } from './specialistStreetProgram';
 import { ELEVATED_RAIL_VARIANT, CIVIC_RAIL_VARIANT, elevatedRailStationProblem } from './elevatedRailProgram';
+import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
 
 export function nativeStreetHasPreparedGround(preparedElevation: number | null, hasPreparedApproach: boolean, hasSharedGround: boolean) {
   return Number.isFinite(preparedElevation) || hasPreparedApproach || hasSharedGround;
@@ -52,6 +53,11 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
   if(!segments.length)return [];
   const stations=[segments[0].from,...segments.map(s=>s.to)];
   const normals=stationNormals(stations);
+  // Ground paths may cross a building's shallow landscaped footing. Seat their
+  // finish at the shared public-realm datum, retaining ordinary depth testing
+  // against actual walls, steps and raised park equipment.
+  const baseLiftM=program.adapter==='narrow-pathway-v1'
+    ? Math.max(program.baseLiftM,PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS) : program.baseLiftM;
   const point=(x:number,station:number,z:number):number[]=>{
     const index=segments.findIndex(s=>station<=s.start+s.length+1e-7);
     const i=index<0?segments.length-1:index,segment=segments[i];
@@ -60,7 +66,7 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
     // bend meet at one offset station rather than inheriting the previous arm.
     const nx=normals[i].x+(normals[i+1].x-normals[i].x)*t;
     const ny=normals[i].y+(normals[i+1].y-normals[i].y)*t;
-    return [segment.from.x+(segment.to.x-segment.from.x)*t-nx*x,segment.from.y+(segment.to.y-segment.from.y)*t-ny*x,z+program.baseLiftM];
+    return [segment.from.x+(segment.to.x-segment.from.x)*t-nx*x,segment.from.y+(segment.to.y-segment.from.y)*t-ny*x,z+baseLiftM];
   };
   const quad=(material:string,vertices:number[][])=>{
     const group=groups.get(material)??{positions:[],indices:[]};const n=group.positions.length/3;

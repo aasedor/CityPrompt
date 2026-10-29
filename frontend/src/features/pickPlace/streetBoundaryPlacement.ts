@@ -37,14 +37,14 @@ export function snapStreetBoundaryPlacement(zone: SiteZone, zones: SiteZone[], b
   const context = zones.filter(row => row.id !== zone.id);
   const original = zones.find(row => row.id === zone.id) ?? zone;
   const connected = streetEditConnectionCheck(original, [...context, original]);
-  const validJunction = (next: SiteZone) => !placementProblem(next.coordinates, context, boundary, zone.id, { allowStreetIntersections: true })
+  const validJunction = (next: SiteZone) => !placementProblem(next.coordinates, context, boundary, zone.id, { allowStreetIntersections: true, properties:next.properties })
     && !streetConnectionProblem(next, context) && connected(next);
   zone = snapStreetJunctionPlacement(zone, context, validJunction);
   properties = zone.properties ?? {};
   const candidate = (coordinates: number[][]) => ({
     ...zone, coordinates, properties: translatedProperties(properties, zone.coordinates, coordinates),
   });
-  const problem = (next: SiteZone) => placementProblem(next.coordinates, context, boundary, zone.id, { allowStreetIntersections: true })
+  const problem = (next: SiteZone) => placementProblem(next.coordinates, context, boundary, zone.id, { allowStreetIntersections: true, properties:next.properties })
     ?? streetConnectionProblem(next, context)
     ?? (connected(next) ? null : 'Keep the existing street junction connected.');
   const coordinates = snapFootprintToSiteBoundary(zone.coordinates, boundary, coords => !problem(candidate(coords)));

@@ -9,6 +9,7 @@ import { nativeParkApproaches } from '@/features/parks/nativeParkReservations';
 import { placementEdgeSnapCandidates, buildingPlacementEnvelope } from './buildingPlacementEdges';
 import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
 import { siteBoundarySnapCandidates } from './siteBoundarySnapping';
+import { isSurfacePath } from './streetConnectionProblem';
 
 type Point = { x: number; y: number };
 export function snapBuildingMove(zone: SiteZone, coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null) {
@@ -30,7 +31,7 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   const check=(coords:number[][])=>placementProblem(coords,zones,boundary,ignoreId,{properties});
   // Protect the street and already-working approaches as part of the usable
   // neighbourhood, rather than solving one plot overlap by blocking a route.
-  const reserves: SiteZone[] = zones.filter(z=>z.zone_type==='road').flatMap(road=>{
+  const reserves: SiteZone[] = zones.filter(z=>z.zone_type==='road' && !isSurfacePath(z)).flatMap(road=>{
     // The constructed street includes its sidewalks. Do not impose an extra
     // blanket three-metre setback on every park or unreviewed building plot.
     if (road.coordinates.length>=3) return [{...streetSurfaceMaskZone(road),id:`snap-road:${road.id}`,zone_type:'parking' as const}];
@@ -49,7 +50,7 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   zones=[...zones,...reserves];
   // Magnetism applies even when the original position is valid, so a small
   // visible gap can close. A candidate must preserve all approach reservations.
-  const neighbours=context.map(z=>{
+  const neighbours=context.filter(z=>!isSurfacePath(z)).map(z=>{
     if(z.zone_type!=='road')return z;
     const reservedStreet=reserves.find(reserve=>reserve.id===`snap-road:${z.id}`);
     return reservedStreet ? {...reservedStreet,id:z.id,zone_type:z.zone_type} : z;
