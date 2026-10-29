@@ -1,0 +1,436 @@
+{
+  "candidate": "clay-climbing-reef-clay-v009",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-climbing-reef",
+  "variant_id": "clay-climbing-reef-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "climbing_wall_building/variant_3 (climbing_reef: organic four-lobed bouldering shell)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 30.0,
+      "depth": 27.0,
+      "height": 8.2
+    },
+    "observed_storeys": 1,
+    "storey_programme": "one tall bouldering hall under the shell (climbable outside and in)",
+    "plan": "four-lobed starfish plan about 30 m east-west by 27 m north-south (top view, 24.4 px to the metre), lobes north, east, south and west with concave bays between",
+    "facade": "one continuous fibreglass shell: tucked dark base, near-vertical bulging walls to about 5 m, rolling over to a 6.9 m plateau; six horizontal contour bands from deep teal to pale seafoam; rounded pockets and multicoloured holds on the walls",
+    "openings": "twelve glazed skylight domes on white rims (one large central dome, eleven small); four arched glazed entrances at the foot of the bays (two visible in the front and oblique)",
+    "landscape": "sand rubber crash-pad apron inside a low rounded curb with four diagonal gaps; white crushed-shell paths to a concrete ring path; native meadow beds on mulch, small trees, lawn beyond",
+    "levels_m": [
+      0.0,
+      0.06,
+      5.0,
+      6.9
+    ],
+    "roof_m": {
+      "shoulder": 5.0,
+      "plateau": 6.9,
+      "dome_centres": 7.3,
+      "top": 8.2
+    },
+    "inferred": "the interior hall, the north-east and north-west entrances and the shell thickness follow the visible grammar; metric dimensions are authored teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "continuous undulating shell roof with contour bands and twelve skylight domes on rims",
+    "datum_m": 6.9,
+    "crowns_m": [
+      7.3,
+      8.2
+    ]
+  },
+  "identity_contract": {
+    "owner": "low organic four-lobed teal-to-seafoam bouldering shell with pockets, holds and skylight domes, ringed by a sand crash-pad apron and curb in a meadow park"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: six teal-to-seafoam contour bands, white dome rims and glazing, multicoloured holds, sand rubber apron and curb, white shell paths, concrete ring path, mulch, meadow greens",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 1,
+    "ground": "bouldering hall and community room under the shell",
+    "upper": "climbable shell exterior"
+  },
+  "contact_contract": [
+    "Shell base from grade inside the apron",
+    "Apron and curb at grade",
+    "Skylight rims seated through the shell",
+    "Paths and beds at grade"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -1.75,
+        -45.2,
+        22.4
+      ],
+      "target": [
+        -0.18,
+        6.65,
+        -2.62
+      ],
+      "lens": 45.6,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -2.1,
+        -43.0,
+        29.6
+      ],
+      "target": [
+        -0.68,
+        -12.2,
+        8.9
+      ],
+      "lens": 40.0,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        32.0,
+        -38.0,
+        30.0
+      ],
+      "target": [
+        0.0,
+        -1.0,
+        2.5
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        -0.25,
+        -0.82,
+        120.0
+      ],
+      "target": [
+        -0.25,
+        -0.819,
+        0.0
+      ],
+      "ortho_scale": 49.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -48.0,
+        1.0,
+        8.5
+      ],
+      "target": [
+        0.0,
+        0.0,
+        3.2
+      ],
+      "lens": 36,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        48.0,
+        2.0,
+        8.5
+      ],
+      "target": [
+        0.0,
+        0.0,
+        3.2
+      ],
+      "lens": 36,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        1.5,
+        48.0,
+        8.5
+      ],
+      "target": [
+        0.0,
+        0.0,
+        3.2
+      ],
+      "lens": 36,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        34.0,
+        36.0,
+        26.0
+      ],
+      "target": [
+        0.0,
+        0.5,
+        2.5
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        -2.5,
+        -24.0,
+        3.2
+      ],
+      "target": [
+        -0.5,
+        -13.0,
+        3.0
+      ],
+      "lens": 38,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        21.0,
+        -10.5,
+        10.5
+      ],
+      "target": [
+        11.5,
+        -1.5,
+        5.8
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        5.5,
+        -9.5,
+        10.4
+      ],
+      "target": [
+        2.05,
+        -4.96,
+        7.2
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "interior",
+      "location": [
+        -3.6,
+        -3.2,
+        1.65
+      ],
+      "target": [
+        3.0,
+        3.2,
+        3.6
+      ],
+      "lens": 16,
+      "whole": false
+    },
+    {
+      "name": "entrance_sw",
+      "location": [
+        -10.6,
+        -10.8,
+        1.7
+      ],
+      "target": [
+        -6.4,
+        -6.6,
+        1.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "entrance_se",
+      "location": [
+        10.0,
+        -11.0,
+        1.7
+      ],
+      "target": [
+        5.9,
+        -6.8,
+        1.4
+      ],
+      "lens": 30,
+      "whole": false
+    },
+    {
+      "name": "curb_gap",
+      "location": [
+        17.6,
+        -13.4,
+        1.7
+      ],
+      "target": [
+        11.4,
+        -11.4,
+        0.3
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "roof_skylights",
+      "location": [
+        -3.0,
+        -22.0,
+        22.0
+      ],
+      "target": [
+        0.0,
+        -1.0,
+        6.6
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "climbing_pockets",
+      "location": [
+        -23.5,
+        1.5,
+        2.5
+      ],
+      "target": [
+        -14.6,
+        -1.2,
+        2.7
+      ],
+      "lens": 34,
+      "whole": false
+    },
+    {
+      "name": "meadow_path",
+      "location": [
+        -18.2,
+        -14.4,
+        1.65
+      ],
+      "target": [
+        -6.5,
+        -6.5,
+        2.8
+      ],
+      "lens": 30,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "interior",
+    "entrance_sw",
+    "entrance_se",
+    "curb_gap",
+    "roof_skylights",
+    "climbing_pockets",
+    "meadow_path"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_3.png",
+        "path": "sources/front.png",
+        "bytes": 1359680,
+        "sha256": "c510322572ffa49702465f621dd95575a967787b28a37e96755cec68263fc595"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 817640,
+        "sha256": "122c06c58a3287c7eb1a503e9d94ce4a6b712275f42e5c65e1bbfdc592027ac9"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 811835,
+        "sha256": "cf5e6092abfb9702cc5fa59e2ba60b579be0c420489a4e31528466d43ec8fe34"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_1.png",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_2.png",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_reef.py",
+        "sha256": "2fb94ccc5c91d1ec316683f10bb6c2a5f50ce3e64ec31885c17efda1be2f2519"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "048c745ebd5d2f45e5f3a98d0f4ddd2f47f0b6f122ab4c4e914fd85eada09c43"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "0cb9cbcec457502a2d6968e13e998d35ab156470d7cb3972c704112c2a317484"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-29T02:48:36.639552+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

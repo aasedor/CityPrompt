@@ -1,7 +1,7 @@
 # Climbing wall building: The Reef (RLASM v6.1 architectural clay)
 
 Candidate K4 of wave K of 2026-10-23, one of five catalogue additions the user asked for
-(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **reached the v008 version cap without a pass after the user reopened the family; v002 (0 P0 / 1 P1) remains the candidate, not keeper-approved; v008 (0 P0 / 2 P1) left two pocket-shading defects (stepped concentric shade rings and a pinched apex crease in each cup)**. Nothing here is keeper-approved,
+(all four variants of the climbing wall building, and the covered passage); a building option from the building catalogue. State: **PASS_ZERO_P0_P1 at v009 (independent review; the user reopened the family and then approved one version past the v008 cap); v009 is the candidate, not keeper-approved**. Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
@@ -70,11 +70,9 @@ See `VERSIONS.md` beside this file; the independent review records live in
 Keeper approval, runtime integration (`docs/ARCHETYPE_RUNTIME_INTEGRATION.md`), zoning use
 program, picker enrolment, catalogue splice and human activation.
 
-## Open blockers after v008 (cap reached)
+## Open blockers after v009 (passed)
 
-Candidate: `clay-climbing-reef-clay-v002.glb`. The v008 independent review (`evidence/v008/independent-review.md`) left these P0/P1 findings open:
+Candidate: `clay-climbing-reef-clay-v009.glb`. The v009 independent review (`evidence/v009/independent-review.md`) left these P0/P1 findings open:
 
-- **P1** (entrance_sw (cup at 300-640,0-160), entrance_se (400-620,30-200), architecture_close (pockets at 300,480 / 500,500 / 310,750 / 580,830), climbing_pockets (540,625 / 790,800), meadow_path (all four cups), facade_close (620,600), curb_gap (320,120 / 890,90)): Each cup interior shows about 8 distinct concentric bands of flat shade, like a terraced contour map, rather than a continuous darkening into the cup. The steps are plain at close range and still show at mid range (meadow_path, curb_gap). In the sources (front: pockets at 590,240 / 830,250 / 920,470; oblique:... Likely fix: Replace the stepped per-ring shade with one continuous gradient: interpolate vertex colours, or use a radial ramp sampled per vertex with at least 16 rings or a smoothstep, and cap the total darkening at the measured...
-- **P1** (climbing_pockets (dark "V" at 540,625 and 790,780), meadow_path (640,465 / 1235,560 / 400,680), entrance_se (500,160), entrance_sw (475,80), architecture_close (520,525 / 600,830), top (pockets at 375,600 / 515,605 / 625,725)): Almost every cup has a sharp dark star or slit at its deepest point. It reads as a crack or puncture in the bottom of the pocket. No source pocket has this. Likely fix: Close the cup with a small flat or spherical cap ring, not a single apex vertex. Average or weld the apex normals and keep the bottom rounded (normal equal to the cup axis). Check again at climbing_pockets and...
-
-The candidate v002's own open findings are in `evidence/v002/independent-review.md`.
+- **P0** (—): None found. Likely fix: —
+- **P1** (—): None found. In front, front_corner, architecture_close, facade_close, climbing_pockets, entrance_sw/se, curb_gap and meadow_path, each cup darkens smoothly from mouth to floor. No stepped rings and no centre slit appear anywhere. Likely fix: —
