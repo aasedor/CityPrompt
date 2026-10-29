@@ -33,6 +33,13 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 
 ## Gates
 
+For a new exact variant, check both the backend trusted parent/child inventory
+and generated native-model reporting facts before the browser compile. A picker
+card or successful `/plan` response alone does not prove `/place-community` accepts it.
+Verify the actual visible model and camera before saving capture evidence; a new
+reshape-panel title can coexist with a previously selected native mesh. Record any
+explicit re-selection needed, and exclude stale-camera drafts from delivery.
+
 Use PASS / FAIL / NOT TESTED / N/A. Attach evidence to each PASS and a reason
 to each N/A. Use the shared checklist for each gate's full meaning.
 

@@ -1,0 +1,523 @@
+{
+  "candidate": "clay-climbing-overhang-clay-v007",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 1081,
+    "vertices": 1156938,
+    "polygons": 1275845,
+    "triangles": 1275845,
+    "path": "clay-climbing-overhang-clay-v007-authoring.blend",
+    "bytes": 9165420,
+    "sha256": "7ce80ab292203889619ab51212fed6b2cbf7962044ff0f4f47e1517e1c50106f"
+  },
+  "runtime": {
+    "path": "clay-climbing-overhang-clay-v007.glb",
+    "bytes": 3498636,
+    "sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
+    "meshes": 55,
+    "materials": 52,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 855,
+    "vertices": 1156938,
+    "polygons": 1275845,
+    "triangles": 1275845
+  },
+  "original_bounds_m": [
+    [
+      -68.0,
+      -78.0,
+      0.0
+    ],
+    [
+      62.0,
+      70.0,
+      33.20000076293945
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -68.0,
+      -78.0,
+      0.0
+    ],
+    [
+      62.0,
+      70.0,
+      33.20000076293945
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 39.0,
+    "depth": 36.0,
+    "height": 20.45
+  },
+  "native_dimensions_m": {
+    "width": 130.0,
+    "depth": 148.0,
+    "height": 33.20000076293945
+  },
+  "native_bottom_center_m": [
+    -3.0,
+    -4.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "precast": 30,
+    "concrete2": 10,
+    "frame": 14,
+    "glass": 18,
+    "interior": 13,
+    "floor": 1,
+    "timber": 2,
+    "timber2": 1,
+    "hold": 2,
+    "hold_w": 1,
+    "mat": 1,
+    "shirt": 1,
+    "skin": 1,
+    "harness": 1,
+    "paving": 1,
+    "paving2": 1,
+    "trough": 1,
+    "granite": 3,
+    "deck": 1,
+    "coping": 6,
+    "water": 1,
+    "membrane": 4,
+    "mech": 3,
+    "asphalt": 4,
+    "curb": 1,
+    "paint": 4,
+    "soil": 5,
+    "lounger": 1,
+    "hardware": 7,
+    "metal": 2,
+    "brick": 1,
+    "brick2": 1,
+    "ctx": 1,
+    "ctx2": 1,
+    "stone": 5,
+    "tree": 39,
+    "tree3": 5,
+    "tree2": 25,
+    "bark": 43,
+    "car1": 1,
+    "car2": 2,
+    "car3": 1,
+    "planter": 1,
+    "pk_groundcover": 1,
+    "pk_straw": 2,
+    "pk_mulch": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/climbing_face.png",
+    "renders/wall_base_contact.png",
+    "renders/rim_interior.png",
+    "renders/pool_deck.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/interior.png",
+    "renders/plaza_planters.png",
+    "renders/entrance.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Climbing shell: base sunk 15 cm into the plaza, back plane lapped 10 cm into the facade",
+      "rim_m": 20.45
+    },
+    {
+      "name": "The Overhang climbing building",
+      "box": [
+        -23.0,
+        16.0,
+        -18.0,
+        18.0
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "site": [
+      "West street",
+      "East street",
+      "South street",
+      "North street",
+      "Plaza",
+      "West sidewalk",
+      "East sidewalk",
+      "South sidewalk",
+      "North sidewalk",
+      "Far west sidewalk",
+      "Far east sidewalk",
+      "Far south sidewalk",
+      "Far north sidewalk",
+      "site paving2",
+      "site curb",
+      "site paint",
+      "site soil",
+      "site hardware",
+      "site metal"
+    ],
+    "car 1": [
+      "car 1 car1",
+      "car 1 glass",
+      "car 1 hardware"
+    ],
+    "car 2": [
+      "car 2 car2",
+      "car 2 glass",
+      "car 2 hardware"
+    ],
+    "car 3": [
+      "car 3 car3",
+      "car 3 glass",
+      "car 3 hardware"
+    ],
+    "car 4": [
+      "car 4 car2",
+      "car 4 glass",
+      "car 4 hardware"
+    ],
+    "building mass": [
+      "building mass interior",
+      "building mass floor"
+    ],
+    "precast fronts": [
+      "precast fronts precast",
+      "precast fronts coping",
+      "precast fronts glass",
+      "precast fronts frame",
+      "precast fronts interior"
+    ],
+    "south frame box": [
+      "Frame box bottom",
+      "Frame box bottom.001",
+      "Frame box top",
+      "Frame box middle spandrel",
+      "Frame box middle spandrel.001",
+      "Frame box east post",
+      "Frame box east post.001",
+      "Frame box east post.002",
+      "Frame box east post.003",
+      "Frame box east post.004",
+      "Frame box east post.005",
+      "Frame box east post.006",
+      "Frame box east post.007",
+      "Frame box east post.008",
+      "Frame box east post.009",
+      "Frame box east post.010",
+      "Frame box east post.011",
+      "Frame box east post.012",
+      "Frame box east post.013",
+      "Frame box east post.014",
+      "Frame box east post.015",
+      "Parapet band",
+      "Parapet band.001",
+      "Parapet band.002",
+      "Parapet band.003",
+      "Parapet coping",
+      "south frame box precast",
+      "south frame box glass",
+      "south frame box frame",
+      "south frame box interior",
+      "south frame box hardware",
+      "south frame box concrete2"
+    ],
+    "south front under the shell": [
+      "south front under the shell precast",
+      "south front under the shell coping",
+      "south front under the shell glass",
+      "south front under the shell frame",
+      "south front under the shell interior",
+      "south front under the shell membrane"
+    ],
+    "corners": [
+      "corners precast"
+    ],
+    "pool deck": [
+      "pool deck deck",
+      "pool deck coping",
+      "pool deck water",
+      "pool deck trough",
+      "pool deck glass",
+      "pool deck metal",
+      "pool deck lounger",
+      "pool deck planter"
+    ],
+    "penthouse": [
+      "penthouse precast",
+      "penthouse coping",
+      "penthouse glass",
+      "penthouse frame",
+      "penthouse interior",
+      "penthouse hardware",
+      "penthouse membrane",
+      "penthouse mech"
+    ],
+    "east block roof": [
+      "east block roof membrane",
+      "east block roof concrete2",
+      "east block roof glass",
+      "east block roof mech",
+      "east block roof frame"
+    ],
+    "climbing shell": [
+      "Climbing shell CLT",
+      "Climbing shell crash mat"
+    ],
+    "climbing shell fascia": [
+      "climbing shell fascia timber2"
+    ],
+    "climbing holds": [
+      "climbing holds hold_w",
+      "climbing holds hold"
+    ],
+    "climbers": [
+      "climbers shirt",
+      "climbers harness",
+      "climbers skin",
+      "climbers hold"
+    ],
+    "street trees": [
+      "Street tree trunk",
+      "Street tree limb",
+      "Street tree limb.001",
+      "Street tree limb.002",
+      "Street tree trunk.001",
+      "Street tree limb.003",
+      "Street tree limb.004",
+      "Street tree limb.005",
+      "Street tree trunk.002",
+      "Street tree limb.006",
+      "Street tree limb.007",
+      "Street tree limb.008",
+      "Street tree trunk.003",
+      "Street tree limb.009",
+      "Street tree limb.010",
+      "Street tree limb.011",
+      "Street tree trunk.004",
+      "Street tree limb.012",
+      "Street tree limb.013",
+      "Street tree limb.014",
+      "Street tree trunk.005",
+      "Street tree limb.015",
+      "Street tree limb.016",
+      "Street tree limb.017",
+      "Street tree trunk.006",
+      "Street tree limb.018",
+      "Street tree limb.019",
+      "Street tree limb.020",
+      "Street tree trunk.007",
+      "Street tree limb.021",
+      "Street tree limb.022",
+      "Street tree limb.023",
+      "Street tree trunk.008",
+      "Street tree limb.024",
+      "Street tree limb.025",
+      "Street tree limb.026",
+      "Street tree trunk.009",
+      "Street tree limb.027",
+      "Street tree limb.028",
+      "Street tree limb.029"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032",
+      "Street tree crown.033",
+      "Street tree crown.034",
+      "Street tree crown.035",
+      "Street tree crown.036",
+      "Street tree crown.037",
+      "Street tree crown.038",
+      "Street tree crown.039",
+      "Street tree crown.040",
+      "Street tree crown.041",
+      "Street tree crown.042",
+      "Street tree crown.043",
+      "Street tree crown.044",
+      "Street tree crown.045",
+      "Street tree crown.046",
+      "Street tree crown.047",
+      "Street tree crown.048",
+      "Street tree crown.049",
+      "Street tree crown.050",
+      "Street tree crown.051",
+      "Street tree crown.052",
+      "Street tree crown.053",
+      "Street tree crown.054",
+      "Street tree crown.055",
+      "Street tree crown.056",
+      "Street tree crown.057",
+      "Street tree crown.058",
+      "Street tree crown.059",
+      "Roof tree crown",
+      "Roof tree crown.001",
+      "Roof tree crown.002",
+      "Roof tree crown.003",
+      "Roof tree crown.004",
+      "Roof tree crown.005",
+      "Roof tree crown.006",
+      "Roof tree crown.007",
+      "Roof tree crown.008"
+    ],
+    "roof garden": [
+      "Roof tree trunk",
+      "Roof tree trunk.001",
+      "Roof tree trunk.002"
+    ],
+    "planters": [
+      "Planter walls",
+      "Planter 0 soil",
+      "Planter walls.001",
+      "Planter 1 soil",
+      "Planter walls.002",
+      "Planter 2 soil",
+      "planters soil"
+    ],
+    "planting": [
+      "Planter 0 groundcover",
+      "Planter 1 groundcover",
+      "Planter 2 groundcover",
+      "Roof garden 0 groundcover",
+      "Roof garden 1 groundcover",
+      {
+        "planting_kit": true,
+        "instancing": true,
+        "plants": 416,
+        "instance_nodes": 809,
+        "prototypes": {
+          "ov_switch_grass": 84,
+          "ov_feather_reed": 201,
+          "ov_edge_grass": 6,
+          "ov_shrub": 54,
+          "ov_fountain_grass": 71
+        },
+        "clearance_violations": 0,
+        "rejected": 280
+      }
+    ],
+    "interiors": [
+      "interiors timber",
+      "interiors coping",
+      "interiors frame"
+    ],
+    "context": [
+      "context brick",
+      "context membrane",
+      "context mech",
+      "context brick2",
+      "context ctx",
+      "context ctx2"
+    ],
+    "east block 1": [
+      "east block 1 west face east block 1 interior",
+      "east block 1 west face east block 1 glass",
+      "east block 1 west face east block 1 stone",
+      "east block 1 west face east block 1 frame"
+    ],
+    "east block 2": [
+      "east block 2 west face east block 2 interior",
+      "east block 2 west face east block 2 glass",
+      "east block 2 west face east block 2 stone",
+      "east block 2 west face east block 2 frame"
+    ],
+    "west block 1": [
+      "west block 1 east face west block 1 interior",
+      "west block 1 east face west block 1 glass",
+      "west block 1 east face west block 1 stone",
+      "west block 1 east face west block 1 frame"
+    ],
+    "west block 2": [
+      "west block 2 east face west block 2 interior",
+      "west block 2 east face west block 2 glass",
+      "west block 2 east face west block 2 stone",
+      "west block 2 east face west block 2 frame"
+    ],
+    "north block 1": [
+      "north block 1 south face north block 1 interior",
+      "north block 1 south face north block 1 glass",
+      "north block 1 south face north block 1 paint",
+      "north block 1 south face north block 1 frame"
+    ],
+    "north block 2": [
+      "north block 2 south face north block 2 interior",
+      "north block 2 south face north block 2 glass",
+      "north block 2 south face north block 2 stone",
+      "north block 2 south face north block 2 frame"
+    ],
+    "north block 3": [
+      "north block 3 south face north block 3 interior",
+      "north block 3 south face north block 3 glass",
+      "north block 3 south face north block 3 paint",
+      "north block 3 south face north block 3 frame"
+    ],
+    "south block": [
+      "south block north face south block interior",
+      "south block north face south block glass",
+      "south block north face south block paint",
+      "south block north face south block frame"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-27T06:44:15.614778+00:00",
+  "delivery_and_render_seconds": 7864.729231714001,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

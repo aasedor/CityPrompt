@@ -1,0 +1,557 @@
+{
+  "candidate": "clay-climbing-reef-clay-v009",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 1096,
+    "vertices": 930060,
+    "polygons": 1102778,
+    "triangles": 1102778,
+    "path": "clay-climbing-reef-clay-v009-authoring.blend",
+    "bytes": 14386724,
+    "sha256": "c09cb7bb53aa1b49559443dfc3bdabe844e07ebdf4ee45f56fc910d41b34e86d"
+  },
+  "runtime": {
+    "path": "clay-climbing-reef-clay-v009.glb",
+    "bytes": 3910236,
+    "sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
+    "meshes": 40,
+    "materials": 49,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 917,
+    "vertices": 930060,
+    "polygons": 1102778,
+    "triangles": 1102778
+  },
+  "original_bounds_m": [
+    [
+      -150.0,
+      -150.0,
+      0.0
+    ],
+    [
+      150.0,
+      150.0,
+      9.505199432373047
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -150.0,
+      -150.0,
+      0.0
+    ],
+    [
+      150.0,
+      150.0,
+      9.505199432373047
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 30.0,
+    "depth": 27.0,
+    "height": 8.2
+  },
+  "native_dimensions_m": {
+    "width": 300.0,
+    "depth": 300.0,
+    "height": 9.505199432373047
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "reef1": 1,
+    "reef2": 5,
+    "reef3": 1,
+    "reef4": 1,
+    "rim": 12,
+    "dome": 12,
+    "tint": 4,
+    "frame": 4,
+    "hardware": 4,
+    "mat": 1,
+    "apron": 5,
+    "curb": 4,
+    "liner": 12,
+    "shellpath": 4,
+    "shell2": 1,
+    "shell3": 1,
+    "concrete": 1,
+    "lawn": 1,
+    "mulch": 8,
+    "hold_r": 1,
+    "hold_y": 1,
+    "hold_b": 1,
+    "hold_p": 1,
+    "hold_k": 1,
+    "hold_w": 1,
+    "hold_n": 1,
+    "hold_o": 1,
+    "hold_g": 1,
+    "bark": 54,
+    "tree": 22,
+    "tree2": 22,
+    "tree3": 22,
+    "reef5v": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/interior.png",
+    "renders/entrance_sw.png",
+    "renders/entrance_se.png",
+    "renders/curb_gap.png",
+    "renders/roof_skylights.png",
+    "renders/climbing_pockets.png",
+    "renders/meadow_path.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Hall floor lapped into the shell base; boulders on the floor",
+      "floor_m": 0.1
+    },
+    {
+      "name": "Apron at grade from under the shell wall to the curb; curb on grade",
+      "apron_m": 0.06,
+      "curb_m": 0.5
+    },
+    {
+      "name": "The Reef bouldering shell on its apron in the meadow park",
+      "box": [
+        -15.6,
+        14.4,
+        -14.4,
+        12.6
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "entrance_0",
+      "face": "Entrance 0",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 3.4,
+      "height": 1.6,
+      "kind": "arched glazed entrance",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 1.8287042045625121,
+      "frame_inset_m": 0.5787042045625121,
+      "pane_inset_m": 0.5787042045625121,
+      "face_origin": [
+        -6.2777267371826335,
+        -7.221698507621534,
+        0.0
+      ],
+      "face_tangent": [
+        0.7547095802227721,
+        -0.6560590289905072,
+        0.0
+      ],
+      "face_inward": [
+        0.6560590289905072,
+        0.7547095802227721,
+        -0.0
+      ],
+      "occupied_space": "bouldering hall"
+    },
+    {
+      "id": "entrance_1",
+      "face": "Entrance 1",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 3.4,
+      "height": 1.6,
+      "kind": "arched glazed entrance",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 1.8068919563848764,
+      "frame_inset_m": 0.5568919563848763,
+      "pane_inset_m": 0.5568919563848763,
+      "face_origin": [
+        6.015196325225485,
+        -6.450508323827264,
+        0.0
+      ],
+      "face_tangent": [
+        0.7313537016191705,
+        0.6819983600624985,
+        0.0
+      ],
+      "face_inward": [
+        -0.6819983600624985,
+        0.7313537016191705,
+        -0.0
+      ],
+      "occupied_space": "bouldering hall"
+    },
+    {
+      "id": "entrance_2",
+      "face": "Entrance 2",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 3.4,
+      "height": 1.6,
+      "kind": "arched glazed entrance",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 1.794777031166804,
+      "frame_inset_m": 0.5447770311668039,
+      "pane_inset_m": 0.5447770311668039,
+      "face_origin": [
+        5.731521995060973,
+        6.1463048483216305,
+        0.0
+      ],
+      "face_tangent": [
+        -0.7313537016191705,
+        0.6819983600624985,
+        0.0
+      ],
+      "face_inward": [
+        -0.6819983600624985,
+        -0.7313537016191705,
+        -0.0
+      ],
+      "occupied_space": "bouldering hall"
+    },
+    {
+      "id": "entrance_3",
+      "face": "Entrance 3",
+      "u": 0.0,
+      "z": 0.15,
+      "width": 3.4,
+      "height": 1.6,
+      "kind": "arched glazed entrance",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 1.7670653673015655,
+      "frame_inset_m": 0.5170653673015654,
+      "pane_inset_m": 0.5170653673015654,
+      "face_origin": [
+        -4.167428512461188,
+        6.178466851642069,
+        0.0
+      ],
+      "face_tangent": [
+        -0.8290375725550417,
+        -0.5591929034707467,
+        0.0
+      ],
+      "face_inward": [
+        0.5591929034707467,
+        -0.8290375725550417,
+        -0.0
+      ],
+      "occupied_space": "bouldering hall"
+    }
+  ],
+  "authoring_modules": {
+    "shell": [
+      "Reef shell",
+      "Reef pocket cups"
+    ],
+    "construction cutter": [
+      "Skylight cutter.001",
+      "Skylight cutter.002",
+      "Skylight cutter.003",
+      "Skylight cutter.004",
+      "Skylight cutter.005",
+      "Skylight cutter.006",
+      "Skylight cutter.007",
+      "Skylight cutter.008",
+      "Skylight cutter.009",
+      "Skylight cutter.010",
+      "Skylight cutter.011",
+      "Entrance cutter",
+      "Entrance cutter.001",
+      "Entrance cutter.002",
+      "Entrance cutter.003"
+    ],
+    "skylights": [
+      "Skylight collar 0",
+      "Skylight reveal liner 0",
+      "Skylight dome 0",
+      "Skylight collar 1",
+      "Skylight reveal liner 1",
+      "Skylight dome 1",
+      "Skylight collar 2",
+      "Skylight reveal liner 2",
+      "Skylight dome 2",
+      "Skylight collar 3",
+      "Skylight reveal liner 3",
+      "Skylight dome 3",
+      "Skylight collar 4",
+      "Skylight reveal liner 4",
+      "Skylight dome 4",
+      "Skylight collar 5",
+      "Skylight reveal liner 5",
+      "Skylight dome 5",
+      "Skylight collar 6",
+      "Skylight reveal liner 6",
+      "Skylight dome 6",
+      "Skylight collar 7",
+      "Skylight reveal liner 7",
+      "Skylight dome 7",
+      "Skylight collar 8",
+      "Skylight reveal liner 8",
+      "Skylight dome 8",
+      "Skylight collar 9",
+      "Skylight reveal liner 9",
+      "Skylight dome 9",
+      "Skylight collar 10",
+      "Skylight reveal liner 10",
+      "Skylight dome 10",
+      "Skylight collar 11",
+      "Skylight reveal liner 11",
+      "Skylight dome 11"
+    ],
+    "entrances": [
+      "Entrance 0 tunnel lining",
+      "Entrance 0 glazing",
+      "Entrance 1 tunnel lining",
+      "Entrance 1 glazing",
+      "Entrance 2 tunnel lining",
+      "Entrance 2 glazing",
+      "Entrance 3 tunnel lining",
+      "Entrance 3 glazing"
+    ],
+    "entrance 0": [
+      "Entrance 0 entrance 0 frame",
+      "Entrance 0 entrance 0 hardware",
+      "Entrance 0 entrance 0 apron"
+    ],
+    "entrance 1": [
+      "Entrance 1 entrance 1 frame",
+      "Entrance 1 entrance 1 hardware",
+      "Entrance 1 entrance 1 apron"
+    ],
+    "entrance 2": [
+      "Entrance 2 entrance 2 frame",
+      "Entrance 2 entrance 2 hardware",
+      "Entrance 2 entrance 2 apron"
+    ],
+    "entrance 3": [
+      "Entrance 3 entrance 3 frame",
+      "Entrance 3 entrance 3 hardware",
+      "Entrance 3 entrance 3 apron"
+    ],
+    "holds": [
+      "Climbing holds hold_p",
+      "Climbing holds hold_y",
+      "Climbing holds hold_o",
+      "Climbing holds hold_b",
+      "Climbing holds hold_w",
+      "Climbing holds hold_r",
+      "Climbing holds hold_g",
+      "Climbing holds hold_n",
+      "Climbing holds hold_k"
+    ],
+    "inside": [
+      "Hall floor",
+      "Bouldering block 0",
+      "Bouldering block 1",
+      "Bouldering block 2"
+    ],
+    "apron": [
+      "Crash-pad apron",
+      "Curb segment 0",
+      "Curb segment 1",
+      "Curb segment 2",
+      "Curb segment 3"
+    ],
+    "paths": [
+      "Shell path +113",
+      "Shell path +42",
+      "Shell path -45",
+      "Shell path -137",
+      "Crushed shell shell2",
+      "Crushed shell shell3",
+      "Ring path"
+    ],
+    "site": [
+      "Park lawn"
+    ],
+    "beds": [
+      "Meadow bed 0",
+      "Meadow bed 1",
+      "Meadow bed 2",
+      "Meadow bed 3",
+      "Meadow bed 4",
+      "Meadow bed 5",
+      "Meadow bed 6",
+      "Meadow bed 7"
+    ],
+    "planting": [
+      {
+        "planting_kit": true,
+        "instancing": true,
+        "plants": 804,
+        "instance_nodes": 884,
+        "prototypes": {
+          "reef_palmetto": 328,
+          "reef_tall_gold": 175,
+          "reef_fountain": 199,
+          "reef_shrub": 40,
+          "reef_gold_grass": 62
+        },
+        "clearance_violations": 0,
+        "rejected": 0
+      }
+    ],
+    "trees": [
+      "Small tree stem",
+      "Small tree stem.001",
+      "Small tree stem.002",
+      "Small tree stem.003",
+      "Small tree stem.004",
+      "Small tree stem.005",
+      "Small tree stem.006",
+      "Small tree stem.007",
+      "Small tree stem.008",
+      "Small tree stem.009",
+      "Small tree stem.010",
+      "Small tree stem.011",
+      "Small tree stem.012",
+      "Small tree stem.013",
+      "Small tree stem.014",
+      "Small tree stem.015",
+      "Small tree stem.016",
+      "Small tree stem.017",
+      "Tree trunk",
+      "Tree limb",
+      "Tree limb.001",
+      "Tree trunk.001",
+      "Tree limb.002",
+      "Tree limb.003",
+      "Tree trunk.002",
+      "Tree limb.004",
+      "Tree limb.005",
+      "Tree trunk.003",
+      "Tree limb.006",
+      "Tree limb.007",
+      "Tree trunk.004",
+      "Tree limb.008",
+      "Tree limb.009",
+      "Tree trunk.005",
+      "Tree limb.010",
+      "Tree limb.011",
+      "Tree trunk.006",
+      "Tree limb.012",
+      "Tree limb.013",
+      "Tree trunk.007",
+      "Tree limb.014",
+      "Tree limb.015",
+      "Tree trunk.008",
+      "Tree limb.016",
+      "Tree limb.017",
+      "Tree trunk.009",
+      "Tree limb.018",
+      "Tree limb.019",
+      "Tree trunk.010",
+      "Tree limb.020",
+      "Tree limb.021",
+      "Tree trunk.011",
+      "Tree limb.022",
+      "Tree limb.023"
+    ],
+    "garden planting": [
+      "Small tree crown",
+      "Small tree crown.001",
+      "Small tree crown.002",
+      "Small tree crown.003",
+      "Small tree crown.004",
+      "Small tree crown.005",
+      "Small tree crown.006",
+      "Small tree crown.007",
+      "Small tree crown.008",
+      "Small tree crown.009",
+      "Small tree crown.010",
+      "Small tree crown.011",
+      "Small tree crown.012",
+      "Small tree crown.013",
+      "Small tree crown.014",
+      "Small tree crown.015",
+      "Small tree crown.016",
+      "Small tree crown.017",
+      "Tree crown",
+      "Tree crown.001",
+      "Tree crown.002",
+      "Tree crown.003",
+      "Tree crown.004",
+      "Tree crown.005",
+      "Tree crown.006",
+      "Tree crown.007",
+      "Tree crown.008",
+      "Tree crown.009",
+      "Tree crown.010",
+      "Tree crown.011",
+      "Tree crown.012",
+      "Tree crown.013",
+      "Tree crown.014",
+      "Tree crown.015",
+      "Tree crown.016",
+      "Tree crown.017",
+      "Tree crown.018",
+      "Tree crown.019",
+      "Tree crown.020",
+      "Tree crown.021",
+      "Tree crown.022",
+      "Tree crown.023",
+      "Tree crown.024",
+      "Tree crown.025",
+      "Tree crown.026",
+      "Tree crown.027",
+      "Tree crown.028",
+      "Tree crown.029",
+      "Tree crown.030",
+      "Tree crown.031",
+      "Tree crown.032",
+      "Tree crown.033",
+      "Tree crown.034",
+      "Tree crown.035",
+      "Tree crown.036",
+      "Tree crown.037",
+      "Tree crown.038",
+      "Tree crown.039",
+      "Tree crown.040",
+      "Tree crown.041",
+      "Tree crown.042",
+      "Tree crown.043",
+      "Tree crown.044",
+      "Tree crown.045",
+      "Tree crown.046",
+      "Tree crown.047"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-29T03:13:10.852135+00:00",
+  "delivery_and_render_seconds": 1455.536129575,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

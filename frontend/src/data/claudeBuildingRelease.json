@@ -3,6 +3,14 @@
   "source_commit": "2e6f4860b75545aebe5a9cccabb845f3943ba8e9",
   "entries": [
     {
+      "asset_id": "claude_climbing_crucible_v004",
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "climbing_crucible",
+      "candidate": "clay-climbing-crucible-clay-v004",
+      "model_sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc",
+      "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1"
+    },
+    {
       "asset_id": "claude_trial_arched_mill_mixed_use",
       "archetype_id": "industrial_brick_mixed_use",
       "variant_id": "industrial_brick_original_mill",
@@ -127,6 +135,30 @@
       "variant_id": "toronto_bay_gable_yellow_brick",
       "candidate": "clay-toronto-bay-and-gable-house-clay-v004",
       "model_sha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8"
+    },
+    {
+      "asset_id": "claude_climbing_overhang_v007",
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "climbing_overhang",
+      "candidate": "clay-climbing-overhang-clay-v007",
+      "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
+      "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1"
+    },
+    {
+      "asset_id": "claude_climbing_reef_v009",
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "climbing_reef",
+      "candidate": "clay-climbing-reef-clay-v009",
+      "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
+      "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1"
+    },
+    {
+      "asset_id": "claude_sandstone_clock_tower_v006",
+      "archetype_id": "calgary_sandstone_heritage",
+      "variant_id": "sandstone_claude_clock_tower_v006",
+      "candidate": "clay-calgary-sandstone-heritage-clay-v006",
+      "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
+      "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1"
     }
   ]
 }

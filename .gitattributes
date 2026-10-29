@@ -105,3 +105,28 @@ seed/classroom-streets/neighbourhood-five/**/*.json -text whitespace=cr-at-eol
 frontend/src/features/landing/media/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/src/features/landing/media/*.mp4 filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/streets/standalone-sidewalks/*.png filter=lfs diff=lfs merge=lfs -text
+# Exact reviewed Claude source packages; preserve evidence hashes on Windows.
+tools/clay_climbing_crucible/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_crucible/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_crucible/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_crucible/**/*.json -text whitespace=cr-at-eol
+tools/clay_climbing_crucible/**/*.md -text whitespace=cr-at-eol
+tools/clay_climbing_crucible/**/*.py -text whitespace=cr-at-eol
+tools/clay_climbing_overhang/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_overhang/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_overhang/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_overhang/**/*.json -text whitespace=cr-at-eol
+tools/clay_climbing_overhang/**/*.md -text whitespace=cr-at-eol
+tools/clay_climbing_overhang/**/*.py -text whitespace=cr-at-eol
+tools/clay_climbing_reef/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_reef/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_reef/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_reef/**/*.json -text whitespace=cr-at-eol
+tools/clay_climbing_reef/**/*.md -text whitespace=cr-at-eol
+tools/clay_climbing_reef/**/*.py -text whitespace=cr-at-eol
+tools/clay_calgary_sandstone_heritage/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_calgary_sandstone_heritage/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_calgary_sandstone_heritage/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_calgary_sandstone_heritage/**/*.json -text whitespace=cr-at-eol
+tools/clay_calgary_sandstone_heritage/**/*.md -text whitespace=cr-at-eol
+tools/clay_calgary_sandstone_heritage/**/*.py -text whitespace=cr-at-eol

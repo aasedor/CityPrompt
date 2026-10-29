@@ -3241,6 +3241,166 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 2,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "claude_climbing_crucible_v004",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "The Crucible climbing centre",
+    "description": "Corten industrial climbing centre with a dark hexagonal wall, glazed east hall and planted rooftop running track.",
+    "thumbnail": "/archetypes/buildings/climbing_wall_building/variant_0.png",
+    "model": {
+      "variantId": "climbing_crucible",
+      "revision": "clay-climbing-crucible-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 154.0,
+    "depth": 129.0,
+    "minWidth": 154.0,
+    "minDepth": 129.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      150.0,
+      125.0999984741211,
+      39.599998474121094
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size. Integral roof landscaping stays with the model.",
+    "properties": {
+      "building_archetype_id": "climbing_wall_building",
+      "development_archetype_id": "climbing_wall_building",
+      "development_selected_variant_id": "climbing_crucible",
+      "development_archetype_label": "The Crucible climbing centre",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_climbing_overhang_v007",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "The Overhang climbing centre",
+    "description": "White precast recreation centre with a folded timber climbing shell and planted rooftop pool deck.",
+    "thumbnail": "/archetypes/buildings/climbing_wall_building/variant_1.png",
+    "model": {
+      "variantId": "climbing_overhang",
+      "revision": "clay-climbing-overhang-clay-v007",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 160.0,
+    "depth": 160.0,
+    "minWidth": 160.0,
+    "minDepth": 160.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      130.0,
+      148.0,
+      33.20000076293945
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model.",
+    "properties": {
+      "building_archetype_id": "climbing_wall_building",
+      "development_archetype_id": "climbing_wall_building",
+      "development_selected_variant_id": "climbing_overhang",
+      "development_archetype_label": "The Overhang climbing centre",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_climbing_reef_v009",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "The Reef climbing centre",
+    "description": "Contour-banded teal climbing shell with twelve skylights and its compact safety apron.",
+    "thumbnail": "/archetypes/buildings/climbing_wall_building/variant_3.png",
+    "model": {
+      "variantId": "climbing_reef",
+      "revision": "clay-climbing-reef-clay-v009",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 304.0,
+    "depth": 304.0,
+    "minWidth": 304.0,
+    "minDepth": 304.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      300.0,
+      300.0,
+      9.505199733066547
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model.",
+    "properties": {
+      "building_archetype_id": "climbing_wall_building",
+      "development_archetype_id": "climbing_wall_building",
+      "development_selected_variant_id": "climbing_reef",
+      "development_archetype_label": "The Reef climbing centre",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_sandstone_clock_tower_v006",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Sandstone clock-tower block",
+    "description": "Richardsonian Romanesque sandstone civic block with an internal court and copper-spired clock tower.",
+    "thumbnail": "/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
+    "model": {
+      "variantId": "sandstone_claude_clock_tower_v006",
+      "revision": "clay-calgary-sandstone-heritage-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 95.0,
+    "depth": 95.0,
+    "minWidth": 95.0,
+    "minDepth": 95.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      88.0199966430664,
+      84.0,
+      49.29999923706055
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model.",
+    "properties": {
+      "building_archetype_id": "calgary_sandstone_heritage",
+      "development_archetype_id": "calgary_sandstone_heritage",
+      "development_selected_variant_id": "sandstone_claude_clock_tower_v006",
+      "development_archetype_label": "Sandstone clock-tower block",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
   }
 ];
 

@@ -1263,6 +1263,110 @@
       "current": true
     },
     {
+      "asset_id": "trial_sandstone_civic",
+      "variant_id": "sandstone_romanesque_revival",
+      "revision": "calgary-sandstone-heritage-clay-v007",
+      "dimensions_m": [
+        59.40999984741211,
+        60.010000228881836,
+        44
+      ],
+      "storeys": 3,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_classic_courtyard_motel",
+      "variant_id": "hotel_roadside_motel",
+      "revision": "highway-motor-hotel-clay-v002",
+      "dimensions_m": [
+        24.8799991607666,
+        37.7400016784668,
+        7.21999979019165
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_beltline_brick_midrise",
+      "variant_id": "beltline_brick_modern",
+      "revision": "calgary-beltline-mid-rise-clay-v003",
+      "dimensions_m": [
+        34.15999984741211,
+        34.15999984741211,
+        20.43000030517578
+      ],
+      "storeys": 5,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_twisting_glass_sky_garden_tower",
+      "variant_id": "glass_tower_twisted",
+      "revision": "glass-tower-twisted-clay-v005",
+      "dimensions_m": [
+        43.4902229309082,
+        44.02606964111328,
+        147.6999969482422
+      ],
+      "storeys": 40,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_climbing_crucible_v004",
+      "variant_id": "climbing_crucible",
+      "revision": "clay-climbing-crucible-clay-v004",
+      "dimensions_m": [
+        101.69000244140625,
+        31.2222843170166,
+        31.93000030517578
+      ],
+      "storeys": 4,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_climbing_overhang_v007",
+      "variant_id": "climbing_overhang",
+      "revision": "clay-climbing-overhang-clay-v007",
+      "dimensions_m": [
+        39.959999084472656,
+        46.937530517578125,
+        20.704999923706055
+      ],
+      "storeys": 3,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_climbing_reef_v009",
+      "variant_id": "climbing_reef",
+      "revision": "clay-climbing-reef-clay-v009",
+      "dimensions_m": [
+        36.338274002075195,
+        32.29375648498535,
+        7.874085903167725
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "claude_sandstone_clock_tower_v006",
+      "variant_id": "sandstone_claude_clock_tower_v006",
+      "revision": "clay-calgary-sandstone-heritage-clay-v006",
+      "dimensions_m": [
+        52.75,
+        50,
+        49.29999923706055
+      ],
+      "storeys": 4,
+      "fixed": true,
+      "current": true
+    },
+    {
       "asset_id": "validation_minimalist_infill_brick_monolith",
       "variant_id": "minimalist_infill_brick_monolith",
       "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",

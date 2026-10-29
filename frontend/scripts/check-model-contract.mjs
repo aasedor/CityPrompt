@@ -15,7 +15,13 @@ const server = await createServer({root,configFile:resolve(root,'vite.config.ts'
 let rows;
 try {
   const { CATALOGUE_ASSETS } = await server.ssrLoadModule('/src/features/pickPlace/assetRegistry.ts');
-  rows = CATALOGUE_ASSETS.filter(row => row.zoneType === 'building' && row.reshapeMode === 'fixed_native');
+  const { CATALOGUE_BUILDING_ASSETS } = await server.ssrLoadModule('/src/features/pickPlace/publishedBuildingAssets.ts');
+  const { withBuildingOnlyFootprint } = await server.ssrLoadModule('/src/features/pickPlace/buildingOnlyFootprint.ts');
+  // Saved local trials need exact report facts without becoming production picker choices.
+  // Prefer registered programmes for published assets; add only missing authored identities.
+  const authored = CATALOGUE_BUILDING_ASSETS.filter(row => !CATALOGUE_ASSETS.some(asset => asset.id === row.id))
+    .map(withBuildingOnlyFootprint);
+  rows = [...CATALOGUE_ASSETS, ...authored].filter(row => row.zoneType === 'building' && row.reshapeMode === 'fixed_native');
 } finally {await server.close();}
 const records = rows.map(row => ({asset_id:row.id,variant_id:row.model.variantId,revision:row.model.revision,
   dimensions_m:row.nativeDimensions,storeys:row.properties.floor_count ?? row.properties.floors,

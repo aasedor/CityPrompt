@@ -28,6 +28,18 @@ function fixture() {
 function bounds(source:THREE.Object3D) { return new THREE.Box3().setFromObject(source,true); }
 
 describe('exact building-only runtime scene',()=>{
+  it('opts the exact Crucible pilot into building-only extraction, retaining integral rooftop structure',()=>{
+    const source=new THREE.Group();
+    source.add(boxes('CLAY_WALL',[[0,14,0,40,28,12]]),
+      boxes('CLAY_ROOF',[[0,27,0,40,.2,12]]),
+      boxes('CLAY_ASPHALT',[[0,.05,40,150,.1,10]]));
+    const result=prepareBuildingOnlyScene(source,'clay-climbing-crucible-clay-v004');
+    expect(result.applied).toBe(true);
+    expect(result.clone.getObjectByName('CLAY_ASPHALT')).toBeUndefined();
+    expect(result.clone.getObjectByName('CLAY_WALL')).toBeDefined();
+    expect(result.clone.getObjectByName('CLAY_ROOF')).toBeDefined();
+    expect(source.children).toHaveLength(3);
+  });
   it('separates a source-owned slab even when its vertices touch scene paving',()=>{
     const source=new THREE.Group();
     // Source ordinal ownership: four scene boxes first; the building base last.

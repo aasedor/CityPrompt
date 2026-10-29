@@ -7,9 +7,15 @@ from pathlib import Path
 import pytest
 from app.services.lego_assembly import AssemblyPlanningError, AssemblyRequest, ModuleDescriptor, plan_vertical_assembly
 from app.services.model_contract import native_model_facts
+from app.services.lego_assembly import catalog_parent_archetype_id
 
 ROOT = Path(__file__).resolve().parents[2]
 CONTRACTS = json.loads((ROOT/'frontend/src/features/legoAssembly/buildingOnlyContracts.json').read_text())
+
+
+@pytest.mark.parametrize('member', json.loads((ROOT/'frontend/src/data/claudeBuildingRelease.json').read_text())['entries'])
+def test_exact_claude_variant_is_trusted_for_community_compilation(member):
+    assert catalog_parent_archetype_id(member['variant_id']) == member['archetype_id']
 
 
 def test_packaged_backend_matches_exact_renderer_envelopes():

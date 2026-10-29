@@ -12132,6 +12132,371 @@
         "unresolved_p0": 0,
         "unresolved_p1": 0
       }
+    },
+    {
+      "candidate": "clay-climbing-crucible-clay-v004",
+      "family": "rlasm-clay-climbing-crucible-claude-v004",
+      "archetype_id": "climbing_wall_building",
+      "archetype_label": "Climbing centre",
+      "variant_id": "climbing_crucible",
+      "variant_label": "The Crucible climbing centre",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 101,
+        "depth": 28,
+        "height": 28.14
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0.png",
+          "bytes": 1254544,
+          "sha256": "a2b53e14adb38bae7599241724773027be0f01b112e97c090d51a9737cc5d1c8"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_60.jpg",
+          "bytes": 815928,
+          "sha256": "8443b0f6a5b3da03d2936bd77ae457ccb085eea419b57ade87abcd2318425bff"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_90.jpg",
+          "bytes": 896561,
+          "sha256": "cb1a5bf529bebca56c1c8787b626d2204ae17b3b326293575fde4ab2634ed9c9"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "limitations": [
+        "Architectural clay teaching model; original source is immutable.",
+        "Runtime retains the building and its integral rooftop garden, running track and pavilion; roads, neighbouring warehouses and large surrounding landscaping are removed.",
+        "Fixed native geometry, authored four occupied levels. Snug runtime bounds are derived separately from retained geometry; seed source dimensions remain original GLB bounds.",
+        "Prepared level site trial only; natural/sloped terrain and independent climbing safety/compliance are not verified."
+      ],
+      "picker": {
+        "id": "claude_climbing_crucible_v004",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 154,
+        "depth": 129,
+        "max_size": 600,
+        "description": "Corten industrial climbing centre with a dark hexagonal wall, glazed east hall and planted rooftop running track.",
+        "reshape_description": "Move and rotate the complete building at its authored size. Integral roof landscaping stays with the model."
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {
+        "model_sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc",
+        "project_url": "",
+        "tested_by": "",
+        "tested_at": "",
+        "evidence": [],
+        "checks": {
+          "catalogue_card": false,
+          "exact_variant": false,
+          "ground_contact": false,
+          "small_and_large_plot": false,
+          "rotation": false,
+          "save_reload": false,
+          "close_and_occluded_capture": false,
+          "no_console_errors": false
+        }
+      },
+      "local_trial_only": true,
+      "model": {
+        "path": "models/clay-climbing-crucible-clay-v004.glb",
+        "bytes": 3247880,
+        "sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc",
+        "native_dimensions_m": {
+          "width": 150.0,
+          "height": 39.599998474121094,
+          "depth": 125.0999984741211
+        },
+        "mesh_count": 52,
+        "material_count": 48,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-climbing-crucible-clay-v004.json",
+        "sha256": "c2095ee9b1af38bd59d74e299bd2006b842b52eea051433ec2ca20385da40415",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-climbing-overhang-clay-v007",
+      "family": "rlasm-clay-climbing-overhang-claude-v007",
+      "archetype_id": "climbing_wall_building",
+      "archetype_label": "Climbing centre",
+      "variant_id": "climbing_overhang",
+      "variant_label": "The Overhang climbing centre",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 39,
+        "depth": 36,
+        "height": 20.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1.png",
+          "bytes": 1349697,
+          "sha256": "345d575a53846738cda1d24794ec0cc409cb5f2335cc624a41c403d83eb5bde8"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_60.jpg",
+          "bytes": 837723,
+          "sha256": "55c334948355972cab086576da047e5d72f85c4682acc308d9507296cfc538ea"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_90.jpg",
+          "bytes": 775997,
+          "sha256": "a6854c9b52d8ccd115ab1110b5466f61cec8486b533d4112577a4561ccdd6bb0"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "limitations": [
+        "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+        "Fixed native geometry; snug bounds derive from complete retained architecture.",
+        "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+      ],
+      "picker": {
+        "id": "claude_climbing_overhang_v007",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 160,
+        "depth": 160,
+        "max_size": 600,
+        "description": "White precast recreation centre with a folded timber climbing shell and planted rooftop pool deck.",
+        "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {
+        "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
+        "project_url": "",
+        "tested_by": "",
+        "tested_at": "",
+        "evidence": [],
+        "checks": {
+          "catalogue_card": false,
+          "exact_variant": false,
+          "ground_contact": false,
+          "small_and_large_plot": false,
+          "rotation": false,
+          "save_reload": false,
+          "close_and_occluded_capture": false,
+          "no_console_errors": false
+        }
+      },
+      "local_trial_only": true,
+      "model": {
+        "path": "models/clay-climbing-overhang-clay-v007.glb",
+        "bytes": 3498636,
+        "sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
+        "native_dimensions_m": {
+          "width": 130.0,
+          "height": 33.20000076293945,
+          "depth": 148.0
+        },
+        "mesh_count": 55,
+        "material_count": 52,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-climbing-overhang-clay-v007.json",
+        "sha256": "06243132b3375b02dda795564000cb8adb29e7152765ee56e9ad466c2a62c25e",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-climbing-reef-clay-v009",
+      "family": "rlasm-clay-climbing-reef-claude-v009",
+      "archetype_id": "climbing_wall_building",
+      "archetype_label": "Climbing centre",
+      "variant_id": "climbing_reef",
+      "variant_label": "The Reef climbing centre",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 34,
+        "depth": 30,
+        "height": 7.9
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3.png",
+          "bytes": 1359680,
+          "sha256": "c510322572ffa49702465f621dd95575a967787b28a37e96755cec68263fc595"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_60.jpg",
+          "bytes": 817640,
+          "sha256": "122c06c58a3287c7eb1a503e9d94ce4a6b712275f42e5c65e1bbfdc592027ac9"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_90.jpg",
+          "bytes": 811835,
+          "sha256": "cf5e6092abfb9702cc5fa59e2ba60b579be0c420489a4e31528466d43ec8fe34"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "limitations": [
+        "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+        "Fixed native geometry; snug bounds derive from complete retained architecture.",
+        "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+      ],
+      "picker": {
+        "id": "claude_climbing_reef_v009",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 304,
+        "depth": 304,
+        "max_size": 600,
+        "description": "Contour-banded teal climbing shell with twelve skylights and its compact safety apron.",
+        "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {
+        "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
+        "project_url": "",
+        "tested_by": "",
+        "tested_at": "",
+        "evidence": [],
+        "checks": {
+          "catalogue_card": false,
+          "exact_variant": false,
+          "ground_contact": false,
+          "small_and_large_plot": false,
+          "rotation": false,
+          "save_reload": false,
+          "close_and_occluded_capture": false,
+          "no_console_errors": false
+        }
+      },
+      "local_trial_only": true,
+      "model": {
+        "path": "models/clay-climbing-reef-clay-v009.glb",
+        "bytes": 3910236,
+        "sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
+        "native_dimensions_m": {
+          "width": 300.0,
+          "height": 9.505199733066547,
+          "depth": 300.0
+        },
+        "mesh_count": 40,
+        "material_count": 49,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-climbing-reef-clay-v009.json",
+        "sha256": "2ac562989759473fab91d7a8beb4e0f2bc03aca12c43410e7a1440694d83259d",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-calgary-sandstone-heritage-clay-v006",
+      "family": "rlasm-clay-calgary-sandstone-heritage-claude-v006",
+      "archetype_id": "calgary_sandstone_heritage",
+      "archetype_label": "Calgary sandstone heritage",
+      "variant_id": "sandstone_claude_clock_tower_v006",
+      "variant_label": "Sandstone clock-tower block",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 48,
+        "depth": 48,
+        "height": 49.5
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
+          "bytes": 1406587,
+          "sha256": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_60.jpg",
+          "bytes": 955727,
+          "sha256": "2fdc718649d51b41c15b269b0aa3adc38d994e44a985905a776fa122d68de8c6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_90.jpg",
+          "bytes": 860843,
+          "sha256": "c73923f39bcfd440a6df2b7384cf9b15a0ffea08f6a2558600eabc1a5ec3539d"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "limitations": [
+        "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+        "Fixed native geometry; snug bounds derive from complete retained architecture.",
+        "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+      ],
+      "picker": {
+        "id": "claude_sandstone_clock_tower_v006",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 95,
+        "depth": 95,
+        "max_size": 600,
+        "description": "Richardsonian Romanesque sandstone civic block with an internal court and copper-spired clock tower.",
+        "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+      },
+      "runtime_enabled": true,
+      "activation": {},
+      "local_trial": {
+        "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
+        "project_url": "",
+        "tested_by": "",
+        "tested_at": "",
+        "evidence": [],
+        "checks": {
+          "catalogue_card": false,
+          "exact_variant": false,
+          "ground_contact": false,
+          "small_and_large_plot": false,
+          "rotation": false,
+          "save_reload": false,
+          "close_and_occluded_capture": false,
+          "no_console_errors": false
+        }
+      },
+      "local_trial_only": true,
+      "model": {
+        "path": "models/clay-calgary-sandstone-heritage-clay-v006.glb",
+        "bytes": 4190248,
+        "sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
+        "native_dimensions_m": {
+          "width": 88.0199966430664,
+          "height": 49.29999923706055,
+          "depth": 84.0
+        },
+        "mesh_count": 16,
+        "material_count": 16,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-calgary-sandstone-heritage-clay-v006.json",
+        "sha256": "2294b138bb5af4c39beefb31b3935052ed235d6677778e0806d61fddd97213aa",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
     }
   ],
   "review_only_archive": []

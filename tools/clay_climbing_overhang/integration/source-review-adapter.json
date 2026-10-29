@@ -1,0 +1,34 @@
+{
+  "candidate": "clay-climbing-overhang-clay-v007",
+  "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
+  "reviewer": "Original independent Claude holistic architectural-clay review, imported from pinned source evidence",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "inspected_files": [
+    {
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1.png",
+      "sha256": "345d575a53846738cda1d24794ec0cc409cb5f2335cc624a41c403d83eb5bde8",
+      "role": "front"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_60.jpg",
+      "sha256": "55c334948355972cab086576da047e5d72f85c4682acc308d9507296cfc538ea",
+      "role": "oblique"
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_90.jpg",
+      "sha256": "a6854c9b52d8ccd115ab1110b5466f61cec8486b533d4112577a4561ccdd6bb0",
+      "role": "top"
+    }
+  ],
+  "original_review": {
+    "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1",
+    "repo_path": "tools/clay_climbing_overhang/evidence/v007/independent-review.md",
+    "sha256": "62d76ca090fe362df5a0a5eb49008f082d7cda0160e153dda7cb05bfc547afa3",
+    "decision": "PASS_ZERO_P0_P1"
+  },
+  "adapter_scope": "Machine-readable import of the original preserved independent review. No new independent pixel review, keeper approval, terrain acceptance or student-runtime pass implied.",
+  "runtime_scope": "Original GLB remains unchanged. Building-only extraction and snug bounds are separately tested and reviewed; embedded context is not included in the runtime presentation."
+}

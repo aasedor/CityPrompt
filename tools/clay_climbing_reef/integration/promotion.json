@@ -1,0 +1,78 @@
+{
+  "entry": {
+    "candidate": "clay-climbing-reef-clay-v009",
+    "family": "rlasm-clay-climbing-reef-claude-v009",
+    "archetype_id": "climbing_wall_building",
+    "archetype_label": "Climbing centre",
+    "variant_id": "climbing_reef",
+    "variant_label": "The Reef climbing centre",
+    "native_floors": 1,
+    "design_dimensions_m": {
+      "width": 34,
+      "depth": 30,
+      "height": 7.9
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3.png",
+        "bytes": 1359680,
+        "sha256": "c510322572ffa49702465f621dd95575a967787b28a37e96755cec68263fc595"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_60.jpg",
+        "bytes": 817640,
+        "sha256": "122c06c58a3287c7eb1a503e9d94ce4a6b712275f42e5c65e1bbfdc592027ac9"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_90.jpg",
+        "bytes": 811835,
+        "sha256": "cf5e6092abfb9702cc5fa59e2ba60b579be0c420489a4e31528466d43ec8fe34"
+      }
+    ],
+    "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+    "limitations": [
+      "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+      "Fixed native geometry; snug bounds derive from complete retained architecture.",
+      "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+    ],
+    "picker": {
+      "id": "claude_climbing_reef_v009",
+      "group_id": "civic",
+      "reshape_mode": "fixed_native",
+      "width": 304,
+      "depth": 304,
+      "max_size": 600,
+      "description": "Contour-banded teal climbing shell with twelve skylights and its compact safety apron.",
+      "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+    }
+  },
+  "model_file": "../candidates/clay-climbing-reef-clay-v009.glb",
+  "review_file": "source-review-adapter.json",
+  "approval": {},
+  "trial": {
+    "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
+    "project_url": "http://127.0.0.1:5176/projects/2715f44e-9ca9-4fc7-976f-350302496ccc",
+    "tested_by": "Codex ordinary browser trial; original independent clay review preserved separately",
+    "tested_at": "2026-10-29T21:14:22.215831+00:00",
+    "evidence": [
+      "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "reef-exact-source.png",
+      "all-six-after-reload-screenshot.png",
+      "saved-native-scale-proof.json"
+    ],
+    "checks": {
+      "catalogue_card": true,
+      "exact_variant": true,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": true,
+      "save_reload": true,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    },
+    "notes": "Core card/drop, native scale, rotation, reload and aerial free PNG content passed. Low-view/slope and per-variant min/max/occlusion acceptance remain unrun; no paid render or actual Download action was tested. Extension emits webext-ad-filtering onMessage errors; no app/model loader error remains after sandstone fix. Local pilot only, not activated."
+  }
+}

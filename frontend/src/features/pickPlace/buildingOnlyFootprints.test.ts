@@ -1,12 +1,17 @@
-import { expect, it } from 'vitest';
+import { afterAll, expect, it, vi } from 'vitest';
 import contracts from '@/features/legoAssembly/buildingOnlyContracts.json';
-import { CATALOGUE_ASSETS } from './assetRegistry';
 import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
-import { CANONICAL_CHOICES } from './canonicalCatalogue';
-import { assetForZone, placementProperties, placeAsset } from './catalogue';
-import { buildingOnlySelectionCoordinates } from './buildingOnlySelection';
-import { rectangleAt,rectangleDimensions } from './geometry';
 import type { SiteZone } from '@/types';
+
+// Exercise exact local pilots too; production eligibility has separate release-gate tests.
+vi.stubEnv('DEV', true);
+vi.stubEnv('MODE', 'development');
+const { CATALOGUE_ASSETS } = await import('./assetRegistry');
+const { CANONICAL_CHOICES } = await import('./canonicalCatalogue');
+const { assetForZone, placementProperties, placeAsset } = await import('./catalogue');
+const { buildingOnlySelectionCoordinates } = await import('./buildingOnlySelection');
+const { rectangleAt, rectangleDimensions } = await import('./geometry');
+afterAll(() => vi.unstubAllEnvs());
 
 it.each(Object.entries(contracts))('fits %s to its retained full architectural envelope', (revision,c) => {
   const asset=CATALOGUE_ASSETS.find(a=>a.model.revision===revision);
