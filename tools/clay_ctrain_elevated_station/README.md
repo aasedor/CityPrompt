@@ -1,7 +1,7 @@
 # Downtown elevated CTrain station (RLASM v6.1 architectural clay)
 
 Candidate D3 of the five-building wave of 2026-10-15, chosen to fill catalogue gaps (building types
-with no clay or runtime family yet). State: **v004 passed independent review with zero P0 and zero P1 and is the candidate** (not keeper approval). Nothing here is keeper-approved,
+with no clay or runtime family yet). State: **PASS_ZERO_P0_P1 at v004 (independent review); v004 is the candidate, not keeper-approved** (not keeper approval). Nothing here is keeper-approved,
 runtime-integrated, enrolled in a catalogue or activated; those remain separate checkpoints that need
 the user's decision.
 
