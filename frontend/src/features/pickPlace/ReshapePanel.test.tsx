@@ -14,6 +14,24 @@ vi.mock('./publicRealmRelease', async () => {
 });
 afterEach(cleanup);
 
+it('keeps fixed native building dimensions read-only while allowing rotation', () => {
+  const asset = placeAsset('claude_trial_cmu_dock_warehouse');
+  const coordinates = rectangleAt([-114, 51], asset.width, asset.depth, 17);
+  const zone = { id: 'fixed-warehouse', zone_type: 'building', properties: placementProperties(asset), coordinates } as SiteZone;
+  const onReshape = vi.fn();
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
+  expect((screen.getByLabelText('Plot width (m)') as HTMLInputElement).disabled).toBe(true);
+  expect((screen.getByLabelText('Plot depth (m)') as HTMLInputElement).disabled).toBe(true);
+  expect(screen.queryByText(/Use a corner to reshape/)).toBeNull();
+  fireEvent.change(screen.getByLabelText('Rotation (degrees)'), { target: { value: '47' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
+  const result = rectangleDimensions(onReshape.mock.calls[0][0]);
+  expect(result.width).toBeCloseTo(asset.width, 3);
+  expect(result.depth).toBeCloseTo(asset.depth, 3);
+  expect(result.degrees).toBeCloseTo(47, 3);
+});
+
 it('repairs an old oversized new-batch plot explicitly and duplicates at snug dimensions',()=>{
   const asset=placeAsset('claude_trial_old_montreal_limestone_commercial');
   const coordinates=rectangleAt([-114,51],150,150,27);

@@ -1,0 +1,83 @@
+{
+  "entry": {
+    "candidate": "clay-student-residence-tower-clay-v004",
+    "family": "rlasm-claude-practical-student-residence-v004",
+    "archetype_id": "student_residence_tower",
+    "archetype_label": "Student residence tower",
+    "variant_id": "contemporary_curtainwall_biophilic",
+    "variant_label": "Student residence tower",
+    "native_floors": 12,
+    "design_dimensions_m": {
+      "width": 32.40792655944824,
+      "depth": 28.899999618530273,
+      "height": 47.8994140625
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0.png",
+        "bytes": 1206622,
+        "sha256": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_60.jpg",
+        "bytes": 930652,
+        "sha256": "d2ecf16c6ffe4b806890db42e133d903535b6747b443362f99a2a185012dc244"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_90.jpg",
+        "bytes": 876613,
+        "sha256": "0ed3c8e1b63539593ab28a714984d718c13d9f885d94a5efcb62a5c947a8be1e"
+      }
+    ],
+    "external_evidence": "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
+    "limitations": [
+      "Source-locked RLASM6.1 architectural-clay model; independently reviewed, no textured keeper claim.",
+      "Compact building and integral entrance/apparatus approach; no surrounding roads.",
+      "Fixed native assembly. Prepared level local trial; slopes, code compliance and paid AI fidelity not verified.",
+      "Full heavy source/GLB review render evidence remains external; build helper hashes are pinned."
+    ],
+    "picker": {
+      "id": "claude_student_residence_v004",
+      "group_id": "towers",
+      "reshape_mode": "fixed_native",
+      "width": 36,
+      "depth": 32,
+      "max_size": 600,
+      "description": "Twelve-storey student residence with recessed planted terraces, an oval glass roof lounge and roof garden.",
+      "reshape_description": "Move and rotate the complete building at its authored size."
+    }
+  },
+  "model_file": "../candidates/clay-student-residence-tower-clay-v004.glb",
+  "review_file": "independent-review.json",
+  "approval": {},
+  "trial": {
+    "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
+    "checks": {
+      "catalogue_card": true,
+      "exact_variant": true,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": true,
+      "save_reload": true,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    },
+    "project_url": "http://127.0.0.1:5176/projects/760b7f67-09d4-419b-a13a-7ec901466445",
+    "tested_by": "Codex ordinary Edge mouse/keyboard UI, separate independent architectural-clay review",
+    "tested_at": "2026-10-29T23:46:34.726990+00:00",
+    "evidence": [
+      "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
+      "student-exact-source.png",
+      "student-photographic-card-screenshot.png",
+      "student-fixed-controls-after-reload-screenshot.png",
+      "practical-three-after-reload-screenshot.png",
+      "practical-controls-proof.json",
+      "practical-saved-native-proof.json",
+      "practical-card-browser-proof.json"
+    ],
+    "notes": "Exact card/photo/drop, whole native model, edited rotation, clean reopen, fixed-footprint controls and free PNG capture passed on one prepared125x120m vacant site. Model unit scale and identity read back from saved recipe; plot rotation is derived from saved geographic ring, separately from the building-row zero rotation. No paid AI call, Download action, low-view walking/slopes, UndoRedo or full size/failure stress was run. Console has extension runtime.onMessage errors; no model-loader/app error observed. All images are labelled source captures/screenshots/clay QA, not photographic AI output. Local unpublished trial only."
+  }
+}

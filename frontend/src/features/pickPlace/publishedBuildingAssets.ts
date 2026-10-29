@@ -3401,6 +3401,126 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "floor_count": 4,
       "native_plot_axes": true
     }
+  },
+  {
+    "id": "claude_fire_station_v010",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Modern fire station",
+    "description": "Cantilevered oxblood fire station with four glazed apparatus bays, a glass clock tower and compact apron.",
+    "thumbnail": "/archetypes/buildings/modern_fire_station/variant_2.png",
+    "model": {
+      "variantId": "fire_cantilevered_modern",
+      "revision": "clay-cantilever-fire-station-clay-v010",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 53.0,
+    "depth": 44.0,
+    "minWidth": 53.0,
+    "minDepth": 44.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      49.989999771118164,
+      40.34000015258789,
+      31.007999420166016
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size.",
+    "properties": {
+      "building_archetype_id": "modern_fire_station",
+      "development_archetype_id": "modern_fire_station",
+      "development_selected_variant_id": "fire_cantilevered_modern",
+      "development_archetype_label": "Modern fire station",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_hospital_v006",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Regional teaching hospital",
+    "description": "Braced teaching hospital with a perforated clinical block, connected glazed atrium and compact entrance canopy.",
+    "thumbnail": "/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
+    "model": {
+      "variantId": "regional_hospital_contemporary_teaching",
+      "revision": "clay-braced-frame-hospital-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 75.0,
+    "depth": 67.0,
+    "minWidth": 75.0,
+    "minDepth": 67.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      71.00500106811523,
+      63.72500228881836,
+      39.79999923706055
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size.",
+    "properties": {
+      "building_archetype_id": "regional_hospital_medical_center",
+      "development_archetype_id": "regional_hospital_medical_center",
+      "development_selected_variant_id": "regional_hospital_contemporary_teaching",
+      "development_archetype_label": "Regional teaching hospital",
+      "floors": 9,
+      "floor_count": 9,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_student_residence_v004",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "pilot",
+    "label": "Student residence tower",
+    "description": "Twelve-storey student residence with recessed planted terraces, an oval glass roof lounge and roof garden.",
+    "thumbnail": "/archetypes/buildings/student-residence-tower/variant_0.png",
+    "model": {
+      "variantId": "contemporary_curtainwall_biophilic",
+      "revision": "clay-student-residence-tower-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "towers",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 36.0,
+    "depth": 32.0,
+    "minWidth": 36.0,
+    "minDepth": 32.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      32.407925686584576,
+      28.899999618530273,
+      47.8994140625
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size.",
+    "properties": {
+      "building_archetype_id": "student_residence_tower",
+      "development_archetype_id": "student_residence_tower",
+      "development_selected_variant_id": "contemporary_curtainwall_biophilic",
+      "development_archetype_label": "Student residence tower",
+      "floors": 12,
+      "floor_count": 12,
+      "native_plot_axes": true
+    }
   }
 ];
 

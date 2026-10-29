@@ -1,0 +1,1 @@
+Pinned build helpers from Claude source 7f30f4852c461c289fe5d305a472f853337a24f1. These exact bytes authored the practical candidates; existing shared repository helpers are unchanged. No resume was used. Heavy evidence is external.

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { PLACE_ASSETS, placeAsset, placementPlanRequest } from './catalogue';
 import { rectangleAt, rectangleDimensions, resizeRectangleCorner } from './geometry';
 import { hasBuildingOnlyFootprint } from './buildingOnlyFootprint';
+import { hasFixedBuildingFootprint } from './fixedBuildingFootprint';
 
 describe('native catalogue placement contracts', () => {
   it('cannot share a preview plan between two homes on identically sized plots', () => {
@@ -18,7 +19,7 @@ describe('native catalogue placement contracts', () => {
     const fixed = coordinates[2];
     const resized = resizeRectangleCorner(coordinates, 0, fixed, asset);
     const dimensions = rectangleDimensions(resized);
-    if (asset.properties.validation_fixed_fixture === true) {
+    if (asset.properties.validation_fixed_fixture === true || hasFixedBuildingFootprint(asset)) {
       expect(resized).toEqual(coordinates);
     } else {
       expect(dimensions.width).toBeCloseTo(asset.minWidth, 3);

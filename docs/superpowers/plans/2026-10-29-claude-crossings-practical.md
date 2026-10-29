@@ -46,11 +46,17 @@
 
 ## Task3 — practical buildings
 
-- [ ] On a separate coherent branch, correct classroom blockers in new versions while preserving locked original files and references.
-- [ ] Render/inspect the required source-locked evidence and obtain independent review before keeper/readiness claims.
-- [ ] Use existing catalogue promotion, selective seed/readback, building-only ownership and snug-envelope workflow.
-- [ ] Browser-trial hospital, fire station and student residence; verify exact model, unit scale, edit/reload and captures.
-- [ ] Narrow checks, fresh review and local checkpoint.
+- [x] On a separate coherent branch, correct classroom blockers in new versions while preserving locked original files and references.
+- [x] Render/inspect the required source-locked evidence and obtain independent review before keeper/readiness claims.
+- [x] Use existing catalogue promotion, selective seed/readback, building-only ownership and snug-envelope workflow.
+- [x] Browser-trial hospital, fire station and student residence; verify exact model, unit scale, edit/reload and captures.
+- [x] Narrow checks, fresh review and local checkpoint.
+
+## Task3b — lifelike picker heroes (user steering)
+
+- [ ] Audit all202 community choices (104buildings/42parks/56streets), exact variant photograph and actual served image decoding.
+- [ ] Reuse authoritative lifelike references; replace clay/isometric previews and repair missing local assets without changing model identities.
+- [ ] Tests and ordinary browser verification; deliver hero-card evidence. No additional paid generations assumed.
 
 ## Task4 — additional bridges
 

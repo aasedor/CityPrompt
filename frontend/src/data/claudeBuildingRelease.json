@@ -159,6 +159,33 @@
       "candidate": "clay-calgary-sandstone-heritage-clay-v006",
       "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
       "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1"
+    },
+    {
+      "asset_id": "claude_fire_station_v010",
+      "archetype_id": "modern_fire_station",
+      "variant_id": "fire_cantilevered_modern",
+      "candidate": "clay-cantilever-fire-station-clay-v010",
+      "model_sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be",
+      "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1",
+      "derived_correction": true
+    },
+    {
+      "asset_id": "claude_hospital_v006",
+      "archetype_id": "regional_hospital_medical_center",
+      "variant_id": "regional_hospital_contemporary_teaching",
+      "candidate": "clay-braced-frame-hospital-clay-v006",
+      "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad",
+      "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1",
+      "derived_correction": true
+    },
+    {
+      "asset_id": "claude_student_residence_v004",
+      "archetype_id": "student_residence_tower",
+      "variant_id": "contemporary_curtainwall_biophilic",
+      "candidate": "clay-student-residence-tower-clay-v004",
+      "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
+      "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1",
+      "derived_correction": true
     }
   ]
 }

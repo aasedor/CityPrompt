@@ -1,0 +1,313 @@
+{
+  "candidate": "clay-cantilever-fire-station-clay-v010",
+  "model_sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be",
+  "reviewer": "independent RLASM verifier /root/fire_v010_verifier",
+  "reviewed_utc": "2026-10-29T22:52:09.360151Z",
+  "scope": "Holistic architectural-clay review of the exact pinned modern_fire_station/variant_2 sources and complete actual GLB-reimport evidence. Practical classroom target; not textured keeper, engineering, runtime integration, publication or arbitrary resizing approval.",
+  "representation_kind": "architectural_clay",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "keeper_approved": false,
+  "runtime_seed_allowed": false,
+  "prior_issue_closure": [
+    {
+      "issue": "v009 P1 finding 1: opaque apparatus-bay headers",
+      "result": "closed in v010",
+      "pixel_evidence": [
+        "renders/apparatus_bays.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/interior.png",
+        "renders/soffit_corner.png"
+      ],
+      "finding": "All four transoms read as glass above the door heads; each has a narrow perimeter and three vertical mullions. The interior view confirms light and room depth through the header region rather than an opaque wall band."
+    }
+  ],
+  "pixel_findings": [
+    {
+      "category": "Exact-source identity and proportions",
+      "finding": "The oxblood upper box, stepped cantilever outline, four apparatus bays, west upper recess, broad pale flat roof, and projecting slender glass clock tower remain recognizable against all three locked sources. Site furniture removal is an intentional compact-building scope change.",
+      "evidence": [
+        "sources/front.png",
+        "sources/oblique.jpg",
+        "sources/top.jpg",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png"
+      ]
+    },
+    {
+      "category": "Whole envelope and roof",
+      "finding": "Front, both sides, rear, rear oblique and top are completely framed with margin. Flat roof and parapet form a coherent bounded rectangle, tower cap is seated, and no gross roof shards, floating parts or missing elevation were visible. Rear/east openings continue the family in explicitly inferred areas.",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/top.png"
+      ]
+    },
+    {
+      "category": "Openings, glazing and interior program",
+      "finding": "Bay glass shows four separate fire appliances and room depth. Recessed window/door framing and loggia reveals are visible, glazing does not read as a flat opaque sticker, and the hall interior has a floor, ceiling and occupied depth. Appliance geometry and tower clock/sign are intentionally schematic clay forms.",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/apparatus_bays.png",
+        "renders/interior.png",
+        "renders/loggia_close.png",
+        "renders/tower_clock.png",
+        "renders/rear_door.png"
+      ]
+    },
+    {
+      "category": "Contacts, circulation and landscape",
+      "finding": "Building base, tower, bay thresholds, appliances and bollards visually meet their supporting surfaces. Apron is compact and unobstructed in front of the four bays. No attached roads, trees, shelter, memorial forecourt or broad surrounding lot remains. Rear/service thresholds are legible at concept scale.",
+      "evidence": [
+        "renders/apron_contact.png",
+        "renders/soffit_corner.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/rear_door.png"
+      ]
+    },
+    {
+      "category": "Phone and evidence regression",
+      "finding": "All four phone boards were opened at original 1080 by 1920 resolution. The source family, tower/box hierarchy, corrected transoms, and compact apron remain legible at board scale. Every one of the 18 mandatory reimport renders was separately opened at original 1440 by 1080 resolution.",
+      "evidence": [
+        "boards/phone-01-source-vs-render.png",
+        "boards/phone-02-details.png",
+        "boards/phone-03-details.png",
+        "boards/phone-04-details.png"
+      ]
+    }
+  ],
+  "blockers": [],
+  "non_blocking_findings": [
+    {
+      "severity": "P2",
+      "category": "Fine construction seam",
+      "finding": "A thin horizontal floor-line reveal/seam is visible where the rear/east oxblood upper volume meets the gray lower carrier. It remains a small detail at normal presentation scale and does not invalidate the classroom clay building; refine its cover/reveal treatment during construction-detail polish.",
+      "evidence": [
+        "renders/rear.png",
+        "renders/right_side.png",
+        "renders/rear_side.png"
+      ]
+    },
+    {
+      "severity": "P2",
+      "category": "Evidence prose",
+      "finding": "The prework contact_contract still mentions removed flagpole/benches/memorial/shelter posts. Pixel evidence correctly omits these and the forecourt measurement field correctly describes the compact apron. Reconcile this stale prose before delivery.",
+      "evidence": [
+        "prework-manifest.json"
+      ]
+    },
+    {
+      "severity": "P2",
+      "category": "Carried clay-detail limitations",
+      "finding": "Prior v009 P2 observations remain visible: pale/broad bay piers, relatively milky bay glass, narrow and separated clock sign band, multi-row loggia grid/front guard, weakly luminous soffit trim, and a slightly tall box-to-hall ratio. They remain non-blocking for the practical architectural-clay target; textured/detail refinement would need a separate bounded iteration.",
+      "evidence": [
+        "renders/apparatus_bays.png",
+        "renders/glass_close.png",
+        "renders/tower_clock.png",
+        "renders/loggia_close.png",
+        "renders/soffit_corner.png",
+        "renders/rear.png"
+      ]
+    }
+  ],
+  "limitations": [
+    "Source photographs do not show the complete rear elevation; rear/service grammar and interior arrangements are inferred concept content.",
+    "No engineering, detailed life-safety, accessibility, operational vehicle manoeuvring, terrain-fit, scaling or runtime installation testing is inferred from this pixel review.",
+    "Source-specific textured finishes, lettering and fine clock hardware are outside this architectural-clay decision."
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/front.png",
+      "bytes": 1073268,
+      "sha256": "6715ca6d2f3fde8f4ddd12ca6a470cba4d470fbc781c5988ccecb25c5c07340d",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "sources"
+    },
+    {
+      "path": "sources/oblique.jpg",
+      "bytes": 786954,
+      "sha256": "256755fda932c4d8434cd957d9bb3e9e86ba7cee6c9fc277d70463a11b06daad",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "sources"
+    },
+    {
+      "path": "sources/top.jpg",
+      "bytes": 753818,
+      "sha256": "3936e8d805938931b3fd26eb94360aa5b3e3d98cbaa26ef0ce032d235f3a5d28",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "sources"
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1368828,
+      "sha256": "eb40fe2e909ca588530c264daeb4b024ba8ce187d93a85f0fc88c7263f3dd49b",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/apparatus_bays.png",
+      "bytes": 1364313,
+      "sha256": "0581fb80c2e7edd709dd1b024fcb7f06be5007f1dbd836ec916d3d5ceb4771e0",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/apron_contact.png",
+      "bytes": 1391851,
+      "sha256": "860cd2b380c0a3e9685622037477524342bed315240015a2265256c5616bc8bd",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1437822,
+      "sha256": "ddf9562b544af64081793549d8a3a5bcbe4c0623f9a1a06911daeb1bfc6d6439",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1426501,
+      "sha256": "1217c4963469542f55622dbe4ac5cb68ece54d2aa92028301080438442f1822c",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1439997,
+      "sha256": "e6c36143d30b4d8ef7989fc9478489714477a81a963267156250cc7f6c05f6fd",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1325301,
+      "sha256": "a9c51d49df9a210a24032ec3b589412987cda46c372839b90629a925d71d2b14",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1334417,
+      "sha256": "dd235b8d339bae2bbf4f41c5d5c50dbf32f2d155715dd2a467bbff51d57cbd51",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/interior.png",
+      "bytes": 1359817,
+      "sha256": "60607e070d911dc7befc153cb004cff97eb75381be451c55bf91036d83a4269e",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1308148,
+      "sha256": "298bdd72d528350c5130999b2be9de242b8947c8af7577217b53acbd87d9b667",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/loggia_close.png",
+      "bytes": 1488857,
+      "sha256": "98ad4cc8535ebeeae6fed24d9ff60046f19032d5ed33f142287b7a717aeecdb6",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/rear_door.png",
+      "bytes": 1321189,
+      "sha256": "d91cf7107e64d462e365b51bd2a6c0ca987a57561bfb832019e9d35802774f34",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1407922,
+      "sha256": "e1bb55d98a476c84807c393b90058e9a9f40b52ea127d2506ed380c887d633df",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1292586,
+      "sha256": "3b7b01ec3d00ea6fb231cbc25585f9c24a54d35c3305820f11f2647e2cb49408",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1300873,
+      "sha256": "213e5e11e1c53185569ab330a9a16f4692609a636f567a89d36afbc183c72caf",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/soffit_corner.png",
+      "bytes": 1556387,
+      "sha256": "d90a0829976e942274dd5003ff07138742b7bb07da0c76b31ce8195a452d1997",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1271544,
+      "sha256": "269a1e4963d9c4c6851bbe4311ba2cb2733a2882f2d81fd70813a2e238f73411",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/tower_clock.png",
+      "bytes": 1330123,
+      "sha256": "19152e43e021ec4cd0a44cd9fb836268ad68da63a2f391830af22c7c5b039aef",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "boards/phone-01-source-vs-render.png",
+      "bytes": 1525228,
+      "sha256": "ac801d7cd87376a422f97e6c0580cf242cb535d0373ae9194499332425669455",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "boards"
+    },
+    {
+      "path": "boards/phone-02-details.png",
+      "bytes": 942873,
+      "sha256": "2c7329ba19accc61975eb6ec253c53c4114844a2653be9e968f58beb15acc0e6",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "boards"
+    },
+    {
+      "path": "boards/phone-03-details.png",
+      "bytes": 813431,
+      "sha256": "21fa7c8c55b7541d0bfdffc3a93a0ebb6612586b41438778633cf30e939fad26",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "boards"
+    },
+    {
+      "path": "boards/phone-04-details.png",
+      "bytes": 387323,
+      "sha256": "626cbf5860c0b52ea2141589049df2b3915760448c4e723599d0dfef3165bdfd",
+      "inspection": "opened directly with view_image(detail=original)",
+      "role": "boards"
+    }
+  ],
+  "previous_review": {
+    "path": "C:/dev-artifacts/CityPrompt/claude-crossings-practical-20261029/source/tools/clay_cantilever_fire_station/evidence/v009/independent-review.md",
+    "sha256": "e7707482c50545a4eeb9687034c6dbaf14ea2259acdd8e20676e8a5fc09a14ae",
+    "read_in_full": true,
+    "p0": 0,
+    "p1": 1,
+    "p2": 7
+  },
+  "metadata_errata": "metadata-errata.json records removal of forecourt props without mutating the hashed prework evidence. The errata is a documentation correction, not visual proof."
+}

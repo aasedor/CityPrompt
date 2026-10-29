@@ -27,6 +27,7 @@ import { MapCleanupControls } from './MapCleanupControls';
 import { MapCleanupPreview } from './MapCleanupPreview';
 import { readMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 import { assetForZone } from '@/features/pickPlace/catalogue';
+import { hasFixedBuildingFootprint } from '@/features/pickPlace/fixedBuildingFootprint';
 import { projectedFrameFraction } from './projectFrameHeight';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
 import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
@@ -5234,6 +5235,8 @@ export function GlobeSitePlannerMap({
       {!walkMode && !entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
           {detailEditing ? (detailInteraction?.moving ? 'Click the map to move this item · Esc to cancel' : detailInteraction?.editing ? 'Use Move, Rotate or Delete in the panel · Click another item to select it' : 'Choose an item to place · Click a placed item to edit · Drag to pan · Scroll to zoom')
+            : siteZones.some(zone => zone.id === selectedZoneId && hasFixedBuildingFootprint(assetForZone(zone)))
+            ? 'Drag the Move handle to move | Use Rotation to turn the fixed footprint | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
             ? 'Drag the Move handle to reposition this house | Use the reshape panel to resize or rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)

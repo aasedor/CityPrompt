@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "modern_fire_station",
+  "variant_id": "variant_2",
+  "catalogue_variant_id": "fire_cantilevered_modern",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; catalogue hero is the mass-timber sibling, not enrolled)",
+  "records": [
+    {
+      "archetype_id": "modern_fire_station",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "fire_cantilevered_modern",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/modern_fire_station/variant_2.png",
+      "file": "variant_2.png",
+      "bytes": 1073268,
+      "sha256": "6715ca6d2f3fde8f4ddd12ca6a470cba4d470fbc781c5988ccecb25c5c07340d",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "modern_fire_station",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "fire_cantilevered_modern",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/modern_fire_station/variant_2_angle_60.jpg",
+      "file": "variant_2_angle_60.jpg",
+      "bytes": 786954,
+      "sha256": "256755fda932c4d8434cd957d9bb3e9e86ba7cee6c9fc277d70463a11b06daad",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "modern_fire_station",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "fire_cantilevered_modern",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/modern_fire_station/variant_2_angle_90.jpg",
+      "file": "variant_2_angle_90.jpg",
+      "bytes": 753818,
+      "sha256": "3936e8d805938931b3fd26eb94360aa5b3e3d98cbaa26ef0ce032d235f3a5d28",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

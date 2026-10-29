@@ -1,4 +1,5 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import { hasFixedBuildingFootprint } from '@/features/pickPlace/fixedBuildingFootprint';
 /**
  * GlobeEditMode.tsx — Zone editing UI for the 3D globe.
  *
@@ -208,7 +209,7 @@ export function GlobeEditMode({
   const routeEditing = isFixedSectionStreet(zone);
   const savedRouteControls = useMemo(() => parsePersistedCenterline(zone.properties?.plan_route_controls),
     [zone.properties?.plan_route_controls]);
-  const handleCoords = isFixedNativeScene(zone.properties) ? [] : routeEditing
+  const handleCoords = isFixedNativeScene(zone.properties) || hasFixedBuildingFootprint(assetForZone(zone)) ? [] : routeEditing
     ? liveRouteControls ?? (liveCoords ? extractCenterline(liveCoords)
       : savedRouteControls ?? extractCenterline(renderedCoords))
     : renderedCoords;
