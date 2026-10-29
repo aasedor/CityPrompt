@@ -43,6 +43,12 @@ installation.
 
 ## Quick start
 
+For the current company review, start with the
+[October 29 handoff runbook](docs/COMPANY_HANDOFF_2026-10-29.md). It explains
+the exact checkout, portable asset packet, private configuration and database
+requirements. The commands below describe the generic development stack;
+they are not a verified fresh-machine installation of the current catalogue.
+
 ~~~bash
 git lfs install
 git clone https://github.com/aasedor/CityPrompt.git
@@ -57,7 +63,9 @@ On PowerShell, create the environment file with:
 Copy-Item .env.example .env
 ~~~
 
-At minimum, set `MAPBOX_ACCESS_TOKEN` in `.env` for map tiles. AI features are
+Set `VITE_GOOGLE_MAPS_API_KEY` in `.env`; the current frontend refuses to start
+without it. Configure `GOOGLE_MAPS_API_KEY` separately for backend address and
+elevation services. Set `MAPBOX_ACCESS_TOKEN` for the fallback map tiles. AI features are
 enabled only when their corresponding keys are present. Never commit `.env` or
 paste credentials into documentation.
 
