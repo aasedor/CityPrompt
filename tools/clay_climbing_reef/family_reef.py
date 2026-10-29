@@ -2489,6 +2489,31 @@ def soft_pairs(obj):
     return {frozenset((i, j)) for i in sk for j in sk if i != j}
 
 
+def separate_cups(obj):
+    """Split the cup faces off the shell into their own object (role reef5v, kept apart at delivery), so only the cups
+    carry the vertex tone (glTF COLOR_0) and the rest of the shell exports without it. The smooth corner normals are
+    frozen first as custom normals, so the cups and the shell still meet without a shading seam."""
+    me = obj.data
+    me.normals_split_custom_set([tuple(c.vector) for c in me.corner_normals])
+    vmat = {i for i, m in enumerate(me.materials) if m.name.endswith('V')}
+    cups = obj.copy(); cups.data = me.copy(); C.bpy.context.collection.objects.link(cups)
+    for o, keep_cups in ((obj, False), (cups, True)):
+        bm = C.bmesh.new(); bm.from_mesh(o.data)
+        C.bmesh.ops.delete(bm, geom=[f for f in bm.faces if (f.material_index in vmat) != keep_cups], context='FACES')
+        C.bmesh.ops.delete(bm, geom=[v for v in bm.verts if not v.link_faces], context='VERTS')
+        bm.to_mesh(o.data); bm.free(); o.data.update()
+    cups.name = 'Reef pocket cups'; cups.data.name = 'Reef pocket cups mesh'
+    for key in ('rlasm_wall_carrier', 'pockets_seated'):
+        if key in cups:
+            del cups[key]
+    C.tag(cups, 'reef5v', 'shell')
+    for o in (obj, cups):
+        C.bpy.ops.object.select_all(action='DESELECT'); o.select_set(True); C.bpy.context.view_layer.objects.active = o
+        C.bpy.ops.object.material_slot_remove_unused()
+    obj.data.color_attributes.remove(obj.data.color_attributes['Col'])
+    return cups
+
+
 def entry_frame(th):
     """Local frame at an entrance: the bay floor point O on the outer bulge line, tangent t, outward e."""
     e = np.array([math.cos(th), math.sin(th), 0.0]); t = np.array([-math.sin(th), math.cos(th), 0.0])
@@ -3052,6 +3077,7 @@ def build():
     skylights()
     tint_glazing()
     entrances(obj)
+    separate_cups(obj)
     holds(shell, Pi, dent_list)
     interior(shell)
     apron_and_curb(shell)
