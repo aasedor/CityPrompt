@@ -390,7 +390,7 @@ async def test_real_redis_celery_delivery_uses_database_identity(isolated, monke
 
 @pytest.mark.asyncio
 async def test_http_submit_status_and_recovery_contract(isolated, monkeypatch):
-    from fastapi import FastAPI
+    from fastapi import Depends, FastAPI
     from httpx import ASGITransport, AsyncClient
     from app.api.v1 import render_attempts as api
     from app.core.database import get_db
@@ -401,8 +401,12 @@ async def test_http_submit_status_and_recovery_contract(isolated, monkeypatch):
     async def db_session():
         async with f.sessions() as db:
             yield db
+    async def authenticated_user(db=Depends(get_db)):
+        # Match production auth: the user belongs to the request's session,
+        # including the admission guard's rollback and locked refresh.
+        return await db.get(User, f.user.id)
     app.dependency_overrides[get_db] = db_session
-    app.dependency_overrides[require_auth] = lambda: f.user
+    app.dependency_overrides[require_auth] = authenticated_user
     monkeypatch.setattr(api, "read_evidence", f.read)
     monkeypatch.setattr(api, "get_settings", lambda: f.settings)
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
