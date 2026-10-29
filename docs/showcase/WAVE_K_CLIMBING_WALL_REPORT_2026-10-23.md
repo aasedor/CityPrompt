@@ -70,11 +70,11 @@ v001 to v003/v004 are the first pass; later versions are the second pass after t
   the lamp posts and the planting.
 - **The Reef reached the cap at v008** with 0 P0 / 2 P1, which does not beat v002's 0 / 1. The user approved one
   version past the cap, and **v009 passed** (0 / 0): the cups darken smoothly through vertex colours and close on a
-  small rounded floor. v009 is the candidate. v008 is nevertheless the closest version visually: envelope, plan, domes, entrances, sculpted relief
-  and landscape match. Its two open findings are one narrow shading defect in the climbing pockets: about eight
-  stepped concentric shade rings inside each cup, and a pinched dark crease at each cup's apex where the mesh
-  closes as a triangle fan. Across the pass the pockets went through cut-outs, faint dents, overly crisp portholes
-  and finally opaque cups whose interior shading is stepped.
+  small rounded floor. v009 is the candidate. v008 had already matched the envelope, plan, domes, entrances,
+  sculpted relief and landscape; its two open findings were one narrow shading defect in the climbing pockets
+  (about eight stepped concentric shade rings inside each cup, and a pinched dark crease at each cup's apex where
+  the mesh closed as a triangle fan), which v009 fixed. Across the passes the pockets went through cut-outs, faint
+  dents, overly crisp portholes, opaque cups with stepped shading, and finally smoothly shaded cups.
 - **The Spine reached the cap at v008** with 1 P0 / 2 P1; v007 (0 / 2: relief too shallow, balconies a storey too
   low) stays the candidate. Reviewers disagreed repeatedly on the spine (pale crisp prism versus warm cleaved
   stone; balconies a storey too high at v002, too low at v007). I arbitrated one of those readings myself at v005 and
@@ -86,7 +86,7 @@ v001 to v003/v004 are the first pass; later versions are the second pass after t
 
 The section headings record the first-pass outcome; the second pass above supersedes them.
 
-### The Reef: stopped, v002 is the candidate
+### The Reef: stopped in the first pass (v002); passed at v009 in the second
 
 - **v001 (0 / 6):** the plan, four-lobed envelope, dome layout, apron, curb and ring path matched from the start.
   It failed on warped dome bubbles, shallow glazed entrances, interior boulders blocking two doorways, skylight
