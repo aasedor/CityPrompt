@@ -2131,8 +2131,16 @@ PK_ECC = .24                                        # the cup's inner rings (and
 # Rings of each pocket patch, outside in: (radius factor, kind). 'skin' rings lie on the shell, 'fillet' rolls the lower
 # lip down, 'mouth' is the lip line (crisp only along the upper lip), 'cup' rings go down into the bowl.
 PK_RINGS = ((1.22, 'skin'), (1.13, 'skin'), (1.06, 'fillet'), (1.0, 'mouth'), (.96, 'cup'), (.90, 'cup'), (.83, 'cup'),
-            (.74, 'cup'), (.63, 'cup'), (.50, 'cup'), (.36, 'cup'), (.20, 'cup'))
-PK_SHADE = 'abcdefgh'                               # cup ring pair (mouth inwards) -> graded shade of the rim band
+            (.74, 'cup'), (.63, 'cup'), (.50, 'cup'), (.36, 'cup'), (.21, 'cup'), (.09, 'cup'))
+PK_TONE = .30                                       # darkest tone of a cup (its low floor) as a fraction of its band colour
+
+
+def cup_tone(rho):
+    """Continuous darkening of a cup (vertex colour) from 1 at the mouth to PK_TONE on its floor; the rings sit low, so
+    the darkest floor sits below the centre."""
+    if rho >= 1.0:
+        return 1.0
+    return 1 - (1 - PK_TONE) * min(max((1 - rho) / .9, 0.0), 1.0) ** .65
 
 
 def entrance_clearance(p):
@@ -2233,8 +2241,8 @@ def surface_sample(bvh, grid, bv, o, ax):
 def pocket_patch(q, grid, bv, bvh, V, val, info):
     """One pocket as a polar patch replacing the grid faces under it: rings on the skin, a lower and side lip that rolls
     softly down into the cup, a crisp upper lip, and a cup whose upper wall runs back under the lip (undercut) and is
-    deeper than its lower floor. Its rings sit progressively lower toward the centre, so the graded shades (by ring)
-    darken toward the lower floor. Returns the outer ring, the patch polygons (with their ring pair index; -1 outside the
+    deeper than its lower floor, closed by a small floor polygon. Its rings sit progressively lower toward the centre, so
+    the continuous darkening (vertex colour by ring radius) deepens toward the lower floor. Returns the outer ring, the patch polygons (with their ring pair index; -1 outside the
     mouth) and the upper-lip vertex pairs."""
     D, Av, kind, p, Rq, ax, asp, up, sh = q
     Au = Av * asp; side = np.cross(ax, up)
@@ -2249,7 +2257,8 @@ def pocket_patch(q, grid, bv, bvh, V, val, info):
                 rg = min(math.hypot(u / (Au * mu), v / (Av * mu)), 1.0); cg = (u / (Au * mu)) / max(rg, 1e-6)
                 lwg = float(smoothstep(.35, -.30, cg)); base = PK_FILLET * lwg
                 prof = max(1 - rg * rg, 0.0) ** (.5 + .45 * lwg)
-                h = -(base + (D * (1 + PK_UPPER * max(cg, 0.0)) - base) * prof)
+                un = max(rg * cg, 0.0)                                  # height above the centre (0 at the centre)
+                h = -(base + (D * (1 + 1.5 * PK_UPPER * un ** 1.5) - base) * prof)   # deeper toward the upper lip, no cusp
                 sc = 1 + PK_UNDERCUT * max(cg, 0.0) ** 2 * float(smoothstep(.30, .72, rho))
                 u *= sc; v *= sc
             else:
@@ -2260,17 +2269,13 @@ def pocket_patch(q, grid, bv, bvh, V, val, info):
             val[idx] = b; info[idx] = (rho, rk == 'mouth' and c > .30)
             row.append(idx)
         rows.append(row)
-    V.append(tuple(float(c_) for c_ in V[rows[-1][0]])); ci = len(V) - 1   # placeholder, set to the ring mean below
-    last = np.array([V[i] for i in rows[-1]]).mean(0) - ax * .01
-    V[ci] = tuple(float(c_) for c_ in last); val[ci] = val[rows[-1][0]]; info[ci] = (0.0, False)
     polys = []
     mi = [j for j, (r_, k_) in enumerate(PK_RINGS) if k_ == 'mouth'][0]
     for j, (r0, r1) in enumerate(zip(rows, rows[1:])):
         tag = j - mi if j >= mi else -1
         for m in range(PK_N):
             polys.append(((r0[m], r0[(m + 1) % PK_N], r1[(m + 1) % PK_N], r1[m]), tag))
-    for m in range(PK_N):
-        polys.append(((rows[-1][m], rows[-1][(m + 1) % PK_N], ci), len(rows) - 2 - mi))   # the floor keeps the last shade
+    polys.append((tuple(rows[-1]), len(rows) - 1 - mi))             # a small rounded floor: no collapsed apex
     lip = rows[mi][0]
     return rows[0], polys, lip
 
@@ -2422,8 +2427,8 @@ def shell_mesh(shell, Pi, pk):
                 nxt_ += [x for x in (hi, lo) if len(x) >= 3]
             pieces = nxt_
         for pc in pieces:
-            if tag >= 0:                                               # inside a cup: its rim band, graded by ring
-                F.append(tuple(pc)); M.append((rim, PK_SHADE[min(tag, len(PK_SHADE) - 1)]))
+            if tag >= 0:                                               # inside a cup: its rim band, darkened by vertex colour
+                F.append(tuple(pc)); M.append((rim, 'v'))
             else:
                 F.append(tuple(pc)); M.append((band_index(sum(val[v_] for v_ in pc) / len(pc)), ''))
     for j in range(len(ks) - 1):
@@ -2440,8 +2445,10 @@ def shell_mesh(shell, Pi, pk):
     for role in ROLES[1:] + ('reef_inner',):
         obj.data.materials.append(C.MATS[role]); names.append(role)
     for role in ROLES:
-        for s_, f_ in SHADES:
-            obj.data.materials.append(C.MATS[role + s_]); names.append(role + s_)
+        obj.data.materials.append(cup_material(role)); names.append(role + 'v')
+    tone = obj.data.color_attributes.new('Col', 'FLOAT_COLOR', 'POINT')
+    for idx, d_ in enumerate(tone.data):
+        f_ = cup_tone(info.get(idx, (9.0, False))[0]); d_.color = (f_, f_, f_, 1.0)
     for p, (m, sh_) in zip(obj.data.polygons, M):
         p.material_index = names.index(names[m] + sh_); p.use_smooth = tuple(F[p.index]) not in flat   # the base annulus is flat
     lipset = {i for i, (r_, lp) in info.items() if lp}
@@ -2457,10 +2464,21 @@ def shell_mesh(shell, Pi, pk):
     return obj, kept
 
 
-SHADES = tuple(zip('abcdefgh', [round(.90 ** (k + 1), 3) for k in range(8)]))   # graded shades of each band in a cup
 for _r in [r for r in PALETTE if r.startswith('reef') and r[4:].isdigit()]:
-    for _s, _f in SHADES:
-        PALETTE[_r + _s] = tuple(round(v * _f, 4) for v in PALETTE[_r])
+    PALETTE[_r + 'v'] = PALETTE[_r]                 # the band colour inside a cup, multiplied by the cup's vertex tone
+
+
+def cup_material(role):
+    """The cup variant of a band material: base colour times the 'Col' vertex tone (exported as glTF COLOR_0, which
+    the importer and runtime multiply into the base colour factor)."""
+    mat = C.MATS[role + 'v']; nt = mat.node_tree
+    if not any(n.bl_idname == 'ShaderNodeVertexColor' for n in nt.nodes):
+        bs = nt.nodes.get('Principled BSDF')
+        va = nt.nodes.new('ShaderNodeVertexColor'); va.layer_name = 'Col'
+        mix = nt.nodes.new('ShaderNodeMix'); mix.data_type = 'RGBA'; mix.blend_type = 'MULTIPLY'
+        mix.inputs['Factor'].default_value = 1.0; mix.inputs[6].default_value = bs.inputs['Base Color'].default_value
+        nt.links.new(va.outputs['Color'], mix.inputs[7]); nt.links.new(mix.outputs[2], bs.inputs['Base Color'])
+    return mat
 
 
 def soft_pairs(obj):
