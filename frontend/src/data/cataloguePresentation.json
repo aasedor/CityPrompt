@@ -2166,7 +2166,7 @@
   },
   "claude_trial_arched_mill_mixed_use": {
     "label": "Arched Mill Mixed Use",
-    "description": "A brick mill conversion with tall arched storefronts and a paved forecourt. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A brick mill conversion with tall arched storefronts. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2178,7 +2178,7 @@
   },
   "claude_trial_brick_podium_condo_tower": {
     "label": "Brick Podium Condo Tower",
-    "description": "A residential tower with glass balconies above a brick podium and glazed shops. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A residential tower with glass balconies above a brick podium and glazed shops. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2189,7 +2189,7 @@
   },
   "claude_trial_calgary_cbe_brutalist_hq": {
     "label": "Calgary CBE Brutalist HQ",
-    "description": "A Calgary civic office with concrete terraces, a broad plaza and neighbouring context masses. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A Calgary civic office with recessed concrete facades, entrance steps and its structural podium. Places the building only; add streets and landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2201,7 +2201,7 @@
   },
   "claude_trial_campus_shed_office": {
     "label": "Campus Shed Office",
-    "description": "A low office campus with a sawtooth roof, glazed entrance and projecting canopy. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A low office campus with a sawtooth roof, glazed entrance and projecting canopy. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2213,7 +2213,7 @@
   },
   "claude_trial_cmu_dock_warehouse": {
     "label": "CMU Dock Warehouse",
-    "description": "A concrete-block warehouse with loading docks, personnel stairs and a vehicle apron. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A concrete-block warehouse with loading docks and personnel stairs. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2225,7 +2225,7 @@
   },
   "claude_trial_courtyard_primary_school": {
     "label": "Courtyard Primary School",
-    "description": "A courtyard school with low classroom wings and a landscaped approach. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A courtyard school with classroom wings, entrance canopy and coloured facade fins. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2235,7 +2235,7 @@
   },
   "claude_trial_ctrain_elevated_station": {
     "label": "CTrain Elevated Station",
-    "description": "An elevated CTrain station fragment with platforms, track, columns and stair towers. Connecting routes require separate design. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "An elevated CTrain station with its integral platforms, guideway, columns and stair towers. Surrounding roads and connecting routes are added separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2246,7 +2246,7 @@
   },
   "claude_trial_energy_centre": {
     "label": "Energy Centre",
-    "description": "A two-storey energy centre with glazed plant spaces and a service apron. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A two-storey energy centre with glazed plant spaces. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2259,7 +2259,7 @@
   },
   "claude_trial_garden_court_senior_residence": {
     "label": "Garden Court Senior Residence",
-    "description": "A senior residence arranged around a planted court with sheltered entrance arcades. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A senior residence with sheltered entrance arcades and its integral enclosed courtyard. Surrounding streets and site landscape are added separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2270,7 +2270,7 @@
   },
   "claude_trial_gastown_heritage_commercial": {
     "label": "Gastown Heritage Commercial",
-    "description": "A brick heritage commercial block with shopfront glazing and a raised plaza edge. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A brick heritage commercial block with shopfront glazing. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2281,7 +2281,7 @@
   },
   "claude_trial_halifax_georgian_colonial": {
     "label": "Halifax Georgian Colonial",
-    "description": "A Georgian house with a central entrance, symmetrical windows and a front garden. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A Georgian house with a central entrance and symmetrical windows. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2292,7 +2292,7 @@
   },
   "claude_trial_halifax_waterfront_warehouse": {
     "label": "Halifax Waterfront Warehouse",
-    "description": "A waterfront warehouse with deep shopfront glazing and a paved entrance apron. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A waterfront warehouse with deep shopfront glazing. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2303,7 +2303,7 @@
   },
   "claude_trial_led_grow_block": {
     "label": "LED Grow Block",
-    "description": "An indoor agriculture block with magenta grow-light windows and a service forecourt. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "An indoor agriculture block with magenta grow-light windows and integral roof growing beds. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2315,7 +2315,7 @@
   },
   "claude_trial_mews_coach_house": {
     "label": "Mews Coach House",
-    "description": "A compact mews home with a garage, side entrance and courtyard paving. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A compact mews home with a garage and side entrance. This source still includes an attached neighbour and site context; an isolated building version is pending.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2326,7 +2326,7 @@
   },
   "claude_trial_old_montreal_limestone_commercial": {
     "label": "Old Montreal Limestone Commercial",
-    "description": "A pale limestone commercial landmark with a dome and columned entrance portico. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A pale limestone commercial landmark with a dome and columned entrance portico. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2338,7 +2338,7 @@
   },
   "claude_trial_plus15_glass_office_tower": {
     "label": "Plus 15 Glass Office Tower",
-    "description": "A glazed office tower with a Plus 15 bridge fragment. Bridge connections require separate design. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A glazed office tower with its integral Plus 15 bridge fragment. Surrounding streets and bridge connections are added separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2351,7 +2351,7 @@
   },
   "claude_trial_slab_balcony_tower": {
     "label": "Slab Balcony Tower",
-    "description": "A slab apartment tower with projecting balconies and ground-level passages. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A slab apartment tower with projecting balconies and ground-level passages. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",
@@ -2364,7 +2364,7 @@
   },
   "claude_trial_toronto_bay_and_gable": {
     "label": "Toronto Bay And Gable",
-    "description": "A narrow Toronto home with a front bay, steep gable, entrance stoop and garden fence. Includes authored surroundings; place on a prepared level site and move or rotate as one assembly.",
+    "description": "A narrow Toronto home with a front bay, steep gable and entrance stoop. Building only; add streets and site landscape separately. Prepared level site; move or rotate at its authored size.",
     "styleIds": [],
     "searchTags": [
       "building",

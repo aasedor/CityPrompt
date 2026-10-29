@@ -10,6 +10,8 @@ import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
+import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
+import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 import { resolveApiFileUrl, type UserGeneratedBuilding } from '@/services/api';
 import { computeFootprintFrame, computeModelPlacement } from '@/components/viewer/globe/buildingPlacement';
@@ -42,12 +44,18 @@ function Home({url}: {url: string}) {
   const gl=useThree(state=>state.gl);
   const extension=useMemo(()=>createKtx2LoaderExtension(gl),[gl]);
   const {scene}=useGLTF(resolveApiFileUrl(url),true,true,extension);
-  const clone=useMemo(()=>centreNativeClayClone(scene.clone(true)),[scene]);
+  const buildingOnly=useMemo(()=>prepareBuildingOnlyScene(scene,url),[scene,url]);
+  useEffect(()=>retainResourceForDeferredDisposal(buildingOnly,
+    value=>value.ownedGeometries.forEach(geometry=>geometry.dispose())),[buildingOnly]);
+  const clone=useMemo(()=>centreNativeClayClone(buildingOnly.clone.clone(true)),[buildingOnly]);
   return <group rotation={[Math.PI/2,0,0]} dispose={null}><primitive object={clone}/></group>;
 }
 function ReviewFixture({url}: {url: string}) {
   const {scene}=useGLTF(url);
-  const clone=useMemo(()=>centreNativeClayClone(scene.clone(true)),[scene]);
+  const buildingOnly=useMemo(()=>prepareBuildingOnlyScene(scene,url),[scene,url]);
+  useEffect(()=>retainResourceForDeferredDisposal(buildingOnly,
+    value=>value.ownedGeometries.forEach(geometry=>geometry.dispose())),[buildingOnly]);
+  const clone=useMemo(()=>centreNativeClayClone(buildingOnly.clone.clone(true)),[buildingOnly]);
   return <group rotation={[Math.PI/2,0,0]} dispose={null}><primitive object={clone}/></group>;
 }
 const ORIGIN = {lng:-114.04677,lat:51.04542};

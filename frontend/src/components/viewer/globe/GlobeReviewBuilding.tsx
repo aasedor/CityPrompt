@@ -6,6 +6,7 @@ import type { SiteZone } from '@/types';
 import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
 import { computeCentroid } from '../mapEngine/geoUtils';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
+import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
 import { rectangleDimensions } from '@/features/pickPlace/geometry';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { resolveZoneTerrainHeight } from './globeTerrainUtils';
@@ -62,7 +63,10 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
 }) {
   const frameRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF(url);
-  const preparedModel = useMemo(() => prepareReviewBuildingGlass(scene), [scene]);
+  const buildingOnly = useMemo(() => prepareBuildingOnlyScene(scene, url), [scene, url]);
+  useEffect(() => retainResourceForDeferredDisposal(buildingOnly,
+    value => value.ownedGeometries.forEach(geometry => geometry.dispose())), [buildingOnly]);
+  const preparedModel = useMemo(() => prepareReviewBuildingGlass(buildingOnly.clone), [buildingOnly]);
   const model = useMemo(() => {
     const clone = centreNativeClayClone(preparedModel.clone);
     // Draw authored geometry after the prepared surface, whose depth remains
@@ -74,7 +78,7 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
     value => value.ownedMaterials.forEach(material => material.dispose())), [preparedModel]);
   const [lng, lat] = computeCentroid(zone.coordinates);
   const yaw = rectangleDimensions(zone.coordinates).degrees * Math.PI / 180;
-  const footprints = useMemo(() => reviewBuildingFootprints(scene, yaw), [scene, yaw]);
+  const footprints = useMemo(() => reviewBuildingFootprints(buildingOnly.clone, yaw), [buildingOnly, yaw]);
   const sharedGround = useSharedSiteGround();
   const verifiedGround = useSharedSiteGroundVerification();
   const boundary = getActiveSiteBoundary(zones);

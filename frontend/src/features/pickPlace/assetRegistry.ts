@@ -7,6 +7,7 @@ import claudeFiveTrial from '@/data/claudeFiveTrial.json';
 import parkadeFamilyTrial from '@/data/parkadeFamilyTrial.json';
 import october from '@/data/catalogueOctober2026.json';
 import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
+import buildingOnlyContracts from '@/features/legoAssembly/buildingOnlyContracts.json';
 import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
@@ -305,6 +306,11 @@ export const PARKADE_TRIAL_ASSETS: PlaceAsset[] = import.meta.env.DEV
   ? (parkadeFamilyTrial.assets as unknown as PlaceAsset[]).filter(asset =>
     !PARKADE_BUILDING_ASSETS.some(published => published.id === asset.id)) : [];
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+  if(asset.kind==='object' && asset.zoneType==='building' && asset.model.revision
+    && Object.prototype.hasOwnProperty.call(buildingOnlyContracts,asset.model.revision)) {
+    asset={...asset,description:'Building only, at its authored size. Add streets and site landscape separately. Prepared level site required.',
+      reshapeDescription:'Move and rotate the building. Its architectural geometry keeps its authored dimensions.'};
+  }
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.

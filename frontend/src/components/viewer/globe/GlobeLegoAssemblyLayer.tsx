@@ -40,6 +40,8 @@ import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntranc
 import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
+import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { buildingWalkRevision } from '@/features/legoAssembly/buildingWalking';
 import { mountBuildingInspection } from '@/features/legoAssembly/buildingInspection';
 import { mountModelBuildingWalking } from '@/features/legoAssembly/mountModelBuildingWalking';
@@ -479,7 +481,8 @@ function LegoStackInstance({
       .map((instance, index) => {
         const scene = sceneByUrl.get(resolveApiFileUrl(instance.model_url));
         if (!scene) return null;
-        const prepared = prepareArchitecturalClone(scene, {
+        const buildingOnly = prepareBuildingOnlyScene(scene, instance.model_url);
+        const prepared = prepareArchitecturalClone(buildingOnly.clone, {
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
           ambientOcclusion: 'disable',
@@ -490,6 +493,7 @@ function LegoStackInstance({
         return {
           key: `${instance.asset_id}-${instance.level}-${index}`,
           cloned,
+          buildingOnly,
           transform: legoInstanceTransform(instance),
           bounds: isNativeClayPlan(recipe)
             ? new THREE.Box3().setFromObject(cloned, true)
@@ -518,6 +522,9 @@ function LegoStackInstance({
   useEffect(() => () => {
     modules.forEach(({ cloned }) => disposeArchitecturalCloneMaterials(cloned));
   }, [modules]);
+  useEffect(() => retainResourceForDeferredDisposal(modules, values => {
+    values.forEach(({ buildingOnly }) => buildingOnly.ownedGeometries.forEach(geometry => geometry.dispose()));
+  }), [modules]);
 
   // Prism suppression: only while this stack is actually mounted AND placeable.
   useEffect(() => {

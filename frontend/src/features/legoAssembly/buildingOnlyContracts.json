@@ -1,0 +1,1577 @@
+{
+  "clay-calgary-cbe-brutalist-hq-clay-v004": {
+    "sourceSha256": "a0836dc6e11577f734452f01e087fe1ee3c08c57ccfe63addd95f0428eb91433",
+    "sourceTriangles": 35078,
+    "retainedTriangles": 28938,
+    "regions": [
+      [
+        -19.55005,
+        0,
+        -18.20005,
+        19.55005,
+        40,
+        18.20005
+      ],
+      [
+        -20.10005,
+        -5e-05,
+        -18.75005,
+        23.20005,
+        0.45005,
+        21.85005
+      ]
+    ],
+    "landscape": [
+      "CLAY_ASPHALT",
+      "CLAY_PAVING",
+      "CLAY_GRASS",
+      "CLAY_WHITE",
+      "CLAY_SCULPTURE",
+      "CLAY_TIMBER",
+      "CLAY_PLANTING",
+      "CLAY_NEIGHBOUR",
+      "CLAY_MEMBRANE",
+      "CLAY_NEIGHBOURTRIM"
+    ],
+    "bounds": {
+      "min": [
+        -20.1,
+        0.0,
+        -18.75
+      ],
+      "max": [
+        23.200001,
+        28.370001,
+        21.85
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_CONCRETE": 60,
+      "CLAY_ASPHALT": 0,
+      "CLAY_PAVING": 0,
+      "CLAY_GRASS": 0,
+      "CLAY_JOINT": 3398,
+      "CLAY_WHITE": 0,
+      "CLAY_HARDWARE": 356,
+      "CLAY_PALE": 60,
+      "CLAY_METAL": 1284,
+      "CLAY_SCULPTURE": 0,
+      "CLAY_TIMBER": 0,
+      "CLAY_PLANTING": 0,
+      "CLAY_NEIGHBOUR": 0,
+      "CLAY_MEMBRANE": 0,
+      "CLAY_GLASS": 2244,
+      "CLAY_NEIGHBOURTRIM": 0,
+      "CLAY_PRECAST": 8868,
+      "CLAY_FRAME": 11928,
+      "CLAY_BOARD": 680,
+      "CLAY_FLOOR": 36,
+      "CLAY_ROOF": 12,
+      "CLAY_INTERIOR": 12
+    }
+  },
+  "clay-cmu-dock-warehouse-clay-v006": {
+    "sourceSha256": "9551998b85a4dd9d1fa40081d53b441d6201344335a83ed98053eae8e9cb2f6e",
+    "sourceTriangles": 20340,
+    "retainedTriangles": 19744,
+    "regions": [
+      [
+        -15.50005,
+        0,
+        -11.70005,
+        15.50005,
+        15,
+        13.70005
+      ],
+      [
+        -7.20005,
+        0,
+        -14.72505,
+        -4.79995,
+        2.10005,
+        -11.49995
+      ]
+    ],
+    "landscape": [
+      "CLAY_ASPHALT",
+      "CLAY_CAR",
+      "CLAY_PLANTING"
+    ],
+    "bounds": {
+      "min": [
+        -15.079999923706055,
+        0.0,
+        -14.725000381469727
+      ],
+      "max": [
+        15.109999656677246,
+        9.475000381469727,
+        13.699999809265137
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_CONCRETE": 144,
+      "CLAY_ASPHALT": 0,
+      "CLAY_WHITE": 48,
+      "CLAY_CAR": 0,
+      "CLAY_GLASS": 336,
+      "CLAY_TIMBER": 972,
+      "CLAY_PLANTING": 0,
+      "CLAY_WALL": 368,
+      "CLAY_JOINT": 12816,
+      "CLAY_DOCK": 192,
+      "CLAY_BUMPER": 96,
+      "CLAY_YELLOW": 2040,
+      "CLAY_DOOR": 48,
+      "CLAY_TRIM": 816,
+      "CLAY_STONE": 60,
+      "CLAY_HARDWARE": 172,
+      "CLAY_PALE": 892,
+      "CLAY_FLOOR": 24,
+      "CLAY_MEMBRANE": 12,
+      "CLAY_ROOF": 60,
+      "CLAY_BLUE": 648
+    }
+  },
+  "clay-gastown-heritage-commercial-clay-v003": {
+    "sourceSha256": "657f66a2df048e606aebe626a76a77e66f93ec1992c2fb1f207833336fd67f14",
+    "sourceTriangles": 37878,
+    "retainedTriangles": 27490,
+    "regions": [
+      [
+        -13.95005,
+        0,
+        -12.75005,
+        13.95005,
+        25,
+        12.75005
+      ]
+    ],
+    "landscape": [
+      "CLAY_PAVER",
+      "CLAY_COBBLE",
+      "CLAY_ASPHALT",
+      "CLAY_CONCRETE",
+      "CLAY_BRONZE",
+      "CLAY_DIAL",
+      "CLAY_GLOBE",
+      "CLAY_TIMBER",
+      "CLAY_PLANTING",
+      "CLAY_CREAM"
+    ],
+    "bounds": {
+      "min": [
+        -13.949999809265137,
+        0.0,
+        -12.75
+      ],
+      "max": [
+        13.949999809265137,
+        20.259611129760742,
+        12.75
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_PAVER": 0,
+      "CLAY_COBBLE": 0,
+      "CLAY_ASPHALT": 0,
+      "CLAY_CONCRETE": 0,
+      "CLAY_JOINT": 4192,
+      "CLAY_TRIM": 168,
+      "CLAY_STONE": 3848,
+      "CLAY_BRONZE": 0,
+      "CLAY_GOLD": 6024,
+      "CLAY_GLASS": 972,
+      "CLAY_DIAL": 0,
+      "CLAY_HARDWARE": 132,
+      "CLAY_GLOBE": 0,
+      "CLAY_TIMBER": 0,
+      "CLAY_PLANTING": 0,
+      "CLAY_WALL": 1974,
+      "CLAY_ARCH": 4384,
+      "CLAY_FRAME": 5304,
+      "CLAY_SIGN": 156,
+      "CLAY_ROOF": 12,
+      "CLAY_MEMBRANE": 180,
+      "CLAY_BRICK2": 12,
+      "CLAY_CLAD": 12,
+      "CLAY_METAL": 12,
+      "CLAY_FLOOR": 36,
+      "CLAY_INTERIOR": 72,
+      "CLAY_CREAM": 0
+    }
+  },
+  "clay-halifax-georgian-colonial-clay-v003": {
+    "sourceSha256": "0359e7171c1b642ab82cb2b73451834ed90227b70f61a605efa5e274b033d7f3",
+    "sourceTriangles": 26574,
+    "retainedTriangles": 17940,
+    "regions": [
+      [
+        -11.20005,
+        0,
+        -10.05005,
+        11.20005,
+        20,
+        10.20005
+      ]
+    ],
+    "landscape": [
+      "CLAY_LAWN",
+      "CLAY_CONCRETE",
+      "CLAY_ASPHALT",
+      "CLAY_PAVING",
+      "CLAY_HEDGE",
+      "CLAY_PLANTING",
+      "CLAY_CONIFER",
+      "CLAY_TIMBER",
+      "CLAY_NEIGHBOUR",
+      "CLAY_PANE",
+      "CLAY_NBTRIM"
+    ],
+    "bounds": {
+      "min": [
+        -11.142812728881836,
+        0.0,
+        -10.042264938354492
+      ],
+      "max": [
+        11.142812728881836,
+        15.819999694824219,
+        10.199999809265137
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_LAWN": 0,
+      "CLAY_CONCRETE": 0,
+      "CLAY_ASPHALT": 0,
+      "CLAY_PAVING": 0,
+      "CLAY_HEDGE": 0,
+      "CLAY_STONE": 3648,
+      "CLAY_HARDWARE": 204,
+      "CLAY_TIMBER": 0,
+      "CLAY_PLANTING": 0,
+      "CLAY_CONIFER": 0,
+      "CLAY_NEIGHBOUR": 0,
+      "CLAY_JOINT": 2074,
+      "CLAY_PANE": 0,
+      "CLAY_NBTRIM": 0,
+      "CLAY_DOOR": 96,
+      "CLAY_ROOF": 72,
+      "CLAY_COURSE": 1164,
+      "CLAY_WALL": 1194,
+      "CLAY_TRIM": 8236,
+      "CLAY_GLASS": 516,
+      "CLAY_LEAD": 216,
+      "CLAY_POT": 432,
+      "CLAY_METAL": 16,
+      "CLAY_FLOOR": 72
+    }
+  },
+  "clay-halifax-waterfront-warehouse-clay-v006": {
+    "sourceSha256": "de39e474c1e41add78aad6bc5f54d162fe81be3c71258ca7fba9de00b79660e3",
+    "sourceTriangles": 16521,
+    "retainedTriangles": 15145,
+    "regions": [
+      [
+        -13.42005,
+        0,
+        -9.58005,
+        13.42005,
+        20,
+        9.82005
+      ]
+    ],
+    "landscape": [
+      "CLAY_CONCRETE",
+      "CLAY_ASPHALT",
+      "CLAY_WHITE",
+      "CLAY_SOIL",
+      "CLAY_TIMBER",
+      "CLAY_PLANTING",
+      "CLAY_NEIGHBOUR",
+      "CLAY_MEMBRANE"
+    ],
+    "bounds": {
+      "min": [
+        -13.420000076293945,
+        0.0,
+        -9.579999923706055
+      ],
+      "max": [
+        13.420000076293945,
+        13.300000190734863,
+        9.819999694824219
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_CONCRETE": 0,
+      "CLAY_ASPHALT": 0,
+      "CLAY_JOINT": 3634,
+      "CLAY_WHITE": 0,
+      "CLAY_HARDWARE": 24,
+      "CLAY_PALE": 12,
+      "CLAY_SOIL": 0,
+      "CLAY_TIMBER": 0,
+      "CLAY_PLANTING": 0,
+      "CLAY_NEIGHBOUR": 0,
+      "CLAY_GLASS": 396,
+      "CLAY_FRAME": 2556,
+      "CLAY_STONE": 1188,
+      "CLAY_MEMBRANE": 0,
+      "CLAY_WALL": 3287,
+      "CLAY_ARCH": 1716,
+      "CLAY_COPPER": 1452,
+      "CLAY_BRICKRING": 820,
+      "CLAY_ROOF": 12,
+      "CLAY_BRICK": 24,
+      "CLAY_FLOOR": 24
+    }
+  },
+  "clay-led-grow-block-clay-v007": {
+    "sourceSha256": "f7ee7d1ee6a39c6ac8b8283279400b7810b741888b15c9ccb8b336c8dd53cdf7",
+    "sourceTriangles": 14820,
+    "retainedTriangles": 14452,
+    "regions": [
+      [
+        -11.03005,
+        0,
+        -11.53005,
+        11.03005,
+        40,
+        11.53005
+      ]
+    ],
+    "landscape": [
+      "CLAY_PLANTING"
+    ],
+    "bounds": {
+      "min": [
+        -11.029999732971191,
+        0.0,
+        -11.529999732971191
+      ],
+      "max": [
+        11.029999732971191,
+        32.65999984741211,
+        11.529999732971191
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_FOUNDATION": 12,
+      "CLAY_STONE": 196,
+      "CLAY_FLOOR": 112,
+      "CLAY_PALE": 2556,
+      "CLAY_HARDWARE": 2836,
+      "CLAY_WALL": 880,
+      "CLAY_JOINT": 732,
+      "CLAY_TRIM": 2456,
+      "CLAY_GLASS": 988,
+      "CLAY_DARKSLOT": 876,
+      "CLAY_RACK": 1368,
+      "CLAY_LEAF": 1152,
+      "CLAY_LED": 48,
+      "CLAY_SAND": 144,
+      "CLAY_MEMBRANE": 12,
+      "CLAY_SOIL": 72,
+      "CLAY_TIMBER": 12,
+      "CLAY_PLANTING": 0
+    },
+    "triangleRegions": {
+      "CLAY_FOUNDATION": [
+        [
+          -11.000001,
+          -1e-06,
+          -11.500001,
+          11.000001,
+          0.150001,
+          11.500001
+        ]
+      ]
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          0,
+          12
+        ]
+      ]
+    }
+  },
+  "clay-slab-balcony-tower-clay-v007": {
+    "sourceSha256": "042c09a9198f60fb0116ab93b6fd073309717a24a59925f31c2db1aed67d7d40",
+    "sourceTriangles": 19700,
+    "retainedTriangles": 19284,
+    "regions": [
+      [
+        -13.20005,
+        0,
+        -13.20005,
+        13.20005,
+        55,
+        13.20005
+      ]
+    ],
+    "landscape": [
+      "CLAY_PLANTING"
+    ],
+    "bounds": {
+      "min": [
+        -13.199999809265137,
+        0.0,
+        -13.199999809265137
+      ],
+      "max": [
+        13.199999809265137,
+        47.0,
+        13.199999809265137
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_FOUNDATION": 12,
+      "CLAY_STONE": 0,
+      "CLAY_PLANTING": 0,
+      "CLAY_CONCRETE": 2348,
+      "CLAY_TIMBER": 156,
+      "CLAY_FLOOR": 156,
+      "CLAY_MEMBRANE": 12,
+      "CLAY_INTERIOR": 84,
+      "CLAY_TRIM": 6876,
+      "CLAY_BLUE": 24,
+      "CLAY_PALE": 180,
+      "CLAY_HARDWARE": 144,
+      "CLAY_WALL": 3342,
+      "CLAY_JOINT": 1222,
+      "CLAY_GLASS": 4680,
+      "CLAY_ACCENT": 48
+    },
+    "triangleRegions": {
+      "CLAY_FOUNDATION": [
+        [
+          -12.600001381469726,
+          -1e-06,
+          -12.600001381469726,
+          12.600001381469726,
+          0.150001,
+          12.600001381469726
+        ]
+      ]
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          36,
+          48
+        ]
+      ]
+    }
+  },
+  "clay-toronto-bay-and-gable-house-clay-v004": {
+    "sourceSha256": "c11761d97f80e7462c88fb7d68b2d44eaaaa3010601fe23f32a4e624720186c8",
+    "sourceTriangles": 17326,
+    "retainedTriangles": 14190,
+    "regions": [
+      [
+        -4.25005,
+        0,
+        -5.87005,
+        4.25005,
+        15,
+        6.65005
+      ],
+      [
+        0.96995,
+        0,
+        5.44995,
+        3.98005,
+        3.65005,
+        8.80005
+      ],
+      [
+        0.69995,
+        3.44995,
+        5.44995,
+        4.25005,
+        5.00005,
+        7.95005
+      ],
+      [
+        -3.85005,
+        6.34995,
+        5.44995,
+        1.85005,
+        11.00005,
+        6.90005
+      ],
+      [
+        -4.25005,
+        3.59995,
+        -5.87005,
+        4.25005,
+        15,
+        6.90005
+      ],
+      [
+        -2.35005,
+        0,
+        -7.44005,
+        -0.84995,
+        0.93005,
+        -5.53995
+      ]
+    ],
+    "landscape": [
+      "CLAY_GRASS",
+      "CLAY_PAVING",
+      "CLAY_ASPHALT",
+      "CLAY_WALK",
+      "CLAY_PALE",
+      "CLAY_PLANTING"
+    ],
+    "bounds": {
+      "min": [
+        -4.179999828338623,
+        0.0,
+        -7.440000057220459
+      ],
+      "max": [
+        4.21999979019165,
+        12.420000076293945,
+        8.800000190734863
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_GRASS": 0,
+      "CLAY_PAVING": 0,
+      "CLAY_ASPHALT": 0,
+      "CLAY_WALK": 0,
+      "CLAY_JOINT": 3512,
+      "CLAY_PALE": 0,
+      "CLAY_STONE": 1004,
+      "CLAY_HARDWARE": 660,
+      "CLAY_TIMBER": 12,
+      "CLAY_PLANTING": 0,
+      "CLAY_FOUNDATION": 304,
+      "CLAY_WALL": 886,
+      "CLAY_DOOR": 12,
+      "CLAY_DOOR2": 48,
+      "CLAY_GLASS": 552,
+      "CLAY_TRIM": 6460,
+      "CLAY_STAINED": 120,
+      "CLAY_ROOF": 244,
+      "CLAY_FLOOR": 108,
+      "CLAY_SHINGLE": 72,
+      "CLAY_SHJOINT": 100,
+      "CLAY_BRICK": 36,
+      "CLAY_POT": 24,
+      "CLAY_INTERIOR": 36
+    }
+  },
+  "clay-arched-mill-mixed-use-clay-v005": {
+    "sourceSha256": "218c0f8d8a84c34169af41490f8d0284e0bf2ac48dfe9a423b0985533c39ffdc",
+    "sourceTriangles": 14088,
+    "retainedTriangles": 13572,
+    "regions": [
+      [
+        -11.6,
+        -5e-05,
+        -11.6,
+        11.6,
+        27,
+        11.6
+      ]
+    ],
+    "landscape": [],
+    "bounds": {
+      "min": [
+        -11.380000114440918,
+        0.0,
+        -11.34000015258789
+      ],
+      "max": [
+        11.380000114440918,
+        25.700000762939453,
+        11.34000015258789
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_FOUNDATION": 12,
+      "CLAY_STONE": 864,
+      "CLAY_TIMBER": 156,
+      "CLAY_PLANTING": 0,
+      "CLAY_WALL": 4742,
+      "CLAY_JOINT": 1634,
+      "CLAY_TRIM": 4128,
+      "CLAY_GLASS": 816,
+      "CLAY_PALE": 36,
+      "CLAY_ROOF": 44,
+      "CLAY_METAL": 408,
+      "CLAY_FLOOR": 48,
+      "CLAY_INTERIOR": 96,
+      "CLAY_BLUE": 24,
+      "CLAY_CONCRETE": 12,
+      "CLAY_HARDWARE": 552
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          48,
+          60
+        ]
+      ]
+    }
+  },
+  "clay-brick-podium-condo-tower-clay-v006": {
+    "sourceSha256": "1ce717fb6f9246312cb359b4808e726088447f12d2c571954cb33a6a91dd0869",
+    "sourceTriangles": 19194,
+    "retainedTriangles": 18530,
+    "regions": [
+      [
+        -21.90005,
+        -5e-05,
+        -16.40005,
+        23.00005,
+        51,
+        16.90005
+      ]
+    ],
+    "landscape": [],
+    "bounds": {
+      "min": [
+        -21.899999618530273,
+        0.0,
+        -16.34000015258789
+      ],
+      "max": [
+        23.0,
+        50.099998474121094,
+        16.899999618530273
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_FOUNDATION": 12,
+      "CLAY_STONE": 348,
+      "CLAY_TIMBER": 368,
+      "CLAY_PLANTING": 404,
+      "CLAY_WALL": 866,
+      "CLAY_JOINT": 2356,
+      "CLAY_TRIM": 4296,
+      "CLAY_GLASS": 3624,
+      "CLAY_PALE": 816,
+      "CLAY_FLOOR": 168,
+      "CLAY_SAND": 12,
+      "CLAY_BLUE": 72,
+      "CLAY_HARDWARE": 2592,
+      "CLAY_CONCRETE": 1452,
+      "CLAY_SPANDREL": 928,
+      "CLAY_INTERIOR": 108,
+      "CLAY_MEMBRANE": 12,
+      "CLAY_METAL": 96
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          48,
+          60
+        ]
+      ]
+    }
+  },
+  "clay-campus-shed-office-clay-v009": {
+    "sourceSha256": "3da93f5933a04669806e0192d9c9871af8bfbd5699ce7e15bba7cc8639d01a95",
+    "sourceTriangles": 20692,
+    "retainedTriangles": 19408,
+    "regions": [
+      [
+        -22.65005,
+        -5e-05,
+        -15.40005,
+        21.40005,
+        11.1,
+        18.80005
+      ]
+    ],
+    "landscape": [],
+    "bounds": {
+      "min": [
+        -22.614999771118164,
+        0.0,
+        -15.34000015258789
+      ],
+      "max": [
+        21.34000015258789,
+        11.020000457763672,
+        18.799999237060547
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_FOUNDATION": 12,
+      "CLAY_STONE": 272,
+      "CLAY_FLOOR": 44,
+      "CLAY_HARDWARE": 4592,
+      "CLAY_PALE": 2536,
+      "CLAY_WALL": 846,
+      "CLAY_JOINT": 2562,
+      "CLAY_TRIM": 5772,
+      "CLAY_GLASS": 1272,
+      "CLAY_INTERIOR": 96,
+      "CLAY_PRECAST": 744,
+      "CLAY_SAFETY": 24,
+      "CLAY_ROOF": 48,
+      "CLAY_MEMBRANE": 12,
+      "CLAY_TIMBER": 240,
+      "CLAY_BLUE": 336,
+      "CLAY_PLANTING": 0
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          0,
+          12
+        ]
+      ]
+    }
+  },
+  "clay-courtyard-primary-school-clay-v009": {
+    "sourceSha256": "8ab45251a971c91aeb217447f2f96fef8e98bdc2e8d2ecefe328d206175a3bd7",
+    "sourceTriangles": 18568,
+    "retainedTriangles": 18224,
+    "regions": [
+      [
+        -20.38005,
+        -5e-05,
+        -23.20005,
+        20.38005,
+        13.1,
+        23.38005
+      ]
+    ],
+    "landscape": [],
+    "bounds": {
+      "min": [
+        -20.030000686645508,
+        0.0,
+        -23.030000686645508
+      ],
+      "max": [
+        20.3700008392334,
+        12.979000091552734,
+        23.3700008392334
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_FOUNDATION": 12,
+      "CLAY_STONE": 0,
+      "CLAY_FLOOR": 160,
+      "CLAY_COURT": 24,
+      "CLAY_PLAY": 12,
+      "CLAY_PALE": 1448,
+      "CLAY_HARDWARE": 5360,
+      "CLAY_FIN_RED": 540,
+      "CLAY_FIN_TEAL": 276,
+      "CLAY_FIN_YELLOW": 264,
+      "CLAY_FIN_GREEN": 168,
+      "CLAY_TIMBER": 240,
+      "CLAY_PLANTING": 0,
+      "CLAY_WALL": 830,
+      "CLAY_JOINT": 1582,
+      "CLAY_TRIM": 4644,
+      "CLAY_GLASS": 2244,
+      "CLAY_CORTEN": 300,
+      "CLAY_ROOF": 48,
+      "CLAY_MEMBRANE": 24,
+      "CLAY_INTERIOR": 48
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          0,
+          12
+        ]
+      ]
+    }
+  },
+  "clay-garden-court-senior-residence-clay-v006": {
+    "sourceSha256": "17e50488c4753c0c91de4a88724d31f335757464cf1cbc96ca48bf9e6e00f8df",
+    "sourceTriangles": 77642,
+    "retainedTriangles": 74750,
+    "regions": [
+      [
+        -32.6,
+        -5e-05,
+        -33.6,
+        -10.9,
+        16,
+        -7.9
+      ],
+      [
+        12.9,
+        -5e-05,
+        -33.1,
+        33.6,
+        16,
+        -7.9
+      ],
+      [
+        -38.1,
+        -5e-05,
+        3.9,
+        -13.9,
+        16,
+        21.1
+      ],
+      [
+        23.9,
+        -5e-05,
+        -3.6,
+        37.6,
+        16,
+        30.6
+      ],
+      [
+        -15.6,
+        -5e-05,
+        18.9,
+        18.1,
+        16,
+        32.6
+      ],
+      [
+        -13.1,
+        -5e-05,
+        -13.7,
+        -3.4999999999999996,
+        7,
+        -8.3
+      ],
+      [
+        3.4999999999999996,
+        -5e-05,
+        -13.7,
+        15.1,
+        7,
+        -8.3
+      ],
+      [
+        -20.1,
+        -5e-05,
+        -10.1,
+        -13.9,
+        7,
+        6.1
+      ],
+      [
+        26.4,
+        -5e-05,
+        -10.1,
+        32.6,
+        7,
+        -1.4
+      ],
+      [
+        -22.1,
+        -5e-05,
+        18.9,
+        -13.4,
+        7,
+        29.6
+      ],
+      [
+        15.9,
+        -5e-05,
+        20.4,
+        26.1,
+        7,
+        30.6
+      ],
+      [
+        -5.3,
+        -5e-05,
+        -14.3,
+        5.3,
+        12,
+        -3.7
+      ],
+      [
+        -14.90005,
+        -5e-05,
+        -8.90005,
+        24.90005,
+        10.6,
+        19.90005
+      ],
+      [
+        -36.99805,
+        0.14995,
+        -8.99805,
+        -14.99995,
+        10.05005,
+        5.30005
+      ]
+    ],
+    "landscape": [
+      "CLAY_CONCRETE"
+    ],
+    "bounds": {
+      "min": [
+        -37.5,
+        0.0,
+        -33.0
+      ],
+      "max": [
+        37.0,
+        15.050000190734863,
+        32.0
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_LAWN": 12,
+      "CLAY_SAND": 636,
+      "CLAY_STONE": 6228,
+      "CLAY_WATER": 152,
+      "CLAY_ROSE": 216,
+      "CLAY_TIMBER": 5128,
+      "CLAY_PLANTING": 5800,
+      "CLAY_SOIL": 120,
+      "CLAY_HARDWARE": 4828,
+      "CLAY_FOUNDATION": 60,
+      "CLAY_MEMBRANE": 144,
+      "CLAY_CONCRETE": 0,
+      "CLAY_WALL": 8872,
+      "CLAY_JOINT": 9808,
+      "CLAY_TRIM": 18464,
+      "CLAY_GLASS": 5022,
+      "CLAY_FLOOR": 180,
+      "CLAY_INTERIOR": 60,
+      "CLAY_ROOF": 8888,
+      "CLAY_PALE": 132
+    },
+    "triangleRanges": {
+      "CLAY_TIMBER": [
+        [
+          0,
+          4700
+        ],
+        [
+          4788,
+          4876
+        ],
+        [
+          5448,
+          5788
+        ]
+      ],
+      "CLAY_PLANTING": [
+        [
+          0,
+          5740
+        ],
+        [
+          5800,
+          5860
+        ]
+      ]
+    }
+  },
+  "clay-baronial-railway-hotel-clay-v006": {
+    "sourceSha256": "424b00606c40c0bb455bf00d0af51fd12d0506049b065863fdc7827b4e9ffbd9",
+    "sourceTriangles": 83012,
+    "retainedTriangles": 76696,
+    "regions": [
+      [
+        -31,
+        0,
+        -27,
+        31,
+        43,
+        27
+      ],
+      [
+        -18,
+        0,
+        24,
+        -5,
+        43,
+        30.5
+      ],
+      [
+        -16.65005,
+        0,
+        10.99995,
+        -6.54995,
+        10,
+        29.05005
+      ]
+    ],
+    "landscape": [
+      "CLAY_CONCRETE",
+      "CLAY_PLANTING"
+    ],
+    "bounds": {
+      "min": [
+        -30.799999237060547,
+        0.0,
+        -26.772518157958984
+      ],
+      "max": [
+        30.799999237060547,
+        42.400001525878906,
+        29.970001220703125
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_CONCRETE": 0,
+      "CLAY_STONE": 28484,
+      "CLAY_FOUNDATION": 36,
+      "CLAY_PLANTING": 0,
+      "CLAY_HARDWARE": 320,
+      "CLAY_TIMBER": 84,
+      "CLAY_FLOOR": 204,
+      "CLAY_WALL": 12076,
+      "CLAY_JOINT": 8020,
+      "CLAY_TRIM": 20256,
+      "CLAY_GLASS": 4800,
+      "CLAY_INTERIOR": 492,
+      "CLAY_ROOF": 1324,
+      "CLAY_LEAD": 72,
+      "CLAY_RUSTIC": 504,
+      "CLAY_BLUE": 24
+    },
+    "meshRegions": {
+      "CLAY_TIMBER": [
+        [
+          14.7,
+          4.9999,
+          18.5,
+          17.3,
+          5.55,
+          20.65
+        ],
+        [
+          10.9,
+          5.7,
+          20.5,
+          13.1,
+          5.9,
+          21.5
+        ]
+      ]
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          48,
+          84
+        ]
+      ],
+      "CLAY_STONE": [
+        [
+          180,
+          28664
+        ]
+      ],
+      "CLAY_HARDWARE": [
+        [
+          4412,
+          4732
+        ]
+      ]
+    }
+  },
+  "clay-ctrain-elevated-station-clay-v004": {
+    "sourceSha256": "d51715e11ca257c68b18214c1a7a4c9f7815f60b7b810d0c7bd1be5c92f48962",
+    "sourceTriangles": 20602,
+    "retainedTriangles": 19758,
+    "regions": [
+      [
+        -18.85,
+        0,
+        -22.35,
+        18.85,
+        18.75,
+        12.85
+      ],
+      [
+        -10.05,
+        4.39995,
+        -40.05,
+        10.05,
+        10.8,
+        56.05
+      ],
+      [
+        -20.35,
+        0,
+        41.95,
+        -9.95,
+        7.05,
+        44.05
+      ],
+      [
+        9.95,
+        0,
+        41.95,
+        20.35,
+        7.05,
+        44.05
+      ],
+      [
+        -38.2,
+        6.05,
+        0.05,
+        -17.85,
+        10.25,
+        5.55
+      ],
+      [
+        -44.25,
+        0,
+        -1.45,
+        -37.75,
+        10.65,
+        7.05
+      ],
+      [
+        17.85,
+        6.05,
+        1.85,
+        27.2,
+        10.25,
+        5.55
+      ],
+      [
+        26.75,
+        0,
+        -22.2,
+        31.25,
+        10.25,
+        40.2
+      ],
+      [
+        25.75,
+        0,
+        39.75,
+        32.25,
+        10.65,
+        46.25
+      ],
+      [
+        25.75,
+        0,
+        -28.25,
+        32.25,
+        10.65,
+        -21.75
+      ],
+      [
+        -10.85005,
+        5.99995,
+        10.89995,
+        10.85005,
+        10.80005,
+        31.10005
+      ],
+      [
+        -9.50005,
+        0,
+        13.79995,
+        9.50005,
+        4.40005,
+        15.20005
+      ],
+      [
+        -9.50005,
+        0,
+        18.49995,
+        9.50005,
+        4.40005,
+        19.90005
+      ],
+      [
+        -9.50005,
+        0,
+        36.29995,
+        9.50005,
+        4.40005,
+        37.70005
+      ],
+      [
+        -9.50005,
+        0,
+        43.29995,
+        9.50005,
+        4.40005,
+        44.70005
+      ],
+      [
+        -4.00005,
+        0,
+        -27.62005,
+        4.00005,
+        4.40005,
+        -26.37995
+      ],
+      [
+        -4.00005,
+        0,
+        -33.62005,
+        4.00005,
+        4.40005,
+        -32.37995
+      ],
+      [
+        -4.00005,
+        0,
+        -39.62005,
+        4.00005,
+        4.40005,
+        -38.37995
+      ],
+      [
+        -4.00005,
+        0,
+        50.37995,
+        4.00005,
+        4.40005,
+        51.62005
+      ],
+      [
+        -4.00005,
+        0,
+        54.579950000000004,
+        4.00005,
+        4.40005,
+        55.82005
+      ]
+    ],
+    "landscape": [
+      "CLAY_ASPHALT",
+      "CLAY_PLANTING"
+    ],
+    "bounds": {
+      "min": [
+        -44.20000076293945,
+        0.0,
+        -40.0
+      ],
+      "max": [
+        32.20000076293945,
+        18.700000762939453,
+        56.0
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_ASPHALT": 0,
+      "CLAY_CONCRETE": 4484,
+      "CLAY_WHITE": 264,
+      "CLAY_HARDWARE": 1272,
+      "CLAY_TIMBER": 120,
+      "CLAY_PLANTING": 0,
+      "CLAY_WALL": 1210,
+      "CLAY_JOINT": 3676,
+      "CLAY_TRIM": 6660,
+      "CLAY_GLASS": 940,
+      "CLAY_STONE": 432,
+      "CLAY_FOUNDATION": 48,
+      "CLAY_FLOOR": 72,
+      "CLAY_MEMBRANE": 12,
+      "CLAY_PALE": 256,
+      "CLAY_SAND": 36,
+      "CLAY_TACTILE": 48,
+      "CLAY_SIGNAL": 48,
+      "CLAY_BLUE": 48,
+      "CLAY_RAIL": 108,
+      "CLAY_TRAIN": 24
+    }
+  },
+  "clay-energy-centre-clay-v010": {
+    "sourceSha256": "1c4849fedf76e226f5b0dc545f61c7c3350debb4ff845c5010d5931224eb05c3",
+    "sourceTriangles": 12442,
+    "retainedTriangles": 11938,
+    "regions": [
+      [
+        -18.081,
+        0,
+        -17.031,
+        18.031,
+        24,
+        17.101
+      ]
+    ],
+    "landscape": [
+      "CLAY_PLANTING"
+    ],
+    "bounds": {
+      "min": [
+        -18.079999923706055,
+        0.0,
+        -17.030000686645508
+      ],
+      "max": [
+        18.030000686645508,
+        23.80500030517578,
+        17.100000381469727
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_FOUNDATION": 24,
+      "CLAY_STONE": 12,
+      "CLAY_TIMBER": 12,
+      "CLAY_PLANTING": 0,
+      "CLAY_WALL": 176,
+      "CLAY_JOINT": 3646,
+      "CLAY_TRIM": 1236,
+      "CLAY_GLASS": 900,
+      "CLAY_CONCRETE": 180,
+      "CLAY_PALE": 864,
+      "CLAY_PRECAST": 36,
+      "CLAY_HARDWARE": 3268,
+      "CLAY_FLOOR": 60,
+      "CLAY_MEMBRANE": 24,
+      "CLAY_CORTEN": 220,
+      "CLAY_STEEL": 1256,
+      "CLAY_TEAL": 24
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          36,
+          60
+        ]
+      ]
+    }
+  },
+  "clay-old-montreal-limestone-commercial-clay-v004": {
+    "sourceSha256": "eee62a12874fc1248a17383fe5f6c98e41b01511a50e1e44533db25b538ad3a8",
+    "sourceTriangles": 66776,
+    "retainedTriangles": 63728,
+    "regions": [
+      [
+        -52.80005,
+        0,
+        -11.35005,
+        11.80005,
+        43,
+        11.35005
+      ],
+      [
+        -11.80005,
+        0,
+        9.70005,
+        56.10005,
+        43,
+        31.10005
+      ],
+      [
+        -10.50005,
+        0,
+        28.80005,
+        10.50005,
+        22,
+        36.00005
+      ],
+      [
+        -10.90005,
+        0,
+        -15.20005,
+        10.90005,
+        8,
+        -10.0
+      ],
+      [
+        -51.29005,
+        0.65995,
+        -9.79005,
+        54.29005,
+        0.90005,
+        29.29005
+      ],
+      [
+        -51.29005,
+        5.75995,
+        -9.79005,
+        54.29005,
+        6.00005,
+        29.29005
+      ],
+      [
+        -51.29005,
+        10.35995,
+        -9.79005,
+        54.29005,
+        10.60005,
+        29.29005
+      ]
+    ],
+    "landscape": [
+      "CLAY_ASPHALT",
+      "CLAY_CONCRETE",
+      "CLAY_COBBLE",
+      "CLAY_PLANTING"
+    ],
+    "bounds": {
+      "min": [
+        -52.75,
+        0.0,
+        -15.180000305175781
+      ],
+      "max": [
+        56.08000183105469,
+        42.5,
+        35.97999954223633
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_ASPHALT": 0,
+      "CLAY_CONCRETE": 0,
+      "CLAY_COBBLE": 0,
+      "CLAY_JOINT": 3006,
+      "CLAY_TIMBER": 48,
+      "CLAY_PLANTING": 0,
+      "CLAY_WALL": 10030,
+      "CLAY_ARCH": 2776,
+      "CLAY_STONE": 18468,
+      "CLAY_FRAME": 15732,
+      "CLAY_GLASS": 3692,
+      "CLAY_HARDWARE": 5256,
+      "CLAY_METAL": 2172,
+      "CLAY_MEMBRANE": 24,
+      "CLAY_ROOF": 112,
+      "CLAY_POT": 120,
+      "CLAY_TRIM": 2208,
+      "CLAY_FLOOR": 84
+    },
+    "meshRegions": {
+      "CLAY_STONE": [
+        [
+          -52.75005,
+          0,
+          -15.18005,
+          56.08005,
+          28.80005,
+          35.98005
+        ]
+      ],
+      "CLAY_METAL": [
+        [
+          -10.40005,
+          14.94995,
+          -9.90005,
+          54.55005,
+          41.20005,
+          34.35005
+        ]
+      ],
+      "CLAY_TIMBER": [
+        [
+          -1.2900499618530274,
+          0.9099500262260437,
+          29.44995076293945,
+          1.2900499618530274,
+          4.5900501525878905,
+          29.55004923706055
+        ],
+        [
+          46.309951373291014,
+          0.9099500262260437,
+          29.44995076293945,
+          48.4900516784668,
+          4.890049866485596,
+          29.55004923706055
+        ],
+        [
+          54.44995076293945,
+          0.8999499761581421,
+          19.35995061035156,
+          54.55004923706055,
+          3.6000499046325682,
+          21.14004938964844
+        ],
+        [
+          -1.190050057220459,
+          0.9099500262260437,
+          -10.050050190734863,
+          1.190050057220459,
+          3.490050009536743,
+          -9.949949809265137
+        ]
+      ]
+    }
+  },
+  "clay-plus15-glass-office-tower-clay-v006": {
+    "sourceSha256": "1f12b3c94ed7405e43fde35450b31a7e5561b937fd854ff8a0c92bc65db35851",
+    "sourceTriangles": 16500,
+    "retainedTriangles": 15812,
+    "regions": [
+      [
+        -18.85005,
+        0,
+        -18.85005,
+        18.85005,
+        83,
+        18.85005
+      ],
+      [
+        -4.90005,
+        4.59995,
+        17.99995,
+        -0.29995,
+        7.80005,
+        47.00005
+      ],
+      [
+        -3.10005,
+        0.14995,
+        24.49995,
+        -2.09995,
+        4.60005,
+        25.50005
+      ],
+      [
+        -3.10005,
+        0.14995,
+        34.49995,
+        -2.09995,
+        4.60005,
+        35.50005
+      ]
+    ],
+    "landscape": [],
+    "bounds": {
+      "min": [
+        -18.850000381469727,
+        0.0,
+        -18.850000381469727
+      ],
+      "max": [
+        18.850000381469727,
+        82.66000366210938,
+        47.0
+      ]
+    },
+    "meshTriangles": {
+      "CLAY_FOUNDATION": 12,
+      "CLAY_FLOOR": 204,
+      "CLAY_CONCRETE": 684,
+      "CLAY_TIMBER": 1372,
+      "CLAY_TRIM": 888,
+      "CLAY_BLUE": 936,
+      "CLAY_INTERIOR": 96,
+      "CLAY_PALE": 1688,
+      "CLAY_HARDWARE": 1260,
+      "CLAY_PLANTING": 2140,
+      "CLAY_GLASS": 984,
+      "CLAY_METAL": 5236,
+      "CLAY_LIGHTGLASS": 204,
+      "CLAY_MEMBRANE": 48,
+      "CLAY_SOIL": 60
+    },
+    "triangleRanges": {
+      "CLAY_FOUNDATION": [
+        [
+          0,
+          12
+        ]
+      ]
+    }
+  }
+}
