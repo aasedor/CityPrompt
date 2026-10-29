@@ -384,6 +384,7 @@ describe('Direct 3D presentation adapter', () => {
       customPrompt: 'Natural spring planting.',
       projectId: 'project-1',
       community3DClaims,
+      authoredSurfaceClaims: [{ zone_id: 'surface', source_hash: 'd'.repeat(64) }],
       publicRealmContext: 'PUBLIC-REALM EDGE COORDINATION:\n- park touches Main Street.',
       residualLandscapeClaim: {
         boundary_id: 'boundary-1',
@@ -393,6 +394,7 @@ describe('Direct 3D presentation adapter', () => {
 
     expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(1);
     expect(rendersApi.generateDirect3D).toHaveBeenCalledWith(expect.objectContaining({
+      authored_surface_claims: [{ zone_id: 'surface', source_hash: 'd'.repeat(64) }],
       add_people: false,
       add_vehicles: false,
       beauty_image_base64: capture.beautyImageBase64,

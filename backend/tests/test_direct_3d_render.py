@@ -405,11 +405,14 @@ def _project_request(
     source_hash: str | None = None,
     *,
     community_claims: list[dict] | None = None,
+    surface_claims: list[dict] | None = None,
 ) -> Direct3DRenderRequest:
     payload = _request().model_dump()
     payload["project_id"] = project_id
     if community_claims is not None:
         payload["community_3d_claims"] = community_claims
+    if surface_claims is not None:
+        payload["authored_surface_claims"] = surface_claims
     if boundary_id is not None and source_hash is not None:
         payload["residual_landscape_claim"] = {
             "boundary_id": boundary_id,
@@ -1368,6 +1371,147 @@ def test_paid_project_preflight_accepts_boundaryless_manual_scene_and_checks_sou
         )
     assert stale.value.status_code == 409
     assert stale.value.detail["billed"] is False
+
+
+def _surface_claims_for(zones):
+    return [{"zone_id": zone.id, "source_hash": direct_api.authored_surface_source_hash(to_shape(zone.geometry), zone.properties)}
+            for zone in zones]
+
+
+@pytest.mark.parametrize("bind_capture_instances", [True, False])
+def test_paid_project_preflight_accepts_authored_ground_surface_without_compile_claim(bind_capture_instances):
+    park = _compiled_zone("green_space")
+    surface = _zone(uuid.uuid4(), "development_area", properties={"ground_surface_material": "black_pavers"})
+    request = _project_request(uuid.uuid4(), community_claims=_claims_for([park]), surface_claims=_surface_claims_for([surface]))
+    request = Direct3DRenderRequest(**{
+        **request.model_dump(),
+        "instance_id_image_base64": request.beauty_image_base64,
+        "instance_id_manifest": {
+            "#010001": {"instance_id": f"zone:{park.id}:park", "semantic_class": "park", "zone_id": park.id},
+            "#010002": {"instance_id": f"zone:{surface.id}:landscape", "semantic_class": "landscape", "zone_id": surface.id},
+        },
+    })
+    inventory = direct_api._validate_direct_3d_project_zones(
+        request, [park, surface], {}, bind_capture_instances=bind_capture_instances,
+    )
+    assert {item["instance_id"] for item in inventory} == (
+        {f"zone:{park.id}:park", f"zone:{surface.id}:landscape"} if bind_capture_instances else set()
+    )
+    park.properties["community_3d"]["state"] = "stale"
+    with pytest.raises(HTTPException, match="stale or missing"):
+        direct_api._validate_direct_3d_project_zones(
+            request, [park, surface], {}, bind_capture_instances=bind_capture_instances,
+        )
+
+
+@pytest.mark.parametrize("material", [None, "unknown-material"])
+def test_paid_project_preflight_still_rejects_unknown_polygons_with_ground_surface(material):
+    park = _compiled_zone("green_space")
+    surface = _zone(uuid.uuid4(), "development_area", properties={"ground_surface_material": "black_pavers"})
+    unknown = _zone(uuid.uuid4(), "water", properties={"ground_surface_material": material})
+    request = _project_request(uuid.uuid4(), community_claims=[*_claims_for([park]), {
+        "zone_id": unknown.id, "source_hash": "c" * 64, "representation_hash": "d" * 64,
+    }], surface_claims=_surface_claims_for([surface]))
+    with pytest.raises(HTTPException) as rejected:
+        direct_api._validate_direct_3d_project_zones(request, [park, surface, unknown], {})
+    assert rejected.value.status_code == 409
+    assert rejected.value.detail["billed"] is False
+
+
+def test_ground_surface_inventory_rejects_relabeling_and_hidden_layer_sources():
+    park = _compiled_zone("green_space")
+    surface = _zone(uuid.uuid4(), "development_area", properties={"ground_surface_material": "black_pavers"})
+    hidden_surface = _zone(uuid.uuid4(), "development_area", properties={
+        "ground_surface_material": "black_pavers", "_imported_from": "Hidden alternative",
+    })
+    for captured_surface, role in [(surface, "park"), (surface, "ground"), (hidden_surface, "landscape")]:
+        request = _project_request(uuid.uuid4(), community_claims=_claims_for([park]), surface_claims=_surface_claims_for([surface]))
+        request = Direct3DRenderRequest(**{
+            **request.model_dump(), "instance_id_image_base64": request.beauty_image_base64,
+            "instance_id_manifest": {
+                "#010001": {"instance_id": f"zone:{park.id}:park", "semantic_class": "park", "zone_id": park.id},
+                "#010002": {"instance_id": f"zone:{captured_surface.id}:{role}", "semantic_class": role,
+                            "zone_id": captured_surface.id},
+            },
+        })
+        with pytest.raises(HTTPException) as rejected:
+            direct_api._validate_direct_3d_project_zones(request, [park, surface, hidden_surface], {})
+        assert rejected.value.detail["billed"] is False
+
+
+def test_ground_surface_scope_keeps_visible_groups_complete_and_hidden_groups_omitted():
+    park = _compiled_zone("green_space", properties={"_imported_from": "Visible layer"})
+    surface = _zone(uuid.uuid4(), "development_area", properties={
+        "ground_surface_material": "black_pavers", "_imported_from": "Visible layer",
+    })
+    hidden = _zone(uuid.uuid4(), "water", properties={"_imported_from": "Hidden alternative"})
+    request = _project_request(uuid.uuid4(), community_claims=_claims_for([park]), surface_claims=_surface_claims_for([surface]))
+    direct_api._validate_direct_3d_project_zones(request, [park, surface, hidden], {}, bind_capture_instances=False)
+
+    missing = _compiled_zone("green_space", properties={"_imported_from": "Visible layer"})
+    with pytest.raises(HTTPException, match="layer set no longer matches"):
+        direct_api._validate_direct_3d_project_zones(
+            request, [park, surface, missing, hidden], {}, bind_capture_instances=False,
+        )
+
+
+def test_ground_surface_geometry_remains_bound_to_current_residual_landscape():
+    park = _compiled_zone("green_space")
+    surface = _zone(uuid.uuid4(), "development_area", properties={"ground_surface_material": "black_pavers"})
+    boundary = _zone(uuid.uuid4(), "site_boundary")
+    source_hash = residual_landscape_source_hash(to_shape(boundary.geometry), [
+        ResidualSourceZone(zone_id=str(park.id), kind="park", role=None, geometry=to_shape(park.geometry)),
+        ResidualSourceZone(zone_id=str(surface.id), kind="development_area", role=None, geometry=to_shape(surface.geometry)),
+    ])
+    boundary.properties["community_3d_landscape"] = {
+        "state": "compiled", "boundary_id": str(boundary.id), "source_hash": source_hash,
+    }
+    request = _project_request(uuid.uuid4(), boundary.id, source_hash, community_claims=_claims_for([park]), surface_claims=_surface_claims_for([surface]))
+    direct_api._validate_direct_3d_project_zones(request, [boundary, park, surface], {}, bind_capture_instances=False)
+    surface.geometry = from_shape(box(-114.08, 51.04, -114.078, 51.041), srid=4326)
+    request = Direct3DRenderRequest(**{**request.model_dump(), "authored_surface_claims": _surface_claims_for([surface])})
+    with pytest.raises(HTTPException, match="parcel changed"):
+        direct_api._validate_direct_3d_project_zones(request, [boundary, park, surface], {}, bind_capture_instances=False)
+
+
+@pytest.mark.parametrize("boundary_mode", ["boundaryless", "placed_objects_only"])
+@pytest.mark.parametrize("changed", ["geometry", "material"])
+def test_ground_surface_capture_rejects_edits_without_residual_landscape(boundary_mode, changed):
+    park = _compiled_zone("green_space")
+    surface = _zone(uuid.uuid4(), "development_area", properties={"ground_surface_material": "black_pavers"})
+    zones = [park, surface]
+    if boundary_mode == "placed_objects_only":
+        zones.append(_zone(uuid.uuid4(), "site_boundary", properties={"community_3d_landscape_mode": "placed_objects_only"}))
+    payload = _project_request(uuid.uuid4(), community_claims=_claims_for([park])).model_dump()
+    # The captured rectangle and finish are fixed independently of current rows.
+    payload["authored_surface_claims"] = [{"zone_id": surface.id, "source_hash":
+        "d0b0d2c05786a8fe8d4284b35862a1c888dec5fd144d8254cbaf003d66869cff"}]
+    request = Direct3DRenderRequest(**payload)
+    direct_api._validate_direct_3d_project_zones(request, zones, {}, bind_capture_instances=False)
+    if changed == "geometry":
+        surface.geometry = from_shape(box(-114.08, 51.04, -114.078, 51.041), srid=4326)
+    else:
+        surface.properties["ground_surface_material"] = "red_brick"
+    with pytest.raises(HTTPException, match="surface.*changed|surface.*stale") as stale:
+        direct_api._validate_direct_3d_project_zones(request, zones, {}, bind_capture_instances=False)
+    assert stale.value.detail["billed"] is False
+
+
+@pytest.mark.parametrize("claims", [[], [{"zone_id": str(uuid.UUID(int=1)), "source_hash": "a" * 64}]])
+def test_ground_surface_capture_requires_exact_current_surface_set(claims):
+    park = _compiled_zone("green_space")
+    surface = _zone(uuid.uuid4(), "development_area", properties={"ground_surface_material": "black_pavers"})
+    request = _project_request(uuid.uuid4(), community_claims=_claims_for([park]), surface_claims=claims)
+    with pytest.raises(HTTPException) as stale:
+        direct_api._validate_direct_3d_project_zones(request, [park, surface], {}, bind_capture_instances=False)
+    assert stale.value.detail["billed"] is False
+
+
+def test_ground_surface_request_rejects_duplicate_surface_claims():
+    claim = {"zone_id": uuid.uuid4(), "source_hash": "a" * 64}
+    payload = _request().model_dump()
+    with pytest.raises(ValidationError, match="distinct non-archetype"):
+        Direct3DRenderRequest(**{**payload, "authored_surface_claims": [claim, claim]})
 
 
 def test_paid_project_preflight_accepts_one_complete_visible_plan_layer():

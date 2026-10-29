@@ -4,6 +4,7 @@ import { authApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { useAuthStore } from '@/store';
 import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
+import type { AuthoredSurfaceClaim } from '@/features/groundSurfaces/groundSurfaceCapture';
 import {
   GLOBE_STYLE_PROMPTS,
   REPROJECTING_STYLES,
@@ -349,6 +350,7 @@ export function useDirect3DRender() {
       addVehicles?: boolean;
       projectId: string;
       community3DClaims: Community3DCaptureClaim[];
+      authoredSurfaceClaims?: AuthoredSurfaceClaim[];
       detailsRevision?: number;
       residualLandscapeClaim?: ResidualLandscapeClaim | null;
       /** 'street' marks an eye-level capture: scene presentation is forced and
@@ -444,6 +446,7 @@ export function useDirect3DRender() {
       presentation_mode: presentationMode,
       project_id: options.projectId,
       community_3d_claims: options.community3DClaims,
+      authored_surface_claims: options.authoredSurfaceClaims ?? [],
       details_revision: options.detailsRevision,
         park_access_snapshot: capture.parkAccessSnapshot,
         shared_ground_snapshot: capture.sharedGroundSnapshot,

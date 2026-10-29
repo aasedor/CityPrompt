@@ -29,6 +29,26 @@ class _ScalarRows:
         return self._rows
 
 
+@pytest.mark.asyncio
+async def test_video_scene_revision_binds_uncompiled_surface_material():
+    from tests.test_direct_3d_render import _compiled_zone, _zone, _claims_for, _surface_claims_for
+    park = _compiled_zone("green_space")
+    surface = _zone(uuid.uuid4(), "development_area", properties={"ground_surface_material": "black_pavers"})
+    request = VideoPilotRequest(**{**_request().model_dump(), "community_3d_claims": _claims_for([park]),
+        "residual_landscape_claim": None, "authored_surface_claims": _surface_claims_for([surface])})
+    async def validate():
+        db = AsyncMock()
+        db.execute.side_effect = [_ScalarRows([park, surface]), _ScalarRows([]), _ScalarRows(None)]
+        return await _validate_video_scene_revision(request, db)
+    assert len(await validate()) == 64
+    surface.properties["ground_surface_material"] = "red_brick"
+    with pytest.raises(HTTPException) as stale:
+        await validate()
+    assert stale.value.status_code == 409
+    assert stale.value.detail["billed"] is False
+    assert stale.value.detail["code"] == "video_project_state_changed"
+
+
 def _request(*, reverse: bool = False) -> VideoPilotRequest:
     zone_ids = [uuid.UUID(int=2), uuid.UUID(int=1)]
     if reverse:

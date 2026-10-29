@@ -4,11 +4,94 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngi
 import { placementProblem, rectangleAt, rectangleDimensions } from './geometry';
 import { snapBuildingMove, snapPlacement } from './snapPlacement';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
+import { CATALOGUE_ASSETS } from './assetRegistry';
+import { placeAsset, placementProperties } from './catalogue';
+import savedCourtScene from './__fixtures__/courtRotationStreetTower20261029.json';
 
 const ll = (x: number, y: number) => [-114 + x/metersPerDegLon(51),51 + y/METERS_PER_DEG_LAT];
 const zone = (id: string, coords: number[][], zone_type: SiteZone['zone_type'] = 'building') => ({id, coordinates:coords, zone_type,properties:{}} as SiteZone);
 const site = zone('site',rectangleAt(ll(0,0),100,100),'site_boundary');
+const cycleStreet = () => {
+  const asset=CATALOGUE_ASSETS.find(a=>a.id==='student_neighbourhood_cycle_street_v1')!;
+  const points=[ll(0,-80),ll(0,0),ll(60,0)];
+  return {...zone('cycle-street',bufferLineToPolygon(points,13),'road'),
+    properties:{...asset.properties,plan_centerline:points,plan_route_controls:points}};
+};
+const court = (x=20,y=-25) => {
+  const asset=placeAsset('native-park:court_only_basketball_v1--native-v1');
+  const coordinates=rectangleAt(ll(x,y),21,36);
+  return {...zone('court',coordinates,'green_space'),properties:placementProperties(asset,0,coordinates)};
+};
+const savedCourtZones = () => {
+  const [lng,lat]=savedCourtScene.origin;
+  const world=(p:number[])=>[lng+p[0]/metersPerDegLon(lat),lat+p[1]/METERS_PER_DEG_LAT];
+  return savedCourtScene.zones.map(item=>({...zone(item.id,item.coordinatesM.map(world),item.zone_type as SiteZone['zone_type']),
+    properties:{...item.properties,...(item.centerlineM ? {plan_centerline:item.centerlineM.map(world)} : {}),
+      ...(item.routeControlsM ? {plan_route_controls:item.routeControlsM.map(world)} : {})}} as SiteZone));
+};
 describe('ideation placement snapping',()=>{
+  it('finds the bounded diagonal fit for the saved court between a tower and cycle street',()=>{
+    const zones=savedCourtZones();
+    const self=zones.find(item=>item.properties?.court_only_native===true)!;
+    const boundary=zones.find(item=>item.zone_type==='site_boundary')!;
+    const dimensions=rectangleDimensions(self.coordinates),before=JSON.stringify(zones);
+    const proposed=rectangleAt(dimensions.center,dimensions.width,dimensions.depth,15);
+    expect(placementProblem(self.coordinates,zones,boundary,self.id)).toBeNull();
+    expect(placementProblem(proposed,zones,boundary,self.id)).toContain('street and sidewalks');
+    const result=snapPlacement(proposed,zones,boundary,self.id,self.properties,self.zone_type);
+    expect(result.problem).toBeNull();
+    const d=rectangleDimensions(result.coordinates);
+    const dx=(d.center[0]-dimensions.center[0])*metersPerDegLon(dimensions.center[1]);
+    const dy=(d.center[1]-dimensions.center[1])*METERS_PER_DEG_LAT;
+    expect(dx).toBeLessThan(-4.2);expect(dy).toBeGreaterThan(29.5);
+    expect(Math.hypot(dx,dy)).toBeLessThanOrEqual(30);
+    expect(d.width).toBeCloseTo(21,3);expect(d.depth).toBeCloseTo(36,3);expect(d.degrees).toBeCloseTo(15,3);
+    expect(placementProblem(result.coordinates,zones,boundary,self.id)).toBeNull();
+    expect(JSON.stringify(zones)).toBe(before);
+  });
+  it('settles a rotated fixed court at the nearest clear inside corner of a cycle street',()=>{
+    const road=cycleStreet(),self=court(),boundary=zone('site',rectangleAt(ll(0,0),200,200),'site_boundary');
+    const before=JSON.stringify(self),context=[self,road,boundary];
+    expect(placementProblem(self.coordinates,context,boundary,self.id)).toBeNull();
+    const proposed=rectangleAt(ll(20,-25),21,36,15);
+    expect(placementProblem(proposed,context,boundary,self.id)).toContain('street and sidewalks');
+    const result=snapPlacement(proposed,context,boundary,self.id,self.properties,self.zone_type);
+    expect(result.problem).toBeNull();
+    expect(result.snapped).toBe(true);
+    const d=rectangleDimensions(result.coordinates);
+    // 6.5 m half-street + rotated half-court extent + 2 cm contact margin.
+    expect((d.center[0]+114)*metersPerDegLon(51)).toBeCloseTo(21.32196,2);
+    expect((d.center[1]-51)*METERS_PER_DEG_LAT).toBeCloseTo(-26.62426,2);
+    expect(d.width).toBeCloseTo(21,3);expect(d.depth).toBeCloseTo(36,3);expect(d.degrees).toBeCloseTo(15,3);
+    expect(placementProblem(result.coordinates,context,boundary,self.id)).toBeNull();
+    expect(JSON.stringify(self)).toBe(before);
+  });
+  it('keeps the requested court and boundary conflict when rotation has no fit',()=>{
+    const self=court(),road=cycleStreet(),boundary=zone('site',self.coordinates,'site_boundary');
+    const before=JSON.stringify(self),proposed=rectangleAt(ll(20,-25),21,36,15);
+    const result=snapPlacement(proposed,[self,road,boundary],boundary,self.id,self.properties,self.zone_type);
+    expect(result.problem).toContain('site boundary');
+    expect(result.snapped).toBe(false);expect(result.coordinates).toEqual(proposed);
+    expect(JSON.stringify(self)).toBe(before);
+  });
+  it('preserves other plots while settling a rotated court around a concave street',()=>{
+    const self=court(),road=cycleStreet(),boundary=zone('site',rectangleAt(ll(0,0),200,200),'site_boundary');
+    const neighbour=zone('neighbour',rectangleAt(ll(30,-50),14,10));
+    const context=[self,road,neighbour,boundary],before=JSON.stringify(context);
+    const result=snapPlacement(rectangleAt(ll(20,-25),21,36,15),context,boundary,self.id,self.properties,self.zone_type);
+    expect(result.problem).toBeNull();
+    expect(placementProblem(result.coordinates,context,boundary,self.id)).toBeNull();
+    expect(rectangleDimensions(result.coordinates).width).toBeCloseTo(21,3);
+    expect(rectangleDimensions(result.coordinates).depth).toBeCloseTo(36,3);
+    expect(JSON.stringify(context)).toBe(before);
+  });
+  it('refuses a street correction beyond the bounded nearby search',()=>{
+    const self=court(0,0),road={...cycleStreet(),coordinates:rectangleAt(ll(0,0),100,100),properties:{width:100}};
+    const boundary=zone('site',rectangleAt(ll(0,0),500,500),'site_boundary'),proposed=rectangleAt(ll(0,0),21,36,15);
+    const result=snapPlacement(proposed,[self,road,boundary],boundary,self.id,self.properties,self.zone_type);
+    expect(result.problem).toContain('street and sidewalks');
+    expect(result.snapped).toBe(false);expect(result.coordinates).toEqual(proposed);
+  });
   it('leaves clear placements exactly unchanged',()=>{
     const coords=rectangleAt(ll(20,0),12,16);
     expect(snapPlacement(coords,[],site)).toEqual({coordinates:coords,snapped:false,problem:null});

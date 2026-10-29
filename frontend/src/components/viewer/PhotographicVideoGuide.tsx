@@ -11,6 +11,7 @@ export interface PhotographicGuideRequest {
   purpose: 'video_appearance'; project_id: string; beauty_image_base64: string;
   source_video_sha256: string; prompt?: string; details_revision?: number;
   community_3d_claims?: unknown[]; residual_landscape_claim?: unknown;
+  authored_surface_claims?: Array<{ zone_id: string; source_hash: string }>;
   source_request?: unknown;
 }
 

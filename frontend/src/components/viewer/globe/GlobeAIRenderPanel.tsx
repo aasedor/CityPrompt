@@ -2,6 +2,8 @@ import {AnimateRenderButton} from '../AnimateRenderButton';
 import { STYLES } from './imageStyles';
 import { savedRenderNotice, savedRenderIsSource, savedRenderNeedsReview } from '@/utils/renderPresentation';
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
+import { groundSurfaceFor } from '@/features/groundSurfaces/groundSurfaces';
+import { authoredSurfaceRevision, getAuthoredSurfaceCaptureClaims } from '@/features/groundSurfaces/groundSurfaceCapture';
 import { useRenderDraft } from './useRenderDraft';
 import { ImagePresentationControls } from './ImagePresentationControls';
 import { RecoverImageAttempts } from './RecoverImageAttempts';
@@ -321,6 +323,8 @@ export function GlobeAIRenderPanel({
   const savedImageKeysRef = useRef<Set<string>>(new Set());
   const pipelineChoiceTouchedRef = useRef(false);
   const authoritativeZones = communitySourceZones ?? siteZones;
+  const currentSurfaceZones = useRef(authoritativeZones);
+  currentSurfaceZones.current = authoritativeZones;
 
   // ── 3D building models ──
   // When ON (default) placed models stay in the capture and their zones get
@@ -387,6 +391,7 @@ export function GlobeAIRenderPanel({
       return zone.zone_type !== 'site_boundary'
         && role !== 'framework_height'
         && zone.coordinates.length >= 3
+        && !groundSurfaceFor(zone)
         && resolveCommunity3DKind(zone) === null;
     }),
     [authoritativeZones],
@@ -902,7 +907,14 @@ export function GlobeAIRenderPanel({
       // reused because the user may have moved the camera in the meantime.
       await onBeforeRender?.();
       setDirectCapturePreview(null);
-      const capture = await captureDirect3D({ includeGeometryPasses: true });
+      const surfaceRevision = authoredSurfaceRevision(currentSurfaceZones.current);
+      const surfaceClaims = getAuthoredSurfaceCaptureClaims(currentSurfaceZones.current);
+      const [capture, authoredSurfaceClaims] = await Promise.all([
+        captureDirect3D({ includeGeometryPasses: true }), surfaceClaims,
+      ]);
+      if (surfaceRevision !== authoredSurfaceRevision(currentSurfaceZones.current)) {
+        throw new Error('Ground surfaces changed during capture. Capture the current scene again.');
+      }
       setIsPreparingCapture(false);
       // Same-camera finishes use the placed design in every artistic medium.
       // Avoid downloading catalogue views that the render will not use.
@@ -919,6 +931,7 @@ export function GlobeAIRenderPanel({
         customPrompt: customPrompt.trim() || undefined,
         projectId: projectId!,
         community3DClaims: community3DCaptureClaims!,
+        authoredSurfaceClaims,
         detailsRevision,
         residualLandscapeClaim,
         archetypeReferences,

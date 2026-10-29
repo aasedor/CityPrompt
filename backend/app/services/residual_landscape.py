@@ -88,6 +88,36 @@ _GROUND_SURFACE_MATERIALS = frozenset({
 })
 
 
+def ground_surface_material_for_source(properties: dict[str, Any] | None) -> str | None:
+    """Recognize the same authored flat finishes as the browser ground layer."""
+    material = (properties or {}).get("ground_surface_material")
+    return material if isinstance(material, str) and material in _GROUND_SURFACE_MATERIALS else None
+
+
+def authored_surface_source_hash(geometry: BaseGeometry, properties: dict[str, Any] | None) -> str:
+    """Match browser geometry/material claims without compiling an archetype."""
+    material = ground_surface_material_for_source(properties)
+    if material is None or geometry.geom_type != "Polygon" or geometry.is_empty or not geometry.is_valid:
+        raise ValueError("Invalid authored ground surface")
+
+    def canonical_ring(coordinates):
+        points = [f"{math.floor(float(point[0]) * 1e7 + .5)},{math.floor(float(point[1]) * 1e7 + .5)}"
+                  for point in coordinates]
+        if points[0] == points[-1]:
+            points.pop()
+        candidates = []
+        for ring in (points, list(reversed(points))):
+            first = min(ring)
+            candidates.extend(";".join(ring[index:] + ring[:index])
+                              for index, point in enumerate(ring) if point == first)
+        return min(candidates)
+
+    rings = [canonical_ring(geometry.exterior.coords),
+             *sorted(canonical_ring(ring.coords) for ring in geometry.interiors)]
+    payload = ["cityprompt.authored-surface@1", material, rings]
+    return hashlib.sha256(json.dumps(payload, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
 def community_3d_kind_for_source(
     zone_type: str | None,
     properties: dict[str, Any] | None,
@@ -97,8 +127,7 @@ def community_3d_kind_for_source(
     if zone_type == "site_boundary":
         return None
     props = properties or {}
-    material = props.get("ground_surface_material")
-    if isinstance(material, str) and material in _GROUND_SURFACE_MATERIALS:
+    if ground_surface_material_for_source(props) is not None:
         return None
     role = props.get("_plan_role")
     if role == "framework_height":

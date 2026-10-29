@@ -34,6 +34,27 @@ export function nativeStreetGroundCells(width:number,length:number,regions:Nativ
   return cells;
 }
 
+/** A source study's full-ROW cross_link is a pedestrian access footprint,
+ * not an authored network crossing at every furniture repetition. Keep its
+ * paving through sidewalks/planting, but let the native travel bands continue.
+ * Local crossings and source markings remain independently authored geometry;
+ * the shared junction renderer still owns actual road intersections. */
+function routeGroundRegions(width:number,length:number,regions:NativeStreetRegion[]):NativeStreetRegion[] {
+  const travel=regions.filter(r=>['asphalt','cycle'].includes(r.material??'')
+    && r.depth>=length-1e-6 && Math.abs(r.y)<1e-6);
+  return regions.flatMap(region=>{
+    if(region.material!=='paving' || Math.abs(region.x)>1e-6 || Math.abs(region.y)>1e-6
+      || Math.abs(region.width-width)>1e-6 || region.depth>=length-1e-6)return [region];
+    let spans=[[-width/2,width/2]];
+    for(const band of travel){
+      const low=band.x-band.width/2,high=band.x+band.width/2;
+      spans=spans.flatMap(([a,b])=>high<=a||low>=b?[[a,b]]
+        : [[a,Math.min(b,low)],[Math.max(a,high),b]].filter(([start,end])=>end-start>1e-6));
+    }
+    return spans.map(([a,b])=>({...region,x:(a+b)/2,width:b-a}));
+  });
+}
+
 export function buildNativeStreetProgram(program:NativeStreetProgram,width:number,fixtureLength:number,route:StreetRouteStation[],stops:BrtStop[]=[]) {
   if(program.adapter==='elevated-rail-v1'||program.adapter==='elevated-station-v1'){
     const problem=specialistRouteProblem(program.adapter==='elevated-rail-v1'?ELEVATED_RAIL_VARIANT:CIVIC_RAIL_VARIANT,route);
@@ -92,7 +113,7 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
       if(height>0){const low=[a,b,c,d].map(v=>[v[0],v[1],v[2]-height]);for(let j=0;j<4;j++)quad(material,[[a,b,c,d][j],low[j],low[(j+1)%4],[a,b,c,d][(j+1)%4]]);}
     }
   };
-  const cells=nativeStreetGroundCells(width,fixtureLength,program.surfaceRegions);
+  const cells=nativeStreetGroundCells(width,fixtureLength,routeGroundRegions(width,fixtureLength,program.surfaceRegions));
   const centers=total<=fixtureLength?[total/2]:Array.from({length:Math.ceil(total/fixtureLength)},(_,i)=>fixtureLength*(i+.5));
   for(const center of centers){
     for(const cell of cells){

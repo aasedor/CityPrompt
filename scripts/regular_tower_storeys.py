@@ -357,6 +357,7 @@ def synchronize(tower, output, *, apply=False, owner_id=None):
     from sqlalchemy import create_engine
     from sqlalchemy.orm import Session
     from scripts.classroom_model_library import object_matches
+    from scripts.private_local_pilot_ids import private_local_pilot_id
     settings = get_settings()
     if any(urlsplit(value).hostname not in {'localhost', '127.0.0.1', '::1'} for value in [settings.database_url, settings.s3_endpoint_url]):
         raise ValueError('Local programme requires loopback database and storage')
@@ -370,7 +371,10 @@ def synchronize(tower, output, *, apply=False, owner_id=None):
             if not owner or not owner.is_active:
                 raise ValueError('Supply an existing local --owner-id')
             for row, module in zip(rows, program['modules'], strict=True):
-                existing = database.get(ModelLibraryEntry, uuid.UUID(row['id']))
+                legacy = database.get(ModelLibraryEntry, uuid.UUID(row['id']))
+                selected_id = private_local_pilot_id(row['id'], owner_id, legacy.owner_id if legacy else None)
+                row['id'] = str(selected_id)
+                existing = legacy if legacy and legacy.id == selected_id else database.get(ModelLibraryEntry, selected_id)
                 if existing and not existing_row_matches(existing,row,owner_id):
                     raise ValueError('Existing local programme row differs; preserved')
                 status = object_matches(client, bucket, row)

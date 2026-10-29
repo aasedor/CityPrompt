@@ -38,8 +38,23 @@ from hash-locked source bytes. Its default external output is
 `C:/dev-artifacts/CityPrompt/student-review-20261026/brick-podium-storeys-v001/`.
 It refuses changed source bytes, changed bands, changed module bytes, existing
 partial output and conflicting installed rows. Installation accepts loopback
-database/storage only and creates private rows for one existing account.
+database/storage only and creates private rows for an existing account.
 It has no hosted installation or publication option.
+
+### Private local programmes for multiple accounts — 29 October
+
+The Brick, regular-tower and landmark installers resolve row IDs per account
+before checking existing bindings. An account that already owns a legacy row
+retains its ID. Other accounts receive a stable UUID5 derived from that legacy
+ID and their normalized owner UUID, including when no legacy row is installed.
+Repeated verification or installation selects the same private binding.
+
+This is a per-account private local pilot. Model URLs, immutable object bytes,
+source hashes and review requirements remain shared and unchanged. Existing
+rows belonging to another account are preserved; a conflicting selected row or
+object still rejects. Loopback database/storage and active-owner gates remain
+required. This does not expose private rows to other users or authorize release
+publication, catalogue activation, hosted installation or additional generation.
 
 ### Saved-zone target repair — 27 October
 

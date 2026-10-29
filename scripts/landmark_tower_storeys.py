@@ -566,6 +566,7 @@ def synchronize_private(family: str, artifacts: Path = OUTPUT_ROOT, *, apply=Fal
     from sqlalchemy import create_engine, select
     from sqlalchemy.orm import Session
     from scripts.classroom_model_library import object_matches
+    from scripts.private_local_pilot_ids import private_local_pilot_id
     settings=get_settings()
     validate_local_target(settings.database_url,settings.s3_endpoint_url)
     engine=create_engine(settings.database_url_sync);client,bucket=_client()
@@ -582,7 +583,10 @@ def synchronize_private(family: str, artifacts: Path = OUTPUT_ROOT, *, apply=Fal
             public_ids=list(public_before)
             # Check every DB/storage conflict before the first mutation.
             for row in rows:
-                existing=database.get(ModelLibraryEntry,uuid.UUID(row['id']))
+                legacy=database.get(ModelLibraryEntry,uuid.UUID(row['id']))
+                selected_id=private_local_pilot_id(row['id'],owner_id,legacy.owner_id if legacy else None)
+                row['id']=str(selected_id)
+                existing=legacy if legacy and legacy.id==selected_id else database.get(ModelLibraryEntry,selected_id)
                 if existing and not existing_row_matches(existing,row,owner_id):
                     raise ValueError('Existing landmark row differs or is public; preserved without overwrite')
                 status=object_matches(client,bucket,row)

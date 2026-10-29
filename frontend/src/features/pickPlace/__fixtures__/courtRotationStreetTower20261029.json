@@ -1,0 +1,412 @@
+{
+  "source": "Saved student browser scene, 2026-10-29; only inert compiler/request metadata omitted",
+  "origin": [
+    -114.0715972925,
+    51.044649914000004
+  ],
+  "zones": [
+    {
+      "id": "a506c490-7dc2-4d11-872b-9b80c568a8b8",
+      "zone_type": "site_boundary",
+      "coordinatesM": [
+        [
+          -116.28831896582376,
+          110.37801015931564
+        ],
+        [
+          146.86706754248243,
+          111.27391351988223
+        ],
+        [
+          146.98184869449003,
+          -125.14805908052324
+        ],
+        [
+          -117.14105893491721,
+          -125.14694588043113
+        ]
+      ],
+      "centerlineM": null,
+      "routeControlsM": null,
+      "properties": {
+        "community_3d_landscape_mode": "placed_objects_only",
+        "community_3d_mask_existing_tiles": true
+      }
+    },
+    {
+      "id": "472dddf3-fe8a-4ea2-8192-aba12c1e98a6",
+      "zone_type": "road",
+      "coordinatesM": [
+        [
+          23.50791469847443,
+          88.61405959961104
+        ],
+        [
+          23.541789136670687,
+          -105.32430480038755
+        ],
+        [
+          10.541563939996328,
+          -105.32664252018549
+        ],
+        [
+          10.507689502794666,
+          88.61183319942683
+        ]
+      ],
+      "centerlineM": [
+        [
+          17.00777008109198,
+          88.61292717405206
+        ],
+        [
+          17.041687616149375,
+          -105.32549674769456
+        ]
+      ],
+      "routeControlsM": [
+        [
+          17.00777008109198,
+          88.61292717405206
+        ],
+        [
+          17.041687616149375,
+          -105.32549674769456
+        ]
+      ],
+      "properties": {
+        "width": 13,
+        "lane_count": 2,
+        "public_realm_lego": {
+          "kind": "street",
+          "target": {
+            "length_m": 194.257,
+            "row_width_m": 13,
+            "target_type": "street_segment"
+          },
+          "family_id": "street_native_student_neighbourhood_cycle_street_v1",
+          "generator": "street_section",
+          "profile_id": "native-student-neighbourhood-cycle-street-v1-v1",
+          "variant_id": "student_neighbourhood_cycle_street_v1",
+          "recipe_hash": "0e8fef36d592d7bd60a18da7c0ae126b685af3f4da185d17de6f8f7964a51608",
+          "archetype_id": "neighborhood_greenway",
+          "family_version": 1,
+          "schema_version": 1,
+          "terrain_policy": "terrain_drape_and_metric_assemblies",
+          "profile_version": 1,
+          "appearance_kit_id": "heritage_brick_stone",
+          "component_set_ids": [
+            "source_recipe:c35ec0969d4fcc4eee414fe9de4a378dbd7018340341edaf10a7da6a227b56be",
+            "source_assembly:2356309544b0cffbb2f97e20bdbd29ee1b45aa6cfac27f19916a629ab3d22342",
+            "reference:f9edf7a1a1194d9a9e6d544dd02aaf23f732f0d33c9ed1beebf875562d0b5b5f",
+            "program:b0fdae2208da196fb7d736a6574a5f1da97f6b890a7470fa78230468b8734b97",
+            "module_flowering_perennial:c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+            "module_grove_tree:6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+            "module_light:bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+            "module_meadow_grass:bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4",
+            "module_silver_shrub:d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+          ],
+          "planting_structure": null,
+          "catalog_fingerprint": "cef9b2d1be6d7d0cc29f80aff016a61f92275ed182f90c33d6d010e317f2caf6",
+          "capability_fingerprint": "58fd4c4f942f5c181948c4fce2de2f635ecbedf5023bbd61fa58e109696e3345"
+        },
+        "road_archetype_id": "neighborhood_greenway",
+        "road_standard_citation": "City Prompt original teaching concept; not a Calgary standard section",
+        "pick_place_automatic_3d": true,
+        "road_selected_variant_id": "student_neighbourhood_cycle_street_v1",
+        "pick_place_street_section": "student_neighbourhood_cycle_street_v1",
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true
+      }
+    },
+    {
+      "id": "924ec3cd-0264-4055-8383-4faf9030d4a4",
+      "zone_type": "road",
+      "coordinatesM": [
+        [
+          -107.24986319584653,
+          -22.505898360583956
+        ],
+        [
+          135.4747583066285,
+          -22.467938240211538
+        ],
+        [
+          135.47853768582132,
+          -46.46797364023769
+        ],
+        [
+          -107.24608381665372,
+          -46.505933760610105
+        ]
+      ],
+      "centerlineM": [
+        [
+          -107.2479601418569,
+          -34.50591784662123
+        ],
+        [
+          135.4766398614201,
+          -34.46799319836629
+        ]
+      ],
+      "routeControlsM": [
+        [
+          -107.2479601418569,
+          -34.50591784662123
+        ],
+        [
+          135.4766398614201,
+          -34.46799319836629
+        ]
+      ],
+      "properties": {
+        "width": 24,
+        "public_realm_lego": {
+          "kind": "street",
+          "target": {
+            "length_m": 243.247,
+            "row_width_m": 24,
+            "target_type": "street_segment"
+          },
+          "family_id": "street_native_student_cycle_avenue_v1",
+          "generator": "street_section",
+          "profile_id": "native-student-cycle-avenue-v1-v1",
+          "variant_id": "student_cycle_avenue_v1",
+          "recipe_hash": "fc225302715c1dec497f6e37beb7dfed9feff0fcc74ec0a1b4eeea78c1dbc753",
+          "archetype_id": "protected_bike_lane_bidirectional",
+          "family_version": 1,
+          "schema_version": 1,
+          "terrain_policy": "terrain_drape_and_metric_assemblies",
+          "profile_version": 1,
+          "appearance_kit_id": "heritage_brick_stone",
+          "component_set_ids": [
+            "source_recipe:f56ed6647252befea881c6101236c588b889a80392113b681a14c0a33b32e9ed",
+            "source_assembly:673c1618cd6002c7e03523e06faf87b9476d8f5ce3b0c29ba0f237c63e75a2ea",
+            "reference:633f0a4a02171263a705e6eee464c254cb6d7be752aa1c17cca544acb37daca9",
+            "program:99ef1a25957d986e7e79af8c69bffa983ff5ab9f7e9d9cb981ddd336d7f4e07b",
+            "module_bench:996f77a959d098469940fc032f23960c959b0c8275842575bb4de33c152539f7",
+            "module_bike_rack:0be3cabadaddbf9f22556f0f7ead696eb8ca41f5c881b4f30a0c2940272bf907",
+            "module_flowering_perennial:c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+            "module_grove_tree:6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+            "module_light:bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+            "module_meadow_grass:bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4",
+            "module_silver_shrub:d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc",
+            "module_street_bollard:530a525ac72258b0ed6b48d4918dbd80a00a14a0c56724fcdd27cb8224e09217",
+            "module_tree_well_grate:861ceb2e4166ff74825c42c485d1f9b118334f85b6a3231d8c3a905cc309e493"
+          ],
+          "planting_structure": null,
+          "catalog_fingerprint": "cef9b2d1be6d7d0cc29f80aff016a61f92275ed182f90c33d6d010e317f2caf6",
+          "capability_fingerprint": "6afebfd9bf1809877c1c3c737a3b5d68012b5806b8a13f96e11de443a0db3ea9"
+        },
+        "road_archetype_id": "protected_bike_lane_bidirectional",
+        "road_standard_citation": "City Prompt reference-informed teaching concept",
+        "pick_place_automatic_3d": true,
+        "road_selected_variant_id": "student_cycle_avenue_v1",
+        "pick_place_street_section": "student_cycle_avenue_v1",
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true
+      }
+    },
+    {
+      "id": "f7a489ca-638a-4cf4-8451-65d6a34c836c",
+      "zone_type": "road",
+      "coordinatesM": [
+        [
+          50.88643879358267,
+          56.419870319859626
+        ],
+        [
+          138.41882485229115,
+          -99.23276308061844
+        ],
+        [
+          127.08754559460829,
+          -105.60494252027382
+        ],
+        [
+          39.5551595349052,
+          50.04769087941327
+        ]
+      ],
+      "centerlineM": [
+        [
+          45.22079721980777,
+          53.23378415863374
+        ],
+        [
+          132.7531808258413,
+          -102.41886839928725
+        ]
+      ],
+      "routeControlsM": [
+        [
+          45.22079721980777,
+          53.23378415863374
+        ],
+        [
+          132.7531808258413,
+          -102.41886839928725
+        ]
+      ],
+      "properties": {
+        "width": 13,
+        "lane_count": 2,
+        "public_realm_lego": {
+          "kind": "street",
+          "target": {
+            "length_m": 178.869,
+            "row_width_m": 13,
+            "target_type": "street_segment"
+          },
+          "family_id": "street_native_student_neighbourhood_cycle_street_v1",
+          "generator": "street_section",
+          "profile_id": "native-student-neighbourhood-cycle-street-v1-v1",
+          "variant_id": "student_neighbourhood_cycle_street_v1",
+          "recipe_hash": "27c66b1ebe0e1e05a830e86a0f994ab487034eec1fee2031d92e6f6776c2da17",
+          "archetype_id": "neighborhood_greenway",
+          "family_version": 1,
+          "schema_version": 1,
+          "terrain_policy": "terrain_drape_and_metric_assemblies",
+          "profile_version": 1,
+          "appearance_kit_id": "heritage_brick_stone",
+          "component_set_ids": [
+            "source_recipe:c35ec0969d4fcc4eee414fe9de4a378dbd7018340341edaf10a7da6a227b56be",
+            "source_assembly:2356309544b0cffbb2f97e20bdbd29ee1b45aa6cfac27f19916a629ab3d22342",
+            "reference:f9edf7a1a1194d9a9e6d544dd02aaf23f732f0d33c9ed1beebf875562d0b5b5f",
+            "program:b0fdae2208da196fb7d736a6574a5f1da97f6b890a7470fa78230468b8734b97",
+            "module_flowering_perennial:c3e00c1d9cde18c492fc2ce263240dc3b49d826f6a47b9dd4848c11e58140581",
+            "module_grove_tree:6de066f61229af40aa4b1ee14917b4472012e276c7ba6d419986e5a24e74ee41",
+            "module_light:bb7a9513267af2c399c6f57e5c926cf6ca50c123e93ee2960bbdd9efe4b48ded",
+            "module_meadow_grass:bca9690b583b30a487a37d8624b3a899d87413415dc301fef1dcc3e9afa8efb4",
+            "module_silver_shrub:d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
+          ],
+          "planting_structure": null,
+          "catalog_fingerprint": "cef9b2d1be6d7d0cc29f80aff016a61f92275ed182f90c33d6d010e317f2caf6",
+          "capability_fingerprint": "58fd4c4f942f5c181948c4fce2de2f635ecbedf5023bbd61fa58e109696e3345"
+        },
+        "road_archetype_id": "neighborhood_greenway",
+        "road_standard_citation": "City Prompt original teaching concept; not a Calgary standard section",
+        "pick_place_automatic_3d": true,
+        "road_selected_variant_id": "student_neighbourhood_cycle_street_v1",
+        "pick_place_street_section": "student_neighbourhood_cycle_street_v1",
+        "pick_place_definition_version": 1,
+        "community_3d_mask_existing_tiles": true
+      }
+    },
+    {
+      "id": "a4ba71f9-dcd5-4dbe-987c-9663b1b70d61",
+      "zone_type": "building",
+      "coordinatesM": [
+        [
+          -70.77906216915768,
+          -22.480183440433734
+        ],
+        [
+          -13.779022307361842,
+          -22.471277840487858
+        ],
+        [
+          -13.78637110045778,
+          24.528694079868387
+        ],
+        [
+          -70.78641096324822,
+          24.519788479131535
+        ]
+      ],
+      "centerlineM": null,
+      "routeControlsM": null,
+      "properties": {
+        "floors": 13,
+        "height": 50.099998474121094,
+        "height_m": 50.099998474121094,
+        "target_d_m": 47,
+        "target_w_m": 57,
+        "floor_count": 13,
+        "native_plot_axes": true,
+        "pick_place_asset": "claude_trial_brick_podium_condo_tower",
+        "building_archetype_id": "condo_podium_tower",
+        "building_geometry_basis": "placement_plot",
+        "development_archetype_id": "condo_podium_tower",
+        "_lego_catalog_fingerprint": "51dbb24d86ea38c6d6342cb7d6dbac8a562aa4f214d2374e827bb943b01763b3",
+        "model_dimensions_revision": "clay-brick-podium-condo-tower-clay-v006",
+        "model_native_dimensions_m": [
+          54,
+          44,
+          50.099998474121094
+        ],
+        "pick_place_model_revision": "clay-brick-podium-condo-tower-clay-v006",
+        "_lego_runtime_selection_id": "brick_podium_glass_tower",
+        "development_archetype_label": "Brick Podium Condo Tower",
+        "pick_place_definition_version": 1,
+        "_lego_actual_footprint_profile": "rectangle",
+        "development_selected_variant_id": "brick_podium_glass_tower"
+      }
+    },
+    {
+      "id": "b7191164-230d-4f63-8216-11a76ceff83e",
+      "zone_type": "green_space",
+      "coordinatesM": [
+        [
+          -10.49999076688618,
+          -17.999998720709414
+        ],
+        [
+          10.49999076688618,
+          -17.999998720709414
+        ],
+        [
+          10.49999076688618,
+          17.99999871912746
+        ],
+        [
+          -10.49999076688618,
+          17.99999871912746
+        ]
+      ],
+      "centerlineM": null,
+      "routeControlsM": null,
+      "properties": {
+        "pick_place_asset": "native-park:court_only_basketball_v1--native-v1",
+        "court_only_native": true,
+        "public_realm_lego": {
+          "kind": "park",
+          "mode": "native_assembly",
+          "frame": {
+            "yaw": 0,
+            "latitude": 51.04464991372696,
+            "longitude": -114.07159729238964
+          },
+          "family_id": "native_park",
+          "generator": "park_kit",
+          "layout_id": "court_only_basketball_v1--native-v1",
+          "variant_id": "court_only_basketball_v1",
+          "recipe_hash": "74924d434dd3a400ac6d03a9980996cb60bee5b688d0db4b97afcebb78adacd3",
+          "archetype_id": "court_only_basketball",
+          "asset_hashes": {
+            "assembly": "5e3150afb5b14183172cd4aef5551f66627eab33ec6aefc58a697fb7dd458259"
+          },
+          "family_version": 1,
+          "schema_version": 2,
+          "terrain_policy": "prepared_level",
+          "content_revision": "6392a787429c551108dd2d99912b690816d838035400d322883c7952f3423117"
+        },
+        "pick_place_automatic_3d": true,
+        "green_space_archetype_id": "court_only_basketball",
+        "green_space_native_layout": {
+          "frame": {
+            "yaw": 0,
+            "latitude": 51.04464991372696,
+            "longitude": -114.07159729238964
+          },
+          "layout_id": "court_only_basketball_v1--native-v1",
+          "content_revision": "6392a787429c551108dd2d99912b690816d838035400d322883c7952f3423117"
+        },
+        "green_space_native_layout_id": "court_only_basketball_v1--native-v1",
+        "pick_place_definition_version": 2,
+        "green_space_selected_variant_id": "court_only_basketball_v1"
+      }
+    }
+  ]
+}

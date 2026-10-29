@@ -140,6 +140,14 @@ For repeatable streets, keep the student route envelope separate from immutable
 source-programme hashes. Frontend drawing, walking, recipe capabilities and
 server validation must agree on the same envelope. Test beyond former limits,
 retain native section/module scale, and preserve exact historical recipe locks.
+Audit material ownership across the complete travel width at source-fixture
+centres as well as module seams: a repeated full-ROW access-link paving region
+must not replace native road/cycle bands with transverse false sidewalks. Retain
+the link through pedestrian/planting bands, local authored crossings and source
+markings; actual junction surfaces still belong to the shared network renderer.
+Use material-aware geometry rays in both route directions and at partial final
+modules, then inspect the native scene. See the [29 October continuity repair](NATIVE_STREET_CONTINUITY_REPAIR_2026-10-29.md)
+for the bounded regression and pending visual checks.
 A fixed bridge span or placement-only reference scene is not a repeatable route.
 On prepared ground, edit handles and pointer picking must use that same datum;
 hidden photogrammetry can still be raycast and must not pull handles onto roofs.

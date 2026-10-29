@@ -107,6 +107,7 @@ def synchronize(output: Path, *, apply=False, owner_id=None):
     from sqlalchemy import create_engine, select
     from sqlalchemy.orm import Session
     from scripts.classroom_model_library import object_matches
+    from scripts.private_local_pilot_ids import private_local_pilot_id
     settings = get_settings()
     if any(urlsplit(value).hostname not in {'localhost', '127.0.0.1', '::1'}
            for value in [settings.database_url, settings.s3_endpoint_url]):
@@ -121,7 +122,10 @@ def synchronize(output: Path, *, apply=False, owner_id=None):
             if not owner or not owner.is_active:
                 raise ValueError('Supply an existing local --owner-id')
             for row, module in zip(rows, program['modules'], strict=True):
-                existing = database.get(ModelLibraryEntry, uuid.UUID(row['id']))
+                legacy = database.get(ModelLibraryEntry, uuid.UUID(row['id']))
+                selected_id = private_local_pilot_id(row['id'], owner_id, legacy.owner_id if legacy else None)
+                row['id'] = str(selected_id)
+                existing = legacy if legacy and legacy.id == selected_id else database.get(ModelLibraryEntry, selected_id)
                 if existing and (existing.is_public or existing.owner_id != owner_id or existing.model_url != row['model_url'] or existing.metadata_ != row['metadata']):
                     raise ValueError('Existing local pilot row differs; it was not overwritten')
                 status = object_matches(client, bucket, row)

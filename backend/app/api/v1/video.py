@@ -30,6 +30,7 @@ from app.models.models import ApiUsageLog, Building, Project, SiteZone, User
 from app.schemas.direct_3d_render import (
     Direct3DCameraManifest,
     Direct3DCommunityZoneClaim,
+    Direct3DAuthoredSurfaceClaim,
     Direct3DInstanceDescriptor,
     Direct3DMaterialDescriptor,
     Direct3DResidualLandscapeClaim,
@@ -185,6 +186,7 @@ class VideoPilotRequest(BaseModel):
         default_factory=list,
         max_length=2000,
     )
+    authored_surface_claims: list[Direct3DAuthoredSurfaceClaim] = Field(default_factory=list, max_length=2000)
     residual_landscape_claim: Direct3DResidualLandscapeClaim | None = None
 
 
@@ -529,6 +531,7 @@ async def _validate_video_scene_revision(
         req.community_3d_claims,
         req.residual_landscape_claim,
         req.details_revision,
+        req.authored_surface_claims,
     )
 
 

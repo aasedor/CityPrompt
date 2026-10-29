@@ -29,6 +29,7 @@ import { VideoRouteEditor } from './VideoRouteEditor';
 import { useAuthStore } from '@/store';
 import type { Building, SiteZone } from '@/types';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
+import { authoredSurfaceRevision, getAuthoredSurfaceCaptureClaims, type AuthoredSurfaceClaim } from '@/features/groundSurfaces/groundSurfaceCapture';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
 import {
   DEFAULT_VIDEO_ROUTE,
@@ -267,6 +268,7 @@ interface PreparedVideoRequest {
     representation_hash: string;
     building_id?: string;
   }>;
+  authored_surface_claims?: AuthoredSurfaceClaim[];
   residual_landscape_claim?: {
     boundary_id: string;
     source_hash: string;
@@ -435,8 +437,8 @@ export function VideoGeneratePanel({
     [siteZones],
   );
   const currentSceneRevisionSignature = useMemo(
-    () => `${sceneClaimsSignature(community3DClaims, residualLandscapeClaim)}:${detailsRevision ?? ""}:${peopleDirection}`,
-    [community3DClaims, residualLandscapeClaim, detailsRevision, peopleDirection],
+    () => `${sceneClaimsSignature(community3DClaims, residualLandscapeClaim)}:${detailsRevision ?? ""}:${peopleDirection}:${authoredSurfaceRevision(siteZones)}`,
+    [community3DClaims, residualLandscapeClaim, detailsRevision, peopleDirection, siteZones],
   );
   const routeCaptureSignature = useMemo(
     () => `${projectId}:${sourceCaptureVersion}:${renderQuality}:${motion}:${durationSeconds}:${animatePeople}:${routeSignature(routePoints)}:${sceneContract.signature}:${currentSceneRevisionSignature}`,
@@ -781,6 +783,7 @@ export function VideoGeneratePanel({
       use_custom_prompt_only: provider === 'omni' && controlMode === 'preview_video' && (useCustomPromptOnly || appearanceReferences),
       scene_brief: withPeopleDirection(sceneBrief, peopleDirection),
       community_3d_claims: community3DClaims,
+      authored_surface_claims: await getAuthoredSurfaceCaptureClaims(siteZones),
       details_revision: detailsRevision,
       ...(residualLandscapeClaim ? {
         residual_landscape_claim: residualLandscapeClaim,
@@ -798,6 +801,7 @@ export function VideoGeneratePanel({
       beauty_image_base64: body.guide_frame_base64,
       source_video_sha256: await videoBytesSha256(body.preview_video_base64), prompt: customPrompt.trim(),
       details_revision: detailsRevision, community_3d_claims: body.community_3d_claims,
+      authored_surface_claims: body.authored_surface_claims,
       residual_landscape_claim: body.residual_landscape_claim, source_request: body };
   }, [requestBody, projectId, customPrompt, detailsRevision]);
 
@@ -816,6 +820,7 @@ export function VideoGeneratePanel({
           source_video_sha256:await videoBytesSha256(body.preview_video_base64!),
           prompt:customPrompt.trim(),details_revision:detailsRevision,
           community_3d_claims:body.community_3d_claims,residual_landscape_claim:body.residual_landscape_claim,
+          authored_surface_claims:body.authored_surface_claims,
           source_request:body,
         });
         if (recoveredGuide) body={...body,omni_reference_mode:'appearance_references',appearance_attempt_id:recoveredGuide.attempt_id,
@@ -878,6 +883,7 @@ export function VideoGeneratePanel({
             source_video_sha256:await videoBytesSha256(body.preview_video_base64!),
             prompt:customPrompt.trim(),details_revision:detailsRevision,
             community_3d_claims:body.community_3d_claims,residual_landscape_claim:body.residual_landscape_claim,
+            authored_surface_claims:body.authored_surface_claims,
             source_request:body};
           const existing = photographicGuide?.signature === appearanceSignature ? photographicGuide : null;
           const guide = existing ?? await preparePhotographicVideo(direct3DAttempts,request,preflight!.scene_revision_sha256);

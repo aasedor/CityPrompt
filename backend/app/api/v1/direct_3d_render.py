@@ -73,6 +73,8 @@ from app.services.residual_landscape import (
     community_3d_kind_for_source,
     community_3d_representation_hash,
     community_3d_source_hash,
+    ground_surface_material_for_source,
+    authored_surface_source_hash,
     lock_residual_landscape_project,
     residual_landscape_source_hash,
     site_has_no_residual_landscape,
@@ -184,18 +186,37 @@ def _validate_direct_3d_project_zones(
             raise _direct_state_conflict("The capture contains no saved details. Frame your details and try again.")
 
     claims_by_zone = {str(claim.zone_id): claim for claim in req.community_3d_claims}
+    raw_surface_claims = getattr(req, "authored_surface_claims", [])
+    surface_claims = {str(claim.zone_id): claim for claim in raw_surface_claims}
+    if len(surface_claims) != len(raw_surface_claims) or set(surface_claims) & set(claims_by_zone):
+        raise _direct_state_conflict("Authored ground surface claims contain duplicate or conflicting identities.")
+    selected_ids = set(claims_by_zone) | set(surface_claims)
     try:
+        # Flat finishes mount directly from authored polygons, without a
+        # compiled archetype claim. Include only finishes in the same visible
+        # scope, then retain exact whole-layer validation for every other zone.
+        expanded_scope = resolve_community_3d_scope(
+            all_physical_zones, selected_ids, expand_groups=True,
+        ) if all_physical_zones or selected_ids else []
+        surface_ids = {
+            str(zone.id) for zone in expanded_scope
+            if ground_surface_material_for_source(zone.properties) is not None
+        }
         physical_zones = resolve_community_3d_scope(
             all_physical_zones,
-            claims_by_zone,
-        ) if all_physical_zones or claims_by_zone else []
+            selected_ids | surface_ids,
+        ) if all_physical_zones or selected_ids else []
     except Community3DScopeError:
         raise _direct_state_conflict(
             "The captured 3D layer set no longer matches this project. " "Run Generate to 3D again before rendering."
         )
+    if set(surface_claims) != surface_ids:
+        raise _direct_state_conflict("Authored ground surfaces changed since capture. Capture the current scene again.")
 
     unsupported = [
-        zone for zone in physical_zones if community_3d_kind_for_source(zone.zone_type, zone.properties) is None
+        zone for zone in physical_zones
+        if community_3d_kind_for_source(zone.zone_type, zone.properties) is None
+        and ground_surface_material_for_source(zone.properties) is None
     ]
     if unsupported:
         raise _direct_state_conflict(
@@ -207,6 +228,14 @@ def _validate_direct_3d_project_zones(
     stale_or_uncompiled: list[SiteZone] = []
     missing_buildings: list[SiteZone] = []
     for zone in physical_zones:
+        if ground_surface_material_for_source(zone.properties) is not None:
+            try:
+                current_hash = authored_surface_source_hash(_direct_source_geometry(zone), zone.properties)
+            except (AssertionError, TypeError, ValueError, AttributeError):
+                raise _direct_state_conflict("Authored ground surface geometry changed. Capture the current scene again.")
+            if surface_claims[str(zone.id)].source_hash.lower() != current_hash:
+                raise _direct_state_conflict("Authored ground surfaces changed since capture. Capture the current scene again.")
+            continue
         kind = community_3d_kind_for_source(zone.zone_type, zone.properties)
         claim = claims_by_zone[str(zone.id)]
         stored_meta = (zone.properties or {}).get("community_3d")
@@ -1235,11 +1264,18 @@ def _bind_instance_manifest_to_server_zones(
             ),
         }
     authorized_zone_ids = set(expected)
+    authorized_zone_ids.update(
+        str(zone.id) for zone in physical_zones
+        if ground_surface_material_for_source(zone.properties) is not None
+    )
     authorized_zone_ids.update(str(zone.id) for zone in all_zones if zone.zone_type == "site_boundary")
     all_zones_by_id = {str(zone.id): zone for zone in all_zones if str(zone.id) in authorized_zone_ids}
     all_zone_ids = set(all_zones_by_id)
     allowed_supplemental_surfaces: set[tuple[str, str]] = set()
     for zone_id, zone in all_zones_by_id.items():
+        if ground_surface_material_for_source(zone.properties) is not None:
+            allowed_supplemental_surfaces.add((zone_id, "landscape"))
+            continue
         source_kind = community_3d_kind_for_source(
             zone.zone_type,
             zone.properties,
@@ -1663,6 +1699,7 @@ async def run_direct_3d_render(
         req.community_3d_claims,
         req.residual_landscape_claim,
         req.details_revision,
+        req.authored_surface_claims,
     )
     source_snapshot = build_render_source_snapshot(
         req,

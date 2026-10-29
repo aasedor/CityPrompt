@@ -1517,6 +1517,7 @@ export const rendersApi = {
       representation_hash: string;
       building_id?: string;
     }>;
+    authored_surface_claims?: Array<{ zone_id: string; source_hash: string }>;
     residual_landscape_claim?: {
       boundary_id: string;
       source_hash: string;

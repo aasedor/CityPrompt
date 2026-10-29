@@ -10,8 +10,20 @@ import { placementEdgeSnapCandidates, buildingPlacementEnvelope } from './buildi
 import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
 import { siteBoundarySnapCandidates } from './siteBoundarySnapping';
 import { isSurfacePath } from './streetConnectionProblem';
+import { ShapeUtils, Vector2 } from 'three';
 
 type Point = { x: number; y: number };
+/** Separating-axis offsets require convex obstacles. A bent street's full
+ * projection would fill its clear inside corner and miss nearby valid fits. */
+function convexObstacles(ring: Point[]): Point[][] {
+  const turns=ring.map((a,i)=>{
+    const b=ring[(i+1)%ring.length],c=ring[(i+2)%ring.length];
+    return (b.x-a.x)*(c.y-b.y)-(b.y-a.y)*(c.x-b.x);
+  });
+  if(!turns.some(turn=>turn>1e-8) || !turns.some(turn=>turn< -1e-8))return [ring];
+  const triangles=ShapeUtils.triangulateShape(ring.map(p=>new Vector2(p.x,p.y)),[]);
+  return triangles.length ? triangles.map(indices=>indices.map(i=>ring[i])) : [ring];
+}
 export function snapBuildingMove(zone: SiteZone, coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null) {
   const entrance = zone.properties?.pedestrian_building_entrance as { automatic?: boolean } | undefined;
   if (entrance?.automatic && coordinates.length === 4) {
@@ -73,7 +85,8 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   const origin = coordinates[0], east = metersPerDegLon(origin[1]);
   const local = (ring: number[][]): Point[] => ring.map(p => ({ x: (p[0] - origin[0]) * east, y: (p[1] - origin[1]) * METERS_PER_DEG_LAT }));
   const footprint = local(occupied(coordinates)), plot=local(coordinates), border = boundary && local(boundary.coordinates);
-  const obstacles = zones.filter(z => z.id !== ignoreId && ['building', 'residential', 'green_space', 'parking'].includes(z.zone_type)).map(z => local(buildingPlacementEnvelope(z)));
+  const obstacles = zones.filter(z => z.id !== ignoreId && ['building', 'residential', 'green_space', 'parking'].includes(z.zone_type))
+    .flatMap(z => convexObstacles(local(buildingPlacementEnvelope(z))));
   const axes = (ring: Point[]) => ring.map((p, i) => {
     const q = ring[(i + 1) % ring.length], size = Math.hypot(q.x - p.x, q.y - p.y);
     return size > .001 ? { x: -(q.y - p.y) / size, y: (q.x - p.x) / size } : null;
@@ -103,20 +116,48 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
       best = consider(offset, best);
       continue;
     }
-    const add = (axis: Point, distance: number) => {
-      const next = { x: offset.x + axis.x * distance, y: offset.y + axis.y * distance };
+    const queue = (next: Point) => {
       const key = `${next.x.toFixed(3)},${next.y.toFixed(3)}`;
       if (Math.hypot(next.x, next.y) <= maxDistance && !seen.has(key)) { seen.add(key); pending.push(next); }
     };
+    const planes = new Map<string, { axis: Point; distance: number; tightDistance: number }>();
+    const add = (axis: Point, distance: number, padding: number) => {
+      queue({ x: offset.x + axis.x * distance, y: offset.y + axis.y * distance });
+      const absolute = distance + offset.x * axis.x + offset.y * axis.y;
+      const tight = absolute-padding+Math.sign(padding)*.001;
+      if (Math.min(Math.abs(absolute),Math.abs(tight)) > maxDistance) return;
+      const sign = axis.x < 0 || (axis.x === 0 && axis.y < 0) ? -1 : 1;
+      const normal = { x: axis.x * sign, y: axis.y * sign }, target = absolute * sign;
+      planes.set(`${normal.x.toFixed(6)},${normal.y.toFixed(6)},${target.toFixed(3)}`,
+        {axis:normal,distance:target,tightDistance:tight*sign});
+    };
     for (const obstacle of hits) for (const axis of [...axes(ring), ...axes(obstacle)]) {
       const a = project(ring, axis), b = project(obstacle, axis);
-      add(axis, Math.max(...b) - Math.min(...a) + gap);
-      add(axis, Math.min(...b) - Math.max(...a) - gap);
+      add(axis, Math.max(...b) - Math.min(...a) + gap, gap);
+      add(axis, Math.min(...b) - Math.max(...a) - gap, -gap);
     }
     if (outside && border) for (const [i, axis] of axes(border).entries()) {
       const edge = border[i], plane = edge.x * axis.x + edge.y * axis.y, a = project(plotRing, axis);
-      add(axis, plane - Math.min(...a) + gap);
-      add(axis, plane - Math.max(...a) - gap);
+      add(axis, plane - Math.min(...a) + gap, gap);
+      add(axis, plane - Math.max(...a) - gap, -gap);
+    }
+    // A narrow corner may require two contacts at once. Alternating normal
+    // pushes can keep revisiting shorter blocked offsets and never reach that
+    // diagonal within the live-search budget. Intersect nearby contact planes
+    // directly; all corner candidates still obey the same distance/save checks.
+    // At most 496 pairs per expansion, independent of neighbourhood size.
+    const contacts = [...planes.values()].sort((a,b)=>Math.abs(a.distance)-Math.abs(b.distance)).slice(0,32);
+    for(let i=0;i<contacts.length;i++)for(let j=i+1;j<contacts.length;j++) {
+      const a=contacts[i],b=contacts[j],det=a.axis.x*b.axis.y-a.axis.y*b.axis.x;
+      if(Math.abs(det)<1e-6)continue;
+      const intersection=(da:number,db:number)=>({x:(da*b.axis.y-a.axis.y*db)/det,
+        y:(a.axis.x*db-da*b.axis.x)/det});
+      const corner=intersection(a.distance,b.distance);
+      queue(corner);
+      // At a shallow corner the 2 cm numerical padding can add centimetres
+      // along the route and put an otherwise nearby fit just beyond the cap.
+      // Keep a 1 mm numerical margin rather than increasing the move limit.
+      if(Math.hypot(corner.x,corner.y)>maxDistance)queue(intersection(a.tightDistance,b.tightDistance));
     }
     // Check the whole frontier before expanding more intersections. Otherwise
     // two close rotated neighbours can keep producing shorter, still-blocked
