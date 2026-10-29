@@ -20,7 +20,7 @@ from shapely.ops import unary_union
 
 from app.services.plan_metrics import DerivedMetric
 from app.services.saved_site_assessment import matching_assessment
-from app.services.model_contract import uses_placement_plot, catalogue_dwellings
+from app.services.model_contract import uses_placement_plot, catalogue_dwellings, catalogue_housing_programme
 from app.services.lego_assembly import DETACHED_ARCHETYPE_IDS, catalog_parent_archetype_id
 from app.services.residual_landscape import community_3d_source_hash
 from app.services.policy_intelligence.retrieval import (
@@ -155,6 +155,7 @@ def build_snapshot(
         "project_name": project.name,
         "site_assessment": (matching_assessment(getattr(project, "metadata_", None), boundary["id"], _shape(boundary)) or {}).get("assessment") if boundary else None,
         "description": project.description or "",
+        "scene_details": (getattr(project, "metadata_", None) or {}).get("scene_details", {"benches": [], "trees": [], "props": [], "surfaces": []}),
         "project_boundary": project_boundary,
         "scope_zone_ids": sorted(set(zone_ids)) if zone_ids is not None else None,
         "zones": sorted(zone_records, key=lambda item: item["id"]),
@@ -472,7 +473,11 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
     # A development-area polygon may be a parcel holding many buildings. Never
     # multiply the entire parcel by storeys and present it as built floor area.
     building_zones = [z for z in zones if z["zone_type"] in {"building", "residential"}]
-    development_areas = [z for z in zones if z["zone_type"] == "development_area"]
+    ground_surfaces = [z for z in zones if z["properties"].get("ground_surface_material")]
+    development_areas = [z for z in zones if z["zone_type"] == "development_area" and not z["properties"].get("ground_surface_material")]
+    metric("park_count", "Parks and open spaces", len(parks), "objects", "Count of saved green-space objects in the selected report scope.")
+    metric("street_count", "Streets and paths", len(roads), "objects", "Count of saved road/path objects; intersections and segments may be separate objects.")
+    metric("ground_surface_count", "Ground finishes", len(ground_surfaces), "objects", "Count of separately drawn ground-finish polygons; these are not buildings or housing allocations.")
     if development_areas:
         limitations.append(
             "Development-area polygons are land allocations. Their area is not counted as building footprint or floor area unless linked building footprints exist."
@@ -500,7 +505,9 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         measured = {z["id"]: project_geometry(geom, transformer) for z, geom in valid if geom is not None}
         boundary_m = project_geometry(boundary_shape, transformer) if boundary_shape is not None else None
 
-        def union_area(records: list[dict]) -> float:
+        def union_area(records: list[dict]) -> float | None:
+            if any(z["id"] not in measured for z in records):
+                return None
             shapes = [measured[z["id"]] for z in records if z["id"] in measured]
             if not shapes:
                 return 0.0
@@ -535,6 +542,8 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "m²",
             "Union of development-area polygons; this is land allocation, not building footprint.",
         )
+        metric("ground_surface_area_m2", "Ground-finish area", union_area(ground_surfaces), "m²",
+               "Union of drawn ground finishes, clipped to the site; overlaps counted once. May overlap parks, streets or building plots and must not be added to them as separate site land.")
         study_shapes = [_shape({"geometry": geometry}) for layer in snapshot.get("references", [])
                         for geometry in layer.get("proposed_geometries", [])]
         study_shapes = [project_geometry(geom, transformer) for geom in study_shapes if geom is not None]
@@ -655,6 +664,108 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 uncertainty="No floor count or housing yield has been guessed.",
             )
 
+    # Basic classroom totals, separate from legacy advisory findings. Resolve
+    # each linked building once: a placement zone is not an additional building.
+    quantity_zones = building_zones + development_areas
+    owners: list[tuple[dict, dict, str]] = []
+    counted: set[str] = set()
+    unresolved_allocations = 0
+    for zone in quantity_zones:
+        ids = set(([zone["building_id"]] if zone["building_id"] else []) + zone["building_ids"])
+        if ids:
+            for bid in sorted(ids):
+                if bid in counted:
+                    continue
+                counted.add(bid)
+                owners.append((zone, buildings_by_id.get(bid, {}), bid))
+        elif zone["zone_type"] == "development_area":
+            unresolved_allocations += 1
+            owners.append((zone, {}, zone["id"]))
+        else:
+            owners.append((zone, {}, zone["id"]))
+    objects = sum(compiled_detached.get(identity, 1) for z, b, identity in owners if z["zone_type"] != "development_area" or b)
+    metric("building_count", "Buildings (known objects)" if unresolved_allocations else "Buildings", objects if objects or not unresolved_allocations else None,
+           "objects", "Distinct linked building records and unlinked building placements; current compiled detached segments replace their parent record. "
+           f"{unresolved_allocations} development allocations have unknown building counts. A multi-building imported model remains one saved object; this is not an inventory of every mesh.")
+
+    def recorded_count(value):
+        number = 0.0 if value == 0 and not isinstance(value, bool) else positive(value)
+        return int(number) if number is not None and number.is_integer() else None
+
+    programme_zones = {zone['id']: catalogue_housing_programme(zone['properties']) for zone in quantity_zones}
+    for zone in quantity_zones:
+        programme = programme_zones[zone['id']]
+        if programme and programme.get('source_title'):
+            finding('catalogue-programme-' + zone['id'], programme['source_title'], programme['source_excerpt'], '',
+                    kind='source_context', records=[zone], basis='Exact reviewed model revision and native storeys',
+                    uncertainty='Concept housing programme, not an approved occupancy or floor-area measurement.',
+                    sources=[{'title': programme['source_title'], 'section': programme['source'], 'excerpt': programme['source_excerpt']}])
+
+    for key, label in [("residential_units", "Residential units"), ("retail_units", "Retail units")]:
+        total, known, missing = 0, 0, 0
+        aggregate_zones: set[str] = set()
+        for zone, building, identity in owners:
+            props = zone["properties"]
+            specs = _object(building.get("specifications"))
+            programme = programme_zones[zone['id']]
+            use = str(props.get("development_type") or (programme or {}).get('development_type') or ("residential" if zone["zone_type"] == "residential" else ""))
+            value = recorded_count(specs.get(key))
+            linked = set(([zone["building_id"]] if zone["building_id"] else []) + zone["building_ids"])
+            # A recorded allocation total belongs to the whole allocation, not
+            # to each linked building. Use it once only when it cannot overlap
+            # any linked specification or certified detached dwelling count.
+            aggregate = recorded_count(props.get("unit_count") if key == "residential_units" else props.get("retail_unit_count", props.get("retail_units")))
+            housing_use = not use or use == "mixed_use" or use.startswith("residential")
+            owns_all_links = {owned for owner_zone, _, owned in owners if owner_zone["id"] == zone["id"]} == linked
+            if len(linked) > 1 and owns_all_links and aggregate is not None and (key != "residential_units" or housing_use) and all(
+                recorded_count(_object(buildings_by_id.get(bid, {}).get("specifications")).get(key)) is None
+                and (key != "residential_units" or bid not in compiled_detached) for bid in linked
+            ):
+                if zone["id"] not in aggregate_zones:
+                    total += aggregate
+                    known += 1
+                    aggregate_zones.add(zone["id"])
+                continue
+            if value is None and len(linked) <= 1 and (key != "residential_units" or not use or use == "mixed_use" or use.startswith("residential")):
+                value = recorded_count(props.get("unit_count") if key == "residential_units" else props.get("retail_unit_count", props.get("retail_units")))
+            if value is None and key == 'retail_units' and programme and len(linked) <= 1:
+                value = recorded_count(programme.get('retail_units'))
+            if key == "residential_units" and value is None and (not use or use == "mixed_use" or use.startswith("residential")):
+                value = compiled_detached.get(identity)
+                if value is None and len(linked) <= 1:
+                    value = catalogue_dwellings(props)
+            relevant = (not use or use == "mixed_use" or
+                        (key == "residential_units" and use.startswith("residential")) or
+                        (key == "retail_units" and use in {"commercial", "retail", "commercial_retail"}))
+            if value is not None:
+                total += value
+                known += 1
+            elif relevant:
+                missing += 1
+        metric(key, label + (" (known, incomplete)" if missing and known else ""),
+               total if known or not missing else None, "units",
+               ("Concept estimate from recorded building/zone counts, reviewed catalogue housing programmes and current compiled detached dwellings. " if key == "residential_units" else
+                "Recorded retail-unit counts only; commercial floor area is never converted into a number of shops. ") +
+               f"Linked building specifications take precedence over parent-zone estimates and are counted once; allocation totals are counted once where no linked counts overlap them. {missing} applicable objects/allocations have unknown counts. Recorded zero is retained.", .8)
+
+    # Always expose missing primary measurements, including an entirely invalid
+    # geometry scope; absence of a metric must not look like a measured zero.
+    by_key = {row["key"]: row for row in metrics}
+    for key, label in [("site_area_m2", "Site area"), ("park_area_m2", "Drawn park area"),
+                       ("street_area_m2", "Drawn street and path area"), ("ground_surface_area_m2", "Ground-finish area"),
+                       ("gfa_m2", "Floor-area estimate")]:
+        if key not in by_key:
+            metric(key, label, None, "m²", "Unknown: no usable saved geometry for this measurement.", 0)
+    floor_area = next(row for row in metrics if row["key"] == "gfa_m2")
+    metric("gfa_ft2", floor_area["label"] + " (square feet)",
+           floor_area["value"] * 10.7639104167 if floor_area["value"] is not None else None,
+           "ft²", "Square-foot conversion of the same floor-area estimate (1 m² = 10.7639104167 ft²); the same unknowns and equal-floor-plate assumption apply.", .7)
+    details = snapshot.get("scene_details")
+    for key, label in [("benches", "Placed benches"), ("trees", "Placed trees"), ("props", "Placed detail objects"), ("surfaces", "Detail surfaces")]:
+        items = details.get(key) if isinstance(details, dict) else None
+        metric("detail_" + key, label, len(items) if isinstance(items, list) else None, "objects",
+               "Whole-project saved scene-detail inventory; not clipped to selected report zones. Detail objects include people/groups and aids as authored objects, not an occupant count. Older snapshots without detail data remain unknown.")
+
     known_units = 0.0
     units_recorded = False
     catalogue_units = 0
@@ -703,8 +814,10 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "Sum of current server-certified detached recipe dwelling counts, deduplicated by linked building. Repeated podium/floor/roof modules represent one dwelling per segment, not additional units.",
             0.95,
         )
-        pending = len(detached_zone_ids - compiled_detached_zone_ids)
-        pending_zones = [zone for zone in zones if zone["id"] in detached_zone_ids - compiled_detached_zone_ids]
+        programme_resolved_zone_ids = {zone_id for zone_id, programme in programme_zones.items() if programme}
+        unresolved_zone_ids = detached_zone_ids - compiled_detached_zone_ids - programme_resolved_zone_ids
+        pending = len(unresolved_zone_ids)
+        pending_zones = [zone for zone in zones if zone["id"] in unresolved_zone_ids]
         automatic_pending = sum(
             zone["properties"].get("pick_place_automatic_3d") is True
             or isinstance(zone["properties"].get("pick_place_asset"), str)
@@ -889,13 +1002,19 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
         return html.escape(str(value if value is not None else ""), quote=True)
 
     analysis = report["analysis"]
+    display_metrics = analysis["metrics"]
+    if any(m["key"] == "building_count" for m in display_metrics):
+        # Legacy API breakdowns remain saved for compatibility; the basic
+        # report uses the combined residential total instead of duplicate rows.
+        display_metrics = [m for m in display_metrics if m["key"] not in {
+            "recorded_units", "catalogue_dwellings", "compiled_detached_dwellings"}]
     historical_notice = (
         '<p class="notice">Historical measurement method: placement plots may have been counted as building footprint or floor area. Request a new report for corrected quantities; this saved record remains unchanged.</p>'
         if analysis.get('method_version') != 'student-review-v2-placement-plots' else ''
     )
     rows = "".join(
         f"<tr><th>{esc(m['label'])}</th><td>{esc(m['value'] if m['value'] is not None else 'Unknown')} {esc(m['unit'])}</td><td>{esc(m['derivation'])}</td></tr>"
-        for m in analysis["metrics"]
+        for m in display_metrics
     )
     sections = []
     for finding in analysis["findings"]:
@@ -920,14 +1039,18 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
             f"<p><b>Student choice:</b> {esc(response['choice'])} · {esc(response['author_name'])} · {esc(response['updated_at'])}</p>"
             f"<p class='reason'>{esc(response['rationale'])}</p><p><b>Follow-through:</b> {esc(response['follow_through']) or 'Not recorded'}</p>"
             if response
-            else "<p>Student response: not yet recorded.</p>"
+            else ""
         )
+        if not response:
+            if sources:
+                sections.append(f"<section><h2>Sources</h2><ul>{''.join(sources)}</ul></section>")
+            continue
         sections.append(
             f"<section><h2>{esc(finding['title'])}</h2><p class='meta'>{esc(finding['kind'].replace('_', ' '))} · {esc(finding['location']['label'])}</p>"
             + (f"<p><b>{'Local plan intent' if finding['comparison']['group'] == 'local_plan' else 'Student-proposed zoning'}:</b> {esc(finding['comparison']['expected'])}</p>"
                f"<p><b>Your design:</b> {esc(finding['comparison']['proposed'])}</p><p><b>Comparison:</b> {esc(finding['comparison']['status'].replace('_', ' '))} · preliminary screening</p>" if finding.get('comparison') else '')
             +
-            f"<p>{esc(finding['observation'])}</p><p><b>Suggested next step:</b> {esc(finding['recommendation'])}</p>"
+            f"<p>{esc(finding['observation'])}</p>"
             f"<p><b>Basis:</b> {esc(finding['basis'])}</p><p><b>Uncertainty:</b> {esc(finding['uncertainty']) or 'None additional recorded.'}</p><ul>{''.join(sources)}</ul>{student}</section>"
         )
     # The exact saved geometry is embedded as an inert JSON download for audit.
@@ -948,10 +1071,10 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
     )
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{esc(report['project_name'])} — planning report</title>
 <style>body{{font:15px/1.6 system-ui,sans-serif;color:#172b2a;max-width:920px;margin:36px auto;padding:0 24px}}h1{{font-size:30px}}h2{{font-size:20px;margin-top:30px}}.meta{{color:#536b68;font-size:12px}}.notice{{padding:16px;background:#edf5f2;border-left:4px solid #327565}}table{{border-collapse:collapse;width:100%;font-size:12px}}td,th{{border-bottom:1px solid #ccd8d4;padding:9px;text-align:left;vertical-align:top}}blockquote{{margin:8px 0;color:#405652;font-size:13px}}.reason{{white-space:pre-wrap}}section{{border-bottom:1px solid #ccd8d4;padding-bottom:16px}}@page{{size:A4;margin:15mm}}@media print{{body{{margin:0;padding:0;max-width:none}}h2{{break-after:avoid}}tr{{break-inside:avoid}}a{{color:inherit}}}}</style></head><body>
-<h1>{esc(report['project_name'])}</h1><p>Planning report and student decision record</p>
+<h1>{esc(report['project_name'])}</h1><p>Quantitative planning report</p>
 <p class="meta">Requested by {esc(report['requested_by_name'])} · {esc(report['created_at'])}<br>Report {esc(report['id'])} · Plan version {esc(report['plan_version'])} · Response revision {esc(report['response_revision'])}</p>
-<p class="notice">{esc(stale)} Recommendations are advisory. Student choices and reasoning are recorded in their own words; selecting “implement” records an intention, not a verified design change.</p>
+<p class="notice">{esc(stale)} Quantities describe the saved scope. Estimates and missing data are identified below; recorded counts are not approved yield.</p>
 <h2>The saved proposal</h2>{snapshot_drawing(snapshot)}<h2>Proposal quantities</h2>{historical_notice}<table>{rows}</table><ul>{''.join('<li>'+esc(x)+'</li>' for x in analysis['limitations'])}</ul>
 {''.join(sections)}<h2>Saved proposal inventory</h2><table><tr><th>Area</th><th>Type</th><th>Stable ID</th></tr>{inventory}</table>
-<h2>Decision history</h2><ul>{history or '<li>No responses recorded.</li>'}</ul>
+{('<h2>Earlier saved responses</h2><ul>' + history + '</ul>') if history else ''}
 <p class="meta">Use your browser’s Print command to save this self-contained report as PDF. The original geometry snapshot is embedded in this HTML for traceability.</p><script type="application/json" id="plan-snapshot">{snapshot_json}</script></body></html>"""

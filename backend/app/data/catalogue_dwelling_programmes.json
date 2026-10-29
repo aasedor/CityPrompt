@@ -1,10 +1,11 @@
 {
-  "source": "Exact authored housing programmes in frontend/src/data/buildingArchetypes.json; reviewed 2026-10-07. Concept dwellings, not occupancy approval or measured floor area.",
+  "source": "Exact authored affordable-housing programmes in frontend/src/data/buildingArchetypes.json, reviewed 2026-10-07; revision-locked bungalow programme in docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md. Concept dwellings, not occupancy approval or measured floor area.",
   "records": [
     {"variant_id":"affordable_porchlight_original","revision":"affordable-porchlight-clay-v004","dwellings":4},
     {"variant_id":"affordable_juniper_original","revision":"affordable-juniper-clay-v006","dwellings":4},
     {"variant_id":"affordable_stackyard_original","revision":"affordable-stackyard-clay-v003","dwellings":6},
     {"variant_id":"affordable_aspen_original","revision":"affordable-aspen-clay-v003","dwellings":12},
-    {"variant_id":"affordable_switchback_original","revision":"affordable-switchback-clay-v003","dwellings":24}
+    {"variant_id":"affordable_switchback_original","revision":"affordable-switchback-clay-v003","dwellings":24},
+    {"variant_id":"bungalow_postwar_ranch","revision":"calgary-inner-city-bungalow-clay-v005","dwellings":1,"retail_units":0,"allow_exact_flexible_native_revision":true,"development_type":"residential_single_family","source_title":"Post-war bungalow · reviewed single-home programme","source":"docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md#bungalow_postwar_ranch","source_excerpt":"Native dimensions 10.898324 × 16.050000 × 6.360000 m, one floor, one home. The reviewed source is a single-family residential home, with no retail programme."}
   ]
 }

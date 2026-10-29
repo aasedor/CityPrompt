@@ -2,11 +2,9 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { Download, FileText, RefreshCw } from 'lucide-react';
 import type { ParkAccessSnapshot } from '@/components/viewer/globe/parkAccessConnections';
 import { useAuthStore } from '@/store';
-import { clearSavedReportDraft, readReportDraft, reportDraftKey, writeReportDraft, type ReportDraft } from './reportDrafts';
-
 import {
   reportError, safeSourceUrl, studentReportsApi,
-  type ReportSummary, type StudentChoice, type StudentDecision, type StudentFinding, type StudentReport,
+  type ReportSummary, type StudentReport,
 } from './studentReportsApi';
 
 interface Props {
@@ -19,129 +17,33 @@ interface Props {
   getPolicyMapEvidence?: () => Promise<import('./policyMapEvidence').PolicyMapEvidence>;
 }
 
-const kindLabels = {
-  design_suggestion: 'Design suggestion', unresolved_question: 'Question to resolve', source_context: 'Source to consider',
-};
-
-function FindingCard({ finding, decision, canEdit, busy, onSave, onSelectZone, draftKey }: {
-  draftKey: string;
-  finding: StudentFinding;
-  decision?: StudentDecision;
-  canEdit: boolean;
-  busy: boolean;
-  onSave: (choice: StudentChoice, rationale: string, followThrough: string) => Promise<void>;
-  onSelectZone?: (zoneId: string) => void;
-}) {
-  const [draft, setDraft] = useState<ReportDraft>(() => readReportDraft(draftKey) ?? {
-    choice: decision?.choice ?? '', rationale: decision?.rationale ?? '', followThrough: decision?.follow_through ?? '',
-  });
-  const { choice, rationale, followThrough } = draft;
-  const currentDraft = useRef(draft);
-  const updateDraft = (change: Partial<ReportDraft>) => {
-    const next = { ...currentDraft.current, ...change };
-    currentDraft.current = next;
-    writeReportDraft(draftKey, next);
-    setDraft(next);
-    setSaved(false);
-  };
-  const [error, setError] = useState<string | null>(null);
-  const [saved, setSaved] = useState(false);
-  const lifecycle = useRef(0);
-  useLayoutEffect(() => {
-    lifecycle.current += 1;
-    return () => { lifecycle.current += 1; };
-  }, []);
-  const inputId = `report-${finding.id}`;
-  const save = async () => {
-    if (!choice || !rationale.trim()) {
-      setError('Choose a response and explain your reasoning in your own words.');
-      return;
-    }
-    setError(null);
-    setSaved(false);
-    const lifetime = lifecycle.current;
-    const submitted = currentDraft.current;
-    try {
-      await onSave(choice, rationale, followThrough);
-      clearSavedReportDraft(draftKey, submitted);
-      if (lifetime === lifecycle.current && currentDraft.current === submitted) setSaved(true);
-    } catch (err) { if (lifetime === lifecycle.current) setError(reportError(err)); }
-  };
-  return <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-    <p className="text-xs font-medium uppercase tracking-wide text-teal-700">{kindLabels[finding.kind]}</p>
-    <h3 className="mt-1 text-lg font-semibold text-slate-900">{finding.title}</h3>
-    <p className="mt-1 text-xs text-slate-500">
-      {onSelectZone && finding.location.zone_ids.length > 0
-        ? <button className="underline hover:text-teal-700" onClick={() => onSelectZone(finding.location.zone_ids[0])}>{finding.location.label}</button>
-        : finding.location.label}
-    </p>
-    {finding.comparison && <dl className="mt-3 grid gap-2 rounded-lg bg-slate-50 p-3 text-sm">
-      <div><dt className="font-semibold">{finding.comparison.group === 'local_plan' ? 'Local plan intent' : 'Student-proposed zoning'}</dt><dd>{finding.comparison.expected}</dd></div>
-      <div><dt className="font-semibold">Your design</dt><dd>{finding.comparison.proposed}</dd></div>
-      <div><dt className="font-semibold">Comparison</dt><dd>{{ permitted:'Preliminary permitted-use match', discretionary:'Discretionary use route — assessment needed', review:'Further review needed', potential_conflict:'Potential departure or mismatch' }[finding.comparison.status]}</dd></div>
-    </dl>}
-    <p className="mt-3 text-sm text-slate-700">{finding.observation}</p>
-    <p className="mt-2 text-sm text-slate-800"><strong>Suggested next step:</strong> {finding.recommendation}</p>
-    <details className="mt-3 text-sm text-slate-600">
-      <summary className="cursor-pointer font-medium">Evidence and uncertainty</summary>
-      <p className="mt-2">{finding.basis}</p>
-      {finding.uncertainty && <p className="mt-2">{finding.uncertainty}</p>}
-      {finding.sources.map((source, index) => <div className="mt-3 border-l-2 border-teal-200 pl-3" key={`${source.title}-${index}`}>
-        {safeSourceUrl(source.url)
-          ? <a className="font-medium text-teal-800 underline" href={safeSourceUrl(source.url)} target="_blank" rel="noopener noreferrer">{source.title}</a>
-          : <strong>{source.title}</strong>}
-        {source.page != null && <span> · p. {source.page}</span>}
-        {source.excerpt && <blockquote className="mt-1 whitespace-pre-wrap text-xs">{source.excerpt}</blockquote>}
-        {source.context_created_at && <p className="mt-1 text-xs">Site context captured {new Date(source.context_created_at).toLocaleDateString()}; verify current applicability.</p>}
-      </div>)}
-    </details>
-    {decision && <p className="mt-3 text-xs text-slate-500">Saved response: {decision.choice} · {decision.author_name} · {new Date(decision.updated_at).toLocaleString()}</p>}
-    {canEdit ? <div className="mt-4 border-t border-slate-100 pt-4">
-      <label className="block text-sm font-medium text-slate-800" htmlFor={`${inputId}-choice`}>Your response</label>
-      <select id={`${inputId}-choice`} className="mt-1 min-h-11 w-full rounded-lg border border-slate-300 bg-white p-2 text-sm"
-        value={choice} onChange={(event) => updateDraft({ choice: event.target.value as StudentChoice | '' })}>
-        <option value="">Choose how to respond</option>
-        <option value="implement">Implement the suggestion</option>
-        <option value="adapt">Adapt it to our vision</option>
-        <option value="decline">Decline and explain why</option>
-      </select>
-      <label className="mt-3 block text-sm font-medium text-slate-800" htmlFor={`${inputId}-rationale`}>Your reasoning</label>
-      <textarea id={`${inputId}-rationale`} className="mt-1 min-h-24 w-full rounded-lg border border-slate-300 p-2 text-sm"
-        maxLength={6000} value={rationale} placeholder="Explain the evidence, priorities, or tradeoffs behind your choice."
-        onChange={(event) => updateDraft({ rationale: event.target.value })} />
-      <label className="mt-3 block text-sm font-medium text-slate-800" htmlFor={`${inputId}-follow`}>Follow-through <span className="font-normal text-slate-500">(optional)</span></label>
-      <textarea id={`${inputId}-follow`} className="mt-1 min-h-16 w-full rounded-lg border border-slate-300 p-2 text-sm"
-        maxLength={6000} value={followThrough} placeholder="What changed in the design, or what still needs investigation?"
-        onChange={(event) => updateDraft({ followThrough: event.target.value })} />
-      <p className="mt-2 text-xs text-slate-500">Draft text is kept in this browser tab when you inspect your design. Save response to include it in your report.</p>
-      <div className="mt-3 flex items-center gap-3">
-        <button disabled={busy} onClick={() => void save()} className="min-h-11 rounded-lg bg-teal-800 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900 disabled:opacity-50">Save response</button>
-        {saved && <span role="status" className="text-sm text-teal-700">Response saved</span>}
-      </div>
-      {error && <p role="alert" className="mt-2 text-sm text-red-700">{error}</p>}
-    </div> : decision && <div className="mt-3 text-sm text-slate-700">
-      <p className="whitespace-pre-wrap">{decision.rationale}</p>
-      {decision.follow_through && <p className="mt-2 whitespace-pre-wrap">Follow-through: {decision.follow_through}</p>}
-    </div>}
-  </article>;
-}
+const primaryMetrics = ['building_count', 'gfa_m2', 'gfa_ft2', 'residential_units', 'retail_units', 'site_area_m2',
+  'park_count', 'park_area_m2', 'street_count', 'street_area_m2', 'ground_surface_count', 'ground_surface_area_m2',
+  'detail_benches', 'detail_trees', 'detail_props', 'detail_surfaces'];
+const legacyUnitBreakdown = new Set(['recorded_units', 'catalogue_dwellings', 'compiled_detached_dwellings']);
+const quantityStatus = (metric: StudentReport['analysis']['metrics'][number]) => metric.value == null
+  ? 'Unknown' : metric.key === 'retail_units' ? 'Recorded' : metric.confidence < 1 ? 'Estimate' : 'Calculated';
 
 export function StudentPlanningReport(props: Props) {
   // A project switch must immediately discard the previous project's visible
-  // report, drafts, and busy flags, even before a new request completes.
+  // report and busy flags, even before a new request completes.
   const account = useAuthStore(state => state.user?.id ?? 'anonymous');
   return <ProjectPlanningReport key={`${account}:${props.projectId}`} {...props} />;
 }
 
-function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = true, onSelectZone, getParkAccessSnapshot, getPolicyMapEvidence }: Props) {
-  const account = useAuthStore(state => state.user?.id ?? 'anonymous');
+function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = true, getParkAccessSnapshot, getPolicyMapEvidence }: Props) {
   const [report, setReport] = useState<StudentReport | null>(null);
   const [history, setHistory] = useState<ReportSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [working, setWorking] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const selectedId = useRef<string | null>(null);
+  const hasQuantitativeTotals = report?.analysis.metrics.some(metric => metric.key === 'building_count');
+  const allMetrics = report?.analysis.metrics.filter(metric => !hasQuantitativeTotals || !legacyUnitBreakdown.has(metric.key)).slice().sort((a, b) => {
+    const aIndex = primaryMetrics.indexOf(a.key), bIndex = primaryMetrics.indexOf(b.key);
+    return (aIndex < 0 ? primaryMetrics.length : aIndex) - (bIndex < 0 ? primaryMetrics.length : bIndex);
+  }) ?? [];
+  const metrics = hasQuantitativeTotals ? allMetrics.filter(metric => primaryMetrics.includes(metric.key)) : allMetrics;
   const requestSequence = useRef(0);
   const lifecycle = useRef(0);
   useLayoutEffect(() => {
@@ -222,64 +124,60 @@ function ProjectPlanningReport({ projectId, zoneIds, planChangeToken, canEdit = 
     } catch (err) { if (lifetime === lifecycle.current) setError(reportError(err)); }
     finally { if (lifetime === lifecycle.current) setWorking(false); }
   };
-  const save = async (findingId: string, choice: StudentChoice, rationale: string, followThrough: string) => {
-    if (!report) return;
-    const lifetime = lifecycle.current;
-    const sequence = ++requestSequence.current;
-    setSaving(true);
-    try {
-      const next = await studentReportsApi.respond(report.id, findingId, {
-        choice, rationale, follow_through: followThrough, expected_revision: report.response_revision,
-      });
-      if (lifetime === lifecycle.current && sequence === requestSequence.current) setReport(next);
-    } finally {
-      if (lifetime === lifecycle.current) {
-        setSaving(false);
-        if (sequence === requestSequence.current) setLoading(false);
-      }
-    }
-  };
-
   return <section aria-label="Planning report" className="h-full overflow-y-auto bg-slate-50 p-4 sm:p-6">
     <div className="mx-auto max-w-4xl space-y-5">
       <header className="rounded-xl border border-teal-100 bg-white p-5">
         <div className="flex items-center gap-2 text-teal-800"><FileText size={22} /><h2 className="text-xl font-semibold">Planning report</h2></div>
-        <p className="mt-2 text-sm text-slate-600">Explore the strengths, questions, and next steps in your proposal. Explain which suggestions you implement, adapt, or decline.</p>
-        <p className="mt-2 text-xs text-slate-500">Requested when you are ready. You can keep designing and rendering with any recommendation unresolved. This review uses saved geometry and available documents without an AI generation charge.</p>
+        <p className="mt-2 text-sm text-slate-600">Buildings, floor area, residential and retail units, and public-realm totals for your saved proposal.</p>
+        <p className="mt-2 text-xs text-slate-500">Calculated quantities, concept estimates and unknown values are identified with their measurement source. Preparing a report uses saved data without an AI generation charge.</p>
         <div className="mt-4 flex flex-wrap gap-2">
-          {canEdit && <button onClick={() => void create()} disabled={working || saving || loading} className="min-h-11 rounded-lg bg-teal-800 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900 disabled:opacity-50">{working ? 'Preparing…' : report ? 'Request a new report' : 'Request report'}</button>}
-          {report && <button onClick={() => void download()} disabled={working || saving} className="flex min-h-11 items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-50"><Download size={16} />Download printable report</button>}
-          <button onClick={() => void refresh(selectedId.current ?? undefined)} disabled={loading || working || saving} className="flex min-h-11 items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-50"><RefreshCw size={16} />Refresh</button>
+          {canEdit && <button onClick={() => void create()} disabled={working || loading} className="min-h-11 rounded-lg bg-teal-800 px-4 py-2 text-sm font-medium text-white hover:bg-teal-900 disabled:opacity-50">{working ? 'Preparing…' : report ? 'Request a new report' : 'Request report'}</button>}
+          {report && <button onClick={() => void download()} disabled={working} className="flex min-h-11 items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-50"><Download size={16} />Download printable report</button>}
+          <button onClick={() => void refresh(selectedId.current ?? undefined)} disabled={loading || working} className="flex min-h-11 items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm disabled:opacity-50"><RefreshCw size={16} />Refresh</button>
         </div>
-        {report && <p className="mt-2 text-xs text-slate-500">Open the downloaded HTML and choose Print → Save as PDF for submission. Saved responses and their authors are included.</p>}
+        {report && <p className="mt-2 text-xs text-slate-500">Open the downloaded HTML and choose Print → Save as PDF. Earlier saved responses are retained in the archive.</p>}
       </header>
       {error && <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">{error}</p>}
       {loading && <p role="status" className="text-sm text-slate-500">Checking saved report…</p>}
-      {!report && !loading && !error && <p className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">Your first report will capture the current saved proposal. Your reasoning stays attached to that version.</p>}
+      {!report && !loading && !error && <p className="rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-500">Your first report will capture the current saved proposal and its quantities.</p>}
       {report && <>
         {history.length > 1 && <label className="block text-sm text-slate-700">Saved reports
-          <select aria-label="Saved reports" value={report.id} disabled={saving || working} onChange={(event) => void refresh(event.target.value)} className="mt-1 min-h-11 w-full rounded-lg border border-slate-300 bg-white p-2">
+          <select aria-label="Saved reports" value={report.id} disabled={working} onChange={(event) => void refresh(event.target.value)} className="mt-1 min-h-11 w-full rounded-lg border border-slate-300 bg-white p-2">
             {history.map((version) => <option key={version.id} value={version.id}>{new Date(version.created_at).toLocaleString()} · {version.plan_version.slice(0, 8)} · {version.requested_by_name}</option>)}
           </select>
         </label>}
-        {report.is_stale && <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>The proposal has changed.</strong> This report and its responses describe the earlier saved plan. Request a new report to review the current design; your earlier reasoning stays in the report history.</div>}
+        {report.is_stale && <div role="status" className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"><strong>The proposal has changed.</strong> These quantities describe the earlier saved plan. Request a new report to measure the current design; earlier reports stay in history.</div>}
         {report.analysis.method_version === 'student-review-v1' && <p role="status" className="rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">This saved report predates the separation of placement plots from building footprints. Its building and floor-area quantities may include yards or paving. Request a new report for corrected quantities; this version and your responses stay in history.</p>}
+        {!hasQuantitativeTotals && <p className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">This earlier report includes the quantities available when it was saved. Request a new report for building, unit and detail totals.</p>}
         <div className="text-xs text-slate-500">Plan {report.plan_version.slice(0, 12)} · {report.analysis.scope_zone_count} proposal areas · {new Date(report.created_at).toLocaleString()} · requested by {report.requested_by_name}</div>
         <div className="overflow-x-auto rounded-xl border border-slate-200 bg-white p-4">
           <h3 className="mb-3 font-semibold text-slate-900">Proposal quantities</h3>
-          <table className="w-full text-left text-sm"><thead className="text-xs text-slate-500"><tr><th className="pb-2">Measure</th><th className="pb-2">Value</th><th className="pb-2">How it was measured</th></tr></thead>
-            <tbody>{report.analysis.metrics.map((metric) => <tr key={metric.key} className="border-t border-slate-100"><th className="py-3 pr-3 font-medium">{metric.label}</th><td className="whitespace-nowrap py-3 pr-4">{metric.value == null ? 'Unknown' : metric.value.toLocaleString(undefined, { maximumFractionDigits: 2 })} {metric.unit}</td><td className="py-3 text-xs text-slate-500">{metric.derivation}</td></tr>)}</tbody>
+          <table className="w-full text-left text-sm"><thead className="text-xs text-slate-500"><tr><th className="pb-2">Measure</th><th className="pb-2">Value</th><th className="pb-2">Status</th></tr></thead>
+            <tbody>{metrics.map((metric) => <tr key={metric.key} className="border-t border-slate-100"><th scope="row" className="py-2 pr-3 font-medium">{metric.label}</th><td className="whitespace-nowrap py-2 pr-4">{metric.value == null ? 'Unknown' : metric.value.toLocaleString(undefined, { maximumFractionDigits: 2 })} {metric.unit}</td><td className="py-2 text-xs text-slate-500">{quantityStatus(metric)}</td></tr>)}</tbody>
           </table>
         </div>
+        <details className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
+          <summary className="cursor-pointer font-medium">How totals are calculated</summary>
+          <dl className="mt-3 space-y-3">{allMetrics.map(metric => <div key={metric.key}><dt className="font-semibold">{metric.label}{!primaryMetrics.includes(metric.key) && ` · ${metric.value == null ? 'Unknown' : metric.value.toLocaleString(undefined, {maximumFractionDigits: 2})} ${metric.unit}`}</dt><dd className="mt-1 text-xs">{metric.derivation}</dd></div>)}</dl>
+        </details>
         <details className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600"><summary className="cursor-pointer font-medium">Scope and limitations</summary><ul className="mt-2 list-disc space-y-2 pl-5">{report.analysis.limitations.map((limitation) => <li key={limitation}>{limitation}</li>)}</ul></details>
-        <p className="text-xs text-slate-500">Recording “implement” saves your intention. It does not change geometry or verify that a design change has been made.</p>
-        {(['local_plan', 'proposed_zoning', 'other'] as const).map(group => {
-          const findings = report.analysis.findings.filter(finding => (finding.comparison?.group ?? 'other') === group);
-          return findings.length > 0 && <section key={group} className="space-y-4" aria-label={group === 'local_plan' ? 'Compare with the local area plan' : group === 'proposed_zoning' ? 'Compare with your proposed zoning' : 'Other planning findings'}>
-            <h3 className="text-xl font-semibold">{group === 'local_plan' ? 'Compare with the local area plan' : group === 'proposed_zoning' ? 'Compare with your proposed zoning' : 'Other planning findings'}</h3>
-            {findings.map(finding => <FindingCard key={`${report.id}-${finding.id}`} draftKey={reportDraftKey(account, projectId, report.id, finding.id)} finding={finding} decision={report.decisions[finding.id]} canEdit={canEdit} busy={saving || working || loading} onSave={(choice, rationale, followThrough) => save(finding.id, choice, rationale, followThrough)} onSelectZone={onSelectZone} />)}
-          </section>;
-        })}
+        <details className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
+          <summary className="cursor-pointer font-medium">Sources</summary>
+          <ul className="mt-2 space-y-2">{[...new Map(report.analysis.findings.flatMap(finding => finding.sources).map(source => [`${source.title}:${source.url ?? ''}:${source.page ?? ''}`, source])).values()].map((source, index) => <li key={index}>
+            {safeSourceUrl(source.url) ? <a className="text-teal-800 underline" href={safeSourceUrl(source.url)} target="_blank" rel="noopener noreferrer">{source.title}</a> : <strong>{source.title}</strong>}
+            {source.page != null && <span> · p. {source.page}</span>}
+            {source.excerpt && <p className="mt-1 whitespace-pre-wrap text-xs">{source.excerpt}</p>}
+          </li>)}</ul>
+          {!report.analysis.findings.some(finding => finding.sources.length) && <p className="mt-2">Saved proposal geometry and recorded object properties. No external source attached.</p>}
+        </details>
+        {Object.keys(report.decisions).length > 0 && <details className="rounded-lg border border-slate-200 bg-white p-4 text-sm text-slate-600">
+          <summary className="cursor-pointer font-medium">Earlier saved responses</summary>
+          {Object.entries(report.decisions).map(([id, decision]) => <article key={id} className="mt-3 border-t pt-3">
+            <p className="text-xs">{decision.author_name} · {new Date(decision.updated_at).toLocaleString()} · {decision.choice}</p>
+            <p className="mt-1 whitespace-pre-wrap">{decision.rationale}</p>
+            {decision.follow_through && <p className="mt-1 whitespace-pre-wrap">{decision.follow_through}</p>}
+          </article>)}
+        </details>}
       </>}
     </div>
   </section>;

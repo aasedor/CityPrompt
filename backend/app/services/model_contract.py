@@ -72,12 +72,28 @@ def _dwelling_programmes() -> tuple[dict, ...]:
     return tuple(json.loads((DATA / 'catalogue_dwelling_programmes.json').read_text(encoding='utf-8'))['records'])
 
 
-def catalogue_dwellings(properties: dict[str, Any]) -> int | None:
-    """Only an exact, unchanged authored assembly supplies a catalogue estimate."""
+def catalogue_housing_programme(properties: dict[str, Any]) -> dict | None:
+    """Return only a reviewed programme for the unchanged native revision."""
     facts = native_model_facts(properties)
-    if not facts or not facts.get('fixed'):
+    if not facts:
         return None
     if properties.get('floor_count', properties.get('floors', facts['storeys'])) != facts['storeys']:
         return None
-    return next((row['dwellings'] for row in _dwelling_programmes()
+    programme = next((row for row in _dwelling_programmes()
                  if row['variant_id'] == facts['variant_id'] and row['revision'] == facts['revision']), None)
+    if not programme:
+        return None
+    # A model capable of student edits is still its reviewed native home when
+    # saved with this exact revision and native storeys. Future/edited house
+    # assemblies receive no programme merely from a shared parent archetype.
+    if not facts.get('fixed') and not (
+        programme.get('allow_exact_flexible_native_revision') is True
+        and properties.get('pick_place_model_revision') == facts['revision']
+    ):
+        return None
+    return programme
+
+
+def catalogue_dwellings(properties: dict[str, Any]) -> int | None:
+    programme = catalogue_housing_programme(properties)
+    return programme['dwellings'] if programme else None

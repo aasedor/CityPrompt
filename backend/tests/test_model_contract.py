@@ -9,6 +9,17 @@ CURRENT = {'pick_place_asset': 'validation_minimalist_infill_brick_monolith',
            'pick_place_model_revision': '97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7'}
 
 
+def test_reviewed_native_bungalow_has_one_dwelling_without_approving_edited_or_imported_models():
+    props = {'pick_place_asset': 'trial_postwar_bungalow', 'development_selected_variant_id': 'bungalow_postwar_ranch',
+             'pick_place_model_revision': 'calgary-inner-city-bungalow-clay-v005', 'floor_count': 1}
+    assert catalogue_dwellings(props) == 1
+    assert catalogue_dwellings({**props, 'floor_count': 2}) is None
+    assert catalogue_dwellings({**props, 'pick_place_model_revision': 'calgary-inner-city-bungalow-two-storey-v001'}) is None
+    assert catalogue_dwellings({**props, 'development_height_override_m': 12}) is None
+    assert catalogue_dwellings({k:v for k,v in props.items() if k != 'pick_place_model_revision'}) is None
+    assert catalogue_dwellings({'imported_model_id': 'a-home.glb', 'floor_count': 1}) is None
+
+
 def test_catalogue_programme_requires_unchanged_height_storeys_and_revision():
     from app.services.model_contract import _records
     row = next(row for row in _records() if row['variant_id'] == 'affordable_aspen_original' and row['current'])
