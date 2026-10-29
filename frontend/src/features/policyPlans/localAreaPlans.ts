@@ -1,15 +1,17 @@
 import clipping from 'polygon-clipping';
 import { zoningBounds, type Position } from '@/features/referenceLayers/zoningLabels';
 import index from './data/localPlanIndex.json';
+import beltlineIndex from './data/beltlinePlanIndex.json';
 import { localDesignations, type DesignationReference } from './localDesignations';
 import { loadRileyPolicy, type PolicySnapshot, type PolicyPreferences, readPolicyPreferences } from './rileyPolicy';
 import { loadPolicySnapshot } from './policySnapshotLoader';
 
 type PlanIndex = Omit<PolicySnapshot, 'features'> & {
   id: string; name: string; title: string; edition: string; source: string; pageUrl: string;
+  mapLabel?: string; mapNumber?: number; limitations?: string; sourceNotice?: string;
   mapPage: number; references: DesignationReference[]; alignmentChecks: number; alignmentMaxMetres: number;
 };
-export const LOCAL_AREA_PLANS = (index as unknown as PlanIndex[]).map(plan => ({ ...plan, designations: localDesignations(plan.id, plan.references) }));
+export const LOCAL_AREA_PLANS = ([...index, ...beltlineIndex] as unknown as PlanIndex[]).map(plan => ({ ...plan, designations: localDesignations(plan.id, plan.references) }));
 export type LocalAreaPlan = typeof LOCAL_AREA_PLANS[number];
 export const localAreaPlan = (id: string) => LOCAL_AREA_PLANS.find(plan => plan.id === id);
 export type LocalPolicyPreferences = PolicyPreferences & { planId: string };
@@ -21,9 +23,11 @@ export function readLocalPolicyPreferences(raw: string | null): LocalPolicyPrefe
   } catch { return { ...basic, planId: 'auto' }; }
 }
 
-// Each map is a separate cached asset; no PDF processing or eight-map download
+// Each map is a separate cached asset; no PDF processing or full-map collection download
 // during project startup. The index contains only boundaries and small metadata.
 const sources: Record<string, URL> = {
+  'beltline-part-1': new URL('./data/beltline-part-1LandUseConcept.json', import.meta.url),
+  'beltline-part-2': new URL('./data/beltline-part-2LandUseConcept.json', import.meta.url),
   'east-calgary': new URL('./data/east-calgaryUrbanForm.json', import.meta.url),
   chinook: new URL('./data/chinookUrbanForm.json', import.meta.url),
   heritage: new URL('./data/heritageUrbanForm.json', import.meta.url),

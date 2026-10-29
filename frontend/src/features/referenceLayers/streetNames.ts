@@ -1,7 +1,7 @@
 import { CALGARY_TRANSPORT_ROOT } from './existingTransport';
 import { zoningBounds, type Position } from './zoningLabels';
 
-export type StreetName = { id: string; label: string; anchor: Position };
+export type StreetName = { id: string; label: string; anchor: Position; segment?: [Position, Position] };
 export type StreetBounds = [number, number, number, number];
 export const STREET_NAME_LIMIT = 100;
 function validBounds(b: StreetBounds): boolean {
@@ -51,12 +51,22 @@ export function streetNameLabels(features: unknown[], bounds: StreetBounds): Str
         const [a,b]=segment;
         const length=Math.hypot((b[0]-a[0])*Math.cos(a[1]*Math.PI/180),b[1]-a[1]);
         if (length<=0 || length<=(names.get(key)?.length ?? 0)) continue;
-        names.set(key,{ id:`street:${key}`,label,anchor:[(a[0]+b[0])/2,(a[1]+b[1])/2],length });
+        names.set(key,{ id:`street:${key}`,label,anchor:[(a[0]+b[0])/2,(a[1]+b[1])/2],length,segment:[a,b] });
       }
     }
   }
   return [...names.values()].sort((a,b)=>b.length-a.length || a.id.localeCompare(b.id))
-    .slice(0,STREET_NAME_LIMIT).map(({ id,label,anchor })=>({ id,label,anchor }));
+    .slice(0,STREET_NAME_LIMIT).map(({ id,label,anchor,segment })=>({ id,label,anchor,segment }));
+}
+
+/** Sprite baseline in screen coordinates (positive Y up). Recompute from the
+ * projected road segment after camera movement, then rotate by 90 degrees. */
+export function perpendicularLabelRotation(dx: number, dy: number): number | null {
+  if (!Number.isFinite(dx) || !Number.isFinite(dy) || Math.hypot(dx,dy) < 1e-6) return null;
+  let angle = Math.atan2(dy,dx) + Math.PI/2;
+  while (angle > Math.PI/2) angle -= Math.PI;
+  while (angle <= -Math.PI/2) angle += Math.PI;
+  return angle;
 }
 
 export async function fetchStreetNames(bounds: StreetBounds, signal?: AbortSignal): Promise<StreetName[]> {

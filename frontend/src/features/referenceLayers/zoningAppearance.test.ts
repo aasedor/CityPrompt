@@ -11,9 +11,13 @@ describe('land-use presentation preferences', () => {
   });
   it('keeps hidden styles and clamps saved opacity', () => {
     expect(readZoningPreferences('{"enabled":false,"labels":false,"districtLines":true,"fill":true,"fillOpacity":0.37}'))
-      .toEqual({ enabled: false, labels: false, lines: true, fill: true, fillOpacity: 0.37 });
+      .toEqual({ enabled: false, clipToSite: false, labels: false, lines: true, fill: true, fillOpacity: 0.37 });
     expect(readZoningPreferences('{"enabled":true,"fillOpacity":5}').fillOpacity).toBe(1);
     expect(readZoningPreferences('{"enabled":true,"fillOpacity":-1}').fillOpacity).toBe(0);
+  });
+  it('defaults site clipping off for existing settings and restores explicit choices', () => {
+    expect(readZoningPreferences('{"enabled":true}').clipToSite).toBe(false);
+    expect(readZoningPreferences('{"enabled":true,"clipToSite":true}').clipToSite).toBe(true);
   });
   it('uses one DC family colour without guessing its land use or confusing park/infrastructure districts', () => {
     expect(zoningColor({ code: 'DC', label: 'DC48Z84' })).toBe(zoningColor({ label: 'DC126D2016' }));

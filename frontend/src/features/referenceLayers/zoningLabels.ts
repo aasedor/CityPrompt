@@ -1,3 +1,4 @@
+import clipping from 'polygon-clipping';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import type { MultiPolygon } from 'polygon-clipping';
 
@@ -24,6 +25,31 @@ export function zoningCoverageProblem(bounds: ZoningOverlay['bounds'] | null): s
   if (w < -114.35 || e > -113.85 || s < 50.8 || n > 51.22) return 'Zoning data is currently available for Calgary sites.';
   if ((e - w) * (n - s) * 111320 ** 2 * Math.cos((n + s) / 2 * Math.PI / 180) > 25_000_000) return 'Choose a site smaller than 25 km² to view zoning detail.';
   return null;
+}
+
+/** Keep nearby districts visible after a site is saved. This is a bounded
+ * context window, not a representation of the site's own geometry. */
+export function zoningContextCoordinates(coordinates: number[][]): number[][] {
+  const bounds = zoningBounds(coordinates);
+  if (!bounds || zoningCoverageProblem(bounds)) return coordinates;
+  const [w,s,e,n] = bounds;
+  const dy = 300 / 111320, dx = dy / Math.cos((s+n)/2 * Math.PI/180);
+  const padded: ZoningOverlay['bounds'] = [w-dx,s-dy,e+dx,n+dy];
+  const [west,south,east,north] = zoningCoverageProblem(padded) ? bounds : padded;
+  return [[west,south],[east,south],[east,north],[west,north]];
+}
+
+/** Site filtering changes fills, outlines, labels and picking together. Never
+ * mutate the cached context map; toggling back restores the same source areas. */
+export function clipZoningOverlay(data: ZoningOverlay, coordinates: number[][]): ZoningOverlay {
+  const ring = coordinates.map(([x,y]) => [x,y] as Position);
+  if (ring.length < 3) return { ...data, districts: [] };
+  if (ring[0][0] !== ring[ring.length-1][0] || ring[0][1] !== ring[ring.length-1][1]) ring.push([...ring[0]]);
+  return { ...data, districts: data.districts.flatMap(district =>
+    clipping.intersection(district.polygon, [ring]).flatMap((polygon,index) => {
+      const anchor = zoningAnchor(polygon);
+      return anchor ? [{ ...district, id: `${district.id}-site-${index}`, polygon, anchor }] : [];
+    })) };
 }
 
 /** Scanline interior point: stays inside concave districts and outside holes. */

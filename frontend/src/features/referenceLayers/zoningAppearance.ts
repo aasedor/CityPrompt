@@ -18,6 +18,7 @@ export function zoningColor(district: Pick<ZoningLabel, 'code' | 'label'>): stri
 
 export interface ZoningPreferences {
   enabled: boolean;
+  clipToSite: boolean;
   labels: boolean;
   lines: boolean;
   fill: boolean;
@@ -25,7 +26,7 @@ export interface ZoningPreferences {
 }
 
 export const DEFAULT_ZONING_PREFERENCES: ZoningPreferences = {
-  enabled: false, labels: true, lines: true, fill: true, fillOpacity: 0.4,
+  enabled: false, clipToSite: false, labels: true, lines: true, fill: true, fillOpacity: 0.4,
 };
 
 export function readZoningPreferences(saved: string | null): ZoningPreferences {
@@ -37,6 +38,7 @@ export function readZoningPreferences(saved: string | null): ZoningPreferences {
     if (legacy && !legacyActive) return { ...DEFAULT_ZONING_PREFERENCES };
     return {
       enabled: typeof value.enabled === 'boolean' ? value.enabled : legacyActive,
+      clipToSite: value.clipToSite === true,
       labels: typeof value.labels === 'boolean' ? value.labels : true,
       // The retired cadastral "lines" key must never become district outlines.
       lines: typeof value.districtLines === 'boolean' ? value.districtLines : !legacy,
