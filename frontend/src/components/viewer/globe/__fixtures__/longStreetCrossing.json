@@ -1,0 +1,212 @@
+[
+  {
+    "id": "00c4b3c0-2c8a-4b7c-8b70-c89c61231b85",
+    "project_id": "junction-trial",
+    "zone_type": "road",
+    "coordinates": [
+      [
+        -114.05523658,
+        51.039100084
+      ],
+      [
+        -114.049318885,
+        51.041338574
+      ],
+      [
+        -114.049186324,
+        51.041200018
+      ],
+      [
+        -114.055104019,
+        51.038961528
+      ]
+    ],
+    "properties": {
+      "width": 18,
+      "community_3d": {
+        "kind": "street",
+        "state": "compiled",
+        "generator": "street_section",
+        "compiled_at": "2026-10-29T02:26:06.904600+00:00",
+        "source_hash": "ba63dcd794466a27dbe6538fb89548a80821ab04ced38fdafd92a49024e4b454",
+        "schema_version": 1,
+        "representation_hash": "8b8f3ed5fb963c0fb5bf756052128cafe3765b3692628649a5b3bc9842abc0a4"
+      },
+      "plan_centerline": [
+        [
+          -114.05517029928878,
+          51.03903080622172
+        ],
+        [
+          -114.04925260418258,
+          51.04126929597164
+        ]
+      ],
+      "public_realm_lego": {
+        "kind": "street",
+        "target": {
+          "length_m": 484.177,
+          "row_width_m": 18.0,
+          "target_type": "street_segment"
+        },
+        "family_id": "street_native_student_quiet_residential_street_v1",
+        "generator": "street_section",
+        "profile_id": "native-student-quiet-residential-street-v1-v1",
+        "variant_id": "student_quiet_residential_street_v1",
+        "recipe_hash": "79c0cd28321e4bbb40d612dc08440e54fbb6562d42e0b2934529bf1c7b6f7fb1",
+        "archetype_id": "student_quiet_residential_street_v1",
+        "family_version": 1,
+        "schema_version": 1,
+        "terrain_policy": "terrain_drape_and_metric_assemblies",
+        "profile_version": 1,
+        "appearance_kit_id": "heritage_brick_stone",
+        "component_set_ids": [
+          "source_recipe:b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+          "source_assembly:52305899464101def9199c861f1dabe3ae083fef56b87984fbd27bf9cf765bdd",
+          "reference:cf86132edc3221c08f8f99ed1b2daf46c59590c2684e1eb055b4ae94b3c26ca3",
+          "program:c2b41d298030c25d05f2e2525d5f271a23fa1690a85f4986d972546ce1b38cc0",
+          "module_bench:2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+          "module_bike_rack:bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76",
+          "module_bin:31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c",
+          "module_flowering_perennial:0fea864a84d1951033430f3e36454e013640a2e2cd02d0b8c260b908e8c4dc4e",
+          "module_grove_tree:6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278",
+          "module_light:010d21cd89f16db18aa6b5c467dcb77c37f7822539a9a3df9708fb7726e069a9",
+          "module_meadow_grass:2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06",
+          "module_silver_shrub:b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
+        ],
+        "planting_structure": null,
+        "catalog_fingerprint": "cef9b2d1be6d7d0cc29f80aff016a61f92275ed182f90c33d6d010e317f2caf6",
+        "capability_fingerprint": "caec9d944c3fded731668f22d3c03792ea1e1086f7d98ea10f5000360cfffc66"
+      },
+      "road_archetype_id": "student_quiet_residential_street_v1",
+      "_client_request_id": "0d1b3f4d-06d1-4385-9036-004a675e773b",
+      "plan_route_controls": [
+        [
+          -114.05517029928878,
+          51.03903080622172
+        ],
+        [
+          -114.04925260418258,
+          51.04126929597164
+        ]
+      ],
+      "terrain_elevation_m": 1026.5569404558119,
+      "_client_request_hash": "0e469c4f09bb4b21e7fd4baaa6f68c0e7079eb7a813368063f2ac9411c3e2a61",
+      "road_standard_citation": "City Prompt native-module teaching section",
+      "pick_place_automatic_3d": true,
+      "road_selected_variant_id": "student_quiet_residential_street_v1",
+      "pick_place_street_section": "student_quiet_residential_street_v1",
+      "pick_place_definition_version": 1,
+      "community_3d_mask_existing_tiles": true
+    },
+    "color": "#777777",
+    "sort_order": 0,
+    "created_at": "2026-10-28",
+    "updated_at": "2026-10-28"
+  },
+  {
+    "id": "7706b0c9-5777-4742-b05d-d33f1d5c280a",
+    "project_id": "junction-trial",
+    "zone_type": "road",
+    "coordinates": [
+      [
+        -114.056056945,
+        51.040230877
+      ],
+      [
+        -114.048365027,
+        51.040230873
+      ],
+      [
+        -114.048365028,
+        51.040069177
+      ],
+      [
+        -114.056056945,
+        51.040069181
+      ]
+    ],
+    "properties": {
+      "width": 18,
+      "community_3d": {
+        "kind": "street",
+        "state": "compiled",
+        "generator": "street_section",
+        "compiled_at": "2026-10-29T02:26:06.904600+00:00",
+        "source_hash": "9e5e37d30be0cb1d9f4643a67ea41a10069cf18f1e77bc08405f87afbb168bdf",
+        "schema_version": 1,
+        "representation_hash": "76af584e56b56c01bfa16a4b5f5374b5c2c4ad85d5367df903005b2ba3206dd3"
+      },
+      "plan_centerline": [
+        [
+          -114.05605694511668,
+          51.04015002889522
+        ],
+        [
+          -114.04836502744453,
+          51.04015002544619
+        ]
+      ],
+      "public_realm_lego": {
+        "kind": "street",
+        "target": {
+          "length_m": 539.557,
+          "row_width_m": 18.0,
+          "target_type": "street_segment"
+        },
+        "family_id": "street_native_student_quiet_residential_street_v1",
+        "generator": "street_section",
+        "profile_id": "native-student-quiet-residential-street-v1-v1",
+        "variant_id": "student_quiet_residential_street_v1",
+        "recipe_hash": "8be287868a3277f93636e29c50bb3523ba5facc44d6a1b24cb37431c7ca2117e",
+        "archetype_id": "student_quiet_residential_street_v1",
+        "family_version": 1,
+        "schema_version": 1,
+        "terrain_policy": "terrain_drape_and_metric_assemblies",
+        "profile_version": 1,
+        "appearance_kit_id": "heritage_brick_stone",
+        "component_set_ids": [
+          "source_recipe:b6f20dbe8236380630ce0f1d212b1690317e4351f229d8140bf0e7ce1ad23626",
+          "source_assembly:52305899464101def9199c861f1dabe3ae083fef56b87984fbd27bf9cf765bdd",
+          "reference:cf86132edc3221c08f8f99ed1b2daf46c59590c2684e1eb055b4ae94b3c26ca3",
+          "program:c2b41d298030c25d05f2e2525d5f271a23fa1690a85f4986d972546ce1b38cc0",
+          "module_bench:2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73",
+          "module_bike_rack:bcad060e80d22763fb3c6ee7c15a0fdd009a099417c7dc955653db773a180b76",
+          "module_bin:31c86a58e7c33c8972ef7bfd6bba9eaf4fa6315203532cce43aa01f74725da3c",
+          "module_flowering_perennial:0fea864a84d1951033430f3e36454e013640a2e2cd02d0b8c260b908e8c4dc4e",
+          "module_grove_tree:6bb27b84d9515c60c5095d6dbb2e149c2000955e1f0dbf6b4ae8471003693278",
+          "module_light:010d21cd89f16db18aa6b5c467dcb77c37f7822539a9a3df9708fb7726e069a9",
+          "module_meadow_grass:2798f35f02df5c3d9c44085c9f39b85327888f5b01d1c744ca2060559d36ca06",
+          "module_silver_shrub:b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
+        ],
+        "planting_structure": null,
+        "catalog_fingerprint": "cef9b2d1be6d7d0cc29f80aff016a61f92275ed182f90c33d6d010e317f2caf6",
+        "capability_fingerprint": "caec9d944c3fded731668f22d3c03792ea1e1086f7d98ea10f5000360cfffc66"
+      },
+      "road_archetype_id": "student_quiet_residential_street_v1",
+      "_client_request_id": "79b1cc3f-8e80-4de5-84ee-5334c5a1c1dc",
+      "plan_route_controls": [
+        [
+          -114.05605694511668,
+          51.04015002889522
+        ],
+        [
+          -114.04836502744453,
+          51.04015002544619
+        ]
+      ],
+      "terrain_elevation_m": 1036.2501593370966,
+      "_client_request_hash": "c5d647c0d6ffdb953dbd0939b7ff9a3a8d3921194eceb118565786db4b6254ad",
+      "road_standard_citation": "City Prompt native-module teaching section",
+      "pick_place_automatic_3d": true,
+      "road_selected_variant_id": "student_quiet_residential_street_v1",
+      "pick_place_street_section": "student_quiet_residential_street_v1",
+      "pick_place_definition_version": 1,
+      "community_3d_mask_existing_tiles": true
+    },
+    "color": "#777777",
+    "sort_order": 0,
+    "created_at": "2026-10-28",
+    "updated_at": "2026-10-28"
+  }
+]

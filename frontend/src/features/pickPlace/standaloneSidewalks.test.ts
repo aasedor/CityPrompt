@@ -49,7 +49,7 @@ describe('standalone sidewalks', () => {
       }
     }
     expect(nativeStreetLocalRouteProblem(pilot, [{ x: 0, y: 0 }, { x: 0, y: pilot.program!.minLengthM - .1 }])).not.toBeNull();
-    expect(nativeStreetLocalRouteProblem(pilot, [{ x: 0, y: 0 }, { x: 0, y: 301 }])).not.toBeNull();
+    expect(nativeStreetLocalRouteProblem(pilot, [{ x: 0, y: 0 }, { x: 0, y: 2001 }])).not.toBeNull();
   });
   it.each(ids)('%s forms pedestrian junctions through the shared route contract', id => {
     const asset = PATHWAY_ASSETS.find(a => a.model.variantId === id)!;

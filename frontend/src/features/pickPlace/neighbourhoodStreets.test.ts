@@ -42,7 +42,7 @@ describe('five neighbourhood street native bindings', () => {
   const pilot=nativeStreetPilot(id)!;const route=[{x:0,y:0},{x:0,y:60}];
   expect(nativeStreetLocalRouteProblem(pilot,route)).toBeNull();
   expect(nativeStreetLocalRouteProblem(pilot,[{x:0,y:0},{x:0,y:39}])).not.toBeNull();
-  expect(nativeStreetLocalRouteProblem(pilot,[{x:0,y:0},{x:0,y:301}])).not.toBeNull();
+  expect(nativeStreetLocalRouteProblem(pilot,[{x:0,y:0},{x:0,y:2001}])).not.toBeNull();
   const poses=placeNativeStreetModules(pilot,route);expect(poses.length).toBeGreaterThan(0);
   expect(poses.length).toBeLessThanOrEqual(pilot.placements.length*2);
   for(const pose of poses){expect(pose.url).toContain('/street-kits/pilots/'+id+'/');expect(pose.sha256).toMatch(/^[a-f0-9]{64}$/);}

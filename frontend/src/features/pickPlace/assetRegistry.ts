@@ -12,6 +12,7 @@ import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
+import { nativeStreetMaxLength } from '@/components/viewer/globe/streetRoutePolicy';
 import manualStreets from '@/data/streetManual.json';
 import { reviewedAssetClassification } from './catalogueClassification';
 import { localTowerStoreyMetadata } from './localTowerStoreyPrograms';
@@ -195,7 +196,7 @@ export function additionalStreet(archetypeId: string, label: string, description
 
 const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
   id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
-    label: street.title, description: street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${street.program.maxLengthM} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
+    label: street.title, description: street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${nativeStreetMaxLength(street.id)} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
   calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
   model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },
@@ -208,7 +209,7 @@ const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
 /** Surface-only paths keep a complete clear walking width, with no road kit. */
 export const PATHWAY_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS
   .filter(asset => nativeStreets.find(row => row.id === asset.model.variantId)?.program?.adapter === 'narrow-pathway-v1')
-  .map(asset => ({ ...asset, description: `${asset.sectionWidth} m clear width · draw a winding path · ${Math.max(2, asset.sectionWidth)}–300 m long · prepared level site`,
+  .map(asset => ({ ...asset, description: `${asset.sectionWidth} m clear width · draw a winding path · ${Math.max(2, asset.sectionWidth)}–${nativeStreetMaxLength(asset.model.variantId)} m long · prepared level site`,
     calgaryGuide: { groupId: 'active', basis: 'design_reference' },
     properties: { ...asset.properties, lane_count: 0, road_standard_citation: 'City Prompt conceptual pathway; not a Calgary standard section' } }));
 

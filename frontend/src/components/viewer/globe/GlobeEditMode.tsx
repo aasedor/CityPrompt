@@ -34,6 +34,7 @@ import { hasElevatedStation } from './elevatedRailProgram';
 import { snapStreetEndpoint } from '@/features/pickPlace/streetSnapping';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
+import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import {
   getObjectFilteredTerrainHeight,
   getRepresentativeTerrainHeight,
@@ -241,7 +242,8 @@ export function GlobeEditMode({
   );
   const storedTerrainHeight = Number.isFinite(storedTerrain) ? storedTerrain : null;
   const filterObjectHeights = shouldFilterObjectTerrainHeight(zone.zone_type);
-  const zoneTerrainHeight = resolveZoneTerrainHeight(
+  const preparedTerrainHeight = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
+  const zoneTerrainHeight = preparedTerrainHeight ?? resolveZoneTerrainHeight(
     sampledTerrainHeight,
     storedTerrainHeight,
     terrainHeight,
@@ -261,6 +263,9 @@ export function GlobeEditMode({
   }, [zoneTerrainHeight]);
 
   const sampleZoneTerrainHeight = useCallback(() => {
+    // Hidden photogrammetry can still be raycast. Its roofs/terrain must not
+    // pull handles away from the authored replacement ground.
+    if (preparedTerrainHeight !== null) return true;
     const tilesGroup = tiles?.group;
     if (!tilesGroup?.children?.length) return false;
 
@@ -284,7 +289,7 @@ export function GlobeEditMode({
         : sampledHeight
     ));
     return true;
-  }, [filterObjectHeights, tiles, zone.coordinates, zoneCentroid, zoneTerrainHeight]);
+  }, [filterObjectHeights, tiles, zone.coordinates, zoneCentroid, zoneTerrainHeight, preparedTerrainHeight]);
 
   useEffect(() => {
     setSampledTerrainHeight(null);
@@ -309,7 +314,7 @@ export function GlobeEditMode({
     raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
 
     const tilesGroup = tiles?.group;
-    if (tilesGroup?.children?.length) {
+    if (preparedTerrainHeight === null && tilesGroup?.children?.length) {
       const hit = raycaster.intersectObjects(tilesGroup.children, true)[0]?.point;
       if (hit) {
         return pointToLngLat(hit, terrainEllipsoid.current);
@@ -321,7 +326,7 @@ export function GlobeEditMode({
     if (!result) return null;
 
     return pointToLngLat(hit, terrainEllipsoid.current);
-  }, [camera, gl, tiles]);
+  }, [camera, gl, tiles, preparedTerrainHeight]);
 
   const pointerToRotationPlaneLocal = useCallback((
     e: PointerEvent | MouseEvent,

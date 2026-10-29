@@ -3,13 +3,14 @@ import json
 import math
 import re
 from pathlib import Path
+from app.services.street_route_policy import MAX_REPEATABLE_STREET_LENGTH_M
 
 CANAL_POLICY = json.loads((Path(__file__).resolve().parents[1] / 'data/canalRoutePolicy.json').read_text())
 
 CONTRACTS = {
-    'student_elevated_garden_rail_v1': ('elevated_garden_rail', 26, 48, 288),
-    'skytrain_elevated_corridor_v0': ('skytrain_elevated_corridor', 26, 48, 288),
-    'elevated_rail_transit_corridor_v0': ('elevated_rail_transit_corridor', 26, 48, 288),
+    'student_elevated_garden_rail_v1': ('elevated_garden_rail', 26, 48, MAX_REPEATABLE_STREET_LENGTH_M),
+    'skytrain_elevated_corridor_v0': ('skytrain_elevated_corridor', 26, 48, MAX_REPEATABLE_STREET_LENGTH_M),
+    'elevated_rail_transit_corridor_v0': ('elevated_rail_transit_corridor', 26, 48, MAX_REPEATABLE_STREET_LENGTH_M),
     'amsterdam_gracht_v1': ('amsterdam_gracht', 36, CANAL_POLICY['minLengthM'], CANAL_POLICY['maxLengthM']),
     'landmark_signature_bridge_v2': ('landmark_signature_bridge', 36, 260, 480),
 }

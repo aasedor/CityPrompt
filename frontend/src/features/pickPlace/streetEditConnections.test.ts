@@ -2,9 +2,10 @@ import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import saved from '@/components/viewer/globe/__fixtures__/currieRehearsalStreetEdit.json';
 import currentRecipes from '@/components/viewer/globe/__fixtures__/classroomStreetRecipes.json';
+import longCrossing from '@/components/viewer/globe/__fixtures__/longStreetCrossing.json';
 import { detectConnectedStreetIntersections } from '@/components/viewer/globe/streetGraphIntersections';
 import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJunctionGeometry';
-import { bufferLineToPolygon } from '@/utils/roadGeometry';
+import { bufferLineToPolygon, extractZoneCenterline } from '@/utils/roadGeometry';
 import { streetCoordinateUpdate } from './streetPlacement';
 import { snapConnectedStreetEdit, streetEditConnectionCheck } from './streetEditConnections';
 import { snapStreetBoundaryPlacement } from './streetBoundaryPlacement';
@@ -20,6 +21,23 @@ const patches = (items: SiteZone[]) => detectConnectedStreetIntersections(items)
   .filter(node => resolveStreetJunctionLayout(node, items));
 
 describe('connected street editing', () => {
+  it('allows a long X crossing to become a complete T without retaining a spur', () => {
+    const network=longCrossing as unknown as SiteZone[];
+    const branch=network[0], host=network[1];
+    const hostLine=extractZoneCenterline(host);
+    const centre=hostLine[0].map((value,axis)=>(value+hostLine[1][axis])/2);
+    const shortened=bufferLineToPolygon([extractZoneCenterline(branch)[0],centre],18);
+    const proposed={...branch,...streetCoordinateUpdate(branch,shortened)};
+    expect(patches(network)[0].armCount).toBe(4);
+    const next=network.map(zone=>zone.id===branch.id?proposed:zone);
+    expect(patches(next)).toHaveLength(1);
+    expect(patches(next)[0].armCount).toBe(3);
+    expect(streetEditConnectionCheck(branch,network)(proposed)).toBe(true);
+    expect(snapConnectedStreetEdit(branch,shortened,network)).toBe(shortened);
+    // Extending the same branch back through the street remains connected.
+    expect(streetEditConnectionCheck(proposed,next)(branch)).toBe(true);
+  });
+
   it('checks the same junctions with buildings, parks and a site boundary present', () => {
     const wholeSite = [...zones, ...saved.nonRoadZones] as unknown as SiteZone[];
     expect(patches(wholeSite)).toEqual(patches(zones));

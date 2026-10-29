@@ -2,6 +2,7 @@
 import json
 import math
 import re
+from app.services.street_route_policy import MAX_REPEATABLE_STREET_LENGTH_M
 
 VARIANT = 'student_grass_tram_avenue_v1'
 
@@ -35,8 +36,8 @@ def validate_tram_properties(properties):
     sx = 111320 * math.cos(math.radians(points[0][1]))
     local = [((p[0]-points[0][0])*sx,(p[1]-points[0][1])*111320) for p in points]
     dx,dy = local[-1]; length = math.hypot(dx,dy)
-    if not 47.99 <= length <= 480.01:
-        raise ValueError('Garden Tram Avenue needs a straight route 48–480 m long.')
+    if not 47.99 <= length <= MAX_REPEATABLE_STREET_LENGTH_M + .01:
+        raise ValueError(f'Garden Tram Avenue needs a straight route 48–{MAX_REPEATABLE_STREET_LENGTH_M} m long.')
     previous = -1
     for x,y in local:
         along = (x*dx+y*dy)/length

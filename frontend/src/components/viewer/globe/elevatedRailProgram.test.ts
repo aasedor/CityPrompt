@@ -29,7 +29,7 @@ describe('elevated rail exact route',()=>{
       expect(constrainElevatedRailWalk([zone],pose(x,100),pose(x,0)).lat*111320).toBeCloseTo(0);
     }
   });
-  it.each([48,49.3,72,103.7,288])('keeps end supports, one train and four buffers at %s m',length=>{
+  it.each([48,49.3,72,103.7,288,508,2000])('keeps end supports, one train and four buffers at %s m',length=>{
     for(const route of [[{x:0,y:0},{x:0,y:length}],[{x:0,y:length},{x:0,y:0}],[{x:0,y:0},{x:length*.6,y:length*.8}]]){
       const poses=placeNativeStreetModules(pilot,route);
       const piers=poses.filter(p=>p.kind==='rail_pier').sort((a,b)=>a.stationM-b.stationM);
@@ -67,7 +67,7 @@ describe('elevated rail exact route',()=>{
   it('rejects bends, reversed interior stations, wrong lengths and unprepared ground',()=>{
     expect(specialistRouteProblem(R,[{x:0,y:0},{x:1,y:30},{x:0,y:60}])).toMatch(/straight/);
     expect(specialistRouteProblem(R,[{x:0,y:0},{x:0,y:70},{x:0,y:60}])).toMatch(/straight/);
-    for(const length of [47,289])expect(specialistRouteProblem(R,[{x:0,y:0},{x:0,y:length}])).toMatch(/48/);
+    for(const length of [47,2001])expect(specialistRouteProblem(R,[{x:0,y:0},{x:0,y:length}])).toMatch(/48/);
     expect(nativeStreetRouteProblem(street('r',[[0,0],[0,60]]),null)).toMatch(/level/);
     expect(addStreetBend(street('r',[[0,0],[0,60]]))).toBeNull();
   });

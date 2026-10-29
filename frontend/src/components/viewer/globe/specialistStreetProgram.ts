@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { canalRoute, canalRouteProblem, canalWalkingHeight, type CanalPoint } from './canalRoute';
 import type {StreetRouteStation} from './nativeStreetPilot';
+import { nativeStreetMaxLength } from './streetRoutePolicy';
 import { hasElevatedStation, isElevatedRail, RAIL_LIFT_X_M, RAIL_LIFT_Y_M, RAIL_PLATFORM_HEIGHT_M, type RailStation } from './elevatedRailProgram';
 
 export const CANAL_VARIANT='amsterdam_gracht_v1';
@@ -11,11 +12,11 @@ export interface SpecialistFixture {kind:string;x:number;y:number;z:number;yaw:n
 export function specialistRouteProblem(variant:string,route:StreetRouteStation[]):string|null {
   if(!isSpecialistStreet(variant))return null;
   if(variant===CANAL_VARIANT)return canalRouteProblem(route);
-  const min=isElevatedRail(variant)?48:260,max=isElevatedRail(variant)?288:480;
+  const min=isElevatedRail(variant)?48:260,max=nativeStreetMaxLength(variant);
   if(route.length<2)return 'Draw two endpoints for this straight specialist street.';
   const a=route[0],b=route[route.length-1],dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy);
   if(!Number.isFinite(length)||length<min-.01||length>max+.01)
-    return isElevatedRail(variant)?'Keep the elevated rail route 48–288 m long.':'Keep the bridge route 260–480 m long for its rigid span and two gradual approaches.';
+    return isElevatedRail(variant)?`Keep the elevated rail route 48–${max} m long.`:'Keep the bridge route 260–480 m long for its rigid span and two gradual approaches.';
   let previous=-1;
   for(const p of route){
     const x=p.x-a.x,y=p.y-a.y,station=(x*dx+y*dy)/length;

@@ -8,13 +8,36 @@ import {GlobeEditMode} from './GlobeEditMode';
 import {GlobeDragProvider} from './useGlobeDragRef';
 import {rectangleAt} from '@/features/pickPlace/geometry';
 import {placeAsset, placementProperties} from '@/features/pickPlace/catalogue';
+import {bufferLineToPolygon} from '@/utils/roadGeometry';
 
 vi.mock('@react-three/fiber',()=>({useThree:()=>({camera:new THREE.PerspectiveCamera(),
   gl:{domElement:document.createElement('canvas')}})}));
 vi.mock('3d-tiles-renderer/r3f',()=>({TilesRendererContext:createContext(null),
-  EastNorthUpFrame:({children,lon}:{children:React.ReactNode;lon:number})=><div data-frame-longitude={lon}>{children}</div>}));
+  EastNorthUpFrame:({children,lon,lat,height}:{children:React.ReactNode;lon:number;lat:number;height:number})=><div data-frame-longitude={lon} data-frame-latitude={lat} data-frame-height={height}>{children}</div>}));
 vi.mock('@react-three/drei',()=>({Html:({children}:{children:React.ReactNode})=>children}));
 afterEach(()=>{cleanup();vi.restoreAllMocks();});
+
+it('keeps long street handles on the prepared site datum and exact persisted endpoints',()=>{
+  const line=[[-114,51.002],[-114,50.997]];
+  const savedFields={project_id:'project',color:'#999999',sort_order:0,created_at:'2026-10-28',updated_at:'2026-10-28'};
+  const zone={...savedFields,id:'road',zone_type:'road',coordinates:bufferLineToPolygon(line,18),properties:{
+    road_archetype_id:'student_quiet_residential_street_v1',road_selected_variant_id:'student_quiet_residential_street_v1',
+    pick_place_street_section:'student_quiet_residential_street_v1',width:18,plan_centerline:line,terrain_elevation_m:1042,
+  }} as SiteZone;
+  const boundary={...savedFields,id:'site',zone_type:'site_boundary',coordinates:rectangleAt([-114,51],1000,1000),properties:{
+    terrain_elevation_m:1026,community_3d_mask_existing_tiles:true,
+  }} as SiteZone;
+  render(<GlobeDragProvider value={{current:{zoneId:null,type:null,vertexIndex:-1,coords:[],version:0}}}>
+    <GlobeEditMode zone={zone} zones={[boundary,zone]} terrainHeight={0} onZoneUpdated={vi.fn()}/>
+  </GlobeDragProvider>);
+  const handles=screen.getAllByTitle(/^Drag route point/);
+  expect(handles).toHaveLength(2);
+  handles.forEach((handle,index)=>{
+    const frame=handle.closest('[data-frame-height]')!;
+    expect(Number(frame.getAttribute('data-frame-height'))).toBe(1026);
+    expect(Number(frame.getAttribute('data-frame-latitude'))*180/Math.PI).toBeCloseTo(line[index][1],6);
+  });
+});
 
 it.each([
   ['claude_trial_brick_podium_condo_tower', 0],

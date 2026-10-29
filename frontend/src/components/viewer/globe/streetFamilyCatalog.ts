@@ -1,4 +1,5 @@
 import { CANAL_ROUTE_POLICY } from './canalRoute';
+import { nativeStreetMaxLength } from './streetRoutePolicy';
 /**
  * Executable Public Realm LEGO V1 street capability catalog.
  *
@@ -384,7 +385,7 @@ export const PUBLIC_REALM_STREET_SELECTIONS: readonly PublicRealmStreetSelection
     archetypeId: street.sourceArchetypeId, variantId: street.id,
     appearanceKitId: (street.junctionSurface === 'cobble' ? 'european_cobblestone_v1' : 'heritage_brick_stone') as StreetAppearanceKitId,
     targetType: 'street_segment' as const, rowWidthM: street.widthM,
-      minLengthM: street.id === 'amsterdam_gracht_v1' ? CANAL_ROUTE_POLICY.minLengthM : street.program?.minLengthM ?? 8, maxLengthM: street.id === 'amsterdam_gracht_v1' ? CANAL_ROUTE_POLICY.maxLengthM : street.program?.maxLengthM ?? 2000,
+      minLengthM: street.id === 'amsterdam_gracht_v1' ? CANAL_ROUTE_POLICY.minLengthM : street.program?.minLengthM ?? 8, maxLengthM: nativeStreetMaxLength(street.id),
     profileId: `native-${street.id.replace(/_/g, '-')}-v1`,
     componentSetIds: [
       `source_recipe:${street.sourceRecipeSha256}`, `source_assembly:${street.sourceAssemblySha256}`, `reference:${street.referenceSha256}`,

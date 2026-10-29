@@ -12,6 +12,7 @@ import json
 import re
 from pathlib import Path
 from functools import lru_cache
+from app.services.street_route_policy import native_street_max_length
 
 from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 from app.services.public_realm_lego import (
@@ -155,7 +156,7 @@ def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canal
                 min_row_width_m=round(width - 0.05, 3),
                 max_row_width_m=round(width + 0.05, 3),
                 min_length_m=route_policy['minLengthM'] if route_policy else 8,
-                max_length_m=route_policy['maxLengthM'] if route_policy else 2_000,
+                max_length_m=native_street_max_length(pilot_id) if flexible_canals else route_policy['maxLengthM'] if route_policy else 2_000,
             ),
             is_default=True,
         )
@@ -190,3 +191,12 @@ def retained_canal_capability():
     catalog = build_native_street_candidate_catalog(manifest, flexible_canals=False)
     cap = next(c for c in catalog.capabilities if c.family_id == 'street_native_amsterdam_gracht_v1')
     return cap.model_copy(update={'title': cap.title.removeprefix('Candidate: ')})
+
+
+@lru_cache(maxsize=1)
+def retained_native_street_capabilities():
+    """Exact original short-route definitions, solely for saved recipe validation."""
+    manifest = Path(__file__).resolve().parents[1] / 'data/nativeStreetPilots.json'
+    catalog = build_native_street_candidate_catalog(manifest, flexible_canals=False)
+    return {cap.family_id: cap.model_copy(update={'title': cap.title.removeprefix('Candidate: ')})
+            for cap in catalog.capabilities}

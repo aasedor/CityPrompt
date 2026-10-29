@@ -2,6 +2,7 @@
 import json
 import math
 import re
+from app.services.street_route_policy import MAX_REPEATABLE_STREET_LENGTH_M
 
 VARIANT = 'brt_bus_rapid_transit_corridor_v0'
 
@@ -38,8 +39,8 @@ def validate_brt_properties(properties):
     sx = 111320 * math.cos(math.radians(points[0][1]))
     local = [((p[0]-points[0][0])*sx,(p[1]-points[0][1])*111320) for p in points]
     dx,dy = local[-1]; length = math.hypot(dx,dy)
-    if not 99.99 <= length <= 480.01:
-        raise ValueError('BRT needs a straight route 100–480 m long.')
+    if not 99.99 <= length <= MAX_REPEATABLE_STREET_LENGTH_M + .01:
+        raise ValueError(f'BRT needs a straight route 100–{MAX_REPEATABLE_STREET_LENGTH_M} m long.')
     previous = -1
     for x,y in local:
         along = (x*dx+y*dy)/length

@@ -68,7 +68,7 @@ describe('narrow, surface-only pathways', () => {
       }
     }
     expect(nativeStreetLocalRouteProblem(pilot,[{x:0,y:0},{x:0,y:1}])).not.toBeNull();
-    expect(nativeStreetLocalRouteProblem(pilot,[{x:0,y:0},{x:0,y:301}])).not.toBeNull();
+    expect(nativeStreetLocalRouteProblem(pilot,[{x:0,y:0},{x:0,y:2001}])).not.toBeNull();
   });
   it.each(PATHWAY_ASSETS)('$label can form a perpendicular path junction through the shared geometry contract', asset => {
     const road = (id:string, points:number[][]):SiteZone => {

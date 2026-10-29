@@ -136,6 +136,19 @@ oversized → valid transitions and retry/edit recovery. The BRT crash reproduce
 and repaired on 1 October 2026 also applies to canal, bridge, tram and elevated
 rail previews; their authored length and station limits remain in force.
 
+For repeatable streets, keep the student route envelope separate from immutable
+source-programme hashes. Frontend drawing, walking, recipe capabilities and
+server validation must agree on the same envelope. Test beyond former limits,
+retain native section/module scale, and preserve exact historical recipe locks.
+A fixed bridge span or placement-only reference scene is not a repeatable route.
+On prepared ground, edit handles and pointer picking must use that same datum;
+hidden photogrammetry can still be raycast and must not pull handles onto roofs.
+A supported X-to-T or T-to-X edit may change arm count while preserving a complete
+junction between the same streets. Keep lost-connection rejection and consumed
+node matching for multiple crossings. Record gestures near angular limits
+separately from clear supported-angle passes. See the
+[October 28 long-route review](LONG_STREET_BROWSER_REVIEW_2026-10-28.md).
+
 Surface-only pedestrian routes must explicitly declare zero motor lanes. Verify
 the same narrow width in the footprint, graph, section and capture; a missing
 lane count can silently widen a non-trail parent to two vehicle lanes. After a

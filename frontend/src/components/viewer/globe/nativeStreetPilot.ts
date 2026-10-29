@@ -7,6 +7,7 @@ import { BRT_VARIANT, brtRouteProblem, brtStreetLayout, type BrtStop } from './b
 import { isSpecialistStreet, specialistFixtures, specialistRouteProblem } from './specialistStreetProgram';
 import { TRAM_VARIANT, tramRouteProblem, tramFixtures } from './tramStreetProgram';
 import { elevatedRailFixtures, elevatedRailStationProblem, hasElevatedStation, isElevatedRail } from './elevatedRailProgram';
+import { nativeStreetMaxLength } from './streetRoutePolicy';
 import type { SiteZone } from '@/types';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { validateStreetRecipeProperties } from './streetLegoContract';
@@ -18,7 +19,9 @@ import {
 
 // Source programme hashes continue to identify the original 80 m study.
 // The independent authoring policy expands its executable route envelope.
-const pilots = sourcePilots.map(p => p.id === 'amsterdam_gracht_v1' ? { ...p, program: { ...p.program!, ...CANAL_ROUTE_POLICY, straightOnly: false } } : p);
+const pilots = sourcePilots.map(p => p.id === 'amsterdam_gracht_v1'
+  ? { ...p, program: { ...p.program!, ...CANAL_ROUTE_POLICY, straightOnly: false } }
+  : p.program ? { ...p, program: { ...p.program, maxLengthM: nativeStreetMaxLength(p.id) } } : p);
 
 export type NativeStreetPilot = typeof pilots[number] & {program?:NativeStreetProgram;programSha256?:string};
 export interface StreetRouteStation { x: number; y: number; z?: number }
@@ -44,10 +47,12 @@ export function nativeStreetPilot(variantId: string): NativeStreetPilot | undefi
 /** Validate the same local route that geometry and rigid modules consume. */
 export function nativeStreetLocalRouteProblem(pilot: NativeStreetPilot, route: StreetRouteStation[], stops: BrtStop[] = []): string | null {
   const program = pilot.program;
+  const length = route.slice(1).reduce((sum, p, i) => sum + Math.hypot(p.x - route[i].x, p.y - route[i].y), 0);
+  if (!Number.isFinite(length) || length > nativeStreetMaxLength(pilot.id) + .01)
+    return `${pilot.title} supports routes up to ${nativeStreetMaxLength(pilot.id)} m long.`;
   if (!program) return null;
   if (pilot.id === BRT_VARIANT) return brtRouteProblem(route, stops);
   if (pilot.id === TRAM_VARIANT) return tramRouteProblem(route, stops);
-  const length = route.slice(1).reduce((sum, p, i) => sum + Math.hypot(p.x - route[i].x, p.y - route[i].y), 0);
   if (isSpecialistStreet(pilot.id)) {
     return specialistRouteProblem(pilot.id, route)
       ?? (hasElevatedStation(pilot.id) ? elevatedRailStationProblem(length, stops) : null);

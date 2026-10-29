@@ -19,8 +19,9 @@ export function streetEditConnectionCheck(zone: SiteZone, zones: SiteZone[]) {
       node.zoneIds.includes(zone.id) && resolveStreetJunctionLayout(node, next));
     // Consume matches: two crossings of the same streets need two patches.
     return required.every(before => {
-      const index = available.findIndex(after => after.armCount === before.armCount
-        && after.zoneIds.length === before.zoneIds.length
+      // A complete T and a complete X both preserve the connection. Requiring
+      // the old arm count clamps a deliberately shortened branch into a spur.
+      const index = available.findIndex(after => after.zoneIds.length === before.zoneIds.length
         && before.zoneIds.every(id => after.zoneIds.includes(id)));
       if (index < 0) return false;
       available.splice(index, 1);
