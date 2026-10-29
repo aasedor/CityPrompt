@@ -15,6 +15,7 @@ from tools.catalogue_promotion import (
     check,
     digest,
     encoded,
+    picker_matches,
     picker_source,
     prepare,
     read,
@@ -199,6 +200,58 @@ def test_detects_picker_and_review_drift(package):
     (root / entry["review"]["repo_path"]).write_text("{}")
     with pytest.raises(ValueError, match="review bytes"):
         check(root)
+
+
+@pytest.mark.parametrize("short, exact", [
+    ("24.610000610351562", "24.6100006103515625"),
+    ("24.360000610351562", "24.3600006103515625"),
+    ("21.472000122070312", "21.4720001220703125"),
+])
+def test_picker_accepts_equivalent_lint_safe_double_spellings(package, short, exact):
+    root, _ = package
+    payload = read(root / LIBRARY)
+    payload["entries"][0]["model"]["native_dimensions_m"]["width"] = float(short)
+    payload["entries"][0]["picker"]["width"] = 40
+    (root / LIBRARY).write_text(encoded(payload))
+    source = picker_source(payload)
+    assert short in source
+    (root / PICKER).write_text(source.replace(short, exact))
+    assert check(root, hydrated=False) == payload
+
+
+@pytest.mark.parametrize("before, after", [
+    ('"definitionVersion": 1,', '"definitionVersion": 2,'),
+    ('"definitionVersion": 1,', '"definitionVersion": true,'),
+    ('"nativeDimensions": [\n      4.0,', '"nativeDimensions": [\n      4.000000000000001,'),
+    ('"method": "RLASM 6.1"', '"method": "RLASM 6.10"'),
+    ('"revision": "', '"revision": "changed-'),
+    ('"thumbnail": "/', '"thumbnail": "/changed/'),
+    ('"readiness": "ready"', '"readiness": "pilot"'),
+    ('export const CATALOGUE_BUILDING_ASSETS', 'export let CATALOGUE_BUILDING_ASSETS'),
+    ("asset.readiness === 'ready'", "asset.readiness === 'pilot'"),
+])
+def test_picker_still_rejects_values_strings_and_wrapper_drift(package, before, after):
+    root, _ = package
+    source = (root / PICKER).read_text()
+    assert before in source
+    (root / PICKER).write_text(source.replace(before, after, 1))
+    with pytest.raises(ValueError, match="Picker drift"):
+        check(root, hydrated=False)
+
+
+@pytest.mark.parametrize("expected, actual", [
+    ("0", "-0"),
+    ("0.0", "-0.0"),
+    ("9007199254740992", "9007199254740993"),
+    ('"6.1"', '"6.10"'),
+    ("1.0", "1e999"),
+])
+def test_picker_numeric_comparison_preserves_zero_integer_and_string_identity(expected, actual):
+    source = picker_source({"entries": []})
+    assert not picker_matches(
+        source.replace("= [];", f"= [{actual}];"),
+        source.replace("= [];", f"= [{expected}];"),
+    )
 
 
 def test_trial_can_be_tested_but_cannot_pass_publication_until_approved(package):
