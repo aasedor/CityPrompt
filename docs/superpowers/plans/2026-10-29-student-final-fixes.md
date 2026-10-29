@@ -31,8 +31,10 @@
   Files: brick_podium_storeys.py, regular_tower_storeys.py, landmark_tower_storeys.py, shared identity helper and regression tests.
 - [x] Run narrow frontend/backend suites and TypeScript checks; review diff and source changes.
 - [x] Serve the exact reviewed source locally; test surface capture, tower height/reload, court rotation and long streets in the browser.
-- [ ] Save accurately labelled screenshots and review notes, upload to the existing private Google Drive review folder, verify metadata and record receipts.
+- [x] Save accurately labelled screenshots and review notes, upload to the existing private Google Drive review folder, verify metadata and record receipts.
 
 ## Checkpoint
 
 Final combined verification passes 210 frontend and 399 backend/installer tests, TypeScript and diff checks. Browser retests pass the four original failures. A secondary surface-freshness finding was repaired and independently rechecked for both image/video preflight. See `docs/STUDENT_FINAL_FIXES_2026-10-29.md` for the scope and explicit unrun gates.
+
+Delivery completed: 15 files verified in private Drive folder `1aroll2NQfIETlqj6VrxJrAZFz19211f3`; local receipts retained under the external evidence directory. Source implementation checkpoint: `c7d3a8ebf`. No remote push or deployment.
