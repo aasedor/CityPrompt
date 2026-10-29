@@ -30,14 +30,15 @@ open findings of its latest review.
 
 In the first pass none of the five reached PASS_ZERO_P0_P1; all five stopped under the stopping rule. The user
 then reopened all five ("Can you keep trying until it passes?"), suspending the stopping rule but keeping the
-method's v008 cap. In that second pass three families passed and two reached the v008 cap without a pass.
+method's v008 cap. In that second pass three families passed and two reached the v008 cap without a pass. The user
+then approved one version past the cap for the Reef only ("Reef only"), and the Reef passed at v009.
 
 | model | catalogue archetype | family | outcome | candidate | GLB bytes | candidate review P0 / P1 |
 |---|---|---|---|---|---|---|
 | The Crucible | climbing_wall_building / variant_0 | `tools/clay_climbing_crucible` | **PASS_ZERO_P0_P1** at v004 | v004 | 3,247,880 | 0 / 0 |
 | Barcelona passatge | barcelona_passatge / variant_0 | `tools/clay_barcelona_passatge` | **PASS_ZERO_P0_P1** at v006 | v006 | 3,884,140 | 0 / 0 |
 | The Overhang | climbing_wall_building / variant_1 | `tools/clay_climbing_overhang` | **PASS_ZERO_P0_P1** at v007 | v007 | 3,498,636 | 0 / 0 |
-| The Reef | climbing_wall_building / variant_3 | `tools/clay_climbing_reef` | reached the v008 cap without a pass | v002 | 3,337,072 | 0 / 1 |
+| The Reef | climbing_wall_building / variant_3 | `tools/clay_climbing_reef` | **PASS_ZERO_P0_P1** at v009 (one version past the cap, approved by the user) | v009 | 3,910,236 | 0 / 0 |
 | The Spine | climbing_wall_building / variant_2 | `tools/clay_climbing_spine` | reached the v008 cap without a pass | v007 | 3,328,180 | 0 / 2 |
 
 Every candidate GLB is the only tracked file in its `candidates/` folder and is under the 4 MiB ordinary-blob cap.
@@ -46,13 +47,13 @@ Every candidate GLB is the only tracked file in its `candidates/` folder and is 
 
 v001 to v003/v004 are the first pass; later versions are the second pass after the user reopened the families.
 
-| model | v001 | v002 | v003 | v004 | v005 | v006 | v007 | v008 |
-|---|---|---|---|---|---|---|---|---|
-| The Crucible | 0 / 5 | 0 / 5 | 0 / 2 | **0 / 0** | | | | |
-| Barcelona passatge | 0 / 4 | 0 / 2 | 0 / 2 | 0 / 2 | 0 / 1 | **0 / 0** | | |
-| The Overhang | 0 / 5 | 0 / 2 | 0 / 2 | 1 / 1 | 2 / 3 | 0 / 5 | **0 / 0** | |
-| The Reef | 0 / 6 | **0 / 1** | 0 / 2 | 0 / 2 | 0 / 4 | 0 / 4 | 0 / 3 | 0 / 2 (cap) |
-| The Spine | 0 / 4 | 1 / 4 | 0 / 4 | 0 / 5 | 0 / 4 | 1 / 3 | **0 / 2** | 1 / 2 (cap) |
+| model | v001 | v002 | v003 | v004 | v005 | v006 | v007 | v008 | v009 |
+|---|---|---|---|---|---|---|---|---|---|
+| The Crucible | 0 / 5 | 0 / 5 | 0 / 2 | **0 / 0** | | | | | |
+| Barcelona passatge | 0 / 4 | 0 / 2 | 0 / 2 | 0 / 2 | 0 / 1 | **0 / 0** | | | |
+| The Overhang | 0 / 5 | 0 / 2 | 0 / 2 | 1 / 1 | 2 / 3 | 0 / 5 | **0 / 0** | | |
+| The Reef | 0 / 6 | 0 / 1 | 0 / 2 | 0 / 2 | 0 / 4 | 0 / 4 | 0 / 3 | 0 / 2 (cap) | **0 / 0** |
+| The Spine | 0 / 4 | 1 / 4 | 0 / 4 | 0 / 5 | 0 / 4 | 1 / 3 | **0 / 2** | 1 / 2 (cap) | |
 
 ## Second pass (reopened by the user)
 
@@ -67,8 +68,9 @@ v001 to v003/v004 are the first pass; later versions are the second pass after t
   segmented by colour in the locked front and oblique, and its vertices were fitted until the rendered shell mask
   matched with IoU 0.92 and 0.88. The same round fixed the pool's infinity edge, the inner box and crash-mat floor,
   the lamp posts and the planting.
-- **The Reef reached the cap at v008** with 0 P0 / 2 P1, which does not beat v002's 0 / 1, so v002 stays the
-  candidate. v008 is nevertheless the closest version visually: envelope, plan, domes, entrances, sculpted relief
+- **The Reef reached the cap at v008** with 0 P0 / 2 P1, which does not beat v002's 0 / 1. The user approved one
+  version past the cap, and **v009 passed** (0 / 0): the cups darken smoothly through vertex colours and close on a
+  small rounded floor. v009 is the candidate. v008 is nevertheless the closest version visually: envelope, plan, domes, entrances, sculpted relief
   and landscape match. Its two open findings are one narrow shading defect in the climbing pockets: about eight
   stepped concentric shade rings inside each cup, and a pinched dark crease at each cup's apex where the mesh
   closes as a triangle fan. Across the pass the pockets went through cut-outs, faint dents, overly crisp portholes
