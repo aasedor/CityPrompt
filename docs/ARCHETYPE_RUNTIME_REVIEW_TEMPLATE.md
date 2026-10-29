@@ -40,6 +40,13 @@ Verify the actual visible model and camera before saving capture evidence; a new
 reshape-panel title can coexist with a previously selected native mesh. Record any
 explicit re-selection needed, and exclude stale-camera drafts from delivery.
 
+For context removal from merged-material GLBs, check complete functional assemblies
+against the authoring recipe as well as retained bounds/counts. A touching kilometre
+of quay can weld to a bridge footway; removing vehicle bodies can leave their glass
+behind. Prove whole decks/footways, original closed end faces and complete prop removal.
+Use the same pinned ownership revision in hover preview, placed geometry and saved
+identity. A compact bounding box or matching triangle total alone is insufficient.
+
 Use PASS / FAIL / NOT TESTED / N/A. Attach evidence to each PASS and a reason
 to each N/A. Use the shared checklist for each gate's full meaning.
 

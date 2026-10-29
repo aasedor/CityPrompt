@@ -13,6 +13,23 @@ import re
 from app.core.config import get_settings
 
 MANIFEST = Path(__file__).resolve().parents[1] / 'data/public_realm_release_20261023.json'
+OWNERSHIP_MANIFEST = MANIFEST.with_name('public_realm_ownership_contracts.json')
+
+
+def _ownership_identity_valid(fixture, properties):
+    try:
+        contracts = json.loads(OWNERSHIP_MANIFEST.read_text(encoding='utf-8')).values()
+    except (OSError, ValueError):
+        return False
+    expected = [contract for contract in contracts if contract['sourceSha256'] == fixture['sha256']
+                or contract['assetId'] == fixture['id']]
+    if not expected:
+        return fixture.get('ownershipSha256') is None and properties.get('public_realm_ownership_sha256') is None
+    return any(contract['sourceSha256'] == fixture['sha256'] and contract['assetId'] == fixture['id']
+               and contract['ownershipSha256'] == fixture.get('ownershipSha256')
+               and contract['ownershipSha256'] == properties.get('public_realm_ownership_sha256')
+               and fixture['url'] == '/street-kits/claude-20261023/'+contract['sourceSha256']+'.glb'
+               for contract in expected)
 
 
 def _sha(value):
@@ -42,7 +59,8 @@ def release_gate_errors(row):
             or len(dimensions) != 3 or any(isinstance(value, bool) or not isinstance(value, (int, float))
                                          or not math.isfinite(value) or value <= 0 for value in [asset['width'], asset['depth'], *dimensions])
             or dimensions[0] > asset['width'] or dimensions[1] > asset['depth']
-            or fixture.get('preserveNativeGround') is not True or fixture.get('centerNativeClay') is not True):
+            or fixture.get('preserveNativeGround') is not True or fixture.get('centerNativeClay') is not True
+            or not _ownership_identity_valid(fixture, props)):
         errors.append('identity_mismatch')
     visual = row['visual_review']
     if (visual.get('status') != 'passed' or visual.get('scope') != 'complete_runtime_derivative'

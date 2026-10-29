@@ -41,6 +41,17 @@ def test_manifests_are_synchronized():
     assert json.loads(frontend.read_text(encoding='utf-8')) == json.loads(MANIFEST.read_text(encoding='utf-8'))
 
 
+def test_compact_crossing_ownership_is_pinned_independently_of_saved_claims():
+    from app.services.fixed_public_realm import release_gate_errors
+    frontend = MANIFEST.parents[3] / 'frontend/src/data/publicRealmRelease20261023.json'
+    row = next(row for row in json.loads(frontend.read_text(encoding='utf-8'))['models']
+               if row['candidate'] == 'clay-barcelona-passatge-clay-v006')
+    assert 'identity_mismatch' not in release_gate_errors(row)
+    row['fixture']['ownershipSha256'] = '0' * 64
+    row['asset']['properties']['public_realm_ownership_sha256'] = '0' * 64
+    assert 'identity_mismatch' in release_gate_errors(row)
+
+
 def test_exact_browser_scene_stamp_removes_legacy_family_pending_fallback(monkeypatch):
     from types import SimpleNamespace
     from geoalchemy2 import WKTElement

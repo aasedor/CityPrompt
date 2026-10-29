@@ -1,0 +1,908 @@
+{
+  "clay-barcelona-passatge-clay-v006": {
+    "sourceSha256": "002027c804034d4b5575bf0cbe08a2f5349af06d8d03018a9ef0df2d48c0a317",
+    "regions": [
+      [
+        -18.8,
+        -0.1,
+        -31.5,
+        9.3,
+        17.5,
+        10.1
+      ]
+    ],
+    "landscape": [
+      "CLAY_ASPHALT",
+      "CLAY_CONCRETE",
+      "CLAY_STUCCO2",
+      "CLAY_CAR",
+      "CLAY_CAR2",
+      "CLAY_CAR3",
+      "CLAY_DARK",
+      "CLAY_TYRE"
+    ],
+    "triangleRanges": {},
+    "triangleRegions": {},
+    "sourceTriangles": 68686,
+    "retainedTriangles": 62430,
+    "meshTriangles": {
+      "CLAY_ASPHALT": 0,
+      "CLAY_CONCRETE": 0,
+      "CLAY_TILE": 24,
+      "CLAY_TILE2": 264,
+      "CLAY_JOINT": 154,
+      "CLAY_STONE": 9768,
+      "CLAY_BRICK": 4896,
+      "CLAY_BRICK2": 1856,
+      "CLAY_FRAME": 4136,
+      "CLAY_GLASS": 2196,
+      "CLAY_SHOPFRAME": 2376,
+      "CLAY_TIMBER": 1332,
+      "CLAY_HARDWARE": 216,
+      "CLAY_SIGN": 216,
+      "CLAY_GOLD": 216,
+      "CLAY_IRON": 32636,
+      "CLAY_LAMP": 216,
+      "CLAY_FLOOR": 72,
+      "CLAY_INTERIOR": 468,
+      "CLAY_GOODS": 192,
+      "CLAY_STUCCO": 36,
+      "CLAY_TERRACOTTA": 24,
+      "CLAY_WHITE": 84,
+      "CLAY_TRIM": 684,
+      "CLAY_MORTAR": 196,
+      "CLAY_PLANTING": 40,
+      "CLAY_POT": 72,
+      "CLAY_AWNING": 60,
+      "CLAY_STUCCO2": 0,
+      "CLAY_CAR": 0,
+      "CLAY_DARK": 0,
+      "CLAY_TYRE": 0,
+      "CLAY_CAR2": 0,
+      "CLAY_CAR3": 0
+    },
+    "bounds": [
+      -18.55500030517578,
+      0.0,
+      -31.329999923706055,
+      9.055000305175781,
+      17.31999969482422,
+      10.0
+    ],
+    "sourceCommit": "7f30f4852c461c289fe5d305a472f853337a24f1",
+    "assetId": "claude_public_realm:barcelona-passatge:002027c80403",
+    "ownershipSha256": "b4492e7fc36b9b7e711aad619b892f0e2fcb8cfa65ec5153d897ab10669220f6"
+  },
+  "clay-brick-arch-viaduct-clay-v003": {
+    "sourceSha256": "3d5a0e6fb50d12d19de78c5ea0f992ff5a371d2269fb115e1b2e064f64c84033",
+    "regions": [
+      [
+        -5.5,
+        -0.1,
+        -123.2,
+        5.5,
+        13.3,
+        43.4
+      ]
+    ],
+    "landscape": [
+      "CLAY_GROUND",
+      "CLAY_PAVING",
+      "CLAY_SETTS",
+      "CLAY_GRASS",
+      "CLAY_SETTJOINT",
+      "CLAY_TERRACE",
+      "CLAY_TERRACE2",
+      "CLAY_ROOF",
+      "CLAY_BRICK",
+      "CLAY_POT",
+      "CLAY_PLANTING",
+      "CLAY_SOIL"
+    ],
+    "triangleRanges": {
+      "CLAY_WALL": [
+        [
+          0,
+          8912
+        ],
+        [
+          8914,
+          8915
+        ],
+        [
+          8920,
+          8921
+        ],
+        [
+          8926,
+          8927
+        ],
+        [
+          8932,
+          8933
+        ],
+        [
+          8938,
+          8939
+        ],
+        [
+          8944,
+          8945
+        ]
+      ],
+      "CLAY_STONE": [
+        [
+          0,
+          2544
+        ],
+        [
+          2546,
+          2547
+        ],
+        [
+          2552,
+          2553
+        ],
+        [
+          2558,
+          2559
+        ],
+        [
+          2564,
+          2565
+        ],
+        [
+          2570,
+          2571
+        ],
+        [
+          2576,
+          2577
+        ],
+        [
+          2582,
+          2583
+        ],
+        [
+          2588,
+          2589
+        ]
+      ],
+      "CLAY_BALLAST": [
+        [
+          0,
+          25
+        ],
+        [
+          30,
+          31
+        ],
+        [
+          36,
+          37
+        ],
+        [
+          42,
+          43
+        ]
+      ],
+      "CLAY_HARDWARE": [
+        [
+          0,
+          6
+        ],
+        [
+          8,
+          9
+        ],
+        [
+          12,
+          18
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          24,
+          30
+        ],
+        [
+          32,
+          33
+        ],
+        [
+          36,
+          42
+        ],
+        [
+          44,
+          45
+        ],
+        [
+          48,
+          54
+        ],
+        [
+          56,
+          57
+        ],
+        [
+          60,
+          66
+        ],
+        [
+          68,
+          69
+        ],
+        [
+          72,
+          78
+        ],
+        [
+          80,
+          81
+        ],
+        [
+          84,
+          90
+        ],
+        [
+          92,
+          93
+        ]
+      ]
+    },
+    "triangleRegions": {
+      "CLAY_WALL": [
+        [
+          -5.5,
+          -0.1,
+          -123.2,
+          5.5,
+          13.3,
+          43.4
+        ]
+      ],
+      "CLAY_STONE": [
+        [
+          -5.5,
+          -0.1,
+          -123.2,
+          5.5,
+          13.3,
+          43.4
+        ]
+      ],
+      "CLAY_BALLAST": [
+        [
+          -5.5,
+          -0.1,
+          -123.2,
+          5.5,
+          13.3,
+          43.4
+        ]
+      ],
+      "CLAY_HARDWARE": [
+        [
+          -5.5,
+          -0.1,
+          -123.2,
+          5.5,
+          13.3,
+          43.4
+        ]
+      ]
+    },
+    "sourceTriangles": 73520,
+    "retainedTriangles": 37736,
+    "meshTriangles": {
+      "CLAY_WALL": 8918,
+      "CLAY_JOINT": 4536,
+      "CLAY_ARCH": 6052,
+      "CLAY_SIGN": 240,
+      "CLAY_GLASS": 624,
+      "CLAY_TRIM": 1728,
+      "CLAY_SHUTTER": 48,
+      "CLAY_DARK": 744,
+      "CLAY_STONE": 2552,
+      "CLAY_CONCRETE": 12,
+      "CLAY_FLOOR": 240,
+      "CLAY_INTERIOR": 384,
+      "CLAY_TIMBER": 5016,
+      "CLAY_BALLAST": 28,
+      "CLAY_BALLAST2": 3456,
+      "CLAY_BALLAST3": 2574,
+      "CLAY_HARDWARE": 56,
+      "CLAY_RED": 72,
+      "CLAY_WHITE": 396,
+      "CLAY_PALE": 60,
+      "CLAY_GROUND": 0,
+      "CLAY_PAVING": 0,
+      "CLAY_SETTS": 0,
+      "CLAY_GRASS": 0,
+      "CLAY_SETTJOINT": 0,
+      "CLAY_TERRACE2": 0,
+      "CLAY_POT": 0,
+      "CLAY_PLANTING": 0,
+      "CLAY_SOIL": 0,
+      "CLAY_TERRACE": 0,
+      "CLAY_ROOF": 0,
+      "CLAY_BRICK": 0
+    },
+    "bounds": [
+      -5.5,
+      0.0,
+      -123.0,
+      5.5,
+      13.15999984741211,
+      43.33000183105469
+    ],
+    "sourceCommit": "7f30f4852c461c289fe5d305a472f853337a24f1",
+    "assetId": "claude_public_realm:brick-arch-viaduct:3d5a0e6fb50d",
+    "ownershipSha256": "cf4c6ae13151e4b8a1020e86f525aa3334bca7c397a59d523ec269761f21a7ce"
+  },
+  "clay-stone-arch-road-bridge-clay-v003": {
+    "sourceSha256": "5300077e633cecc901ef86bb0a78e0b7bd0dce0588c613becbb2195b92337d6d",
+    "regions": [
+      [
+        -33,
+        -0.1,
+        -13.6,
+        45,
+        18.3,
+        13.6
+      ]
+    ],
+    "landscape": [
+      "CLAY_WATER",
+      "CLAY_QUAY",
+      "CLAY_TIMBER",
+      "CLAY_PLANTING",
+      "CLAY_CAR",
+      "CLAY_RED",
+      "CLAY_VAN",
+      "CLAY_WALL",
+      "CLAY_TRIM",
+      "CLAY_ROOF",
+      "CLAY_FACADE2",
+      "CLAY_DARK",
+      "CLAY_BRICK",
+      "CLAY_GLASS"
+    ],
+    "triangleRanges": {
+      "CLAY_PAVING": [
+        [
+          928,
+          952
+        ]
+      ]
+    },
+    "triangleRegions": {
+      "CLAY_PAVING": [
+        [
+          -33,
+          -0.1,
+          -13.6,
+          45,
+          18.3,
+          13.6
+        ]
+      ]
+    },
+    "sourceTriangles": 76684,
+    "retainedTriangles": 48576,
+    "meshTriangles": {
+      "CLAY_WATER": 0,
+      "CLAY_QUAY": 0,
+      "CLAY_ASPHALT": 12,
+      "CLAY_PAVING": 24,
+      "CLAY_WHITE": 264,
+      "CLAY_JOINT": 5760,
+      "CLAY_TIMBER": 0,
+      "CLAY_PLANTING": 0,
+      "CLAY_STONE": 20732,
+      "CLAY_ARCH": 1880,
+      "CLAY_CAR": 0,
+      "CLAY_GLASS": 0,
+      "CLAY_KERB": 24,
+      "CLAY_PALE": 400,
+      "CLAY_HARDWARE": 19480,
+      "CLAY_WALL": 0,
+      "CLAY_TRIM": 0,
+      "CLAY_ROOF": 0,
+      "CLAY_FACADE2": 0,
+      "CLAY_DARK": 0,
+      "CLAY_BRICK": 0,
+      "CLAY_RED": 0,
+      "CLAY_VAN": 0
+    },
+    "bounds": [
+      -32.5,
+      0.0,
+      -13.420000076293945,
+      44.790000915527344,
+      18.113000869750977,
+      13.420000076293945
+    ],
+    "sourceCommit": "7f30f4852c461c289fe5d305a472f853337a24f1",
+    "meshRegions": {
+      "CLAY_WHITE": [
+        [
+          -27.51,
+          10.99,
+          -3.07,
+          41.01,
+          11.01,
+          3.07
+        ]
+      ]
+    },
+    "assetId": "claude_public_realm:stone-arch-road-bridge-compact-r002:5300077e633c",
+    "contextSupports": [
+      {
+        "name": "west-bank",
+        "polygon": [
+          [
+            -31.96150188,
+            12.83263214
+          ],
+          [
+            -31.84666622,
+            12.2553143
+          ],
+          [
+            -31.6574579,
+            11.69792455
+          ],
+          [
+            -31.39711432,
+            11.17
+          ],
+          [
+            -31.07009003,
+            10.68057357
+          ],
+          [
+            -30.68198052,
+            10.23801948
+          ],
+          [
+            -30.23942643,
+            9.84990997
+          ],
+          [
+            -29.75,
+            9.52288568
+          ],
+          [
+            -29.22207545,
+            9.2625421
+          ],
+          [
+            -28.6646857,
+            9.07333378
+          ],
+          [
+            -28.08736786,
+            8.95849812
+          ],
+          [
+            -27.5,
+            8.92
+          ],
+          [
+            -27.5,
+            -8.92
+          ],
+          [
+            -28.08736786,
+            -8.95849812
+          ],
+          [
+            -28.6646857,
+            -9.07333378
+          ],
+          [
+            -29.22207545,
+            -9.2625421
+          ],
+          [
+            -29.75,
+            -9.52288568
+          ],
+          [
+            -30.23942643,
+            -9.84990997
+          ],
+          [
+            -30.68198052,
+            -10.23801948
+          ],
+          [
+            -31.07009003,
+            -10.68057357
+          ],
+          [
+            -31.39711432,
+            -11.17
+          ],
+          [
+            -31.6574579,
+            -11.69792455
+          ],
+          [
+            -31.84666622,
+            -12.2553143
+          ],
+          [
+            -31.96150188,
+            -12.83263214
+          ],
+          [
+            -32.0,
+            -13.42
+          ],
+          [
+            -32.5,
+            -13.42
+          ],
+          [
+            -32.5,
+            13.42
+          ],
+          [
+            -32.0,
+            13.42
+          ]
+        ],
+        "bottom": 0,
+        "top": 10.96,
+        "material": "CLAY_QUAY",
+        "sourceRecipe": "family_stonearch.py:west_bank",
+        "sourceRecipeSha256": "3bfb66e64348e7d81e433ea7bb3d2aab40503e2f787b64221639793b511d5fff",
+        "adaptation": "closed finite intersection of the original bank footprint with the retained source envelope"
+      },
+      {
+        "name": "west-bank-surface",
+        "polygon": [
+          [
+            -31.96150188,
+            12.83263214
+          ],
+          [
+            -31.84666622,
+            12.2553143
+          ],
+          [
+            -31.6574579,
+            11.69792455
+          ],
+          [
+            -31.39711432,
+            11.17
+          ],
+          [
+            -31.07009003,
+            10.68057357
+          ],
+          [
+            -30.68198052,
+            10.23801948
+          ],
+          [
+            -30.23942643,
+            9.84990997
+          ],
+          [
+            -29.75,
+            9.52288568
+          ],
+          [
+            -29.22207545,
+            9.2625421
+          ],
+          [
+            -28.6646857,
+            9.07333378
+          ],
+          [
+            -28.08736786,
+            8.95849812
+          ],
+          [
+            -27.5,
+            8.92
+          ],
+          [
+            -27.5,
+            -8.92
+          ],
+          [
+            -28.08736786,
+            -8.95849812
+          ],
+          [
+            -28.6646857,
+            -9.07333378
+          ],
+          [
+            -29.22207545,
+            -9.2625421
+          ],
+          [
+            -29.75,
+            -9.52288568
+          ],
+          [
+            -30.23942643,
+            -9.84990997
+          ],
+          [
+            -30.68198052,
+            -10.23801948
+          ],
+          [
+            -31.07009003,
+            -10.68057357
+          ],
+          [
+            -31.39711432,
+            -11.17
+          ],
+          [
+            -31.6574579,
+            -11.69792455
+          ],
+          [
+            -31.84666622,
+            -12.2553143
+          ],
+          [
+            -31.96150188,
+            -12.83263214
+          ],
+          [
+            -32.0,
+            -13.42
+          ],
+          [
+            -32.5,
+            -13.42
+          ],
+          [
+            -32.5,
+            13.42
+          ],
+          [
+            -32.0,
+            13.42
+          ]
+        ],
+        "bottom": 10.96,
+        "top": 11,
+        "material": "CLAY_ASPHALT",
+        "sourceRecipe": "family_stonearch.py:west_bank",
+        "sourceRecipeSha256": "3bfb66e64348e7d81e433ea7bb3d2aab40503e2f787b64221639793b511d5fff",
+        "adaptation": "closed finite intersection of the original bank footprint with the retained source envelope"
+      },
+      {
+        "name": "east-bank",
+        "polygon": [
+          [
+            44.0,
+            -11.92
+          ],
+          [
+            43.95442326,
+            -11.39905547
+          ],
+          [
+            43.81907786,
+            -10.89393957
+          ],
+          [
+            43.59807621,
+            -10.42
+          ],
+          [
+            43.29813333,
+            -9.99163717
+          ],
+          [
+            42.92836283,
+            -9.62186667
+          ],
+          [
+            42.5,
+            -9.32192379
+          ],
+          [
+            42.02606043,
+            -9.10092214
+          ],
+          [
+            41.52094453,
+            -8.96557674
+          ],
+          [
+            41.0,
+            -8.92
+          ],
+          [
+            41.0,
+            8.92
+          ],
+          [
+            41.52094453,
+            8.96557674
+          ],
+          [
+            42.02606043,
+            9.10092214
+          ],
+          [
+            42.5,
+            9.32192379
+          ],
+          [
+            42.92836283,
+            9.62186667
+          ],
+          [
+            43.29813333,
+            9.99163717
+          ],
+          [
+            43.59807621,
+            10.42
+          ],
+          [
+            43.81907786,
+            10.89393957
+          ],
+          [
+            43.95442326,
+            11.39905547
+          ],
+          [
+            44.0,
+            11.92
+          ],
+          [
+            43.89634774,
+            13.42
+          ],
+          [
+            44.79000092,
+            13.42
+          ],
+          [
+            44.79000092,
+            -13.42
+          ],
+          [
+            44.0,
+            -13.42
+          ]
+        ],
+        "bottom": 0,
+        "top": 10.96,
+        "material": "CLAY_QUAY",
+        "sourceRecipe": "family_stonearch.py:east_bank",
+        "sourceRecipeSha256": "3bfb66e64348e7d81e433ea7bb3d2aab40503e2f787b64221639793b511d5fff",
+        "adaptation": "closed finite intersection of the original bank footprint with the retained source envelope"
+      },
+      {
+        "name": "east-bank-surface",
+        "polygon": [
+          [
+            44.0,
+            -11.92
+          ],
+          [
+            43.95442326,
+            -11.39905547
+          ],
+          [
+            43.81907786,
+            -10.89393957
+          ],
+          [
+            43.59807621,
+            -10.42
+          ],
+          [
+            43.29813333,
+            -9.99163717
+          ],
+          [
+            42.92836283,
+            -9.62186667
+          ],
+          [
+            42.5,
+            -9.32192379
+          ],
+          [
+            42.02606043,
+            -9.10092214
+          ],
+          [
+            41.52094453,
+            -8.96557674
+          ],
+          [
+            41.0,
+            -8.92
+          ],
+          [
+            41.0,
+            8.92
+          ],
+          [
+            41.52094453,
+            8.96557674
+          ],
+          [
+            42.02606043,
+            9.10092214
+          ],
+          [
+            42.5,
+            9.32192379
+          ],
+          [
+            42.92836283,
+            9.62186667
+          ],
+          [
+            43.29813333,
+            9.99163717
+          ],
+          [
+            43.59807621,
+            10.42
+          ],
+          [
+            43.81907786,
+            10.89393957
+          ],
+          [
+            43.95442326,
+            11.39905547
+          ],
+          [
+            44.0,
+            11.92
+          ],
+          [
+            43.89634774,
+            13.42
+          ],
+          [
+            44.79000092,
+            13.42
+          ],
+          [
+            44.79000092,
+            -13.42
+          ],
+          [
+            44.0,
+            -13.42
+          ]
+        ],
+        "bottom": 10.96,
+        "top": 11,
+        "material": "CLAY_ASPHALT",
+        "sourceRecipe": "family_stonearch.py:east_bank",
+        "sourceRecipeSha256": "3bfb66e64348e7d81e433ea7bb3d2aab40503e2f787b64221639793b511d5fff",
+        "adaptation": "closed finite intersection of the original bank footprint with the retained source envelope"
+      }
+    ],
+    "runtimeTriangles": 48976,
+    "ownershipSha256": "5aab6b165834398fbe0f2a7d154e0a65edd21bb112849235be65f3c953ad7337"
+  }
+}

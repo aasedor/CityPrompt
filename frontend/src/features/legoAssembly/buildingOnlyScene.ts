@@ -2,12 +2,13 @@ import * as THREE from 'three';
 import contractData from './buildingOnlyContracts.json';
 
 type Prism = readonly [number, number, number, number, number, number];
-type Contract = {
+export type NativeSceneOwnershipContract = {
   regions: readonly Prism[]; landscape: readonly string[];
   meshRegions?: Record<string, readonly Prism[]>;
   triangleRanges?: Record<string, readonly (readonly [number,number])[]>;
   triangleRegions?: Record<string, readonly Prism[]>;
 };
+type Contract = NativeSceneOwnershipContract;
 
 /** Source-pinned CBE v004: family_cbe.py main()/site(), not an inferred crop.
  * The exporter joins objects by material: its 'neighbours' GLASS also contains
@@ -100,7 +101,15 @@ function subsetGeometry(source:THREE.BufferGeometry, offsets:number[]):THREE.Buf
 export function prepareBuildingOnlyScene(source: THREE.Object3D, identity?: string): {
   clone: THREE.Object3D; ownedGeometries: THREE.BufferGeometry[]; applied: boolean;
 } {
-  const clone=source.clone(true), ownedGeometries:THREE.BufferGeometry[]=[], contract=contractFor(identity);
+  return prepareOwnedNativeScene(source, contractFor(identity));
+}
+
+/** Retain complete source components or explicitly owned original faces. The
+ * caller must bind this contract to an immutable catalogue identity. */
+export function prepareOwnedNativeScene(source: THREE.Object3D, contract?: NativeSceneOwnershipContract): {
+  clone: THREE.Object3D; ownedGeometries: THREE.BufferGeometry[]; applied: boolean;
+} {
+  const clone=source.clone(true), ownedGeometries:THREE.BufferGeometry[]=[];
   if(!contract) return {clone,ownedGeometries,applied:false};
   const regions=boxesFor(contract.regions);
   clone.updateMatrixWorld(true);

@@ -130,3 +130,21 @@ tools/clay_calgary_sandstone_heritage/**/*.png filter=lfs diff=lfs merge=lfs -te
 tools/clay_calgary_sandstone_heritage/**/*.json -text whitespace=cr-at-eol
 tools/clay_calgary_sandstone_heritage/**/*.md -text whitespace=cr-at-eol
 tools/clay_calgary_sandstone_heritage/**/*.py -text whitespace=cr-at-eol
+tools/clay_barcelona_passatge/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_barcelona_passatge/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_barcelona_passatge/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_barcelona_passatge/**/*.json -text whitespace=cr-at-eol
+tools/clay_barcelona_passatge/**/*.md -text whitespace=cr-at-eol
+tools/clay_barcelona_passatge/**/*.py -text whitespace=cr-at-eol
+tools/clay_brick_arch_viaduct/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_brick_arch_viaduct/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_brick_arch_viaduct/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_brick_arch_viaduct/**/*.json -text whitespace=cr-at-eol
+tools/clay_brick_arch_viaduct/**/*.md -text whitespace=cr-at-eol
+tools/clay_brick_arch_viaduct/**/*.py -text whitespace=cr-at-eol
+tools/clay_stone_arch_road_bridge/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_stone_arch_road_bridge/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_stone_arch_road_bridge/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_stone_arch_road_bridge/**/*.json -text whitespace=cr-at-eol
+tools/clay_stone_arch_road_bridge/**/*.md -text whitespace=cr-at-eol
+tools/clay_stone_arch_road_bridge/**/*.py -text whitespace=cr-at-eol

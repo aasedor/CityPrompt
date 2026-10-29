@@ -208,7 +208,7 @@ export function GlobeEditMode({
   const routeEditing = isFixedSectionStreet(zone);
   const savedRouteControls = useMemo(() => parsePersistedCenterline(zone.properties?.plan_route_controls),
     [zone.properties?.plan_route_controls]);
-  const handleCoords = routeEditing
+  const handleCoords = isFixedNativeScene(zone.properties) ? [] : routeEditing
     ? liveRouteControls ?? (liveCoords ? extractCenterline(liveCoords)
       : savedRouteControls ?? extractCenterline(renderedCoords))
     : renderedCoords;
