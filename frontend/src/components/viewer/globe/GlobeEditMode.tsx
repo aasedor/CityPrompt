@@ -1,4 +1,5 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { hasFixedBuildingFootprint } from '@/features/pickPlace/buildingFootprintProgram';
 /**
  * GlobeEditMode.tsx — Zone editing UI for the 3D globe.
@@ -54,6 +55,7 @@ function isBuildableZoneType(zoneType: string | null | undefined): boolean {
 
 interface GlobeEditModeProps {
   zone: SiteZone;
+  allowFootprintResize?: boolean;
   zones?: SiteZone[];
   terrainHeight: number;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => boolean | void;
@@ -190,6 +192,7 @@ function getTerrainProbePoints(
 
 export function GlobeEditMode({
   zone,
+  allowFootprintResize = true,
   zones = [],
   terrainHeight,
   onZoneUpdated,
@@ -872,7 +875,7 @@ export function GlobeEditMode({
         </EastNorthUpFrame>
       )}
 
-      {!isFixedNativeScene(zone.properties) && !hasFixedBuildingFootprint(assetForZone(zone)) && handleCoords.map((coord, i) => (
+      {allowFootprintResize && !isFixedNativeScene(zone.properties) && !hasNativePark(zone) && assetForZone(zone)?.reshapeMode !== 'fixed_native' && !hasFixedBuildingFootprint(assetForZone(zone)) && handleCoords.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
           lat={coord[1] * DEG_TO_RAD}

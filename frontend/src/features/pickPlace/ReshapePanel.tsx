@@ -17,7 +17,7 @@ import { BuildingDesignControls } from './BuildingDesignControls';
 import type { SiteZoneProperties } from '@/types';
 import { cataloguePresentationFor } from './cataloguePresentation';
 
-export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onConnections, onTerrace, onUpdateDesign, zones = [], onUpdateParkLayout, onSaveDetails, onDetailsEditingChange }: {
+export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onTerrace, onUpdateDesign, zones = [], onUpdateParkLayout, onSaveDetails, onDetailsEditingChange }: {
   onDetailsEditingChange?: (editing:boolean) => void;
   onSaveDetails?: (properties: SiteZoneProperties) => Promise<unknown>;
   zones?: SiteZone[]; onUpdateParkLayout?: (data:{coordinates:number[][];properties:SiteZoneProperties})=>Promise<unknown>;
@@ -31,7 +31,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
 }) {
   const asset = assetForZone(zone)!;
   const fixedFixture = isFixedNativeScene(zone.properties);
-  const fixedFootprint = fixedFixture || hasFixedBuildingFootprint(asset);
+  const fixedFootprint = fixedFixture || asset.reshapeMode === 'fixed_native' || hasFixedBuildingFootprint(asset) || hasNativePark(zone);
   const isPark = zone.zone_type === 'green_space' && !fixedFixture;
   const keepOutline = isPark || asset.reshapeMode === 'authored_footprint';
   const dimensions = keepOutline ? parkOutlineDimensions(zone.coordinates) : rectangleDimensions(zone.coordinates);
@@ -75,20 +75,20 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
       {structuredPark.notes.map(note=><p className="mt-1" key={note}>{note}</p>)}
     </div>}
     <form onSubmit={event => { event.preventDefault(); if(valid) { const problem = onReshape(keepOutline
-      ? reshapeParkOutline(zone.coordinates,Number(width),Number(depth),Number(degrees),isPark ? outline || undefined : undefined)
+      ? reshapeParkOutline(zone.coordinates,shapeWidth,shapeDepth,Number(degrees),isPark && !fixedFootprint ? outline || undefined : undefined)
       : rectangleAt(dimensions.center,shapeWidth,shapeDepth,Number(degrees)));
       setReshapeRejected(problem === false); } }}>
-      {isPark && <div className="mb-3">
+      {isPark && !fixedFootprint && <div className="mb-3">
         <label className="text-xs font-semibold text-slate-800">Park outline<select aria-label="Park outline" value={outline} onChange={e=>setOutline(e.target.value as ParkOutlineShape | '')} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900">
           <option value="">Keep current outline</option><option value="rectangle">Rectangle</option><option value="triangle">Triangle</option><option value="l_shape">L shape</option>
         </select></label>
         <button type="button" className={`${button} mt-2 w-full`} disabled={disabled || zone.coordinates.length >= 128} onClick={()=>onReshape(addParkOutlinePoint(zone.coordinates))}>Add outline point</button>
         <p className="mt-2 text-xs text-slate-600">{isFlexiblePark(zone.properties) ? 'Resize keeps your outline. Paths and planting adapt to the saved shape; benches and trees keep their real size.' : 'Resize keeps your outline. Equipment and courts keep their real size; the selected complete layout must fit.'}</p>
       </div>}
-      <div className="grid grid-cols-2 gap-2">
+      {!fixedFootprint && <div className="grid grid-cols-2 gap-2">
         <label className="text-xs font-semibold text-slate-800">Plot width (m)<input aria-label="Plot width (m)" disabled={fixedFootprint} type="number" min={asset.minWidth} max={maxWidth} step="0.1" value={width} onChange={e=>setWidth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
         <label className="text-xs font-semibold text-slate-800">Plot depth (m)<input aria-label="Plot depth (m)" disabled={fixedFootprint} type="number" min={asset.minDepth} max={maxDepth} step="0.1" value={depth} onChange={e=>setDepth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
-      </div>
+      </div>}
       <label className="mt-2 block text-xs font-semibold text-slate-800">Rotation (°)<input aria-label="Rotation (degrees)" type="number" step="1" value={degrees} onChange={e=>setDegrees(e.target.value)} className="ml-2 min-h-11 w-20 rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
       <p className="my-3 text-xs text-slate-600">{fixedFixture ? 'The model and its plot keep their fixed size. Move or rotate it to fit, or choose a smaller model.' : asset.reshapeDescription}</p>
       {reshapeRejected && <p role="alert" className="mb-2 text-xs font-semibold text-red-700">Shape not saved. The existing plot is unchanged; check the placement message, then move the plot or try another size or angle.</p>}
@@ -97,7 +97,6 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
       <button disabled={disabled||!valid} className={`${button} w-full !bg-[#c9ff3d]`}>{disabled?'Saving…':'Apply shape'}</button>
     </form>
     <div className="mt-2 grid grid-cols-2 gap-2"><button className={button} disabled={disabled} onClick={()=>onDuplicate(asset.id,Number(dimensions.width.toFixed(3)),Number(dimensions.depth.toFixed(3)),Number(dimensions.degrees.toFixed(3)))}>Place another</button><button className={button} disabled={disabled} onClick={onDelete}>Delete</button></div>
-    {onConnections && <button onClick={onConnections} className={`${button} mt-3 w-full`}>Connections</button>}
     {onTerrace && !fixedFixture && !hasNativePark(zone) && <button onClick={onTerrace} className={`${button} mt-2 w-full`}>Terrace & path</button>}
     <button onClick={onMore} className="mt-2 min-h-11 text-xs text-slate-700 underline">More settings</button>
   </aside>;

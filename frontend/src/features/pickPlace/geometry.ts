@@ -7,6 +7,7 @@ import { assetForZone, type PlaceAsset } from './catalogue';
 import { buildingPlacementEnvelope } from './buildingPlacementEdges';
 import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
 import { isSurfacePath } from './streetConnectionProblem';
+import { groundSurfaceFor, groundSurfaceProblem } from '@/features/groundSurfaces/groundSurfaces';
 
 export function rectangleAt(center: number[], width: number, depth: number, degrees = 0): number[][] {
   const yaw = degrees * Math.PI / 180, c = Math.cos(yaw), s = Math.sin(yaw);
@@ -49,6 +50,7 @@ export function placementProblem(
     const ownProperties=properties ?? zones.find(z=>z.id===ignoreId)?.properties;
     const groundPath = isSurfacePath({zone_type:'road',properties:ownProperties});
     const footprint = local(buildingPlacementEnvelope({coordinates:coords,properties:ownProperties}));
+    if (groundSurfaceFor({properties:ownProperties})) return groundSurfaceProblem(coords,boundary);
     // Saved plots must remain inside the site, matching the server's contract.
     if (boundary && !envelopeFits(local(coords),local(boundary.coordinates))) return isFixedNativeScene(ownProperties)
       ? 'This fixed-size model needs more clear space inside your site boundary. Move or rotate it, or choose a smaller model.'

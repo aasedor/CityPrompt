@@ -56,9 +56,9 @@ it('checks the detailed Brick Podium assembly before saving supported tower stor
 
 it('does not allow arbitrary storeys or heights for a fixed authored building', () => {
   const onSave = vi.fn(); render(<BuildingDesignControls zone={zone} disabled={false} onSave={onSave} />);
-  expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(true);
-  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).readOnly).toBe(true);
-  expect((screen.getByLabelText('Storeys') as HTMLInputElement).value).toBe('2');
+    expect(screen.queryByLabelText('Storeys')).toBeNull();
+    expect(screen.queryByLabelText('Height (m)')).toBeNull();
+    expect(screen.getByText(/2 storeys · .* m high/)).toBeTruthy();
 });
 
 it('changes exact catalogue identity while retaining independent object data', () => {
@@ -287,8 +287,9 @@ it('locks buildings without alternate assemblies to their metadata storey count'
     ...placementProperties(building), floors: 4, floor_count: 4,
     height: 16, height_m: 16, development_height_override_m: 16,
   } }} disabled={false} onSave={onSave} />);
-  expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(true);
-  expect((screen.getByLabelText('Storeys') as HTMLInputElement).value).toBe('1');
+  expect(screen.queryByLabelText('Storeys')).toBeNull();
+  expect(screen.queryByLabelText('Height (m)')).toBeNull();
+  expect(screen.getByText(/1 storey · .* m high/)).toBeTruthy();
   screen.getByText('This exact model is currently available at 1 storey.');
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
   expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
@@ -321,8 +322,9 @@ it('retains the saved older model when applying its authored dimensions', () => 
   const revision = '3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6';
   const onSave = vi.fn();
   render(<BuildingDesignControls zone={{ ...zone, properties: { ...placementProperties(asset), pick_place_model_revision: revision, height: 30 } }} disabled={false} onSave={onSave} />);
-  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('10.48');
-  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).readOnly).toBe(true);
+  expect(screen.queryByLabelText('Storeys')).toBeNull();
+  expect(screen.queryByLabelText('Height (m)')).toBeNull();
+  expect(screen.getByText(/storeys? · 10\.48 m high/)).toBeTruthy();
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
   expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ pick_place_model_revision: revision, height_m: 10.48 }));
 });

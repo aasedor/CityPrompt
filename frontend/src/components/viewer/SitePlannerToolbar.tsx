@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { Brain, MousePointer, HelpCircle, Layers3, Eye, Building2, History, Ruler } from 'lucide-react';
+import { MousePointer, HelpCircle, Layers3, Building2, History, Ruler } from 'lucide-react';
 import type { SiteZoneType, SiteZoneProperties } from '@/types';
 import { CalgaryGuideDetails } from '@/features/calgaryCatalogue/CatalogueBrowser';
 import { useViewerStore } from '@/store';
@@ -7,7 +7,6 @@ import { UndoRedoButtons } from '@/components/ui/UndoRedoButtons';
 import buildingsIcon from '@/assets/site-planner-tools/buildings.svg';
 import streetsPathsIcon from '@/assets/site-planner-tools/streets-paths.svg';
 import parksPlazasIcon from '@/assets/site-planner-tools/parks-plazas.svg';
-import siteBoundaryIcon from '@/assets/site-planner-tools/site-boundary.svg';
 
 type CoreToolId = 'siteBoundary' | 'buildings' | 'streetsPaths' | 'parksPlazas';
 type ParksSubtype = 'park' | 'plaza';
@@ -44,10 +43,10 @@ function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
 }
 export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, measureActive = false,
   onMeasureModeChange, isGlobeMode = false, layout = 'default', bottomSlot, uploadSlot,
-  onMasterPlan, masterPlanActive = false, onSiteBoundary, placementSlot, advancedSlot, onLeavePlacement, streetPlacement, streetInPlacement = false }: SitePlannerToolbarProps) {
+  onSiteBoundary, placementSlot, advancedSlot, onLeavePlacement, streetPlacement, streetInPlacement = false }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive,
     settings, updateSettings } = useViewerStore();
-  const [parksSubtype, setParksSubtype] = useState<ParksSubtype>('park');
+  const parksSubtype: ParksSubtype = 'park';
   const [showAdvanced, setShowAdvanced] = useState(false);
   const isSidebar = layout === 'sidebar';
   const activeCoreTool = mapToolToCoreTool(activeSitePlannerTool);
@@ -113,25 +112,14 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
     {showAdvanced && <div id="site-planner-advanced-tools" className="site-planner-advanced-row space-y-2 rounded-lg border border-slate-300 bg-white p-2">
       <p className="text-sm font-semibold text-slate-800">Optional tools</p>
       {advancedSlot}
-      {placementSlot && <div className="grid gap-2"><button className={buttonStyle()} onClick={()=>activateAdvanced('building')}>Draw custom building</button><button className={buttonStyle()} onClick={()=>activateAdvanced('green_space')}>Draw custom park</button></div>}
-      <p className="text-xs leading-relaxed text-slate-600">You can start drawing without a site boundary or imported data.</p>
       <div className={['grid gap-2', isSidebar ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-3'].join(' ')}>
-        <button type="button" data-tour="tool-siteBoundary" aria-pressed={activeCoreTool === 'siteBoundary'} onClick={() => activateCoreTool('siteBoundary')} className={'site-planner-core-tool ' + buttonStyle(activeCoreTool === 'siteBoundary')} title="Draw or select your site boundary"><img src={siteBoundaryIcon} alt="" aria-hidden className="site-planner-core-icon h-6 w-6" /><span className="site-planner-core-label">Site Boundary</span></button>
-        {onMasterPlan && <button type="button" data-tour="tool-masterPlan" aria-pressed={masterPlanActive} onClick={onMasterPlan} className={'site-planner-core-tool ' + buttonStyle(masterPlanActive)} title="Explore planning scenarios for your site boundary"><Brain size={18} /><span className="site-planner-core-label">Master Plan</span></button>}
-        <button type="button" aria-pressed={Boolean(streetViewPegman)} onClick={() => { onMeasureModeChange?.(false); setActiveSitePlannerTool(null); setStreetViewActive(!streetViewPegman); }} className={buttonStyle(Boolean(streetViewPegman))} title="Place a camera for a street-level view"><Eye size={18} /> Street View</button>
         {onMeasureModeChange && <button type="button" aria-pressed={measureActive} onClick={() => { if (streetViewPegman) setStreetViewActive(false); setActiveSitePlannerTool(null); onMeasureModeChange(!measureActive); }} className={buttonStyle(measureActive)} title="Measure distance"><Ruler size={18} /> Measure</button>}
         {!isGlobeMode && <button type="button" aria-pressed={settings.showExistingBuildings} onClick={() => updateSettings({ showExistingBuildings: !settings.showExistingBuildings })} className={buttonStyle(settings.showExistingBuildings)} title={settings.showExistingBuildings ? 'Hide existing 3D buildings' : 'Show existing 3D buildings'}><Building2 size={18} /> Existing buildings</button>}
         {onToggleHistory && <button type="button" aria-pressed={Boolean(historyOpen)} onClick={onToggleHistory} className={buttonStyle(Boolean(historyOpen))} title="Version history"><History size={18} /> History</button>}
       </div>
-      <div className="flex flex-wrap gap-2" aria-label="Park or plaza">
-        {(['park', 'plaza'] as const).map((subtype) => <button key={subtype} type="button" aria-pressed={selectedParksSubtype === subtype} className={buttonStyle(selectedParksSubtype === subtype)} onClick={() => {
-          setParksSubtype(subtype);
-          leaveOtherModes();
-          setActiveSitePlannerTool(subtype === 'plaza' ? 'parking' : 'green_space');
-        }}>{subtype === 'park' ? 'Parks' : 'Plazas'}</button>)}
-      </div>
       <div className="flex flex-wrap gap-2" aria-label="Other areas">
-        {([['residential', 'Residential'], ['development_area', 'Development Area'], ['water', 'Water']] as const).map(([type, label]) => <button key={type} type="button" aria-pressed={activeSitePlannerTool === type} onClick={() => activateAdvanced(type)} className={buttonStyle(activeSitePlannerTool === type)}>{label}</button>)}
+        <button type="button" aria-pressed={activeSitePlannerTool === 'water'} onClick={() => activateAdvanced('water')} className={buttonStyle(activeSitePlannerTool === 'water')}>Water</button>
+        <button type="button" aria-pressed={activeSitePlannerTool === 'development_area'} onClick={() => { leaveOtherModes(); setActiveSitePlannerTool('development_area',{ground_surface_material:'grass'}); }} className={buttonStyle(activeSitePlannerTool === 'development_area')}>Ground surface</button>
       </div>
       {uploadSlot}
     </div>}

@@ -12,7 +12,7 @@ import { StreetDuplicateControls } from './StreetDuplicateControls';
 import { isSpecialistStreet, CANAL_VARIANT } from '@/components/viewer/globe/specialistStreetProgram';
 import { isElevatedRail, hasElevatedStation } from '@/components/viewer/globe/elevatedRailProgram';
 
-export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete, onMore, onConnections, onPublicConnection, connectionLeavesSite = false, onUpdateDesign, onDuplicate }: {
+export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete, onMore, onPublicConnection, connectionLeavesSite = false, onUpdateDesign, onDuplicate }: {
   zone: SiteZone; disabled: boolean; onReshape: (coordinates: number[][]) => void;
   onClose: () => void; onDelete: () => void; onMore: () => void;
   onConnections?: () => void;
@@ -53,7 +53,6 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
     {onDuplicate && !isFixedNativeScene(zone.properties) && <StreetDuplicateControls key={zone.id} disabled={disabled} width={width} onDuplicate={onDuplicate} />}
     {!bend && !isBrt && (!specialist || canal) && <p className="mt-2 text-xs text-slate-600">Extend a segment to {2 * width} m before adding another point.</p>}
     {asset && <CalgaryGuideDetails classification={asset.calgaryGuide} />}
-    {onConnections && <button className={`${button} mt-3 w-full`} onClick={onConnections}>Connections</button>}
     <button className="mt-2 min-h-11 text-xs text-slate-700 underline" onClick={onMore}>More street types and settings</button>
   </aside>;
 }

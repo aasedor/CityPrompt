@@ -22,8 +22,8 @@ it('keeps a brick podium tower footprint fixed while retaining its storey contro
   const onReshape = vi.fn();
   render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
     onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} onUpdateDesign={vi.fn()}/>);
-  expect(screen.getByLabelText('Plot width (m)')).toBeDisabled();
-  expect(screen.getByLabelText('Plot depth (m)')).toBeDisabled();
+  expect(screen.queryByLabelText('Plot width (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot depth (m)')).not.toBeInTheDocument();
   expect(screen.getByText(/footprint.*move and rotate/i)).toBeTruthy();
   expect(screen.getByLabelText('Storeys')).toBeEnabled();
   fireEvent.change(screen.getByLabelText('Rotation (degrees)'), {target:{value:'5'}});
@@ -45,30 +45,43 @@ it('keeps a flexible park recognisable without offering an incompatible fixed la
   expect(screen.getByLabelText('Plot width (m)')).toBeEnabled();
 });
 
-it('points native-house students to the working Move handle', () => {
+it('shows move and rotation instructions without unsupported native-house plot controls', () => {
   const asset=placeAsset('infill_home');
   const zone={id:'infill',zone_type:'building',properties:placementProperties(asset),coordinates:rectangleAt([-114,51],12,16)} as SiteZone;
   render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={vi.fn()} onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()}/>);
-  expect(screen.getByText(/Drag the Move handle on the selected plot/)).toBeTruthy();
+  expect(screen.getByText(/Fixed native footprint: move and rotate only/)).toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot width (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot depth (m)')).not.toBeInTheDocument();
+  expect(screen.getByLabelText('Rotation (degrees)')).toBeEnabled();
   expect(screen.queryByText(/Drag the object to move it/)).toBeNull();
 });
 
-it('keeps Vancouver tower reshaping inside its reviewed gentle footprint band', () => {
+it('keeps Vancouver storey controls while hiding unsupported plot resizing', () => {
   const asset = placeAsset('clay_vancouver_balcony_podium_tower');
   const zone = { id: 'vancouver', zone_type: 'building', properties: placementProperties(asset),
     coordinates: rectangleAt([-114, 51], asset.width, asset.depth) } as SiteZone;
   render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={vi.fn()}
-    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
-  expect(screen.getByText(/move this building/)).toBeTruthy();
-  expect(screen.queryByText(/move this house/)).toBeNull();
-  expect(screen.getByLabelText('Plot width (m)')).toMatchObject({ min: '51.1', max: '57.5' });
-  expect(screen.getByLabelText('Plot depth (m)')).toMatchObject({ min: '43.1', max: '47.5' });
-  fireEvent.change(screen.getByLabelText('Plot width (m)'), { target: { value: '58' } });
-  expect((screen.getByRole('button', { name: 'Apply shape' }) as HTMLButtonElement).disabled).toBe(true);
-  expect(screen.getByRole('alert').textContent).toContain('51.1–57.5');
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} onUpdateDesign={vi.fn()} />);
+  expect(screen.getByText(/Fixed native footprint: move and rotate only/)).toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot width (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot depth (m)')).not.toBeInTheDocument();
+  expect(screen.getByLabelText('Storeys')).toBeEnabled();
 });
 
-it('reshapes a 40-storey Vancouver footprint without rewriting its height contract', () => {
+it('keeps the reviewed building footprint slider available independently of plot resizing', () => {
+  const asset = placeAsset('trial_postwar_bungalow');
+  const zone = { id: 'bungalow', zone_type: 'building', properties: placementProperties(asset),
+    coordinates: rectangleAt([-114, 51], asset.width, asset.depth) } as SiteZone;
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={vi.fn()}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} onUpdateDesign={vi.fn()} />);
+  expect(screen.queryByLabelText('Plot width (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot depth (m)')).not.toBeInTheDocument();
+  expect(screen.getByLabelText('Building footprint (%)')).toBeEnabled();
+  fireEvent.change(screen.getByLabelText('Building footprint (%)'), { target: { value: '95' } });
+  expect(screen.getByLabelText('Building footprint (%)')).toHaveValue('95');
+});
+
+it('rotates a 40-storey Vancouver tower without changing its plot size or height contract', () => {
   const asset = placeAsset('clay_vancouver_balcony_podium_tower');
   const properties = { ...placementProperties(asset), floors: 40, floor_count: 40,
     height: 135.6, height_m: 135.6, development_height_override_m: 135.6 };
@@ -76,21 +89,30 @@ it('reshapes a 40-storey Vancouver footprint without rewriting its height contra
     coordinates: rectangleAt([-114, 51], asset.width, asset.depth), name: 'Vancouver tower',
     color: '#fff', sort_order: 0, created_at: 'now', updated_at: 'now' } as SiteZone;
   const onReshape = vi.fn();
+  const onUpdateDesign = vi.fn();
   render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
-    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
-  fireEvent.change(screen.getByLabelText('Plot width (m)'), { target: { value: '57.5' } });
-  fireEvent.change(screen.getByLabelText('Plot depth (m)'), { target: { value: '47.5' } });
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} onUpdateDesign={onUpdateDesign} />);
+  expect(screen.getByLabelText('Storeys')).toHaveValue(40);
+  expect(screen.queryByLabelText('Plot width (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot depth (m)')).not.toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText('Rotation (degrees)'), { target: { value: '15' } });
   fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
   expect(onReshape).toHaveBeenCalledOnce();
+  const result = rectangleDimensions(onReshape.mock.calls[0][0]);
+  expect(result.width).toBeCloseTo(asset.width, 5);
+  expect(result.depth).toBeCloseTo(asset.depth, 5);
+  expect(result.degrees).toBeCloseTo(15, 5);
+  expect(onUpdateDesign).not.toHaveBeenCalled();
   expect(properties).toMatchObject({ floors: 40, floor_count: 40, height_m: 135.6,
     development_height_override_m: 135.6 });
 });
 
-it('preserves an irregular authored park footprint when resizing', () => {
+it('preserves an irregular adaptive park footprint when no native layout is bound', () => {
   const asset = placeAsset('native-park:urban_pocket_park_v0--native-v1');
   const onReshape = vi.fn();
   const coordinates = reshapeParkOutline(rectangleAt([-114, 51], 40, 40), 40, 40, 0, 'l_shape');
   const zone = { id: 'pocket-park', zone_type: 'green_space', properties: placementProperties(asset), coordinates } as SiteZone;
+  expect(zone.properties?.green_space_native_layout).toBeUndefined();
   render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape} onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
   fireEvent.change(screen.getByLabelText('Plot width (m)'), { target: { value: '50' } });
   fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
@@ -98,6 +120,28 @@ it('preserves an irregular authored park footprint when resizing', () => {
   expect(result.width).toBeCloseTo(50, 2);
   expect(result.normalized).toHaveLength(6);
   result.normalized.forEach((p, i) => p.forEach((v, axis) => expect(v).toBeCloseTo(parkOutlineDimensions(coordinates).normalized[i][axis], 5)));
+});
+
+it('hides native park resizing and outline controls while retaining exact rotation', () => {
+  const asset = placeAsset('native-park:urban_pocket_park_v0--native-v1');
+  const coordinates = rectangleAt([-114, 51], 40.04, 40.04);
+  const zone = { id: 'native-park', zone_type: 'green_space',
+    properties: placementProperties(asset, undefined, coordinates), coordinates } as SiteZone;
+  expect(zone.properties?.green_space_native_layout).toBeDefined();
+  const onReshape = vi.fn();
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
+  expect(screen.queryByLabelText('Plot width (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot depth (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Park outline')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Add outline point' })).not.toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText('Rotation (degrees)'), { target: { value: '10' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
+  const result = parkOutlineDimensions(onReshape.mock.calls[0][0]);
+  // Local longitude/latitude projection changes by sub-millimetres on rotation;
+  // the visible one-decimal controls must still never round away this 4 cm.
+  expect(result.width).toBeCloseTo(40.04, 3);
+  expect(result.depth).toBeCloseTo(40.04, 3);
 });
 
 it('states that a rejected building rotation was not saved', () => {
@@ -145,7 +189,8 @@ it('rotates a fixed model without rounding away its saved fractional footprint',
   const onReshape = vi.fn();
   render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
     onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
-  expect((screen.getByLabelText('Plot depth (m)') as HTMLInputElement).disabled).toBe(true);
+  expect(screen.queryByLabelText('Plot width (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot depth (m)')).not.toBeInTheDocument();
   fireEvent.change(screen.getByLabelText('Rotation (degrees)'), { target: { value: '5' } });
   fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
   const actual = rectangleDimensions(onReshape.mock.calls[0][0]);

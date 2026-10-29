@@ -78,6 +78,7 @@ from app.services.plan_boundary_identity import (
     plan_boundary_fingerprint,
 )
 from app.services.residual_landscape import (
+    community_3d_kind_for_source,
     community_3d_source_hash,
     lock_residual_landscape_project,
     mark_community_3d_stale,
@@ -3156,6 +3157,8 @@ async def generate_all(
 
     for zone in all_zones:
         if zone.zone_type not in ("building", "residential", "development_area"):
+            continue
+        if community_3d_kind_for_source(zone.zone_type, zone.properties) != "building":
             continue
         # AI-planner framework bands ("≤6 storeys", "≤27+ storeys") share
         # zone_type development_area but are height-reference OVERLAYS, not

@@ -6,7 +6,6 @@ import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
 import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/direct3dCapture';
 import { useSharedSiteGround } from '@/components/viewer/globe/SharedSiteGroundProvider';
-import { authoredCameraGround } from '@/components/viewer/globe/authoredCameraGround';
 import { isPeopleAsset } from '@/features/people/peopleActions';
 import { detailAsset } from './detailCatalogue';
 import { DetailModelInstances } from './DetailModelInstances';
@@ -14,6 +13,7 @@ import { PeopleModelInstances } from '@/features/people/PeopleModel';
 import type { useDetailPlacement } from './useDetailPlacement';
 import { detailPlacementSupport } from './safetyPlacement';
 import { useSafetySurfaceVersion } from './safetySupport';
+import { detailPlacementGroundHeight } from './detailGround';
 
 export type DetailInteraction = ReturnType<typeof useDetailPlacement>;
 
@@ -55,7 +55,8 @@ export function DetailMapPreview({ interaction, zones, surfaceAt, fallbackHeight
   const [lng, lat] = point.lngLat;
   const support=(detailAsset(asset).safety || isPeopleAsset(detailAsset(asset)))?detailPlacementSupport(asset,{lng,lat,angle:interaction.angle},zones.map(zone=>zone.id)):null;
   if(support&&!support.ok)return null;
-  const height = support?.ok&&support.height!==undefined?support.height:authoredCameraGround(zones, lng, lat, ground.heightAt(lng, lat) ?? point.height);
+  const height = detailPlacementGroundHeight(detailAsset(asset), zones, lng, lat, ground.heightAt(lng, lat) ?? point.height,
+    support?.ok ? support.height : undefined);
   const radius = Math.max(0.7, detailAsset(asset).dimensions[0] / 2);
   return <group userData={DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA}>
     {/* Saved instances stay visible; only placement/movement needs a cursor ghost. */}

@@ -1,7 +1,7 @@
 import type { CaptureLandscapeContext } from '@/features/siteLandscape/landscapeContext';
-import { SiteLandscapePanel } from '@/features/siteLandscape/SiteLandscapePanel';
 import { buildAestheticSelectionProps } from './aestheticSelection';
 import { useState, useEffect, useLayoutEffect, useCallback, useMemo, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import type { ReactNode } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Trash2, Sparkles, Loader2, X, RefreshCw, Building2, Route, TreePine, Droplets, ParkingCircle, MapPin, LayoutGrid, ChevronDown, ArrowDownToLine, Check, BookmarkPlus, Library, Box, Upload } from 'lucide-react';
@@ -446,7 +446,7 @@ function getFrontDayArchetypeImage(images: CatalogArchetypeImage[]): CatalogArch
   return images.find((image) => image.id.endsWith(`_${FRONT_DAY_VARIANT_ID}`));
 }
 
-export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeControls = false, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor, onConnections }: ZonePropertiesPanelProps) {
+export function ZonePropertiesPanel({ zone, belowGlobeControls = false, savedVersionReload, onUpdate, onDelete, onClose, onAIGenerate, buildings, allZones, onOpenBlockEditor }: ZonePropertiesPanelProps) {
   const [siteAnalysisOpen, setSiteAnalysisOpen] = useState(false);
   const config = ZONE_TYPE_CONFIG[zone.zone_type];
   const osmContext = useViewerStore((s) => s.osmContext);
@@ -454,6 +454,10 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
   const undoRedoHistoryVersion = useUndoRedoStore((s) => s.historyVersion);
   const lastAppliedUndoRedoAction = useUndoRedoStore((s) => s.lastAppliedAction);
   const [name, setName] = useState(zone.name || '');
+  const [showImportedModel, setShowImportedModel] = useState(false);
+  const linkedModel = buildings?.find(building => building.id === zone.building_id && building.project_id === zone.project_id);
+  const importedBuilding = linkedModel && (linkedModel.generation_engine === 'imported_glb' || linkedModel.specifications?.imported_glb)
+    ? linkedModel : undefined;
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
   const nativeModel = nativeBuildingContract({ properties: props });
   const rigidModel = nativeModel?.rigid === true;
@@ -929,9 +933,10 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
       {/* Backdrop overlay ? mobile only */}
       <div
         className="pointer-events-auto fixed inset-0 z-20 bg-black/30 sm:hidden"
-        onClick={onClose}
+        onClick={event => { event.stopPropagation(); onClose(); }}
+        onPointerDown={event => event.stopPropagation()}
       />
-      <div ref={panelRef} className={`pointer-events-auto fixed inset-x-0 bottom-0 z-30 max-h-[70dvh] w-full overflow-x-hidden overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:bottom-auto sm:left-auto sm:z-40 sm:w-96 sm:max-w-[calc(100vw-2rem)] sm:rounded-lg xl:w-[28rem] ${belowGlobeControls ? 'sm:top-28 sm:max-h-[calc(100dvh-13rem)]' : 'sm:top-16 sm:max-h-[calc(100dvh-5rem)]'}`}>
+      <div ref={panelRef} onClick={event => event.stopPropagation()} onPointerDown={event => event.stopPropagation()} className={`pointer-events-auto fixed inset-x-0 bottom-0 z-30 max-h-[70dvh] w-full overflow-x-hidden overflow-y-auto rounded-t-lg border-2 border-[#151515] bg-[#fff9ec]/95 p-4 shadow-[8px_8px_0_0_#151515] backdrop-blur-xl sm:absolute sm:inset-auto sm:right-4 sm:bottom-auto sm:left-auto sm:z-40 sm:w-96 sm:max-w-[calc(100vw-2rem)] sm:rounded-lg xl:w-[28rem] ${belowGlobeControls ? 'sm:top-28 sm:max-h-[calc(100dvh-13rem)]' : 'sm:top-16 sm:max-h-[calc(100dvh-5rem)]'}`}>
         {/* Drag handle ? mobile visual cue */}
         <div className="mb-3 flex justify-center sm:hidden">
           <div className="h-1 w-10 rounded-full bg-[#151515]" />
@@ -945,7 +950,8 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
             <h3 className="text-sm font-black uppercase text-[#151515]">{config?.label || zone.zone_type}</h3>
           </div>
           <button
-            onClick={onClose}
+            type="button"
+            onClick={event => { event.stopPropagation(); onClose(); }}
             aria-label="Close object properties"
             className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#151515] bg-white p-1 text-[#151515] shadow-[2px_2px_0_0_#151515] transition hover:bg-[#ff5a3d] hover:text-white"
           >
@@ -954,8 +960,7 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
         </div>
 
         <div className="mt-3 space-y-2.5 text-sm">
-        {onConnections && <button type="button" onClick={onConnections} className="min-h-11 w-full rounded-lg border-2 border-slate-900 bg-white px-3 text-sm font-semibold text-slate-900">Connections</button>}
-        <CustomMassingRecovery zone={{...zone,properties:props}} buildings={buildings} onReplace={properties=>{
+        {!importedBuilding && <CustomMassingRecovery zone={{...zone,properties:props}} buildings={buildings} onReplace={properties=>{
           if (!isPersistedZoneId(zone.id) || reloadControlRef.current?.pending) return;
           // A confirmed replacement is one complete write. An old debounced
           // custom-style edit must not flush over it when this panel closes.
@@ -964,18 +969,36 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
           const color = getShadeForArchetype(String(properties.development_selected_variant_id ?? properties.development_archetype_id ?? ''));
           onUpdate(zone.id,{name:name || undefined,properties,color:color === '#888888' ? undefined : color});
           onClose();
-        }}/>
+        }}/>}
         {/* Name */}
         <div>
-          <label className={panelLabelClass}>Name</label>
+          <label htmlFor={`zone-properties-name-${zone.id}`} className={panelLabelClass}>Name</label>
           <input
+            id={`zone-properties-name-${zone.id}`}
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onBlur={() => {
+              if (importedBuilding && name !== (zone.name || '') && isPersistedZoneId(zone.id)) {
+                // Rename only: keep the source identity, transforms and legacy
+                // metadata untouched, including fields absent from this editor.
+                onUpdate(zone.id, { name });
+              }
+            }}
+            onKeyDown={event => { if (importedBuilding && event.key === 'Enter') event.currentTarget.blur(); }}
             placeholder={config?.label || 'Zone'}
             className={panelFieldClass}
           />
         </div>
+
+        {importedBuilding ? <>
+          <button type="button" disabled={!importedBuilding.model_url} onClick={() => setShowImportedModel(true)}
+            className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-[#28c7e8] px-3 text-sm font-bold text-[#151515] disabled:opacity-50">
+            View Model
+          </button>
+          {showImportedModel && importedBuilding.model_url && createPortal(<BuildingModelViewer modelUrl={importedBuilding.model_url}
+            name={name || 'Imported model'} onClose={() => setShowImportedModel(false)} />, document.body)}
+        </> : <>
 
         {/* Area display */}
         <div className="flex justify-between">
@@ -1040,11 +1063,6 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
                 className="min-h-11 w-full accent-[#151515]" />
               <p className="text-xs text-text-muted">Lower opacity reveals Google roads and buildings. {props.community_3d_mask_existing_tiles !== false && 'The flat placement surface stays in place. '}Save changes to apply. Land-use colours have their own opacity control.</p>
             </div>
-            <SiteLandscapePanel zone={zone} captureContext={captureLandscapeContext} onSaved={saved => setProps(current => ({...current,
-              community_3d_landscape:saved.community_3d_landscape,
-              community_3d_landscape_mode:saved.community_3d_landscape_mode,
-              community_3d_automatic_trees:saved.community_3d_automatic_trees,
-            }))}/>
             {belowGlobeControls ? <details onToggle={event => setSiteAnalysisOpen(event.currentTarget.open)}>
               <summary className="min-h-11 cursor-pointer py-3 font-semibold focus-visible:outline focus-visible:outline-2">Optional AI site analysis</summary>
               {siteAnalysisOpen && <SiteIntelligencePanel zone={zone} />}
@@ -1800,13 +1818,14 @@ export function ZonePropertiesPanel({ captureLandscapeContext, zone, belowGlobeC
         {(zone.zone_type === 'building' || zone.zone_type === 'residential' || zone.zone_type === 'development_area') && (
           <PreviewHistorySection zone={zone} />
         )}
+        </>}
 
         <button
           onClick={() => onDelete(zone.id)}
           className="flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-[#151515] bg-[#fff0ec] px-3 py-2 text-xs font-black uppercase text-[#d92618] shadow-[3px_3px_0_0_#151515] transition hover:bg-[#ffddd4]"
         >
           <Trash2 size={12} />
-          Delete Zone
+          {importedBuilding ? 'Delete zone' : 'Delete Zone'}
         </button>
       </div>
     </div>

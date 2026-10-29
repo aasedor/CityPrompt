@@ -41,7 +41,7 @@ it('keeps long street handles on the prepared site datum and exact persisted end
 
 it.each([
   ['claude_trial_brick_podium_condo_tower', 0],
-  ['clay_vancouver_balcony_podium_tower', 4],
+  ['clay_vancouver_balcony_podium_tower', 0],
 ] as const)('only offers supported footprint handles for %s', (id, count) => {
   const asset = placeAsset(id);
   const zone = {id:'tower', zone_type:'building', properties:placementProperties(asset),
@@ -51,6 +51,19 @@ it.each([
   </GlobeDragProvider>);
   expect(screen.queryAllByTitle(/^Drag corner/)).toHaveLength(count);
   expect(screen.getByRole('button',{name:'Move selected object'})).toBeTruthy();
+  expect(screen.getByTitle('Drag to rotate building')).toBeTruthy();
+});
+
+it('keeps imported GLB move and rotation handles while withholding footprint resizing', () => {
+  const zone: SiteZone = { id: 'imported-zone', project_id: 'project', zone_type: 'building', building_id: 'imported-building',
+    coordinates: rectangleAt([-114, 51], 24, 26.5),
+    properties: { user_generated_source_id: 'original-source', height: 6.6 },
+    color: '#fff', sort_order: 0, created_at: 'now', updated_at: 'now' };
+  render(<GlobeDragProvider value={{current:{zoneId:null,type:null,vertexIndex:-1,coords:[],version:0}}}>
+    <GlobeEditMode zone={zone} terrainHeight={0} onZoneUpdated={vi.fn()} allowFootprintResize={false}/>
+  </GlobeDragProvider>);
+  expect(screen.queryAllByTitle(/^Drag corner/)).toHaveLength(0);
+  expect(screen.getByRole('button', { name: 'Move selected object' })).toBeTruthy();
   expect(screen.getByTitle('Drag to rotate building')).toBeTruthy();
 });
 

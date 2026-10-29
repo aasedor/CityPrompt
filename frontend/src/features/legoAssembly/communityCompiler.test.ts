@@ -22,6 +22,12 @@ import {
 import { resetProjectCommunityCompileCoordinatorForTests } from './projectCommunityCompile';
 import { rectangleAt } from '@/features/pickPlace/geometry';
 
+it('does not derive a building or park compilation job for an independently drawn ground finish', () => {
+  const finish = zone('finish', 'development_area', { ground_surface_material: 'grass', _plan_role: 'building', floors: 10 });
+  expect(deriveItems([finish])).toEqual([]);
+  expect(deriveGroundItems([finish])).toEqual([]);
+});
+
 it.each([25, 115, 205, 295])('keeps fixed native plot axes at %s degrees', (degrees) => {
   const plot=zone('motel','building',{development_selected_variant_id:'hotel_roadside_motel',floors:1,native_plot_axes:true});
   plot.coordinates=rectangleAt([-114,51],29,42,degrees);

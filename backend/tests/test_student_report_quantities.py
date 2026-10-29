@@ -107,5 +107,3 @@ def test_native_bungalow_programme_resolves_units_and_pending_warning_without_in
     assert result['gfa_m2'] is None and result['gfa_ft2'] is None
     assert result['detached_plots_pending'] == 0
     assert any('single-home' in source['title'].lower() for finding in report['findings'] for source in finding['sources'])
-
-

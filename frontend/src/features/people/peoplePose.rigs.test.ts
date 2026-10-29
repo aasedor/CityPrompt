@@ -55,4 +55,3 @@ describe.skipIf(!hydrated)('actual catalogue arm rigs (requires hydrated CITYPRO
     actor.dispose();
   }, 30000);
 });
-

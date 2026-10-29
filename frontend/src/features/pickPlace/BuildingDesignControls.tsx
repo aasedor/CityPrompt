@@ -159,19 +159,18 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
     {Boolean(choice?.option.variants?.length) && <label className="block text-xs font-semibold">Building variant<select value={variantId} onChange={e => choose(choiceId, e.target.value)} className={field}>
       {choice?.option.variants?.map(v => <option value={v.id} key={v.id}>{v.label}</option>)}
     </select></label>}
-    <div className="grid grid-cols-2 gap-2">
+    {storeyProgram?.mode==='fixed_authored_assembly' ? <p className="text-sm text-slate-700">{floors} {Number(floors)===1?'storey':'storeys'} · {height} m high</p> : <div className="grid grid-cols-2 gap-2">
       <label className="text-xs font-semibold">Storeys{storeyProgram?.supportedStoreys
         ? <select value={floors} onChange={e=>changeStoreys(e.target.value)} className={field}>
           {!storeyProgram.supportedStoreys.includes(Number(floors)) && <option value={floors} disabled>Saved: {floors}</option>}
           {storeyProgram.supportedStoreys.map(count=><option key={count} value={count}>{count}</option>)}
         </select>
         : <input type="number" min={storeyProgram?.minStoreys ?? 1} max={storeyProgram?.maxStoreys ?? 100} value={floors}
-          readOnly={storeyProgram?.mode === 'fixed_authored_assembly'} aria-readonly={storeyProgram?.mode === 'fixed_authored_assembly'}
-          onChange={e=>changeStoreys(e.target.value)} className={`${field} ${storeyProgram?.mode === 'fixed_authored_assembly' ? 'bg-slate-100' : ''}`} />}</label>
+          onChange={e=>changeStoreys(e.target.value)} className={field} />}</label>
       <label className="text-xs font-semibold">Height (m)<input type="number" min="0.1" max="1000" step="any" value={height}
         readOnly={Boolean(storeyProgram)} aria-readonly={Boolean(storeyProgram)}
         onChange={e => { setHeight(e.target.value); setHeightEdited(true); }} className={`${field} ${storeyProgram ? 'bg-slate-100' : ''}`} /></label>
-    </div>
+    </div>}
     {footprintProgram && footprintProgram.editable !== false && <label className="block text-xs font-semibold">Building footprint ({Math.round(Number(footprintScale) * 100)}%)
       <input aria-label="Building footprint (%)" type="range"
         min={Math.round(footprintProgram.minScale * 100)} max={Math.round(footprintProgram.maxScale * 100)}

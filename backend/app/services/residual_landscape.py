@@ -80,6 +80,12 @@ _TREE_CANOPY_CLEARANCE_M = 5.8
 _COMMUNITY_BUILDING_TYPES = {"building", "residential", "development_area", "development"}
 _COMMUNITY_PARK_TYPES = {"green_space", "park", "plaza", "parking"}
 _COMMUNITY_STREET_TYPES = {"road", "street", "path"}
+_GROUND_SURFACE_MATERIALS = frozenset({
+    "grass", "mown_grass", "dry_grass", "meadow", "snow", "sand", "gravel", "light_gravel", "dark_gravel",
+    "black_pavers", "charcoal_pavers", "grey_pavers", "light_pavers", "red_brick", "buff_brick", "concrete",
+    "light_concrete", "exposed_aggregate", "asphalt", "red_asphalt", "blue_rubber", "terracotta",
+    "decomposed_granite", "mulch", "cobblestone",
+})
 
 
 def community_3d_kind_for_source(
@@ -91,6 +97,9 @@ def community_3d_kind_for_source(
     if zone_type == "site_boundary":
         return None
     props = properties or {}
+    material = props.get("ground_surface_material")
+    if isinstance(material, str) and material in _GROUND_SURFACE_MATERIALS:
+        return None
     role = props.get("_plan_role")
     if role == "framework_height":
         return None

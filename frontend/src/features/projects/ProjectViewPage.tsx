@@ -34,6 +34,8 @@ import { duplicateStreet } from '@/features/pickPlace/duplicateStreet';
 import { streetConnectionProblem } from '@/features/pickPlace/streetConnectionProblem';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
+import {groundSurfaceFor,groundSurfaceProblem} from '@/features/groundSurfaces/groundSurfaces';
+import {GroundSurfacePanel} from '@/features/groundSurfaces/GroundSurfacePanel';
 import type { EntrancePickRequest } from '@/features/pickPlace/pickBuildingEntrance';
 import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
@@ -203,6 +205,7 @@ export function ProjectViewPage() {
   const [globeRenderPosition, setGlobeRenderPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDraggingGlobeRender, setIsDraggingGlobeRender] = useState(false);
   const [globeRefs, setGlobeRefs] = useState<{
+    clearBuildingSelection?: () => void;
     getMapCentre?: () => { lng: number; lat: number };
     canvas: HTMLCanvasElement;
     camera: any;
@@ -311,6 +314,11 @@ export function ProjectViewPage() {
     lightboxImageUrl,
   } = useViewerStore();
 
+  const closeObjectProperties = useCallback(() => {
+    globeRefs?.clearBuildingSelection?.();
+    selectZone(null);
+  }, [globeRefs, selectZone]);
+
   const {
     siteZones,
     siteZonesLoading,
@@ -413,6 +421,11 @@ export function ProjectViewPage() {
       if (problem) { toast.error(problem, {id:'boundary-outline-validation',position:'top-center'}); return false; }
     }
     const zone = siteZones.find(item => item.id === zoneId);
+    if (zone && groundSurfaceFor(zone)) {
+      const problem=groundSurfaceProblem(coordinates,getActiveSiteBoundary(siteZones));
+      if(problem){toast.error(problem,{position:'top-center'});return false;}
+      if(isSaving)return false;
+    }
     if (zone && isFixedSectionStreet(zone)) coordinates = snapConnectedStreetEdit(zone, coordinates, siteZones);
     if (zone?.zone_type === 'road') {
       const snapped = snapStreetBoundaryPlacement({ ...zone, ...streetCoordinateUpdate(zone, coordinates) }, siteZones, getActiveSiteBoundary(siteZones));
@@ -1192,6 +1205,10 @@ export function ProjectViewPage() {
                   return false;
                 }
               }
+              if (groundSurfaceFor({properties})) {
+                const problem=groundSurfaceProblem(coordinates,getActiveSiteBoundary(siteZones));
+                if(problem){toast.error(problem,{position:'top-center'});return false;}
+              }
               if (['building', 'residential', 'green_space'].includes(type)) {
                 const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, properties, type);
                 if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
@@ -1407,8 +1424,7 @@ export function ProjectViewPage() {
               updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } });
             }}
             onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
-            onConnections={()=>setConnectionZoneId(selectedZone.id)}
-            onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
+            onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={closeObjectProperties}
             onDelete={() => deleteZone.mutate(selectedZone.id)} onDuplicate={pickObject} onMore={() => setAdvancedZoneId(selectedZone.id)} />
         )}
         {selectedZone && !entrancePick && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
@@ -1446,10 +1462,10 @@ export function ProjectViewPage() {
             onPublicConnection={enabled => updateZone.mutate({zoneId: selectedZone.id, data: {
               properties: {...selectedZone.properties, connect_to_public_road: enabled},
             }, previousData: { properties: selectedZone.properties }})}
-            onConnections={()=>setConnectionZoneId(selectedZone.id)}
-            onClose={()=>selectZone(null)} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
+            onClose={closeObjectProperties} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
         )}
-        {selectedZone && !entrancePick && ((!assetForZone(selectedZone) && !isFixedSectionStreet(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
+        {selectedZone && groundSurfaceFor(selectedZone) && <GroundSurfacePanel zone={selectedZone} disabled={isSaving} onClose={closeObjectProperties} onDelete={()=>deleteZone.mutate(selectedZone.id)} onChange={properties=>updateZone.mutate({zoneId:selectedZone.id,data:{properties},previousData:{properties:selectedZone.properties}})}/>}
+        {selectedZone && !groundSurfaceFor(selectedZone) && !entrancePick && ((!assetForZone(selectedZone) && !isFixedSectionStreet(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
           <ZonePropertiesPanel
             key={selectedZone.id}
             belowGlobeControls
@@ -1458,7 +1474,6 @@ export function ProjectViewPage() {
             }) : undefined}
             zone={selectedZone}
             savedVersionReload={savedVersionReload}
-            onConnections={['building','residential','green_space','road'].includes(selectedZone.zone_type) ? ()=>setConnectionZoneId(selectedZone.id) : undefined}
             onUpdate={(zoneId, data) => {
               const previousZone = siteZones.find((z) => z.id === zoneId);
               updateZone.mutate({
@@ -1471,7 +1486,7 @@ export function ProjectViewPage() {
               if (siteZones) rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
             }}
             onDelete={(zoneId) => deleteZone.mutate(zoneId)}
-            onClose={() => selectZone(null)}
+            onClose={closeObjectProperties}
             onAIGenerate={(buildingId, prompt, tab) => {
               setAiGenerateInitialPrompt(prompt);
               setAiGenerateInitialTab(tab);
@@ -1824,7 +1839,7 @@ export function ProjectViewPage() {
                 }
               }}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
-              onClose={() => selectZone(null)}
+              onClose={closeObjectProperties}
               onAIGenerate={(buildingId, prompt, tab) => {
                 setAiGenerateInitialPrompt(prompt);
                 setAiGenerateInitialTab(tab);

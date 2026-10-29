@@ -29,6 +29,7 @@ import { MapCleanupPreview } from './MapCleanupPreview';
 import { readMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 import { assetForZone } from '@/features/pickPlace/catalogue';
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import {groundSurfaceFor} from '@/features/groundSurfaces/groundSurfaces';
 import { projectedFrameFraction, projectFrameRoofHeight } from './projectFrameHeight';
 import { findUnobstructedProjectFrame } from './projectFrameObstruction';
 import { PLAN_VIEW_FOV_DEGREES, WORKING_VIEW_FOV_DEGREES, distanceForFieldOfView, setWorkingCameraProjection, syncPlanCameraClipping, syncPlanCameraFog } from './planViewCamera';
@@ -392,7 +393,7 @@ export function buildZoneCreateProperties(
   terrainElevation: number,
 ): SiteZoneProperties {
   return {
-    ...ZONE_TYPE_CONFIG[tool].defaultProperties,
+    ...(groundSurfaceFor({properties:properties??{}}) ? {} : ZONE_TYPE_CONFIG[tool].defaultProperties),
     ...(properties ?? {}),
     terrain_elevation_m: terrainElevation,
   };
@@ -1570,6 +1571,7 @@ interface GlobeSitePlannerMapProps {
    * dead code for any future code that wants to adapt the globe to that API.
    */
   onGlobeReady?: (refs: {
+    clearBuildingSelection?: () => void;
     getMapCentre?: () => { lng: number; lat: number };
     canvas: HTMLCanvasElement;
     camera: THREE.Camera;
@@ -1886,6 +1888,10 @@ export function GlobeSitePlannerMap({
     || Boolean(projectBenches?.length || projectTrees?.length || projectProps?.length || projectSurfaces?.length);
   const [buildingLayerRecoveryGeneration, setBuildingLayerRecoveryGeneration] = useState(0);
   const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null);
+  const importedModelIds = useMemo(() => new Set((buildings ?? [])
+    .filter(building => building.generation_engine === 'imported_glb' || building.specifications?.imported_glb)
+    .map(building => building.id)), [buildings]);
+  useEffect(() => { if (selectedZoneId === null) setSelectedBuildingId(null); }, [selectedZoneId]);
   const selectedBuildingIdRef = useRef<string | null>(null);
   selectedBuildingIdRef.current = selectedBuildingId;
   // Zone overlays can legitimately win the pointer race against the model
@@ -3742,6 +3748,7 @@ export function GlobeSitePlannerMap({
     const camera = cameraRef.current;
     if (!canvas || !camera) return;
     onGlobeReady({
+      clearBuildingSelection: () => setSelectedBuildingId(null),
       getMapCentre: globeAIRenderViewport.getCenter,
       canvas,
       camera,
@@ -4381,7 +4388,7 @@ export function GlobeSitePlannerMap({
     // Zoning studies reuse the development-area drawing tool, but their
     // polygons must be drawable across existing buildings without selecting
     // those buildings and cancelling the unfinished zoning ring.
-    if (isBuildingZoneType(activeSitePlannerTool) && activeToolProperties?.cartography_study !== true) {
+    if (isBuildingZoneType(activeSitePlannerTool) && activeToolProperties?.cartography_study !== true && !groundSurfaceFor({properties:activeToolProperties??{}})) {
       const clickPt = turfPoint(clickLngLat);
       let hitZoneId: string | null = null;
       let hitZoneArea = Infinity;
@@ -4967,6 +4974,7 @@ export function GlobeSitePlannerMap({
               return zone ? (
                 <GlobeEditMode
                   zone={zone}
+                  allowFootprintResize={!importedModelIds.has(zone.building_id ?? '')}
                   zones={siteZones}
                   terrainHeight={terrainElevation}
                   onZoneUpdated={onZoneUpdated}
@@ -5261,7 +5269,7 @@ export function GlobeSitePlannerMap({
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;
         const tool = activeSitePlannerTool!;
-        const label = activeToolProperties?.cartography_study ? 'Land-use zone' : getToolDisplayLabel(tool);
+        const label = activeToolProperties?.ground_surface_material ? 'Ground surface' : activeToolProperties?.cartography_study ? 'Land-use zone' : getToolDisplayLabel(tool);
         const min = minPointsForTool(tool);
         const linear = isLinearTool(tool);
 
@@ -5329,6 +5337,8 @@ export function GlobeSitePlannerMap({
       {!walkMode && !entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
           {detailEditing ? (detailInteraction?.moving ? 'Click the map to move this item · Esc to cancel' : detailInteraction?.editing ? 'Use Move, Rotate or Delete in the panel · Click another item to select it' : 'Choose an item to place · Click a placed item to edit · Drag to pan · Scroll to zoom')
+            : selectedInspectionZone && importedModelIds.has(selectedRenderedBuildingId ?? '')
+            ? 'Imported GLB | Drag the Move handle to reposition | Drag the amber handle or Q/E to rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && isFixedNativeScene(zone.properties))
             ? 'Fixed-size model | Drag to move | Use the reshape panel to rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
@@ -5403,7 +5413,7 @@ export function GlobeSitePlannerMap({
             <span className="text-[10px] font-black uppercase text-[#151515]/70">Loading tiles...</span>
           </div>
         )}
-        {selectedInspectionZone && isBuildingZoneType(selectedInspectionZone.zone_type) && (
+        {selectedInspectionZone && !groundSurfaceFor(selectedInspectionZone) && isBuildingZoneType(selectedInspectionZone.zone_type) && (
           <button
             type="button"
             onClick={() => {
@@ -5475,8 +5485,6 @@ export function GlobeSitePlannerMap({
         )}
         {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" onClick={() => setShowGroundReview(true)}>Review ground</button>}
         {import.meta.env.DEV && cleanupBoundary && onSaveMapCleanup && <button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold" disabled={Boolean(detailEditing || entrancePick || placementDraft || hasDrawingTool || measureModeActive)} onClick={() => { setWalkMode(null); onZoneSelected(null); setShowMapCleanup(true); }}>Map cleanup pilot</button>}
-        {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-          onClick={()=>setShowEntranceReview(true)}>Review entrances</button>}
         </>, mapToolsTarget)}
         {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable' || Boolean(sharedGroundState.snapshot?.excludedCells?.length)) && (
           <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">

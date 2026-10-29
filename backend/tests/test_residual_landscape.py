@@ -8,6 +8,7 @@ from shapely.geometry import Polygon, box, shape
 from shapely.ops import transform, unary_union
 
 from app.services.residual_landscape import (
+    community_3d_kind_for_source,
     ResidualSourceZone,
     build_residual_landscape_recipe,
     community_3d_representation_hash,
@@ -22,6 +23,13 @@ from app.services.site_engine import WGS84_CRS, build_transformer, project_geome
 METRIC_CRS = CRS.from_epsg(32612)
 TO_WGS84 = build_transformer(METRIC_CRS, WGS84_CRS)
 TO_METRIC = build_transformer(WGS84_CRS, METRIC_CRS)
+
+
+@pytest.mark.parametrize('material', ['grass', 'black_pavers', 'cobblestone', 'snow'])
+def test_ground_finishes_have_no_generated_building_owner_even_with_legacy_building_roles(material):
+    assert community_3d_kind_for_source('development_area', {'ground_surface_material': material,
+        '_plan_role': 'building', 'development_archetype_id': 'housing'}) is None
+    assert community_3d_kind_for_source('development_area', {'ground_surface_material': 'invalid'}) == 'building'
 ORIGIN_E = 707_000.0
 ORIGIN_N = 5_655_000.0
 

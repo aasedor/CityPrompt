@@ -3,6 +3,7 @@ import { PATHWAY_ASSETS as ALL_PATHWAY_ASSETS, validateRegistry } from './assetR
 import { CANONICAL_CHOICES, filterCanonicalChoices } from './canonicalCatalogue';
 import { nativeStreetPilot, nativeStreetLocalRouteProblem, placeNativeStreetModules } from '@/components/viewer/globe/nativeStreetPilot';
 import { buildNativeStreetProgram } from '@/components/viewer/globe/nativeStreetProgram';
+import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from '@/components/viewer/globe/publicRealmDepthPolicy';
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { roundMetricStreetCenterline } from '@/utils/streetRouteCurves';
 import { bufferLineToPolygon, effectiveRoadWidth } from '@/utils/roadGeometry';
@@ -58,8 +59,9 @@ describe('narrow, surface-only pathways', () => {
         expect(pilot.program!.palette[material]).toHaveLength(3);
         expect([...geometry.attributes.position.array].every(Number.isFinite)).toBe(true);
         geometry.computeBoundingBox();
-        expect(geometry.boundingBox!.min.z).toBeGreaterThanOrEqual(.0249);
-        expect(geometry.boundingBox!.max.z).toBeLessThan(.03);
+        // Surface paths clear the prepared ground while retaining only a thin finish.
+        expect(geometry.boundingBox!.min.z).toBeGreaterThanOrEqual(PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS - .0001);
+        expect(geometry.boundingBox!.max.z).toBeLessThan(PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS + .005);
         if (route.length === 2) {
           expect(geometry.boundingBox!.min.x).toBeGreaterThanOrEqual(-pilot.widthM/2-.0001);
           expect(geometry.boundingBox!.max.x).toBeLessThanOrEqual(pilot.widthM/2+.0001);
