@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { CANONICAL_CHOICES, CANONICAL_DOMAINS, UNAVAILABLE_CATALOGUE_ENTRIES, resolveCatalogueRoster, catalogueChoices, canonicalDrawing, filterCanonicalChoices, preferredCatalogueVariant } from './canonicalCatalogue';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
-import { CATALOGUE_ASSETS, MANUAL_STREET_ASSETS } from './assetRegistry';
+import { CATALOGUE_ASSETS, GENERATED_BUILDING_ADDITIONS, MANUAL_STREET_ASSETS } from './assetRegistry';
 
 describe('canonical discovery and identity', () => {
   it('finds a duplex inside an infill parent and opens the matching detailed variant', () => {
@@ -16,7 +16,11 @@ describe('canonical discovery and identity', () => {
   it('discovers exactly the current eligible parents in each domain', () => {
     expect(UNAVAILABLE_CATALOGUE_ENTRIES).toEqual([]);
     const roster = [...validation.entries, ...expansion.entries];
-    expect(CANONICAL_CHOICES).toHaveLength(roster.length + MANUAL_STREET_ASSETS.length);
+    const newGeneratedDesigns = new Set(GENERATED_BUILDING_ADDITIONS.filter(asset => !roster.some(entry =>
+      entry.domain === 'building' && entry.archetype_id === asset.properties.development_archetype_id
+      && entry.variant_id === asset.model.variantId,
+    )).map(asset => `${asset.properties.development_archetype_id}:${asset.model.variantId}`));
+    expect(CANONICAL_CHOICES).toHaveLength(roster.length + MANUAL_STREET_ASSETS.length + newGeneratedDesigns.size);
     for (const entry of roster) {
       const choice = CANONICAL_CHOICES.find(c => c.option.id === entry.archetype_id && c.placements[0]?.model.variantId === entry.variant_id);
       expect(choice, entry.variant_id).toBeDefined();

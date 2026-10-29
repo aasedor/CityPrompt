@@ -6,6 +6,7 @@ import streetCatalogue from '@/data/streetPathArchetypes.json';
 import nativeStreets from '@/data/nativeStreetPilots.json';
 import manualStreets from '@/data/streetManual.json';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
+import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 
 export type PlaceAssetId = string;
 export type AssetReadiness = 'candidate' | 'pilot' | 'ready' | 'retired';
@@ -235,7 +236,17 @@ function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
   };
 }
 
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS].map(asset => {
+const curatedAssets: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...MANUAL_STREET_ASSETS];
+// Existing cards and saved-only identities retain their curated bindings.
+// A generated local pilot is discoverable only in a development build.
+const registeredIds = new Set([...curatedAssets, ...LEGACY_OBJECT_ASSETS, ...LEGACY_SECTION_STREET_ASSETS].map(asset => asset.id));
+export const GENERATED_BUILDING_ADDITIONS = CATALOGUE_BUILDING_ASSETS.filter(asset => {
+  if (registeredIds.has(asset.id) || !(asset.readiness === 'ready' || (import.meta.env.DEV && asset.readiness === 'pilot'))) return false;
+  registeredIds.add(asset.id);
+  return true;
+});
+
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...curatedAssets, ...GENERATED_BUILDING_ADDITIONS].map(asset => {
   if (asset.kind==='object' && asset.zoneType==='road') {
     const native=NATIVE_STREET_ASSETS.find(street=>street.model.variantId===asset.model.variantId);
     if(native)return {...native,calgaryGuide:asset.calgaryGuide};
