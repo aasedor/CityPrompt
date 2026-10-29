@@ -56,6 +56,42 @@ def changed_glb(change):
     return struct.pack('<4sII', b'glTF', 2, 20 + len(text) + len(tail)) + struct.pack('<II', len(text), 0x4E4F534A) + text + tail
 
 
+def test_imports_valid_dense_geometry_beyond_standard_building_complexity():
+    # Meshy exports can have >3M index elements while remaining within the
+    # upload and decoded-resource budgets. Repeated box faces keep this fixture
+    # self-contained and exercise the real geometry decoder without a binary.
+    original = glb()
+    length = struct.unpack_from('<I', original, 12)[0]
+    doc = json.loads(original[20:20 + length])
+    triangles = 1_000_004
+    indices = struct.pack('<3I', 0, 1, 2) * triangles
+    binary = original[28 + length:28 + length + 96] + indices
+    doc['buffers'][0]['byteLength'] = len(binary)
+    doc['bufferViews'][1]['byteLength'] = len(indices)
+    doc['accessors'][1].update(componentType=5125, count=triangles * 3)
+    text = json.dumps(doc).encode()
+    text += b' ' * (-len(text) % 4)
+    payload = (struct.pack('<4sII', b'glTF', 2, 28 + len(text) + len(binary))
+               + struct.pack('<II', len(text), 0x4E4F534A) + text
+               + struct.pack('<II', len(binary), 0x004E4942) + binary)
+    result = inspect_glb(payload, 'metres')
+    assert result['triangles'] == triangles
+    assert (result['width_m'], result['height_meters'], result['depth_m']) == (12, 9, 20)
+
+
+def test_large_scene_description_is_bounded_by_upload_size_not_building_complexity():
+    payload = changed_glb(lambda d: d.update(extras={'source_note': 'a' * (4 * 1024 * 1024)}))
+    assert inspect_glb(payload, 'metres')['triangles'] == 12
+
+
+@pytest.mark.parametrize('width,height,depth', [(0.5, 1, 0.8), (1200, 900, 2000), (1e-6, 2e-6, 3e-6)])
+def test_valid_native_dimensions_are_preserved_without_building_size_restrictions(width, height, depth):
+    result = inspect_glb(glb(width, height, depth), 'metres')
+    assert result['width_m'] == pytest.approx(width)
+    assert result['depth_m'] == pytest.approx(depth)
+    assert result['height_meters'] == pytest.approx(height)
+
+
 @pytest.mark.parametrize('kind,count', [('SCALAR', 100_000_000), ('MAT4', 3_000_000)])
 def test_bounds_all_accessor_allocations_before_loading_geometry(monkeypatch, kind, count):
     import trimesh
@@ -79,7 +115,7 @@ def test_rejects_broken_embedded_texture_before_the_browser_loads_it():
 
 @pytest.mark.parametrize('payload,units', [(b'not a model', 'metres'), (glb()[:-4], 'metres'),
     (glb(external=True), 'metres'), (glb(0, 9, 20), 'metres'), (glb(), 'furlongs'),
-    (glb(1200, 900, 2000), 'metres')])
+    (glb(float('inf'), 9, 20), 'metres')])
 def test_rejects_unusable_models_without_storage_or_network(payload, units):
     with pytest.raises(HTTPException) as exc:
         inspect_glb(payload, units)

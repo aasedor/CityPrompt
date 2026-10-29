@@ -52,12 +52,14 @@ def validate_glb_resources(doc: dict, payload: bytes, json_end: int) -> None:
     decoded_bytes = 0
     for accessor in doc.get('accessors', []):
         count, kind, component = accessor.get('count'), accessor.get('type'), accessor.get('componentType')
-        if type(count) is not int or not 0 <= count <= 3_000_000 or kind not in components or component not in byte_sizes:
-            invalid('This model is too complex or has invalid geometry data. Simplify it before importing.')
+        if type(count) is not int or count < 0 or kind not in components or component not in byte_sizes:
+            invalid('The GLB has invalid geometry data. Export it again as a static GLB 2.0.')
         element = components[kind] * byte_sizes[component]
         decoded_bytes += count * element
+        # Bound decoded allocations (including sparse/implicit zero arrays),
+        # rather than rejecting valid models for an arbitrary element count.
         if decoded_bytes > 128 * 1024 * 1024:
-            invalid('This model is too complex. Simplify it before importing.')
+            invalid('The GLB needs more than 128 MB of decoded geometry memory. Reduce its embedded geometry data before importing.')
         if 'bufferView' in accessor:
             view = index(views, accessor['bufferView'])
             start, stride = accessor.get('byteOffset', 0), view.get('byteStride', element)

@@ -32,8 +32,8 @@ def inspect_glb(payload: bytes, units: str, target_height_m: float | None = None
     if version != 2 or length != len(payload):
         invalid('The GLB is incomplete or unsupported. Export it again as GLB 2.0.')
     chunk_length, chunk_type = struct.unpack_from('<II', payload, 12)
-    if chunk_type != 0x4E4F534A or chunk_length > 4 * 1024 * 1024 or 20 + chunk_length > len(payload):
-        invalid('The GLB scene description is invalid or too complex.')
+    if chunk_type != 0x4E4F534A or chunk_length % 4 or 20 + chunk_length > len(payload):
+        invalid('The GLB scene description is invalid.')
     try:
         doc = json.loads(payload[20:20 + chunk_length])
 
@@ -50,16 +50,12 @@ def inspect_glb(payload: bytes, units: str, target_height_m: float | None = None
         check_resources(doc)
         if not isinstance(doc, dict) or doc.get('asset', {}).get('version') != '2.0':
             invalid('Export your building as a GLB 2.0 file.')
-        if len(doc.get('nodes', [])) > 10000 or len(doc.get('meshes', [])) > 5000:
-            invalid('This model is too complex. Simplify it before importing.')
         from app.services.glb_import_resources import validate_glb_resources
         validate_glb_resources(doc, payload, 20 + chunk_length)
         import numpy as np
         import trimesh
         scene = trimesh.load(BytesIO(payload), file_type='glb', force='scene', process=False, skip_materials=True)
         triangles = sum(len(scene.geometry[scene.graph[node][1]].faces) for node in scene.graph.nodes_geometry)
-        if triangles > 1_000_000:
-            invalid('This model has more than one million triangles. Simplify it before importing.')
         bounds = scene.bounds
         if triangles < 1 or bounds is None or not np.isfinite(bounds).all():
             invalid('The GLB has no usable building geometry.')
@@ -70,10 +66,12 @@ def inspect_glb(payload: bytes, units: str, target_height_m: float | None = None
             size *= target_height_m / size[1]
         width, depth = sorted((float(size[0]), float(size[2])))
         height = float(size[1])
-        if not (2 <= width <= 100 and 2 <= depth <= 100 and .25 <= height <= 500):
-            invalid('Check the model units. The building must be 2–100 m wide/deep and 0.25–500 m high.')
-        return {'version': 1, 'units': units, 'target_height_m': target_height_m, 'width_m': round(width, 4), 'depth_m': round(depth, 4),
-                'height_meters': round(height, 4), 'triangles': triangles,
+        if not all(math.isfinite(dimension) and dimension > 0 for dimension in (width, depth, height)):
+            invalid('The GLB must have finite, non-zero width, depth and height. Check its geometry and units.')
+        # Preserve the author's native scale. Plot fit belongs to placement;
+        # import must also support small objects and normalized Meshy exports.
+        return {'version': 1, 'units': units, 'target_height_m': target_height_m, 'width_m': width, 'depth_m': depth,
+                'height_meters': height, 'triangles': triangles,
                 'source_sha256': hashlib.sha256(payload).hexdigest()}
     except HTTPException:
         raise
