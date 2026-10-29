@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { PLACE_ASSETS, placeAsset, placementPlanRequest } from './catalogue';
 import { rectangleAt, rectangleDimensions, resizeRectangleCorner } from './geometry';
+import { hasBuildingOnlyFootprint } from './buildingOnlyFootprint';
 
 describe('native catalogue placement contracts', () => {
   it('cannot share a preview plan between two homes on identically sized plots', () => {
@@ -23,8 +24,9 @@ describe('native catalogue placement contracts', () => {
       expect(dimensions.width).toBeCloseTo(asset.minWidth, 3);
       expect(dimensions.depth).toBeCloseTo(asset.minDepth, 3);
     }
-    expect(dimensions.width - asset.nativeDimensions![0]).toBeGreaterThanOrEqual(3 - 1e-6);
-    expect(dimensions.depth - asset.nativeDimensions![1]).toBeGreaterThanOrEqual(3 - 1e-6);
+    const clearance=hasBuildingOnlyFootprint(asset) ? .02 : 3;
+    expect(dimensions.width - asset.nativeDimensions![0]).toBeGreaterThanOrEqual(clearance - 1e-6);
+    expect(dimensions.depth - asset.nativeDimensions![1]).toBeGreaterThanOrEqual(clearance - 1e-6);
     expect(resized[2][0]).toBeCloseTo(fixed[0], 7);
     expect(resized[2][1]).toBeCloseTo(fixed[1], 7);
   });

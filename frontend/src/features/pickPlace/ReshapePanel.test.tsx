@@ -14,6 +14,22 @@ vi.mock('./publicRealmRelease', async () => {
 });
 afterEach(cleanup);
 
+it('repairs an old oversized new-batch plot explicitly and duplicates at snug dimensions',()=>{
+  const asset=placeAsset('claude_trial_old_montreal_limestone_commercial');
+  const coordinates=rectangleAt([-114,51],150,150,27);
+  const zone={id:'oversized',zone_type:'building',properties:placementProperties(asset),coordinates} as SiteZone;
+  const onReshape=vi.fn(),onDuplicate=vi.fn();
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={onDuplicate} onReshape={onReshape}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()}/>);
+  expect(onReshape).not.toHaveBeenCalled(); // Never silently relocate saved projects.
+  fireEvent.click(screen.getByRole('button',{name:'Fit footprint to building'}));
+  const fitted=rectangleDimensions(onReshape.mock.calls[0][0]);
+  expect(fitted.width).toBeCloseTo(asset.width,3);expect(fitted.depth).toBeCloseTo(asset.depth,3);
+  expect(fitted.degrees).toBeCloseTo(27,2);expect(fitted.center).toEqual(rectangleDimensions(coordinates).center);
+  fireEvent.click(screen.getByRole('button',{name:'Place another'}));
+  expect(onDuplicate.mock.calls[0].slice(0,3)).toEqual([asset.id,asset.width,asset.depth]);
+});
+
 it('points native-house students to the working Move handle', () => {
   const asset=placeAsset('infill_home');
   const zone={id:'infill',zone_type:'building',properties:placementProperties(asset),coordinates:rectangleAt([-114,51],12,16)} as SiteZone;

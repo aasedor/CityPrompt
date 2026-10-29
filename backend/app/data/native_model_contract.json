@@ -903,8 +903,8 @@
       "variant_id": "scottish_baronial_granite_tower",
       "revision": "clay-baronial-railway-hotel-clay-v006",
       "dimensions_m": [
-        78,
-        72,
+        61.599998474121094,
+        56.74251937866211,
         42.400001525878906
       ],
       "storeys": 5,
@@ -1033,8 +1033,8 @@
       "variant_id": "industrial_brick_original_mill",
       "revision": "clay-arched-mill-mixed-use-clay-v005",
       "dimensions_m": [
-        38,
-        34,
+        22.760000228881836,
+        22.68000030517578,
         25.700000762939453
       ],
       "storeys": 4,
@@ -1046,8 +1046,8 @@
       "variant_id": "brick_podium_glass_tower",
       "revision": "clay-brick-podium-condo-tower-clay-v006",
       "dimensions_m": [
-        54,
-        44,
+        44.89999961853027,
+        33.239999771118164,
         50.099998474121094
       ],
       "storeys": 13,
@@ -1059,9 +1059,9 @@
       "variant_id": "calgary_cbe_original",
       "revision": "clay-calgary-cbe-brutalist-hq-clay-v004",
       "dimensions_m": [
-        84.9000015258789,
-        89.54999923706055,
-        28.3700008392334
+        43.300001,
+        40.6,
+        28.370001
       ],
       "storeys": 4,
       "fixed": true,
@@ -1072,8 +1072,8 @@
       "variant_id": "industrial_warehouse_campus_hq",
       "revision": "clay-campus-shed-office-clay-v009",
       "dimensions_m": [
-        48.5895132778808,
-        39.34000015258789,
+        43.954999923706055,
+        34.13999938964844,
         11.020000457763672
       ],
       "storeys": 2,
@@ -1085,8 +1085,8 @@
       "variant_id": "cmu_dock_utilitarian",
       "revision": "clay-cmu-dock-warehouse-clay-v006",
       "dimensions_m": [
-        57,
-        44.22500038146973,
+        30.1899995803833,
+        28.425000190734863,
         9.475000381469727
       ],
       "storeys": 1,
@@ -1098,8 +1098,8 @@
       "variant_id": "ecole-republicaine-art-deco",
       "revision": "clay-courtyard-primary-school-clay-v009",
       "dimensions_m": [
-        46,
-        50.03000068664551,
+        40.400001525878906,
+        46.400001525878906,
         12.979000091552734
       ],
       "storeys": 3,
@@ -1111,8 +1111,8 @@
       "variant_id": "ctrain_downtown_platform",
       "revision": "clay-ctrain-elevated-station-clay-v004",
       "dimensions_m": [
-        80,
-        100,
+        76.4000015258789,
+        96,
         18.700000762939453
       ],
       "storeys": 3,
@@ -1124,8 +1124,8 @@
       "variant_id": "transparent_plant_showcase_urban",
       "revision": "clay-energy-centre-clay-v010",
       "dimensions_m": [
-        44.09647641933048,
-        38.03000068664551,
+        36.11000061035156,
+        34.130001068115234,
         23.80500030517578
       ],
       "storeys": 2,
@@ -1137,8 +1137,8 @@
       "variant_id": "senior_garden_courtyard",
       "revision": "clay-garden-court-senior-residence-clay-v006",
       "dimensions_m": [
-        90,
-        88,
+        74.5,
+        65,
         15.050000190734863
       ],
       "storeys": 3,
@@ -1150,9 +1150,9 @@
       "variant_id": "gastown_italianate",
       "revision": "clay-gastown-heritage-commercial-clay-v003",
       "dimensions_m": [
-        82,
-        61.39999961853027,
-        20.559999465942383
+        27.899999618530273,
+        25.5,
+        20.259611129760742
       ],
       "storeys": 3,
       "fixed": true,
@@ -1163,9 +1163,9 @@
       "variant_id": "georgian_clapboard_original",
       "revision": "clay-halifax-georgian-colonial-clay-v003",
       "dimensions_m": [
-        51.39999961853027,
-        47.81999969482422,
-        16.5
+        22.285625457763672,
+        20.24226474761963,
+        15.819999694824219
       ],
       "storeys": 2,
       "fixed": true,
@@ -1176,8 +1176,8 @@
       "variant_id": "warehouse_privateers_wharf",
       "revision": "clay-halifax-waterfront-warehouse-clay-v006",
       "dimensions_m": [
-        60,
-        43.39999961853027,
+        26.84000015258789,
+        19.399999618530273,
         13.300000190734863
       ],
       "storeys": 2,
@@ -1189,8 +1189,8 @@
       "variant_id": "dark_panel_led_grow_block",
       "revision": "clay-led-grow-block-clay-v007",
       "dimensions_m": [
-        29.696476800800205,
-        30.255247130201496,
+        22.059999465942383,
+        23.059999465942383,
         32.65999984741211
       ],
       "storeys": 6,
@@ -1215,8 +1215,8 @@
       "variant_id": "old_mtl_french_colonial",
       "revision": "clay-old-montreal-limestone-commercial-clay-v004",
       "dimensions_m": [
-        128,
-        80,
+        108.83000183105469,
+        51.15999984741211,
         42.5
       ],
       "storeys": 3,
@@ -1228,8 +1228,8 @@
       "variant_id": "plus15_contemporary_glass",
       "revision": "clay-plus15-glass-office-tower-clay-v006",
       "dimensions_m": [
-        52,
-        83,
+        37.70000076293945,
+        65.85000038146973,
         82.66000366210938
       ],
       "storeys": 17,
@@ -1241,8 +1241,8 @@
       "variant_id": "midcentury_concrete_slab",
       "revision": "clay-slab-balcony-tower-clay-v007",
       "dimensions_m": [
-        37.357473373413086,
-        37.20000076293945,
+        26.399999618530273,
+        26.399999618530273,
         47
       ],
       "storeys": 13,
@@ -1254,8 +1254,8 @@
       "variant_id": "toronto_bay_gable_yellow_brick",
       "revision": "clay-toronto-bay-and-gable-house-clay-v004",
       "dimensions_m": [
-        23.550000190734863,
-        25.34999942779541,
+        8.399999618530273,
+        16.240000247955322,
         12.420000076293945
       ],
       "storeys": 2,

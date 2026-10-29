@@ -27,6 +27,7 @@ import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
+import { buildingOnlySelectionCoordinates } from '@/features/pickPlace/buildingOnlySelection';
 import { parkOutlineProblem } from '@/features/pickPlace/parkOutline';
 import { flexibleParkFitProblem, isFlexiblePark } from '@/features/parks/flexibleParkFit';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
@@ -1373,9 +1374,13 @@ export function ProjectViewPage() {
             zones={siteZones} onUpdateParkLayout={data => updateZone.mutateAsync({zoneId:selectedZone.id,data,previousData:{coordinates:selectedZone.coordinates,properties:selectedZone.properties}})}
             onUpdateDesign={properties => {
               const footprintChanged=properties.building_footprint_scale!==selectedZone.properties?.building_footprint_scale;
-              const problem=footprintChanged ? placementProblem(selectedZone.coordinates,siteZones,getActiveSiteBoundary(siteZones),selectedZone.id,{properties}) : null;
+              const nextAsset=assetForZone({properties});
+              const coordinates=nextAsset ? buildingOnlySelectionCoordinates(selectedZone,nextAsset) : selectedZone.coordinates;
+              const resized=coordinates!==selectedZone.coordinates;
+              const problem=footprintChanged || resized ? placementProblem(coordinates,siteZones,getActiveSiteBoundary(siteZones),selectedZone.id,{properties}) : null;
               if(problem){toast.error(problem,{position:'top-center'});return;}
-              updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } });
+              updateZone.mutate({ zoneId: selectedZone.id, data: { properties,...(resized?{coordinates}:{}) },
+                previousData: { properties: selectedZone.properties,...(resized?{coordinates:selectedZone.coordinates}:{}) } });
             }}
             onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
             onConnections={()=>setConnectionZoneId(selectedZone.id)}

@@ -4,13 +4,14 @@ import { assetForZone, placeAsset, placementProperties } from './catalogue';
 import { CALGARY_LOCAL_PLACEMENT, CALGARY_LOCAL_WIDTH_M, isCalgaryLocalRoute } from './streetPlacement';
 
 describe('placeable asset registry', () => {
-  it('describes isolated models as buildings while preserving their saved placement contracts', () => {
+  it('describes isolated models as buildings with their retained architecture dimensions', () => {
     const cbe=placeAsset('claude_trial_calgary_cbe_brutalist_hq');
     expect(cbe.description).toContain('Building only');
     expect(cbe.reshapeDescription).not.toContain('surrounding geometry');
     expect(cbe.model.revision).toBe('clay-calgary-cbe-brutalist-hq-clay-v004');
-    expect(cbe.nativeDimensions).toEqual([84.9000015258789,89.54999923706055,28.3700008392334]);
-    expect(cbe.width).toBe(88);
+    expect(cbe.nativeDimensions?.[0]).toBeCloseTo(43.3,4);
+    expect(cbe.nativeDimensions?.[1]).toBeCloseTo(40.6,4);
+    expect(cbe.width).toBe(43.4);
   });
   it('rejects duplicate identities, incompatible categories and mismatched variants', () => {
     expect(validateRegistry(CATALOGUE_ASSETS)).toEqual([]);
