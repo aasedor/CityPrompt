@@ -36,6 +36,10 @@
 
 ## Verified source checkpoint
 
+This initial checkpoint is retained as history. Subsequent OAuth code-exchange,
+deployment-secret, public-environment and student-UI verification is recorded in
+[`FINAL_CANDIDATE_SECURITY_2026-10-30.md`](../../FINAL_CANDIDATE_SECURITY_2026-10-30.md).
+
 - `5f546df5895f1d44d58adf682e7bacb765b6de28`: account/session, upload-resource and background-job hardening, additive migrations032/033, quota admission, frontend refresh/cache compatibility and regression tests.
 - `fcca92f23d762fa69e7735142667a36bd942740a`: compatible dependency security upgrades with explicit cached U2-Net selection.
 - `b209537c870c0c8fb6922d62235c114ead38eb2b`: validated queue names preserve production defaults and allow local/staging worker isolation;81 focused checks passed, with14 opt-in skips.

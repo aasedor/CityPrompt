@@ -1,5 +1,10 @@
 # Company review handoff — 29 October 2026
 
+For the subsequent account, upload and job-access fixes and their remaining
+release gates, read the [October 30 security and QA checkpoint](FINAL_CANDIDATE_SECURITY_2026-10-30.md).
+The dated results below describe the earlier checkpoint and are retained as
+historical evidence.
+
 Use an explicitly supplied review commit and its matching assets. The reviewed
 desktop is usable locally, but it depends on an ignored runtime profile,
 external hydrated files and existing database/storage state. This document does
