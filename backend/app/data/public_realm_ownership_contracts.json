@@ -392,13 +392,13 @@
       ]
     },
     "sourceTriangles": 76684,
-    "retainedTriangles": 48576,
+    "retainedTriangles": 48600,
     "meshTriangles": {
       "CLAY_WATER": 0,
       "CLAY_QUAY": 0,
       "CLAY_ASPHALT": 12,
       "CLAY_PAVING": 24,
-      "CLAY_WHITE": 264,
+      "CLAY_WHITE": 288,
       "CLAY_JOINT": 5760,
       "CLAY_TIMBER": 0,
       "CLAY_PLANTING": 0,
@@ -902,7 +902,7 @@
         "adaptation": "closed finite intersection of the original bank footprint with the retained source envelope"
       }
     ],
-    "runtimeTriangles": 48976,
-    "ownershipSha256": "5aab6b165834398fbe0f2a7d154e0a65edd21bb112849235be65f3c953ad7337"
+    "runtimeTriangles": 49000,
+    "ownershipSha256": "34bdd8b415d78249d1075456abcf3c3c67da394f9a6763d23b4e0218601c938e"
   }
 }

@@ -1411,7 +1411,7 @@
           "road_selected_variant_id": "urban_vehicular_bridge_v0",
           "public_realm_release_asset": "claude_public_realm:stone-arch-road-bridge-compact-r002:5300077e633c",
           "native_public_realm_url": "/street-kits/claude-20261023/5300077e633cecc901ef86bb0a78e0b7bd0dce0588c613becbb2195b92337d6d.glb",
-          "public_realm_ownership_sha256": "5aab6b165834398fbe0f2a7d154e0a65edd21bb112849235be65f3c953ad7337"
+          "public_realm_ownership_sha256": "34bdd8b415d78249d1075456abcf3c3c67da394f9a6763d23b4e0218601c938e"
         },
         "maxWidth": 77.6,
         "maxDepth": 27.2
@@ -1429,7 +1429,7 @@
         "surfaceRegions": [],
         "preserveNativeGround": true,
         "centerNativeClay": true,
-        "ownershipSha256": "5aab6b165834398fbe0f2a7d154e0a65edd21bb112849235be65f3c953ad7337"
+        "ownershipSha256": "34bdd8b415d78249d1075456abcf3c3c67da394f9a6763d23b4e0218601c938e"
       }
     },
     {
