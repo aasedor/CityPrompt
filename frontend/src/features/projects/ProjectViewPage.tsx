@@ -1267,6 +1267,7 @@ export function ProjectViewPage() {
               discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />}>
             {activeStudentStep !== 'design' && !showGlobeRender && !showVideoRender && <StudentStepPanel
               siteOptions={null}
+              walkControls={<div ref={setWalkControlTarget} />}
               step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}
               drawingSite={activeSitePlannerTool === 'site_boundary'} location={project.location?.address}
               canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}
@@ -1296,7 +1297,6 @@ export function ProjectViewPage() {
               streetInPlacement
               advancedSlot={<div ref={setMapToolsTarget} className="grid gap-2" aria-label="3D viewing tools" />}
               placementSlot={<PlacementPalette projectId={id} primaryAction={<div className="grid gap-2">
-                <div ref={setWalkControlTarget} />
                 <button type="button"
                   onClick={async () => {
                     const result = await projectDetails.refetch();

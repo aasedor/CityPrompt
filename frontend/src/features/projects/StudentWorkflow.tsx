@@ -44,9 +44,9 @@ export function StudentWorkflowNav({ step, onChange }: {
   </nav>;
 }
 
-export function StudentStepPanel({ step, hasSite, drawingSite = false, location, siteOptions, canRender, renderReason, landscapeNeedsRefresh = false, automatic3DStatus = 'idle', automatic3DMessage = '', onSite, onDesign, onImage, onVideo, onRefreshLandscape, onRetry3D }: {
+export function StudentStepPanel({ step, hasSite, drawingSite = false, location, siteOptions, walkControls, canRender, renderReason, landscapeNeedsRefresh = false, automatic3DStatus = 'idle', automatic3DMessage = '', onSite, onDesign, onImage, onVideo, onRefreshLandscape, onRetry3D }: {
   step: 'site' | 'present'; hasSite: boolean; location?: string | null;
-  drawingSite?: boolean; siteOptions?: ReactNode;
+  drawingSite?: boolean; siteOptions?: ReactNode; walkControls?: ReactNode;
   canRender: boolean; renderReason: string; streetAccessNotice?: string | null; landscapeNeedsRefresh?: boolean;
   automatic3DStatus?: 'idle' | 'updating' | 'ready' | 'error'; automatic3DMessage?: string;
   onSite: () => void; onDesign: () => void; onImage: () => void; onVideo: () => void; onRefreshLandscape: () => void; onRetry3D?: () => void;
@@ -84,6 +84,7 @@ export function StudentStepPanel({ step, hasSite, drawingSite = false, location,
       </div>}
       <button type="button" className={`${action} bg-[#c9ff3d] disabled:opacity-50`} disabled={!canRender} onClick={onImage}><Camera size={18} aria-hidden />Image</button>
       <button type="button" className={`${action} bg-white disabled:opacity-50`} disabled={!canRender} onClick={onVideo}><Video size={18} aria-hidden />{videoEnabled ? 'Video' : 'Video preview · free'}</button>
+      {walkControls}
       {!canRender && (automatic3DStatus === 'idle' || automatic3DStatus === 'ready') && <p role="status" className="text-sm text-slate-700">{renderReason}</p>}
       <button type="button" className={`${action} border-transparent underline`} onClick={onDesign}>Back to design</button>
     </>}
