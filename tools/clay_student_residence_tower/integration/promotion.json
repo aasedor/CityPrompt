@@ -52,7 +52,12 @@
   },
   "model_file": "../candidates/clay-student-residence-tower-clay-v004.glb",
   "review_file": "independent-review.json",
-  "approval": {},
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74"
+  },
   "trial": {
     "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
     "checks": {

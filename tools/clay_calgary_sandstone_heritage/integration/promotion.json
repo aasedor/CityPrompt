@@ -51,7 +51,12 @@
   },
   "model_file": "../candidates/clay-calgary-sandstone-heritage-clay-v006.glb",
   "review_file": "source-review-adapter.json",
-  "approval": {},
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7"
+  },
   "trial": {
     "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
     "project_url": "http://127.0.0.1:5176/projects/2715f44e-9ca9-4fc7-976f-350302496ccc",

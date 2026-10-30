@@ -51,7 +51,12 @@
   },
   "model_file": "../candidates/clay-climbing-reef-clay-v009.glb",
   "review_file": "source-review-adapter.json",
-  "approval": {},
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab"
+  },
   "trial": {
     "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
     "project_url": "http://127.0.0.1:5176/projects/2715f44e-9ca9-4fc7-976f-350302496ccc",

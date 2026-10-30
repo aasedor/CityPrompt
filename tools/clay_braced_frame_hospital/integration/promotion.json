@@ -52,7 +52,12 @@
   },
   "model_file": "../candidates/clay-braced-frame-hospital-clay-v006.glb",
   "review_file": "independent-review.json",
-  "approval": {},
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad"
+  },
   "trial": {
     "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad",
     "checks": {

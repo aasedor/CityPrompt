@@ -52,7 +52,12 @@
   },
   "model_file": "../candidates/clay-cantilever-fire-station-clay-v010.glb",
   "review_file": "independent-review.json",
-  "approval": {},
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be"
+  },
   "trial": {
     "model_sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be",
     "checks": {

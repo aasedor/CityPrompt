@@ -51,7 +51,12 @@
   },
   "model_file": "../candidates/clay-climbing-overhang-clay-v007.glb",
   "review_file": "source-review-adapter.json",
-  "approval": {},
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c"
+  },
   "trial": {
     "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
     "project_url": "http://127.0.0.1:5176/projects/2715f44e-9ca9-4fc7-976f-350302496ccc",
