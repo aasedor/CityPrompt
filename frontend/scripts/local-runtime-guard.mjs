@@ -39,14 +39,14 @@ export async function verifyLocalRuntime(env, audit) {
 }
 
 /** Runs for direct Vite launches too; npm lifecycle hooks can be bypassed. */
-export function localRuntimeGuard() {
+export function localRuntimeGuard(publicEnv) {
   return {
     name: 'cityprompt-local-runtime-guard',
     apply: 'serve',
     async configureServer(server) {
       // The catalogue audit loads modules through Vite without serving an app.
       if (server.config.server.middlewareMode || server.config.mode === 'test') return;
-      await verifyLocalRuntime(server.config.env, async () => {
+      await verifyLocalRuntime(publicEnv ?? server.config.env, async () => {
         try {
           const { stdout } = await run(process.execPath, [join(server.config.root, 'scripts/check-catalogue-delivery.mjs')], {
             cwd: server.config.root, env: process.env, timeout: 120000, maxBuffer: 1024 * 1024,

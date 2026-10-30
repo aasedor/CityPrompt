@@ -47,3 +47,19 @@ test('explicit offline test mode needs no provider key while normal development 
     /VITE_GOOGLE_MAPS_API_KEY is missing/,
   );
 });
+
+test('exact public configuration still permits the real startup audit when automatic env exposure is disabled', async t => {
+  const root = mkdtempSync(join(tmpdir(), 'cityprompt-runtime-'));
+  t.after(() => {
+    assert.equal(dirname(resolve(root)), resolve(tmpdir()));
+    assert.ok(basename(root).startsWith('cityprompt-runtime-'));
+    rmSync(root, { recursive: true, force: true });
+  });
+  mkdirSync(join(root, 'scripts'));
+  writeFileSync(join(root, 'scripts/check-catalogue-delivery.mjs'), 'console.log("Synthetic catalogue passed");');
+  const messages = [];
+  await localRuntimeGuard({ VITE_GOOGLE_MAPS_API_KEY: 'synthetic-public-maps' }).configureServer({
+    config: { mode: 'development', root, server: {}, env: {}, logger: { info: message => messages.push(message) } },
+  });
+  assert.deepEqual(messages, ['Synthetic catalogue passed']);
+});
