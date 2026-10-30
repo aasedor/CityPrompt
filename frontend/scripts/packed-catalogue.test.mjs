@@ -116,13 +116,17 @@ for (const filename of ['streetManual.json', 'nativeStreetModuleBounds.json']) {
   });
 }
 
-test('packing uses the smaller of two bounded lossless compression profiles', () => {
+test('packing creates smaller street output without regressing the previous building output', () => {
   for (const filename of ['nativeStreetPilots.json', 'buildingArchetypes.json']) {
     const source = readFileSync(resolve('src/data', filename), 'utf8');
     const canonical = source.replace(/("(?:\\.|[^"\\])*")|\s+/g, (_match, quoted) => quoted ?? '');
     const candidates = [8, 6].map(memLevel => deflateSync(Buffer.from(canonical), { level: 9, memLevel }));
     const smallest = candidates.reduce((a, b) => b.length < a.length ? b : a);
-    assert.ok(packCatalogue(source).includes(JSON.stringify(smallest.toString('base64'))), filename);
+    const packed = packCatalogue(source).match(/atob\(("[A-Za-z0-9+/=]+")\)/);
+    assert.ok(packed, filename);
+    const emitted = Buffer.from(JSON.parse(packed[1]), 'base64');
+    assert.ok(emitted.length <= smallest.length, filename);
+    if (filename === 'nativeStreetPilots.json') assert.ok(emitted.length < smallest.length * 0.99, 'Create headroom for account security without relaxing the bundle budget');
   }
 });
 
