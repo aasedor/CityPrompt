@@ -72,6 +72,32 @@ describe('useSiteZones', () => {
     });
   });
 
+  it('opens the new parking capacity panel after save without leaving students drawing another outline', async () => {
+    const created = { ...makeZone(REAL_ZONE_ID), zone_type: 'parking' as const,
+      properties: { ground_surface_material: 'asphalt', parking_layout_version: 1, parking_row_direction: 'auto' } };
+    vi.mocked(siteZonesApi.create).mockResolvedValue(created);
+    useViewerStore.setState({ activeSitePlannerTool: 'parking' });
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+    act(() => result.current.handleZoneCreated(created.coordinates, 'parking', created.properties));
+    await waitFor(() => expect(useViewerStore.getState().selectedZoneId).toBe(REAL_ZONE_ID));
+    expect(useViewerStore.getState().activeSitePlannerTool).toBeNull();
+  });
+  it('does not cancel a newer parking outline when the previous lot finishes saving late', async () => {
+    const created = { ...makeZone(REAL_ZONE_ID), zone_type: 'parking' as const,
+      properties: { ground_surface_material: 'asphalt', parking_layout_version: 1, parking_row_direction: 'auto' } };
+    let complete!: (zone: SiteZone) => void;
+    vi.mocked(siteZonesApi.create).mockReturnValue(new Promise<SiteZone>(resolve => { complete = resolve; }));
+    useViewerStore.setState({ activeSitePlannerTool: 'parking' });
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+    act(() => result.current.handleZoneCreated(created.coordinates, 'parking', created.properties));
+    await waitFor(() => expect(siteZonesApi.create).toHaveBeenCalled());
+    act(() => useViewerStore.setState({ activeSitePlannerTool: 'parking', selectedZoneId: null }));
+    await act(async () => complete(created));
+    await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
+    expect(useViewerStore.getState().activeSitePlannerTool).toBe('parking');
+    expect(useViewerStore.getState().selectedZoneId).toBeNull();
+  });
+
   it('handleZoneUpdated skips the API for temp ids and updates the cache only', () => {
     queryClient.setQueryData(['site-zones', PROJECT_ID], [makeZone(TEMP_ZONE_ID)]);
     const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });

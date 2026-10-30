@@ -1,5 +1,7 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import {groundSurfaceFor,createGroundSurfaceTexture} from '@/features/groundSurfaces/groundSurfaces';
+import { isDrawnParking } from '@/features/parks/drawnParking';
+import { createDrawnParkingTexture } from '@/features/parks/drawnParkingTexture';
 import { useSiteLandscapeTexture } from '@/features/siteLandscape/useSiteLandscapeTexture';
 /**
  * GlobeZoneLayer.tsx — Renders SiteForge zones on the 3D tile globe.
@@ -467,7 +469,8 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
   const isSiteBoundary = zone.zone_type === 'site_boundary';
   const isWaterSurface = zone.zone_type === 'water';
   const surfaceFinish=groundSurfaceFor(zone);
-  const surfaceTexture=useMemo(()=>surfaceFinish?createGroundSurfaceTexture(surfaceFinish):null,[surfaceFinish]);
+  const parkingSurface=useMemo(()=>isDrawnParking(zone)?createDrawnParkingTexture(zone):null,[zone]);
+  const surfaceTexture=useMemo(()=>parkingSurface?.texture??(surfaceFinish?createGroundSurfaceTexture(surfaceFinish):null),[surfaceFinish,parkingSurface]);
   useDeferredDisposable(surfaceTexture);
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
   const boundaryOpacity = siteBoundaryOpacity(zone.properties);
@@ -674,9 +677,10 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
     if(!surfaceFinish||!geoData?.flatTopGeo)return null;
     const geometry=geoData.flatTopGeo.clone(),p=geometry.getAttribute('position');
     const uv=new THREE.Float32BufferAttribute(p.count*2,2);
-    for(let i=0;i<p.count;i++)uv.setXY(i,p.getX(i)/2,p.getY(i)/2);
+    for(let i=0;i<p.count;i++)uv.setXY(i,parkingSurface?(p.getX(i)-parkingSurface.minX)/parkingSurface.widthM:p.getX(i)/2,
+      parkingSurface?(p.getY(i)-parkingSurface.minY)/parkingSurface.heightM:p.getY(i)/2);
     geometry.setAttribute('uv',uv);return geometry;
-  },[surfaceFinish,geoData]);
+  },[surfaceFinish,geoData,parkingSurface]);
   useDeferredDisposable(surfaceGeo);
 
   const preparedEdgeProfile = useMemo(() => isPreparedBoundary ? readPreparedEdges(zone) : null, [isPreparedBoundary, zone]);

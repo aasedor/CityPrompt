@@ -1,5 +1,6 @@
 import type { SiteZone } from '@/types';
 import { groundSurfaceFor } from './groundSurfaces';
+import { isDrawnParking, parkingRowDirection } from '@/features/parks/drawnParking';
 
 export interface AuthoredSurfaceClaim { zone_id: string; source_hash: string }
 
@@ -24,7 +25,9 @@ function canonicalRing(coordinates: number[][]): string {
 export function authoredSurfaceSourceIdentity(zone: SiteZone): string | null {
   const finish = groundSurfaceFor(zone);
   if (zone.zone_type === 'site_boundary' || zone.properties?._plan_role === 'framework_height' || !finish) return null;
-  return JSON.stringify(['cityprompt.authored-surface@1', finish.id, [canonicalRing(zone.coordinates)]]);
+  const payload: unknown[] = ['cityprompt.authored-surface@1', finish.id, [canonicalRing(zone.coordinates)]];
+  if (isDrawnParking(zone)) payload.push(['parking@1', parkingRowDirection(zone)]);
+  return JSON.stringify(payload);
 }
 
 export function authoredSurfaceRevision(zones: SiteZone[]): string {

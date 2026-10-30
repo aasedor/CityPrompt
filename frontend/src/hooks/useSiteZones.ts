@@ -1,4 +1,5 @@
 import { hasNativePark, nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
+import { isDrawnParking } from '@/features/parks/drawnParking';
 import { runProjectWrite } from '@/utils/projectWriteQueue';
 import { mergeSavedSiteLandscape } from '@/features/siteLandscape/automaticSiteTrees';
 import {boundaryEditProblem} from '@/features/pickPlace/boundaryEdit';
@@ -132,6 +133,11 @@ export function useSiteZones(projectId: string | undefined) {
         properties: vars.properties,
       };
       upsertDraft(draft);
+      const viewer = useViewerStore.getState();
+      if (isDrawnParking(vars) && viewer.activeSitePlannerTool === 'parking' && useUndoRedoStore.getState().projectId === projectId) {
+        viewer.setActiveSitePlannerTool(null);
+        viewer.selectZone(`temp-${vars.requestId}`);
+      }
       return { draft, optimisticId: `temp-${vars.requestId}` };
     },
     onSuccess: (createdZone, _vars, context) => {
@@ -153,6 +159,12 @@ export function useSiteZones(projectId: string | undefined) {
         useUndoRedoStore.getState().pushAction(
           createZoneCreateAction(projectId, createdZone, queryClient),
         );
+      }
+      if (isDrawnParking(createdZone)) {
+        const viewer = useViewerStore.getState();
+        if (viewer.activeSitePlannerTool === null && viewer.selectedZoneId === context?.optimisticId) {
+          viewer.selectZone(createdZone.id);
+        }
       }
       if (createdZone.zone_type === 'site_boundary') {
         // A project can have only one active boundary. Leave drawing mode and

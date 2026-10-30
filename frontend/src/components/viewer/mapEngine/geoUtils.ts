@@ -21,6 +21,7 @@ for (const option of [
 
 export function resolveZoneLabel(zone: SiteZone): string {
   const props = zone.properties || {};
+  if (props.parking_layout_version === 1 && props.ground_surface_material === 'asphalt') return 'Parking lot';
   for (const prefix of ['development', 'green_space', 'road', 'plaza'] as const) {
     const subcategoryId = props[`${prefix}_subcategory`] as string | undefined;
     const archetypeId = props[`${prefix}_archetype_id`] as string | undefined;

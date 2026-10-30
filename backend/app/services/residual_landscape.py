@@ -144,6 +144,14 @@ def authored_surface_source_hash(geometry: BaseGeometry, properties: dict[str, A
         *sorted(canonical_ring(ring.coords) for ring in geometry.interiors),
     ]
     payload = ["cityprompt.authored-surface@1", material, rings]
+    props = properties or {}
+    if (
+        material == "asphalt"
+        and type(props.get("parking_layout_version")) is int
+        and props["parking_layout_version"] == 1
+    ):
+        direction = props.get("parking_row_direction")
+        payload.append(["parking@1", direction if direction in ("along", "across") else "auto"])
     return hashlib.sha256(json.dumps(payload, separators=(",", ":")).encode("utf-8")).hexdigest()
 
 

@@ -8,6 +8,7 @@ from shapely.geometry import Polygon, box, shape
 from shapely.ops import transform, unary_union
 
 from app.services.residual_landscape import (
+    authored_surface_source_hash,
     community_3d_kind_for_source,
     ResidualSourceZone,
     build_residual_landscape_recipe,
@@ -548,3 +549,15 @@ def test_shared_stale_transition_is_idempotent_and_preserves_diagnostics():
         "stale_reason": "Floors changed",
     }
     assert not mark_community_3d_stale(zone, reason="Repeated change")
+
+
+def test_drawn_parking_capture_tracks_recipe_and_row_direction():
+    geometry = box(-114.08, 51.04, -114.079, 51.041)
+    props = {"ground_surface_material": "asphalt"}
+    plain = authored_surface_source_hash(geometry, props)
+    props.update(parking_layout_version=1, parking_row_direction="auto")
+    automatic = authored_surface_source_hash(geometry, props)
+    assert automatic == "2a608fc376cb58d3a79ce75cb192867f01d62e1ca66edd7a25fb93d9526a4cf5"
+    assert automatic != plain
+    props["parking_row_direction"] = "across"
+    assert authored_surface_source_hash(geometry, props) != automatic

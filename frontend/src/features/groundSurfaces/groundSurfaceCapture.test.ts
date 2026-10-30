@@ -43,3 +43,15 @@ it('excludes unknown finishes and framework/boundary overlays', async () => {
   const boundary = finish(); boundary.zone_type = 'site_boundary';
   expect(await getAuthoredSurfaceCaptureClaims([unknown, framework, boundary])).toEqual([]);
 });
+
+it('invalidates a parking capture when automatic stall layout or row direction changes', async () => {
+  const zone = finish(); zone.properties = { ground_surface_material: 'asphalt' };
+  const plain = authoredSurfaceRevision([zone]);
+  zone.properties.parking_layout_version = 1;
+  zone.properties.parking_row_direction = 'auto';
+  const automatic = authoredSurfaceRevision([zone]);
+  expect((await getAuthoredSurfaceCaptureClaims([zone]))[0].source_hash).toBe('2a608fc376cb58d3a79ce75cb192867f01d62e1ca66edd7a25fb93d9526a4cf5');
+  expect(automatic).not.toBe(plain);
+  zone.properties.parking_row_direction = 'across';
+  expect(authoredSurfaceRevision([zone])).not.toBe(automatic);
+});

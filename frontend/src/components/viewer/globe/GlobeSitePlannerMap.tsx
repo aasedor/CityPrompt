@@ -5270,7 +5270,7 @@ export function GlobeSitePlannerMap({
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;
         const tool = activeSitePlannerTool!;
-        const label = activeToolProperties?.ground_surface_material ? 'Ground surface' : activeToolProperties?.cartography_study ? 'Land-use zone' : getToolDisplayLabel(tool);
+        const label = activeToolProperties?.parking_layout_version === 1 ? 'Parking lot' : activeToolProperties?.ground_surface_material ? 'Ground surface' : activeToolProperties?.cartography_study ? 'Land-use zone' : getToolDisplayLabel(tool);
         const min = minPointsForTool(tool);
         const linear = isLinearTool(tool);
 
