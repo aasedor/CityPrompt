@@ -5,7 +5,7 @@ import {AnimateRenderButton} from './AnimateRenderButton';
  * is placed on the map. Shows compass direction, rotation controls, and a
  * generate button. Displays the rendered street view in a modal.
  */
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import { Eye, ArrowLeft, ArrowRight, Loader2, X, Download, Save, Wand2 } from 'lucide-react';
 import { useViewerStore } from '@/store';
 import {
@@ -23,6 +23,8 @@ import { RenderEditModal } from './RenderEditModal';
 import { DIRECT_3D_ALLOWED_STYLES, resolveDirect3DPresentationMode, useDirect3DRender } from './globe/useDirect3DRender';
 import { collectDirect3DArchetypeReferences } from './globe/direct3dArchetypeReferences';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
+import { authoredSurfaceRevision, getAuthoredSurfaceCaptureClaims, type AuthoredSurfaceClaim } from '@/features/groundSurfaces/groundSurfaceCapture';
+import { groundSurfaceFor } from '@/features/groundSurfaces/groundSurfaces';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
 import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
 import { ImageModelSelect } from './ImageModelSelect';
@@ -143,7 +145,12 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
     () => globeCapture ? getCommunity3DCaptureClaims(siteZones, buildings ?? []) : null,
     [globeCapture, siteZones, buildings],
   );
-  const needsCommunity3D = Boolean(directStreetMode && globeCapture && (!currentSceneClaims || (!currentSceneClaims.length && detailsRevision === undefined)));
+  const currentSurfaceZones = useRef(siteZones);
+  currentSurfaceZones.current = siteZones;
+  const hasAuthoredSurface = siteZones.some(zone => zone.zone_type !== 'site_boundary'
+    && zone.properties?._plan_role !== 'framework_height' && groundSurfaceFor(zone));
+  const needsCommunity3D = Boolean(directStreetMode && globeCapture && (!currentSceneClaims
+    || (!currentSceneClaims.length && !hasAuthoredSurface && detailsRevision === undefined)));
   const previewStreetSource = async () => {
     if (!globeCapture || !streetViewPegman?.position || isPreviewing) return;
     const position = JSON.stringify(streetViewPegman.position);
@@ -208,7 +215,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
       toast.error('Your selected image engine is unavailable. Choose an available engine.');
       return;
     }
-    if (directStreetMode && (!currentSceneClaims || (!currentSceneClaims.length && detailsRevision === undefined))) {
+    if (directStreetMode && (!globeCapture || needsCommunity3D)) {
       toast.error('Wait for the automatic 3D update before rendering this street view.');
       return;
     }
@@ -240,9 +247,19 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
       let overrideAspectRatio: string | undefined;
       let overrideSemanticGuide: string | undefined;
       let streetCapture: StreetCaptureResult | null = null;
+      let authoredSurfaceClaims: AuthoredSurfaceClaim[] = [];
       if (globeCapture) {
         console.log('[StreetViewPanel] Capturing globe scene from street level...');
-        streetCapture = await globeCapture();
+        const surfaceRevision = directStreetMode ? authoredSurfaceRevision(currentSurfaceZones.current) : null;
+        const [surfaceClaims, captured] = await Promise.all([
+          directStreetMode ? getAuthoredSurfaceCaptureClaims(currentSurfaceZones.current) : Promise.resolve([]),
+          globeCapture(),
+        ]);
+        if (directStreetMode && surfaceRevision !== authoredSurfaceRevision(currentSurfaceZones.current)) {
+          throw new Error('Ground surfaces changed during capture. Capture the current scene again.');
+        }
+        streetCapture = captured;
+        authoredSurfaceClaims = surfaceClaims;
         if (streetCapture) {
           overrideGuideImage = streetCapture.imageBase64;
           overrideGuideKind = streetCapture.kind;
@@ -281,6 +298,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
             style: directStyle,
             projectId,
             community3DClaims: claims,
+            authoredSurfaceClaims,
             detailsRevision,
             residualLandscapeClaim: getCurrentResidualLandscapeClaim(siteZones),
             viewMode: 'street',
@@ -436,7 +454,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, detailsRevision, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, needsCommunity3D, detailsRevision, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
 
   const handleDownload = useCallback(async () => {
     if (!result?.imageUrl || result.error) return;

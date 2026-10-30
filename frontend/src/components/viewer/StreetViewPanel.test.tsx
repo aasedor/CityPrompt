@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/vitest';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import type { SiteZone } from '@/types';
 
 const mocks = vi.hoisted(() => ({ direct: vi.fn(), classic: vi.fn(), save: vi.fn(), imageModels: vi.fn(), references: vi.fn(), claims: vi.fn() }));
 vi.mock('@/store', () => ({ useViewerStore: () => ({ streetViewPegman: { position: [-114, 51], angle: 0 }, setStreetViewAngle: vi.fn(), setStreetViewPosition: vi.fn(), setStreetViewActive: vi.fn() }) }));
@@ -16,7 +17,66 @@ vi.mock('react-hot-toast', () => ({ default: Object.assign(vi.fn(), { error: vi.
 
 import { StreetViewPanel } from './StreetViewPanel';
 
+const surface = (parking = false): SiteZone => ({
+  id: 'surface', zone_type: 'development_area', project_id: 'project-1',
+  coordinates: [[-114.08,51.04],[-114.079,51.04],[-114.079,51.041],[-114.08,51.041]],
+  color: '#303336', sort_order: 0, created_at: '', updated_at: '',
+  properties: parking ? {ground_surface_material:'asphalt',parking_layout_version:1,parking_row_direction:'auto'}
+    : {ground_surface_material:'black_pavers'},
+});
+
 describe('student street render', () => {
+  it.each([
+    [false, 'd0b0d2c05786a8fe8d4284b35862a1c888dec5fd144d8254cbaf003d66869cff'],
+    [true, '2a608fc376cb58d3a79ce75cb192867f01d62e1ca66edd7a25fb93d9526a4cf5'],
+  ] as const)('includes unchanged authored surfaces in the street capture (parking=%s)', async (parking, hash) => {
+    const capture=vi.fn().mockResolvedValue({kind:'model3d',direct3d:{}});
+    render(<StreetViewPanel siteZones={[surface(parking)]} projectId="project-1" globeCapture={capture}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Render'}));
+    await waitFor(()=>expect(mocks.direct).toHaveBeenCalledOnce());
+    expect(mocks.direct.mock.calls[0][1].authoredSurfaceClaims).toEqual([{zone_id:'surface',source_hash:hash}]);
+    expect(capture).toHaveBeenCalledOnce();
+  });
+
+  it('renders an authored-surface-only scene without requiring archetype compilation', async () => {
+    mocks.claims.mockReturnValue([]);
+    render(<StreetViewPanel siteZones={[surface()]} projectId="project-1"
+      globeCapture={vi.fn().mockResolvedValue({kind:'model3d',direct3d:{}})}/>);
+    expect(screen.getByRole('button',{name:'Render'})).toBeEnabled();
+    fireEvent.click(screen.getByRole('button',{name:'Render'}));
+    await waitFor(()=>expect(mocks.direct).toHaveBeenCalledOnce());
+    expect(mocks.direct.mock.calls[0][1]).toMatchObject({community3DClaims:[],authoredSurfaceClaims:[{zone_id:'surface'}]});
+  });
+
+  it('does not send a Direct street attempt to a classic provider if its capture becomes unavailable', () => {
+    const capture=vi.fn();
+    const {rerender}=render(<StreetViewPanel siteZones={[surface()]} projectId="project-1" globeCapture={capture}/>);
+    rerender(<StreetViewPanel siteZones={[surface()]} projectId="project-1"/>);
+    fireEvent.click(screen.getByRole('button',{name:'Render'}));
+    expect(mocks.classic).not.toHaveBeenCalled();
+    expect(mocks.direct).not.toHaveBeenCalled();
+  });
+
+  it.each(['material','geometry','parking direction'] as const)('stops before an image request when %s changes during capture', async change => {
+    const zone=surface(change==='parking direction');
+    let finishCapture=()=>{};
+    const capture=vi.fn().mockImplementation(()=>new Promise(resolve=>{
+      finishCapture=()=>resolve({kind:'model3d',direct3d:{}});
+    }));
+    const {rerender}=render(<StreetViewPanel siteZones={[zone]} projectId="project-1" globeCapture={capture}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Render'}));
+    await waitFor(()=>expect(capture).toHaveBeenCalledOnce());
+    const changed={...zone,properties:{...zone.properties},coordinates:zone.coordinates.map(point=>[...point])};
+    if(change==='material') changed.properties.ground_surface_material='red_brick';
+    else if(change==='geometry') changed.coordinates[1][0]+=.0001;
+    else changed.properties.parking_row_direction='across';
+    rerender(<StreetViewPanel siteZones={[changed]} projectId="project-1" globeCapture={capture}/>);
+    await act(async()=>finishCapture());
+    await waitFor(()=>expect(screen.getByRole('button',{name:'Render'})).toBeEnabled());
+    expect(mocks.direct).not.toHaveBeenCalled();
+    expect(mocks.classic).not.toHaveBeenCalled();
+  });
+
   it('keeps the clean source and review warnings alongside a processed finish and its AI original', async () => {
     const saved = { id: 'aligned', image_url: '/aligned.png', prompt: 'finish' };
     mocks.direct.mockResolvedValue({
@@ -81,8 +141,11 @@ describe('student street render', () => {
       { id: 'gpt-image-2', available: true },
     ],
   };
-  afterEach(cleanup);
-  beforeEach(() => {
+  afterEach(()=>{cleanup();vi.unstubAllGlobals();});
+  beforeEach(async () => {
+    const cryptoModule='node:crypto';
+    const {webcrypto}=await import(cryptoModule);
+    vi.stubGlobal('crypto',webcrypto);
     // Each case starts a fresh project preference; comparison tests persist
     // their engine choice just like the real student workflow.
     sessionStorage.removeItem('cityprompt:render-draft:project-1');
