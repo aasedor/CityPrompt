@@ -9,10 +9,12 @@ import math
 from typing import Literal
 
 import httpx
-from fastapi import APIRouter, Query, HTTPException
-from pydantic import BaseModel, field_validator
+from fastapi import APIRouter, Depends, Query, HTTPException, Request
+from pydantic import BaseModel, Field, field_validator
 
 from app.core.config import get_settings
+from app.core.provider_limits import admit_maps_request
+from app.core.security import get_current_user
 
 router = APIRouter()
 
@@ -25,17 +27,22 @@ class ElevationResponse(BaseModel):
     source: Literal["google_elevation", "renderer_fallback"]
     approximate: bool = True
     vertical_reference: Literal["mean_sea_level"] = "mean_sea_level"
-    unavailable_reason: Literal["not_configured", "network_error", "provider_error", "invalid_response"] | None = None
+    unavailable_reason: (
+        Literal["not_configured", "network_error", "provider_error", "invalid_response", "authentication_required"]
+        | None
+    ) = None
 
 
 class BatchElevationRequest(BaseModel):
-    points: list[list[float]]  # [[lng, lat], ...]
+    points: list[list[float]] = Field(max_length=4000)  # [[lng, lat], ...]
 
     @field_validator("points", mode="before")
     @classmethod
     def valid_coordinates(cls, points):
         if not isinstance(points, list):
             raise ValueError("Points must be a list of longitude/latitude pairs.")
+        if len(points) > 4000:
+            raise ValueError("Too many points (max 4000).")
         for point in points:
             if (
                 not isinstance(point, (list, tuple))
@@ -132,6 +139,18 @@ def estimate_geoid_undulation(lat: float, lng: float) -> float:
 
 
 @router.get("", response_model=ElevationResponse)
+async def read_elevation(
+    request: Request,
+    lat: float = Query(..., ge=-90, le=90, description="Latitude"),
+    lng: float = Query(..., ge=-180, le=180, description="Longitude"),
+    user=Depends(get_current_user),
+):
+    if user is None:
+        return _unavailable(lat, lng, "authentication_required")
+    await admit_maps_request(request, user)
+    return await get_elevation(lat, lng)
+
+
 async def get_elevation(
     lat: float = Query(..., ge=-90, le=90, description="Latitude"),
     lng: float = Query(..., ge=-180, le=180, description="Longitude"),
@@ -162,6 +181,17 @@ async def get_elevation(
 
 
 @router.post("/batch", response_model=BatchElevationResponse)
+async def read_elevation_batch(request: Request, body: BatchElevationRequest, user=Depends(get_current_user)):
+    if user is None:
+        return BatchElevationResponse(
+            elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in body.points],
+            statuses=["unavailable"] * len(body.points),
+            sources=["renderer_fallback"] * len(body.points),
+        )
+    await admit_maps_request(request, user, max(1, math.ceil(len(body.points) / 250)))
+    return await get_elevation_batch(body)
+
+
 async def get_elevation_batch(body: BatchElevationRequest):
     """Bare-earth ellipsoidal heights for many [lng, lat] points in one call.
 

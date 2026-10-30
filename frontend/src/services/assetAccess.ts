@@ -10,19 +10,33 @@ interface Options {
   fileTicket: (path: string) => Promise<TicketResponse>;
 }
 
-/** Cache identity only. The server still authenticates every ticket request and
- * protected download; decoding a JWT here does not establish authorization. */
-export function assetAccountIdentity(accessToken: string | null): string | null {
+function readAccessIdentity(accessToken: string | null): { subject: string; version: unknown } | null {
   if (!accessToken) return null;
   try {
     const parts = accessToken.split('.');
     if (parts.length !== 3) return null;
     const encoded = parts[1].replace(/-/g, '+').replace(/_/g, '/');
     const bytes = Uint8Array.from(atob(encoded.padEnd(Math.ceil(encoded.length / 4) * 4, '=')), (value) => value.charCodeAt(0));
-    const payload = JSON.parse(new TextDecoder().decode(bytes)) as { sub?: unknown; type?: unknown };
+    const payload = JSON.parse(new TextDecoder().decode(bytes)) as { sub?: unknown; type?: unknown; ver?: unknown };
     return payload.type === 'access' && typeof payload.sub === 'string' && payload.sub.trim()
-      ? payload.sub : null;
+      ? { subject: payload.sub, version: payload.ver } : null;
   } catch { return null; }
+}
+
+/** Stable user identity for durable recovery; token decoding grants no access. */
+export function assetAccountIdentity(accessToken: string | null): string | null {
+  return readAccessIdentity(accessToken)?.subject ?? null;
+}
+
+/** Ticket caches also follow revocation epochs, while ordinary rotation stays stable. */
+export function assetSessionIdentity(accessToken: string | null): string | null {
+  const identity = readAccessIdentity(accessToken);
+  if (!identity) return null;
+  const version = identity.version;
+  // Keep legacy tokens distinct from version 0; the server still rejects them.
+  if (version === undefined) return JSON.stringify([identity.subject, 'legacy']);
+  return typeof version === 'number' && Number.isInteger(version) && version >= 0
+    ? JSON.stringify([identity.subject, version]) : null;
 }
 
 /** Short-lived, scoped download credentials for image and GLTF elements. */

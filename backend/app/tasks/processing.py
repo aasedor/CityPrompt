@@ -355,7 +355,7 @@ def process_document(self, document_id: str, extract_only: bool = False):
 
     With extract_only=True (style-reference uploads for custom render zones),
     steps 4-6 are skipped: no AI interpretation, no Building records, no 3D
-    generation — only text/image extraction into Document.extracted_data.
+    generation — PDF references extract text without rasterization.
     """
     if settings.classroom_release and not extract_only:
         raise ValueError("Classroom document processing is extraction-only; no AI or model generation")
@@ -387,7 +387,17 @@ def process_document(self, document_id: str, extract_only: bool = False):
             tmp.write(file_data)
             tmp_path = tmp.name
 
-        extraction_result = extract_from_file(tmp_path, document.file_type)
+        extraction_result = extract_from_file(tmp_path, document.file_type, text_only=extract_only)
+        if extraction_result.errors:
+            # Invalid/over-budget sources are permanent input failures. Do not
+            # repeat the work, mark an empty reference completed, or call AI.
+            document.processing_status = "failed"
+            document.extracted_data = {
+                "error": "; ".join(extraction_result.errors),
+                "extraction": extraction_result.to_dict(),
+            }
+            session.commit()
+            return {"status": "failed", "document_id": document_id}
 
         self.update_state(state="PROCESSING", meta={"progress": 0.5, "step": "interpreting"})
 

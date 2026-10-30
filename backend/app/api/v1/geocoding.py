@@ -6,13 +6,14 @@ single stable API while allowing the active Maps provider to change safely.
 """
 
 import httpx
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 
 from app.core.config import get_settings
+from app.core.provider_limits import require_maps_admission
 
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(require_maps_admission)])
 
 
 class GeocodeSuggestion(BaseModel):

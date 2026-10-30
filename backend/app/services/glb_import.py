@@ -16,7 +16,9 @@ MAX_GLB_BYTES = 50 * 1024 * 1024
 UNIT_SCALE = {"metres": 1, "centimetres": 0.01, "millimetres": 0.001, "feet": 0.3048}
 
 
-def inspect_glb(payload: bytes, units: str, target_height_m: float | None = None) -> dict:
+def inspect_glb(
+    payload: bytes, units: str, target_height_m: float | None = None, *, max_upload_bytes: int = MAX_GLB_BYTES
+) -> dict:
     """Measure the default scene without changing its original buffers/materials."""
 
     def invalid(message):
@@ -26,8 +28,8 @@ def inspect_glb(payload: bytes, units: str, target_height_m: float | None = None
         invalid("Choose metres, centimetres, millimetres or feet for the model units.")
     if target_height_m is not None and (not math.isfinite(target_height_m) or not 0.25 <= target_height_m <= 500):
         invalid("Choose a building height between 0.25 and 500 m.")
-    if len(payload) > MAX_GLB_BYTES:
-        raise HTTPException(413, "Choose a GLB smaller than 50 MB.")
+    if len(payload) > max_upload_bytes:
+        raise HTTPException(413, f"Choose a GLB smaller than {max_upload_bytes // (1024 * 1024)} MB.")
     if len(payload) < 20 or payload[:4] != b"glTF":
         invalid("This is not a GLB file. Export your building as a self-contained GLB 2.0 file.")
     _, version, length = struct.unpack_from("<4sII", payload)

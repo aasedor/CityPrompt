@@ -9,12 +9,13 @@ from urllib.parse import urlencode, urlparse
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import RedirectResponse
-from sqlalchemy import select
+from pydantic import EmailStr, TypeAdapter, ValidationError
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import create_access_token, create_refresh_token
+from app.core.security import issue_session_tokens, revoke_user_sessions
 from app.models.models import User
 from app.services.oauth_state import issue_state, bind_browser, consume_state
 
@@ -28,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
-GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo"
+GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
 
 
 def _allowed_frontend_origins() -> set[str]:
@@ -70,6 +71,74 @@ def _is_allowed_frontend_origin(frontend_origin: str | None) -> bool:
 def _oauth_error_redirect(frontend_origin: str, message: str) -> RedirectResponse:
     params = urlencode({"oauth_error": message})
     return RedirectResponse(url=f"{frontend_origin}/oauth/callback?{params}", status_code=302)
+
+
+async def _resolve_oauth_user(db: AsyncSession, provider: str, profile: dict) -> User:
+    """Bind identities by the provider's immutable OIDC subject, never by mutable mail."""
+    subject = profile.get("sub")
+    if not isinstance(subject, str) or not subject.strip() or len(subject) > 255:
+        raise HTTPException(400, "The sign-in provider did not return a valid account identity.")
+
+    result = await db.execute(
+        select(User)
+        .where(User.oauth_provider == provider, User.oauth_subject == subject)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
+    user = result.scalar_one_or_none()
+    if user:
+        if not user.is_active:
+            raise HTTPException(403, "Account is disabled")
+        return user
+
+    try:
+        email = str(TypeAdapter(EmailStr).validate_python(profile.get("email"))).strip().lower()
+        if len(email) > 255:
+            raise ValueError("Email too long")
+    except (ValidationError, ValueError):
+        raise HTTPException(400, "The sign-in provider did not return a valid email address.")
+
+    # Google is authoritative for Gmail and verified Workspace addresses only.
+    # Microsoft email/preferred_username/UPN are display hints, not proof of mail ownership.
+    verified = provider == "google" and profile.get("email_verified") is True
+    authoritative = verified and (email.endswith("@gmail.com") or bool(profile.get("hd")))
+    if provider == "google" and not verified:
+        raise HTTPException(400, "Google has not verified this email address.")
+
+    result = await db.execute(
+        select(User).where(func.lower(User.email) == email).with_for_update().execution_options(populate_existing=True)
+    )
+    matches = result.scalars().all()
+    if len(matches) > 1:
+        raise HTTPException(409, "Multiple existing accounts use this email. Contact an administrator.")
+    user = matches[0] if matches else None
+    if user:
+        if not user.is_active:
+            raise HTTPException(403, "Account is disabled")
+        if user.oauth_subject or user.oauth_provider not in (None, provider) or not authoritative:
+            raise HTTPException(
+                409,
+                "An account already uses this email. Use its existing sign-in method or password recovery.",
+            )
+        # Local registrations never proved email ownership. Authoritative first
+        # social sign-in must remove the pre-existing credential and every session.
+        user.hashed_password = None
+        revoke_user_sessions(user)
+        user.oauth_provider = provider
+        user.oauth_subject = subject
+    else:
+        user = User(
+            email=email,
+            hashed_password=None,
+            full_name=profile.get("name"),
+            role="editor",
+            oauth_provider=provider,
+            oauth_subject=subject,
+        )
+        db.add(user)
+        await db.flush()
+        await db.refresh(user)
+    return user
 
 
 @router.get("/google")
@@ -160,7 +229,11 @@ async def google_callback(
             except Exception:
                 provider_reason = None
             reason = provider_reason or token_response.text[:220] or f"HTTP {token_response.status_code}"
-            logger.warning("Google token exchange failed (%s): %s", token_response.status_code, reason)
+            logger.warning(
+                "Google token exchange failed (%s): %s",
+                token_response.status_code,
+                reason,
+            )
             return _oauth_error_redirect(frontend_origin, f"Google token exchange failed: {reason}")
 
         token_data = token_response.json()
@@ -187,47 +260,25 @@ async def google_callback(
             except Exception:
                 provider_reason = None
             reason = provider_reason or userinfo_response.text[:220] or f"HTTP {userinfo_response.status_code}"
-            logger.warning("Google userinfo fetch failed (%s): %s", userinfo_response.status_code, reason)
+            logger.warning(
+                "Google userinfo fetch failed (%s): %s",
+                userinfo_response.status_code,
+                reason,
+            )
             return _oauth_error_redirect(frontend_origin, f"Failed to fetch Google user profile: {reason}")
 
         userinfo = userinfo_response.json()
 
-    email = userinfo.get("email")
-    if not email:
-        return _oauth_error_redirect(frontend_origin, "Google account does not have an email address")
-
-    full_name = userinfo.get("name")
-
-    # Find or create user
-    result = await db.execute(select(User).where(User.email == email))
-    user = result.scalar_one_or_none()
-
-    if not user:
-        user = User(
-            email=email,
-            hashed_password=None,
-            full_name=full_name,
-            role="editor",
-            oauth_provider="google",
-        )
-        db.add(user)
-        await db.flush()
-        await db.refresh(user)
-    else:
-        # Update OAuth provider if not set (linking existing account)
-        if not user.oauth_provider:
-            user.oauth_provider = "google"
-            await db.flush()
-
-    if not user.is_active:
-        return _oauth_error_redirect(frontend_origin, "Account is disabled")
+    try:
+        user = await _resolve_oauth_user(db, "google", userinfo)
+    except HTTPException as exc:
+        return _oauth_error_redirect(frontend_origin, str(exc.detail))
 
     user.last_login_at = datetime.now(timezone.utc)
     await db.flush()
 
     # Generate JWT tokens
-    access_token = create_access_token(str(user.id), user.role)
-    refresh_token = create_refresh_token(str(user.id))
+    access_token, refresh_token = await issue_session_tokens(user, db)
 
     # Redirect to frontend with tokens as query params
     redirect_params = urlencode(
@@ -248,7 +299,7 @@ async def google_callback(
 
 MICROSOFT_AUTH_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
 MICROSOFT_TOKEN_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
-MICROSOFT_USERINFO_URL = "https://graph.microsoft.com/v1.0/me"
+MICROSOFT_USERINFO_URL = "https://graph.microsoft.com/oidc/userinfo"
 
 
 @router.get("/microsoft")
@@ -303,7 +354,8 @@ async def microsoft_callback(
     frontend_origin = await consume_state(request, "microsoft", state)
     if error or not code:
         return _oauth_error_redirect(
-            frontend_origin, "Microsoft sign-in was cancelled or did not return a code. Start sign-in again."
+            frontend_origin,
+            "Microsoft sign-in was cancelled or did not return a code. Start sign-in again.",
         )
     if not settings.microsoft_client_id or not settings.microsoft_client_secret:
         raise HTTPException(
@@ -354,49 +406,16 @@ async def microsoft_callback(
 
         userinfo = userinfo_response.json()
 
-    # Microsoft Graph returns email in 'mail' or 'userPrincipalName'
-    email = userinfo.get("mail") or userinfo.get("userPrincipalName")
-    if not email:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Microsoft account does not have an email address",
-        )
-
-    full_name = userinfo.get("displayName")
-
-    # Find or create user
-    result = await db.execute(select(User).where(User.email == email))
-    user = result.scalar_one_or_none()
-
-    if not user:
-        user = User(
-            email=email,
-            hashed_password=None,
-            full_name=full_name,
-            role="editor",
-            oauth_provider="microsoft",
-        )
-        db.add(user)
-        await db.flush()
-        await db.refresh(user)
-    else:
-        # Update OAuth provider if not set (linking existing account)
-        if not user.oauth_provider:
-            user.oauth_provider = "microsoft"
-            await db.flush()
-
-    if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Account is disabled",
-        )
+    try:
+        user = await _resolve_oauth_user(db, "microsoft", userinfo)
+    except HTTPException as exc:
+        return _oauth_error_redirect(frontend_origin, str(exc.detail))
 
     user.last_login_at = datetime.now(timezone.utc)
     await db.flush()
 
     # Generate JWT tokens
-    access_token = create_access_token(str(user.id), user.role)
-    refresh_token = create_refresh_token(str(user.id))
+    access_token, refresh_token = await issue_session_tokens(user, db)
 
     # Redirect to frontend with tokens as query params
     redirect_params = urlencode(

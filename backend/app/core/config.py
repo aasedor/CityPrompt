@@ -132,6 +132,20 @@ class Settings(BaseSettings):
 
     # --- Redis ---
     redis_url: str = "redis://localhost:6379/0"
+    # Only explicitly configured reverse proxies can supply client addresses.
+    trusted_proxy_cidrs: str = ""
+    maps_requests_per_hour: int = Field(default=3000, ge=1, le=1000000)
+
+    @model_validator(mode="after")
+    def _validate_trusted_proxy_cidrs(self) -> "Settings":
+        import ipaddress
+
+        for value in self.trusted_proxy_cidrs.split(","):
+            if value.strip():
+                network = ipaddress.ip_network(value.strip())
+                if network.prefixlen == 0:
+                    raise ValueError("Trusted proxy networks cannot include all addresses")
+        return self
 
     # --- Security ---
     jwt_secret_key: str = "change-this-in-production"

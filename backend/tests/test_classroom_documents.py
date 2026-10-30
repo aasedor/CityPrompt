@@ -37,12 +37,14 @@ async def test_reference_document_is_committed_before_dispatch_and_survives_brok
     monkeypatch.setattr(documents, "_upload_to_storage", AsyncMock(return_value="/api/v1/files/test.pdf"))
     monkeypatch.setattr(activity, "log_activity", AsyncMock())
 
-    def dispatch(document_id, *, extract_only):
-        assert db.commit.await_count == 1 and extract_only is True
+    def dispatch(*, args, kwargs, task_id):
+        assert db.commit.await_count == 1 and kwargs == {"extract_only": True}
+        document = db.add.call_args.args[0]
+        assert args == [str(document.id)] and document.processing_task_id == task_id
         if not broker_available:
             raise RuntimeError("simulated broker failure")
 
-    monkeypatch.setattr(processing.process_document, "delay", dispatch)
+    monkeypatch.setattr(processing.process_document, "apply_async", dispatch)
     result = await documents.upload_document(
         project.id, UploadFile(filename="reference.pdf", file=BytesIO(b"test fixture")), "reference", user, db
     )

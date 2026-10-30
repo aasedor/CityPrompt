@@ -6,6 +6,7 @@ the database dependency to use a fresh async SQLite database per test.
 """
 
 import uuid
+import time
 from datetime import datetime, timezone
 from unittest.mock import AsyncMock, MagicMock
 
@@ -15,6 +16,38 @@ from httpx import ASGITransport, AsyncClient
 from app.core.database import get_db
 from app.core.security import create_access_token, hash_password
 from app.main import app
+
+
+@pytest.fixture(autouse=True)
+def isolated_admission_store(monkeypatch):
+    """Each test retains real quota decisions without a shared external Redis.
+
+    The Lua script itself is verified against Redis by the opt-in integration
+    test; this small store implements its bounded admission result for API tests.
+    """
+    from app.core import rate_limit as admission
+
+    class Store:
+        def __init__(self):
+            self.windows = {}
+
+        async def eval(self, script, key_count, key, window, maximum, member):
+            assert script == admission._ADMIT_SCRIPT and key_count == 1
+            window, maximum = int(window), int(maximum)
+            now = time.monotonic()
+            entries = self.windows.setdefault(key, {})
+            for expired in [value for value, score in entries.items() if score <= now - window]:
+                del entries[expired]
+            if len(entries) >= maximum:
+                import math
+
+                return [0, max(1, math.ceil(min(entries.values()) + window - now))]
+            entries[member] = now
+            return [1, 0]
+
+    store = Store()
+    monkeypatch.setattr(admission, "_get_redis", AsyncMock(return_value=store))
+    return store
 
 
 # ---------------------------------------------------------------------------

@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
+from starlette.concurrency import run_in_threadpool
 
 from app.core.database import get_db
 from app.core.security import require_auth
@@ -81,6 +82,10 @@ _LEGO_ENGINE = "compiler"  # generation_engine is String(20) — keep short
 _TAG_REUSE_KEY_LIMIT = 3
 # Compiler modules are ~50-150 KB; anything near this cap is the wrong file.
 _MAX_UPLOAD_BYTES = 75 * 1024 * 1024
+_MAX_BATCH_BYTES = 256 * 1024 * 1024
+_MAX_BATCH_FILES = 100
+_MAX_JSON_BYTES = 4 * 1024 * 1024
+_MAX_THUMBNAIL_BYTES = 8 * 1024 * 1024
 
 
 class LegoAssemblyPlanRequest(BaseModel):
@@ -897,10 +902,12 @@ def _module_storage_key(
 
 
 async def _parse_json_upload(upload: UploadFile, label: str) -> Any:
-    raw = await upload.read()
+    raw = await upload.read(_MAX_JSON_BYTES + 1)
+    if len(raw) > _MAX_JSON_BYTES:
+        raise HTTPException(413, f"{label} is capped at 4 MB.")
     try:
         return json.loads(raw.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
         raise HTTPException(status_code=400, detail=f"{label} is not valid JSON: {exc}") from exc
 
 
@@ -954,10 +961,13 @@ async def import_compiler_manifest(
     reuse_keys = [str(k) for k in (manifest_data.get("reuse_keys") or []) if str(k or "").strip()]
 
     uploads: dict[str, bytes] = {}
+    if len(files) > _MAX_BATCH_FILES:
+        raise HTTPException(413, "Import at most 100 GLBs per request.")
+    total_bytes = 0
     for upload in files:
         if not upload.filename:
             continue
-        data = await upload.read()
+        data = await upload.read(min(_MAX_UPLOAD_BYTES, _MAX_BATCH_BYTES - total_bytes) + 1)
         if len(data) > _MAX_UPLOAD_BYTES:
             raise HTTPException(
                 status_code=413,
@@ -966,7 +976,27 @@ async def import_compiler_manifest(
                     f"module GLBs are capped at {_MAX_UPLOAD_BYTES // 1_048_576} MB per file"
                 ),
             )
-        uploads[_basename(upload.filename)] = data
+        total_bytes += len(data)
+        if total_bytes > _MAX_BATCH_BYTES:
+            raise HTTPException(413, "Module GLBs are capped at 256 MB per request.")
+        filename = _basename(upload.filename)
+        if filename in uploads:
+            raise HTTPException(400, "Upload each module filename only once.")
+        uploads[filename] = data
+
+    # A supplied validation report is provenance, never an attestation of the
+    # actual bytes. Validate the entire batch before writing even its first
+    # object, including on force=true and for the assembled preview.
+    from app.services.glb_import import inspect_glb
+
+    for data in uploads.values():
+        await run_in_threadpool(inspect_glb, data, "metres", max_upload_bytes=_MAX_UPLOAD_BYTES)
+
+    thumb_data = None
+    if thumbnail is not None:
+        thumb_data = await thumbnail.read(_MAX_THUMBNAIL_BYTES + 1)
+        if len(thumb_data) > _MAX_THUMBNAIL_BYTES:
+            raise HTTPException(413, "The thumbnail is capped at 8 MB.")
 
     # Storage helpers live in the Celery module; deferred import matches the
     # codebase convention (see admin.py, model_cache.py) and keeps tests free
@@ -979,8 +1009,7 @@ async def import_compiler_manifest(
     thumbnail_url: str | None = None
     if thumbnail is not None:
         thumb_key = f"library/lego/{user.id}/{family}/preview.png"
-        thumb_data = await thumbnail.read()
-        _upload_to_storage(thumb_key, thumb_data, "image/png")
+        await run_in_threadpool(_upload_to_storage, thumb_key, thumb_data, "image/png")
         thumb_version = hashlib.sha256(thumb_data).hexdigest()[:12]
         thumbnail_url = f"{_file_proxy_url(thumb_key)}?v={thumb_version}"
 
@@ -1025,7 +1054,7 @@ async def import_compiler_manifest(
         lod = max(0, int(module.get("lod") or 0))
         key = _module_storage_key(user.id, family, role, variant_key, lod)
         module_bytes = uploads[filename]
-        _upload_to_storage(key, module_bytes, "model/gltf-binary")
+        await run_in_threadpool(_upload_to_storage, key, module_bytes, "model/gltf-binary")
         content_hash = hashlib.sha256(module_bytes).hexdigest()
         model_url = f"{_file_proxy_url(key)}?v={content_hash[:12]}"
 

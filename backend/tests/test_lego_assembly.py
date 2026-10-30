@@ -3888,9 +3888,11 @@ async def test_plan_api_uses_only_project_owner_modules_for_an_authorized_editor
 
 
 def _multipart(manifest_dict, glb_names, *, thumbnail=False, report=None):
+    from tests.test_glb_import import glb
+
     parts = [("manifest", ("manifest.json", json.dumps(manifest_dict).encode(), "application/json"))]
     for name in glb_names:
-        parts.append(("files", (name, f"glb-bytes-{name}".encode(), "model/gltf-binary")))
+        parts.append(("files", (name, glb(), "model/gltf-binary")))
     if thumbnail:
         parts.append(("thumbnail", ("fam_preview.png", b"png-bytes", "image/png")))
     if report is not None:

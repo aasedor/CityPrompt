@@ -24,7 +24,7 @@ from app.core.security import (
 )
 from app.tasks.worker import celery_app
 from app.generation.styles import ARCHITECTURAL_STYLES, get_style
-from app.models.models import Building, Project, ProjectShare, RenderPreview, User
+from app.models.models import Building, Document, Project, ProjectShare, RenderPreview, User
 from app.services.generation_queue import queue_ai_generation_task
 from app.services.photo_building import (
     MAX_PHOTOS,
@@ -1146,6 +1146,20 @@ async def generate_render_preview(
         if not share_result.scalar_one_or_none():
             raise HTTPException(status_code=403, detail="Not authorized")
 
+    source_url = None
+    if req.source_document_id:
+        source_result = await db.execute(select(Document).where(Document.id == req.source_document_id))
+        source_document = source_result.scalar_one_or_none()
+        if source_document is None or source_document.project_id != building.project_id:
+            raise HTTPException(status_code=404, detail="Source image not found in this project")
+        from app.services.render_preview_source import document_image_key
+
+        try:
+            document_image_key(source_document, building.project_id)
+        except ValueError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from None
+        source_url = f"/api/v1/documents/{source_document.id}/file"
+
     if not settings.stability_api_key:
         raise HTTPException(
             status_code=400,
@@ -1166,8 +1180,9 @@ async def generate_render_preview(
         str(building_id),
         req.prompt,
         req.source_type,
-        req.source_image_url,
-        style_id,
+        style_id=style_id,
+        source_document_id=str(req.source_document_id) if req.source_document_id else None,
+        requested_by=str(user.id),
     )
 
     # Return a placeholder response
@@ -1178,7 +1193,7 @@ async def generate_render_preview(
         prompt=req.prompt,
         style=style_id,
         source_type=req.source_type,
-        source_image_url=req.source_image_url,
+        source_image_url=source_url,
         created_at=building.created_at,
     )
 

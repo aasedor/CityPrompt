@@ -31,6 +31,8 @@ from app.core.security import (
     get_current_user,
     is_admin_or_above,
     require_auth,
+    session_version,
+    validate_session_version,
 )
 from app.models.models import ModelLibraryEntry, Project, RenderAuditLog, User
 
@@ -56,6 +58,7 @@ async def _file_ticket_user(file_path: str, file_ticket: str, db: AsyncSession) 
     user = result.scalar_one_or_none()
     if not user or not user.is_active:
         raise HTTPException(status_code=401, detail="File ticket account is inactive")
+    validate_session_version(payload, user)
     return user
 
 
@@ -69,7 +72,10 @@ async def issue_file_read_ticket(
     """Issue an exact-object read ticket after checking current ownership/access."""
     await _authorize_file(request.file_path, user, db, None, None)
     response.headers.update(_cache_headers(False))
-    return {"file_ticket": create_file_asset_ticket(request.file_path, user.id), "expires_in": 900}
+    return {
+        "file_ticket": create_file_asset_ticket(request.file_path, user.id, session_version=session_version(user)),
+        "expires_in": 900,
+    }
 
 
 def _key_from_url(url: str | None) -> str | None:

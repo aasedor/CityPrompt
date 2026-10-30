@@ -2,6 +2,8 @@
 Security utilities: password hashing, JWT token creation and verification.
 """
 
+import hashlib
+import secrets
 import uuid
 from datetime import datetime, timedelta, timezone
 
@@ -29,25 +31,87 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def create_access_token(user_id: str, role: str = "editor") -> str:
+def create_access_token(user_id: str, role: str = "editor", *, session_version: int = 0) -> str:
     expire = datetime.now(timezone.utc) + timedelta(minutes=settings.jwt_access_token_expire_minutes)
     payload = {
         "sub": user_id,
         "role": role,
         "type": "access",
+        "ver": session_version,
         "exp": expire,
     }
     return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
 
 
-def create_refresh_token(user_id: str) -> str:
+def create_refresh_token(
+    user_id: str,
+    *,
+    session_version: int = 0,
+    session_id: str | None = None,
+    nonce: str | None = None,
+) -> str:
     expire = datetime.now(timezone.utc) + timedelta(days=settings.jwt_refresh_token_expire_days)
     payload = {
         "sub": user_id,
         "type": "refresh",
+        "ver": session_version,
+        "sid": session_id,
+        "jti": nonce or secrets.token_urlsafe(32),
         "exp": expire,
     }
     return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
+
+
+def token_digest(value: str) -> str:
+    return hashlib.sha256(value.encode()).hexdigest()
+
+
+def token_subject(payload: dict) -> uuid.UUID:
+    """Reject malformed signed identities as credentials, rather than server errors."""
+    try:
+        return uuid.UUID(payload["sub"])
+    except (KeyError, ValueError, TypeError, AttributeError):
+        raise HTTPException(401, "Invalid token payload")
+
+
+def session_version(user) -> int:
+    return getattr(user, "session_version", 0) or 0
+
+
+def validate_session_version(payload: dict, user) -> None:
+    # Missing versions intentionally invalidate sessions issued before the migration.
+    if type(payload.get("ver")) is not int or payload["ver"] != session_version(user):
+        raise HTTPException(401, "This session has expired. Please sign in again.")
+
+
+def revoke_user_sessions(user) -> None:
+    user.session_version = session_version(user) + 1
+    user.reset_nonce_hash = None
+
+
+async def issue_session_tokens(user, db: AsyncSession) -> tuple[str, str]:
+    from app.models.models import UserRefreshSession
+
+    nonce = secrets.token_urlsafe(32)
+    version = session_version(user)
+    session = UserRefreshSession(
+        id=uuid.uuid4(),
+        user_id=user.id,
+        token_hash=token_digest(nonce),
+        session_version=version,
+        expires_at=datetime.now(timezone.utc) + timedelta(days=settings.jwt_refresh_token_expire_days),
+    )
+    db.add(session)
+    await db.flush()
+    return (
+        create_access_token(str(user.id), user.role, session_version=version),
+        create_refresh_token(
+            str(user.id),
+            session_version=version,
+            session_id=str(session.id),
+            nonce=nonce,
+        ),
+    )
 
 
 def decode_token(token: str) -> dict:
@@ -79,17 +143,17 @@ async def get_current_user(
     if payload.get("type") != "access":
         raise HTTPException(status_code=401, detail="Invalid token type")
 
-    user_id = payload.get("sub")
-    if not user_id:
-        raise HTTPException(status_code=401, detail="Invalid token payload")
+    user_id = token_subject(payload)
 
     from app.models.models import User
 
-    result = await db.execute(select(User).where(User.id == uuid.UUID(user_id)))
+    result = await db.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
 
     if not user or not user.is_active:
         raise HTTPException(status_code=401, detail="User not found or inactive")
+
+    validate_session_version(payload, user)
 
     return user
 
@@ -231,13 +295,14 @@ async def check_project_read_access(
     await check_project_permission(project_id, user, db, required="viewer")
 
 
-def create_project_asset_ticket(project_id: uuid.UUID, user_id: uuid.UUID) -> str:
+def create_project_asset_ticket(project_id: uuid.UUID, user_id: uuid.UUID, *, session_version: int = 0) -> str:
     """Issue a short-lived read-only credential, never a login credential."""
     return jwt.encode(
         {
             "type": "project_asset",
             "sub": str(user_id),
             "project_id": str(project_id),
+            "ver": session_version,
             "exp": datetime.now(timezone.utc) + timedelta(minutes=15),
         },
         settings.jwt_secret_key,
@@ -245,13 +310,14 @@ def create_project_asset_ticket(project_id: uuid.UUID, user_id: uuid.UUID) -> st
     )
 
 
-def create_file_asset_ticket(file_path: str, user_id: uuid.UUID) -> str:
+def create_file_asset_ticket(file_path: str, user_id: uuid.UUID, *, session_version: int = 0) -> str:
     """Limit URL authentication to one stored object for fifteen minutes."""
     return jwt.encode(
         {
             "type": "file_asset",
             "sub": str(user_id),
             "file_path": file_path,
+            "ver": session_version,
             "exp": datetime.now(timezone.utc) + timedelta(minutes=15),
         },
         settings.jwt_secret_key,
@@ -285,6 +351,7 @@ async def check_project_asset_access(
         ticket_user = result.scalar_one_or_none()
         if not ticket_user or not ticket_user.is_active:
             raise HTTPException(status_code=401, detail="Asset ticket account is inactive")
+        validate_session_version(payload, ticket_user)
         await check_project_permission(project_id, ticket_user, db, required="viewer")
         return
     raise HTTPException(status_code=401, detail="Authentication required")

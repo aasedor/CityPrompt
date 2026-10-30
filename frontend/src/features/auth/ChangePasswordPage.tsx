@@ -1,9 +1,16 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 import { authApi } from '@/services/api';
+import { useAuthStore } from '@/store';
+import { resetSessionState } from '@/utils/sessionReset';
 
 export function ChangePasswordPage() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const logout = useAuthStore(state => state.logout);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -26,10 +33,10 @@ export function ChangePasswordPage() {
 
     try {
       await authApi.changePassword(currentPassword, newPassword);
-      toast.success('Password changed successfully!');
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
+      logout();
+      resetSessionState(queryClient);
+      toast.success('Password changed. Sign in again with your new password.');
+      navigate('/login', { replace: true });
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Failed to change password');
     } finally {

@@ -4,9 +4,19 @@ Routes uploaded files to the appropriate extractor based on file type.
 """
 
 import logging
+import math
 from typing import Any
 
 logger = logging.getLogger(__name__)
+
+MAX_PDF_TEXT_PAGES = 200
+MAX_PDF_RASTER_PAGES = 20
+PDF_RASTER_DPI = 300
+MAX_RASTER_DIMENSION = 8192
+MAX_PAGE_PIXELS = 25_000_000
+MAX_DOCUMENT_PIXELS = 48_000_000
+MAX_TEXT_CHARS = 4 * 1024 * 1024
+MAX_PDF_PAGE_POINTS = 72 * 72  # up to a six-foot drawing sheet
 
 
 class ExtractionResult:
@@ -35,8 +45,10 @@ class ExtractionResult:
         }
 
 
-def extract_from_file(file_path: str, file_type: str) -> ExtractionResult:
+def extract_from_file(file_path: str, file_type: str, *, text_only: bool = False) -> ExtractionResult:
     """Route file to appropriate extractor."""
+    if file_type == "pdf":
+        return extract_pdf(file_path, text_only=text_only)
     extractors = {
         "pdf": extract_pdf,
         "jpg": extract_image,
@@ -197,33 +209,68 @@ def _classify_pdf_page(page_image_bytes: bytes, page_text: str, page_num: int) -
     return classification
 
 
-def extract_pdf(file_path: str) -> ExtractionResult:
-    """Extract data from PDF documents with page classification."""
+def extract_pdf(file_path: str, *, text_only: bool = False) -> ExtractionResult:
+    """Extract reference text, or preflight the complete raster workload first."""
     import fitz  # PyMuPDF
 
     result = ExtractionResult()
     try:
-        doc = fitz.open(file_path)
-        result.metadata = dict(doc.metadata) if doc.metadata else {}
-        result.metadata["page_count"] = len(doc)
-
-        page_texts = []
-        for page_num, page in enumerate(doc):
-            # Extract text
-            page_text = page.get_text()
-            page_texts.append(page_text)
-            result.text_content += page_text + "\n"
-
-            # Extract images at 300 DPI for analysis
-            pix = page.get_pixmap(dpi=300)
-            image_bytes = pix.tobytes("png")
-            result.images.append(image_bytes)
-
-            # Classify each page
-            classification = _classify_pdf_page(image_bytes, page_text, page_num)
-            result.page_classifications.append(classification)
-
-        doc.close()
+        with fitz.open(file_path) as doc:
+            page_count = len(doc)
+            result.metadata = dict(doc.metadata) if doc.metadata else {}
+            result.metadata.update(page_count=page_count, text_only=text_only)
+            page_limit = MAX_PDF_TEXT_PAGES if text_only else MAX_PDF_RASTER_PAGES
+            if page_count > page_limit:
+                raise ValueError(f"PDF page budget exceeded (maximum {page_limit} pages).")
+            page_dpis = []
+            if not text_only:
+                pixels = 0
+                for page in doc:
+                    width_pt, height_pt = page.rect.width, page.rect.height
+                    if not 0 < width_pt <= MAX_PDF_PAGE_POINTS or not 0 < height_pt <= MAX_PDF_PAGE_POINTS:
+                        raise ValueError(
+                            "PDF page dimensions exceed the raster budget. Use a standard drawing sheet size."
+                        )
+                    # Preserve ordinary pages at 300 DPI; downsample large
+                    # architectural sheets instead of rejecting usable plans.
+                    dpi = max(
+                        1,
+                        math.floor(
+                            min(
+                                PDF_RASTER_DPI,
+                                MAX_RASTER_DIMENSION * 72 / width_pt,
+                                MAX_RASTER_DIMENSION * 72 / height_pt,
+                                math.sqrt(MAX_PAGE_PIXELS * 72 * 72 / (width_pt * height_pt)),
+                            )
+                        ),
+                    )
+                    page_dpis.append(dpi)
+                    # IntegerRect matches MuPDF's outward rounding, including
+                    # rotated pages. Inspect every page before any allocation.
+                    rect = (page.rect * fitz.Matrix(dpi / 72, dpi / 72)).irect
+                    width, height = rect.width, rect.height
+                    pixels += width * height
+                    if (
+                        not 0 < width <= MAX_RASTER_DIMENSION
+                        or not 0 < height <= MAX_RASTER_DIMENSION
+                        or width * height > MAX_PAGE_PIXELS
+                        or pixels > MAX_DOCUMENT_PIXELS
+                    ):
+                        raise ValueError("PDF raster pixel budget exceeded. Use smaller pages or split the document.")
+                result.metadata["raster_dpi"] = page_dpis
+            texts, chars = [], 0
+            for page_num, page in enumerate(doc):
+                page_text = page.get_text()
+                chars += len(page_text) + 1
+                if chars > MAX_TEXT_CHARS:
+                    raise ValueError("PDF text budget exceeded (maximum 4 million characters).")
+                texts.append(page_text)
+                if not text_only:
+                    pix = page.get_pixmap(dpi=page_dpis[page_num], colorspace=fitz.csRGB, alpha=False)
+                    image_bytes = pix.tobytes("png")
+                    result.images.append(image_bytes)
+                    result.page_classifications.append(_classify_pdf_page(image_bytes, page_text, page_num))
+            result.text_content = "\n".join(texts)
 
         # Sort images so floor plans come first, then elevations, then others
         type_priority = {"floor_plan": 0, "elevation": 1, "schedule": 2, "text": 3}
@@ -245,9 +292,12 @@ def extract_pdf(file_path: str) -> ExtractionResult:
         result.metadata["page_types"] = type_counts
 
         result.confidence = 0.7
-        logger.info(f"PDF extracted: {len(doc)} pages, " f"types: {type_counts}")
+        logger.info(f"PDF extracted: {page_count} pages, types: {type_counts}")
 
     except Exception as e:
+        result.images.clear()
+        result.page_classifications.clear()
+        result.text_content = ""
         result.errors.append(f"PDF extraction error: {str(e)}")
         logger.error(f"PDF extraction failed: {e}")
 
@@ -261,6 +311,20 @@ def extract_image(file_path: str) -> ExtractionResult:
 
     result = ExtractionResult()
     try:
+        import os
+        from PIL import Image
+
+        if os.path.getsize(file_path) > 50 * 1024 * 1024:
+            raise ValueError("Image file budget exceeded (maximum 50 MB).")
+        with Image.open(file_path) as image:
+            width, height = image.size
+            if (
+                not 0 < width <= MAX_RASTER_DIMENSION
+                or not 0 < height <= MAX_RASTER_DIMENSION
+                or width * height > MAX_PAGE_PIXELS
+            ):
+                raise ValueError("Image pixel budget exceeded. Resize the reference image before uploading.")
+            image.verify()
         img = cv2.imread(file_path)
         if img is None:
             result.errors.append("Failed to read image file")
@@ -363,26 +427,31 @@ def extract_cad(file_path: str) -> ExtractionResult:
 
 def extract_spreadsheet(file_path: str) -> ExtractionResult:
     """Extract data from spreadsheets (CSV/XLSX)."""
-    import pandas as pd
-
     result = ExtractionResult()
     try:
-        if file_path.endswith(".csv"):
-            df = pd.read_csv(file_path)
+        from app.processing.extractors.table_resources import MAX_TABLE_ROWS, preflight_table
+
+        preflight_table(file_path)
+        import pandas as pd
+
+        if file_path.lower().endswith(".csv"):
+            df = pd.read_csv(file_path, nrows=MAX_TABLE_ROWS, encoding="utf-8-sig")
         else:
-            df = pd.read_excel(file_path)
+            df = pd.read_excel(file_path, nrows=MAX_TABLE_ROWS)
 
         result.metadata["columns"] = list(df.columns)
         result.metadata["row_count"] = len(df)
 
         # Look for coordinate columns
-        coord_cols = [c for c in df.columns if c.lower() in ("lat", "latitude", "lng", "longitude", "lon", "x", "y")]
+        coord_cols = [
+            c for c in df.columns if str(c).lower() in ("lat", "latitude", "lng", "longitude", "lon", "x", "y")
+        ]
         if len(coord_cols) >= 2:
             result.metadata["has_coordinates"] = True
 
         # Look for dimension columns
         dim_cols = [
-            c for c in df.columns if any(kw in c.lower() for kw in ("height", "width", "length", "area", "floor"))
+            c for c in df.columns if any(kw in str(c).lower() for kw in ("height", "width", "length", "area", "floor"))
         ]
         if dim_cols:
             for _, row in df.iterrows():
@@ -391,7 +460,12 @@ def extract_spreadsheet(file_path: str) -> ExtractionResult:
                     dim[col] = row[col]
                 result.dimensions.append(dim)
 
-        result.text_content = df.to_string()
+        # Fixed-width formatting multiplies each column's widest cell by every
+        # row. CSV stays proportional to the already bounded table contents.
+        result.text_content = df.to_csv(index=False)
+        if len(result.text_content.encode("utf-8")) > 8 * 1024 * 1024:
+            result.text_content = ""
+            raise ValueError("The spreadsheet text exceeds the 8 MB extraction limit.")
         result.confidence = 0.9
         logger.info(f"Spreadsheet extracted: {len(df)} rows, {len(df.columns)} columns")
 

@@ -1,4 +1,5 @@
 import json
+import base64
 import struct
 import uuid
 from io import BytesIO
@@ -64,6 +65,68 @@ def test_measures_original_geometry_with_offset_origin_and_converts_units():
     assert result["triangles"] == 12
 
 
+def repeated_primitive_glb(vertices=100000, copies=200):
+    original = glb()
+    length = struct.unpack_from("<I", original, 12)[0]
+    doc = json.loads(original[20 : 20 + length])
+    binary = original[28 + length : 28 + length + 96] + bytes(vertices * 12 - 96)
+    binary += original[28 + length + 96 :]
+    doc["bufferViews"][0]["byteLength"] = vertices * 12
+    doc["bufferViews"][1]["byteOffset"] = vertices * 12
+    doc["accessors"][0]["count"] = vertices
+    doc["buffers"][0]["byteLength"] = len(binary)
+    doc["meshes"][0]["primitives"] *= copies
+    encoded = json.dumps(doc).encode()
+    encoded += b" " * (-len(encoded) % 4)
+    return (
+        struct.pack("<4sII", b"glTF", 2, 28 + len(encoded) + len(binary))
+        + struct.pack("<II", len(encoded), 0x4E4F534A)
+        + encoded
+        + struct.pack("<II", len(binary), 0x004E4942)
+        + binary
+    )
+
+
+def test_repeated_primitive_expansion_is_bounded_before_native_decode(monkeypatch):
+    decoder = MagicMock(side_effect=AssertionError("Oversized geometry reached decoder"))
+    monkeypatch.setattr("trimesh.load", decoder)
+    with pytest.raises(HTTPException, match="128 MB"):
+        inspect_glb(repeated_primitive_glb(), "metres")
+    decoder.assert_not_called()
+
+
+def test_small_shared_primitive_reuse_still_imports():
+    assert inspect_glb(repeated_primitive_glb(vertices=8, copies=2), "metres")["triangles"] == 24
+
+
+def overlapping_views_glb(copies):
+    raw = repeated_primitive_glb(vertices=10000, copies=1)
+    length = struct.unpack_from("<I", raw, 12)[0]
+    doc = json.loads(raw[20 : 20 + length])
+    doc["bufferViews"].extend([{"buffer": 0, "byteOffset": 0, "byteLength": 120000}] * copies)
+    encoded = json.dumps(doc).encode()
+    encoded += b" " * (-len(encoded) % 4)
+    tail = raw[20 + length :]
+    return (
+        struct.pack("<4sII", b"glTF", 2, 20 + len(encoded) + len(tail))
+        + struct.pack("<II", len(encoded), 0x4E4F534A)
+        + encoded
+        + tail
+    )
+
+
+def test_overlapping_unused_buffer_views_are_bounded_before_native_decode(monkeypatch):
+    decoder = MagicMock(side_effect=AssertionError("Oversized views reached decoder"))
+    monkeypatch.setattr("trimesh.load", decoder)
+    with pytest.raises(HTTPException, match="128 MB"):
+        inspect_glb(overlapping_views_glb(2000), "metres")
+    decoder.assert_not_called()
+
+
+def test_small_overlapping_buffer_views_preserve_valid_imports():
+    assert inspect_glb(overlapping_views_glb(2), "metres")["triangles"] == 12
+
+
 def test_arbitrary_game_scale_can_be_given_a_real_building_height_without_distortion():
     result = inspect_glb(glb(1.2, 1, 2), "metres", target_height_m=10)
     assert result["width_m"] == pytest.approx(12)
@@ -71,8 +134,8 @@ def test_arbitrary_game_scale_can_be_given_a_real_building_height_without_distor
     assert result["height_meters"] == pytest.approx(10)
 
 
-def changed_glb(change):
-    raw = glb()
+def changed_glb(change, raw=None):
+    raw = glb() if raw is None else raw
     length = struct.unpack_from("<I", raw, 12)[0]
     doc = json.loads(raw[20 : 20 + length])
     change(doc)
@@ -85,6 +148,89 @@ def changed_glb(change):
         + text
         + tail
     )
+
+
+@pytest.mark.parametrize(
+    "nodes,roots",
+    [
+        ([{"mesh": 0, "children": [0]}], [0]),
+        ([{"mesh": 0}, {"children": [2]}, {"children": [1]}], [0]),
+        ([{"children": [2]}, {"children": [2]}, {"mesh": 0}], [0, 1]),
+        ([{"children": [1, 1]}, {"mesh": 0}], [0]),
+        ([{"children": [1]}, {"mesh": 0}], [0, 1]),
+        ([{"mesh": 0}], [0, 0]),
+        ([{"children": [False], "mesh": 0}], [0]),
+        ([{"children": [999], "mesh": 0}], [0]),
+    ],
+    ids=[
+        "self-cycle",
+        "unused-cycle",
+        "two-parents",
+        "duplicate-edge",
+        "child-root",
+        "duplicate-root",
+        "bool-index",
+        "bad-index",
+    ],
+)
+def test_scene_topology_rejected_before_geometry_decoder(monkeypatch, nodes, roots):
+    decoder = MagicMock(side_effect=AssertionError("Invalid graph reached native decoder"))
+    monkeypatch.setattr("trimesh.load", decoder)
+    payload = changed_glb(lambda doc: doc.update(nodes=nodes, scenes=[{"nodes": roots}]))
+    with pytest.raises(HTTPException):
+        inspect_glb(payload, "metres")
+    decoder.assert_not_called()
+
+
+@pytest.mark.parametrize("kind", ["nodes", "edges", "depth", "primitive-nodes", "vertex-work"])
+def test_scene_work_amplification_rejected_before_geometry_decoder(monkeypatch, kind):
+    def amplify(doc):
+        if kind == "nodes":
+            doc["nodes"] = [{"mesh": 0}] * 10001
+            doc["scenes"] = [{"nodes": list(range(10001))}]
+        elif kind == "edges":
+            doc["scenes"] = [{"nodes": [0] * 20001}]
+        elif kind == "depth":
+            doc["nodes"] = [{"children": [index + 1]} for index in range(128)] + [{"mesh": 0}]
+        else:
+            doc["nodes"] = [{"mesh": 0}] * 101
+            doc["scenes"] = [{"nodes": list(range(101))}]
+            if kind == "primitive-nodes":
+                doc["meshes"][0]["primitives"] *= 101
+
+    original = repeated_primitive_glb(vertices=100000, copies=1) if kind == "vertex-work" else glb()
+    payload = changed_glb(amplify, original)
+    decoder = MagicMock(side_effect=AssertionError("Unbounded scene work reached native decoder"))
+    monkeypatch.setattr("trimesh.load", decoder)
+    with pytest.raises(HTTPException):
+        inspect_glb(payload, "metres")
+    decoder.assert_not_called()
+
+
+def test_gpu_instancing_rejected_before_decoder_with_precise_export_guidance(monkeypatch):
+    def add_instancing(doc):
+        doc["accessors"].append({"count": 1000000, "componentType": 5126, "type": "VEC3"})
+        doc["meshes"][0]["primitives"] *= 100
+        doc["extensionsUsed"] = ["EXT_mesh_gpu_instancing"]
+        doc["nodes"][0]["extensions"] = {"EXT_mesh_gpu_instancing": {"attributes": {"TRANSLATION": 2}}}
+
+    decoder = MagicMock(side_effect=AssertionError("Instanced geometry reached native decoder"))
+    monkeypatch.setattr("trimesh.load", decoder)
+    with pytest.raises(HTTPException) as exc:
+        inspect_glb(changed_glb(add_instancing), "metres")
+    assert "instanc" in exc.value.detail.lower() and "bake" in exc.value.detail.lower()
+    decoder.assert_not_called()
+
+
+def test_bounded_hierarchy_and_shared_mesh_nodes_keep_exact_bounds():
+    def hierarchy(doc):
+        doc["nodes"] = [{"children": [1, 2]}, {"mesh": 0}, {"mesh": 0, "translation": [12, 0, 0]}]
+        # glTF permits a root to be used by multiple scenes.
+        doc["scenes"] = [{"nodes": [0]}, {"nodes": [0]}]
+
+    result = inspect_glb(changed_glb(hierarchy), "metres")
+    assert result["triangles"] == 24
+    assert (result["width_m"], result["depth_m"], result["height_meters"]) == (20, 24, 9)
 
 
 def test_imports_valid_dense_geometry_beyond_standard_building_complexity():
@@ -148,6 +294,132 @@ def test_rejects_broken_embedded_texture_before_the_browser_loads_it():
 
     with pytest.raises(HTTPException, match=""):
         inspect_glb(changed_glb(break_image), "metres")
+
+
+@pytest.mark.parametrize("extension", ["EXT_meshopt_compression", "KHR_draco_mesh_compression"])
+def test_rejects_unvalidated_compressed_geometry_before_decoder(monkeypatch, extension):
+    # A normal fallback box must not hide instructions for a different browser
+    # decoding path. No actual compressed decoding or large allocation occurs.
+    def add_compression(doc):
+        doc["extensionsUsed"] = [extension]
+        doc["bufferViews"][0]["extensions"] = {
+            extension: {"buffer": 0, "byteOffset": 0, "byteLength": 8, "count": 268435456, "byteStride": 12}
+        }
+
+    payload = changed_glb(add_compression)
+    with pytest.raises(HTTPException) as exc:
+        inspect_glb(payload, "metres")
+    assert exc.value.status_code == 422
+    assert "compression" in exc.value.detail.lower()
+
+
+def meshopt_glb(change=None):
+    # Real Meshopt ATTRIBUTES stream for the fixture's eight XYZ vertices,
+    # generated with the installed meshoptimizer encoder. Retain the valid
+    # uncompressed fallback so trimesh and the browser measure the same box.
+    compressed = base64.b64decode(
+        "oAAAAQDAAACAAQDAAACCAAABDMwAACAfIAEMzAAAgoGCAAABP/8AAL/Av8C/wL8BP/8AAIKBgoGCgYIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+    )
+    original = glb()
+    length = struct.unpack_from("<I", original, 12)[0]
+    doc = json.loads(original[20 : 20 + length])
+    binary = original[28 + length :] + compressed
+    binary += b"\0" * (-len(binary) % 4)
+    doc["buffers"][0]["byteLength"] = len(binary)
+    doc["extensionsUsed"] = ["EXT_meshopt_compression"]
+    extension = {
+        "buffer": 0,
+        "byteOffset": 168,
+        "byteLength": len(compressed),
+        "byteStride": 12,
+        "count": 8,
+        "mode": "ATTRIBUTES",
+    }
+    doc["bufferViews"][0]["extensions"] = {"EXT_meshopt_compression": extension}
+    if change:
+        change(extension)
+    text = json.dumps(doc).encode()
+    text += b" " * (-len(text) % 4)
+    return (
+        struct.pack("<4sII", b"glTF", 2, 28 + len(text) + len(binary))
+        + struct.pack("<II", len(text), 0x4E4F534A)
+        + text
+        + struct.pack("<II", len(binary), 0x004E4942)
+        + binary
+    )
+
+
+def test_safe_meshopt_with_embedded_fallback_preserves_supported_geometry():
+    result = inspect_glb(meshopt_glb(), "metres")
+    assert result["triangles"] == 12
+    assert (result["width_m"], result["height_meters"], result["depth_m"]) == (12, 9, 20)
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"count": 268435456},
+        {"byteStride": 256},
+        {"byteOffset": 100000},
+        {"buffer": 42},
+        {"mode": "TRIANGLES"},
+        {"filter": "QUATERNION"},
+        {"count": True},
+        {"filter": "UNKNOWN"},
+    ],
+)
+def test_meshopt_rejects_invalid_decoded_layout_and_source_ranges(change):
+    with pytest.raises(HTTPException) as exc:
+        inspect_glb(meshopt_glb(lambda extension: extension.update(change)), "metres")
+    assert exc.value.status_code == 422
+
+
+def ktx2_glb(change=None):
+    # A one-pixel RGBA8 KTX2 with a complete basic data-format descriptor.
+    dfd = struct.pack("<IIHH4B4B8B", 92, 0, 2, 88, 1, 1, 2, 0, *([0] * 4), 4, *([0] * 7))
+    dfd += b"".join(
+        struct.pack("<HBB4BII", i * 8, 7, channel, 0, 0, 0, 0, 0, 255) for i, channel in enumerate([0, 1, 2, 15])
+    )
+    raw = bytearray(
+        b"\xabKTX 20\xbb\r\n\x1a\n"
+        + struct.pack("<13I2Q", 37, 1, 1, 1, 0, 0, 1, 1, 0, 104, 92, 0, 0, 0, 0)
+        + struct.pack("<3Q", 196, 4, 4)
+        + dfd
+        + b"\xff\xff\xff\xff"
+    )
+    if change:
+        change(raw)
+
+    def add_image(doc):
+        doc["images"] = [{"uri": "data:image/ktx2;base64," + base64.b64encode(raw).decode()}]
+        doc["textures"] = [{"extensions": {"KHR_texture_basisu": {"source": 0}}}]
+
+    return changed_glb(add_image)
+
+
+def test_bounded_2d_ktx2_texture_keeps_supported_import():
+    assert inspect_glb(ktx2_glb(), "metres")["triangles"] == 12
+
+
+@pytest.mark.parametrize(
+    "offset,value",
+    [(28, 268435456), (32, 268435456), (36, 100000), (40, 100000)],
+    ids=["depth", "layers", "faces", "levels"],
+)
+def test_ktx2_dimensions_cannot_hide_decoded_texture_work(offset, value):
+    with pytest.raises(HTTPException) as exc:
+        inspect_glb(ktx2_glb(lambda raw: struct.pack_into("<I", raw, offset, value)), "metres")
+    assert exc.value.status_code == 422
+
+
+def test_ktx2_zstd_declared_allocation_is_bounded_without_decompression():
+    def oversized(raw):
+        struct.pack_into("<I", raw, 44, 2)
+        struct.pack_into("<Q", raw, 96, 3 * 1024 * 1024 * 1024)
+
+    with pytest.raises(HTTPException) as exc:
+        inspect_glb(ktx2_glb(oversized), "metres")
+    assert exc.value.status_code == 422
 
 
 @pytest.mark.parametrize(

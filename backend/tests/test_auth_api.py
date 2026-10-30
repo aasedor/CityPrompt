@@ -9,7 +9,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from app.core.security import create_access_token, create_refresh_token, hash_password
+from app.core.security import create_access_token, hash_password, issue_session_tokens
 from tests.conftest import FakeUser
 
 
@@ -179,11 +179,14 @@ async def test_me_unauthenticated(client):
 
 @pytest.mark.anyio
 async def test_refresh_token_success(client, mock_db, test_user):
-    refresh = create_refresh_token(str(test_user.id))
+    _, refresh = await issue_session_tokens(test_user, mock_db)
+    refresh_session = mock_db.add.call_args.args[0]
 
     mock_result = MagicMock()
     mock_result.scalar_one_or_none.return_value = test_user
-    mock_db.execute = AsyncMock(return_value=mock_result)
+    session_result = MagicMock()
+    session_result.scalar_one_or_none.return_value = refresh_session
+    mock_db.execute = AsyncMock(side_effect=[mock_result, session_result])
 
     response = await client.post(
         "/api/v1/auth/refresh",
