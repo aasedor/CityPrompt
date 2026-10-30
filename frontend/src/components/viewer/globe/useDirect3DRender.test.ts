@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { rendersApi } from '@/services/api';
 import { useImageModelChoice } from '../useImageModelChoice';
 import { imageModelsForChoice } from '@/config/imageModels';
-import { renderLocalImage } from '@/services/localImageRender';
 import {
   buildDirect3DVisualPrompt,
   DIRECT_3D_ALLOWED_STYLES,
@@ -31,7 +30,6 @@ vi.mock('@/services/api', () => ({
   resolveApiFileUrl: (url: string) => url,
 }));
 
-vi.mock('@/services/localImageRender', () => ({ renderLocalImage: vi.fn() }));
 
 const capture: Direct3DCaptureBundle = {
   schema: DIRECT_3D_CAPTURE_SCHEMA,
@@ -174,18 +172,6 @@ const response: Awaited<ReturnType<typeof rendersApi.generateDirect3D>> = {
 };
 
 describe('Direct 3D presentation adapter', () => {
-  it.each(['flux-klein', 'qwen-image'] as const)('routes %s locally without paid geometry processing', async model => {
-    vi.mocked(rendersApi.generateDirect3D).mockClear();
-    vi.mocked(renderLocalImage).mockResolvedValue({ id: 'local-result', image_url: '/local.png', prompt: 'local', created_at: '2026-10-07' });
-    const hook = renderHook(() => useDirect3DRender());
-    const direct = await hook.result.current.renderDirect3D(capture, { model, style: 'photorealistic', projectId: 'project-1', community3DClaims });
-    expect(renderLocalImage).toHaveBeenCalledWith(expect.objectContaining({ model, imageBase64: capture.beautyImageBase64 }));
-    expect(rendersApi.generateDirect3D).not.toHaveBeenCalled();
-    expect(direct.render.imageUrl).toBe('/local.png');
-    expect(direct.diagnostics).toBeNull();
-    expect(direct.outcome).toBe('review_required');
-    expect(direct.render.prompt).not.toContain('CONCEPT FIDELITY');
-  });
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue(response);

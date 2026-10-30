@@ -779,7 +779,7 @@ export function AIRenderPanel({ mapRef, onPreviewsReady, onClearOverlay, siteZon
               </p>
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
-              {projectId && <AnimateRenderButton projectId={projectId} render={galleryLightbox} onSaved={onVideoSaved} onImageSaved={handleEditedRenderSaved} />}
+              {projectId && <AnimateRenderButton projectId={projectId} render={galleryLightbox} onSaved={onVideoSaved} />}
               {projectId && (
                 <button
                   type="button"

@@ -37,7 +37,7 @@ class RenderStagingTests(unittest.TestCase):
     def test_full_catalogue_profile_and_secrets_are_consistent(self):
         api_vars = {v["key"]: v for v in self.services["cityprompt-staging-api"]["envVars"] if "key" in v}
         self.assertEqual(api_vars["CLASSROOM_RELEASE"]["value"], "false")
-        self.assertEqual(api_vars["COMFY_TRIALS_ENABLED"]["value"], "false")
+        self.assertNotIn("COMFY_TRIALS_ENABLED", api_vars)
         self.assertEqual(api_vars["RUN_DATABASE_MIGRATIONS"]["value"], "false")
         for key in ("S3_ACCESS_KEY", "S3_SECRET_KEY", "OPENAI_API_KEY", "FAL_KEY", "RENDER_GLOBAL_DAILY_TOKEN_CAP"):
             self.assertIs(api_vars[key]["sync"], False)

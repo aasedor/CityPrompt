@@ -2,8 +2,7 @@ import '@testing-library/jest-dom/vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const mocks = vi.hoisted(() => ({ direct: vi.fn(), classic: vi.fn(), local: vi.fn(), save: vi.fn(), imageModels: vi.fn(), references: vi.fn(), claims: vi.fn() }));
-vi.mock('@/services/localImageRender', () => ({ renderLocalImage: mocks.local }));
+const mocks = vi.hoisted(() => ({ direct: vi.fn(), classic: vi.fn(), save: vi.fn(), imageModels: vi.fn(), references: vi.fn(), claims: vi.fn() }));
 vi.mock('@/store', () => ({ useViewerStore: () => ({ streetViewPegman: { position: [-114, 51], angle: 0 }, setStreetViewAngle: vi.fn(), setStreetViewPosition: vi.fn(), setStreetViewActive: vi.fn() }) }));
 vi.mock('./useStreetViewRender', () => ({ useStreetViewRender: () => ({ generateStreetView: mocks.classic }) }));
 vi.mock('./globe/useDirect3DRender', async (importOriginal) => ({ ...await importOriginal<typeof import('./globe/useDirect3DRender')>(), useDirect3DRender: () => ({ renderDirect3D: mocks.direct }) }));
@@ -73,21 +72,6 @@ describe('student street render', () => {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Render' })).toBeEnabled());
     expect(mocks.direct).not.toHaveBeenCalled();
     expect(mocks.classic).not.toHaveBeenCalled();
-  });
-  it('keeps a local screenshot fallback free and uses its existing saved result', async () => {
-    mocks.imageModels.mockResolvedValue({ default_model: 'gpt-image-2', models: [{ id: 'qwen-image', available: true }] });
-    const saved = { id: 'local-1', image_url: '/local.png' };
-    mocks.local.mockResolvedValue(saved);
-    const onSaved = vi.fn();
-    render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', imageBase64: 'local-source' })} onRenderSaved={onSaved} />);
-    await waitFor(() => expect(screen.getByRole('option', { name: /Qwen/ })).toBeEnabled());
-    fireEvent.change(screen.getByRole('combobox', { name: 'Image engine' }), { target: { value: 'qwen-image' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
-    await waitFor(() => expect(onSaved).toHaveBeenCalledWith(saved));
-    expect(mocks.local).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ model: 'qwen-image', imageBase64: 'local-source', projectId: 'project-1' }));
-    expect(mocks.classic).not.toHaveBeenCalled();
-    expect(mocks.direct).not.toHaveBeenCalled();
-    expect(mocks.save).not.toHaveBeenCalled();
   });
   const pairAccess = {
     default_model: 'gpt-image-2.5-flare',

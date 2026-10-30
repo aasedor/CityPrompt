@@ -7,7 +7,7 @@ import { authoredSurfaceRevision, getAuthoredSurfaceCaptureClaims } from '@/feat
 import { useRenderDraft } from './useRenderDraft';
 import { ImagePresentationControls } from './ImagePresentationControls';
 import { RecoverImageAttempts } from './RecoverImageAttempts';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, imageModelUnavailable, isLocalImageModel } from '@/config/imageModels';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
 import { useAuthStore } from '@/store';
 import { ImageModelSelect } from '../ImageModelSelect';
 import { useImageModelChoice } from '../useImageModelChoice';
@@ -280,7 +280,7 @@ export function GlobeAIRenderPanel({
   });
   const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelUnavailable(imageModelAvailability, model)
     || (imageModelAvailability !== null && !imageModelAvailability.models.some(entry => entry.id === model && entry.available !== false)));
-  const paidImageModels = imageModelsForChoice(directImageModel).filter(model => !isLocalImageModel(model));
+  const paidImageModels = imageModelsForChoice(directImageModel);
   const minimumImageCosts = paidImageModels.map(model => imageModelAvailability?.models.find(entry => entry.id === model)?.minimum_credit_cost);
   const minimumImageCredits = minimumImageCosts.every(cost => typeof cost === 'number' && Number.isFinite(cost) && cost >= 0)
     ? minimumImageCosts.reduce<number>((total, cost) => total + cost!, 0) : null;

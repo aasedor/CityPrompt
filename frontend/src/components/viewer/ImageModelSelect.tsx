@@ -1,11 +1,10 @@
-import { PAID_IMAGE_MODELS, LOCAL_IMAGE_MODELS, isLocalImageModel, imageModelUnavailable, type ImageModelChoice, type ImageModelAvailability } from '@/config/imageModels';
+import { PAID_IMAGE_MODELS, imageModelUnavailable, type ImageModelChoice, type ImageModelAvailability } from '@/config/imageModels';
 
-export function ImageModelSelect({ value, onChange, disabled = false, availability, allowLocal = true }: {
+export function ImageModelSelect({ value, onChange, disabled = false, availability }: {
   value: ImageModelChoice;
   onChange: (value: ImageModelChoice) => void;
   disabled?: boolean;
   availability: ImageModelAvailability | null;
-  allowLocal?: boolean;
 }) {
   const unavailable = (id: string) => imageModelUnavailable(availability, id);
   const batchUnavailable = unavailable('gpt-image-2') || unavailable('gpt-image-2.5-flare') || unavailable('gpt-image-2.5-sunburst');
@@ -25,20 +24,11 @@ export function ImageModelSelect({ value, onChange, disabled = false, availabili
           {PAID_IMAGE_MODELS.map((model) => (
             <option key={model.id} value={model.id} disabled={unavailable(model.id)}>{model.option}{unavailable(model.id) ? ` · ${unavailableLabel}` : ''}</option>
           ))}
-          {allowLocal && import.meta.env.DEV && LOCAL_IMAGE_MODELS.map(model => (
-            <option key={model.id} value={model.id} disabled={!availability?.models.some(entry => entry.id === model.id && entry.available === true)}>
-              {model.option}{!availability?.models.some(entry => entry.id === model.id && entry.available === true) ? ' · ComfyUI unavailable' : ''}
-            </option>
-          ))}
         </select>
       </label>
       <p className="mt-1 text-[10px] opacity-75">
         {value === 'gemini-nano-banana-2.1'
           ? 'Google image generation · 2K output for Direct 3D · one image call. Uses the same captured scene and geometry controls.'
-          : value === 'qwen-image'
-          ? 'High-quality local render · approximately 4 megapixels · 40 steps · 0 credits. Allow several minutes; compare building details with your 3D view.'
-          : isLocalImageModel(value)
-          ? 'Runs on your desktop GPU · 0 credits. Returns the generated image directly, without geometry repair or replacement. Compare it with your 3D view.'
           : value === 'compare-all-three'
           ? 'Three image calls, billed separately. Same source view: GPT Image 2, Flare, then Sunburst. Each result is saved.'
           : allUnavailable ? 'Image rendering is unavailable in this session. You can still edit and explore the 3D scene.'

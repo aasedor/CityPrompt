@@ -1671,7 +1671,7 @@ export function ProjectViewPage() {
                 <RenderSourceNote render={renderLightbox} />
               </div>
               <div className="absolute top-3 right-3 flex gap-2">
-                <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} onImageSaved={rememberSavedRender} />
+                <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} />
                 <button
                   type="button"
                   onClick={() => handleEditRender(renderLightbox)}
@@ -2118,7 +2118,7 @@ export function ProjectViewPage() {
               <RenderSourceNote render={renderLightbox} />
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
-              <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} onImageSaved={rememberSavedRender} />
+              <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} />
               <button
                 type="button"
                 onClick={() => handleEditRender(renderLightbox)}

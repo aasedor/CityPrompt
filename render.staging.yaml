@@ -36,8 +36,6 @@ services:
     value: 'false'
   - key: RUN_DATABASE_MIGRATIONS
     value: 'false'
-  - key: COMFY_TRIALS_ENABLED
-    value: 'false'
   - key: DIRECT_3D_JOBS_ENABLED
     value: 'true'
   - key: DIRECT_3D_IMAGES_ENABLED
@@ -114,11 +112,6 @@ services:
       name: cityprompt-staging-api
       type: web
       envVarKey: CLASSROOM_RELEASE
-  - key: COMFY_TRIALS_ENABLED
-    fromService:
-      name: cityprompt-staging-api
-      type: web
-      envVarKey: COMFY_TRIALS_ENABLED
   - key: DIRECT_3D_JOBS_ENABLED
     fromService:
       name: cityprompt-staging-api
@@ -243,11 +236,6 @@ services:
       name: cityprompt-staging-api
       type: web
       envVarKey: CLASSROOM_RELEASE
-  - key: COMFY_TRIALS_ENABLED
-    fromService:
-      name: cityprompt-staging-api
-      type: web
-      envVarKey: COMFY_TRIALS_ENABLED
   - key: DIRECT_3D_JOBS_ENABLED
     fromService:
       name: cityprompt-staging-api
@@ -372,11 +360,6 @@ services:
       name: cityprompt-staging-api
       type: web
       envVarKey: CLASSROOM_RELEASE
-  - key: COMFY_TRIALS_ENABLED
-    fromService:
-      name: cityprompt-staging-api
-      type: web
-      envVarKey: COMFY_TRIALS_ENABLED
   - key: DIRECT_3D_JOBS_ENABLED
     fromService:
       name: cityprompt-staging-api
@@ -501,11 +484,6 @@ services:
       name: cityprompt-staging-api
       type: web
       envVarKey: CLASSROOM_RELEASE
-  - key: COMFY_TRIALS_ENABLED
-    fromService:
-      name: cityprompt-staging-api
-      type: web
-      envVarKey: COMFY_TRIALS_ENABLED
   - key: DIRECT_3D_JOBS_ENABLED
     fromService:
       name: cityprompt-staging-api
