@@ -180,6 +180,7 @@
     "src/components/viewer/globe/projectFrameRetry.ts",
     "src/components/viewer/globe/publicRealmDepthPolicy.ts",
     "src/components/viewer/globe/publicRealmGenerationContext.ts",
+    "src/components/viewer/globe/publicRealmOwnership.ts",
     "src/components/viewer/globe/publicRealmPlantGeometry.ts",
     "src/components/viewer/globe/publicRealmPropPalettes.ts",
     "src/components/viewer/globe/publicRealmSurfaceFinish.ts",
@@ -355,6 +356,8 @@
     "src/features/legoAssembly/LegoAssemblyPreview.tsx",
     "src/features/legoAssembly/allSettledWithConcurrency.ts",
     "src/features/legoAssembly/buildingInspection.ts",
+    "src/features/legoAssembly/buildingOnlyContracts.json",
+    "src/features/legoAssembly/buildingOnlyScene.ts",
     "src/features/legoAssembly/buildingWalking.ts",
     "src/features/legoAssembly/communityCompiler.ts",
     "src/features/legoAssembly/detachedPlot.ts",
@@ -443,6 +446,8 @@
     "src/features/pickPlace/assetRegistry.ts",
     "src/features/pickPlace/brtConnections.ts",
     "src/features/pickPlace/buildingFootprintProgram.ts",
+    "src/features/pickPlace/buildingOnlyFootprint.ts",
+    "src/features/pickPlace/buildingOnlySelection.ts",
     "src/features/pickPlace/buildingPlacementEdges.ts",
     "src/features/pickPlace/buildingStoreyProgram.ts",
     "src/features/pickPlace/canonicalBuildingPlacement.ts",
@@ -457,6 +462,7 @@
     "src/features/pickPlace/claudeAssetLocalTrial.ts",
     "src/features/pickPlace/claudeBuildingRelease.ts",
     "src/features/pickPlace/duplicateStreet.ts",
+    "src/features/pickPlace/fixedBuildingFootprint.ts",
     "src/features/pickPlace/fixedNativeScene.ts",
     "src/features/pickPlace/generatedPlacement.ts",
     "src/features/pickPlace/geometry.ts",
@@ -467,6 +473,8 @@
     "src/features/pickPlace/pickBuildingEntrance.ts",
     "src/features/pickPlace/pickerCategories.ts",
     "src/features/pickPlace/pickerHeroImages.ts",
+    "src/features/pickPlace/publicRealmOwnershipContract.ts",
+    "src/features/pickPlace/publicRealmOwnershipContracts.json",
     "src/features/pickPlace/publicRealmRelease.ts",
     "src/features/pickPlace/publicRoadConnection.ts",
     "src/features/pickPlace/publicRoadSuggestions.ts",
@@ -616,10 +624,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3652,
+    "explicitReferenceCount": 3657,
     "dynamicCollectionCount": 7,
     "requiredFileCount": 5441,
-    "requiredLogicalBytes": 12460088480,
+    "requiredLogicalBytes": 12821529095,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -2562,6 +2570,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1406587,
@@ -3160,6 +3169,46 @@
       "logicalBytes": 121796
     },
     {
+      "url": "/archetypes/buildings/classroom-heroes/parkade_classic_concrete-photo-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 314012,
+      "lfsOid": "63dc911faab04b2e73f62852716155e205bdad219ed1f729d870a4777613501d"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/parkade_green_terraces-photo-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 465520,
+      "lfsOid": "6034c9681481271aa92c971ca9c07a1c5a66963cb00e198a2be9a303dbaaa57c"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/parkade_mobility_courtyard-photo-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 474182,
+      "lfsOid": "900b0514f81616ef403344debf43fadb863071f2e5892bb57f36bed0bd1f4555"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/parkade_solar_ribbon-photo-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 382936,
+      "lfsOid": "ed172719b940beecedd119fc64e08b2f80558e4907682f2e19d2fb7673c7e906"
+    },
+    {
+      "url": "/archetypes/buildings/classroom-heroes/parkade_urban_brick-photo-v1.webp",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 441768,
+      "lfsOid": "98c32d94407f7edce4b9f68f157057fcbd1971703ccaa5ba9fc2e2d435e17675"
+    },
+    {
       "url": "/archetypes/buildings/classroom-heroes/showcase_aquatic-street-v1.webp",
       "sources": [
         "src/data/catalogueHeroImages.json"
@@ -3219,7 +3268,9 @@
       "url": "/archetypes/buildings/climbing_wall_building/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1254544,
       "lfsOid": "a2b53e14adb38bae7599241724773027be0f01b112e97c090d51a9737cc5d1c8"
@@ -3228,7 +3279,9 @@
       "url": "/archetypes/buildings/climbing_wall_building/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1349697,
       "lfsOid": "345d575a53846738cda1d24794ec0cc409cb5f2335cc624a41c403d83eb5bde8"
@@ -3246,7 +3299,9 @@
       "url": "/archetypes/buildings/climbing_wall_building/variant_3.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1359680,
       "lfsOid": "c510322572ffa49702465f621dd95575a967787b28a37e96755cec68263fc595"
@@ -6995,7 +7050,9 @@
       "url": "/archetypes/buildings/modern_fire_station/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1073268,
       "lfsOid": "6715ca6d2f3fde8f4ddd12ca6a470cba4d470fbc781c5988ccecb25c5c07340d"
@@ -8196,7 +8253,6 @@
     {
       "url": "/archetypes/buildings/parkade-classic-concrete/front.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8206,7 +8262,6 @@
     {
       "url": "/archetypes/buildings/parkade-green-terraces/front.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8216,7 +8271,6 @@
     {
       "url": "/archetypes/buildings/parkade-mobility-courtyard/front.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8226,7 +8280,6 @@
     {
       "url": "/archetypes/buildings/parkade-solar-ribbon/front.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8236,7 +8289,6 @@
     {
       "url": "/archetypes/buildings/parkade-urban-brick/front.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8613,7 +8665,9 @@
       "url": "/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1295867,
       "lfsOid": "4e6289d461f2ad8bba095c0e5f7a67751234a066b022a585244f8dbb937e20a4"
@@ -9419,7 +9473,9 @@
       "url": "/archetypes/buildings/student-residence-tower/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1206622,
       "lfsOid": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc"
@@ -12988,6 +13044,7 @@
       "url": "/archetypes/openspaces/halifax-public-gardens/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1556335,
@@ -14327,6 +14384,7 @@
       "url": "/archetypes/openspaces/outdoor-ice-rink/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1338889,
@@ -15481,6 +15539,7 @@
       "url": "/archetypes/openspaces/stepped-terraced-plaza/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1223732,
@@ -17135,6 +17194,7 @@
       "url": "/archetypes/streets/barcelona-passatge-covered-passage/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1623910,
@@ -21736,6 +21796,7 @@
       "url": "/archetypes/streets/rail-transit-viaduct/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1547636,
@@ -23577,6 +23638,7 @@
       "url": "/archetypes/streets/urban-vehicular-bridge/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1312745,
@@ -25329,7 +25391,6 @@
     {
       "url": "/park-kits/claude-20261023/395418e0134ab65633bb5cc487f2e963c47278f9b1ecfe6f9687324abc87cab8.jpg",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/publicRealmRelease20261023.json"
       ],
       "logicalBytes": 17870
@@ -25361,7 +25422,6 @@
     {
       "url": "/park-kits/claude-20261023/a08f2e9a011a3d0d3ea8bea0107c8af420f869bce88aac4665726f191052330a.jpg",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/publicRealmRelease20261023.json"
       ],
       "logicalBytes": 18368
@@ -32038,9 +32098,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 133,
-      "logicalBytes": 57030396,
-      "pathDigest": "2f6abdf2b0aa7f26b3d525592187b81ead6c2f928c821796f38936d7fbfed213"
+      "fileCount": 503,
+      "logicalBytes": 434305560,
+      "pathDigest": "09e2c7b87eff8165a249710ffa271ec4366e5a30f5f15542903e1929dfbe83fc"
     },
     {
       "name": "public-realm-skins",
@@ -32078,9 +32138,9 @@
         "/street-kits/pilots/"
       ],
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
-      "fileCount": 179,
-      "logicalBytes": 110266248,
-      "pathDigest": "944010e4da5d6339e68c663483aa5a9bfc12224b0f7c6e1d6fa6befd44cee048"
+      "fileCount": 174,
+      "logicalBytes": 92353281,
+      "pathDigest": "f42ba76385d374b65f41a1d041f36b4ba4440ae1adbbd5a9bbac2ff329e498ec"
     },
     {
       "name": "sports-park-modules",
@@ -32094,8 +32154,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21536,
-    "unclassifiedRuntimePathDigest": "adc337d2e8bcf6e40af6885585feb294765a8616b3dd37172d1e6cff32f92a3e",
+    "unclassifiedRuntimeFileCount": 21494,
+    "unclassifiedRuntimePathDigest": "925fe7426b40b8c04d1bbb75d16502cee8c12ccb8a26d1b8004218e7e793ce01",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",

@@ -54,9 +54,9 @@
 
 ## Task3b — lifelike picker heroes (user steering)
 
-- [ ] Audit all202 community choices (104buildings/42parks/56streets), exact variant photograph and actual served image decoding.
-- [ ] Reuse authoritative lifelike references; replace clay/isometric previews and repair missing local assets without changing model identities.
-- [ ] Tests and ordinary browser verification; deliver hero-card evidence. No additional paid generations assumed.
+- [x] Audit all202 community choices (104buildings/42parks/56streets), exact variant photograph and actual served image decoding.
+- [x] Reuse authoritative lifelike references; replace clay/isometric previews and repair missing local assets without changing model identities.
+- [x] Tests and ordinary browser verification; deliver hero-card evidence. Five built-in parkade hero generations; no City Prompt paid API jobs or credit purchases. Verified eight Drive deliveries.
 
 ## Task4 — additional bridges
 
