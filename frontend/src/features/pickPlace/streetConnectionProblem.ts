@@ -7,11 +7,8 @@ import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJun
 import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetProgram';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { isFixedSectionStreet } from './streetPlacement';
-import { nativeStreetPilotForZone } from '@/components/viewer/globe/nativeStreetPilot';
-
-/** Exact, flat walking surfaces can overlap without a vehicle junction kit. */
-export const isSurfacePath = (zone: Pick<SiteZone, 'zone_type' | 'properties'>) =>
-  nativeStreetPilotForZone(zone, true)?.program?.adapter === 'narrow-pathway-v1';
+import { isSurfacePath } from './surfacePath';
+export { isSurfacePath } from './surfacePath';
 
 /** Only accept overlaps that the shared junction renderer can actually join. */
 export function streetConnectionProblem(candidate: Pick<SiteZone, 'coordinates'|'properties'> & Partial<SiteZone>, zones: SiteZone[]): string | null {

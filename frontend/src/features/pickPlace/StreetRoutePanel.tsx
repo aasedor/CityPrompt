@@ -11,6 +11,7 @@ import { BrtStopControls } from './BrtStopControls';
 import { StreetDuplicateControls } from './StreetDuplicateControls';
 import { isSpecialistStreet, CANAL_VARIANT } from '@/components/viewer/globe/specialistStreetProgram';
 import { isElevatedRail, hasElevatedStation } from '@/components/viewer/globe/elevatedRailProgram';
+import { isSurfacePath } from './surfacePath';
 
 export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete, onMore, onPublicConnection, connectionLeavesSite = false, onUpdateDesign, onDuplicate }: {
   zone: SiteZone; disabled: boolean; onReshape: (coordinates: number[][]) => void;
@@ -35,7 +36,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{asset?.label ?? 'Street'}</h2><button className={button} aria-label="Close street settings" onClick={onClose}>×</button></div>
     <p className="my-3 text-sm text-slate-800">{isBrt||(specialist&&!canal)?'Drag a white endpoint to extend this straight corridor. Drag the street to move it.':'Drag a white route point to bend or extend the street. Drag the street to move it.'}</p>
     <p className="mb-3 text-xs text-slate-600">{elevatedRail?stationRail?'Add a station at a chosen point along this straight route. Walk to either glass lift tower for step-free platform access, or use the stairs. The train is a static display; street crossings and rail junctions are unsupported.':'Walk along the landscaped paths below the tracks. The metro train is a static display. Keep other streets outside this corridor; rail junctions, stations and street crossings are not supported.':specialist?(zone.properties?.road_selected_variant_id===CANAL_VARIANT?'Draw or reshape the canal to fit your site. Connect paths at the outer bank edge. The arch keeps its size and fits on a straight stretch; leave a straight stretch for a crossing.':'The 84 m arch span stays rigid. The route includes a 100 m deck and gradual approaches; connect other roads at the ground-level ends.'): 'Bring an end close to another street to snap a junction. Leave room away from bends and street ends for both sidewalks. Existing junctions stay connected as you edit. Hold Alt to skip endpoint snapping.'}</p>
-    <p className="mb-3 text-xs text-slate-600">This section stays {width} m wide. Keep route points at least {width} m apart. Choose another street type for a different width.</p>
+    <p className="mb-3 text-xs text-slate-600">This section stays {width} m wide. {isSurfacePath(zone) ? 'Tight bends and switchbacks are supported.' : <>Keep route points at least {width} m apart.</>} Choose another street type for a different width.</p>
     {program && !canal && <p className="mb-3 text-xs text-slate-600">Keep the complete route between {program.minLengthM} and {program.maxLengthM} m on a prepared level site. The original structures and furniture retain their sizes as you extend it.</p>}
     {onUpdateDesign && <StreetDesignControls key={`${zone.id}:${zone.properties?.road_archetype_id}:${zone.properties?.road_selected_variant_id}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {onUpdateDesign && (isBrt||stationRail) && <BrtStopControls zone={zone} disabled={disabled} onSave={onUpdateDesign}/>}
@@ -51,7 +52,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
     {asset && <StreetCrossSection asset={asset} expanded />}
     <div className="grid grid-cols-2 gap-2"><button className={button} disabled={disabled || !bend} onClick={()=>bend && onReshape(bend)}>Add bend point</button><button className={button} disabled={disabled} onClick={onDelete}>Delete street</button></div>
     {onDuplicate && !isFixedNativeScene(zone.properties) && <StreetDuplicateControls key={zone.id} disabled={disabled} width={width} onDuplicate={onDuplicate} />}
-    {!bend && !isBrt && (!specialist || canal) && <p className="mt-2 text-xs text-slate-600">Extend a segment to {2 * width} m before adding another point.</p>}
+    {!bend && !isBrt && (!specialist || canal) && <p className="mt-2 text-xs text-slate-600">Extend a segment to {isSurfacePath(zone) ? .2 : 2 * width} m before adding another point.</p>}
     {asset && <CalgaryGuideDetails classification={asset.calgaryGuide} />}
     <button className="mt-2 min-h-11 text-xs text-slate-700 underline" onClick={onMore}>More street types and settings</button>
   </aside>;

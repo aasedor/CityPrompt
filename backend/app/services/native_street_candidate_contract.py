@@ -13,6 +13,7 @@ import re
 from pathlib import Path
 from functools import lru_cache
 from app.services.street_route_policy import native_street_max_length
+from app.services.surface_path import SURFACE_PATH_WIDTHS as _SURFACE_PATH_WIDTHS
 
 from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 from app.services.public_realm_lego import (
@@ -25,16 +26,6 @@ from app.services.public_realm_lego import (
 
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 _ID = re.compile(r"[a-z][a-z0-9_]*\Z")
-_SURFACE_PATH_WIDTHS = {
-    "garden_gravel_path_v1": 1.5,
-    "concrete_neighbourhood_walk_v1": 1.8,
-    "brick_courtyard_path_v1": 2.0,
-    "timber_garden_walk_v1": 2.0,
-    "asphalt_shared_path_v1": 3.0,
-    "standalone_narrow_sidewalk_v1": 1.5,
-    "standalone_neighbourhood_sidewalk_v1": 2.0,
-    "standalone_urban_sidewalk_v1": 3.0,
-}
 _APPEARANCE_BY_FINISH = {
     "pavers": "heritage_brick_stone",
     "brick": "heritage_brick_stone",

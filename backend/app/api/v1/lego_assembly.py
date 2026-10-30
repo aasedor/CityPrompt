@@ -1295,48 +1295,65 @@ def _public_realm_recipe_for_zone(
     if kind == "street":
         if strict:
             properties, migrated_variant_id = normalize_legacy_ai_street_variant_properties(properties)
-        # Import lazily: the plan generator owns metric centreline validation
-        # and conservative recovery, while this API owns ORM/proof mutation.
-        from app.services.plan_geometry.generator import (
-            recover_street_plan_centerline_wgs84,
-            validate_street_plan_centerline_wgs84,
-        )
+        from app.services.surface_path import surface_path_centerline_metric
 
-        had_centerline = "plan_centerline" in properties
-        centerline_is_valid = had_centerline and (
-            validate_street_plan_centerline_wgs84(
-                source_geometry,
-                properties.get("plan_centerline"),
+        try:
+            path_line = surface_path_centerline_metric(source_geometry, properties)
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "invalid_pathway_source",
+                    "message": str(exc),
+                    "zone_id": str(zone.id),
+                    "kind": kind,
+                },
+            ) from exc
+        # A trusted flat path owns its winding route, including crossings and
+        # retraces. Generic vehicle-axis recovery would replace that design.
+        if path_line is None:
+            # Import lazily: the plan generator owns metric centreline validation
+            # and conservative recovery, while this API owns ORM/proof mutation.
+            from app.services.plan_geometry.generator import (
+                recover_street_plan_centerline_wgs84,
+                validate_street_plan_centerline_wgs84,
             )
-        )
-        if not centerline_is_valid:
-            recovered_centerline = recover_street_plan_centerline_wgs84(source_geometry)
-            if recovered_centerline and validate_street_plan_centerline_wgs84(
-                source_geometry,
-                recovered_centerline,
-            ):
-                properties["plan_centerline"] = recovered_centerline
-                centerline_normalized = True
-            elif had_centerline:
-                # Never let malformed/stale authored metadata survive a
-                # recompile. Manual zones may fall back to their legacy
-                # geometry renderer; strict AI plans must fail closed.
-                properties.pop("plan_centerline", None)
-                centerline_normalized = True
-                if strict:
-                    raise HTTPException(
-                        status_code=422,
-                        detail={
-                            "code": "invalid_plan_centerline",
-                            "message": (
-                                "Street plan_centerline does not describe the "
-                                "current zone geometry and could not be safely "
-                                "recovered."
-                            ),
-                            "zone_id": str(zone.id),
-                            "kind": kind,
-                        },
-                    )
+
+            had_centerline = "plan_centerline" in properties
+            centerline_is_valid = had_centerline and (
+                validate_street_plan_centerline_wgs84(
+                    source_geometry,
+                    properties.get("plan_centerline"),
+                )
+            )
+            if not centerline_is_valid:
+                recovered_centerline = recover_street_plan_centerline_wgs84(source_geometry)
+                if recovered_centerline and validate_street_plan_centerline_wgs84(
+                    source_geometry,
+                    recovered_centerline,
+                ):
+                    properties["plan_centerline"] = recovered_centerline
+                    centerline_normalized = True
+                elif had_centerline:
+                    # Never let malformed/stale authored metadata survive a
+                    # recompile. Manual zones may fall back to their legacy
+                    # geometry renderer; strict AI plans must fail closed.
+                    properties.pop("plan_centerline", None)
+                    centerline_normalized = True
+                    if strict:
+                        raise HTTPException(
+                            status_code=422,
+                            detail={
+                                "code": "invalid_plan_centerline",
+                                "message": (
+                                    "Street plan_centerline does not describe the "
+                                    "current zone geometry and could not be safely "
+                                    "recovered."
+                                ),
+                                "zone_id": str(zone.id),
+                                "kind": kind,
+                            },
+                        )
 
     if migrated_variant_id is not None or centerline_normalized:
         zone.properties = properties

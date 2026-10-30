@@ -453,7 +453,7 @@ export function ProjectViewPage() {
         ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates) ?? flexibleParkFitProblem(coordinates,zone.properties)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
-          parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
+          parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined, streetUpdate?.properties ?? zone.properties) : null)
         ?? placementProblem(footprint, siteZones,
           publicRoadConnectionFits(zone, footprint, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId,
           { allowStreetIntersections: isFixedSectionStreet(zone), properties:streetUpdate?.properties ?? zone.properties });
@@ -1243,7 +1243,7 @@ export function ProjectViewPage() {
                   ?? streetConnectionProblem({coordinates,properties},siteZones)
                   ?? nativeStreetRouteProblem({coordinates,properties},getActiveSiteBoundary(siteZones))
                   ?? streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
-                  parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
+                  parsePersistedCenterline(properties?.plan_route_controls) ?? undefined, properties)
                   ?? placementProblem(coordinates, siteZones,
                     publicRoadConnectionFits({ zone_type: type, properties }, coordinates, getActiveSiteBoundary(siteZones))
                       ? null : getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true, properties });
@@ -1455,7 +1455,7 @@ export function ProjectViewPage() {
               const problem = specialistConnectionProblem(copy, siteZones) ?? brtConnectionProblem(copy, siteZones)
                 ?? streetConnectionProblem(copy, siteZones)
                 ?? nativeStreetRouteProblem(copy, boundary)
-                ?? streetRouteProblem(copy.coordinates, Number(copy.properties.width), parsePersistedCenterline(copy.properties.plan_route_controls) ?? undefined)
+                ?? streetRouteProblem(copy.coordinates, Number(copy.properties.width), parsePersistedCenterline(copy.properties.plan_route_controls) ?? undefined, copy.properties)
                 ?? placementProblem(copy.coordinates, siteZones, boundary, undefined, { allowStreetIntersections: true, properties:copy.properties });
               if (problem) throw new Error(problem);
               const created = await createZone.mutateAsync(copy);
@@ -1469,7 +1469,7 @@ export function ProjectViewPage() {
                 ?? brtConnectionProblem({...selectedZone,...data},siteZones)
                 ?? streetConnectionProblem({...selectedZone,...data},siteZones)
                 ?? streetRouteProblem(data.coordinates, Number(data.properties.width),
-                parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)
+                parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined, data.properties)
                 ?? placementProblem(data.coordinates, siteZones,
                   publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id,
                   { allowStreetIntersections: true, properties:data.properties });

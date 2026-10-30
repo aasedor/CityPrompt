@@ -5,6 +5,7 @@ import { buildBrtStreetProgram, type BrtStop } from './brtStreetProgram';
 import { buildSpecialistStreetProgram, CANAL_VARIANT, BRIDGE_VARIANT, specialistRouteProblem } from './specialistStreetProgram';
 import { ELEVATED_RAIL_VARIANT, CIVIC_RAIL_VARIANT, elevatedRailStationProblem } from './elevatedRailProgram';
 import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
+import { pathwaySurfacePolygons } from '@/utils/pathwayFootprint';
 
 export function nativeStreetHasPreparedGround(preparedElevation: number | null, hasPreparedApproach: boolean, hasSharedGround: boolean) {
   return Number.isFinite(preparedElevation) || hasPreparedApproach || hasSharedGround;
@@ -93,6 +94,21 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
     const group=groups.get(material)??{positions:[],indices:[]};const n=group.positions.length/3;
     group.positions.push(...vertices.flat());group.indices.push(n,n+1,n+2,n,n+2,n+3);groups.set(material,group);
   };
+  if (program.adapter==='narrow-pathway-v1') {
+    // A path may double back or cross itself. One unioned walking surface
+    // keeps full-width round joins, avoids overlapping base triangles and
+    // preserves the lawn inside an enclosed loop.
+    const surface=pathwaySurfacePolygons(route.map(p=>[p.x,p.y]),width);
+    const group={positions:[] as number[],indices:[] as number[]};
+    for (const polygon of surface) {
+      const rings=polygon.map(ring=>ring.slice(0,-1).map(([x,y])=>new THREE.Vector2(x,y)));
+      const points=rings.flat(), first=group.positions.length/3;
+      const faces=THREE.ShapeUtils.triangulateShape(rings[0],rings.slice(1));
+      group.positions.push(...points.flatMap(p=>[p.x,p.y,baseLiftM]));
+      group.indices.push(...faces.flatMap(face=>face.map(index=>first+index)));
+    }
+    groups.set('paving',group);
+  }
   const clipAtStation=(vertices:number[][], boundary:number, keepAfter:boolean):number[][]=>{
     const result:number[][]=[];
     for(let i=0;i<vertices.length;i++){
@@ -119,7 +135,8 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
     for(const cell of cells){
       const {x,y,width:w,depth:d}=cell,material=cell.material!;
       const a=x-w/2,b=x+w/2,c=y-d/2,e=y+d/2;
-      rect(material,a,b,center+c,center+e,0);
+      if(program.adapter!=='narrow-pathway-v1')rect(material,a,b,center+c,center+e,0);
+      else if(material!=='paving')rect(material,a,b,center+c,center+e,.0005);
       if(material==='paving' && program.paving==='stone'){
         for(let j=1;j<Math.trunc(d/.8);j++)rect('edge',a,b,center+c+j*.8-.0045,center+c+j*.8+.0045,.002);
         for(let j=1;j<Math.trunc(w/1.2);j++)rect('edge',a+j*1.2-.0045,a+j*1.2+.0045,center+c,center+e,.002);

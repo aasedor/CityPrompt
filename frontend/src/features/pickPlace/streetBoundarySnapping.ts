@@ -5,6 +5,8 @@ import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetProgram';
 import { BRT_VARIANT } from '@/components/viewer/globe/brtStreetProgram';
 import { TRAM_VARIANT } from '@/components/viewer/globe/tramStreetProgram';
+import { isSurfacePath } from './surfacePath';
+import { bufferPathwayToPolygon } from '@/utils/pathwayFootprint';
 
 const SNAP_DISTANCE_M = 6;
 // Avoid inconsistent point-on-edge classification and projection round-off.
@@ -68,6 +70,8 @@ export function snapStreetToBoundary(points: number[][], width: number, boundary
     if (candidates.length) result = reverse ? candidates[0].route.reverse() : candidates[0].route;
   }
   // The entire rounded street must fit, including concave parcel recesses.
-  const footprint = bufferLineToPolygon(roundAuthoredStreetRoute(result, width, properties), width).map(local);
+  const centerline = roundAuthoredStreetRoute(result,width,properties);
+  const footprint = (isSurfacePath({zone_type:'road',properties})
+    ? bufferPathwayToPolygon(centerline,width) : bufferLineToPolygon(centerline,width)).map(local);
   return envelopeFits(footprint, ring) ? result : points;
 }

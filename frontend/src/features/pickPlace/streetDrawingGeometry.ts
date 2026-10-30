@@ -7,6 +7,8 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { snapStreetToBoundary } from './streetBoundarySnapping';
 import { suggestPublicRoad, type PublicRoadContext, type PublicRoadSuggestion } from './publicRoadSuggestions';
 import { snapStreetBoundaryPlacement } from './streetBoundaryPlacement';
+import { isSurfacePath } from './surfacePath';
+import { bufferPathwayToPolygon } from '@/utils/pathwayFootprint';
 
 /** One geometry path for the unsaved preview and the final authored road. */
 export function streetDrawingGeometry(points: number[][], properties: SiteZoneProperties, zones: SiteZone[], options: {
@@ -21,7 +23,8 @@ export function streetDrawingGeometry(points: number[][], properties: SiteZonePr
     ? snapStreetEnds(bounded, zones, undefined, width)
     : snapRoadEndpoints(bounded, zones, properties.road_level);
   const centerline = roundAuthoredStreetRoute(authored, width, properties);
-  const geometry = { coordinates: bufferLineToPolygon(centerline, width), properties: {
+  const geometry = { coordinates: isSurfacePath({zone_type:'road',properties})
+    ? bufferPathwayToPolygon(centerline,width) : bufferLineToPolygon(centerline, width), properties: {
     ...properties, plan_centerline: centerline,
     ...(properties.pick_place_street_section ? { plan_route_controls: authored } : { procedural_road: 1 }),
   } };

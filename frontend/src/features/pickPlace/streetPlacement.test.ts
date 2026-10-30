@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
 import { bufferLineToPolygon, extractCenterline } from '@/utils/roadGeometry';
+import { isSurfacePath } from './surfacePath';
+import { pointInside } from '@/components/viewer/globe/parkAccessConnections';
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { resolveManualParkAccess } from '@/components/viewer/globe/parkAccessConnections';
 import { addStreetBend, CALGARY_LOCAL_PLACEMENT, reshapeStreetPoint, streetCoordinateUpdate, streetRouteProblem } from './streetPlacement';
@@ -45,7 +47,12 @@ describe('fixed sections across street types', () => {
     const updated = streetCoordinateUpdate(saved, reshaped);
     expect(updated.properties?.width).toBe(width);
     expect(updated.properties?.plan_route_controls).toEqual(extractCenterline(reshaped));
-    expect(updated.properties?.plan_centerline).toEqual(extractCenterline(updated.coordinates));
+    if (isSurfacePath(saved)) {
+      const footprint=updated.coordinates.map(xy) as [number,number][];
+      for(const point of updated.properties?.plan_centerline as number[][]) {
+        expect(pointInside(xy(point) as [number,number],footprint)).toBe(true);
+      }
+    } else expect(updated.properties?.plan_centerline).toEqual(extractCenterline(updated.coordinates));
     expect((updated.properties?.plan_centerline as number[][]).length).toBeGreaterThan(3);
     expect(streetRouteProblem(updated.coordinates, width, updated.properties?.plan_route_controls as number[][])).toBeNull();
     const a = xy(reshaped[0]), b = xy(reshaped[reshaped.length - 1]);

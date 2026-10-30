@@ -2742,21 +2742,28 @@ def plan_public_realm_zone_recipe(
         local_metric_crs_for_polygon(geometry_wgs84),
     )
     metric_geometry = project_geometry(geometry_wgs84, transformer)
+    from app.services.surface_path import surface_path_centerline_metric, surface_path_width
+
+    path_line = surface_path_centerline_metric(geometry_wgs84, props) if is_street else None
     centerline_metric = None
     if is_street and props.get("plan_centerline") is not None:
         from app.services.plan_geometry.generator import validate_street_plan_centerline_wgs84
 
         if validate_street_plan_centerline_wgs84(geometry_wgs84, props["plan_centerline"]):
             centerline_metric = project_geometry(LineString(props["plan_centerline"]), transformer)
-    target = _target_from_metric_geometry(
-        metric_geometry,
-        props,
-        target_type=target_types.pop(),
-        # Strictness controls failure behavior, not recipe geometry.  Every
-        # emitted V1 recipe must use the same target policy so a manual compile
-        # and Direct's later canonical replan cannot disagree.
-        attest_segment_width=True,
-        centerline_metric=centerline_metric,
+    target = (
+        StreetSegmentTarget(row_width_m=surface_path_width(props), length_m=round(path_line.length, 3))
+        if path_line is not None
+        else _target_from_metric_geometry(
+            metric_geometry,
+            props,
+            target_type=target_types.pop(),
+            # Strictness controls failure behavior, not recipe geometry.  Every
+            # emitted V1 recipe must use the same target policy so a manual compile
+            # and Direct's later canonical replan cannot disagree.
+            attest_segment_width=True,
+            centerline_metric=centerline_metric,
+        )
     )
     exact_variant_id = variant_id or next(
         (
