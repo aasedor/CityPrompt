@@ -19,6 +19,8 @@ export function modularBridgeConnectionProblem(bridge: Pick<SiteZone,'coordinate
       const q=ring[(i+1)%ring.length];return sum+p[0]*q[1]-q[0]*p[1];
     },0))/2;
     if (overlap.reduce((sum,polygon)=>sum+area(polygon[0])-polygon.slice(1).reduce((holes,ring)=>holes+area(ring),0),0)<=1e-6) return null;
+    if(program.adapter==='source-span-bridge-v1')
+      return 'Keep other objects clear of this bridge structure. Routes may meet at its endpoints.';
     if (other.properties?.lane_count !== 0 || !isSurfacePath(other))
       return 'Keep other bridges and vehicle streets clear of this bridge. Connect at a ground-level endpoint.';
     const dx=(b[0]-a[0])*sx,dy=(b[1]-a[1])*111320,length=Math.hypot(dx,dy);

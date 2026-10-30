@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import ts from 'typescript';
 import { deflateSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
-import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
+import { packCatalogue, packedCatalogue, productionStarter } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
 
@@ -40,10 +40,21 @@ for (const relative of [
     assert.notEqual(transformed, null);
     const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
-    assert.deepEqual(decoded.default, JSON.parse(source));
+    assert.deepEqual(decoded.default, JSON.parse(relative === 'data/classroomStarter.json' ? productionStarter(source) : source));
     assert.ok(module.length < JSON.stringify(JSON.parse(source)).length);
   });
 }
+
+test('production starter omits only local trials and exclusively trial-owned dependencies', () => {
+  const source = JSON.stringify({ schema: 1, entries: [
+    { placementId: 'published', status: 'ready', dependencies: ['shared', 'public'] },
+    { placementId: 'trial', status: 'local-pilot-runtime-pending', dependencies: ['shared', 'private'] },
+  ], dependencies: ['shared', 'public', 'private', 'unrelated'].map(id => ({ id, sha256: id })) });
+  const before = JSON.parse(source), result = JSON.parse(productionStarter(source));
+  assert.deepEqual(result.entries, [before.entries[0]]);
+  assert.deepEqual(result.dependencies.map(dep => dep.id), ['shared', 'public', 'unrelated']);
+  assert.deepEqual(JSON.parse(source), before);
+});
 
 test('extracted static registries preserve every original transport fact and render preset', () => {
   for (const [name, count, hash] of [

@@ -11,5 +11,5 @@ type NativeStreetSource = Omit<typeof streets[number], 'modules' | 'program'> & 
 /** New bridge adapters remain local pilots until their exact runtime review.
  * Keep their data and modules out of production discovery and bundle payload. */
 export const nativeStreetSources: NativeStreetSource[] = [...streets, ...(import.meta.env.DEV && import.meta.env.MODE === 'development' ? bridges : [])]
-  .map(row => ({ ...row, modules: Object.fromEntries(Object.entries(row.modules)
+  .map(row => ({ ...row, program:row.program as NativeStreetProgram, modules: Object.fromEntries(Object.entries(row.modules)
     .filter((entry): entry is [string, NativeModule] => entry[1] !== undefined)) }));

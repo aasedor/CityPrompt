@@ -49,7 +49,7 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
         const level=resolvePreparedSiteTerrainForZone(zone,zones,measured);
         const upper=level!==null && (measured>level+3 || (entrySurfaceHeight??-Infinity)>level+3);
         const height=specialistWalkingHeight(variant,(x*dy-y*dx)/length,(x*dx+y*dy)/length,length,
-          hasElevatedStation(variant)?zone.properties?.road_native_stops??[]:[],upper);
+          hasElevatedStation(variant)?zone.properties?.road_native_stops??[]:[],upper,level===null?undefined:(entrySurfaceHeight??measured)-level);
         if(height!==null&&level!==null){
           const modularBridge = modularBridgeProgramFor(variant);
           const station=(x*dx+y*dy)/length,deckStart=modularBridge

@@ -5,7 +5,7 @@ import {
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, MODULAR_BRIDGE_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, LOCAL_TOWER_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, MODULAR_BRIDGE_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, LOCAL_TOWER_ASSETS, isPlaceable, hasDrawnBridgeReplacement, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
@@ -118,9 +118,7 @@ const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansi
   ...[...LOCAL_CLAUDE_ASSETS.filter(asset =>
     !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
     && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId)),
-  ...PUBLIC_REALM_RELEASE_ASSETS.filter(asset => !MODULAR_BRIDGE_ASSETS.some(bridge =>
-    asset.id.startsWith('claude_public_realm:timber-covered-footbridge:')
-    && bridge.properties.road_archetype_id === asset.properties.road_archetype_id))].map(asset => ({
+  ...PUBLIC_REALM_RELEASE_ASSETS.filter(asset => !hasDrawnBridgeReplacement(asset))].map(asset => ({
     domain: asset.zoneType === 'building' ? 'building' : asset.zoneType === 'road' ? 'street' : 'park',
     archetype_id: String(asset.properties.development_archetype_id ?? asset.properties.road_archetype_id ?? asset.properties.green_space_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id,

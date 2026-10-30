@@ -59,7 +59,7 @@ function routeGroundRegions(width:number,length:number,regions:NativeStreetRegio
 }
 
 export function buildNativeStreetProgram(program:NativeStreetProgram,width:number,fixtureLength:number,route:StreetRouteStation[],stops:BrtStop[]=[]) {
-  if (import.meta.env.DEV && program.adapter === 'modular-bridge-v1' && program.bridge) {
+  if (import.meta.env.DEV && ['modular-bridge-v1','source-span-bridge-v1'].includes(program.adapter) && program.bridge) {
     const problem = modularBridgeRouteProblem({ ...program, bridge: program.bridge }, route, true);
     if (problem) throw new Error(problem);
     // The verified modules own deck, stairs and structure. No lawn or paving

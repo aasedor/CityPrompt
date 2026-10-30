@@ -55,9 +55,9 @@ export function specialistFixtures(variant:string,length:number,route:CanalPoint
 }
 
 /** Source-height camera support, in metres above the prepared site. */
-export function specialistWalkingHeight(variant:string,x:number,station:number,length:number,stops:RailStation[]=[],onUpperLevel=false):number|null {
+export function specialistWalkingHeight(variant:string,x:number,station:number,length:number,stops:RailStation[]=[],onUpperLevel=false,preferredHeight?:number):number|null {
   const bridgeProgram = modularBridgeProgramFor(variant);
-  if (bridgeProgram) return modularBridgeWalkingHeight(bridgeProgram, x, station, length);
+  if (bridgeProgram) return modularBridgeWalkingHeight(bridgeProgram, x, station, length,preferredHeight);
   if(station<0||station>length)return null;
   // The public route stays below the protected tracks, including when a map
   // click initially hits the deck or train roof.

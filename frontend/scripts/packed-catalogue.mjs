@@ -30,6 +30,18 @@ const bytes = Uint8Array.from(atob(${JSON.stringify(packed)}), character => char
 export default JSON.parse(strFromU8(unzlibSync(bytes)));`;
 }
 
+/** Local runtime trials are DEV-only. Do not ship their discovery receipts or
+ * exclusive asset dependencies in a production roster that cannot use them. */
+export function productionStarter(source) {
+  const roster = JSON.parse(source);
+  const trials = roster.entries.filter(entry => entry.status === 'local-pilot-runtime-pending');
+  const entries = roster.entries.filter(entry => entry.status !== 'local-pilot-runtime-pending');
+  const removed = new Set(trials.flatMap(entry => entry.dependencies ?? []));
+  const retained = new Set(entries.flatMap(entry => entry.dependencies ?? []));
+  return JSON.stringify({ ...roster, entries, dependencies: roster.dependencies.filter(dep =>
+    !removed.has(dep.id) || retained.has(dep.id)) });
+}
+
 /** The canonical generator emits JSON plus one fixed discovery filter. Only
  * accept that exact format: a future generator change needs a reviewed codec,
  * rather than silently losing an export or changing activation behavior. */
@@ -57,7 +69,9 @@ export function packedCatalogue() {
         return { code: packPublishedBuildingCatalogue(readFileSync(id, 'utf8')), map: null };
       }
       if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename) && !STATIC_METADATA.test(filename)) return null;
-      return { code: packCatalogue(readFileSync(id, 'utf8')), map: null };
+      const source = readFileSync(id, 'utf8');
+      return { code: packCatalogue(filename.endsWith('/src/data/classroomStarter.json')
+        ? productionStarter(source) : source), map: null };
     },
   };
 }

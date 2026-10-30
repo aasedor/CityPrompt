@@ -72,6 +72,7 @@ def test_frontend_runtime_fixtures_keep_their_trusted_saved_identity():
 
 
 def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review():
+    from app.services.native_source_bridge import SOURCE_BRIDGE_SOURCES
     catalog = build_native_street_candidate_catalog(MANIFEST)
     rows = {
         row["id"]: row
@@ -112,6 +113,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         "student_separated_walking_cycling_greenway_v1",
         "student_neighbourhood_transit_stop_street_v1",
         "timber_covered_bridge_route_v1",
+        *SOURCE_BRIDGE_SOURCES,
     }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()
@@ -127,7 +129,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
                 variant_id=selection.variant_id,
                 preferred_family_id=capability.family_id,
                 target=StreetSegmentTarget(
-                    row_width_m=pilot["widthM"], length_m=max(120, pilot.get("program", {}).get("minLengthM", 0))
+                    row_width_m=pilot["widthM"], length_m=min(pilot.get("program", {}).get("maxLengthM",2000),max(120, pilot.get("program", {}).get("minLengthM", 0)))
                 ),
             ),
             catalog=catalog,
@@ -140,7 +142,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
                 archetype_id=selection.archetype_id,
                 variant_id=selection.variant_id,
                 target=StreetSegmentTarget(
-                    row_width_m=pilot["widthM"], length_m=max(120, pilot.get("program", {}).get("minLengthM", 0))
+                    row_width_m=pilot["widthM"], length_m=min(pilot.get("program", {}).get("maxLengthM",2000),max(120, pilot.get("program", {}).get("minLengthM", 0)))
                 ),
             )
         )
@@ -154,7 +156,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
                     variant_id=selection.variant_id,
                     preferred_family_id=capability.family_id,
                     target=StreetSegmentTarget(
-                        row_width_m=pilot["widthM"], length_m=max(120, pilot.get("program", {}).get("minLengthM", 0))
+                        row_width_m=pilot["widthM"], length_m=min(pilot.get("program", {}).get("maxLengthM",2000),max(120, pilot.get("program", {}).get("minLengthM", 0)))
                     ),
                 ),
                 catalog=catalog,

@@ -66,6 +66,7 @@ export function PlacementPalette({ projectId, selected, onPick, onCancel, status
     ? matchingAssets.filter(choice => choice.placements[0]?.kind === 'street' || isBridgeChoice(choice)) : matchingAssets;
   const visibleSections = sections.filter(item => onPickStreet || item.id !== 'street_pathway');
   const activeStreet = STREET_ASSETS.find(asset => asset.model.variantId === activeStreetVariant);
+  const activeBridge=modularBridgeProgramFor(activeStreet?.model.variantId);
   const userGenerated = section === 'building' && groupId === 'user-generated' && Boolean(onPickGenerated);
   return <section aria-label="Place 3D objects" className="space-y-2">
     <p className="text-sm font-bold text-slate-900">Add to your community</p>
@@ -87,8 +88,8 @@ export function PlacementPalette({ projectId, selected, onPick, onCancel, status
       onClose={() => { setImportOpen(false); onBrowseChange?.(false); }}
       onImported={model => { setImportOpen(false); onBrowseChange?.(false); onPickGenerated(model); }}/>}
     {activeStreet && <p className="rounded-lg border border-lime-400 bg-lime-50 px-2 py-2 text-xs text-slate-900">
-      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />{import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(activeStreet.model.variantId)
-        ? 'Draw two endpoints, 32–240 m apart. Move after the first click to preview the bridge in 3D. Further clicks adjust its end. Press Enter to finish.'
+      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />{activeBridge
+        ? `Draw two endpoints, ${Math.ceil(activeBridge.minLengthM)}–${Math.floor(activeBridge.maxLengthM)} m apart. Move after the first click to preview the bridge in 3D. Further clicks adjust its end. Press Enter to finish.`
         : activeStreet.model.variantId === 'amsterdam_gracht_v1'
         ? 'Draw the canal to fit your site. Click route points to bend or extend it, then press Enter to finish. The banks stay 36 m wide; the arch stays its original size and fits on a straight stretch.'
         : 'Place the first point, then move to preview the street in 3D. Start near a site edge to snap an entrance, then draw inward. Enter finishes the route.'}

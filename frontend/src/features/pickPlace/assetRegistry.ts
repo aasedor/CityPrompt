@@ -15,6 +15,7 @@ import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
 import { nativeStreetSources as nativeStreets } from '@/components/viewer/globe/nativeStreetSources';
 import { nativeStreetMaxLength } from '@/components/viewer/globe/streetRoutePolicy';
+import { sourceBridgeLaneCount } from '@/components/viewer/globe/sourceSpanBridgeProgram';
 import manualStreets from '@/data/streetManual.json';
 import { reviewedAssetClassification } from './catalogueClassification';
 import { localTowerStoreyMetadata } from './localTowerStoreyPrograms';
@@ -198,19 +199,25 @@ export function additionalStreet(archetypeId: string, label: string, description
 
 const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
   id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
-    label: street.title, description: street.program?.adapter === 'modular-bridge-v1' ? 'Draw two endpoints. The bridge repeats its structural bays to fit your span, with compact stairs at each end. Prepared level site; no surrounding river or landscape.' : street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${nativeStreetMaxLength(street.id)} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
+    label: street.title, description: street.program?.adapter === 'modular-bridge-v1' ? 'Draw two endpoints. The bridge repeats its structural bays to fit your span, with compact stairs at each end. Prepared level site; no surrounding river or landscape.' : import.meta.env.DEV && street.program?.adapter === 'source-span-bridge-v1' ? `Draw two endpoints, ${Math.ceil(street.program.minLengthM)}–${Math.floor(street.program.maxLengthM)} m apart. The bridge adapts its source-derived span; prepared level site. ${street.program.bridge?.trafficKind==='rail'||street.program.bridge?.trafficKind==='road'?'Elevated endpoints; automatic road junctions are unsupported.':'Compact source-derived approaches; no surrounding scenery.'}` : street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${nativeStreetMaxLength(street.id)} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
-  calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
+  calgaryGuide: import.meta.env.DEV && ['modular-bridge-v1','source-span-bridge-v1'].includes(street.program?.adapter??'')
+    ? {groupId:'bridges',basis:'form_reference'} : classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
   model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },
   properties: { road_archetype_id: street.sourceArchetypeId, road_selected_variant_id: street.id,
     width: street.widthM, pick_place_street_section: street.id, pick_place_automatic_3d: true,
     pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
     road_standard_citation: 'City Prompt native-module teaching section',
-    ...(street.program?.adapter === 'modular-bridge-v1' ? { lane_count: 0 } : {}) },
+    ...(import.meta.env.DEV && ['modular-bridge-v1','source-span-bridge-v1'].includes(street.program?.adapter??'') ? { lane_count: sourceBridgeLaneCount(street.id) } : {}) },
 }));
 
 export const MODULAR_BRIDGE_ASSETS = import.meta.env.DEV && import.meta.env.MODE === 'development'
-  ? NATIVE_STREET_ASSETS.filter(asset => nativeStreets.find(row => row.id === asset.id)?.program?.adapter === 'modular-bridge-v1') : [];
+  ? NATIVE_STREET_ASSETS.filter(asset => ['modular-bridge-v1','source-span-bridge-v1'].includes(nativeStreets.find(row => row.id === asset.id)?.program?.adapter??'')) : [];
+
+/** Discovery replacement only; the historical fixed asset remains readable in saved projects. */
+export function hasDrawnBridgeReplacement(asset:PlaceAsset):boolean {
+  return MODULAR_BRIDGE_ASSETS.some(bridge=>nativeStreets.find(row=>row.id===bridge.id)?.sourceAssemblySha256===asset.model.revision);
+}
 
 /** Surface-only paths keep a complete clear walking width, with no road kit. */
 export const PATHWAY_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS

@@ -1,14 +1,16 @@
 import type { NativeStreetPose, StreetRouteStation } from './nativeStreetPilot';
 import bridges from '@/data/nativeBridgePilots.json';
+import { sourceSpanBridgeLayout, sourceSpanBridgeWalkingHeight, type SourceSpanBridge } from './sourceSpanBridgeProgram';
 
 export function modularBridgeProgramFor(variant: unknown): ModularBridgeProgram | undefined {
   return import.meta.env.DEV && import.meta.env.MODE === 'development'
-    ? bridges.find(row => row.id === variant)?.program : undefined;
+    ? bridges.find(row => row.id === variant)?.program as ModularBridgeProgram | undefined : undefined;
 }
 
 export interface ModularBridgeProgram {
   adapter: string; minLengthM: number; maxLengthM: number;
-  bridge: { approachM: number; endM: number; bayM: number; deckHeightM: number; clearWidthM: number };
+  bridge: { approachM: number; endM: number; bayM?: number; deckHeightM: number; clearWidthM: number }
+    & Partial<SourceSpanBridge>;
 }
 interface BridgePilot {
   widthM: number; program: ModularBridgeProgram;
@@ -19,8 +21,9 @@ export function modularBridgeRouteProblem(program: ModularBridgeProgram, route: 
   if (sampled ? route.length < 2 : route.length !== 2) return 'Draw a start and end point for this straight bridge.';
   if (route.some(p => !Number.isFinite(p.x) || !Number.isFinite(p.y))) return 'Choose two valid bridge endpoints.';
   const a = route[0], b = route[route.length - 1], dx = b.x - a.x, dy = b.y - a.y, length = Math.hypot(dx, dy);
-  if (length < program.minLengthM - .01 || length > program.maxLengthM + .01)
-    return `Draw a bridge ${program.minLengthM}–${program.maxLengthM} m long, including its compact approaches.`;
+  const tolerance=program.adapter==='source-span-bridge-v1'?1e-6:.01;
+  if (length < program.minLengthM - tolerance || length > program.maxLengthM + tolerance)
+    return `Draw a bridge ${Math.ceil(program.minLengthM)}–${Math.floor(program.maxLengthM)} m long, including its compact approaches.`;
   let previous = -1;
   for (const p of route) {
     const x = p.x - a.x, y = p.y - a.y, station = (x * dx + y * dy) / length;
@@ -37,7 +40,19 @@ export function modularBridgePoses(pilot: BridgePilot, route: StreetRouteStation
   const problem = modularBridgeRouteProblem(pilot.program, route, true);
   if (problem) throw new Error(problem);
   const a = route[0], b = route[route.length - 1], dx = b.x - a.x, dy = b.y - a.y, length = Math.hypot(dx, dy);
+  if(import.meta.env.DEV&&pilot.program.adapter==='source-span-bridge-v1'&&pilot.program.bridge.parts){
+    return sourceSpanBridgeLayout(pilot.program.bridge as SourceSpanBridge,length).map(part=>{
+      const asset=pilot.modules[part.kind];
+      if(!asset)throw new Error('A bridge component has no verified module binding.');
+      const stationM=part.startM+part.lengthM/2;
+      return {kind:part.kind,...asset,x:a.x+dx*stationM/length,y:a.y+dy*stationM/length,
+        z:(a.z??0)+((b.z??0)-(a.z??0))*stationM/length,yaw:Math.atan2(dy,dx)-Math.PI/2,
+        scale:1,stationM,surfaceLiftM:0,longitudinalScale:part.scale,
+        ...(part.deformation?{bridgeDeformation:part.deformation}:{})};
+    });
+  }
   const { approachM, endM, bayM } = pilot.program.bridge;
+  if(!bayM)throw new Error('The bridge has no source bay dimension.');
   const middle = length - 2 * (approachM + endM), count = Math.max(1, Math.round(middle / bayM));
   const bayLength = middle / count;
   const parts = [
@@ -60,7 +75,9 @@ export function modularBridgePoses(pilot: BridgePilot, route: StreetRouteStation
 
 /** The source uses risers <= 0.2 m at each end and a 4 m clear deck.
  * Return null outside that real walking surface, including the empty banks. */
-export function modularBridgeWalkingHeight(program: ModularBridgeProgram, lateral: number, station: number, length: number): number | null {
+export function modularBridgeWalkingHeight(program: ModularBridgeProgram, lateral: number, station: number, length: number,preferredHeight?:number): number | null {
+  if(import.meta.env.DEV&&program.adapter==='source-span-bridge-v1'&&program.bridge.parts)
+    return sourceSpanBridgeWalkingHeight(program.bridge as SourceSpanBridge,lateral,station,length,preferredHeight);
   const { approachM, deckHeightM, clearWidthM } = program.bridge;
   if (![lateral, station, length].every(Number.isFinite) || Math.abs(lateral) > clearWidthM / 2
     || station < 0 || station > length) return null;

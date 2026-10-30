@@ -1,6 +1,7 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
 import { nativeStreetSources as sourcePilots } from './nativeStreetSources';
 import { modularBridgePoses, modularBridgeRouteProblem } from './modularBridgeProgram';
+import type { BridgeDeformation } from './sourceSpanBridgeProgram';
 import { CANAL_ROUTE_POLICY } from './canalRoute';
 import bounds from '@/data/nativeStreetModuleBounds.json';
 import type { NativeStreetProgram } from './nativeStreetProgram';
@@ -39,6 +40,7 @@ export interface NativeStreetPose {
   surfaceLiftM: number;
   /** Only an explicitly authored modular bridge bay may vary along its route. */
   longitudinalScale?: number;
+  bridgeDeformation?: BridgeDeformation;
   wellWidthM?: number;
   wellDepthM?: number;
 }
@@ -50,7 +52,7 @@ export function nativeStreetPilot(variantId: string): NativeStreetPilot | undefi
 /** Validate the same local route that geometry and rigid modules consume. */
 export function nativeStreetLocalRouteProblem(pilot: NativeStreetPilot, route: StreetRouteStation[], stops: BrtStop[] = []): string | null {
   const program = pilot.program;
-  if (import.meta.env.DEV && program?.adapter === 'modular-bridge-v1' && program.bridge)
+  if (import.meta.env.DEV && program && ['modular-bridge-v1','source-span-bridge-v1'].includes(program.adapter) && program.bridge)
     return modularBridgeRouteProblem({ ...program, bridge: program.bridge }, route, true);
   const length = route.slice(1).reduce((sum, p, i) => sum + Math.hypot(p.x - route[i].x, p.y - route[i].y), 0);
   if (!Number.isFinite(length) || length > nativeStreetMaxLength(pilot.id) + .01)
@@ -85,7 +87,7 @@ export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'prope
   const preparation=nativeStreetPreparationProblem(zone,boundary);
   if(preparation)return preparation;
   const points=extractZoneCenterline(zone),scale=111320*Math.cos((points[0]?.[1]??0)*Math.PI/180);
-  if (import.meta.env.DEV && program.adapter === 'modular-bridge-v1' && points.length !== 2)
+  if (import.meta.env.DEV && ['modular-bridge-v1','source-span-bridge-v1'].includes(program.adapter) && points.length !== 2)
     return 'Draw a start and end point for this straight bridge.';
   return nativeStreetLocalRouteProblem(pilot, points.map(p => ({
     x: (p[0] - points[0][0]) * scale, y: (p[1] - points[0][1]) * 111320,
@@ -130,7 +132,7 @@ export function placeNativeStreetModules(
     overlapsFootprint?: (points: Array<{x:number;y:number}>) => boolean }> = [],
   stops:BrtStop[] = [],
 ): NativeStreetPose[] {
-  if (import.meta.env.DEV && pilot.program?.adapter === 'modular-bridge-v1' && pilot.program.bridge)
+  if (import.meta.env.DEV && pilot.program && ['modular-bridge-v1','source-span-bridge-v1'].includes(pilot.program.adapter) && pilot.program.bridge)
     return modularBridgePoses({ ...pilot, program: { ...pilot.program, bridge: pilot.program.bridge } }, route);
   const segments: RouteSegment[] = [];
   for (let index = 1; index < route.length; index++) {

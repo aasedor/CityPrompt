@@ -48,6 +48,8 @@ def _validate_bridge_pair(bridge_coordinates, bridge_properties, other_coordinat
     overlap = occupied.intersection(other)
     if overlap.area <= _AREA_TOLERANCE_M2:
         return  # Shared ground endpoints and touching footprint edges stay usable.
+    if profile['program']['adapter']=='source-span-bridge-v1':
+        raise ValueError('Keep other objects clear of this bridge structure. Routes may meet at its endpoints.')
     if (
         isinstance(other_properties.get("lane_count"), bool)
         or other_properties.get("lane_count") != 0

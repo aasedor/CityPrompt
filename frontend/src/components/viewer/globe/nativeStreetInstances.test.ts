@@ -1,9 +1,25 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import * as THREE from 'three';
-import { instanceStreetModule } from './nativeStreetInstances';
+import { disposeStreetInstances, instanceStreetModule } from './nativeStreetInstances';
 import type { NativeStreetPose } from './nativeStreetPilot';
 
 describe('native street instancing',()=>{
+  it('deforms each topology span without altering the verified source or another span length',()=>{
+    const source=new THREE.Group(),geometry=new THREE.BoxGeometry(6,8,60),material=new THREE.MeshStandardMaterial();
+    source.add(new THREE.Mesh(geometry,material));
+    const pose={kind:'bridge',url:'/bridge.glb',sha256:'b'.repeat(64),x:0,y:0,z:0,yaw:0,scale:1,stationM:0,surfaceLiftM:0,
+      bridgeDeformation:{mode:'longitudinal-core-v1',nativeLengthM:60,requestedLengthM:80,rigidEndM:10}} satisfies NativeStreetPose;
+    const group=instanceStreetModule(source,[pose,{...pose,y:100,bridgeDeformation:{...pose.bridgeDeformation,requestedLengthM:70}}]);
+    expect(group.children).toHaveLength(2);
+    const first=group.children[0] as THREE.Mesh,second=group.children[1] as THREE.Mesh;
+    expect(first.geometry).not.toBe(geometry);expect(second.geometry).not.toBe(first.geometry);
+    first.geometry.computeBoundingBox();second.geometry.computeBoundingBox();
+    expect(first.geometry.boundingBox!.getSize(new THREE.Vector3()).z).toBeCloseTo(80);
+    expect(second.geometry.boundingBox!.getSize(new THREE.Vector3()).z).toBeCloseTo(70);
+    expect(first.material).toBe(material);
+    geometry.computeBoundingBox();expect(geometry.boundingBox!.getSize(new THREE.Vector3()).z).toBe(60);
+    const dispose=vi.spyOn(geometry,'dispose');disposeStreetInstances(group);expect(dispose).not.toHaveBeenCalled();
+  });
   it('adjusts a bridge middle bay along the route while retaining its width, height and source geometry', () => {
     const source = new THREE.Group(), geometry = new THREE.BoxGeometry(6, 8, 4), material = new THREE.MeshStandardMaterial();
     source.add(new THREE.Mesh(geometry, material));

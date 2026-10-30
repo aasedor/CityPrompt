@@ -216,6 +216,7 @@
     "src/components/viewer/globe/siteMaskShader.ts",
     "src/components/viewer/globe/sitePreparationSurface.ts",
     "src/components/viewer/globe/skateParkFit.ts",
+    "src/components/viewer/globe/sourceSpanBridgeProgram.ts",
     "src/components/viewer/globe/specialistStreetProgram.ts",
     "src/components/viewer/globe/streetDetailLod.ts",
     "src/components/viewer/globe/streetFamilyCatalog.ts",
@@ -676,10 +677,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3691,
+    "explicitReferenceCount": 3725,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5475,
-    "requiredLogicalBytes": 12841486849,
+    "requiredFileCount": 5509,
+    "requiredLogicalBytes": 12912387514,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -19160,6 +19161,15 @@
       "lfsOid": "3971bc64d8fb3945c1619b1035b27d1361da69aacb2770d0f217c2f16f46ac4a"
     },
     {
+      "url": "/archetypes/streets/dedicated-cycle-bridge/cable-stayed-cycle-ring-route-v1.png",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1220653,
+      "lfsOid": "c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66"
+    },
+    {
       "url": "/archetypes/streets/dedicated-cycle-bridge/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -19167,6 +19177,15 @@
       ],
       "logicalBytes": 1240859,
       "lfsOid": "9d4dfd3c7e61cea6215d04f7175ddd4ba1569be6251c38ea0758b2cdd9cc3feb"
+    },
+    {
+      "url": "/archetypes/streets/dedicated-cycle-bridge/swooping-cycle-flyover-route-v1.png",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1373407,
+      "lfsOid": "ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd"
     },
     {
       "url": "/archetypes/streets/dedicated-cycle-bridge/variant_0.png",
@@ -20158,6 +20177,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1653127,
@@ -22061,10 +22081,20 @@
       "lfsOid": "1f01c8d5f6748d0967bff8f3427233e9f37615c92fa7971ed166227fe166bb2c"
     },
     {
+      "url": "/archetypes/streets/rail-transit-viaduct/rail-through-truss-route-v1.png",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1216789,
+      "lfsOid": "05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3"
+    },
+    {
       "url": "/archetypes/streets/rail-transit-viaduct/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1547636,
@@ -22868,6 +22898,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1241385,
@@ -23897,6 +23928,15 @@
       "lfsOid": "7043a0a0de81fdf7625f288a216d28f045342a9992fea41846c1f0651962502b"
     },
     {
+      "url": "/archetypes/streets/urban-pedestrian-footbridge/weathering-steel-v-footbridge-route-v1.png",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1431655,
+      "lfsOid": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7"
+    },
+    {
       "url": "/archetypes/streets/urban-vehicular-bridge/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -23906,10 +23946,20 @@
       "lfsOid": "fc8dcc14f334b2c1f715837f3464d3d060919a6df7751bb5d788841c0fd94f8c"
     },
     {
+      "url": "/archetypes/streets/urban-vehicular-bridge/steel-truss-road-bridge-route-v1.png",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1315817,
+      "lfsOid": "42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6"
+    },
+    {
       "url": "/archetypes/streets/urban-vehicular-bridge/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1312745,
@@ -29216,6 +29266,7 @@
       "url": "/street-kits/claude-20261023/05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3.png",
       "sources": [
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/publicRealmRelease20261023.json"
       ],
       "logicalBytes": 1216789,
@@ -29225,6 +29276,7 @@
       "url": "/street-kits/claude-20261023/05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7.png",
       "sources": [
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/publicRealmRelease20261023.json"
       ],
       "logicalBytes": 1431655,
@@ -29268,6 +29320,7 @@
       "url": "/street-kits/claude-20261023/42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6.png",
       "sources": [
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/publicRealmRelease20261023.json"
       ],
       "logicalBytes": 1315817,
@@ -29318,6 +29371,7 @@
       "url": "/street-kits/claude-20261023/c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66.png",
       "sources": [
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/publicRealmRelease20261023.json"
       ],
       "logicalBytes": 1220653,
@@ -29360,6 +29414,7 @@
       "url": "/street-kits/claude-20261023/ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd.png",
       "sources": [
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/publicRealmRelease20261023.json"
       ],
       "logicalBytes": 1373407,
@@ -30148,6 +30203,33 @@
       "lfsOid": "12b631fccef4facfaa4170680acbbb8949c968a001855468ddd9b4f4e7062fff"
     },
     {
+      "url": "/street-kits/pilots/brick_arch_viaduct_route_v1/bridge_left_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 690944,
+      "lfsOid": "a55c9691f3d02f74f8eff291388ebfaab92ea3fb189f53c16b2461547b5fe27c"
+    },
+    {
+      "url": "/street-kits/pilots/brick_arch_viaduct_route_v1/bridge_main.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 462356,
+      "lfsOid": "41fd2d4f3291d5ea98275e3200065771218c76414f87f2530da4b855afc387d3"
+    },
+    {
+      "url": "/street-kits/pilots/brick_arch_viaduct_route_v1/bridge_right_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 183004,
+      "lfsOid": "511d0030c9397b1957ef38a4464286a2a3e6d433cd110ed726d53f8871a4428d"
+    },
+    {
       "url": "/street-kits/pilots/brt_bus_rapid_transit_corridor_v0/bus_symbol.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
@@ -30198,6 +30280,33 @@
       ],
       "logicalBytes": 95612,
       "lfsOid": "f51ce084fa6ed1cda5e5fed3b0c3d678b8e762e6fc4f45f201292c40ecdbf60a"
+    },
+    {
+      "url": "/street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_core.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 393560,
+      "lfsOid": "9b533b6ae48465983ad935b0176af36aa0edc7170072f4e0ea8ee9452a64a7c4"
+    },
+    {
+      "url": "/street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_left.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 123680,
+      "lfsOid": "0ef5dcc10792346171d4f3bd012b97b3b096ccf7a32a83fa67259acf55d2bcb1"
+    },
+    {
+      "url": "/street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_right.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 123680,
+      "lfsOid": "16cad0ce7e5ade06693c61944e2892536c678fd8796d7f737c324fdd9ec870b9"
     },
     {
       "url": "/street-kits/pilots/elevated_rail_transit_corridor_v0/bench.glb",
@@ -30300,6 +30409,114 @@
       "lfsOid": "3a68ae18809b45c35a44bb252251dda3beb8da1a3ca7d95fc30079d7d7cb7443"
     },
     {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_centre.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 6653328,
+      "lfsOid": "4bbcc024ca853bfc9dfbdb090d0b172dd78e188177ef2bd38fbada0c23194f59"
+    },
+    {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_left_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1057816,
+      "lfsOid": "0693343800ea8126aedf27faf31adf876b1fce1ae4152df18d6901aff97e02d6"
+    },
+    {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_left_landscape.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 3006540,
+      "lfsOid": "e01230723c10cf69bfec0a8978658a4c0e39cdf84c77c2e8f723db6de039e5d3"
+    },
+    {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_left_span.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 64384,
+      "lfsOid": "771d221ec444d5bd723ddc12df83254337f54a0262f666974e6813303d1e2ec7"
+    },
+    {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_left_stair.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 81520,
+      "lfsOid": "f2beaaa8e140b1b4cf40f043983e3f851849e59587c224e503dac6bc9b8a58af"
+    },
+    {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_right_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 537836,
+      "lfsOid": "bcbf8e2d3faad5d9bb2a057f3cb2c3a04de8cc95dd049b2139a30c39de6eb60e"
+    },
+    {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_right_landscape.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 3565084,
+      "lfsOid": "8e338b4aedf9eddb86a67cc45150cff0b1e4ad0a24535cf4c8997d2beca84788"
+    },
+    {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_right_span.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 64384,
+      "lfsOid": "cc7b8611c2f941a34d29c676f70092d081bd9ab4772c544ea9f77df301945837"
+    },
+    {
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_right_stair.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 81520,
+      "lfsOid": "018eabb68f9d61e5a943415b129cd8e3398602d0e9f2be4448fdb84a15e99754"
+    },
+    {
+      "url": "/street-kits/pilots/rail_through_truss_route_v1/bridge_left_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1526988,
+      "lfsOid": "355b6ef79a31012bc29063ecbf04eb49ea49f190db562c3a6fdc7d96894168dc"
+    },
+    {
+      "url": "/street-kits/pilots/rail_through_truss_route_v1/bridge_main.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 440616,
+      "lfsOid": "1cf84e7c690e9d9588f5ea7b8d57454d441610bb8518c659a7c9bfba94e7a9e6"
+    },
+    {
+      "url": "/street-kits/pilots/rail_through_truss_route_v1/bridge_right_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 774320,
+      "lfsOid": "abd7125c42ed04601532429ac39d92c22f1b3977795adcbd77c7d2d966776dcc"
+    },
+    {
       "url": "/street-kits/pilots/skytrain_elevated_corridor_v0/bench.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
@@ -30378,6 +30595,60 @@
       ],
       "logicalBytes": 95608,
       "lfsOid": "1112bc81e7a42ca524716cd1641e68348f498b835f857724a90886254cb30618"
+    },
+    {
+      "url": "/street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_left_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 857728,
+      "lfsOid": "86ad9896f3aab6786778326ad5cd98d23c3ddd7350b71780027d2f5917df9f5b"
+    },
+    {
+      "url": "/street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_main.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1123596,
+      "lfsOid": "c6812d50d36a7535fea305a6e1ebc33cf7818e7f49f4ca186bbb32cad52a590f"
+    },
+    {
+      "url": "/street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_right_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 860156,
+      "lfsOid": "f0cb3c606d6ca13fd486427fdaf1d9db1cc4e90d72cdb26ea3d5c86433932514"
+    },
+    {
+      "url": "/street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_left_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1543672,
+      "lfsOid": "a230096f64c591b6cb5977d5c70e471d7c71dda61b53124e3d52eae663a32db2"
+    },
+    {
+      "url": "/street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_main.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1063988,
+      "lfsOid": "edc8fe9c527ff7ef6438047caa781914c24793a34df988729df19726ab1ec7a7"
+    },
+    {
+      "url": "/street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_right_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1782380,
+      "lfsOid": "d983895be4525b7d13d4b8e50994d7a8ecf1a2e3795464c15e981d87428e670d"
     },
     {
       "url": "/street-kits/pilots/student_barcelona_shaded_promenade_v1/autumn_florist_kiosk.glb",
@@ -31540,6 +31811,42 @@
       "lfsOid": "b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
     },
     {
+      "url": "/street-kits/pilots/swooping_cycle_flyover_route_v1/bridge_topology.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 2584540,
+      "lfsOid": "33c9c9020fbfb15c2292c2c79b0a5ac430fb0339bd50695bb36fd0590f3b410d"
+    },
+    {
+      "url": "/street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_left_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 296668,
+      "lfsOid": "d010b94214a5cab5811434a008dc43c39c01881facaf2b6b95cf6a1a01cfb71f"
+    },
+    {
+      "url": "/street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_main.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 1093388,
+      "lfsOid": "bad3eba068f12519b36322a29d6dfee10e3d95f37ce36294a0a57927cfea193a"
+    },
+    {
+      "url": "/street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_right_end.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 296668,
+      "lfsOid": "ff5938e089d7b1bccd2384341a1985a529ee4986381633ee5607c685bcefbecd"
+    },
+    {
       "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb",
       "sources": [
         "src/data/nativeBridgePilots.json"
@@ -31578,6 +31885,15 @@
       ],
       "logicalBytes": 50624,
       "lfsOid": "8c2937bf27f8b4136ad61c6b89106f36f52419a86588c91874cf3988e96fbb18"
+    },
+    {
+      "url": "/street-kits/pilots/weathering_steel_v_footbridge_route_v1/bridge_topology.glb",
+      "sources": [
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 836828,
+      "lfsOid": "4aa83ba538242870786a5463716234f139671b300489ca9e89177becc70c1fc5"
     },
     {
       "url": "/street-kits/site-details-v1/accessible-parking.glb",
@@ -32481,9 +32797,9 @@
         "/street-kits/pilots/"
       ],
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
-      "fileCount": 179,
-      "logicalBytes": 92885569,
-      "pathDigest": "e9a5be1ff1a5f42f134a83326751a9d5b03d391a57769762d6046763f04ab5a6"
+      "fileCount": 208,
+      "logicalBytes": 125056741,
+      "pathDigest": "5029539d73b8dff9db060df41226c3d895fe867248341e5609e12966b895420b"
     },
     {
       "name": "sports-park-modules",

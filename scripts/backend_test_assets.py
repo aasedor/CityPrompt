@@ -51,9 +51,12 @@ def fixture_assets(root: Path = ROOT) -> dict[str, str]:
             add(Path("frontend/public") / entry["url"].lstrip("/"), entry["sha256"])
 
     for pilot in read("backend/app/data/nativeBridgePilots.json"):
+        if pilot["program"]["adapter"] == "source-span-bridge-v1":
+            sha = pilot["sourceAssemblySha256"]
+            add(Path("frontend/public/street-kits/claude-20261023") / f"{sha}.glb", sha)
         for module in pilot["modules"].values():
             add(Path("frontend/public") / module["url"].lstrip("/"), module["sha256"])
-    if not assets or len(assets) > 80:
+    if not assets or len(assets) > 81:
         raise ValueError("Review unexpected backend fixture batch size")
     return assets
 

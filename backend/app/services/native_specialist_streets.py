@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from app.services.street_route_policy import MAX_REPEATABLE_STREET_LENGTH_M
 from app.services.native_modular_bridge import MODULAR_BRIDGE_IDENTITIES, is_modular_bridge, modular_bridge_profile
+from app.services.native_source_bridge import SOURCE_BRIDGE_LANES
 from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 
 CANAL_POLICY = json.loads((Path(__file__).resolve().parents[1] / "data/canalRoutePolicy.json").read_text())
@@ -62,8 +63,9 @@ def validate_specialist_properties(properties):
         minimum, maximum = program["minLengthM"], program["maxLengthM"]
         if props.get("connect_to_public_road"):
             raise ValueError("This pedestrian bridge cannot connect directly to an ordinary public road.")
-        if isinstance(props.get("lane_count"), bool) or props.get("lane_count") != 0:
-            raise ValueError("Keep this pedestrian bridge’s zero motor lanes and original native width.")
+        lanes=SOURCE_BRIDGE_LANES.get(props['road_selected_variant_id'],0)
+        if isinstance(props.get("lane_count"), bool) or props.get("lane_count") != lanes:
+            raise ValueError("Keep this bridge’s source traffic lanes and original native width.")
     else:
         parent, width, minimum, maximum = CONTRACTS[props["road_selected_variant_id"]]
     if props["road_selected_variant_id"] in (
@@ -107,8 +109,9 @@ def validate_specialist_properties(properties):
         return
     dx, dy = local[-1]
     length = math.hypot(dx, dy)
-    if not minimum - 0.01 <= length <= maximum + 0.01:
-        raise ValueError(f"Keep this route {minimum}–{maximum} m long for its complete crossing and approaches.")
+    tolerance=1e-6 if modular_bridge and program.get('adapter')=='source-span-bridge-v1' else 0.01
+    if not minimum - tolerance <= length <= maximum + tolerance:
+        raise ValueError(f"Keep this route {math.ceil(minimum)}–{math.floor(maximum)} m long for its complete crossing and approaches.")
     previous = -1
     for x, y in local:
         station = (x * dx + y * dy) / length
