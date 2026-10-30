@@ -20,6 +20,24 @@ class DeploymentWorkflowTargets(unittest.TestCase):
     def test_backend_gate_also_checks_deployment_pushes(self):
         self.assertIn('deployment-version', workflow('backend-tests.yml')['on']['push']['branches'])
 
+    def test_backend_checks_deployment_boundaries_before_other_release_gates(self):
+        for filename, job in [('ci.yml', 'backend'), ('backend-tests.yml', 'pytest')]:
+            steps = workflow(filename)['jobs'][job]['steps']
+            selected = [index for index, step in enumerate(steps)
+                        if all(name in step.get('run', '') for name in (
+                            'test_deployment_secret_boundaries.py', 'test_compose_data_ports.py'))]
+            self.assertEqual(len(selected), 1, filename)
+            installation = next(index for index, step in enumerate(steps)
+                                if 'pip install -r requirements.txt' in step.get('run', ''))
+            migration = next(index for index, step in enumerate(steps)
+                             if 'alembic upgrade head' in step.get('run', ''))
+            self.assertLess(installation, selected[0], filename)
+            self.assertLess(selected[0], migration, filename)
+            publication = [index for index, step in enumerate(steps)
+                           if 'catalogue_promotion check' in step.get('run', '')]
+            for index in publication:
+                self.assertLess(selected[0], index, filename)
+
     def test_manual_asset_verification_defaults_to_the_handoff_branch(self):
         dispatch = workflow('release-assets.yml')['on']['workflow_dispatch']
         self.assertEqual(dispatch['inputs']['ref']['default'], 'deployment-version')
