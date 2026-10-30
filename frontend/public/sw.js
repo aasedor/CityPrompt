@@ -1,4 +1,4 @@
-const CACHE_NAME = 'siteforge-v1';
+const CACHE_NAME = 'siteforge-v2';
 const STATIC_ASSETS = [
   '/',
   '/manifest.json',
@@ -29,6 +29,13 @@ self.addEventListener('fetch', (event) => {
 
   // Skip non-GET and API requests
   if (request.method !== 'GET' || url.pathname.startsWith('/api/')) {
+    return;
+  }
+
+  // OAuth/reset navigation must never persist codes or legacy credentials as
+  // offline cache keys. v2 activation also removes old v1 callback entries.
+  if (url.pathname === '/oauth/callback' || url.pathname === '/reset-password') {
+    event.respondWith(fetch(request, { cache: 'no-store', referrerPolicy: 'no-referrer' }));
     return;
   }
 

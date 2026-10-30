@@ -48,6 +48,9 @@ class LocalSession:
     async def flush(self):
         self.session.flush()
 
+    async def commit(self):
+        self.session.commit()
+
     async def refresh(self, value):
         self.session.refresh(value)
 
@@ -254,7 +257,7 @@ async def test_malformed_signed_subject_returns_auth_error(local_db, route):
     assert rejected.value.status_code in (400, 401)
 
 
-async def provider_login(db, monkeypatch, provider, profile):
+async def provider_login(db, monkeypatch, provider, profile, *, publish=None):
     monkeypatch.setattr(
         oauth,
         "settings",
@@ -267,7 +270,12 @@ async def provider_login(db, monkeypatch, provider, profile):
             microsoft_redirect_uri="https://api.example/callback",
         ),
     )
-    monkeypatch.setattr(oauth, "consume_state", AsyncMock(return_value="https://class.example"))
+    monkeypatch.setattr(
+        oauth,
+        "consume_state",
+        AsyncMock(return_value={"origin": "https://class.example", "challenge": "a" * 43}),
+    )
+    monkeypatch.setattr(oauth, "issue_exchange", publish or AsyncMock(return_value="x" * 43))
     client = AsyncMock()
     client.__aenter__.return_value = client
     client.post.return_value = SimpleNamespace(status_code=200, json=lambda: {"access_token": "mock-provider-token"})

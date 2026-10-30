@@ -3,6 +3,7 @@
 import hashlib
 import json
 import secrets
+import re
 
 import redis.asyncio as redis
 from fastapi import HTTPException, Request
@@ -17,12 +18,17 @@ if not value then return false end
 local record = cjson.decode(value)
 if record.binding ~= ARGV[1] then return false end
 redis.call('DEL', KEYS[1])
-return record.origin
+return value
 """
 
 
 def _client():
-    return redis.from_url(get_settings().redis_url, decode_responses=True, socket_connect_timeout=2, socket_timeout=2)
+    return redis.from_url(
+        get_settings().redis_url,
+        decode_responses=True,
+        socket_connect_timeout=2,
+        socket_timeout=2,
+    )
 
 
 def _digest(value: str) -> str:
@@ -37,13 +43,26 @@ def cookie_name(provider: str) -> str:
     return f"{'__Host-' if get_settings().is_production else ''}cityprompt-oauth-{provider}"
 
 
-async def issue_state(provider: str, origin: str) -> tuple[str, str]:
+def validate_challenge(challenge: str | None) -> str:
+    if not isinstance(challenge, str) or not re.fullmatch(r"[A-Za-z0-9_-]{43}", challenge):
+        raise HTTPException(400, "Refresh the sign-in page and start sign-in again.")
+    return challenge
+
+
+async def issue_state(provider: str, origin: str, challenge: str) -> tuple[str, str]:
+    validate_challenge(challenge)
     state, binding = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
     try:
         async with _client() as client:
             created = await client.set(
                 _key(provider, state),
-                json.dumps({"binding": _digest(binding), "origin": origin}),
+                json.dumps(
+                    {
+                        "binding": _digest(binding),
+                        "origin": origin,
+                        "challenge": challenge,
+                    }
+                ),
                 ex=STATE_TTL_SECONDS,
                 nx=True,
             )
@@ -69,15 +88,25 @@ def bind_browser(response: RedirectResponse, provider: str, binding: str) -> Red
     return response
 
 
-async def consume_state(request: Request, provider: str, state: str | None) -> str:
+async def consume_state(request: Request, provider: str, state: str | None) -> dict:
     binding = request.cookies.get(cookie_name(provider))
     if not state or len(state) > 200 or not binding or len(binding) > 200:
-        raise HTTPException(400, "This sign-in expired or belongs to another browser. Start sign-in again.")
+        raise HTTPException(
+            400,
+            "This sign-in expired or belongs to another browser. Start sign-in again.",
+        )
     try:
         async with _client() as client:
-            origin = await client.eval(_CONSUME, 1, _key(provider, state), _digest(binding))
+            value = await client.eval(_CONSUME, 1, _key(provider, state), _digest(binding))
     except Exception as exc:
         raise HTTPException(503, "Sign-in verification is temporarily unavailable. Start sign-in again.") from exc
-    if not origin:
+    if not value:
         raise HTTPException(400, "This sign-in expired or was already used. Start sign-in again.")
-    return origin
+    try:
+        record = json.loads(value)
+        validate_challenge(record.get("challenge"))
+        if not isinstance(record.get("origin"), str):
+            raise ValueError("Invalid origin")
+    except (ValueError, TypeError, AttributeError):
+        raise HTTPException(400, "This sign-in expired. Start sign-in again.") from None
+    return record

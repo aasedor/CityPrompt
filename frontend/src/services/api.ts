@@ -254,6 +254,10 @@ export interface AuthTokens {
 }
 
 export const authApi = {
+  exchangeOAuthCode: async (code: string, codeVerifier: string): Promise<AuthTokens> => {
+    const { data } = await api.post('/api/v1/auth/oauth/exchange', { code, code_verifier: codeVerifier });
+    return data;
+  },
   register: async (email: string, password: string, fullName?: string): Promise<AuthUser> => {
     const { data } = await api.post('/api/v1/auth/register', {
       email,

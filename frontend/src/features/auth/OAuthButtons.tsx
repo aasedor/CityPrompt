@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { createOAuthChallenge } from './oauthFlow';
 
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
@@ -51,6 +52,7 @@ export function OAuthButtons({ returnTo = '/projects' }: OAuthButtonsProps) {
       localStorage.setItem('oauth_return_to', returnTo);
       const url = new URL(`${API_BASE}/api/v1/auth/oauth/${provider}`, API_BASE || window.location.origin);
       url.searchParams.set('frontend_origin', window.location.origin);
+      url.searchParams.set('code_challenge', await createOAuthChallenge());
 
       const response = await fetch(url.toString());
       const authorizationUrl = await readOAuthAuthorizationUrl(response, provider);

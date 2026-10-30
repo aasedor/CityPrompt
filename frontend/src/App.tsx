@@ -50,6 +50,10 @@ export default function App() {
 
   // On mount, check if we have a valid token and load user
   useEffect(() => {
+    if (window.location.pathname === '/oauth/callback') {
+      setLoading(false);
+      return;
+    }
     let token: string | null = null;
     try { token = localStorage.getItem('access_token'); } catch {
       // Storage restrictions must still allow the public/sign-in pages to load.
