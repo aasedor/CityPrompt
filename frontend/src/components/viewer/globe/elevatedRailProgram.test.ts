@@ -29,8 +29,13 @@ describe('elevated rail exact route',()=>{
       expect(constrainElevatedRailWalk([zone],pose(x,100),pose(x,0)).lat*111320).toBeCloseTo(0);
     }
   });
-  it.each([48,49.3,72,103.7,288,508,2000])('keeps end supports, one train and four buffers at %s m',length=>{
-    for(const route of [[{x:0,y:0},{x:0,y:length}],[{x:0,y:length},{x:0,y:0}],[{x:0,y:0},{x:length*.6,y:length*.8}]]){
+  // Each direction owns its geometry build and time budget; the 2 km case
+  // must not combine three independent stress builds inside one 5 s test.
+  it.each([48,49.3,72,103.7,288,508,2000].flatMap(length=>[
+    {length,direction:'forward',route:[{x:0,y:0},{x:0,y:length}]},
+    {length,direction:'reverse',route:[{x:0,y:length},{x:0,y:0}]},
+    {length,direction:'diagonal',route:[{x:0,y:0},{x:length*.6,y:length*.8}]},
+  ]))('keeps end supports, one train and four buffers at $length m ($direction)',({length,route})=>{
       const poses=placeNativeStreetModules(pilot,route);
       const piers=poses.filter(p=>p.kind==='rail_pier').sort((a,b)=>a.stationM-b.stationM);
       expect(piers[0].stationM).toBeCloseTo(2);
@@ -45,7 +50,6 @@ describe('elevated rail exact route',()=>{
         expect(Array.from(m.geometry.getAttribute('position').array).every(Number.isFinite)).toBe(true);
         m.geometry.dispose();
       }
-    }
   });
   it('covers a partial final module with continuous rail heads and deck',()=>{
     const meshes=buildNativeStreetProgram(pilot.program!,26,48,[{x:0,y:0},{x:0,y:103.7}]);

@@ -38,16 +38,17 @@
 
 - [x] Run focused tests for imported GLBs, surfaces, reports, towers, snapping, intersections, catalogue cards, fixed footprints and bridge corrections.
 - [x] Run TypeScript, lint, relevant backend tests, hosted asset checks and production build.
-- [ ] Run browser placement/edit/save/reload/walk/free-capture checks on the combined build.
+- [x] Run browser placement/edit/save/reload/walk/free-capture checks on the combined build.
 - [x] Obtain an independent whole-integration review, address regressions and record honest limits.
 
 ## Task 3: Capture the handoff branch
 
 - [x] Commit the coherent integration and a source/asset coverage note after diff checks.
-- [ ] Verify the remote target has not moved; preserve exact commit and LFS-object availability evidence.
-- [ ] Prepare a checked PR targeting `deployment-version`; promote through the existing CI process only when passing and within the user's branch-update authorization.
+- [x] Verify the remote target has not moved; preserve exact commit and LFS-object availability evidence.
+- [x] Prepare draft PR #38 targeting `deployment-version`, preserving the failing publication gate.
+- [ ] Promote through the existing CI process only when passing and within the user's branch-update authorization.
 - [ ] Verify remote readback and retain a rollback commit. Keep production deployment a separate action.
 
 ## Actual completion boundary
 
-Browser checks covered project/boundary creation, catalogue discovery, hospital placement/rotation, saved reload, tower height editing and quantitative reports. A complete fresh browser walk/free-export/route matrix remains unrun on this combined checkout; earlier local evidence and automated tests are separate. Seven unpublished building pilots still fail the intentional publication preflight. The source consolidation may be proposed as a draft PR, but cannot be merged through failing required CI or treated as security clearance.
+Browser checks covered project/boundary creation, catalogue discovery, hospital placement/rotation, saved reload, tower height editing/reopen, quantitative reports, ground walking/movement, free street-source preview and simplified GLB uploader open/close. The complete route/paid-output matrix remains unrun on this combined checkout; earlier local evidence and automated tests are separate. GitHub passed 13 browser tests and 2,793 backend tests at the recorded checkpoint. Fresh frontend verification follows the isolated 2 km rail test cases. Seven unpublished building pilots still fail the intentional publication preflight, and the user's activation choice is pending. The source consolidation is preserved in draft PR #38, but cannot be merged through failing required CI or treated as security clearance.
