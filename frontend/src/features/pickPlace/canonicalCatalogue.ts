@@ -180,7 +180,16 @@ CANONICAL_CHOICES.push(...MANUAL_STREET_ASSETS.map(registeredSupplement).map(ass
 })));
 export const CLASSROOM_CHOICES = CANONICAL_CHOICES;
 const normalizeSearch = (v: string) => v.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
+const BRIDGE_ARCHETYPES = new Set(['landmark_signature_bridge', 'urban_vehicular_bridge',
+  'urban_pedestrian_footbridge', 'shared_cycle_pedestrian_bridge', 'landscape_park_pedestrian_bridge',
+  'dedicated_cycle_bridge', 'rail_transit_viaduct']);
+/** Discovery only: preserve native placement, dimensions and release eligibility. */
+export function isBridgeChoice(choice: CanonicalChoice): boolean {
+  return choice.domain === 'street_pathway' && (BRIDGE_ARCHETYPES.has(choice.option.id)
+    || choice.placements.some(asset => BRIDGE_ARCHETYPES.has(String(asset.properties.road_archetype_id))));
+}
 export function choiceMatchesGroup(choice: CanonicalChoice, groupId: string) {
+  if (groupId === 'bridges') return isBridgeChoice(choice);
   return !groupId || choice.option.calgaryGuide?.groupId === groupId
     || choice.option.variants?.some(variant => classifyCalgaryVariant(choice.option.id, variant.id)?.groupId === groupId)
     || choice.placements.some(asset => asset.calgaryGuide.groupId === groupId);

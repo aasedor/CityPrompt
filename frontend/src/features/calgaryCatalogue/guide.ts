@@ -61,6 +61,7 @@ export const CALGARY_GROUPS: CalgaryGroup[] = [
   group('arterial', 'street_pathway', 'Arterial & major streets', [], 'Larger movement corridors need context-specific crossing and frontage design.', ['streets', 'streetManual']),
   group('alley', 'street_pathway', 'Alleys & service lanes', [], 'Consider rear access, servicing and pedestrian connections.', ['streets', 'streetManual']),
   group('active', 'street_pathway', 'Walking, wheeling & shared streets', [], 'Choose connected routes for walking and wheeling. International and Alberta references remain design inspiration.', ['streets']),
+  group('bridges', 'street_pathway', 'Bridges & viaducts', [], 'Road, walking, cycling and rail crossings. Fixed bridges keep their original size; move and rotate them to fit your site.', ['streets']),
   group('transit', 'street_pathway', 'Transit corridors', [], 'Coordinate transit stops, access and nearby development.', ['streets']),
   group('intersection', 'street_pathway', 'Intersections & crossings', [], 'Check how each movement crosses or joins the street.', ['streets', 'streetManual']),
   group('calming', 'street_pathway', 'Traffic calming & safer streets', [], 'Explore measures that fit the street role and nearby activity.', ['streets', 'streetManual']),

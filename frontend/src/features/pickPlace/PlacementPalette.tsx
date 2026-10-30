@@ -3,7 +3,7 @@ import { ArrowLeft, Building2, Trees, Route, ParkingSquare, Upload } from 'lucid
 import { ImportGlbDialog } from './ImportGlbDialog';
 import type { PlaceAssetId } from './catalogue';
 import { STREET_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, type StreetAsset } from './assetRegistry';
-import { CANONICAL_CHOICES, CLASSROOM_CHOICES, UNAVAILABLE_CATALOGUE_ENTRIES, filterCanonicalChoices, preferredCatalogueVariant, type CanonicalSelection } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, CLASSROOM_CHOICES, UNAVAILABLE_CATALOGUE_ENTRIES, filterCanonicalChoices, preferredCatalogueVariant, isBridgeChoice, type CanonicalSelection } from './canonicalCatalogue';
 import { availablePickerCategories, pickerCategory } from './pickerCategories';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { StudioDialog } from '@/features/projects/StudioControls';
@@ -60,9 +60,9 @@ export function PlacementPalette({ projectId, selected, onPick, onCancel, status
   const matchingAssets = useMemo(() => filterCanonicalChoices(section, query, purposeId, choices)
     .filter(choice => (!groupId || pickerCategory(choice) === groupId) && choiceMatchesFacets(choice, facets)), [section, query, purposeId, choices, groupId, facets]);
   const fixedStreetCount = section === 'street_pathway'
-    ? matchingAssets.filter(choice => choice.placements[0]?.kind !== 'street').length : 0;
+    ? matchingAssets.filter(choice => choice.placements[0]?.kind !== 'street' && !isBridgeChoice(choice)).length : 0;
   const assets = section === 'street_pathway' && !showFixedStreetSegments
-    ? matchingAssets.filter(choice => choice.placements[0]?.kind === 'street') : matchingAssets;
+    ? matchingAssets.filter(choice => choice.placements[0]?.kind === 'street' || isBridgeChoice(choice)) : matchingAssets;
   const visibleSections = sections.filter(item => onPickStreet || item.id !== 'street_pathway');
   const activeStreet = STREET_ASSETS.find(asset => asset.model.variantId === activeStreetVariant);
   const userGenerated = section === 'building' && groupId === 'user-generated' && Boolean(onPickGenerated);

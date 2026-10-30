@@ -1,6 +1,6 @@
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { CALGARY_GROUPS, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
-import { choiceMatchesGroup, type CanonicalChoice } from './canonicalCatalogue';
+import { choiceMatchesGroup, isBridgeChoice, type CanonicalChoice } from './canonicalCatalogue';
 
 import { CatalogueCategoryIllustration } from './CatalogueCategoryIllustration';
 
@@ -8,7 +8,8 @@ export function CatalogueCategoryTiles({ domain, choices, onChoose, onBrowseAll,
   domain: CatalogueDomain; choices: CanonicalChoice[]; onChoose: (id: string) => void;
   onBrowseAll: () => void; onGenerated?: () => void;
 }) {
-  const options = choices.filter(c => c.domain === domain && (domain !== 'street_pathway' || c.placements[0]?.kind === 'street'));
+  const options = choices.filter(c => c.domain === domain
+    && (domain !== 'street_pathway' || c.placements[0]?.kind === 'street' || isBridgeChoice(c)));
   const groups = CALGARY_GROUPS.filter(g => g.domain === domain).map(g => ({...g, count:options.filter(c => choiceMatchesGroup(c,g.id)).length})).filter(g => g.count > 0);
   const noun = domain === 'building' ? 'buildings' : domain === 'park_plaza' ? 'parks' : 'streets';
   return <div className="space-y-4 p-1">

@@ -2,8 +2,11 @@ import '@testing-library/jest-dom/vitest';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { PlacementPalette } from './PlacementPalette';
-import { CANONICAL_CHOICES } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, isBridgeChoice } from './canonicalCatalogue';
 import { cataloguePresentationFor } from './cataloguePresentation';
+
+const hiddenFixedCount = CANONICAL_CHOICES.filter(choice => choice.domain === 'street_pathway'
+  && choice.placements[0]?.kind !== 'street' && !isBridgeChoice(choice)).length;
 
 describe('local student validation discovery',()=>{
   it('shows the current roster and expandable details across catalogue domains',()=>{
@@ -28,7 +31,7 @@ describe('local student validation discovery',()=>{
     fireEvent.click(screen.getAllByRole('button',{name:'Streets'})[1]);
     fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
     expect(screen.queryByRole('button', { name: /Place fixed review segment/ })).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Show 9 fixed review segments (placement only)' }));
+    if (hiddenFixedCount) fireEvent.click(screen.getByRole('button', { name: `Show ${hiddenFixedCount} fixed review segments (placement only)` }));
     expect(screen.getAllByRole('article')).toHaveLength(12);
     expect(onPickStreet).not.toHaveBeenCalled();
     expect(onPick).not.toHaveBeenCalled();
@@ -45,7 +48,7 @@ describe('local student validation discovery',()=>{
       onPickCanonical={onPickCanonical} onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}/>);
     fireEvent.click(screen.getByRole('button', { name: 'Streets' }));
     fireEvent.click(screen.getByRole('button', { name: /^Browse all / }));
-    fireEvent.click(screen.getByRole('button', { name: 'Show 9 fixed review segments (placement only)' }));
+    if (hiddenFixedCount) fireEvent.click(screen.getByRole('button', { name: `Show ${hiddenFixedCount} fixed review segments (placement only)` }));
     for (let page = 0; page < Math.floor(index / 12); page++) {
       fireEvent.click(screen.getByRole('button', { name: 'Show more choices' }));
     }

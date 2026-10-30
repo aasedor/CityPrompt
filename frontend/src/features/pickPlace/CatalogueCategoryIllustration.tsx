@@ -58,6 +58,6 @@ export function CatalogueCategoryIllustration({ id }: { id: string }) {
     street_other: () => <><path d="m24 100 69 18 102-56-59-23z" fill={blue}/><path d="m22 83 59 21m60-62 56 17" fill="none" stroke={coral} strokeWidth="12"/><path d="M67 99V70q40-55 86-19v25l-13 7V61q-30-25-60 18v24z" fill={paper}/><path d="m73 70 73-18m-62 5v14m17-27v14m18-21v15m17-13v13" fill="none"/><path d="m96 105 13-7 12 4-12 8z" fill={coral}/></>,
   };
   return <svg viewBox="0 0 224 132" aria-hidden="true" focusable="false" className="h-28 w-full max-w-64 overflow-visible">
-    <g stroke={ink} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round">{(scenes[id] ?? scenes.building_other)()}</g>
+    <g stroke={ink} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round">{(scenes[id === 'bridges' ? 'street_other' : id] ?? scenes.building_other)()}</g>
   </svg>;
 }

@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
 import { PlacementPalette } from './PlacementPalette';
-import { CLASSROOM_CHOICES, choiceMatchesGroup } from './canonicalCatalogue';
+import { CLASSROOM_CHOICES, choiceMatchesGroup, isBridgeChoice } from './canonicalCatalogue';
 import { CALGARY_GROUPS } from '@/features/calgaryCatalogue/guide';
 
 it('starts with category tiles, drills into existing groups and returns without placing', () => {
@@ -13,7 +13,8 @@ it('starts with category tiles, drills into existing groups and returns without 
   for (const [domain, label] of [['building', 'Buildings'], ['park_plaza', 'Parks'], ['street_pathway', 'Streets']] as const) {
     fireEvent.click(within(screen.getByRole('navigation', { name: 'Catalogue sections' })).getByRole('button', { name: label }));
     expect(screen.queryByRole('article')).not.toBeInTheDocument();
-    const choices = CLASSROOM_CHOICES.filter(c => c.domain === domain && (domain !== 'street_pathway' || c.placements[0]?.kind === 'street'));
+    const choices = CLASSROOM_CHOICES.filter(c => c.domain === domain
+      && (domain !== 'street_pathway' || c.placements[0]?.kind === 'street' || isBridgeChoice(c)));
     for (const group of CALGARY_GROUPS.filter(g => g.domain === domain && choices.some(c => choiceMatchesGroup(c, g.id)))) {
       const tile = screen.getByRole('button', { name: `Browse ${group.label}` });
       fireEvent.click(tile);
