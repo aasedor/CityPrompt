@@ -132,6 +132,7 @@ class Settings(BaseSettings):
 
     # --- Redis ---
     redis_url: str = "redis://localhost:6379/0"
+    celery_default_queue: str = Field(default="celery", min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_.-]+$")
     # Only explicitly configured reverse proxies can supply client addresses.
     trusted_proxy_cidrs: str = ""
     maps_requests_per_hour: int = Field(default=3000, ge=1, le=1000000)
@@ -296,6 +297,7 @@ class Settings(BaseSettings):
     # Roll out only with migration 030 and a direct3d worker + Celery beat.
     direct_3d_jobs_enabled: bool = False
     direct_3d_images_enabled: bool = True
+    direct_3d_queue_name: str = Field(default="direct3d", min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_.-]+$")
     direct_3d_queue_limit: int = 16
     direct_3d_project_queue_limit: int = 2
     direct_3d_queue_timeout_seconds: int = 900

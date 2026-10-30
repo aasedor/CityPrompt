@@ -202,7 +202,10 @@ async def deliver_attempt(attempt_id):
 
     try:
         await asyncio.to_thread(
-            render_direct_3d_attempt.apply_async, args=[str(attempt_id)], queue="direct3d", retry=False
+            render_direct_3d_attempt.apply_async,
+            args=[str(attempt_id)],
+            queue=get_settings().direct_3d_queue_name,
+            retry=False,
         )
     except Exception:
         logger.warning("Image %s is saved; broker delivery will be retried by maintenance", attempt_id)
