@@ -1,6 +1,7 @@
 """URL credentials are exact-object reads with live ownership checks."""
 
 import uuid
+from io import BytesIO
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 from unittest.mock import MagicMock
@@ -11,6 +12,7 @@ from jose import jwt
 
 from app.api.v1 import files
 from app.core import security
+from tests.file_response_support import response_bytes
 
 
 FILE_PATH = "library/private-model/model.glb"
@@ -130,10 +132,10 @@ async def test_authorized_file_ticket_reads_object_and_disables_caching(mock_db,
     token = security.create_file_asset_ticket(FILE_PATH, test_user.id)
     mock_db.execute.side_effect = [scalar(test_user), library_result(test_user.id)]
     storage = MagicMock()
-    storage.get_object.return_value = {"Body": SimpleNamespace(read=lambda: b"glTF")}
+    storage.get_object.return_value = {"Body": BytesIO(b"glTF")}
     monkeypatch.setattr(files, "_s3_client", lambda: storage)
     response = await files.get_file(FILE_PATH, user=None, db=mock_db, file_ticket=token)
-    assert response.body == b"glTF"
+    assert await response_bytes(response) == b"glTF"
     assert response.headers["cache-control"] == "private, no-store"
     assert response.headers["referrer-policy"] == "no-referrer"
     storage.get_object.assert_called_once_with(Bucket=files.settings.s3_bucket_name, Key=FILE_PATH)
