@@ -243,6 +243,14 @@ jobs:
       - name: Check first-click import during globe startup
         run: npm run test:e2e:startup
 
+      - name: Retain failed browser diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-failure-diagnostics
+          path: frontend/test-results/
+          retention-days: 7
+
   # -------------------------------------------------------
   # Docker build verification
   # -------------------------------------------------------

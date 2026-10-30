@@ -1,6 +1,21 @@
 import { test, expect } from '@playwright/test';
 
 test('opens Import GLB on the first click while the real globe is preparing', async ({ page }) => {
+  const diagnostics = { pageErrors: [] as string[], consoleErrors: [] as string[], requests: [] as string[] };
+  const safe = (value: string) => value.replace(/([?&](?:key|token|access_token|file_ticket)=)[^&\s)]+/gi, '$1[redacted]');
+  const requestPath = (value: string) => { const url = new URL(value); return url.origin + url.pathname; };
+  page.on('pageerror', error => {
+    if (diagnostics.pageErrors.length < 30) diagnostics.pageErrors.push(safe(error.stack ?? error.message));
+  });
+  page.on('console', message => {
+    if (message.type() === 'error' && diagnostics.consoleErrors.length < 30) diagnostics.consoleErrors.push(safe(message.text()));
+  });
+  page.on('requestfailed', request => {
+    if (diagnostics.requests.length < 30) diagnostics.requests.push(`${requestPath(request.url())}: ${request.failure()?.errorText}`);
+  });
+  page.on('response', response => {
+    if (response.status() >= 400 && diagnostics.requests.length < 30) diagnostics.requests.push(`${requestPath(response.url())}: HTTP ${response.status()}`);
+  });
   let finishTerrain!: () => void;
   const terrain = new Promise<void>(resolve => { finishTerrain = resolve; });
   await page.addInitScript(() => localStorage.setItem('access_token', 'startup-test-token'));
@@ -52,6 +67,13 @@ test('opens Import GLB on the first click while the real globe is preparing', as
     await expect(page.getByText('Checking terrain height', { exact: true })).toBeHidden();
     await expect(dialog.getByText('test.glb', { exact: true })).toBeVisible();
     await expect(dialog.getByRole('button', { name: 'Upload', exact: true })).toBeEnabled();
+  } catch (error) {
+    const body = await page.locator('body').innerText({ timeout: 1000 }).catch(() => '[body unavailable]');
+    const evidence = { ...diagnostics, url: requestPath(page.url()), body: safe(body.slice(0, 12000)) };
+    console.error('Startup failure diagnostics:', JSON.stringify(evidence));
+    await test.info().attach('startup-diagnostics', { body: Buffer.from(JSON.stringify(evidence, null, 2)), contentType: 'application/json' }).catch(() => {});
+    await page.screenshot({ timeout: 2000 }).then(body => test.info().attach('startup-screen', { body, contentType: 'image/png' })).catch(() => {});
+    throw error;
   } finally {
     finishTerrain();
   }
