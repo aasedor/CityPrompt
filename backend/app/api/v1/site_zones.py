@@ -993,14 +993,24 @@ async def _ensure_project_access(
     return project
 
 
-async def _validate_elevated_rail_neighbours(db, project_id, coordinates, properties, exclude_id=None):
-    result = await db.execute(select(SiteZone).where(SiteZone.project_id == project_id, SiteZone.zone_type == "road"))
-    neighbours = [
-        (list(to_shape(z.geometry).exterior.coords), z.properties or {})
-        for z in result.scalars().all()
-        if z.id != exclude_id
-    ]
-    validate_rail_overlap(coordinates, properties or {}, neighbours)
+async def _validate_elevated_rail_neighbours(
+    db, project_id, coordinates, properties, exclude_id=None, zone_type="road"
+):
+    """Keep the old rail gate and source-locked bridge reservations under the project lock."""
+    from app.services.native_bridge_clearance import validate_modular_bridge_overlap
+
+    result = await db.execute(
+        select(SiteZone).where(SiteZone.project_id == project_id, SiteZone.zone_type.in_(("road", "street", "path")))
+    )
+    zones = [zone for zone in result.scalars().all() if zone.id != exclude_id]
+    neighbours = [(list(to_shape(z.geometry).exterior.coords), z.properties or {}) for z in zones]
+    if zone_type == "road":
+        validate_rail_overlap(
+            coordinates,
+            properties or {},
+            [source for source, zone in zip(neighbours, zones) if zone.zone_type == "road"],
+        )
+    validate_modular_bridge_overlap(coordinates, properties or {}, neighbours)
 
 
 async def _assert_new_catalogue_building_clear(db, project_id, zone_type, polygon, properties):
@@ -1218,8 +1228,10 @@ async def create_zone(
         validate_brt_ground(zone_in.properties, active_boundary.properties if active_boundary else None)
         validate_specialist_properties(zone_in.properties)
         validate_specialist_ground(zone_in.properties, active_boundary.properties if active_boundary else None)
-        if zone_in.zone_type == "road":
-            await _validate_elevated_rail_neighbours(db, project_id, coords, zone_in.properties)
+        if zone_in.zone_type in ("road", "street", "path"):
+            await _validate_elevated_rail_neighbours(
+                db, project_id, coords, zone_in.properties, zone_type=zone_in.zone_type
+            )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     if (zone_in.properties or {}).get("green_space_native_layout") is not None:
@@ -1552,9 +1564,14 @@ async def update_zone(
             tram_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
             validate_tram_ground(native_properties, tram_boundary.properties if tram_boundary else None)
         validate_specialist_properties(native_properties)
-        if requested_zone_type == "road":
+        if requested_zone_type in ("road", "street", "path"):
             await _validate_elevated_rail_neighbours(
-                db, zone.project_id, updated_coordinates or before_snapshot["coordinates"], native_properties, zone.id
+                db,
+                zone.project_id,
+                updated_coordinates or before_snapshot["coordinates"],
+                native_properties,
+                zone.id,
+                zone_type=requested_zone_type,
             )
         if is_native_specialist(native_properties):
             specialist_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)

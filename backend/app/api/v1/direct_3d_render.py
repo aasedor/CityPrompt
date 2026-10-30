@@ -244,6 +244,27 @@ def _validate_direct_3d_project_zones(
             "park/plaza, street/path type before rendering."
         )
 
+    from app.services.native_modular_bridge import is_modular_bridge
+
+    bridge_zones = [zone for zone in physical_zones if is_modular_bridge(zone.properties)]
+    if bridge_zones:
+        from app.services.native_bridge_clearance import validate_modular_bridge_overlap
+
+        try:
+            streets = [
+                (zone, list(_direct_source_geometry(zone).exterior.coords))
+                for zone in physical_zones
+                if community_3d_kind_for_source(zone.zone_type, zone.properties) == "street"
+            ]
+            for bridge in bridge_zones:
+                validate_modular_bridge_overlap(
+                    list(_direct_source_geometry(bridge).exterior.coords),
+                    bridge.properties,
+                    [(coordinates, other.properties or {}) for other, coordinates in streets if other.id != bridge.id],
+                )
+        except (AssertionError, TypeError, ValueError, AttributeError) as exc:
+            raise _direct_state_conflict(f"Bridge clearance changed: {exc}") from exc
+
     stale_or_uncompiled: list[SiteZone] = []
     missing_buildings: list[SiteZone] = []
     for zone in physical_zones:

@@ -366,8 +366,15 @@ def compiled_bridge(bridge_profile, tmp_path, monkeypatch):
     from app.services import native_street_candidate_contract
 
     staged = write_catalog(tmp_path, bridge_row())
+    retained = tuple(
+        capability
+        for capability in native_street_candidate_contract.native_street_runtime_capabilities()
+        if capability.family_id != f"street_native_{VARIANT}"
+    )
     monkeypatch.setattr(
-        native_street_candidate_contract, "native_street_runtime_capabilities", lambda: staged.capabilities
+        native_street_candidate_contract,
+        "native_street_runtime_capabilities",
+        lambda: (*retained, *staged.capabilities),
     )
     native_street_candidate_contract.flush_native_street_junction_levels.cache_clear()
     yield compile_bridge_state()
@@ -464,3 +471,89 @@ def test_modular_bridge_capture_requires_its_native_recipe(compiled_bridge):
         _validate_direct_3d_project_zones(request, [boundary, zone], {}, bind_capture_instances=False)
     assert caught.value.status_code == 409
     assert caught.value.detail["billed"] is False
+
+
+def crossing_zone_at_bridge(zone, station, *, path=False):
+    from geoalchemy2.shape import from_shape
+    from shapely.geometry import Polygon
+    from app.models.models import SiteZone
+
+    lng, lat = zone.properties["plan_centerline"][0]
+    sx = 111320 * math.cos(math.radians(lat))
+    width = 1.8 if path else 16
+    geometry = Polygon(
+        [
+            (lng + x / sx, lat + y / 111320)
+            for x, y in [
+                (-40, station - width / 2),
+                (40, station - width / 2),
+                (40, station + width / 2),
+                (-40, station + width / 2),
+            ]
+        ]
+    )
+    return SiteZone(
+        id=uuid.uuid4(),
+        project_id=zone.project_id,
+        zone_type="road",
+        geometry=from_shape(geometry, srid=4326),
+        properties={
+            "road_archetype_id": "campus_pedestrian_spine" if path else "calgary_local",
+            "road_selected_variant_id": "concrete_neighbourhood_walk_v1" if path else "calgary_local_v0",
+            "lane_count": 0 if path else 2,
+            "width": width,
+            "plan_centerline": [[lng - 40 / sx, lat + station / 111320], [lng + 40 / sx, lat + station / 111320]],
+        },
+    )
+
+
+def add_capture_claim(request, zone):
+    from app.api.v1.lego_assembly import _public_realm_recipe_for_zone, _stamp_community_3d
+
+    recipe = _public_realm_recipe_for_zone(zone, "street")
+    _stamp_community_3d(zone, "street", "2026-10-30T00:00:00Z", public_realm_recipe=recipe)
+    metadata = zone.properties["community_3d"]
+    request.community_3d_claims.append(
+        SimpleNamespace(
+            zone_id=zone.id,
+            source_hash=metadata["source_hash"],
+            representation_hash=metadata["representation_hash"],
+            building_id=None,
+        )
+    )
+
+
+@pytest.mark.parametrize("station", [3, 40])
+def test_modular_bridge_capture_rejects_saved_motor_road_collisions(compiled_bridge, station):
+    from fastapi import HTTPException
+    from app.api.v1.direct_3d_render import _validate_direct_3d_project_zones
+
+    zone, boundary, request = compiled_bridge
+    other = crossing_zone_at_bridge(zone, station)
+    add_capture_claim(request, other)
+    with pytest.raises(HTTPException) as caught:
+        _validate_direct_3d_project_zones(request, [boundary, zone, other], {}, bind_capture_instances=False)
+    assert caught.value.status_code == 409
+    assert caught.value.detail["billed"] is False
+
+
+def test_road_first_capture_cannot_hide_a_collision_with_an_existing_bridge(compiled_bridge):
+    from fastapi import HTTPException
+    from app.api.v1.direct_3d_render import _validate_direct_3d_project_zones
+
+    bridge, boundary, request = compiled_bridge
+    other = crossing_zone_at_bridge(bridge, 3)
+    add_capture_claim(request, other)
+    with pytest.raises(HTTPException) as caught:
+        _validate_direct_3d_project_zones(request, [boundary, other, bridge], {}, bind_capture_instances=False)
+    assert caught.value.status_code == 409
+    assert caught.value.detail["billed"] is False
+
+
+def test_modular_bridge_capture_allows_a_clear_native_path_underpass(compiled_bridge):
+    from app.api.v1.direct_3d_render import _validate_direct_3d_project_zones
+
+    zone, boundary, request = compiled_bridge
+    path = crossing_zone_at_bridge(zone, 40, path=True)
+    add_capture_claim(request, path)
+    assert _validate_direct_3d_project_zones(request, [boundary, zone, path], {}, bind_capture_instances=False) == []
