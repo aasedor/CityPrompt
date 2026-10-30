@@ -27,12 +27,22 @@ from app.generation.styles import ARCHITECTURAL_STYLES, get_style
 from app.models.models import Building, Project, ProjectShare, RenderPreview, User
 from app.services.generation_queue import queue_ai_generation_task
 from app.services.photo_building import (
-    MAX_PHOTOS, MIN_REFERENCE_VIEWS, MAX_REFERENCE_VIEWS,
-    PHOTO_MODEL_TOKEN_COST, PHOTO_REFERENCE_TOKEN_COST,
-    photo_state, prepare_photo, refund_photo_tokens, reserve_photo_tokens,
+    MAX_PHOTOS,
+    MIN_REFERENCE_VIEWS,
+    MAX_REFERENCE_VIEWS,
+    PHOTO_MODEL_TOKEN_COST,
+    PHOTO_REFERENCE_TOKEN_COST,
+    photo_state,
+    prepare_photo,
+    refund_photo_tokens,
+    reserve_photo_tokens,
 )
 from app.services.building_reference_search import (
-    VIEW_TERMS, download_building_view, search_building_views, sign_candidate, verified_candidate,
+    VIEW_TERMS,
+    download_building_view,
+    search_building_views,
+    sign_candidate,
+    verified_candidate,
 )
 from app.services.residual_landscape import (
     lock_residual_landscape_project,
@@ -733,8 +743,7 @@ async def get_photo_references(
         "error": state.get("error"),
         "source_count": len(state.get("source_keys", [])),
         "resume_available": bool(
-            state.get("status") == "failed" and state.get("provider_task_id")
-            and not state.get("reference_keys")
+            state.get("status") == "failed" and state.get("provider_task_id") and not state.get("reference_keys")
         ),
         "reference_token_cost": PHOTO_REFERENCE_TOKEN_COST,
         "model_token_cost": PHOTO_MODEL_TOKEN_COST,
@@ -758,12 +767,15 @@ async def find_photo_references(
     try:
         candidates = [sign_candidate(item, str(building_id)) for item in await search_building_views(query, view)]
     except Exception as exc:
-        raise HTTPException(status_code=503, detail="Image search is temporarily unavailable. Try again or upload your own photos.") from exc
+        raise HTTPException(
+            status_code=503, detail="Image search is temporarily unavailable. Try again or upload your own photos."
+        ) from exc
     specs = dict(building.specifications or {})
     previous = specs.get("photo_reference_search", {}).get("candidates", [])
     current_ids = {item["id"] for item in candidates}
     specs["photo_reference_search"] = {
-        "query": query.strip(), "searched_at": datetime.now(timezone.utc).isoformat(),
+        "query": query.strip(),
+        "searched_at": datetime.now(timezone.utc).isoformat(),
         "candidates": (candidates + [item for item in previous if item.get("id") not in current_ids])[:48],
     }
     building.specifications = specs
@@ -788,16 +800,26 @@ async def create_photo_references(
         raise HTTPException(status_code=409, detail="Reference views are already being prepared.")
     try:
         selected_ids = json.loads(web_reference_ids if isinstance(web_reference_ids, str) else "[]")
-        if (not isinstance(selected_ids, list) or not all(isinstance(item, str) for item in selected_ids)
-                or len(set(selected_ids)) != len(selected_ids)):
+        if (
+            not isinstance(selected_ids, list)
+            or not all(isinstance(item, str) for item in selected_ids)
+            or len(set(selected_ids)) != len(selected_ids)
+        ):
             raise ValueError("invalid selection")
     except (ValueError, TypeError) as exc:
         raise HTTPException(status_code=422, detail="Choose valid reference photos from your search results.") from exc
     if not 1 <= len(photos) + len(selected_ids) <= MAX_PHOTOS:
         raise HTTPException(status_code=422, detail="Choose 1 to 4 photos total, including uploads and search results.")
-    candidates = {item["id"]: item for item in (building.specifications or {}).get("photo_reference_search", {}).get("candidates", [])}
-    if any(item not in candidates or not verified_candidate(candidates[item], str(building_id)) for item in selected_ids):
-        raise HTTPException(status_code=409, detail="A selected web photo is no longer available. Search again before preparing views.")
+    candidates = {
+        item["id"]: item
+        for item in (building.specifications or {}).get("photo_reference_search", {}).get("candidates", [])
+    }
+    if any(
+        item not in candidates or not verified_candidate(candidates[item], str(building_id)) for item in selected_ids
+    ):
+        raise HTTPException(
+            status_code=409, detail="A selected web photo is no longer available. Search again before preparing views."
+        )
     if len(brief) > 500:
         raise HTTPException(status_code=422, detail="Description must be 500 characters or fewer.")
     _check_engine_available("meshy")
@@ -816,7 +838,10 @@ async def create_photo_references(
         try:
             prepared.append(await download_building_view(candidate))
         except Exception as exc:
-            raise HTTPException(status_code=422, detail="A selected web photo could not be loaded. Choose another view; no tokens were charged.") from exc
+            raise HTTPException(
+                status_code=422,
+                detail="A selected web photo could not be loaded. Choose another view; no tokens were charged.",
+            ) from exc
         provenance.append({**candidate, "sha256": prepared[-1][1], "confirmed_same_building": True})
 
     from app.tasks.processing import _upload_to_storage, synthesize_building_photo_references
@@ -829,8 +854,12 @@ async def create_photo_references(
         source_keys.append(key)
 
     audit_id = await reserve_photo_tokens(
-        db, user, building.project_id, cost=PHOTO_REFERENCE_TOKEN_COST,
-        stage="references", brief=brief.strip(),
+        db,
+        user,
+        building.project_id,
+        cost=PHOTO_REFERENCE_TOKEN_COST,
+        stage="references",
+        brief=brief.strip(),
     )
     specs = dict(building.specifications or {})
     specs["photo_generation"] = {
@@ -875,8 +904,10 @@ async def resume_photo_references(
     building = await _editable_building(building_id, user, db)
     state = photo_state(building.specifications)
     if (
-        state.get("status") != "failed" or not state.get("provider_task_id")
-        or state.get("reference_keys") or not state.get("batch_id")
+        state.get("status") != "failed"
+        or not state.get("provider_task_id")
+        or state.get("reference_keys")
+        or not state.get("batch_id")
     ):
         raise HTTPException(status_code=409, detail="No prepared provider task is available to resume.")
     state = {**state, "status": "synthesizing", "error": None}
@@ -909,12 +940,18 @@ async def generate_photo_model(
     state = photo_state(building.specifications)
     keys = state.get("reference_keys") or []
     expected_prefix = f"projects/{building.project_id}/photo-buildings/{building.id}/{state.get('batch_id', '')}/"
-    if state.get("status") not in {"references_ready", "failed"} or not MIN_REFERENCE_VIEWS <= len(keys) <= MAX_REFERENCE_VIEWS or not all(
-        isinstance(key, str) and key.startswith(expected_prefix + "reference-") for key in keys
+    if (
+        state.get("status") not in {"references_ready", "failed"}
+        or not MIN_REFERENCE_VIEWS <= len(keys) <= MAX_REFERENCE_VIEWS
+        or not all(isinstance(key, str) and key.startswith(expected_prefix + "reference-") for key in keys)
     ):
         raise HTTPException(status_code=409, detail="Review the prepared views before generating a model.")
     selected = list(range(len(keys))) if selected_reference_indices is None else selected_reference_indices
-    if not selected or len(set(selected)) != len(selected) or any(index < 0 or index >= len(keys) for index in selected):
+    if (
+        not selected
+        or len(set(selected)) != len(selected)
+        or any(index < 0 or index >= len(keys) for index in selected)
+    ):
         raise HTTPException(status_code=422, detail="Select at least one valid reference view.")
     selected_keys = [keys[index] for index in selected]
     if building.generation_status == "generating":
@@ -927,24 +964,40 @@ async def generate_photo_model(
         + str(state.get("brief", ""))[:500]
     )
     audit_id = await reserve_photo_tokens(
-        db, user, building.project_id, cost=PHOTO_MODEL_TOKEN_COST,
-        stage="model", brief=prompt,
+        db,
+        user,
+        building.project_id,
+        cost=PHOTO_MODEL_TOKEN_COST,
+        stage="model",
+        brief=prompt,
     )
-    state = {**state, "status": "model_generating", "error": None,
-             "selected_reference_indices": selected, "model_audit_id": str(audit_id)}
+    state = {
+        **state,
+        "status": "model_generating",
+        "error": None,
+        "selected_reference_indices": selected,
+        "model_audit_id": str(audit_id),
+    }
     building.specifications = {**(building.specifications or {}), "photo_generation": state}
     building.generation_status = "generating"
     building.generation_prompt = f"[student photos] {str(state.get('brief', ''))[:500]}"
     await db.flush()
     try:
         await queue_ai_generation_task(
-            db, building, prompt, mode="multi_image", engine="meshy",
-            photo_reference_keys=selected_keys, photo_batch_id=state["batch_id"],
+            db,
+            building,
+            prompt,
+            mode="multi_image",
+            engine="meshy",
+            photo_reference_keys=selected_keys,
+            photo_batch_id=state["batch_id"],
             photo_audit_id=str(audit_id),
         )
     except Exception as exc:
         await refund_photo_tokens(db, str(audit_id))
-        raise HTTPException(status_code=503, detail="Could not start 3D generation. Your tokens were restored.") from exc
+        raise HTTPException(
+            status_code=503, detail="Could not start 3D generation. Your tokens were restored."
+        ) from exc
     return GenerationStatusResponse(status="generating", progress=0)
 
 

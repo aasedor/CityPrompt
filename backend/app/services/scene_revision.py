@@ -39,8 +39,9 @@ def compiled_scene_revision_sha256(
     }
     if details_revision is not None:
         identity["details_revision"] = details_revision
-    surface_claims = sorted((_json_value(claim) for claim in authored_surface_claims),
-                            key=lambda claim: str(claim.get("zone_id", "")))
+    surface_claims = sorted(
+        (_json_value(claim) for claim in authored_surface_claims), key=lambda claim: str(claim.get("zone_id", ""))
+    )
     if surface_claims:
         identity["authored_surfaces"] = surface_claims
     return hashlib.sha256(json.dumps(identity, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()

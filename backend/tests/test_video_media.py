@@ -1,4 +1,5 @@
 """Free, real-codec media checks before spending on video generation."""
+
 import cv2
 import numpy as np
 import pytest
@@ -17,8 +18,14 @@ def test_media_inspection_measures_the_decoded_file(tmp_path, seconds, frames):
     finally:
         writer.release()
     media = inspect_video_media(path.read_bytes(), "video/mp4")
-    assert media == {"width": 640, "height": 360, "fps": 24.0, "frame_count": frames,
-                     "duration_seconds": float(seconds), "duration_basis": "decoded_frames/fps"}
+    assert media == {
+        "width": 640,
+        "height": 360,
+        "fps": 24.0,
+        "frame_count": frames,
+        "duration_seconds": float(seconds),
+        "duration_basis": "decoded_frames/fps",
+    }
     validate_omni_source_media(media, expected_seconds=seconds)
 
 
@@ -27,11 +34,16 @@ def test_magic_bytes_alone_do_not_establish_a_readable_video():
         inspect_video_media(b"\x00\x00\x00\x20ftyp" + b"0" * 2048, "video/mp4")
 
 
-@pytest.mark.parametrize("overrides", [
-    {"duration_seconds": 3}, {"fps": 12}, {"width": 320}, {"frame_count": 96},
-])
+@pytest.mark.parametrize(
+    "overrides",
+    [
+        {"duration_seconds": 3},
+        {"fps": 12},
+        {"width": 320},
+        {"frame_count": 96},
+    ],
+)
 def test_incompatible_source_is_rejected_before_a_paid_call(overrides):
-    media = {"width": 1280, "height": 720, "fps": 24.0, "frame_count": 192,
-             "duration_seconds": 8.0}
+    media = {"width": 1280, "height": 720, "fps": 24.0, "frame_count": 192, "duration_seconds": 8.0}
     with pytest.raises(ValueError, match="route recording"):
         validate_omni_source_media(media | overrides, expected_seconds=8)

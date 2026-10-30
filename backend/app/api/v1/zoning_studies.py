@@ -3,6 +3,7 @@
 No statutory zoning, development drawings, assessments or terrain are changed.
 Project locking and content revisions protect classmates' concurrent edits.
 """
+
 import hashlib
 import json
 import uuid
@@ -98,13 +99,19 @@ def study_collection(request: StudyRequest, condition: Condition, site: Polygon)
     warnings = ["Student-authored graphic; consult official district data for statutory zoning."]
     if shapes:
         union = unary_union(shapes)
-        if sum(shape.area for shape in shapes) - union.area > site.area * .0001:
+        if sum(shape.area for shape in shapes) - union.area > site.area * 0.0001:
             warnings.append("Some study zones overlap. Their colours stack in drawing order.")
-    collection = {"type": "FeatureCollection", "features": features, "_citypromptStudy": {
-        "schema": 1, "condition": condition, "boundaryId": str(request.boundary_id),
-        "boundaryCoordinates": request.boundary_coordinates,
-        "updatedAt": datetime.now(timezone.utc).isoformat(),
-    }}
+    collection = {
+        "type": "FeatureCollection",
+        "features": features,
+        "_citypromptStudy": {
+            "schema": 1,
+            "condition": condition,
+            "boundaryId": str(request.boundary_id),
+            "boundaryCoordinates": request.boundary_coordinates,
+            "updatedAt": datetime.now(timezone.utc).isoformat(),
+        },
+    }
     encoded = json.dumps(collection, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
     if len(encoded) > 2 * 1024 * 1024:
         raise ValueError("Use a smaller study; each layer supports up to 2 MB.")
@@ -113,45 +120,76 @@ def study_collection(request: StudyRequest, condition: Condition, site: Polygon)
 
 @router.put("/projects/{project_id}/{condition}", response_model=ReferenceLayerResponse)
 async def save_zoning_study(
-    project_id: uuid.UUID, condition: Condition, request: StudyRequest,
-    user: User = Depends(require_auth), db: AsyncSession = Depends(get_db),
+    project_id: uuid.UUID,
+    condition: Condition,
+    request: StudyRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
 ):
     await check_project_permission(project_id, user, db, required="editor")
     await db.execute(select(Project.id).where(Project.id == project_id).with_for_update())
-    boundary = (await db.execute(select(SiteZone).where(SiteZone.id == request.boundary_id)
-                                 .with_for_update())).scalar_one_or_none()
-    if boundary is None or boundary.project_id != project_id or boundary.zone_type != "site_boundary" or not boundary.is_active_boundary:
+    boundary = (
+        await db.execute(select(SiteZone).where(SiteZone.id == request.boundary_id).with_for_update())
+    ).scalar_one_or_none()
+    if (
+        boundary is None
+        or boundary.project_id != project_id
+        or boundary.zone_type != "site_boundary"
+        or not boundary.is_active_boundary
+    ):
         raise HTTPException(409, "The active site changed. Reopen the study using the current boundary.")
     site = to_shape(boundary.geometry)
     submitted = Polygon(request.boundary_coordinates)
     if not submitted.is_valid or not site.equals(submitted):
         raise HTTPException(409, "Wait for the site boundary to finish saving, then reopen the study.")
     filename = f"cityprompt-zoning-study-{condition}.geojson"
-    layers = (await db.execute(select(ReferenceLayer).where(ReferenceLayer.project_id == project_id).with_for_update())).scalars().all()
-    managed = [layer for layer in layers if layer.source_filename == filename
-               and layer.feature_collection.get("_citypromptStudy", {}).get("condition") == condition]
+    layers = (
+        (await db.execute(select(ReferenceLayer).where(ReferenceLayer.project_id == project_id).with_for_update()))
+        .scalars()
+        .all()
+    )
+    managed = [
+        layer
+        for layer in layers
+        if layer.source_filename == filename
+        and layer.feature_collection.get("_citypromptStudy", {}).get("condition") == condition
+    ]
     if len(managed) > 1:
         raise HTTPException(409, "This study has duplicate layers. Review the map layers before saving.")
     layer = managed[0] if managed else None
     if (layer.content_hash if layer else None) != request.expected_hash:
-        raise HTTPException(409, "The shared study changed or was removed. Your draft is kept; reload the shared version to review it.")
+        raise HTTPException(
+            409, "The shared study changed or was removed. Your draft is kept; reload the shared version to review it."
+        )
     try:
         collection, size, digest, warnings = await run_in_threadpool(study_collection, request, condition, site)
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
-    if (layer is None and len(layers) >= 20) or sum(row.storage_bytes for row in layers if row is not layer) + size > 12 * 1024 * 1024:
+    if (layer is None and len(layers) >= 20) or sum(
+        row.storage_bytes for row in layers if row is not layer
+    ) + size > 12 * 1024 * 1024:
         raise HTTPException(409, "The project supports 20 map layers and 12 MB of reference data. Use a smaller study.")
     if layer is None:
         layer = ReferenceLayer(project_id=project_id, created_by=user.id)
         db.add(layer)
-    layer.name = "Draft bylaw · May 2025 study" if condition == "draft-2025" else "Existing zoning study" if condition == "existing" else "Proposed land-use study"
+    layer.name = (
+        "Draft bylaw · May 2025 study"
+        if condition == "draft-2025"
+        else "Existing zoning study" if condition == "existing" else "Proposed land-use study"
+    )
     layer.kind = "zoning"
     layer.source_filename = filename
     layer.source_crs = "EPSG:4326"
-    layer.source_url = "https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh" if any(zone.origin == "calgary-extract" or zone.district is not None for zone in request.zones) else None
+    layer.source_url = (
+        "https://data.calgary.ca/Base-Maps/Land-Use-Districts/qe6k-p9nh"
+        if any(zone.origin == "calgary-extract" or zone.district is not None for zone in request.zones)
+        else None
+    )
     if condition == "draft-2025":
         layer.source_url = DRAFT_SOURCE
-        warnings.append("May 2025 discussion draft; illustrative student colours, not statutory zoning or a compliance assessment.")
+        warnings.append(
+            "May 2025 discussion draft; illustrative student colours, not statutory zoning or a compliance assessment."
+        )
     layer.description = "Editable student graphic. Existing and proposed conditions are separate; official zoning and project drawings remain independent."
     layer.feature_collection = collection
     layer.feature_count = len(request.zones)

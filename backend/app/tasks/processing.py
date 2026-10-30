@@ -26,8 +26,12 @@ from app.services.residual_landscape import (
 )
 from app.tasks.worker import celery_app
 from app.services.photo_building import (
-    MIN_REFERENCE_VIEWS, MAX_REFERENCE_VIEWS, photo_state, prepare_photo,
-    reference_prompt, refund_photo_tokens_sync,
+    MIN_REFERENCE_VIEWS,
+    MAX_REFERENCE_VIEWS,
+    photo_state,
+    prepare_photo,
+    reference_prompt,
+    refund_photo_tokens_sync,
 )
 
 logger = logging.getLogger(__name__)
@@ -875,7 +879,11 @@ def synthesize_building_photo_references(building_id: str, batch_id: str, audit_
             urls = result.get("image_urls") or []
             if isinstance(urls, dict):
                 urls = list(urls.values())
-            if not isinstance(urls, list) or not MIN_REFERENCE_VIEWS <= len(urls) <= MAX_REFERENCE_VIEWS or not all(isinstance(url, str) for url in urls):
+            if (
+                not isinstance(urls, list)
+                or not MIN_REFERENCE_VIEWS <= len(urls) <= MAX_REFERENCE_VIEWS
+                or not all(isinstance(url, str) for url in urls)
+            ):
                 raise RuntimeError("The provider did not return enough reference views")
             images: list[bytes] = []
             async with httpx.AsyncClient(timeout=60, follow_redirects=True) as http:
@@ -890,8 +898,11 @@ def synthesize_building_photo_references(building_id: str, batch_id: str, audit_
 
         provider_task_id, images = asyncio.run(_prepare())
         log_api_usage_sync(
-            provider="meshy", operation="image_to_image_multiview", credits_used=9,
-            task_id=provider_task_id, building_id=building_id,
+            provider="meshy",
+            operation="image_to_image_multiview",
+            credits_used=9,
+            task_id=provider_task_id,
+            building_id=building_id,
         )
         reference_keys = []
         for index, image_data in enumerate(images):
@@ -907,7 +918,9 @@ def synthesize_building_photo_references(building_id: str, batch_id: str, audit_
         building.specifications = {
             **(building.specifications or {}),
             "photo_generation": {
-                **current, "status": "references_ready", "reference_keys": reference_keys,
+                **current,
+                "status": "references_ready",
+                "reference_keys": reference_keys,
                 "reference_hashes": [hashlib.sha256(data).hexdigest() for data in images],
                 "error": None,
             },
@@ -1045,15 +1058,18 @@ def generate_3d_model_ai(
             all_hashes = state.get("reference_hashes") or []
             selected_indices = state.get("selected_reference_indices", list(range(len(all_keys))))
             selected_valid = (
-                isinstance(selected_indices, list) and 1 <= len(selected_indices) <= MAX_REFERENCE_VIEWS
+                isinstance(selected_indices, list)
+                and 1 <= len(selected_indices) <= MAX_REFERENCE_VIEWS
                 and all(isinstance(index, int) and 0 <= index < len(all_keys) for index in selected_indices)
                 and len(set(selected_indices)) == len(selected_indices)
             )
             expected_selected_keys = [all_keys[index] for index in selected_indices] if selected_valid else []
             if (
-                mode != "multi_image" or state.get("batch_id") != photo_batch_id
+                mode != "multi_image"
+                or state.get("batch_id") != photo_batch_id
                 or state.get("status") != "model_generating"
-                or len(all_keys) != len(all_hashes) or not selected_valid
+                or len(all_keys) != len(all_hashes)
+                or not selected_valid
                 or photo_reference_keys != expected_selected_keys
                 or not all(isinstance(key, str) and key.startswith(prefix) for key in photo_reference_keys)
             ):

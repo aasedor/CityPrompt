@@ -102,7 +102,7 @@ def test_maximum_footprint_does_not_change_the_40_storey_height():
     assert plan["fit"]["scale_x"] == plan["fit"]["scale_y"]
 
 
-@pytest.mark.parametrize('storeys',[15,41])
+@pytest.mark.parametrize("storeys", [15, 41])
 def test_storeys_outside_the_reviewed_program_are_rejected(storeys):
     with pytest.raises(AssemblyPlanningError, match="fixed at its native size and floor count"):
         plan_vertical_assembly(

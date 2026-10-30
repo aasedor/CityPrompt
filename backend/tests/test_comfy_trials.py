@@ -15,16 +15,27 @@ from PIL import Image
 from app.services import comfy_trials as service
 from app.api.v1 import comfy_trials as routes, render_animation, documents, video
 from app.models.models import Project, User, ProjectShare
-from tests.test_render_attempts import isolated as isolated
+from tests.test_render_attempts import isolated as render_attempt_fixture
 from tests.test_kling_video import png
+
+isolated = render_attempt_fixture  # Expose the shared fixture under its pytest name.
 
 
 def test_local_capture_is_an_image_source_but_not_a_finished_video_source():
     project_id, render_id = uuid.uuid4(), uuid.uuid4()
-    project = SimpleNamespace(id=project_id, metadata_={"saved_renders": [{
-        "id": str(render_id), "model": "3d-capture", "variant": "manual",
-        "image_url": f"/api/v1/files/projects/{project_id}/renders/{render_id}.png",
-    }]})
+    project = SimpleNamespace(
+        id=project_id,
+        metadata_={
+            "saved_renders": [
+                {
+                    "id": str(render_id),
+                    "model": "3d-capture",
+                    "variant": "manual",
+                    "image_url": f"/api/v1/files/projects/{project_id}/renders/{render_id}.png",
+                }
+            ]
+        },
+    )
     assert render_animation._source_render(project, render_id, require_finished=False)[0]["model"] == "3d-capture"
     with pytest.raises(HTTPException, match="finished AI render"):
         render_animation._source_render(project, render_id)
@@ -35,9 +46,7 @@ def test_workflows_use_native_reference_conditioning_and_bounded_sizes():
         data, w, h = service.prepare_source(png(), p)
         assert max(w, h) <= p.max_edge and w % 32 == h % 32 == 0
         assert Image.open(io.BytesIO(data)).size == (w, h)
-        g = service.workflow(
-            p, "full-source.png", "A restrained photograph", 42, w, h, "job"
-        )
+        g = service.workflow(p, "full-source.png", "A restrained photograph", 42, w, h, "job")
         assert g["4"]["inputs"]["image"] == "full-source.png"
         assert not any(n["class_type"].startswith("Kling") for n in g.values())
         if p.id == "flux-klein":
@@ -59,7 +68,7 @@ def test_quality_preset_preserves_aspect_and_uses_native_output_budget(size):
     _, w, h = service.prepare_source(source.getvalue(), p)
     assert w * h <= 2048 * 2048
     assert max(w, h) <= 2752
-    assert abs(w / h - size[0] / size[1]) / (size[0] / size[1]) < .08
+    assert abs(w / h - size[0] / size[1]) / (size[0] / size[1]) < 0.08
     g = service.workflow(p, "source.png", "Architectural photograph", 42, w, h, "job")
     assert g["8"]["inputs"]["steps"] == 40
     assert g["8"]["inputs"]["cfg"] == 1
@@ -78,9 +87,7 @@ async def test_native_job_id_submission_and_output_download(monkeypatch):
     def handle(req):
         calls.append(req)
         if req.url.path == "/upload/image":
-            return httpx.Response(
-                200, json={"name": "source.png", "subfolder": "", "type": "input"}
-            )
+            return httpx.Response(200, json={"name": "source.png", "subfolder": "", "type": "input"})
         if req.url.path == "/prompt":
             import json
 
@@ -114,13 +121,9 @@ async def test_native_job_id_submission_and_output_download(monkeypatch):
     monkeypatch.setattr(
         service,
         "client",
-        lambda _: httpx.AsyncClient(
-            base_url="http://127.0.0.1:8188", transport=httpx.MockTransport(handle)
-        ),
+        lambda _: httpx.AsyncClient(base_url="http://127.0.0.1:8188", transport=httpx.MockTransport(handle)),
     )
-    await service.submit(
-        None, service.PRESETS["flux-klein"], png(), "Photo", 42, 768, 448, job_id
-    )
+    await service.submit(None, service.PRESETS["flux-klein"], png(), "Photo", 42, 768, 448, job_id)
     state, output = await service.poll(None, job_id)
     assert state == "saving" and output == png()
     assert sum(c.url.path == "/prompt" for c in calls) == 1
@@ -128,9 +131,7 @@ async def test_native_job_id_submission_and_output_download(monkeypatch):
 
 def test_loopback_only_configuration_and_no_client_graph():
     with pytest.raises(service.ComfyFailure):
-        service.client(
-            SimpleNamespace(comfy_trials_base_url="https://external.example")
-        )
+        service.client(SimpleNamespace(comfy_trials_base_url="https://external.example"))
     with pytest.raises(ValueError):
         routes.TrialRequest(
             project_id=uuid.uuid4(),
@@ -151,11 +152,7 @@ async def pilot(isolated, monkeypatch):
     monkeypatch.setattr(
         service,
         "available_presets",
-        AsyncMock(
-            return_value=[
-                {"id": p.id, "available": True} for p in service.PRESETS.values()
-            ]
-        ),
+        AsyncMock(return_value=[{"id": p.id, "available": True} for p in service.PRESETS.values()]),
     )
     submit = AsyncMock()
     poll = AsyncMock(return_value=("saving", png()))
@@ -187,23 +184,17 @@ async def pilot(isolated, monkeypatch):
         preset="flux-klein",
         prompt="Natural architectural photograph",
     )
-    return SimpleNamespace(
-        **vars(f), request=req, submit=submit, poll=poll, saved=saved
-    )
+    return SimpleNamespace(**vars(f), request=req, submit=submit, poll=poll, saved=saved)
 
 
 async def generate(f, req=None, user_id=None):
     async with f.sessions() as db:
-        return await routes.generate(
-            req or f.request, await db.get(User, user_id or f.user.id), db
-        )
+        return await routes.generate(req or f.request, await db.get(User, user_id or f.user.id), db)
 
 
 async def recover(f, job):
     async with f.sessions() as db:
-        return await routes.recover(
-            f.project.id, uuid.UUID(job["id"]), await db.get(User, f.user.id), db
-        )
+        return await routes.recover(f.project.id, uuid.UUID(job["id"]), await db.get(User, f.user.id), db)
 
 
 @pytest.mark.asyncio
@@ -241,9 +232,7 @@ async def test_lost_receipt_recovers_original_job_and_saves_image_once(pilot):
     async with f.sessions() as db:
         project = await db.get(Project, f.project.id)
         assert len(project.metadata_["saved_renders"]) == 2
-        assert project.metadata_[routes.JOBS_KEY][0]["source_render_id"] == str(
-            f.request.source_render_id
-        )
+        assert project.metadata_[routes.JOBS_KEY][0]["source_render_id"] == str(f.request.source_render_id)
     assert any(k.endswith(".provenance.json") for k in f.saved)
 
 
@@ -260,21 +249,14 @@ async def test_video_saved_to_existing_gallery_without_route_fidelity_claim(pilo
     async with f.sessions() as db:
         project = await db.get(Project, f.project.id)
         assert len(project.metadata_["video_pilot_attempts"]) == 1
-        assert (
-            video._public_attempt(
-                project.metadata_["video_pilot_attempts"][0]
-            ).estimated_cost_usd
-            == 0
-        )
+        assert video._public_attempt(project.metadata_["video_pilot_attempts"][0]).estimated_cost_usd == 0
 
 
 @pytest.mark.asyncio
 async def test_wrong_project_source_and_viewer_cannot_submit(pilot):
     f = pilot
     with pytest.raises(HTTPException) as exc:
-        await generate(
-            f, f.request.model_copy(update={"source_render_id": uuid.uuid4()})
-        )
+        await generate(f, f.request.model_copy(update={"source_render_id": uuid.uuid4()}))
     assert exc.value.status_code == 404
     async with f.sessions() as db:
         other = User(
@@ -285,9 +267,7 @@ async def test_wrong_project_source_and_viewer_cannot_submit(pilot):
         )
         db.add(other)
         await db.flush()
-        db.add(
-            ProjectShare(project_id=f.project.id, user_id=other.id, permission="viewer")
-        )
+        db.add(ProjectShare(project_id=f.project.id, user_id=other.id, permission="viewer"))
         await db.commit()
     with pytest.raises(HTTPException) as exc:
         await generate(f, user_id=other.id)
@@ -341,8 +321,6 @@ async def test_missing_job_resolution_requires_absence_and_does_not_resubmit(pil
         await db.rollback()
         f.poll.return_value = ("submission_unknown", None)
         user = await db.get(User, f.user.id)
-        result = await routes.resolve_missing(
-            f.project.id, uuid.UUID(job["id"]), user, db
-        )
+        result = await routes.resolve_missing(f.project.id, uuid.UUID(job["id"]), user, db)
         assert result["status"] == "failed"
     f.submit.assert_awaited_once()

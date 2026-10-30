@@ -365,14 +365,20 @@ def _provider_usage(attempts: list[dict], provider: VideoProvider | Literal["kli
     )
 
 
-def _visible_usage(project: Project, attempts: list[dict], provider: VideoProvider | Literal["kling"]) -> VideoProviderUsage:
+def _visible_usage(
+    project: Project, attempts: list[dict], provider: VideoProvider | Literal["kling"]
+) -> VideoProviderUsage:
     usage = _provider_usage(attempts, provider)
     trial = (project.metadata_ or {}).get(TRIAL_KEY)
     if trial and provider != "internal_enhance":
         used = len(trial.get("video_requests", {}))
         maximum = trial["video_limit"]
-        return VideoProviderUsage(attempts_used=used, max_attempts=maximum,
-            attempts_remaining=min(usage.attempts_remaining, max(0, maximum - used)), allowance_scope="trial")
+        return VideoProviderUsage(
+            attempts_used=used,
+            max_attempts=maximum,
+            attempts_remaining=min(usage.attempts_remaining, max(0, maximum - used)),
+            allowance_scope="trial",
+        )
     return usage
 
 
@@ -388,14 +394,20 @@ def _public_attempt(entry: dict) -> VideoAttemptResponse:
                 try:
                     started = datetime.fromisoformat(entry["created_at"].replace("Z", "+00:00"))
                     if (datetime.now(timezone.utc) - started).total_seconds() > 300:
-                        public.update(status="submission_unknown", error="This saved request was interrupted before a provider receipt was retained. Review the provider queue; it will not be submitted again automatically.")
+                        public.update(
+                            status="submission_unknown",
+                            error="This saved request was interrupted before a provider receipt was retained. Review the provider queue; it will not be submitted again automatically.",
+                        )
                 except (KeyError, TypeError, ValueError):
                     pass
         return VideoAttemptResponse(**public)
     # Retained pixels remain recoverable even if scoring or the response failed.
     if entry.get("video_url") and entry.get("status") != "complete":
-        public.update(status="complete", fidelity_status="unavailable",
-                      error="The video was saved, but completion checks were interrupted. Compare it with the source preview.")
+        public.update(
+            status="complete",
+            fidelity_status="unavailable",
+            error="The video was saved, but completion checks were interrupted. Compare it with the source preview.",
+        )
     elif entry.get("status") in {"reserved", "generating"}:
         started = entry.get("provider_call_started_at") or entry.get("local_run_started_at") or entry.get("created_at")
         try:
@@ -403,7 +415,10 @@ def _public_attempt(entry: dict) -> VideoAttemptResponse:
             settings = get_settings()
             timeout = max(settings.omni_video_timeout_seconds, settings.seedance_video_timeout_seconds) + 120
             if age > timeout:
-                public.update(status="interrupted", error="This video attempt was interrupted. Its provider outcome may be unknown; it will not be submitted again automatically.")
+                public.update(
+                    status="interrupted",
+                    error="This video attempt was interrupted. Its provider outcome may be unknown; it will not be submitted again automatically.",
+                )
         except (AttributeError, TypeError, ValueError):
             pass
     return VideoAttemptResponse(**public)
@@ -470,8 +485,9 @@ async def _project_internal_resources(db: AsyncSession, project_id: uuid.UUID) -
 
 
 async def _locked_project(db: AsyncSession, project_id: uuid.UUID) -> Project:
-    result = await db.execute(select(Project).where(Project.id == project_id).with_for_update()
-                              .execution_options(populate_existing=True))
+    result = await db.execute(
+        select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True)
+    )
     project = result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -537,13 +553,13 @@ async def _validate_video_scene_revision(
 
 def _saved_people_prompt(req, project, prompt: str) -> str:
     """Only current revision-bound saved details may influence a new provider request."""
-    details = (project.metadata_ or {}).get('scene_details') if project else None
+    details = (project.metadata_ or {}).get("scene_details") if project else None
     if req.details_revision is None:
-        if details and any(details.get(key) for key in ('benches', 'trees', 'props', 'surfaces')):
-            raise _video_scene_conflict('Saved details changed. Reload the scene before rendering.')
+        if details and any(details.get(key) for key in ("benches", "trees", "props", "surfaces")):
+            raise _video_scene_conflict("Saved details changed. Reload the scene before rendering.")
         return prompt
-    if not details or details.get('revision') != req.details_revision:
-        raise _video_scene_conflict('Saved details changed. Reload the scene before rendering.')
+    if not details or details.get("revision") != req.details_revision:
+        raise _video_scene_conflict("Saved details changed. Reload the scene before rendering.")
     from app.services.people_actions import append_people_action_direction, people_action_direction
 
     return append_people_action_direction(prompt, people_action_direction(details))
@@ -552,12 +568,24 @@ def _saved_people_prompt(req, project, prompt: str) -> str:
 async def _validate_appearance_binding(req, db, user, preview, keyframes, scene_sha):
     if req.appearance_attempt_id is None:
         return
-    if req.provider != 'omni' or req.control_mode != 'preview_video' or req.omni_reference_mode != 'appearance_references' or preview is None:
-        raise HTTPException(400, 'A photographic guide requires Omni preview-video edit.')
+    if (
+        req.provider != "omni"
+        or req.control_mode != "preview_video"
+        or req.omni_reference_mode != "appearance_references"
+        or preview is None
+    ):
+        raise HTTPException(400, "A photographic guide requires Omni preview-video edit.")
     from app.services.video_appearance import validate_binding
-    await validate_binding(db, user, req.project_id, req.appearance_attempt_id,
-        source_sha256=hashlib.sha256(preview.data).hexdigest(), scene_sha256=scene_sha,
-        images=[image.data for image in keyframes])
+
+    await validate_binding(
+        db,
+        user,
+        req.project_id,
+        req.appearance_attempt_id,
+        source_sha256=hashlib.sha256(preview.data).hexdigest(),
+        scene_sha256=scene_sha,
+        images=[image.data for image in keyframes],
+    )
 
 
 async def _update_attempt(db: AsyncSession, project_id: uuid.UUID, attempt_id: str, **updates) -> dict:
@@ -719,9 +747,7 @@ def _decode_geometry_checkpoints(req: VideoPilotRequest) -> list[dict[str, Any]]
 def _preflight_values(req: VideoPilotRequest):
     try:
         reference_label = "Appearance" if req.omni_reference_mode == "appearance_references" else "Architectural"
-        if req.omni_reference_mode != "video_only" and (
-            req.provider != "omni" or req.control_mode != "preview_video"
-        ):
+        if req.omni_reference_mode != "video_only" and (req.provider != "omni" or req.control_mode != "preview_video"):
             raise ValueError(f"{reference_label} references require Omni preview video.")
         if req.camera_motion == "people_follow" and (req.provider != "omni" or req.control_mode != "preview_video"):
             raise ValueError("People-follow tracking requires Omni preview video.")
@@ -733,7 +759,8 @@ def _preflight_values(req: VideoPilotRequest):
             raise ValueError("The capture frame count must match the requested duration at 24 fps.")
         character_reference = (
             decode_character_reference(req.character_reference_base64, req.character_reference_mime_type)
-            if req.character_reference_base64 is not None else None
+            if req.character_reference_base64 is not None
+            else None
         )
         guide = decode_guide_image(req.guide_frame_base64)
         keyframes = [decode_guide_image(value) for value in req.route_keyframes_base64]
@@ -755,7 +782,10 @@ def _preflight_values(req: VideoPilotRequest):
         if req.control_mode == "preview_video":
             if preview is None:
                 raise ValueError("Preview-video mode requires the deterministic route preview.")
-            if req.provider == "omni" and req.omni_reference_mode in {"architecture_references", "appearance_references"}:
+            if req.provider == "omni" and req.omni_reference_mode in {
+                "architecture_references",
+                "appearance_references",
+            }:
                 if len(keyframes) not in (1, 2):
                     raise ValueError(f"{reference_label} references require one or two scene images.")
             elif req.provider in {"omni", "internal_enhance"} and keyframes:
@@ -789,11 +819,13 @@ def _preflight_values(req: VideoPilotRequest):
             )
         )
         if req.omni_reference_mode == "architecture_references":
-            prompt = build_architecture_reference_prompt(prompt, len(keyframes),
-                has_character=character_reference is not None)
+            prompt = build_architecture_reference_prompt(
+                prompt, len(keyframes), has_character=character_reference is not None
+            )
         elif req.omni_reference_mode == "appearance_references":
-            prompt = build_appearance_reference_prompt(prompt, len(keyframes),
-                has_character=character_reference is not None)
+            prompt = build_appearance_reference_prompt(
+                prompt, len(keyframes), has_character=character_reference is not None
+            )
         elif character_reference is not None:
             prompt = build_character_reference_prompt(prompt)
     except (ValueError, KeyError) as exc:
@@ -820,14 +852,22 @@ def _omni_output_cost_estimate(req) -> float:
 
 
 def _photographic_preflight_credit_cost(req, settings) -> int:
-    if not getattr(req, 'prepare_photographic_finish', False) or req.appearance_attempt_id:
+    if not getattr(req, "prepare_photographic_finish", False) or req.appearance_attempt_id:
         return 0
-    if req.provider != 'omni' or req.control_mode != 'preview_video':
-        raise HTTPException(400, 'Photographic finishing requires an Omni route video.')
-    if (settings.classroom_release or not settings.direct_3d_jobs_enabled
-        or not settings.direct_3d_images_enabled or not settings.openai_api_key):
-        raise HTTPException(503, 'Photographic video preparation is unavailable on this server. Saved image jobs and the image provider must be configured before generating.')
+    if req.provider != "omni" or req.control_mode != "preview_video":
+        raise HTTPException(400, "Photographic finishing requires an Omni route video.")
+    if (
+        settings.classroom_release
+        or not settings.direct_3d_jobs_enabled
+        or not settings.direct_3d_images_enabled
+        or not settings.openai_api_key
+    ):
+        raise HTTPException(
+            503,
+            "Photographic video preparation is unavailable on this server. Saved image jobs and the image provider must be configured before generating.",
+        )
     from app.services.video_appearance import GUIDE_CREDIT_COST
+
     return GUIDE_CREDIT_COST
 
 
@@ -926,12 +966,24 @@ async def list_video_attempts(
             # Shared gallery access is distinct from requester-only recovery.
             # Saved pixels survive an interrupted completion check too.
             shared = _public_attempt(item).model_dump()
-            shared.update(prompt=None, custom_prompt="", error=None, guide_image_url=None,
-                          interaction_id=None, request_id="", recoverable=False,
-                          negative_prompt=None, generation_settings=None, scene_direction=None,
-                          character_reference_url=None, character_reference_sha256=None,
-                          character_reference_mime_type=None, character_reference_width=None,
-                          character_reference_height=None, character_reference_role=None)
+            shared.update(
+                prompt=None,
+                custom_prompt="",
+                error=None,
+                guide_image_url=None,
+                interaction_id=None,
+                request_id="",
+                recoverable=False,
+                negative_prompt=None,
+                generation_settings=None,
+                scene_direction=None,
+                character_reference_url=None,
+                character_reference_sha256=None,
+                character_reference_mime_type=None,
+                character_reference_width=None,
+                character_reference_height=None,
+                character_reference_role=None,
+            )
             visible.append(shared)
     attempts = visible
     omni_usage = _visible_usage(project, all_attempts, "omni")
@@ -1054,15 +1106,17 @@ async def generate_video(
         if existing.get("request_id") == str(req.request_id):
             request_hashes = {revision_sha256(req.model_dump(mode="json"))}
             legacy_excluded: set[str] = set()
-            if 'appearance_attempt_id' not in existing and req.appearance_attempt_id is None:
-                legacy_excluded.add('appearance_attempt_id')
-                request_hashes.add(revision_sha256(req.model_dump(mode='json', exclude=legacy_excluded)))
+            if "appearance_attempt_id" not in existing and req.appearance_attempt_id is None:
+                legacy_excluded.add("appearance_attempt_id")
+                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
             if "omni_reference_mode" not in existing and req.omni_reference_mode == "video_only":
                 legacy_excluded.add("omni_reference_mode")
                 request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
-            if ("character_reference_sha256" not in existing
-                    and req.character_reference_base64 is None
-                    and req.character_reference_mime_type == "image/png"):
+            if (
+                "character_reference_sha256" not in existing
+                and req.character_reference_base64 is None
+                and req.character_reference_mime_type == "image/png"
+            ):
                 legacy_excluded.update({"character_reference_base64", "character_reference_mime_type"})
                 request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded)))
             if "use_custom_prompt_only" not in existing and not req.use_custom_prompt_only:
@@ -1071,10 +1125,11 @@ async def generate_video(
             # Requests saved before the optional scene direction existed hashed
             # the same body without that field. Preserve their exact replay.
             if "custom_prompt" not in existing and req.custom_prompt == "":
-                request_hashes.add(revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded | {"custom_prompt"})))
+                request_hashes.add(
+                    revision_sha256(req.model_dump(mode="json", exclude=legacy_excluded | {"custom_prompt"}))
+                )
             if existing.get("request_sha256") and (
-                existing["request_sha256"] not in request_hashes
-                or existing.get("requested_by") != str(user.id)
+                existing["request_sha256"] not in request_hashes or existing.get("requested_by") != str(user.id)
             ):
                 raise HTTPException(409, "This request ID belongs to a different video. Recover the original attempt.")
             provider = _attempt_provider(existing)
@@ -1182,7 +1237,7 @@ async def generate_video(
         "custom_prompt": req.custom_prompt if req.provider == "omni" else "",
         "use_custom_prompt_only": req.use_custom_prompt_only,
         "omni_reference_mode": req.omni_reference_mode,
-        'appearance_attempt_id': str(req.appearance_attempt_id) if req.appearance_attempt_id else None,
+        "appearance_attempt_id": str(req.appearance_attempt_id) if req.appearance_attempt_id else None,
         "estimated_cost_usd": estimated_cost,
         "guide_sha256": guide_hash,
         "scene_revision_sha256": scene_revision_sha256,
@@ -1296,28 +1351,47 @@ async def generate_video(
     # transaction. Recheck under the shared edit lock immediately before debit.
     try:
         from app.services.residual_landscape import lock_residual_landscape_project
+
         await lock_residual_landscape_project(db, req.project_id)
         await _locked_project(db, req.project_id)
         final_scene_sha = await _validate_video_scene_revision(req, db)
         if final_scene_sha != scene_revision_sha256:
-            raise _video_scene_conflict('The scene changed while saving the video source. Prepare the route again.')
+            raise _video_scene_conflict("The scene changed while saving the video source. Prepare the route again.")
         await _validate_appearance_binding(req, db, user, preview, keyframes, final_scene_sha)
     except HTTPException as exc:
         await db.rollback()
-        await _update_attempt(db, req.project_id, attempt_id, status='preflight_failed',
-            error='The scene or photographic guide changed before dispatch. The provider was not called.')
+        await _update_attempt(
+            db,
+            req.project_id,
+            attempt_id,
+            status="preflight_failed",
+            error="The scene or photographic guide changed before dispatch. The provider was not called.",
+        )
         raise exc
     run_marker = (
         {"local_run_started_at": _now()} if req.provider == "internal_enhance" else {"provider_call_started_at": _now()}
     )
     if credit_cost and not is_admin_or_above(user):
-        remaining = (await db.execute(update(User).where(
-            User.id == user.id, User.render_credits >= credit_cost,
-        ).values(render_credits=User.render_credits - credit_cost).returning(User.render_credits))).scalar_one_or_none()
+        remaining = (
+            await db.execute(
+                update(User)
+                .where(
+                    User.id == user.id,
+                    User.render_credits >= credit_cost,
+                )
+                .values(render_credits=User.render_credits - credit_cost)
+                .returning(User.render_credits)
+            )
+        ).scalar_one_or_none()
         if remaining is None:
             await db.rollback()
-            await _update_attempt(db, req.project_id, attempt_id, status="failed",
-                                  error="Insufficient video credits. The provider was not called.")
+            await _update_attempt(
+                db,
+                req.project_id,
+                attempt_id,
+                status="failed",
+                error="Insufficient video credits. The provider was not called.",
+            )
             raise HTTPException(402, "Insufficient Video Render credits.")
     entry = await _update_attempt(
         db,
@@ -1389,6 +1463,7 @@ async def generate_video(
                 render_quality=req.render_quality,
                 omni_reference_mode=req.omni_reference_mode,
             )
+
             async def retain_omni_interaction(value: str):
                 nonlocal interaction_id
                 interaction_id = value
@@ -1404,16 +1479,26 @@ async def generate_video(
         # Keep paid pixels and their address before optional scoring. A later
         # failure must not turn a usable saved result into another provider call.
         from app.api.v1.documents import _upload_to_storage
+
         await _upload_to_storage(video_key, result.video_bytes, result.mime_type)
         video_url = f"/api/v1/files/{video_key}"
-        await _update_attempt(db, req.project_id, attempt_id, video_url=video_url,
-                              interaction_id=interaction_id, size_bytes=len(result.video_bytes))
+        await _update_attempt(
+            db,
+            req.project_id,
+            attempt_id,
+            video_url=video_url,
+            interaction_id=interaction_id,
+            size_bytes=len(result.video_bytes),
+        )
         media_updates: dict = {"provider_usage": getattr(result, "usage", None)}
         try:
             media_updates["output_media"] = await asyncio.to_thread(
-                inspect_video_media, result.video_bytes, result.mime_type)
-            if abs(media_updates["output_media"]["duration_seconds"] - req.duration_seconds) > .1:
-                media_updates["media_warning"] = "The provider changed the clip duration. Compare the complete result with the source."
+                inspect_video_media, result.video_bytes, result.mime_type
+            )
+            if abs(media_updates["output_media"]["duration_seconds"] - req.duration_seconds) > 0.1:
+                media_updates["media_warning"] = (
+                    "The provider changed the clip duration. Compare the complete result with the source."
+                )
         except Exception as media_exc:
             # Pixels are already saved. A local checker failure is never a
             # reason to lose paid output or submit another generation.

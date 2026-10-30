@@ -87,9 +87,7 @@ def client(settings) -> httpx.AsyncClient:
         or url.path not in {"", "/"}
     ):
         raise ComfyFailure("Local trials require a loopback ComfyUI URL.")
-    return httpx.AsyncClient(
-        base_url=settings.comfy_trials_base_url.rstrip("/"), timeout=30, trust_env=False
-    )
+    return httpx.AsyncClient(base_url=settings.comfy_trials_base_url.rstrip("/"), timeout=30, trust_env=False)
 
 
 def prepare_source(data: bytes, preset: Preset) -> tuple[bytes, int, int]:
@@ -101,8 +99,7 @@ def prepare_source(data: bytes, preset: Preset) -> tuple[bytes, int, int]:
     if preset.target_pixels:
         # Generate at the model's native pixel budget, including when the source
         # is smaller. This is diffusion output, not a post-generation upscale.
-        scale = min(preset.max_edge / max(image.size),
-                    (preset.target_pixels / (image.width * image.height)) ** .5)
+        scale = min(preset.max_edge / max(image.size), (preset.target_pixels / (image.width * image.height)) ** 0.5)
     quantize = int if preset.target_pixels else round
     w, h = (max(64, quantize(edge * scale / 32) * 32) for edge in image.size)
     image = image.resize((w, h), Image.Resampling.LANCZOS)
@@ -111,9 +108,7 @@ def prepare_source(data: bytes, preset: Preset) -> tuple[bytes, int, int]:
     return output.getvalue(), w, h
 
 
-def workflow(
-    preset: Preset, image: str, prompt: str, seed: int, w: int, h: int, job_id: str
-) -> dict:
+def workflow(preset: Preset, image: str, prompt: str, seed: int, w: int, h: int, job_id: str) -> dict:
     def node(kind, **inputs):
         return {"class_type": kind, "inputs": inputs}
 
@@ -243,9 +238,7 @@ def workflow(
             **{"format.codec": "h264", "format.codec.encoding": "auto"},
         )
     else:
-        graph["10"] = node(
-            "SaveImage", images=["9", 0], filename_prefix=f"cityprompt_trials/{job_id}"
-        )
+        graph["10"] = node("SaveImage", images=["9", 0], filename_prefix=f"cityprompt_trials/{job_id}")
     return graph
 
 
@@ -274,12 +267,7 @@ async def available_presets(settings) -> list[dict]:
                 ("CLIPLoader", "clip_name", p.encoder),
                 ("VAELoader", "vae_name", p.vae),
             ):
-                choices = (
-                    info.get(node, {})
-                    .get("input", {})
-                    .get("required", {})
-                    .get(field, [[]])[0]
-                )
+                choices = info.get(node, {}).get("input", {}).get("required", {}).get(field, [[]])[0]
                 if name not in choices:
                     missing.append(name)
         result.append(
@@ -288,11 +276,7 @@ async def available_presets(settings) -> list[dict]:
                 "label": p.label,
                 "kind": p.kind,
                 "available": bool(info) and not missing,
-                "message": (
-                    ("Ready" if not missing else "Missing: " + ", ".join(missing))
-                    if info
-                    else message
-                ),
+                "message": (("Ready" if not missing else "Missing: " + ", ".join(missing)) if info else message),
                 "default_prompt": p.prompt,
                 "max_edge": p.max_edge,
                 "steps": p.steps,
@@ -311,9 +295,7 @@ async def submit(settings, preset, image_bytes, prompt, seed, w, h, job_id):
         )
         response.raise_for_status()
         uploaded = response.json()
-        image_name = "/".join(
-            x for x in (uploaded.get("subfolder", ""), uploaded["name"]) if x
-        )
+        image_name = "/".join(x for x in (uploaded.get("subfolder", ""), uploaded["name"]) if x)
         graph = workflow(preset, image_name, prompt, seed, w, h, job_id)
         # Current native ComfyUI accepts a client-assigned UUID. Persist it BEFORE
         # submission, so even a lost HTTP receipt can be recovered without reruns.
@@ -326,15 +308,11 @@ async def submit(settings, preset, image_bytes, prompt, seed, w, h, job_id):
             },
         )
         if response.status_code == 400:
-            raise ComfyFailure(
-                "ComfyUI rejected the workflow. Check its models and nodes; no automatic retry."
-            )
+            raise ComfyFailure("ComfyUI rejected the workflow. Check its models and nodes; no automatic retry.")
         response.raise_for_status()
         receipt = response.json()
         if receipt.get("node_errors") or receipt.get("prompt_id") != job_id:
-            raise ComfyFailure(
-                "ComfyUI did not accept the stored job ID. Update ComfyUI before trying again."
-            )
+            raise ComfyFailure("ComfyUI did not accept the stored job ID. Update ComfyUI before trying again.")
 
 
 async def poll(settings, job_id: str) -> tuple[str, bytes | None]:
@@ -359,17 +337,11 @@ async def poll(settings, job_id: str) -> tuple[str, bytes | None]:
         if not state.get("completed"):
             return "running", None
         output = entry.get("outputs", {}).get("10", {})
-        assets = (
-            output.get("images") or output.get("videos") or output.get("gifs") or []
-        )
+        assets = output.get("images") or output.get("videos") or output.get("gifs") or []
         if not assets:
             raise ComfyFailure("ComfyUI finished without an image or video output.")
         asset = assets[0]
-        if (
-            asset.get("type") != "output"
-            or ".." in asset.get("filename", "")
-            or ".." in asset.get("subfolder", "")
-        ):
+        if asset.get("type") != "output" or ".." in asset.get("filename", "") or ".." in asset.get("subfolder", ""):
             raise ComfyFailure("ComfyUI returned an invalid output reference.")
         response = await c.get(
             "/view",

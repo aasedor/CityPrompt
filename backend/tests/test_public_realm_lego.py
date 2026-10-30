@@ -626,7 +626,9 @@ def test_unbuilt_street_visual_variants_are_not_advertised(archetype_id):
 def test_calgary_local_advertises_only_its_built_draft_manual_and_legacy_variants():
     catalog = build_public_realm_capability_catalog()
     assert catalog.variants_by_archetype["calgary_local"] == (
-        "calgary_local_draft3_v1", "calgary_local_manual_v1", "calgary_local_v0",
+        "calgary_local_draft3_v1",
+        "calgary_local_manual_v1",
+        "calgary_local_v0",
     )
     with pytest.raises(PublicRealmPlanningError) as raised:
         plan_public_realm_recipe(_street_request("calgary_local", 10, variant_id="calgary_local_v1"))
@@ -802,34 +804,42 @@ def test_recipe_identity_fails_closed_after_payload_or_catalog_hash_tampering():
     assert public_realm_recipe_identity(payload) is None
 
 
-@pytest.mark.parametrize('archetype,width,variant', [
-    ('narrow_residential_street', 12, None),
-    ('neighborhood_main_street', 23, 'student_main_street_v1'),
-    ('pedestrian_only_street', 18, 'student_market_street_v1'),
-])
+@pytest.mark.parametrize(
+    "archetype,width,variant",
+    [
+        ("narrow_residential_street", 12, None),
+        ("neighborhood_main_street", 23, "student_main_street_v1"),
+        ("pedestrian_only_street", 18, "student_market_street_v1"),
+    ],
+)
 def test_saved_recipe_survives_catalog_additions_only_with_unchanged_trusted_family(archetype, width, variant):
-    catalog = replace(build_public_realm_capability_catalog(),
-        fingerprint='4e673702affdad9f2354c69d2a64a86a47bf877f77a2eb3425bd813dfafedbdb')
+    catalog = replace(
+        build_public_realm_capability_catalog(),
+        fingerprint="4e673702affdad9f2354c69d2a64a86a47bf877f77a2eb3425bd813dfafedbdb",
+    )
     recipe = plan_public_realm_recipe(_street_request(archetype, width, variant_id=variant), catalog=catalog)
-    expanded = replace(catalog, fingerprint='a' * 64)
+    expanded = replace(catalog, fingerprint="a" * 64)
     identity = public_realm_recipe_identity(recipe, catalog=expanded)
     assert identity is not None
-    assert identity['recipe'] == recipe.model_dump(mode='json')
+    assert identity["recipe"] == recipe.model_dump(mode="json")
 
-    unknown = recipe.model_dump(mode='json')
-    unknown['catalog_fingerprint'] = 'b' * 64
-    unknown['recipe_hash'] = public_realm_recipe_hash(unknown)
+    unknown = recipe.model_dump(mode="json")
+    unknown["catalog_fingerprint"] = "b" * 64
+    unknown["recipe_hash"] = public_realm_recipe_hash(unknown)
     assert public_realm_recipe_identity(unknown, catalog=expanded) is None
 
-    tampered = recipe.model_dump(mode='json')
-    tampered['appearance_kit_id'] = 'different_geometry'
-    tampered['recipe_hash'] = public_realm_recipe_hash(tampered)
+    tampered = recipe.model_dump(mode="json")
+    tampered["appearance_kit_id"] = "different_geometry"
+    tampered["recipe_hash"] = public_realm_recipe_hash(tampered)
     assert public_realm_recipe_identity(tampered, catalog=expanded) is None
 
-    changed = replace(expanded, capabilities=tuple(
-        c.model_copy(update={'title': 'changed definition'}) if c.family_id == recipe.family_id else c
-        for c in expanded.capabilities
-    ))
+    changed = replace(
+        expanded,
+        capabilities=tuple(
+            c.model_copy(update={"title": "changed definition"}) if c.family_id == recipe.family_id else c
+            for c in expanded.capabilities
+        ),
+    )
     assert public_realm_recipe_identity(recipe, catalog=changed) is None
 
 
@@ -975,12 +985,17 @@ def test_native_street_attests_section_width_along_bent_authored_route(bend_m, s
     # A bend widens the enclosing rectangle, not the actual 18 m section.
     line = LineString([(700_000, 5_650_000), (700_050, 5_650_000 + bend_m), (700_100, 5_650_000)])
     street = _to_wgs84(line.buffer(9, cap_style=2, join_style=2))
-    recipe = plan_public_realm_zone_recipe("road", street, {
-        "road_archetype_id": "student_quiet_residential_street_v1",
-        "road_selected_variant_id": "student_quiet_residential_street_v1",
-        "width": 18,
-        "plan_centerline": list(_to_wgs84(line).coords),
-    }, strict=True)
+    recipe = plan_public_realm_zone_recipe(
+        "road",
+        street,
+        {
+            "road_archetype_id": "student_quiet_residential_street_v1",
+            "road_selected_variant_id": "student_quiet_residential_street_v1",
+            "width": 18,
+            "plan_centerline": list(_to_wgs84(line).coords),
+        },
+        strict=True,
+    )
     assert recipe is not None
     assert recipe.target.row_width_m == 18
     assert recipe.target.length_m == pytest.approx(saved_length_m, abs=0.01)
@@ -988,14 +1003,14 @@ def test_native_street_attests_section_width_along_bent_authored_route(bend_m, s
 
 
 def test_downtown_browser_street_compiles_without_a_family_pending_fallback():
-    source=json.loads((Path(__file__).parent / "fixtures/downtown_bent_street.json").read_text())
-    street=Polygon(source["coordinates"])
-    manual=plan_public_realm_zone_recipe("road",street,source["properties"],strict=False)
-    direct=plan_public_realm_zone_recipe("road",street,source["properties"],strict=True)
+    source = json.loads((Path(__file__).parent / "fixtures/downtown_bent_street.json").read_text())
+    street = Polygon(source["coordinates"])
+    manual = plan_public_realm_zone_recipe("road", street, source["properties"], strict=False)
+    direct = plan_public_realm_zone_recipe("road", street, source["properties"], strict=True)
     assert manual is not None
     assert manual == direct
     assert manual.target.row_width_m == 18
-    assert manual.target.length_m == pytest.approx(56.63,abs=0.15)
+    assert manual.target.length_m == pytest.approx(56.63, abs=0.15)
     assert public_realm_recipe_identity(manual) is not None
 
 
@@ -1003,12 +1018,18 @@ def test_downtown_browser_street_compiles_without_a_family_pending_fallback():
 def test_native_street_cannot_use_centerline_to_bless_a_false_width(bend_m):
     line = LineString([(700_000, 5_650_000), (700_050, 5_650_000 + bend_m), (700_100, 5_650_000)])
     with pytest.raises(PublicRealmPlanningError):
-        plan_public_realm_zone_recipe("road", _to_wgs84(line.buffer(11, cap_style=2)), {
-            "road_archetype_id": "student_quiet_residential_street_v1",
-            "road_selected_variant_id": "student_quiet_residential_street_v1",
-            "width": 18,
-            "plan_centerline": list(_to_wgs84(line).coords),
-        }, strict=True)
+        plan_public_realm_zone_recipe(
+            "road",
+            _to_wgs84(line.buffer(11, cap_style=2)),
+            {
+                "road_archetype_id": "student_quiet_residential_street_v1",
+                "road_selected_variant_id": "student_quiet_residential_street_v1",
+                "width": 18,
+                "plan_centerline": list(_to_wgs84(line).coords),
+            },
+            strict=True,
+        )
+
 
 def test_manual_compile_and_direct_replan_share_one_canonical_street_target():
     street = _to_wgs84(box(700_000, 5_650_000, 700_146, 5_650_016))
@@ -1038,17 +1059,22 @@ def test_manual_compile_and_direct_replan_share_one_canonical_street_target():
 
 def test_existing_fixed_street_is_neither_recompiled_nor_fallback():
     street = _to_wgs84(box(700_000, 5_650_000, 700_048, 5_650_018))
-    properties = dict(validation_fixed_fixture=True, road_archetype_id='quiet_residential_street',
-                      road_selected_variant_id='student_quiet_residential_street_v1', width=18)
-    assert plan_public_realm_zone_recipe('road', street, properties, strict=False) is None
-    assert public_realm_fallback_marker('road', properties) is None
+    properties = dict(
+        validation_fixed_fixture=True,
+        road_archetype_id="quiet_residential_street",
+        road_selected_variant_id="student_quiet_residential_street_v1",
+        width=18,
+    )
+    assert plan_public_realm_zone_recipe("road", street, properties, strict=False) is None
+    assert public_realm_fallback_marker("road", properties) is None
 
 
 def test_fixed_fixture_flag_does_not_bypass_strict_planning():
     street = _to_wgs84(box(700_000, 5_650_000, 700_048, 5_650_018))
     with pytest.raises(PublicRealmPlanningError):
-        plan_public_realm_zone_recipe('road', street, dict(validation_fixed_fixture=True,
-                                     road_archetype_id='unknown_fixture'), strict=True)
+        plan_public_realm_zone_recipe(
+            "road", street, dict(validation_fixed_fixture=True, road_archetype_id="unknown_fixture"), strict=True
+        )
 
 
 def test_zone_planner_preserves_legacy_fallback_but_ai_fails_closed():

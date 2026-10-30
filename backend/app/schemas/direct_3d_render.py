@@ -81,6 +81,7 @@ class Direct3DResidualLandscapeClaim(BaseModel):
 
 class Direct3DAuthoredSurfaceClaim(BaseModel):
     """Geometry/material source of a directly mounted, uncompiled flat finish."""
+
     zone_id: uuid.UUID
     source_hash: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
 
@@ -429,7 +430,9 @@ class Direct3DRenderRequest(BaseModel):
             controls += 3 if self.control_bundle_version == 2 else 0
             controls += int(self.presentation_mode == "source_anchored")
             if controls + len(self.archetype_references) > 14:
-                raise ValueError(f"Nano Banana allows 14 images total; keep at most {14 - controls} archetype references with these geometry controls")
+                raise ValueError(
+                    f"Nano Banana allows 14 images total; keep at most {14 - controls} archetype references with these geometry controls"
+                )
         return self
 
 

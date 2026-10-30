@@ -25,7 +25,9 @@ class AssessmentRequest(BaseModel):
 
 @router.get("/zones/{zone_id}")
 async def saved_site_assessment(
-    zone_id: uuid.UUID, user: User = Depends(require_auth), db: AsyncSession = Depends(get_db),
+    zone_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
 ):
     boundary = (await db.execute(select(SiteZone).where(SiteZone.id == zone_id))).scalar_one_or_none()
     if boundary is None:
@@ -39,8 +41,10 @@ async def saved_site_assessment(
 
 @router.post("/zones/{zone_id}")
 async def calculate_site_assessment(
-    zone_id: uuid.UUID, request: AssessmentRequest,
-    user: User = Depends(require_auth), db: AsyncSession = Depends(get_db),
+    zone_id: uuid.UUID,
+    request: AssessmentRequest,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
 ):
     boundary = (await db.execute(select(SiteZone).where(SiteZone.id == zone_id))).scalar_one_or_none()
     if boundary is None:
@@ -63,15 +67,38 @@ async def calculate_site_assessment(
     if permission in {"owner", "editor"}:
         # No locks during the external lookup. Re-read under locks before merging
         # metadata so a concurrent boundary edit or detail save cannot be lost.
-        project = (await db.execute(select(Project).where(Project.id == boundary.project_id)
-                   .with_for_update().execution_options(populate_existing=True))).scalar_one_or_none()
-        current = (await db.execute(select(SiteZone).where(SiteZone.id == zone_id)
-                   .with_for_update().execution_options(populate_existing=True))).scalar_one_or_none()
-        if (project is None or current is None or not current.is_active_boundary
-                or not to_shape(current.geometry).equals(site)):
-            raise HTTPException(409, "The site changed during the lookup. Calculate its new assessed value when saving finishes.")
-        project.metadata_ = {**(project.metadata_ or {}), "site_assessment": {
-            "boundary_id": str(boundary.id), "coordinates": list(site.exterior.coords), "assessment": assessment,
-        }}
+        project = (
+            await db.execute(
+                select(Project)
+                .where(Project.id == boundary.project_id)
+                .with_for_update()
+                .execution_options(populate_existing=True)
+            )
+        ).scalar_one_or_none()
+        current = (
+            await db.execute(
+                select(SiteZone)
+                .where(SiteZone.id == zone_id)
+                .with_for_update()
+                .execution_options(populate_existing=True)
+            )
+        ).scalar_one_or_none()
+        if (
+            project is None
+            or current is None
+            or not current.is_active_boundary
+            or not to_shape(current.geometry).equals(site)
+        ):
+            raise HTTPException(
+                409, "The site changed during the lookup. Calculate its new assessed value when saving finishes."
+            )
+        project.metadata_ = {
+            **(project.metadata_ or {}),
+            "site_assessment": {
+                "boundary_id": str(boundary.id),
+                "coordinates": list(site.exterior.coords),
+                "assessment": assessment,
+            },
+        }
         await db.flush()
     return assessment

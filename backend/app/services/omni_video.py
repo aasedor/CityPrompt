@@ -146,9 +146,7 @@ def build_architecture_reference_prompt(prompt: str, count: int, *, has_characte
     tags = " ".join(f"<IMAGE_REF_{index}>@Image{index + 1}" for index in range(total))
     prefix = f"[# Sources <VIDEO_0>@Video1] [# References {tags}]"
     scene_images = " and ".join(f"Image{index + 1}" for index in range(int(has_character), total))
-    identity = (
-        "Use Image1 only for the walking subject's identity and appearance. " if has_character else ""
-    )
+    identity = "Use Image1 only for the walking subject's identity and appearance. " if has_character else ""
     direction = (
         identity + f"Use {scene_images} only as architectural identity references, not as first or last frames. "
         "Retain the shown buildings, roof forms, facade openings and skyline landmarks. "
@@ -284,21 +282,26 @@ def build_cinematic_prompt(
         # The source video already contains the inventory and camera motion;
         # keep the full scene contract in attempt metadata, not in this prompt.
         detail = custom_prompt.strip()
-        return " ".join([
-            "Transform this rough 3D source into convincing live-action architectural footage. "
-            "Use the source as a camera and layout guide, not a target rendering style. Keep it one continuous shot.",
-            "Match the source video's camera path, framing, speed and timing exactly."
-            + (" " + MOTION_PROMPTS["people_follow"] if camera_motion == "people_follow" else ""),
-            f"Requested scene detail: {detail}" if detail else
-            "Keep existing people and traffic as shown; do not add new actors.",
-            "Preserve building footprints, heights, roof forms, window openings, parks and street layout. "
-            "Replace viewport shading with physically plausible materials, natural daylight, contact shadows, "
-            "reflections, surface texture and lifelike planting detail. "
-            "Do not enclose open façades or add connections between buildings. "
-            "Keep objects grounded. Any requested people or animals "
-            "must move naturally on existing paths without changing the design.",
-            "No scene cuts, captions, logos or visible route graphics.",
-        ])
+        return " ".join(
+            [
+                "Transform this rough 3D source into convincing live-action architectural footage. "
+                "Use the source as a camera and layout guide, not a target rendering style. Keep it one continuous shot.",
+                "Match the source video's camera path, framing, speed and timing exactly."
+                + (" " + MOTION_PROMPTS["people_follow"] if camera_motion == "people_follow" else ""),
+                (
+                    f"Requested scene detail: {detail}"
+                    if detail
+                    else "Keep existing people and traffic as shown; do not add new actors."
+                ),
+                "Preserve building footprints, heights, roof forms, window openings, parks and street layout. "
+                "Replace viewport shading with physically plausible materials, natural daylight, contact shadows, "
+                "reflections, surface texture and lifelike planting detail. "
+                "Do not enclose open façades or add connections between buildings. "
+                "Keep objects grounded. Any requested people or animals "
+                "must move naturally on existing paths without changing the design.",
+                "No scene cuts, captions, logos or visible route graphics.",
+            ]
+        )
     prompt_scene_brief = scene_brief.strip()
     motion_prompt = MOTION_PROMPTS[camera_motion]
     route_description = describe_route(route_points)
@@ -312,37 +315,45 @@ def build_cinematic_prompt(
         else (
             "Ride no more than 56 metres during the full shot."
             if is_bicycle
-            else "Move no more than 4 metres during the full shot."
-            if is_street
             else (
-                "Translate no more than one sixteenth of the shorter authored building dimension during the full shot; "
-                "hold altitude, focal length, and subject scale constant."
-                if camera_motion == "path_follow"
-                else "Keep total camera travel below one quarter of an authored building length during the full shot."
+                "Move no more than 4 metres during the full shot."
+                if is_street
+                else (
+                    "Translate no more than one sixteenth of the shorter authored building dimension during the full shot; "
+                    "hold altitude, focal length, and subject scale constant."
+                    if camera_motion == "path_follow"
+                    else "Keep total camera travel below one quarter of an authored building length during the full shot."
+                )
             )
         )
     )
     shot_kind = (
-        "forward-facing bicycle ride" if is_bicycle
-        else "pedestrian-height architectural walk-by" if is_street
+        "forward-facing bicycle ride"
+        if is_bicycle
         else (
-            "low detail architectural-drone fly-through"
-            if is_detail_flythrough
-            else "professional architectural drone shot"
+            "pedestrian-height architectural walk-by"
+            if is_street
+            else (
+                "low detail architectural-drone fly-through"
+                if is_detail_flythrough
+                else "professional architectural drone shot"
+            )
         )
     )
     framing_lock = (
         "Keep the forward route corridor, paving and adjacent public realm legible at cycling eye height. "
         "Stay in clear open space; never pass through a building, wall or tree."
         if is_bicycle
-        else "Keep the authored facade and adjacent public realm in the same clear close-up view for the entire shot. Preserve "
-        "every already-visible joint, window frame, railing, entrance, plant, and paving edge at its source level of detail."
-        if is_street
         else (
-            "Keep the route corridor, adjacent authored facades, entrances, landscape edges, and the open-air gap between "
-            "the buildings legible throughout the shot. Never fly through a solid wall, roof, tree, or facade."
-            if is_detail_flythrough
-            else "Keep every authored building and the complete authored open space clearly legible together for all eight seconds."
+            "Keep the authored facade and adjacent public realm in the same clear close-up view for the entire shot. Preserve "
+            "every already-visible joint, window frame, railing, entrance, plant, and paving edge at its source level of detail."
+            if is_street
+            else (
+                "Keep the route corridor, adjacent authored facades, entrances, landscape edges, and the open-air gap between "
+                "the buildings legible throughout the shot. Never fly through a solid wall, roof, tree, or facade."
+                if is_detail_flythrough
+                else "Keep every authored building and the complete authored open space clearly legible together for all eight seconds."
+            )
         )
     )
     if control_mode == "multi_keyframe":
@@ -567,20 +578,37 @@ def build_omni_payload(
         ]
         if character_reference_base64 is not None:
             reference = decode_character_reference(character_reference_base64, character_reference_mime_type)
-            input_items.append({"type": "image", "data": base64.b64encode(reference.data).decode("ascii"),
-                                "mime_type": reference.mime_type})
+            input_items.append(
+                {
+                    "type": "image",
+                    "data": base64.b64encode(reference.data).decode("ascii"),
+                    "mime_type": reference.mime_type,
+                }
+            )
         if omni_reference_mode in {"architecture_references", "appearance_references"}:
             if not route_keyframes or len(route_keyframes) not in (1, 2):
                 raise ValueError(f"{reference_label} references require one or two scene images.")
             for value, mime_type in route_keyframes:
                 frame = decode_guide_image(value)
                 if frame.mime_type != mime_type:
-                    raise ValueError(f"The {reference_label.lower()} reference MIME type does not match its image content.")
-                input_items.append({"type": "image", "data": base64.b64encode(frame.data).decode("ascii"),
-                                    "mime_type": frame.mime_type})
-            reference_prompt = (build_appearance_reference_prompt if omni_reference_mode == "appearance_references"
-                                else build_architecture_reference_prompt)
-            prompt = reference_prompt(prompt, len(route_keyframes), has_character=character_reference_base64 is not None)
+                    raise ValueError(
+                        f"The {reference_label.lower()} reference MIME type does not match its image content."
+                    )
+                input_items.append(
+                    {
+                        "type": "image",
+                        "data": base64.b64encode(frame.data).decode("ascii"),
+                        "mime_type": frame.mime_type,
+                    }
+                )
+            reference_prompt = (
+                build_appearance_reference_prompt
+                if omni_reference_mode == "appearance_references"
+                else build_architecture_reference_prompt
+            )
+            prompt = reference_prompt(
+                prompt, len(route_keyframes), has_character=character_reference_base64 is not None
+            )
         elif character_reference_base64 is not None:
             prompt = build_character_reference_prompt(prompt)
         task = "edit"
@@ -590,8 +618,11 @@ def build_omni_payload(
         task = "image_to_video"
     input_items.append({"type": "text", "text": prompt})
     response_format = (
-        ({"type": "video", "resolution": "1080p" if render_quality == "high" else "720p", "delivery": "uri"}
-         if model == "gemini-omni-1.1-flash" else {"type": "video"})
+        (
+            {"type": "video", "resolution": "1080p" if render_quality == "high" else "720p", "delivery": "uri"}
+            if model == "gemini-omni-1.1-flash"
+            else {"type": "video"}
+        )
         if control_mode == "preview_video"
         else {
             "type": "video",
@@ -664,8 +695,13 @@ def parse_omni_video(payload: Mapping[str, Any]) -> OmniVideoResult:
 def _download_url(uri: str) -> str:
     """Turn a Gemini Files metadata URI into its media download endpoint."""
     parsed = urlsplit(uri)
-    if (parsed.scheme != "https" or parsed.hostname != "generativelanguage.googleapis.com"
-            or parsed.username or parsed.password or parsed.port not in (None, 443)):
+    if (
+        parsed.scheme != "https"
+        or parsed.hostname != "generativelanguage.googleapis.com"
+        or parsed.username
+        or parsed.password
+        or parsed.port not in (None, 443)
+    ):
         raise ValueError("Unsupported Google video download endpoint; no API key was forwarded.")
     path = parsed.path
     if path.startswith("/v1beta/files/"):
@@ -716,14 +752,18 @@ async def request_omni_video_once(
             for poll in range(20):
                 metadata = await client.get(metadata_url, headers={"x-goog-api-key": api_key})
                 if metadata.status_code >= 400:
-                    raise RuntimeError(f"Gemini video status HTTP {metadata.status_code}; generation will not be repeated.")
+                    raise RuntimeError(
+                        f"Gemini video status HTTP {metadata.status_code}; generation will not be repeated."
+                    )
                 state = metadata.json().get("state")
                 if state == "ACTIVE":
                     break
                 if state == "FAILED":
                     raise RuntimeError("Google could not process the generated video; generation will not be repeated.")
                 if poll == 19:
-                    raise RuntimeError("Google video is still processing; its interaction ID was retained. Generation will not be repeated.")
+                    raise RuntimeError(
+                        "Google video is still processing; its interaction ID was retained. Generation will not be repeated."
+                    )
                 await asyncio.sleep(3)
         # This GET retrieves the already-created media; it is not a second
         # generation submission and uses the same no-retry transport.

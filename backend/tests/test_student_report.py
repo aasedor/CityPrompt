@@ -61,39 +61,70 @@ def values(analysis):
 
 def test_report_includes_saved_assessment_with_provenance_and_excludes_changed_site():
     boundary = zone("site_boundary")
-    assessment = {"boundary_id": str(boundary.id), "roll_year": 2026,
-                  "full_property_assessed_total": 500000, "area_weighted_estimate": 350000,
-                  "partial_property_count": 1, "property_count": 2, "missing_value_count": 0,
-                  "complete": True, "assessed_coverage_pct": 90,
-                  "fetched_at": "2026-10-08T12:00:00Z", "source_url": "https://data.calgary.ca/test"}
-    project = SimpleNamespace(name="Trial", description="", site_boundary=None, metadata_={
-        "site_assessment": {"boundary_id": str(boundary.id),
-                            "coordinates": list(boundary.geometry.exterior.coords), "assessment": assessment}})
+    assessment = {
+        "boundary_id": str(boundary.id),
+        "roll_year": 2026,
+        "full_property_assessed_total": 500000,
+        "area_weighted_estimate": 350000,
+        "partial_property_count": 1,
+        "property_count": 2,
+        "missing_value_count": 0,
+        "complete": True,
+        "assessed_coverage_pct": 90,
+        "fetched_at": "2026-10-08T12:00:00Z",
+        "source_url": "https://data.calgary.ca/test",
+    }
+    project = SimpleNamespace(
+        name="Trial",
+        description="",
+        site_boundary=None,
+        metadata_={
+            "site_assessment": {
+                "boundary_id": str(boundary.id),
+                "coordinates": list(boundary.geometry.exterior.coords),
+                "assessment": assessment,
+            }
+        },
+    )
     plan = build_snapshot(project, [boundary], [], [], None)
     analysis = analyze_snapshot(plan)
     assert values(analysis)["site_assessment_cad"] == 350000
     assert values(analysis)["property_assessment_cad"] == 500000
-    evidence = next(f for f in analysis['findings'] if f['id'] == 'site-assessment')
-    assert '2026-10-08' in evidence['observation']
-    assert 'prorat' in evidence['uncertainty'].lower()
-    assert evidence['sources'][0]['url'] == assessment['source_url']
-    rendered = report_html({"analysis": analysis, "project_name": "Trial", "created_at": "2026-10-08",
-                            "plan_version": "trial", "is_stale": False, "decisions": {},
-                            "requested_by_name": "Student", "id": "report", "response_revision": 0}, plan, [])
-    assert assessment['source_url'] in rendered
-    assert '350000' in rendered
-    boundary.geometry = rectangle(x=.001)
+    evidence = next(f for f in analysis["findings"] if f["id"] == "site-assessment")
+    assert "2026-10-08" in evidence["observation"]
+    assert "prorat" in evidence["uncertainty"].lower()
+    assert evidence["sources"][0]["url"] == assessment["source_url"]
+    rendered = report_html(
+        {
+            "analysis": analysis,
+            "project_name": "Trial",
+            "created_at": "2026-10-08",
+            "plan_version": "trial",
+            "is_stale": False,
+            "decisions": {},
+            "requested_by_name": "Student",
+            "id": "report",
+            "response_revision": 0,
+        },
+        plan,
+        [],
+    )
+    assert assessment["source_url"] in rendered
+    assert "350000" in rendered
+    boundary.geometry = rectangle(x=0.001)
     changed = build_snapshot(project, [boundary], [], [], None)
-    assert changed.get('site_assessment') is None
-    assert 'site_assessment_cad' not in values(analyze_snapshot(changed))
+    assert changed.get("site_assessment") is None
+    assert "site_assessment_cad" not in values(analyze_snapshot(changed))
     assert digest(plan) != digest(changed)
 
 
 def test_exact_catalogue_dwelling_programmes_are_counted_without_plot_floor_area():
-    props = dict(pick_place_asset="clay_affordable_aspen_original",
-                 development_selected_variant_id="affordable_aspen_original",
-                 pick_place_model_revision="affordable-aspen-clay-v003",
-                 floor_count=3)
+    props = dict(
+        pick_place_asset="clay_affordable_aspen_original",
+        development_selected_variant_id="affordable_aspen_original",
+        pick_place_model_revision="affordable-aspen-clay-v003",
+        floor_count=3,
+    )
     plan = snapshot([zone("building", **props), zone("building", **props)])
     result = values(analyze_snapshot(plan))
     assert result["catalogue_dwellings"] == 24
@@ -109,12 +140,24 @@ def test_exact_catalogue_dwelling_programmes_are_counted_without_plot_floor_area
 
 def test_proposed_study_area_is_separate_clipped_and_deduplicated():
     boundary = zone("site_boundary")
-    collection = {"type": "FeatureCollection", "_citypromptStudy": {"schema": 1, "condition": "proposed"},
-                  "features": [{"type": "Feature", "id": str(i), "properties": {"label": "MU-1"},
-                                "geometry": mapping(rectangle())} for i in range(2)]}
-    layer = SimpleNamespace(id=uuid.uuid4(), name="Proposed", kind="geojson", source_url=None,
-                            source_filename="study.geojson", source_crs="EPSG:4326", feature_count=2,
-                            feature_collection=collection)
+    collection = {
+        "type": "FeatureCollection",
+        "_citypromptStudy": {"schema": 1, "condition": "proposed"},
+        "features": [
+            {"type": "Feature", "id": str(i), "properties": {"label": "MU-1"}, "geometry": mapping(rectangle())}
+            for i in range(2)
+        ],
+    }
+    layer = SimpleNamespace(
+        id=uuid.uuid4(),
+        name="Proposed",
+        kind="geojson",
+        source_url=None,
+        source_filename="study.geojson",
+        source_crs="EPSG:4326",
+        feature_count=2,
+        feature_collection=collection,
+    )
     result = values(analyze_snapshot(snapshot([boundary], references=[layer])))
     assert result["proposed_zoning_area_m2"] == result["site_area_m2"]
     assert result["development_land_m2"] == 0
@@ -125,11 +168,19 @@ def test_proposed_study_area_is_separate_clipped_and_deduplicated():
 def test_policy_map_context_is_bound_to_saved_boundary_and_is_explicitly_a_summary():
     from app.services.student_report import bind_policy_map_evidence
     from app.schemas.student_report import PolicyMapEvidence
+
     boundary = zone("site_boundary")
     plan = snapshot([boundary])
-    evidence = PolicyMapEvidence(boundary_coordinates=list(boundary.geometry.exterior.coords), sources=[{
-        "title":"Westbrook: City Civic and Recreation", "url":"https://www.calgary.ca/plan.pdf",
-        "excerpt":"2025 edition. Public recreation land."}])
+    evidence = PolicyMapEvidence(
+        boundary_coordinates=list(boundary.geometry.exterior.coords),
+        sources=[
+            {
+                "title": "Westbrook: City Civic and Recreation",
+                "url": "https://www.calgary.ca/plan.pdf",
+                "excerpt": "2025 edition. Public recreation land.",
+            }
+        ],
+    )
     bound = bind_policy_map_evidence(evidence, plan)
     assert bound[0]["excerpt"].startswith("Map-derived student summary")
     plan["map_policy_sources"] = bound
@@ -144,34 +195,60 @@ def test_policy_map_context_is_bound_to_saved_boundary_and_is_explicitly_a_summa
 def test_comparisons_bind_saved_design_and_reject_changed_geometry_or_reference():
     from app.services.student_report import bind_plan_comparisons
     from app.schemas.student_report import PolicyMapEvidence
-    boundary, building = zone('site_boundary'), zone('building')
+
+    boundary, building = zone("site_boundary"), zone("building")
     plan = snapshot([boundary, building])
-    payload = dict(boundary_coordinates=list(boundary.geometry.exterior.coords), sources=[],
-        design_inputs={'zones': [{'id': z['id'], 'coordinates': z['geometry']['coordinates'][0], 'properties': z['properties']} for z in plan['zones']], 'references': []},
-        comparisons=[{'id': 'test', 'kind': 'source_context', 'title': 'Compare zoning', 'observation': 'Check use',
-          'recommendation': 'Explain', 'basis': 'Map comparison', 'uncertainty': 'Screen only', 'sources': [],
-          'location': {'label': 'Building', 'zone_ids': [str(building.id)]},
-          'comparison': {'group': 'proposed_zoning', 'status': 'review', 'expected': 'R-CG', 'proposed': 'Housing'}}])
+    payload = dict(
+        boundary_coordinates=list(boundary.geometry.exterior.coords),
+        sources=[],
+        design_inputs={
+            "zones": [
+                {"id": z["id"], "coordinates": z["geometry"]["coordinates"][0], "properties": z["properties"]}
+                for z in plan["zones"]
+            ],
+            "references": [],
+        },
+        comparisons=[
+            {
+                "id": "test",
+                "kind": "source_context",
+                "title": "Compare zoning",
+                "observation": "Check use",
+                "recommendation": "Explain",
+                "basis": "Map comparison",
+                "uncertainty": "Screen only",
+                "sources": [],
+                "location": {"label": "Building", "zone_ids": [str(building.id)]},
+                "comparison": {
+                    "group": "proposed_zoning",
+                    "status": "review",
+                    "expected": "R-CG",
+                    "proposed": "Housing",
+                },
+            }
+        ],
+    )
     evidence = PolicyMapEvidence.model_validate(payload)
     result = bind_plan_comparisons(evidence, plan)
-    assert result[0]['comparison']['expected'] == 'R-CG'
-    plan['comparison_findings'] = result
+    assert result[0]["comparison"]["expected"] == "R-CG"
+    plan["comparison_findings"] = result
     analysis = analyze_snapshot(plan)
-    assert any(f.get('comparison') for f in analysis['findings'])
-    plan['zones'][1]['geometry'] = mapping(rectangle(x=.002))
+    assert any(f.get("comparison") for f in analysis["findings"])
+    plan["zones"][1]["geometry"] = mapping(rectangle(x=0.002))
     assert not bind_plan_comparisons(evidence, plan)
     plan = snapshot([boundary, building])
-    plan['references'] = [{'id':'new-layer', 'data_version':'changed'}]
+    plan["references"] = [{"id": "new-layer", "data_version": "changed"}]
     assert not bind_plan_comparisons(evidence, plan)
     from app.schemas.student_report import ComparisonReferenceInput
-    evidence.design_inputs.references = [ComparisonReferenceInput(id='new-layer', content_hash='correct')]
-    plan['references'][0]['content_hash'] = 'correct'
+
+    evidence.design_inputs.references = [ComparisonReferenceInput(id="new-layer", content_hash="correct")]
+    plan["references"][0]["content_hash"] = "correct"
     assert bind_plan_comparisons(evidence, plan)
-    plan['references'][0]['content_hash'] = 'edited'
+    plan["references"][0]["content_hash"] = "edited"
     assert not bind_plan_comparisons(evidence, plan)
     evidence.design_inputs.references = []
-    plan['references'] = []
-    evidence.comparisons[0].location.zone_ids = ['another-project']
+    plan["references"] = []
+    evidence.comparisons[0].location.zone_ids = ["another-project"]
     assert not bind_plan_comparisons(evidence, plan)
 
 
@@ -262,12 +339,19 @@ def test_native_single_detached_landmark_is_one_dwelling_without_guessing_floor_
     assert values(analyze_snapshot(snapshot([parcel], [building])))["compiled_detached_dwellings"] is None
 
 
-@pytest.mark.parametrize("automatic_properties", [
-    {"development_archetype_id": "calgary_modern_infill_house", "development_selected_variant_id": "infill_duplex",
-     "pick_place_asset": "clay_side_by_side_duplex", "pick_place_model_revision": "calgary-side-by-side-duplex-clay-v004"},
-    {"development_archetype_id": "calgary_modern_infill_house", "development_selected_variant_id": "infill_duplex"},
-    {"pick_place_automatic_3d": True},
-])
+@pytest.mark.parametrize(
+    "automatic_properties",
+    [
+        {
+            "development_archetype_id": "calgary_modern_infill_house",
+            "development_selected_variant_id": "infill_duplex",
+            "pick_place_asset": "clay_side_by_side_duplex",
+            "pick_place_model_revision": "calgary-side-by-side-duplex-clay-v004",
+        },
+        {"development_archetype_id": "calgary_modern_infill_house", "development_selected_variant_id": "infill_duplex"},
+        {"pick_place_automatic_3d": True},
+    ],
+)
 def test_one_assembled_catalogue_mesh_does_not_certify_one_dwelling(automatic_properties):
     from app.services.residual_landscape import community_3d_source_hash
 
@@ -278,7 +362,8 @@ def test_one_assembled_catalogue_mesh_does_not_certify_one_dwelling(automatic_pr
         "instances": [{"segment_id": "landmark", "role": "assembled"}],
     }
     parcel.properties["community_3d"]["source_hash"] = community_3d_source_hash(
-        parcel.zone_type, parcel.geometry, parcel.properties)
+        parcel.zone_type, parcel.geometry, parcel.properties
+    )
     report = analyze_snapshot(snapshot([parcel], [building]))
     metrics = values(report)
     assert metrics["compiled_detached_dwellings"] is None
@@ -318,10 +403,13 @@ def test_detached_recipe_inconsistent_count_is_not_reported_as_compiled_housing(
     assert metrics["detached_plots_pending"] == 1
 
 
-@pytest.mark.parametrize("automatic_properties", [
-    {"pick_place_automatic_3d": True},
-    {"pick_place_asset": "validation_infill_flat_roof_minimal", "validation_fixed_fixture": True},
-])
+@pytest.mark.parametrize(
+    "automatic_properties",
+    [
+        {"pick_place_automatic_3d": True},
+        {"pick_place_asset": "validation_infill_flat_roof_minimal", "validation_fixed_fixture": True},
+    ],
+)
 def test_automatic_models_keep_unknown_quantities_without_requesting_a_hidden_rebuild(automatic_properties):
     parcel, building = detached_fixture(compiled=False)
     parcel.properties.update(automatic_properties)
@@ -399,32 +487,42 @@ def test_linked_footprint_not_counted_twice_and_unknown_floors_are_not_guessed()
 
 
 def test_authored_model_plot_is_not_floor_area_and_plot_growth_does_not_change_gfa():
-    parcel = zone('building', rectangle(width=0.0003), floors=2,
-                  pick_place_asset='validation_minimalist_infill_brick_monolith',
-                  development_selected_variant_id='minimalist_infill_brick_monolith',
-                  pick_place_model_revision='97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7')
-    building = SimpleNamespace(id=uuid.uuid4(), name='Buff brick', footprint=parcel.geometry,
-                              floor_count=2, height_meters=6.4, specifications={})
+    parcel = zone(
+        "building",
+        rectangle(width=0.0003),
+        floors=2,
+        pick_place_asset="validation_minimalist_infill_brick_monolith",
+        development_selected_variant_id="minimalist_infill_brick_monolith",
+        pick_place_model_revision="97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+    )
+    building = SimpleNamespace(
+        id=uuid.uuid4(),
+        name="Buff brick",
+        footprint=parcel.geometry,
+        floor_count=2,
+        height_meters=6.4,
+        specifications={},
+    )
     parcel.building_id = building.id
     first = values(analyze_snapshot(snapshot([parcel], [building])))
-    assert first['building_placement_plot_m2'] > 0
-    assert first['building_footprint_m2'] is None and first['gfa_m2'] is None
+    assert first["building_placement_plot_m2"] > 0
+    assert first["building_footprint_m2"] is None and first["gfa_m2"] is None
     parcel.geometry = rectangle(width=0.0006)
     building.footprint = parcel.geometry
     second = values(analyze_snapshot(snapshot([parcel], [building])))
-    assert second['building_placement_plot_m2'] > first['building_placement_plot_m2']
-    assert second['building_footprint_m2'] is None and second['gfa_m2'] is None
+    assert second["building_placement_plot_m2"] > first["building_placement_plot_m2"]
+    assert second["building_footprint_m2"] is None and second["gfa_m2"] is None
 
 
 def test_mixed_footprint_and_native_plot_total_remains_explicitly_incomplete():
-    drawn = zone('building', rectangle(x=0.002), floors=3)
-    native = zone('building', native_plot_axes=True, pick_place_asset='trial_neighborhood20_campus', floors=3)
+    drawn = zone("building", rectangle(x=0.002), floors=3)
+    native = zone("building", native_plot_axes=True, pick_place_asset="trial_neighborhood20_campus", floors=3)
     report = analyze_snapshot(snapshot([drawn, native]))
     metrics = values(report)
-    assert metrics['gfa_m2'] == pytest.approx(metrics['building_footprint_m2'] * 3, abs=0.02)
-    gfa = next(metric for metric in report['metrics'] if metric['key'] == 'gfa_m2')
-    assert 'incomplete' in gfa['label']
-    assert report['method_version'] == 'student-review-v2-placement-plots'
+    assert metrics["gfa_m2"] == pytest.approx(metrics["building_footprint_m2"] * 3, abs=0.02)
+    gfa = next(metric for metric in report["metrics"] if metric["key"] == "gfa_m2")
+    assert "incomplete" in gfa["label"]
+    assert report["method_version"] == "student-review-v2-placement-plots"
 
 
 def test_park_union_preserves_holes_and_excludes_reference_layers():
@@ -535,8 +633,12 @@ def test_export_preserves_authors_reasoning_snapshot_and_staleness_without_execu
     plan = snapshot([zone("residential", floors=3, unit_count=12)])
     plan["project_name"] = "<script>alert(1)</script>"
     analysis = analyze_snapshot(plan)
-    analysis['findings'][0]['comparison'] = {'group':'proposed_zoning', 'status':'review',
-        'expected':'M-C2 <script>district()</script>', 'proposed':'Apartment model'}
+    analysis["findings"][0]["comparison"] = {
+        "group": "proposed_zoning",
+        "status": "review",
+        "expected": "M-C2 <script>district()</script>",
+        "proposed": "Apartment model",
+    }
     decision = {
         "choice": "decline",
         "rationale": "Our reason <script>attack()</script>",
@@ -563,8 +665,8 @@ def test_export_preserves_authors_reasoning_snapshot_and_staleness_without_execu
     assert "<script>attack()</script>" not in output
     assert 'id="plan-snapshot"' in output and 'aria-label="Saved proposal plan"' in output
     assert "Our reason &lt;script&gt;" in output
-    assert 'Student-proposed zoning' in output and 'Apartment model' in output
-    assert '<script>district()</script>' not in output
+    assert "Student-proposed zoning" in output and "Apartment model" in output
+    assert "<script>district()</script>" not in output
 
 
 def test_student_cannot_submit_blank_or_automatically_invented_reasoning():
@@ -591,18 +693,29 @@ def make_row():
     )
 
 
-@pytest.mark.parametrize("status,connections,kind", [
-    ("connected", [{"id": "approach"}], "source_context"),
-    ("blocked", [], "unresolved_question"),
-    ("unresolved", [], "unresolved_question"),
-    ("connected", [], "unresolved_question"),
-])
+@pytest.mark.parametrize(
+    "status,connections,kind",
+    [
+        ("connected", [{"id": "approach"}], "source_context"),
+        ("blocked", [], "unresolved_question"),
+        ("unresolved", [], "unresolved_question"),
+        ("connected", [], "unresolved_question"),
+    ],
+)
 def test_report_distinguishes_derived_access_from_polygon_distance(status, connections, kind):
     park = zone("green_space", rectangle(x=0.003))
     plan = snapshot([zone("site_boundary", rectangle(width=0.01, height=0.01)), park, zone("road")])
     assert any("nearest drawn" in f["observation"] for f in analyze_snapshot(plan)["findings"])
-    plan["park_access_snapshot"] = {"parks": [{"parkZoneId": str(park.id), "status": status,
-        "connections": connections, "reason": "Leave a clear entrance corridor."}]}
+    plan["park_access_snapshot"] = {
+        "parks": [
+            {
+                "parkZoneId": str(park.id),
+                "status": status,
+                "connections": connections,
+                "reason": "Leave a clear entrance corridor.",
+            }
+        ]
+    }
     result = next(f for f in analyze_snapshot(plan)["findings"] if f["id"] == "park-access-" + str(park.id))
     assert result["kind"] == kind
     assert "Client-derived" in result["basis"]
@@ -622,12 +735,14 @@ def test_route_evidence_is_retained_without_making_report_immediately_stale():
 
 def test_export_draws_only_current_connected_approaches_in_report_scope():
     park = zone("green_space")
-    plan = snapshot([park, zone("road", rectangle(x=.002))])
+    plan = snapshot([park, zone("road", rectangle(x=0.002))])
     approach = {"path": [[-114.069, 51.0405], [-114.068, 51.0405]], "widthM": 2.2}
-    plan["park_access_snapshot"] = {"parks": [
-        {"parkZoneId": str(park.id), "status": "connected", "connections": [approach]},
-        {"parkZoneId": "outside-report", "status": "connected", "connections": [approach]},
-    ]}
+    plan["park_access_snapshot"] = {
+        "parks": [
+            {"parkZoneId": str(park.id), "status": "connected", "connections": [approach]},
+            {"parkZoneId": "outside-report", "status": "connected", "connections": [approach]},
+        ]
+    }
     assert snapshot_drawing(plan).count("<polyline") == 1
     plan["park_access_snapshot"]["parks"][0]["status"] = "blocked"
     assert "<polyline" not in snapshot_drawing(plan)
@@ -637,6 +752,7 @@ def test_export_draws_only_current_connected_approaches_in_report_scope():
 async def test_report_snapshot_rejects_stale_park_route_inventory():
     from tests.test_park_access_provenance import inputs
     from app.schemas.park_access import ParkAccessSnapshot
+
     _, zones, _, raw = inputs()
     for item in zones:
         item.name = item.zone_type

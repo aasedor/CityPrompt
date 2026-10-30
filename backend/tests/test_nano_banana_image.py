@@ -94,9 +94,7 @@ async def test_google_interactions_keeps_roles_camera_frame_and_original_without
     }
     assert body["store"] is False
     assert "tools" not in body and "temperature" not in body
-    assert body["input"][-1]["text"].endswith(
-        "Preserve the placed buildings and landmarks."
-    )
+    assert body["input"][-1]["text"].endswith("Preserve the placed buildings and landmarks.")
     image_part = next(part for part in body["input"] if part["type"] == "image")
     padded = Image.open(io.BytesIO(base64.b64decode(image_part["data"])))
     assert padded.size == (162, 108)
@@ -106,20 +104,14 @@ async def test_google_interactions_keeps_roles_camera_frame_and_original_without
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "status,billing", [(401, "unproduced"), (429, "unproduced"), (500, "unknown")]
-)
-async def test_provider_failure_never_retries_or_falls_back(
-    monkeypatch, status, billing
-):
+@pytest.mark.parametrize("status,billing", [(401, "unproduced"), (429, "unproduced"), (500, "unknown")])
+async def test_provider_failure_never_retries_or_falls_back(monkeypatch, status, billing):
     nano, calls = provider(
         monkeypatch,
         httpx.Response(status, json={"error": {"message": "Provider unavailable"}}),
     )
     with pytest.raises(nano.NanoBananaProviderError) as err:
-        await nano.generate_nano_banana_image(
-            "google-key", [{"text": "Render"}], target_size=(512, 512)
-        )
+        await nano.generate_nano_banana_image("google-key", [{"text": "Render"}], target_size=(512, 512))
     assert err.value.billing_status == billing
     assert len(calls) == 1
 
@@ -139,9 +131,12 @@ async def test_unreadable_inputs_are_rejected_before_a_paid_request(monkeypatch)
 
 @pytest.mark.asyncio
 async def test_bad_request_explains_google_rejection_without_exposing_key(monkeypatch):
-    nano, calls = provider(monkeypatch, httpx.Response(400, json={"error":{"message":"Unsupported request field; credential AQ.private-test-key"}}))
+    nano, calls = provider(
+        monkeypatch,
+        httpx.Response(400, json={"error": {"message": "Unsupported request field; credential AQ.private-test-key"}}),
+    )
     with pytest.raises(nano.NanoBananaProviderError) as caught:
-        await nano.generate_nano_banana_image("AQ.private-test-key", [{"text":"Render"}], target_size=(512,512))
+        await nano.generate_nano_banana_image("AQ.private-test-key", [{"text": "Render"}], target_size=(512, 512))
     assert "Unsupported request field" in str(caught.value)
     assert "AQ.private-test-key" not in str(caught.value)
     assert caught.value.billing_status == "unproduced"
@@ -150,13 +145,24 @@ async def test_bad_request_explains_google_rejection_without_exposing_key(monkey
 
 @pytest.mark.asyncio
 async def test_native_jpeg_preserves_decoded_original_as_lossless_png(monkeypatch):
-    image = Image.new("RGB", (256,256), (89,123,67))
+    image = Image.new("RGB", (256, 256), (89, 123, 67))
     raw = io.BytesIO()
     image.save(raw, format="JPEG", quality=95)
     encoded = base64.b64encode(raw.getvalue()).decode()
     expected = png(Image.open(io.BytesIO(raw.getvalue())).convert("RGB"))
-    nano, calls = provider(monkeypatch, httpx.Response(200,json={"status":"completed","steps":[{"type":"model_output","content":[{"type":"image","mime_type":"image/jpeg","data":encoded}]}]}))
-    result = await nano.generate_nano_banana_image("google-key",[{"text":"Render"}],target_size=(256,256))
+    nano, calls = provider(
+        monkeypatch,
+        httpx.Response(
+            200,
+            json={
+                "status": "completed",
+                "steps": [
+                    {"type": "model_output", "content": [{"type": "image", "mime_type": "image/jpeg", "data": encoded}]}
+                ],
+            },
+        ),
+    )
+    result = await nano.generate_nano_banana_image("google-key", [{"text": "Render"}], target_size=(256, 256))
     assert calls[0][1]["json"]["response_format"]["mime_type"] == "image/jpeg"
     assert result.provider_image_base64 == expected
     assert png(result.image) == expected
@@ -180,9 +186,7 @@ async def test_text_only_or_incomplete_response_cannot_be_called_a_success(monke
         ),
     )
     with pytest.raises(nano.NanoBananaProviderError) as err:
-        await nano.generate_nano_banana_image(
-            "google-key", [{"text": "Render"}], target_size=(512, 512)
-        )
+        await nano.generate_nano_banana_image("google-key", [{"text": "Render"}], target_size=(512, 512))
     assert err.value.billing_status == "unknown"
     assert len(calls) == 1
 
@@ -224,9 +228,7 @@ async def test_classic_and_saved_edit_path_routes_google_and_keeps_mask_roles(
     )
     result = await render._generate_render_image(
         req,
-        SimpleNamespace(
-            gemini_api_key="google-key", openai_api_key="", vertex_ai_project=""
-        ),
+        SimpleNamespace(gemini_api_key="google-key", openai_api_key="", vertex_ai_project=""),
         req.model,
     )
     assert result.image_base64
@@ -242,9 +244,9 @@ async def test_google_queue_admission_does_not_require_openai(monkeypatch):
     from app.services import render_attempts as attempts
     from tests.test_direct_3d_render import _request
 
-    request = _request(
-        model="gemini-nano-banana-2.1", presentation_mode="scene"
-    ).model_copy(update={"project_id": uuid.UUID(int=1)})
+    request = _request(model="gemini-nano-banana-2.1", presentation_mode="scene").model_copy(
+        update={"project_id": uuid.UUID(int=1)}
+    )
     db = AsyncMock()
     db.add = MagicMock()
     db.scalar.return_value = None
@@ -269,8 +271,10 @@ async def test_google_queue_admission_does_not_require_openai(monkeypatch):
     ):
         monkeypatch.setattr(attempts, name, AsyncMock())
     attempt = await attempts.submit_attempt(
-        db, SimpleNamespace(id=uuid.UUID(int=2), role="editor", render_credits=1000,
-                            credits_reset_at=None), request, "test-google-only"
+        db,
+        SimpleNamespace(id=uuid.UUID(int=2), role="editor", render_credits=1000, credits_reset_at=None),
+        request,
+        "test-google-only",
     )
     assert attempt.model == "gemini-nano-banana-2.1"
     attempts.write_evidence.assert_awaited_once()

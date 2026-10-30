@@ -285,9 +285,7 @@ def descriptor_from_library_entry(entry: Any) -> ModuleDescriptor | None:
         native_floors=_as_int_or_none(lego.get("native_floors")),
         occupied_storeys=max(
             0,
-            (_as_int_or_none(lego.get("occupied_storeys")) or 0)
-            if lego.get("occupied_storeys") is not None
-            else 1,
+            (_as_int_or_none(lego.get("occupied_storeys")) or 0) if lego.get("occupied_storeys") is not None else 1,
         ),
         source_variant_id=(str(lego.get("source_variant_id")) if lego.get("source_variant_id") else None),
         generation_archetype_id=(
@@ -785,14 +783,20 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     if module.delivery_format == RLASM_ARCHITECTURAL_CLAY_FORMAT and not authored_storey_program:
         return True
     fixed_authored_assembly = (
-        module.role == "assembled" and not module.repeatable_z
+        module.role == "assembled"
+        and not module.repeatable_z
         and module.delivery_format == RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT
         and placement_mode == "authored_storey_program"
         and placement.get("continuous_resize_allowed") is False
         and not authored_storey_program
     )
     fixed_non_resizable = placement_mode == "fixed_landmark" and placement.get("continuous_resize_allowed") is False
-    return bool(fixed_authored_assembly or fixed_non_resizable or footprint_mode == "select_and_place" or footprint.get("polygonFit") is False)
+    return bool(
+        fixed_authored_assembly
+        or fixed_non_resizable
+        or footprint_mode == "select_and_place"
+        or footprint.get("polygonFit") is False
+    )
 
 
 # Streetwall repeat: bars validate against the same relaxed band multi-wing
@@ -1160,11 +1164,16 @@ def _matches_model_revision(module: ModuleDescriptor, revision: str) -> bool:
 def _authored_assembly_program_key(module: ModuleDescriptor) -> tuple[str, str, str] | None:
     contract = module.placement_contract or {}
     program = contract.get("storey_program_id")
-    if (module.role != "assembled" or module.repeatable_z
+    if (
+        module.role != "assembled"
+        or module.repeatable_z
         or module.delivery_format not in {RLASM_ARCHITECTURAL_CLAY_FORMAT, RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT}
         or contract.get("mode") != "authored_storey_program"
-        or not isinstance(program, str) or not program.strip()
-        or not module.source_variant_id or module.source_variant_id != module.generation_archetype_id):
+        or not isinstance(program, str)
+        or not program.strip()
+        or not module.source_variant_id
+        or module.source_variant_id != module.generation_archetype_id
+    ):
         return None
     return module.family, module.source_variant_id, program
 
@@ -1179,9 +1188,14 @@ def plan_vertical_assembly(
     # Fit the exact retained architecture, never shrink it to the smaller plot.
     retained_modules = []
     for module in modules:
-        dimensions = building_only_dimensions(module.model_revision,module.model_url,module.delivery_format,module.role)
-        retained_modules.append(replace(module,width_m=dimensions[0],depth_m=dimensions[1],height_m=dimensions[2])
-            if dimensions else module)
+        dimensions = building_only_dimensions(
+            module.model_revision, module.model_url, module.delivery_format, module.role
+        )
+        retained_modules.append(
+            replace(module, width_m=dimensions[0], depth_m=dimensions[1], height_m=dimensions[2])
+            if dimensions
+            else module
+        )
     modules = retained_modules
     if request.model_revision:
         pinned = [module for module in modules if _matches_model_revision(module, request.model_revision)]
@@ -1190,13 +1204,19 @@ def plan_vertical_assembly(
         # A complete authored house can have one immutable GLB per storey
         # choice. The saved source pins its finite programme, not an unrelated
         # family or variant. Ordinary fixed models keep strict revision locks.
-        programs = {key for module in pinned
-                    if module.source_variant_id == request.archetype_id
-                    and module.native_floors != request.target_floors
-                    and (key := _authored_assembly_program_key(module)) is not None}
-        modules = [module for module in modules if _matches_model_revision(module, request.model_revision)
-                   or (module.native_floors == request.target_floors
-                       and _authored_assembly_program_key(module) in programs)]
+        programs = {
+            key
+            for module in pinned
+            if module.source_variant_id == request.archetype_id
+            and module.native_floors != request.target_floors
+            and (key := _authored_assembly_program_key(module)) is not None
+        }
+        modules = [
+            module
+            for module in modules
+            if _matches_model_revision(module, request.model_revision)
+            or (module.native_floors == request.target_floors and _authored_assembly_program_key(module) in programs)
+        ]
     # An explicit home plot groups whole independent copies. It does not grant
     # a clay asset a repeatable floor/bay contract or allow mesh deformation.
     if request.native_home_plot:
@@ -1661,7 +1681,11 @@ def _plan_vertical_assembly_core(
         origins = []
         for module, _, _, _ in levels:
             contract = module.placement_contract or {}
-            raw = contract.get("source_frame_origin_xy_m", [0.0, 0.0]) if contract.get("mode") == "authored_storey_program" else [0.0, 0.0]
+            raw = (
+                contract.get("source_frame_origin_xy_m", [0.0, 0.0])
+                if contract.get("mode") == "authored_storey_program"
+                else [0.0, 0.0]
+            )
             try:
                 if not isinstance(raw, (list, tuple)) or len(raw) != 2:
                     raise ValueError("Expected two source-frame coordinates")
@@ -1672,7 +1696,9 @@ def _plan_vertical_assembly_core(
                 raise AssemblyPlanningError("Invalid authored stack source frame", code="family_incompatible") from exc
             origins.append(origin)
         if len(set(origins)) != 1:
-            raise AssemblyPlanningError("Authored stack modules do not share one source frame", code="family_incompatible")
+            raise AssemblyPlanningError(
+                "Authored stack modules do not share one source frame", code="family_incompatible"
+            )
         origin_x, origin_y = origins[0]
 
         instances: list[dict[str, Any]] = []
@@ -1765,9 +1791,9 @@ def _plan_vertical_assembly_core(
                 "footprint_mode": "archetype_contain",
                 "delivery_format": (
                     RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT
-                    if levels and all(
-                        module.delivery_format == RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT
-                        for module, _, _, _ in levels
+                    if levels
+                    and all(
+                        module.delivery_format == RLASM_ARCHITECTURAL_CLAY_MODULE_FORMAT for module, _, _, _ in levels
                     )
                     else None
                 ),

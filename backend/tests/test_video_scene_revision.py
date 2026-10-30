@@ -32,14 +32,23 @@ class _ScalarRows:
 @pytest.mark.asyncio
 async def test_video_scene_revision_binds_uncompiled_surface_material():
     from tests.test_direct_3d_render import _compiled_zone, _zone, _claims_for, _surface_claims_for
+
     park = _compiled_zone("green_space")
     surface = _zone(uuid.uuid4(), "development_area", properties={"ground_surface_material": "black_pavers"})
-    request = VideoPilotRequest(**{**_request().model_dump(), "community_3d_claims": _claims_for([park]),
-        "residual_landscape_claim": None, "authored_surface_claims": _surface_claims_for([surface])})
+    request = VideoPilotRequest(
+        **{
+            **_request().model_dump(),
+            "community_3d_claims": _claims_for([park]),
+            "residual_landscape_claim": None,
+            "authored_surface_claims": _surface_claims_for([surface]),
+        }
+    )
+
     async def validate():
         db = AsyncMock()
         db.execute.side_effect = [_ScalarRows([park, surface]), _ScalarRows([]), _ScalarRows(None)]
         return await _validate_video_scene_revision(request, db)
+
     assert len(await validate()) == 64
     surface.properties["ground_surface_material"] = "red_brick"
     with pytest.raises(HTTPException) as stale:
@@ -139,39 +148,50 @@ async def test_video_scene_revision_translates_direct_conflicts_before_billing(m
 async def test_no_details_capture_rejected_after_people_are_added_with_unchanged_zone_claims():
     from tests.test_direct_3d_render import _compiled_zone, _claims_for
 
-    zone = _compiled_zone('green_space')
-    request = VideoPilotRequest.model_validate({**_request().model_dump(),
-        'community_3d_claims': _claims_for([zone]), 'residual_landscape_claim': None})
-    current = SimpleNamespace(metadata_={'scene_details': {'version': 1, 'revision': 1,
-        'benches': [], 'props': [{'id': 'new-person', 'variant': 'people-pilot-commuter',
-                                 'people_action': 'reading'}]}})
+    zone = _compiled_zone("green_space")
+    request = VideoPilotRequest.model_validate(
+        {**_request().model_dump(), "community_3d_claims": _claims_for([zone]), "residual_landscape_claim": None}
+    )
+    current = SimpleNamespace(
+        metadata_={
+            "scene_details": {
+                "version": 1,
+                "revision": 1,
+                "benches": [],
+                "props": [{"id": "new-person", "variant": "people-pilot-commuter", "people_action": "reading"}],
+            }
+        }
+    )
     db = AsyncMock()
     db.execute.side_effect = [_ScalarRows([zone]), _ScalarRows([]), _ScalarRows(current)]
     with pytest.raises(HTTPException) as error:
         await _validate_video_scene_revision(request, db)
     assert error.value.status_code == 409
-    assert error.value.detail['billed'] is False
-    assert error.value.detail['code'] == 'video_project_state_changed'
+    assert error.value.detail["billed"] is False
+    assert error.value.detail["code"] == "video_project_state_changed"
 
 
 @pytest.mark.asyncio
 async def test_current_details_are_read_even_when_capture_has_no_details_revision():
-    current = SimpleNamespace(metadata_={'scene_details': {'revision': 1, 'props': [{'id': 'person'}]}})
+    current = SimpleNamespace(metadata_={"scene_details": {"revision": 1, "props": [{"id": "person"}]}})
     db = AsyncMock()
     db.execute.return_value = _ScalarRows(current)
-    assert await direct_3d_render._current_render_details(_request(), db) == current.metadata_['scene_details']
+    assert await direct_3d_render._current_render_details(_request(), db) == current.metadata_["scene_details"]
     db.execute.assert_awaited_once()
 
 
 def test_direct_image_without_details_revision_rejects_new_saved_people_but_allows_empty_legacy_details():
     from tests.test_direct_3d_render import _compiled_zone, _claims_for, _project_request
 
-    zone = _compiled_zone('green_space')
+    zone = _compiled_zone("green_space")
     req = _project_request(uuid.uuid4(), community_claims=_claims_for([zone]))
-    details = {'revision': 1, 'props': [{'id': 'new-person', 'variant': 'people-pilot-commuter',
-                                     'people_action': 'reading'}]}
+    details = {
+        "revision": 1,
+        "props": [{"id": "new-person", "variant": "people-pilot-commuter", "people_action": "reading"}],
+    }
     with pytest.raises(HTTPException) as error:
         direct_3d_render._validate_direct_3d_project_zones(req, [zone], {}, project_details=details)
-    assert error.value.status_code == 409 and error.value.detail['billed'] is False
-    direct_3d_render._validate_direct_3d_project_zones(req, [zone], {},
-        project_details={'revision': 2, 'props': [], 'benches': [], 'trees': [], 'surfaces': []})
+    assert error.value.status_code == 409 and error.value.detail["billed"] is False
+    direct_3d_render._validate_direct_3d_project_zones(
+        req, [zone], {}, project_details={"revision": 2, "props": [], "benches": [], "trees": [], "surfaces": []}
+    )

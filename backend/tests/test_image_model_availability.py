@@ -90,17 +90,8 @@ async def test_google_model_is_discovered_without_an_openai_key(monkeypatch):
 
     monkeypatch.setattr(availability.httpx, "AsyncClient", Client)
     result = await availability.get_image_model_availability("", "google-key")
-    assert (
-        next(
-            item for item in result["models"] if item["id"] == "gemini-nano-banana-2.1"
-        )["available"]
-        is True
-    )
-    assert all(
-        not item["available"]
-        for item in result["models"]
-        if item["id"].startswith("gpt-image")
-    )
+    assert next(item for item in result["models"] if item["id"] == "gemini-nano-banana-2.1")["available"] is True
+    assert all(not item["available"] for item in result["models"] if item["id"].startswith("gpt-image"))
     assert len(calls) == 1
     assert calls[0][1]["headers"]["x-goog-api-key"] == "google-key"
 
@@ -130,19 +121,10 @@ async def test_google_revoked_key_disables_option(monkeypatch):
         async def get(self, url, **kwargs):
             return httpx.Response(
                 403,
-                json={
-                    "error": {
-                        "message": "Your API key was reported as leaked. Please use another API key."
-                    }
-                },
+                json={"error": {"message": "Your API key was reported as leaked. Please use another API key."}},
                 request=httpx.Request("GET", url),
             )
 
     monkeypatch.setattr(availability.httpx, "AsyncClient", Client)
     result = await availability.get_image_model_availability("", "revoked-key")
-    assert (
-        next(
-            item for item in result["models"] if item["id"] == "gemini-nano-banana-2.1"
-        )["available"]
-        is False
-    )
+    assert next(item for item in result["models"] if item["id"] == "gemini-nano-banana-2.1")["available"] is False

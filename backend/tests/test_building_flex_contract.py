@@ -17,7 +17,9 @@ def properties(variant="bungalow_postwar_ranch", scale=1.0):
 
 def test_resolves_native_dimensions_from_the_trusted_manifest():
     assert trusted_house_footprint_target(properties()) == pytest.approx((10.8983240127563, 16.0500001907349))
-    assert trusted_house_footprint_target(properties(scale=1.15)) == pytest.approx((12.533072614669745, 18.457500219345134))
+    assert trusted_house_footprint_target(properties(scale=1.15)) == pytest.approx(
+        (12.533072614669745, 18.457500219345134)
+    )
 
 
 def test_unrelated_properties_keep_the_ordinary_polygon_target():

@@ -633,8 +633,11 @@ def _build_openai_files(
         files.append(
             (
                 "image[]",
-                (f"semantic-zone-map.{_extension_for_mime(_guess_image_mime(req.semantic_guide_base64))}",
-                 _decode_base64_payload(req.semantic_guide_base64), _guess_image_mime(req.semantic_guide_base64)),
+                (
+                    f"semantic-zone-map.{_extension_for_mime(_guess_image_mime(req.semantic_guide_base64))}",
+                    _decode_base64_payload(req.semantic_guide_base64),
+                    _guess_image_mime(req.semantic_guide_base64),
+                ),
             )
         )
 
@@ -721,7 +724,10 @@ def _validated_render_image(value: str | None, label: str, *, required: bool = F
         return base64.b64encode(raw).decode()
     except Exception:
         if required:
-            raise HTTPException(400, detail="The view capture could not be read. Close the render panel, capture the view again, and try again.") from None
+            raise HTTPException(
+                400,
+                detail="The view capture could not be read. Close the render panel, capture the view again, and try again.",
+            ) from None
         logger.warning("Skipping unreadable optional render image: %s", label)
         return None
 
@@ -766,7 +772,9 @@ async def _call_openai_image_edit(
         if req.semantic_guide_base64
         else ""
     )
-    prompt_text = _openai_source_framing(req.guide_image_kind, source_view_mode=source_view_mode) + semantic_framing + prompt_text
+    prompt_text = (
+        _openai_source_framing(req.guide_image_kind, source_view_mode=source_view_mode) + semantic_framing + prompt_text
+    )
     if site_pack:
         n_ctx = len(site_pack.get("images", []))
         if n_ctx:
@@ -958,16 +966,20 @@ async def image_models(user: User = Depends(require_auth)):
 
     settings = get_settings()
     # Show the configured pause before a student prepares a costly capture.
-    availability = await get_image_model_availability(settings.openai_api_key if settings.direct_3d_images_enabled else "",
-        settings.gemini_api_key if settings.direct_3d_images_enabled else "")
+    availability = await get_image_model_availability(
+        settings.openai_api_key if settings.direct_3d_images_enabled else "",
+        settings.gemini_api_key if settings.direct_3d_images_enabled else "",
+    )
     # Account data must never enter discovery's shared provider cache. These
     # are affordability floors; exact capture pricing is checked at admission.
     return {
         **availability,
         "credit_balance": effective_render_credit_balance(user),
         "credit_exempt": is_admin_or_above(user),
-        "models": [{**model, "minimum_credit_cost": minimum_direct_3d_token_cost(model["id"])}
-                   for model in availability["models"]],
+        "models": [
+            {**model, "minimum_credit_cost": minimum_direct_3d_token_cost(model["id"])}
+            for model in availability["models"]
+        ],
     }
 
 
@@ -982,12 +994,18 @@ async def generate_render(
     # Internal callers (including custom landscape artwork) do not traverse
     # the API router's classroom dependency. Enforce the paid boundary here too.
     if getattr(settings, "classroom_release", False):
-        raise HTTPException(403, detail={
-            "code": "outside_classroom_release", "billed": False,
-            "message": "Custom AI ground artwork is outside the classroom starter release. Choose a free 3D landscape preset or use the current-view image tool. No credits were charged.",
-        })
+        raise HTTPException(
+            403,
+            detail={
+                "code": "outside_classroom_release",
+                "billed": False,
+                "message": "Custom AI ground artwork is outside the classroom starter release. Choose a free 3D landscape preset or use the current-view image tool. No credits were charged.",
+            },
+        )
     if not getattr(settings, "direct_3d_images_enabled", True):
-        raise HTTPException(503, "Image generation is paused. Free 3D landscape presets and exact image downloads remain available.")
+        raise HTTPException(
+            503, "Image generation is paused. Free 3D landscape presets and exact image downloads remain available."
+        )
     if req.project_id:
         await check_project_permission(req.project_id, user, db, required="editor")
     render_model = req.model if req.model in _ALLOWED_MODELS else _GEMINI_RENDER_MODEL
@@ -1000,16 +1018,28 @@ async def generate_render(
     except Exception as exc:
         # A submitted Google request with an unknown/produced outcome must not
         # be refunded or retried merely because delivery failed.
-        google_billing = exc.detail.get("billing_status") if isinstance(exc, HTTPException) and isinstance(exc.detail, dict) else None
+        google_billing = (
+            exc.detail.get("billing_status")
+            if isinstance(exc, HTTPException) and isinstance(exc.detail, dict)
+            else None
+        )
         if render_model != NANO_BANANA_MODEL or google_billing not in {"unknown", "produced"}:
             await _refund_render(db, user, reservation)
         if render_model == NANO_BANANA_MODEL and isinstance(exc, HTTPException) and isinstance(exc.detail, dict):
             original = exc.detail.get("provider_image_base64")
             if original:
                 try:
-                    await _save_render_audit(db, user, render_model, token_cost, req.image_base64, original,
+                    await _save_render_audit(
+                        db,
+                        user,
+                        render_model,
+                        token_cost,
+                        req.image_base64,
+                        original,
                         prompt_preview=f"[Google produced; output needs review] {req.prompt[:440]}",
-                        project_id=req.project_id, reservation=reservation)
+                        project_id=req.project_id,
+                        reservation=reservation,
+                    )
                 except Exception:
                     await db.rollback()
                     logger.exception("Google image exists but original audit storage failed: %s", reservation.id)
@@ -1041,7 +1071,9 @@ async def generate_render(
         await db.rollback()
         logger.exception("Render image produced but audit image storage failed: %s", reservation.id)
     await _preserve_google_original(db, req, provider_original)
-    return RenderResponse(image_base64=image_b64, seed=req.seed, model=render_model, provider_image_base64=provider_original)
+    return RenderResponse(
+        image_base64=image_b64, seed=req.seed, model=render_model, provider_image_base64=provider_original
+    )
 
 
 async def _preserve_google_original(db, req: RenderRequest, original: str | None):
@@ -1237,11 +1269,7 @@ async def _generate_render_image(req: RenderRequest, settings, render_model: str
         if req.image_base64:
             with Image.open(io.BytesIO(base64.b64decode(req.image_base64))) as source:
                 target_size = source.size
-        frame_images = {
-            value
-            for value in (req.image_base64, req.semantic_guide_base64, req.mask_base64)
-            if value
-        }
+        frame_images = {value for value in (req.image_base64, req.semantic_guide_base64, req.mask_base64) if value}
         try:
             result = await generate_nano_banana_image(
                 settings.gemini_api_key,
@@ -1516,7 +1544,9 @@ async def persist_render_to_gallery(
     path (which persists every paid result, including the untouched provider
     image when a safety fallback replaced it).
     """
-    project_result = await db.execute(select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True))
+    project_result = await db.execute(
+        select(Project).where(Project.id == project_id).with_for_update().execution_options(populate_existing=True)
+    )
     project = project_result.scalar_one_or_none()
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")

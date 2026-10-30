@@ -36,12 +36,15 @@ def _jpeg_data_url(width: int = 1280, height: int = 720) -> str:
     return "data:image/jpeg;base64," + base64.b64encode(buffer.getvalue()).decode()
 
 
-@pytest.mark.parametrize("uri", [
-    "https://untrusted.invalid/generativelanguage.googleapis.com/v1beta/files/one",
-    "https://generativelanguage.googleapis.com.untrusted.invalid/v1beta/files/one",
-    "https://user:password@generativelanguage.googleapis.com/v1beta/files/one",
-    "http://generativelanguage.googleapis.com/v1beta/files/one",
-])
+@pytest.mark.parametrize(
+    "uri",
+    [
+        "https://untrusted.invalid/generativelanguage.googleapis.com/v1beta/files/one",
+        "https://generativelanguage.googleapis.com.untrusted.invalid/v1beta/files/one",
+        "https://user:password@generativelanguage.googleapis.com/v1beta/files/one",
+        "http://generativelanguage.googleapis.com/v1beta/files/one",
+    ],
+)
 def test_video_download_never_forwards_the_api_key_to_untrusted_urls(uri):
     with pytest.raises(ValueError, match="Google video download"):
         _download_url(uri)
@@ -49,34 +52,46 @@ def test_video_download_never_forwards_the_api_key_to_untrusted_urls(uri):
 
 def test_google_file_download_keeps_the_authenticated_official_endpoint():
     assert _download_url("https://generativelanguage.googleapis.com/v1beta/files/one") == (
-        "https://generativelanguage.googleapis.com/download/v1beta/files/one:download?alt=media")
+        "https://generativelanguage.googleapis.com/download/v1beta/files/one:download?alt=media"
+    )
 
 
 def test_google_documented_download_uri_does_not_duplicate_media_parameter():
     assert _download_url("https://generativelanguage.googleapis.com/v1beta/files/one:download?alt=media") == (
-        "https://generativelanguage.googleapis.com/download/v1beta/files/one:download?alt=media")
+        "https://generativelanguage.googleapis.com/download/v1beta/files/one:download?alt=media"
+    )
 
 
 @pytest.mark.asyncio
 async def test_uri_delivery_waits_for_saved_media_without_resubmitting(monkeypatch):
     calls = []
     metadata_reads = 0
+
     async def handle(request):
         nonlocal metadata_reads
         calls.append((request.method, str(request.url)))
         if request.method == "POST":
-            return httpx.Response(200, json={"id": "interaction-one", "usage": {"total_output_tokens": 46336}, "output_video": {
-                "type": "video", "uri": "https://generativelanguage.googleapis.com/v1beta/files/one",
-                "mime_type": "video/mp4"}})
+            return httpx.Response(
+                200,
+                json={
+                    "id": "interaction-one",
+                    "usage": {"total_output_tokens": 46336},
+                    "output_video": {
+                        "type": "video",
+                        "uri": "https://generativelanguage.googleapis.com/v1beta/files/one",
+                        "mime_type": "video/mp4",
+                    },
+                },
+            )
         if request.url.path == "/v1beta/files/one":
             metadata_reads += 1
             return httpx.Response(200, json={"state": "PROCESSING" if metadata_reads == 1 else "ACTIVE"})
         return httpx.Response(200, content=b"saved-mp4", headers={"content-type": "video/mp4"})
+
     monkeypatch.setattr("app.services.omni_video.httpx.AsyncHTTPTransport", lambda **_: httpx.MockTransport(handle))
     monkeypatch.setattr("app.services.omni_video.asyncio.sleep", AsyncMock())
     retain = AsyncMock()
-    result = await request_omni_video_once(api_key="test-only", payload={}, timeout_seconds=60,
-                                         on_interaction=retain)
+    result = await request_omni_video_once(api_key="test-only", payload={}, timeout_seconds=60, on_interaction=retain)
     retain.assert_awaited_once_with("interaction-one")
     assert result.video_bytes == b"saved-mp4"
     assert result.usage == {"total_output_tokens": 46336}
@@ -86,9 +101,12 @@ async def test_uri_delivery_waits_for_saved_media_without_resubmitting(monkeypat
 
 def test_omni_video_finish_is_concise_and_keeps_custom_detail_separate():
     prompt = build_cinematic_prompt(
-        route_points=[{"x": .4, "y": .6}, {"x": .6, "y": .4}],
-        camera_motion="street_walkby", scene_brief="INTERNAL SCENE CONTRACT " * 100,
-        duration_seconds=8, control_mode="preview_video", provider="omni",
+        route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+        camera_motion="street_walkby",
+        scene_brief="INTERNAL SCENE CONTRACT " * 100,
+        duration_seconds=8,
+        control_mode="preview_video",
+        provider="omni",
         custom_prompt="A woman walks her dog on the existing sidewalk.",
     )
     assert len(prompt.split()) < 180
@@ -106,10 +124,16 @@ def test_omni_video_finish_is_concise_and_keeps_custom_detail_separate():
 
 def test_omni_preview_can_use_exact_custom_prompt_without_hidden_directions():
     direction = "Make this a hyper-realistic movie scene with people walking on the sidewalks."
-    values = dict(route_points=[{"x": .4, "y": .6}, {"x": .6, "y": .4}],
-                  camera_motion="bicycle_ride", scene_brief="INTERNAL CONTRACT " * 100,
-                  duration_seconds=8, control_mode="preview_video", provider="omni",
-                  custom_prompt=direction, use_custom_prompt_only=True)
+    values = dict(
+        route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+        camera_motion="bicycle_ride",
+        scene_brief="INTERNAL CONTRACT " * 100,
+        duration_seconds=8,
+        control_mode="preview_video",
+        provider="omni",
+        custom_prompt=direction,
+        use_custom_prompt_only=True,
+    )
     assert build_cinematic_prompt(**values) == direction
     with pytest.raises(ValueError, match="non-empty"):
         build_cinematic_prompt(**(values | {"custom_prompt": "  "}))
@@ -118,8 +142,11 @@ def test_omni_preview_can_use_exact_custom_prompt_without_hidden_directions():
 
 
 def test_omni_video_request_accepts_bounded_optional_scene_details():
-    values = dict(project_id=uuid.uuid4(), guide_frame_base64=_jpeg_data_url(),
-                  route_points=[{"x": .4, "y": .6}, {"x": .6, "y": .4}])
+    values = dict(
+        project_id=uuid.uuid4(),
+        guide_frame_base64=_jpeg_data_url(),
+        route_points=[{"x": 0.4, "y": 0.6}, {"x": 0.6, "y": 0.4}],
+    )
     request = VideoPilotRequest(**values, custom_prompt="A woman walking her dog.")
     assert request.custom_prompt == "A woman walking her dog."
     assert VideoPilotRequest(**values).custom_prompt == ""
@@ -129,9 +156,13 @@ def test_omni_video_request_accepts_bounded_optional_scene_details():
 
 def test_omni_11_preview_requests_explicit_high_detail_delivery():
     payload = build_omni_payload(
-        model="gemini-omni-1.1-flash", guide_base64=_jpeg_data_url(),
-        guide_mime_type="image/jpeg", prompt="Finish the source video.",
-        duration_seconds=8, control_mode="preview_video", render_quality="high",
+        model="gemini-omni-1.1-flash",
+        guide_base64=_jpeg_data_url(),
+        guide_mime_type="image/jpeg",
+        prompt="Finish the source video.",
+        duration_seconds=8,
+        control_mode="preview_video",
+        render_quality="high",
         preview_video_base64=base64.b64encode(b"preview").decode(),
         preview_video_mime_type="video/mp4",
     )
@@ -200,14 +231,16 @@ def test_bicycle_request_and_prompt_keep_forward_eye_height_motion():
     request = VideoPilotRequest(
         project_id="00000000-0000-0000-0000-000000000001",
         guide_frame_base64=_jpeg_data_url(),
-        route_points=[{"x": .4, "y": .66}, {"x": .6, "y": .64}],
+        route_points=[{"x": 0.4, "y": 0.66}, {"x": 0.6, "y": 0.64}],
         camera_motion="bicycle_ride",
     )
     prompt = build_cinematic_prompt(
         route_points=[point.model_dump() for point in request.route_points],
         camera_motion=request.camera_motion,
-        scene_brief="A park beside the route.", duration_seconds=8,
-        control_mode="multi_keyframe", keyframe_count=6,
+        scene_brief="A park beside the route.",
+        duration_seconds=8,
+        control_mode="multi_keyframe",
+        keyframe_count=6,
     )
     assert "forward-facing bicycle ride" in prompt
     assert "1.6 metres" in prompt
@@ -219,7 +252,8 @@ def test_bicycle_request_and_prompt_keep_forward_eye_height_motion():
     preview_prompt = build_cinematic_prompt(
         route_points=[point.model_dump() for point in request.route_points],
         camera_motion=request.camera_motion,
-        scene_brief="A park beside the route.", duration_seconds=8,
+        scene_brief="A park beside the route.",
+        duration_seconds=8,
         control_mode="preview_video",
     )
     assert "Match the source video's camera path, framing, speed and timing exactly" in preview_prompt

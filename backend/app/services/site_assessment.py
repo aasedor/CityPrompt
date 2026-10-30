@@ -105,33 +105,46 @@ def summarize_assessments(rows: list[dict], site: Polygon, *, truncated: bool = 
             full_total += amount
             weighted_total += amount * Decimal(str(proportion))
         coverage.append(overlap)
-        records.append({
-            "roll_number": roll, "roll_year": year,
-            "address": str(account["row"].get("address") or "Address not published")[:300],
-            "property_type": account["row"].get("property_type"),
-            "assessed_value": float(amount) if amount is not None else None,
-            "overlap_pct": round(100 * proportion, 2),
-            "partial": is_partial,
-        })
+        records.append(
+            {
+                "roll_number": roll,
+                "roll_year": year,
+                "address": str(account["row"].get("address") or "Address not published")[:300],
+                "property_type": account["row"].get("property_type"),
+                "assessed_value": float(amount) if amount is not None else None,
+                "overlap_pct": round(100 * proportion, 2),
+                "partial": is_partial,
+            }
+        )
     warnings = []
     if truncated:
-        warnings.append("Calgary returned more than 10,000 records. These are incomplete subtotals; use a smaller site.")
+        warnings.append(
+            "Calgary returned more than 10,000 records. These are incomplete subtotals; use a smaller site."
+        )
     if skipped:
-        warnings.append(f"{skipped} source records lacked usable geometry or account identity; totals may be incomplete.")
+        warnings.append(
+            f"{skipped} source records lacked usable geometry or account identity; totals may be incomplete."
+        )
     if missing:
         warnings.append(f"{missing} properties have missing or conflicting values and are excluded from the subtotals.")
     if partial:
-        warnings.append("Some properties extend beyond the site. Their full assessments include land outside your boundary.")
+        warnings.append(
+            "Some properties extend beyond the site. Their full assessments include land outside your boundary."
+        )
     return {
         "roll_year": next(iter(years)) if years else None,
-        "property_count": len(records), "partial_property_count": partial,
-        "missing_value_count": missing, "skipped_record_count": skipped,
+        "property_count": len(records),
+        "partial_property_count": partial,
+        "missing_value_count": missing,
+        "skipped_record_count": skipped,
         "complete": not (truncated or skipped or missing),
         "full_property_assessed_total": float(full_total),
         "area_weighted_estimate": float(weighted_total.quantize(Decimal("0.01"))),
         "assessed_coverage_pct": round(100 * unary_union(coverage).area / frame.area_m2, 2) if coverage else 0,
-        "records": records[:DETAIL_LIMIT], "details_omitted": max(0, len(records) - DETAIL_LIMIT),
-        "warnings": warnings, "source_url": SOURCE_URL,
+        "records": records[:DETAIL_LIMIT],
+        "details_omitted": max(0, len(records) - DETAIL_LIMIT),
+        "warnings": warnings,
+        "source_url": SOURCE_URL,
         "fetched_at": datetime.now(timezone.utc).isoformat(),
     }
 
@@ -142,11 +155,16 @@ async def _fetch(site: Polygon) -> dict:
     # One deadline for the complete paginated lookup, rather than one per page.
     async with asyncio.timeout(45), httpx.AsyncClient(timeout=15) as client:
         for page in range(MAX_PAGES):
-            response = await client.get(SOURCE_API, params={
-                "$select": "multipolygon,roll_number,roll_year,address,assessed_value,property_type",
-                "$where": f"intersects(multipolygon, '{wkt}')", "$order": ":id",
-                "$limit": PAGE_SIZE, "$offset": page * PAGE_SIZE,
-            })
+            response = await client.get(
+                SOURCE_API,
+                params={
+                    "$select": "multipolygon,roll_number,roll_year,address,assessed_value,property_type",
+                    "$where": f"intersects(multipolygon, '{wkt}')",
+                    "$order": ":id",
+                    "$limit": PAGE_SIZE,
+                    "$offset": page * PAGE_SIZE,
+                },
+            )
             response.raise_for_status()
             if len(response.content) > 20 * 1024 * 1024:
                 raise AssessmentError("This assessment lookup is too large. Use a smaller boundary.")
@@ -167,6 +185,7 @@ async def get_site_assessment(site: Polygon) -> dict:
         _cache.move_to_end(key)
         return cached[1]
     if key not in _pending:
+
         async def load():
             try:
                 result = await _fetch(site)
@@ -177,6 +196,7 @@ async def get_site_assessment(site: Polygon) -> dict:
                 return result
             finally:
                 _pending.pop(key, None)
+
         task = asyncio.create_task(load())
         # A cancelled browser request must not cancel classmates' shared lookup.
         task.add_done_callback(lambda finished: finished.exception() if not finished.cancelled() else None)

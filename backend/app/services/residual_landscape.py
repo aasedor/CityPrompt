@@ -60,6 +60,7 @@ class ResidualSourceZone:
 def residual_occupied_geometry(zone: ResidualSourceZone) -> BaseGeometry:
     if zone.native_selection is not None:
         from app.services.native_parks import native_park_ground
+
         return native_park_ground(zone.native_selection)
     return zone.geometry
 
@@ -80,12 +81,35 @@ _TREE_CANOPY_CLEARANCE_M = 5.8
 _COMMUNITY_BUILDING_TYPES = {"building", "residential", "development_area", "development"}
 _COMMUNITY_PARK_TYPES = {"green_space", "park", "plaza", "parking"}
 _COMMUNITY_STREET_TYPES = {"road", "street", "path"}
-_GROUND_SURFACE_MATERIALS = frozenset({
-    "grass", "mown_grass", "dry_grass", "meadow", "snow", "sand", "gravel", "light_gravel", "dark_gravel",
-    "black_pavers", "charcoal_pavers", "grey_pavers", "light_pavers", "red_brick", "buff_brick", "concrete",
-    "light_concrete", "exposed_aggregate", "asphalt", "red_asphalt", "blue_rubber", "terracotta",
-    "decomposed_granite", "mulch", "cobblestone",
-})
+_GROUND_SURFACE_MATERIALS = frozenset(
+    {
+        "grass",
+        "mown_grass",
+        "dry_grass",
+        "meadow",
+        "snow",
+        "sand",
+        "gravel",
+        "light_gravel",
+        "dark_gravel",
+        "black_pavers",
+        "charcoal_pavers",
+        "grey_pavers",
+        "light_pavers",
+        "red_brick",
+        "buff_brick",
+        "concrete",
+        "light_concrete",
+        "exposed_aggregate",
+        "asphalt",
+        "red_asphalt",
+        "blue_rubber",
+        "terracotta",
+        "decomposed_granite",
+        "mulch",
+        "cobblestone",
+    }
+)
 
 
 def ground_surface_material_for_source(properties: dict[str, Any] | None) -> str | None:
@@ -101,19 +125,24 @@ def authored_surface_source_hash(geometry: BaseGeometry, properties: dict[str, A
         raise ValueError("Invalid authored ground surface")
 
     def canonical_ring(coordinates):
-        points = [f"{math.floor(float(point[0]) * 1e7 + .5)},{math.floor(float(point[1]) * 1e7 + .5)}"
-                  for point in coordinates]
+        points = [
+            f"{math.floor(float(point[0]) * 1e7 + .5)},{math.floor(float(point[1]) * 1e7 + .5)}"
+            for point in coordinates
+        ]
         if points[0] == points[-1]:
             points.pop()
         candidates = []
         for ring in (points, list(reversed(points))):
             first = min(ring)
-            candidates.extend(";".join(ring[index:] + ring[:index])
-                              for index, point in enumerate(ring) if point == first)
+            candidates.extend(
+                ";".join(ring[index:] + ring[:index]) for index, point in enumerate(ring) if point == first
+            )
         return min(candidates)
 
-    rings = [canonical_ring(geometry.exterior.coords),
-             *sorted(canonical_ring(ring.coords) for ring in geometry.interiors)]
+    rings = [
+        canonical_ring(geometry.exterior.coords),
+        *sorted(canonical_ring(ring.coords) for ring in geometry.interiors),
+    ]
     payload = ["cityprompt.authored-surface@1", material, rings]
     return hashlib.sha256(json.dumps(payload, separators=(",", ":")).encode("utf-8")).hexdigest()
 
@@ -711,11 +740,10 @@ def community_3d_source_hash(
     # placed native assets that edge owns heading, so a 180-degree turn must
     # invalidate compiled proof even though the occupied polygon is equal.
     props = properties or {}
-    if (payload["kind"] == "building" and (
-        props.get("native_home_plot") is True or props.get("native_plot_axes") is True
-    )) or (
-        payload["kind"] in {"park", "street"} and "fixed_public_realm" in payload["design"]
-    ):
+    if (
+        payload["kind"] == "building"
+        and (props.get("native_home_plot") is True or props.get("native_plot_axes") is True)
+    ) or (payload["kind"] in {"park", "street"} and "fixed_public_realm" in payload["design"]):
         if geometry.geom_type == "Polygon" and len(geometry.exterior.coords) == 5:
             payload["authored_front_edge"] = [
                 [round(float(v), 7) for v in point[:2]] for point in list(geometry.exterior.coords)[:2]

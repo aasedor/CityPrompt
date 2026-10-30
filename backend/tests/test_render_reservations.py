@@ -13,13 +13,9 @@ from app.api.v1 import render
 
 
 @pytest.mark.asyncio
-async def test_google_edit_preserves_original_before_optional_polish(
-    monkeypatch, mock_db
-):
+async def test_google_edit_preserves_original_before_optional_polish(monkeypatch, mock_db):
     account = user(100)
-    monkeypatch.setattr(
-        render, "get_settings", lambda: SimpleNamespace(render_global_daily_token_cap=0)
-    )
+    monkeypatch.setattr(render, "get_settings", lambda: SimpleNamespace(render_global_daily_token_cap=0))
     monkeypatch.setattr(render, "check_project_permission", AsyncMock())
     monkeypatch.setattr(
         render,
@@ -47,26 +43,18 @@ async def test_google_edit_preserves_original_before_optional_polish(
 
 
 @pytest.mark.asyncio
-async def test_google_unusable_image_is_recoverable_without_refund_or_retry(
-    monkeypatch, mock_db
-):
+async def test_google_unusable_image_is_recoverable_without_refund_or_retry(monkeypatch, mock_db):
     account = user(100)
-    monkeypatch.setattr(
-        render, "get_settings", lambda: SimpleNamespace(render_global_daily_token_cap=0)
-    )
+    monkeypatch.setattr(render, "get_settings", lambda: SimpleNamespace(render_global_daily_token_cap=0))
     monkeypatch.setattr(render, "check_project_permission", AsyncMock())
     call = AsyncMock(
-        side_effect=HTTPException(
-            502, {"billing_status": "produced", "provider_image_base64": "original"}
-        )
+        side_effect=HTTPException(502, {"billing_status": "produced", "provider_image_base64": "original"})
     )
     gallery, audit = AsyncMock(), AsyncMock()
     monkeypatch.setattr(render, "_generate_render_image", call)
     monkeypatch.setattr(render, "persist_render_to_gallery", gallery)
     monkeypatch.setattr(render, "_save_render_audit", audit)
-    req = request().model_copy(
-        update={"model": "gemini-nano-banana-2.1", "project_id": uuid.UUID(int=1)}
-    )
+    req = request().model_copy(update={"model": "gemini-nano-banana-2.1", "project_id": uuid.UUID(int=1)})
     with pytest.raises(HTTPException):
         await render.generate_render(req, account, mock_db)
     call.assert_awaited_once()
@@ -183,24 +171,14 @@ async def test_provider_failure_refunds_once(monkeypatch, mock_db):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize(
-    "billing,expected", [("unproduced", 100), ("unknown", 75), ("produced", 75)]
-)
-async def test_google_edit_refunds_only_a_confirmed_unproduced_call(
-    monkeypatch, mock_db, billing, expected
-):
+@pytest.mark.parametrize("billing,expected", [("unproduced", 100), ("unknown", 75), ("produced", 75)])
+async def test_google_edit_refunds_only_a_confirmed_unproduced_call(monkeypatch, mock_db, billing, expected):
     account = user(100)
-    monkeypatch.setattr(
-        render, "get_settings", lambda: SimpleNamespace(render_global_daily_token_cap=0)
-    )
+    monkeypatch.setattr(render, "get_settings", lambda: SimpleNamespace(render_global_daily_token_cap=0))
     monkeypatch.setattr(
         render,
         "_generate_render_image",
-        AsyncMock(
-            side_effect=HTTPException(
-                502, {"message": "Google request failed", "billing_status": billing}
-            )
-        ),
+        AsyncMock(side_effect=HTTPException(502, {"message": "Google request failed", "billing_status": billing})),
     )
     with pytest.raises(HTTPException):
         await render.generate_render(

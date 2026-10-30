@@ -31,7 +31,11 @@ from app.core.image_models import (
     PaidImageModel,
 )
 from app.schemas.direct_3d_render import Direct3DRenderRequest
-from app.services.render_fidelity import AERIAL_CONTEXT_REFINEMENT, RENDER_PRESERVATION_LOCK, apply_presentation_selections
+from app.services.render_fidelity import (
+    AERIAL_CONTEXT_REFINEMENT,
+    RENDER_PRESERVATION_LOCK,
+    apply_presentation_selections,
+)
 from app.services.people_actions import append_people_action_direction
 
 logger = logging.getLogger(__name__)
@@ -3341,8 +3345,15 @@ def _presentation_prompt(
             "chosen artistic medium." + archetype_identity_lock + " " + RENDER_PRESERVATION_LOCK
         )
         if view_mode == "aerial" and style in {
-            "photorealistic", "photomontage", "development", "atmospheric",
-            "winter", "night", "survey", "documentary", "site-plan-photo",
+            "photorealistic",
+            "photomontage",
+            "development",
+            "atmospheric",
+            "winter",
+            "night",
+            "survey",
+            "documentary",
+            "site-plan-photo",
         }:
             task += " " + AERIAL_CONTEXT_REFINEMENT
         if view_mode == "street":
@@ -4072,9 +4083,14 @@ def _same_camera_presentation_result(
 
 
 def _visible_people_action_direction(server_inventory, visible_ids) -> str:
-    return next((item.get('people_action_direction', '') for item in (server_inventory or [])
-                 if item.get('instance_id') == 'project-details'
-                 and item['instance_id'] in visible_ids), '')
+    return next(
+        (
+            item.get("people_action_direction", "")
+            for item in (server_inventory or [])
+            if item.get("instance_id") == "project-details" and item["instance_id"] in visible_ids
+        ),
+        "",
+    )
 
 
 class Direct3DRenderService:
@@ -4228,7 +4244,9 @@ class Direct3DRenderService:
             )
         )
         prompt = append_people_action_direction(
-            prompt, _visible_people_action_direction(server_inventory, visible_ids), max_length=30_000,
+            prompt,
+            _visible_people_action_direction(server_inventory, visible_ids),
+            max_length=30_000,
         )
         prompt = apply_presentation_selections(prompt, add_people=req.add_people, add_vehicles=req.add_vehicles)
         if req.model == NANO_BANANA_MODEL:
@@ -4244,9 +4262,7 @@ class Direct3DRenderService:
                     raw = _png_bytes(capture.normalized_proposal_mask.convert("RGB"))
                     filename = "direct-3d-proposal-mask.png (white=edit, black=keep)"
                 encoded = base64.b64encode(raw).decode("ascii")
-                parts.extend(
-                    [{"text": filename}, {"inlineData": {"mimeType": mime, "data": encoded}}]
-                )
+                parts.extend([{"text": filename}, {"inlineData": {"mimeType": mime, "data": encoded}}])
                 if filename.startswith("direct-3d-"):
                     same_camera.add(encoded)
             parts.append({"text": prompt})

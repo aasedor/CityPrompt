@@ -26,12 +26,14 @@ from app.services.public_realm_lego import (
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 _ID = re.compile(r"[a-z][a-z0-9_]*\Z")
 _SURFACE_PATH_WIDTHS = {
-    'garden_gravel_path_v1': 1.5, 'concrete_neighbourhood_walk_v1': 1.8,
-    'brick_courtyard_path_v1': 2.0, 'timber_garden_walk_v1': 2.0,
-    'asphalt_shared_path_v1': 3.0,
-    'standalone_narrow_sidewalk_v1': 1.5,
-    'standalone_neighbourhood_sidewalk_v1': 2.0,
-    'standalone_urban_sidewalk_v1': 3.0,
+    "garden_gravel_path_v1": 1.5,
+    "concrete_neighbourhood_walk_v1": 1.8,
+    "brick_courtyard_path_v1": 2.0,
+    "timber_garden_walk_v1": 2.0,
+    "asphalt_shared_path_v1": 3.0,
+    "standalone_narrow_sidewalk_v1": 1.5,
+    "standalone_neighbourhood_sidewalk_v1": 2.0,
+    "standalone_urban_sidewalk_v1": 3.0,
 }
 _APPEARANCE_BY_FINISH = {
     "pavers": "heritage_brick_stone",
@@ -43,21 +45,33 @@ _APPEARANCE_BY_FINISH = {
 @lru_cache(maxsize=1)
 def flush_native_street_junction_levels() -> dict[str, float]:
     """Mirror native section classification for exact car-free surface joins."""
-    rows = json.loads((Path(__file__).resolve().parents[1] / 'data/nativeStreetPilots.json').read_text(encoding='utf-8'))
-    allowed = {selection.variant_id for capability in native_street_runtime_capabilities() for selection in capability.selections}
+    rows = json.loads(
+        (Path(__file__).resolve().parents[1] / "data/nativeStreetPilots.json").read_text(encoding="utf-8")
+    )
+    allowed = {
+        selection.variant_id
+        for capability in native_street_runtime_capabilities()
+        for selection in capability.selections
+    }
     result = {}
     for row in rows:
-        program = row.get('program')
-        if row['id'] not in allowed or not program or row['id'] == 'student_main_street_v1':
+        program = row.get("program")
+        if row["id"] not in allowed or not program or row["id"] == "student_main_street_v1":
             continue
-        bands = row['sections']
-        narrow = program['adapter'] == 'narrow-pathway-v1'
-        if not narrow and any('parking' in band['name'] or (band['material'] == 'asphalt'
-                and not any(name in band['name'] for name in ('walk', 'furniture'))) for band in bands):
+        bands = row["sections"]
+        narrow = program["adapter"] == "narrow-pathway-v1"
+        if not narrow and any(
+            "parking" in band["name"]
+            or (band["material"] == "asphalt" and not any(name in band["name"] for name in ("walk", "furniture")))
+            for band in bands
+        ):
             continue
-        if narrow or any(any(name in band['name'] for name in ('walk', 'furniture'))
-                or band['material'] not in ('asphalt', 'cycle', 'soil', 'grass') for band in bands):
-            result[row['id']] = float(program['baseLiftM'])
+        if narrow or any(
+            any(name in band["name"] for name in ("walk", "furniture"))
+            or band["material"] not in ("asphalt", "cycle", "soil", "grass")
+            for band in bands
+        ):
+            result[row["id"]] = float(program["baseLiftM"])
     return result
 
 
@@ -73,7 +87,10 @@ def native_street_runtime_capabilities() -> tuple[PublicRealmFamilyCapability, .
         release = allowed.get(selection.variant_id)
         if release is None:
             continue
-        if release["archetypeId"] != selection.archetype_id or f"source_recipe:{release['revision']}" not in selection.component_set_ids:
+        if (
+            release["archetypeId"] != selection.archetype_id
+            or f"source_recipe:{release['revision']}" not in selection.component_set_ids
+        ):
             raise ValueError(f"Native street release lock disagrees with {selection.variant_id}")
         accepted.append(capability.model_copy(update={"title": capability.title.removeprefix("Candidate: ")}))
     if len(accepted) != len(allowed):
@@ -81,7 +98,9 @@ def native_street_runtime_capabilities() -> tuple[PublicRealmFamilyCapability, .
     return tuple(accepted)
 
 
-def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canals: bool = True) -> PublicRealmCapabilityCatalog:
+def build_native_street_candidate_catalog(
+    manifest_path: Path, *, flexible_canals: bool = True
+) -> PublicRealmCapabilityCatalog:
     """Compile an explicit review-only catalogue from the staged source lock."""
 
     rows = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -100,11 +119,17 @@ def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canal
         width = float(row["widthM"])
         sections = row["sections"]
         surface_path = pilot_id in _SURFACE_PATH_WIDTHS
-        if surface_path and (width != _SURFACE_PATH_WIDTHS[pilot_id]
-                            or row.get('program', {}).get('adapter') != 'narrow-pathway-v1'
-                            or row.get('placements') != []):
-            raise ValueError(f'{pilot_id} has an invalid surface-only pathway contract')
-        if not (width == _SURFACE_PATH_WIDTHS[pilot_id] if surface_path else 5 <= width <= 60) or not isinstance(sections, list) or not sections:
+        if surface_path and (
+            width != _SURFACE_PATH_WIDTHS[pilot_id]
+            or row.get("program", {}).get("adapter") != "narrow-pathway-v1"
+            or row.get("placements") != []
+        ):
+            raise ValueError(f"{pilot_id} has an invalid surface-only pathway contract")
+        if (
+            not (width == _SURFACE_PATH_WIDTHS[pilot_id] if surface_path else 5 <= width <= 60)
+            or not isinstance(sections, list)
+            or not sections
+        ):
             raise ValueError(f"{pilot_id} has an invalid metric section")
         edge = -width / 2
         for band in sections:
@@ -124,12 +149,12 @@ def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canal
             ("source_assembly", row["sourceAssemblySha256"]),
             ("reference", row["referenceSha256"]),
         ]
-        program = row.get('program')
+        program = row.get("program")
         if program is not None:
-            digest = hashlib.sha256(json.dumps(program, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
-            if row.get('programSha256') != digest:
-                raise ValueError(f'{pilot_id} has a changed executable program')
-            locks.append(('program', digest))
+            digest = hashlib.sha256(json.dumps(program, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+            if row.get("programSha256") != digest:
+                raise ValueError(f"{pilot_id} has a changed executable program")
+            locks.append(("program", digest))
         modules = row["modules"]
         if not isinstance(modules, dict) or (not modules and not surface_path):
             raise ValueError(f"{pilot_id} has no native modules")
@@ -140,8 +165,9 @@ def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canal
         if any(not _SHA256.fullmatch(value) for _, value in locks):
             raise ValueError(f"{pilot_id} has an invalid source or module hash")
         route_policy = program
-        if flexible_canals and pilot_id == 'amsterdam_gracht_v1':
+        if flexible_canals and pilot_id == "amsterdam_gracht_v1":
             from app.services.native_specialist_streets import CANAL_POLICY
+
             route_policy = CANAL_POLICY
         selection = PublicRealmSelectionCapability(
             archetype_id=parent_id,
@@ -155,18 +181,24 @@ def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canal
                 nominal_row_width_m=width,
                 min_row_width_m=round(width - 0.05, 3),
                 max_row_width_m=round(width + 0.05, 3),
-                min_length_m=route_policy['minLengthM'] if route_policy else 8,
-                max_length_m=native_street_max_length(pilot_id) if flexible_canals else route_policy['maxLengthM'] if route_policy else 2_000,
+                min_length_m=route_policy["minLengthM"] if route_policy else 8,
+                max_length_m=(
+                    native_street_max_length(pilot_id)
+                    if flexible_canals
+                    else route_policy["maxLengthM"] if route_policy else 2_000
+                ),
             ),
             is_default=True,
         )
-        capabilities.append(PublicRealmFamilyCapability(
-            family_id=f"street_native_{pilot_id}",
-            kind="street",
-            title=f"Candidate: {row['title']}",
-            generator="street_section",
-            selections=(selection,),
-        ))
+        capabilities.append(
+            PublicRealmFamilyCapability(
+                family_id=f"street_native_{pilot_id}",
+                kind="street",
+                title=f"Candidate: {row['title']}",
+                generator="street_section",
+                selections=(selection,),
+            )
+        )
     capabilities.sort(key=lambda item: item.family_id)
     payload = [item.model_dump(mode="json") for item in capabilities]
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
@@ -187,16 +219,18 @@ def build_native_street_candidate_catalog(manifest_path: Path, *, flexible_canal
 @lru_cache(maxsize=1)
 def retained_canal_capability():
     """Exact pre-flexible contract, only for validating an existing recipe."""
-    manifest = Path(__file__).resolve().parents[1] / 'data/nativeStreetPilots.json'
+    manifest = Path(__file__).resolve().parents[1] / "data/nativeStreetPilots.json"
     catalog = build_native_street_candidate_catalog(manifest, flexible_canals=False)
-    cap = next(c for c in catalog.capabilities if c.family_id == 'street_native_amsterdam_gracht_v1')
-    return cap.model_copy(update={'title': cap.title.removeprefix('Candidate: ')})
+    cap = next(c for c in catalog.capabilities if c.family_id == "street_native_amsterdam_gracht_v1")
+    return cap.model_copy(update={"title": cap.title.removeprefix("Candidate: ")})
 
 
 @lru_cache(maxsize=1)
 def retained_native_street_capabilities():
     """Exact original short-route definitions, solely for saved recipe validation."""
-    manifest = Path(__file__).resolve().parents[1] / 'data/nativeStreetPilots.json'
+    manifest = Path(__file__).resolve().parents[1] / "data/nativeStreetPilots.json"
     catalog = build_native_street_candidate_catalog(manifest, flexible_canals=False)
-    return {cap.family_id: cap.model_copy(update={'title': cap.title.removeprefix('Candidate: ')})
-            for cap in catalog.capabilities}
+    return {
+        cap.family_id: cap.model_copy(update={"title": cap.title.removeprefix("Candidate: ")})
+        for cap in catalog.capabilities
+    }

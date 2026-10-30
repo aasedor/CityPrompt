@@ -77,8 +77,24 @@ async def test_health_identifies_release_without_echoing_arbitrary_environment(m
 @pytest.mark.asyncio
 async def test_unreviewed_starter_receipt_cannot_qualify_classroom_release(monkeypatch, tmp_path):
     receipt = tmp_path / "receipt.json"
-    receipt.write_text(json.dumps({"command": "preflight", "errors": [], "dependencies": [], "runtime_reviews_required": True, "roster_sha256": "wrong"}))
-    monkeypatch.setattr(readiness, "get_settings", lambda: SimpleNamespace(classroom_release=True, direct_3d_jobs_enabled=True, classroom_asset_receipt=str(receipt)))
+    receipt.write_text(
+        json.dumps(
+            {
+                "command": "preflight",
+                "errors": [],
+                "dependencies": [],
+                "runtime_reviews_required": True,
+                "roster_sha256": "wrong",
+            }
+        )
+    )
+    monkeypatch.setattr(
+        readiness,
+        "get_settings",
+        lambda: SimpleNamespace(
+            classroom_release=True, direct_3d_jobs_enabled=True, classroom_asset_receipt=str(receipt)
+        ),
+    )
     with pytest.raises(RuntimeError, match="does not qualify"):
         await readiness.assets_ready()
 

@@ -93,6 +93,7 @@ def _public_realm_design_identity(
         recipe = identity["recipe"]
         if recipe.get("schema_version") == 2:
             from app.services.native_parks import layout_for
+
             layout = layout_for(recipe["layout_id"], recipe["content_revision"])
             return f"{layout['title']} — {layout['label']}; exact native park composition"
         catalog = build_public_realm_capability_catalog()

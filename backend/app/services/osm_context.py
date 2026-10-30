@@ -97,8 +97,12 @@ DEFAULT_FEATURE_CAPS = {"buildings": 50, "roads": 50, "water": 20, "parks": 20}
 class OSMContextFetcher:
     """Fetches OSM features within a buffered polygon."""
 
-    def __init__(self, timeout: float = 30.0, feature_caps: dict[str, int] | None = None,
-                 endpoints: tuple[str, ...] | None = None):
+    def __init__(
+        self,
+        timeout: float = 30.0,
+        feature_caps: dict[str, int] | None = None,
+        endpoints: tuple[str, ...] | None = None,
+    ):
         self.timeout = timeout
         self.feature_caps = {**DEFAULT_FEATURE_CAPS, **(feature_caps or {})}
         self.endpoints = endpoints or (OVERPASS_URL,)
@@ -137,16 +141,18 @@ out skel qt;
                     # whole response too so a trickling primary leaves time
                     # for an independent mirror within the caller's deadline.
                     try:
-                        resp = await asyncio.wait_for(
-                            client.post(endpoint, data={"data": query}), timeout=self.timeout)
+                        resp = await asyncio.wait_for(client.post(endpoint, data={"data": query}), timeout=self.timeout)
                     except TimeoutError as exc:
-                        raise httpx.ReadTimeout("Map provider exceeded its time limit.",
-                            request=httpx.Request("POST", endpoint)) from exc
+                        raise httpx.ReadTimeout(
+                            "Map provider exceeded its time limit.", request=httpx.Request("POST", endpoint)
+                        ) from exc
                     resp.raise_for_status()
                     try:
                         data = resp.json()
                     except ValueError as exc:
-                        raise httpx.DecodingError("Map provider returned an invalid response.", request=resp.request) from exc
+                        raise httpx.DecodingError(
+                            "Map provider returned an invalid response.", request=resp.request
+                        ) from exc
                     # Overpass can return HTTP 200 with partial/empty data and a
                     # timeout remark. It cannot certify that no roads exist.
                     if not isinstance(data, dict) or not isinstance(data.get("elements"), list) or data.get("remark"):
@@ -213,9 +219,13 @@ out skel qt;
                         "lanes": tags.get("lanes"),
                         # Retain restrictions for optional road-connection suggestions.
                         # Older stored snapshots without these tags are not snap targets.
-                        "connection_tags": {key: tags[key] for key in tags if key in {
-                            "highway", "access", "motor_vehicle", "vehicle", "bridge", "tunnel", "layer", "service"
-                        } or ":conditional" in key},
+                        "connection_tags": {
+                            key: tags[key]
+                            for key in tags
+                            if key
+                            in {"highway", "access", "motor_vehicle", "vehicle", "bridge", "tunnel", "layer", "service"}
+                            or ":conditional" in key
+                        },
                         "geometry_complete": len(coords) == len(node_ids),
                     }
                 )
@@ -247,8 +257,10 @@ out skel qt;
         )
 
         return {
-            "truncated": any(len(items) > self.feature_caps[key] for key, items in
-                             [("buildings", buildings), ("roads", roads), ("water", water), ("parks", parks)]),
+            "truncated": any(
+                len(items) > self.feature_caps[key]
+                for key, items in [("buildings", buildings), ("roads", roads), ("water", water), ("parks", parks)]
+            ),
             "buildings": buildings[: self.feature_caps["buildings"]],
             "roads": roads[: self.feature_caps["roads"]],
             "water": water[: self.feature_caps["water"]],

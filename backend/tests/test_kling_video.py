@@ -33,10 +33,15 @@ def test_saved_still_payload_matches_documented_schema_and_price():
         kling.validate_endpoint("https://untrusted.example/submit")
 
 
-@pytest.mark.parametrize("width,height,expected", [
-    (2032, 736, (2032, 814)), (736, 2032, (814, 2032)),
-    (1600, 900, (1600, 900)), (1500, 600, (1500, 600)),
-])
+@pytest.mark.parametrize(
+    "width,height,expected",
+    [
+        (2032, 736, (2032, 814)),
+        (736, 2032, (814, 2032)),
+        (1600, 900, (1600, 900)),
+        (1500, 600, (1500, 600)),
+    ],
+)
 def test_animation_padding_preserves_entire_source_without_resizing(width, height, expected):
     original = png(width, height)
     source = kling.validate_source_image(original)
@@ -58,9 +63,11 @@ def test_animation_padding_preserves_entire_source_without_resizing(width, heigh
 async def test_completed_provider_input_rejection_is_terminal_only_for_422(monkeypatch, status, terminal):
     from fal_client import Completed
     from fal_client.client import FalClientHTTPError
+
     error = FalClientHTTPError("private source URL", status, {}, httpx.Response(status))
-    handle = SimpleNamespace(status=AsyncMock(return_value=Completed(logs=None, metrics={})),
-                             get=AsyncMock(side_effect=error))
+    handle = SimpleNamespace(
+        status=AsyncMock(return_value=Completed(logs=None, metrics={})), get=AsyncMock(side_effect=error)
+    )
     monkeypatch.setattr(kling, "_fal_client", lambda _: SimpleNamespace(get_handle=AsyncMock(return_value=handle)))
     with pytest.raises(kling.KlingGenerationFailed if terminal else FalClientHTTPError) as caught:
         await kling.poll_kling_request("mock-key", "fal-ai/kling-video/v3/pro/image-to-video", "existing")
@@ -73,12 +80,14 @@ async def test_completed_provider_input_rejection_is_terminal_only_for_422(monke
 async def test_legacy_fal_http_failure_uses_chained_status_not_message(monkeypatch, status, terminal):
     from fal_client import Completed
     from fal_client.client import FalClientError
+
     async def get():
         response = httpx.Response(status, request=httpx.Request("GET", "https://queue.fal.run/result"))
         try:
             response.raise_for_status()
         except httpx.HTTPStatusError as exc:
             raise FalClientError("image_aspect_ratio_error") from exc
+
     handle = SimpleNamespace(status=AsyncMock(return_value=Completed(logs=None, metrics={})), get=get)
     monkeypatch.setattr(kling, "_fal_client", lambda _: SimpleNamespace(get_handle=AsyncMock(return_value=handle)))
     with pytest.raises(kling.KlingGenerationFailed if terminal else FalClientError):
@@ -88,8 +97,9 @@ async def test_legacy_fal_http_failure_uses_chained_status_not_message(monkeypat
 def test_brief_scene_direction_is_optional_bounded_and_part_of_the_single_prompt():
     import uuid
 
-    body = dict(project_id=uuid.uuid4(), source_render_id=uuid.uuid4(),
-                request_id=uuid.uuid4(), confirm_paid_submission=True)
+    body = dict(
+        project_id=uuid.uuid4(), source_render_id=uuid.uuid4(), request_id=uuid.uuid4(), confirm_paid_submission=True
+    )
     req = RenderAnimationRequest(**body, scene_direction="  People stroll along the paths.  ")
     assert req.scene_direction == "People stroll along the paths."
     payload = kling.build_kling_arguments("https://fal.media/finished.png", req.scene_direction)
@@ -121,9 +131,7 @@ def test_separate_request_forbids_client_images_model_options_and_fake_route_con
             RenderAnimationRequest(**{**body, field: value})
     # Existing route contract is still eight seconds, with at least two points.
     with pytest.raises(ValidationError):
-        VideoPilotRequest(
-            project_id=body["project_id"], guide_frame_base64="x" * 100, route_points=[]
-        )
+        VideoPilotRequest(project_id=body["project_id"], guide_frame_base64="x" * 100, route_points=[])
     with pytest.raises(ValidationError):
         VideoPilotRequest(
             project_id=body["project_id"],
@@ -139,19 +147,14 @@ async def test_upload_keeps_finished_pixels_and_full_resolution(monkeypatch):
     source = kling.validate_source_image(original)
     upload = AsyncMock(return_value="https://fal.media/exact-source.png")
     monkeypatch.setattr(kling, "_fal_client", lambda _: SimpleNamespace(upload=upload))
-    assert (
-        await kling.upload_kling_source("mock-key", source)
-        == "https://fal.media/exact-source.png"
-    )
+    assert await kling.upload_kling_source("mock-key", source) == "https://fal.media/exact-source.png"
     upload.assert_awaited_once_with(original, content_type="image/png")
     assert (source.width, source.height) == (1600, 900)
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("failure", ["timeout", "server_error"])
-async def test_paid_submission_never_retries_an_uncertain_http_result(
-    monkeypatch, failure
-):
+async def test_paid_submission_never_retries_an_uncertain_http_result(monkeypatch, failure):
     calls = []
 
     def handler(request):
@@ -161,9 +164,7 @@ async def test_paid_submission_never_retries_an_uncertain_http_result(
             raise httpx.ReadTimeout("receipt lost")
         return httpx.Response(503, json={"error": "unavailable"})
 
-    monkeypatch.setattr(
-        kling.httpx, "AsyncHTTPTransport", lambda **_: httpx.MockTransport(handler)
-    )
+    monkeypatch.setattr(kling.httpx, "AsyncHTTPTransport", lambda **_: httpx.MockTransport(handler))
     with pytest.raises(httpx.HTTPError):
         await kling.submit_kling_once(
             "mock-key",
@@ -181,21 +182,13 @@ async def test_poll_recreates_the_original_handle_and_reads_a_completed_result(
 
     handle = SimpleNamespace(
         status=AsyncMock(return_value=Completed(logs=None, metrics={})),
-        get=AsyncMock(
-            return_value={"video": {"url": "https://fal.media/retained.mp4"}}
-        ),
+        get=AsyncMock(return_value={"video": {"url": "https://fal.media/retained.mp4"}}),
     )
-    client = SimpleNamespace(
-        get_handle=AsyncMock(return_value=handle), submit=AsyncMock()
-    )
+    client = SimpleNamespace(get_handle=AsyncMock(return_value=handle), submit=AsyncMock())
     monkeypatch.setattr(kling, "_fal_client", lambda _: client)
-    result = await kling.poll_kling_request(
-        "mock-key", "fal-ai/kling-video/v3/pro/image-to-video", "already-paid"
-    )
+    result = await kling.poll_kling_request("mock-key", "fal-ai/kling-video/v3/pro/image-to-video", "already-paid")
     assert result == ("saving", "https://fal.media/retained.mp4")
-    client.get_handle.assert_awaited_once_with(
-        "fal-ai/kling-video/v3/pro/image-to-video", "already-paid"
-    )
+    client.get_handle.assert_awaited_once_with("fal-ai/kling-video/v3/pro/image-to-video", "already-paid")
     client.submit.assert_not_awaited()
 
 
@@ -206,19 +199,13 @@ async def test_explicit_provider_failure_is_terminal_and_does_not_fetch_or_resub
     from fal_client import Completed
 
     handle = SimpleNamespace(
-        status=AsyncMock(
-            return_value=Completed(logs=None, metrics={}, error="Generation failed")
-        ),
+        status=AsyncMock(return_value=Completed(logs=None, metrics={}, error="Generation failed")),
         get=AsyncMock(),
     )
-    client = SimpleNamespace(
-        get_handle=AsyncMock(return_value=handle), submit=AsyncMock()
-    )
+    client = SimpleNamespace(get_handle=AsyncMock(return_value=handle), submit=AsyncMock())
     monkeypatch.setattr(kling, "_fal_client", lambda _: client)
     with pytest.raises(kling.KlingGenerationFailed):
-        await kling.poll_kling_request(
-            "mock-key", "fal-ai/kling-video/v3/pro/image-to-video", "already-paid"
-        )
+        await kling.poll_kling_request("mock-key", "fal-ai/kling-video/v3/pro/image-to-video", "already-paid")
     handle.get.assert_not_awaited()
     client.submit.assert_not_awaited()
 

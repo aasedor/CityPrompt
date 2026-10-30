@@ -22,8 +22,7 @@ return record.origin
 
 
 def _client():
-    return redis.from_url(get_settings().redis_url, decode_responses=True,
-                          socket_connect_timeout=2, socket_timeout=2)
+    return redis.from_url(get_settings().redis_url, decode_responses=True, socket_connect_timeout=2, socket_timeout=2)
 
 
 def _digest(value: str) -> str:
@@ -42,8 +41,12 @@ async def issue_state(provider: str, origin: str) -> tuple[str, str]:
     state, binding = secrets.token_urlsafe(32), secrets.token_urlsafe(32)
     try:
         async with _client() as client:
-            created = await client.set(_key(provider, state), json.dumps({"binding": _digest(binding), "origin": origin}),
-                                       ex=STATE_TTL_SECONDS, nx=True)
+            created = await client.set(
+                _key(provider, state),
+                json.dumps({"binding": _digest(binding), "origin": origin}),
+                ex=STATE_TTL_SECONDS,
+                nx=True,
+            )
             if not created:
                 raise RuntimeError("Unable to issue a unique sign-in attempt")
     except Exception as exc:
@@ -54,8 +57,15 @@ async def issue_state(provider: str, origin: str) -> tuple[str, str]:
 def bind_browser(response: RedirectResponse, provider: str, binding: str) -> RedirectResponse:
     # Issued by a top-level API navigation so cross-site frontend deployments do
     # not depend on third-party cookies. Providers return via top-level GET.
-    response.set_cookie(cookie_name(provider), binding, max_age=STATE_TTL_SECONDS,
-                        httponly=True, secure=get_settings().is_production, samesite="lax", path="/")
+    response.set_cookie(
+        cookie_name(provider),
+        binding,
+        max_age=STATE_TTL_SECONDS,
+        httponly=True,
+        secure=get_settings().is_production,
+        samesite="lax",
+        path="/",
+    )
     return response
 
 

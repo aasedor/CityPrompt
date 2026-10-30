@@ -1229,26 +1229,38 @@ def _public_realm_recipe_for_zone(
     strict = bool(isinstance(properties.get("_plan_scenario"), str) and properties.get("_plan_scenario", "").strip())
     source_geometry = _community_source_geometry(zone)
     from app.services.fixed_public_realm import validate_fixed_public_realm
+
     try:
         if validate_fixed_public_realm(zone.zone_type, source_geometry, properties):
             return None  # The exact fixed native browser model owns this scene.
     except ValueError as exc:
-        raise HTTPException(status_code=422, detail={
-            'code': 'fixed_public_realm_incompatible', 'message': str(exc),
-            'zone_id': str(zone.id), 'kind': kind,
-        }) from exc
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "code": "fixed_public_realm_incompatible",
+                "message": str(exc),
+                "zone_id": str(zone.id),
+                "kind": kind,
+            },
+        ) from exc
     if not strict:
         from app.services.local_claude_trials import validate_local_claude_public_realm
+
         try:
             if validate_local_claude_public_realm(zone.zone_type, source_geometry, properties):
                 # The exact browser-mounted review model owns this fixed scene.
                 # Never compile a second generic park or stretchable road.
                 return None
         except ValueError as exc:
-            raise HTTPException(status_code=422, detail={
-                'code': 'local_trial_incompatible', 'message': str(exc),
-                'zone_id': str(zone.id), 'kind': kind,
-            }) from exc
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "local_trial_incompatible",
+                    "message": str(exc),
+                    "zone_id": str(zone.id),
+                    "kind": kind,
+                },
+            ) from exc
     migrated_variant_id: str | None = None
     centerline_normalized = False
     if kind == "street":
@@ -1413,13 +1425,19 @@ def _stamp_community_3d(
         # Revalidate its bytes and rectangle here before excluding a fallback;
         # a saved namespace claim alone cannot grant detailed-model readiness.
         from app.services.fixed_public_realm import validate_fixed_public_realm
+
         try:
             fixed_native_scene = validate_fixed_public_realm(zone.zone_type, source_geometry, properties)
         except ValueError as exc:
-            raise HTTPException(status_code=422, detail={
-                'code': 'fixed_public_realm_incompatible', 'message': str(exc),
-                'zone_id': str(zone.id), 'kind': kind,
-            }) from exc
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "fixed_public_realm_incompatible",
+                    "message": str(exc),
+                    "zone_id": str(zone.id),
+                    "kind": kind,
+                },
+            ) from exc
         if public_realm_recipe is None:
             # A family-pending archetype uses the historical source-fitted
             # procedural representation, but an older exact V1 recipe must
@@ -1633,9 +1651,10 @@ def _planned_massing_dimensions(zone: SiteZone) -> tuple[int | None, float]:
     """Resolve the planner's authoritative height without inventing a family."""
     properties = zone.properties or {}
     from app.services.model_contract import native_model_facts
+
     native = native_model_facts(properties)
-    if native and native['fixed']:
-        return _positive_int(native['storeys']), _column_height_meters(native['dimensions_m'][2])
+    if native and native["fixed"]:
+        return _positive_int(native["storeys"]), _column_height_meters(native["dimensions_m"][2])
     floors = _positive_int(properties.get("floor_count")) or _positive_int(properties.get("floors"))
     floor_height = _positive_float(properties.get("floor_height")) or 3.2
     height = (
@@ -2113,7 +2132,9 @@ async def place_community_3d(
             # The locked boundary's saved preference wins over a request that
             # may have started planning before another tab changed the toggle.
             automatic_trees = (boundary.properties or {}).get("community_3d_automatic_trees")
-            include_landscape = automatic_trees if isinstance(automatic_trees, bool) else body.include_residual_landscape
+            include_landscape = (
+                automatic_trees if isinstance(automatic_trees, bool) else body.include_residual_landscape
+            )
             if not include_landscape:
                 existing_landscape = (boundary.properties or {}).get("community_3d_landscape")
                 # Automatic object recompiles do not own a landscape the
@@ -2150,7 +2171,7 @@ async def place_community_3d(
                 source_zones.append(
                     ResidualSourceZone(
                         zone_id=str(zone.id),
-                        native_selection=properties.get('green_space_native_layout'),
+                        native_selection=properties.get("green_space_native_layout"),
                         kind=_community_3d_kind(zone) or str(zone.zone_type),
                         role=str(role) if role is not None else None,
                         geometry=to_shape(zone.geometry),
@@ -2185,14 +2206,18 @@ async def place_community_3d(
         source_locked_rlasm = False
         source_locked_user_generated = False
         if kind == "building":
-            if (zone.properties or {}).get('user_generated_source_id'):
+            if (zone.properties or {}).get("user_generated_source_id"):
                 from app.services.user_generated_models import has_user_generated_binding
+
                 linked_building = project_buildings_by_id.get(str(zone.building_id))
                 if item.recipe is not None or not has_user_generated_binding(zone, linked_building):
-                    raise HTTPException(status_code=422, detail='The selected user generated model is unavailable. Choose it again from the building picker.')
+                    raise HTTPException(
+                        status_code=422,
+                        detail="The selected user generated model is unavailable. Choose it again from the building picker.",
+                    )
                 building = linked_building
                 building.footprint = zone.geometry
-                building_generator = 'meshy'
+                building_generator = "meshy"
                 source_locked_user_generated = True
             elif item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)

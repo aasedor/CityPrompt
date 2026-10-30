@@ -4,7 +4,11 @@ import uuid
 from typing import Any
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
-from app.schemas.direct_3d_render import Direct3DCommunityZoneClaim, Direct3DResidualLandscapeClaim, Direct3DAuthoredSurfaceClaim
+from app.schemas.direct_3d_render import (
+    Direct3DCommunityZoneClaim,
+    Direct3DResidualLandscapeClaim,
+    Direct3DAuthoredSurfaceClaim,
+)
 
 
 class VideoAppearanceRequest(BaseModel):

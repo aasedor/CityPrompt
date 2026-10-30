@@ -38,25 +38,42 @@ def trusted_building_footprint_target(properties: dict[str, Any]) -> tuple[float
     """
 
     declared = properties.get("building_footprint_program_id")
-    tower = _tower_contracts().get(declared) if isinstance(declared, str) and declared.endswith("-native-footprint") else None
+    tower = (
+        _tower_contracts().get(declared)
+        if isinstance(declared, str) and declared.endswith("-native-footprint")
+        else None
+    )
     if tower:
-        if (properties.get("pick_place_asset") != tower["assetId"]
+        if (
+            properties.get("pick_place_asset") != tower["assetId"]
             or properties.get("development_selected_variant_id") != tower["variantId"]
-            or properties.get("pick_place_model_revision") != tower["sourceRevision"]):
+            or properties.get("pick_place_model_revision") != tower["sourceRevision"]
+        ):
             raise ValueError("The selected building revision is not part of this tower programme")
         try:
             scale = float(properties["building_footprint_scale"])
             floors = float(properties.get("floor_count", properties.get("floors")))
-            height = float(properties.get("development_height_override_m", properties.get("height_m", properties.get("height"))))
+            height = float(
+                properties.get("development_height_override_m", properties.get("height_m", properties.get("height")))
+            )
         except (KeyError, TypeError, ValueError) as exc:
             raise ValueError("The tower scale, storeys or height is missing or invalid") from exc
         program = tower["storeyProgram"]
-        expected = program["podiumHeightM"] + (floors-program["podiumStoreys"]) * program["repeatedStoreyHeightM"] + program["roofHeightM"]
-        if (not math.isfinite(scale) or scale != 1
-            or not math.isfinite(floors) or not floors.is_integer()
+        expected = (
+            program["podiumHeightM"]
+            + (floors - program["podiumStoreys"]) * program["repeatedStoreyHeightM"]
+            + program["roofHeightM"]
+        )
+        if (
+            not math.isfinite(scale)
+            or scale != 1
+            or not math.isfinite(floors)
+            or not floors.is_integer()
             or not program["minStoreys"] <= floors <= program["maxStoreys"]
             or ("supportedStoreys" in program and floors not in program["supportedStoreys"])
-            or not math.isfinite(height) or abs(height-expected) > 0.05):
+            or not math.isfinite(height)
+            or abs(height - expected) > 0.05
+        ):
             raise ValueError("The tower dimensions are outside its authored storey programme")
         return tower["nativeWidthM"], tower["nativeDepthM"]
     if properties.get("building_footprint_program_id") != "brick-podium-condo-native-footprint-v001":
@@ -95,7 +112,10 @@ def _contracts() -> tuple[str, float, float, dict[str, tuple[float, float]]]:
         depths = {round(float(row["native_dimensions_m"][1]), 6) for row in assemblies}
         if len(widths) != 1 or len(depths) != 1:
             raise ValueError(f"Storey assemblies changed footprint for {family['variant_id']}")
-        families[str(family["variant_id"])] = (float(assemblies[0]["native_dimensions_m"][0]), float(assemblies[0]["native_dimensions_m"][1]))
+        families[str(family["variant_id"])] = (
+            float(assemblies[0]["native_dimensions_m"][0]),
+            float(assemblies[0]["native_dimensions_m"][1]),
+        )
     return str(payload["id"]), minimum, maximum, families
 
 
