@@ -1,3 +1,4 @@
+import { modularBridgeProgramFor } from '@/components/viewer/globe/modularBridgeProgram';
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { ArrowLeft, Building2, Trees, Route, ParkingSquare, Upload } from 'lucide-react';
 import { ImportGlbDialog } from './ImportGlbDialog';
@@ -86,7 +87,9 @@ export function PlacementPalette({ projectId, selected, onPick, onCancel, status
       onClose={() => { setImportOpen(false); onBrowseChange?.(false); }}
       onImported={model => { setImportOpen(false); onBrowseChange?.(false); onPickGenerated(model); }}/>}
     {activeStreet && <p className="rounded-lg border border-lime-400 bg-lime-50 px-2 py-2 text-xs text-slate-900">
-      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />{activeStreet.model.variantId === 'amsterdam_gracht_v1'
+      <strong>{activeStreet.label} · {activeStreet.sectionWidth} m wide</strong><br />{import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(activeStreet.model.variantId)
+        ? 'Draw two endpoints, 32–240 m apart. Move after the first click to preview the bridge in 3D. Further clicks adjust its end. Press Enter to finish.'
+        : activeStreet.model.variantId === 'amsterdam_gracht_v1'
         ? 'Draw the canal to fit your site. Click route points to bend or extend it, then press Enter to finish. The banks stay 36 m wide; the arch stays its original size and fits on a straight stretch.'
         : 'Place the first point, then move to preview the street in 3D. Start near a site edge to snap an entrance, then draw inward. Enter finishes the route.'}
     </p>}

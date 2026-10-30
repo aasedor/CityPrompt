@@ -15,6 +15,7 @@ import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { isSpecialistStreet, specialistWalkingHeight, BRIDGE_VARIANT } from './specialistStreetProgram';
 import { hasElevatedStation } from './elevatedRailProgram';
 import { stepFreeParkWalkingNetwork } from '@/features/parks/stepFreeParkAccess';
+import { modularBridgeProgramFor } from './modularBridgeProgram';
 
 /** Camera feet belong on the authored ground, not the Google mesh hidden
  * underneath it. Unprepared landscape and off-site context keep their hit. */
@@ -50,14 +51,17 @@ export function authoredCameraGround(zones: SiteZone[], lng: number, lat: number
         const height=specialistWalkingHeight(variant,(x*dy-y*dx)/length,(x*dx+y*dy)/length,length,
           hasElevatedStation(variant)?zone.properties?.road_native_stops??[]:[],upper);
         if(height!==null&&level!==null){
-          const station=(x*dx+y*dy)/length,deckStart=(length-100)/2;
+          const modularBridge = modularBridgeProgramFor(variant);
+          const station=(x*dx+y*dy)/length,deckStart=modularBridge
+            ? modularBridge.bridge.approachM + modularBridge.bridge.endM : (length-100)/2;
           // Retain the lower route when walking through the opening. Entering
           // a ramp or clicking the deck keeps the upper continuous surface.
           // Map picking resolves the underlying terrain, not every instanced
           // deck mesh. A new entry on the bridge chooses its upper walkable
           // plane; arriving from outside underneath retains the lower level.
           const enteredDeck = entrySurfaceHeight !== undefined;
-          if(variant===BRIDGE_VARIANT && station>deckStart+8 && station<length-deckStart-8
+          const supportInset = modularBridge ? 2 : 8;
+          if((variant===BRIDGE_VARIANT || modularBridge) && station>deckStart+supportInset && station<length-deckStart-supportInset
             && measured<level+height-2 && !enteredDeck)return level;
           return level+height;
         }

@@ -257,5 +257,19 @@
   "revision": "4ff46e23abc65c10c77525e82f5d5b8c614218b9c920c0cfbed72060f62f165f",
   "status": "local-pilot-runtime-pending"
 }
+,
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "urban_pedestrian_footbridge",
+  "variantId": "timber_covered_bridge_route_v1",
+  "placementId": "timber_covered_bridge_route_v1",
+  "revision": "4275b01adc0228982522fa7e5201d026e5823ee264f549e4ebda29ef56ebeeed",
+  "status": "local-pilot-runtime-pending",
+  "review": {
+    "asset": "derived-pilot-pending",
+    "runtime": "NOT TESTED"
+  }
+}
 ]
 }

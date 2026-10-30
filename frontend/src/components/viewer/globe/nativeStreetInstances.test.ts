@@ -4,6 +4,17 @@ import { instanceStreetModule } from './nativeStreetInstances';
 import type { NativeStreetPose } from './nativeStreetPilot';
 
 describe('native street instancing',()=>{
+  it('adjusts a bridge middle bay along the route while retaining its width, height and source geometry', () => {
+    const source = new THREE.Group(), geometry = new THREE.BoxGeometry(6, 8, 4), material = new THREE.MeshStandardMaterial();
+    source.add(new THREE.Mesh(geometry, material));
+    const pose = {kind:'bridge_bay',url:'/bay.glb',sha256:'a'.repeat(64),x:0,y:0,z:0,yaw:0,
+      scale:1,longitudinalScale:1.25,stationM:0,surfaceLiftM:0} satisfies NativeStreetPose;
+    const group = instanceStreetModule(source, [pose]);
+    const size = new THREE.Box3().setFromObject(group).getSize(new THREE.Vector3());
+    expect(size.x).toBeCloseTo(6); expect(size.y).toBeCloseTo(5); expect(size.z).toBeCloseTo(8);
+    expect((group.children[0] as THREE.Mesh).geometry).toBe(geometry);
+    expect(new THREE.Box3().setFromObject(source).getSize(new THREE.Vector3()).z).toBe(4);
+  });
   it('retains the source node transform, exact material and all 1200 rigid instances',()=>{
     const source=new THREE.Group(),material=new THREE.MeshStandardMaterial();
     const part=new THREE.Mesh(new THREE.BoxGeometry(2,3,4),material);

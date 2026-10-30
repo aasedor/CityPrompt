@@ -1,0 +1,89 @@
+[
+  {
+    "id": "timber_covered_bridge_route_v1",
+    "sourceArchetypeId": "urban_pedestrian_footbridge",
+    "title": "Timber Covered Bridge — Draw Route",
+    "status": "candidate",
+    "sourceAssemblySha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+    "referenceSha256": "2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936",
+    "widthM": 6,
+    "fixtureLengthM": 43.6,
+    "routeAxis": "local_y",
+    "junctionSurface": "pavers",
+    "sections": [
+      {
+        "name": "left_reserve",
+        "x": -2.5,
+        "width": 1,
+        "material": "timber"
+      },
+      {
+        "name": "clear_walk",
+        "x": 0,
+        "width": 4,
+        "material": "timber"
+      },
+      {
+        "name": "right_reserve",
+        "x": 2.5,
+        "width": 1,
+        "material": "timber"
+      }
+    ],
+    "placements": [],
+    "treeWells": [],
+    "modules": {
+      "bridge_left_stair": {
+        "sha256": "809464012e9ec5a0e6f80668b35e4a77a5d256a432fd95e9c90b283f24382f8e",
+        "bytes": 50624,
+        "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb"
+      },
+      "bridge_left_end": {
+        "sha256": "76babe3579ca81530fbe013b1a088bb14a1bede9486dfcdd50d8c612366a41fc",
+        "bytes": 143580,
+        "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb"
+      },
+      "bridge_bay": {
+        "sha256": "fc56d96e008318e3fb9a0edf6fe9ed8dc91014e899fb6e6d1f549dce54d14374",
+        "bytes": 146568,
+        "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb"
+      },
+      "bridge_right_end": {
+        "sha256": "10562dbbcae0c856a591d78f98bd1fda16434fcdf20d53685c6ceb4ce382fdc9",
+        "bytes": 140892,
+        "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb"
+      },
+      "bridge_right_stair": {
+        "sha256": "8c2937bf27f8b4136ad61c6b89106f36f52419a86588c91874cf3988e96fbb18",
+        "bytes": 50624,
+        "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb"
+      }
+    },
+    "program": {
+      "schemaVersion": 1,
+      "adapter": "modular-bridge-v1",
+      "bridge": {
+        "approachM": 6.3,
+        "endM": 6.833333333333333,
+        "bayM": 4.333333333333333,
+        "deckHeightM": 3.45,
+        "clearWidthM": 4
+      },
+      "surfaceRegions": [],
+      "details": [],
+      "paving": "source-native",
+      "pavingModuleM": [
+        0.3,
+        0.15
+      ],
+      "baseLiftM": 0,
+      "palette": {},
+      "minLengthM": 32,
+      "maxLengthM": 240,
+      "preparedLevelOnly": true
+    },
+    "programSha256": "ed1dba861ef40b328b19d3bf9788fa8d06d27652939ce92280062e90816a8458",
+    "thumbnailUrl": "/archetypes/streets/urban-pedestrian-footbridge/variant_2.png",
+    "sourceRecipeSha256": "4275b01adc0228982522fa7e5201d026e5823ee264f549e4ebda29ef56ebeeed"
+  }
+]

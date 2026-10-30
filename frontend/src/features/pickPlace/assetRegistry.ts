@@ -13,7 +13,7 @@ import { withBuildingOnlyFootprint } from './buildingOnlyFootprint';
 import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
-import nativeStreets from '@/data/nativeStreetPilots.json';
+import { nativeStreetSources as nativeStreets } from '@/components/viewer/globe/nativeStreetSources';
 import { nativeStreetMaxLength } from '@/components/viewer/globe/streetRoutePolicy';
 import manualStreets from '@/data/streetManual.json';
 import { reviewedAssetClassification } from './catalogueClassification';
@@ -198,15 +198,19 @@ export function additionalStreet(archetypeId: string, label: string, description
 
 const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
   id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
-    label: street.title, description: street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${nativeStreetMaxLength(street.id)} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
+    label: street.title, description: street.program?.adapter === 'modular-bridge-v1' ? 'Draw two endpoints. The bridge repeats its structural bays to fit your span, with compact stairs at each end. Prepared level site; no surrounding river or landscape.' : street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${nativeStreetMaxLength(street.id)} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
   calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
   model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },
   properties: { road_archetype_id: street.sourceArchetypeId, road_selected_variant_id: street.id,
     width: street.widthM, pick_place_street_section: street.id, pick_place_automatic_3d: true,
     pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
-    road_standard_citation: 'City Prompt native-module teaching section' },
+    road_standard_citation: 'City Prompt native-module teaching section',
+    ...(street.program?.adapter === 'modular-bridge-v1' ? { lane_count: 0 } : {}) },
 }));
+
+export const MODULAR_BRIDGE_ASSETS = import.meta.env.DEV && import.meta.env.MODE === 'development'
+  ? NATIVE_STREET_ASSETS.filter(asset => nativeStreets.find(row => row.id === asset.id)?.program?.adapter === 'modular-bridge-v1') : [];
 
 /** Surface-only paths keep a complete clear walking width, with no road kit. */
 export const PATHWAY_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS
@@ -367,7 +371,7 @@ export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, 
     model:{...asset.model,revision:layout.contentRevision,method:'native_park_v2'},
     width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
     properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
-}).concat(LOCAL_TEACHING_BUILDINGS, COURT_ONLY_SPORT_ASSETS, FLEXIBLE_PARK_ASSETS, PUBLIC_REALM_RELEASE_SAVED_ASSETS, LOCAL_CLAUDE_SAVED_ASSETS.filter(asset =>
+}).concat(MODULAR_BRIDGE_ASSETS, LOCAL_TEACHING_BUILDINGS, COURT_ONLY_SPORT_ASSETS, FLEXIBLE_PARK_ASSETS, PUBLIC_REALM_RELEASE_SAVED_ASSETS, LOCAL_CLAUDE_SAVED_ASSETS.filter(asset =>
   !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id))).map(reviewedAssetClassification);
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {

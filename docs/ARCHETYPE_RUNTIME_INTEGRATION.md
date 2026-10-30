@@ -809,3 +809,7 @@ Keep raw attempt inputs and video control guides requester-private even when the
 saved output is shared. Test revocation against GET, HEAD, Range and old tickets;
 refresh current project authorization on each read. A healthy process or mocked
 unit test alone does not establish Linux prefork crash/timeout recovery.
+
+## Two-endpoint bridge draft and persistence regression
+
+For route-capable bridges, verify first-click hover, both confirmed endpoints plus cursor motion, extra click endpoint adjustment, Enter/Finish and the complete click/click/double-click event sequence. Coordinates and sampled-height arrays must retain the same two endpoints; ordinary street bend/duplicate behavior must remain unchanged. Repeat endpoint edits against the actual PostgreSQL enum-backed API, then Undo/Redo/reload and download the exact source. Mocked session tests alone do not prove a valid database query. Keep original fixed saves and production gates distinct from the new route revision.

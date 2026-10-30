@@ -14,7 +14,7 @@ export function instanceStreetModule(scene: THREE.Group, poses: NativeStreetPose
       const matrix=new THREE.Matrix4().compose(
         new THREE.Vector3(pose.x,pose.y,pose.z+pose.surfaceLiftM),
         new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,0,1),pose.yaw),
-        new THREE.Vector3(pose.scale,pose.scale,pose.scale),
+        new THREE.Vector3(pose.scale,pose.scale * (pose.longitudinalScale ?? 1),pose.scale),
       );
       mesh.setMatrixAt(index,matrix.multiply(convert).multiply(object.matrixWorld));
     });

@@ -1,3 +1,4 @@
+import { modularBridgeProgramFor } from './modularBridgeProgram';
 import {pickReferenceFeature, resolveReferenceSelection, type ReferenceSelection} from '@/features/referenceLayers/referenceInspection';
 import {ReferenceFeatureDetails} from '@/features/referenceLayers/ReferenceFeatureDetails';
 import type { StreetNamesState } from '@/features/referenceLayers/useStreetNames';
@@ -54,7 +55,7 @@ import { StreetPreviewGroundProvider } from '@/features/pickPlace/StreetPreviewG
 import { GlobeBuildingPlotLandscape } from './GlobeBuildingPlotLandscape';
 import { BuildingLandscapeSurfaceProvider } from './BuildingFoundationSurface';
 import { nativeStreetPreparationProblem } from './nativeStreetPilot';
-import { streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
+import { appendStreetDrawingValue, finishDoubleClickValues, streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
 import { usePublicRoadContext } from '@/features/pickPlace/usePublicRoadContext';
 import { supportsPublicRoadSuggestions } from '@/features/pickPlace/publicRoadSuggestions';
 import { Canvas, useThree } from '@react-three/fiber';
@@ -4190,7 +4191,7 @@ export function GlobeSitePlannerMap({
   const addDrawingPointFromSurface = useCallback((surface: { lngLat: [number, number]; height: number }) => {
     if (!activeSitePlannerTool) return;
 
-    const newPts = [...drawingPointsRef.current, surface.lngLat];
+    const newPts = appendStreetDrawingValue(drawingPointsRef.current, surface.lngLat, activeSitePlannerTool === 'road' ? activeToolProperties : null);
     const shouldFilterHeight = shouldFilterObjectTerrainHeight(activeSitePlannerTool);
     const tilesGroup = tilesRendererRef.current?.group;
     const drawingHeight = shouldFilterHeight && tilesGroup?.children?.length
@@ -4202,14 +4203,14 @@ export function GlobeSitePlannerMap({
         surface.height,
       ) ?? surface.height
       : surface.height;
-    const newHeights = [...drawingPointHeightsRef.current, drawingHeight];
+    const newHeights = appendStreetDrawingValue(drawingPointHeightsRef.current, drawingHeight, activeSitePlannerTool === 'road' ? activeToolProperties : null);
 
     drawingPointsRef.current = newPts;
     drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [activeSitePlannerTool, updateCenterConnectionState]);
+  }, [activeSitePlannerTool, activeToolProperties, updateCenterConnectionState]);
 
   const placeCenterVertex = useCallback(() => {
     if (!activeSitePlannerTool) return;
@@ -4428,7 +4429,7 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    const newPts = [...drawingPointsRef.current, clickLngLat];
+    const newPts = appendStreetDrawingValue(drawingPointsRef.current, clickLngLat, activeSitePlannerTool === 'road' ? activeToolProperties : null);
     const shouldFilterHeight = shouldFilterObjectTerrainHeight(activeSitePlannerTool);
     const tilesGroup = tilesRendererRef.current?.group;
     const drawingHeight = shouldFilterHeight && tilesGroup?.children?.length
@@ -4440,7 +4441,7 @@ export function GlobeSitePlannerMap({
         clickHeight,
       ) ?? clickHeight
       : clickHeight;
-    const newHeights = [...drawingPointHeightsRef.current, drawingHeight];
+    const newHeights = appendStreetDrawingValue(drawingPointHeightsRef.current, drawingHeight, activeSitePlannerTool === 'road' ? activeToolProperties : null);
     drawingPointsRef.current = newPts;
     drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
@@ -4656,10 +4657,12 @@ export function GlobeSitePlannerMap({
             if (!isDrawingNow) return;
             e.preventDefault();
             e.stopPropagation();
-            // Remove the duplicate point added by the first click of the double-click
+            // Bridge clicks already replace the endpoint; only ordinary drawings append a duplicate.
             if (drawingPointsRef.current.length > 0) {
-              drawingPointsRef.current = drawingPointsRef.current.slice(0, -1);
-              drawingPointHeightsRef.current = drawingPointHeightsRef.current.slice(0, -1);
+              const drawingState = useViewerStore.getState();
+              const properties = drawingState.activeSitePlannerTool === 'road' ? drawingState.activeToolProperties : null;
+              drawingPointsRef.current = finishDoubleClickValues(drawingPointsRef.current, properties);
+              drawingPointHeightsRef.current = finishDoubleClickValues(drawingPointHeightsRef.current, properties);
               setDrawingPoints(drawingPointsRef.current);
               setDrawingPointHeights(drawingPointHeightsRef.current);
             }
@@ -5178,7 +5181,7 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
-      {activeSitePlannerTool === 'road' && !interactionPaused && !captureOverlaysHidden && <aside aria-label="Public road suggestions"
+      {activeSitePlannerTool === 'road' && !(import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(activeToolProperties?.road_selected_variant_id)) && !interactionPaused && !captureOverlaysHidden && <aside aria-label="Public road suggestions"
         className="absolute right-3 top-28 z-40 max-w-64 rounded-lg border border-cyan-500 bg-white p-3 text-xs text-slate-900 shadow-lg">
         <label className="flex min-h-8 items-center gap-2 font-semibold"><input type="checkbox" checked={publicRoadSnapSupported && publicRoadSnapEnabled} disabled={!publicRoadSnapSupported}
           onChange={event => setPublicRoadSnapEnabled(event.target.checked)} />Snap to nearby public roads</label>

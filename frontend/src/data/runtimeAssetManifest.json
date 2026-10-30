@@ -146,6 +146,7 @@
     "src/components/viewer/globe/modelAssetAvailability.ts",
     "src/components/viewer/globe/modelMaterialQuality.ts",
     "src/components/viewer/globe/modelRenderZones.ts",
+    "src/components/viewer/globe/modularBridgeProgram.ts",
     "src/components/viewer/globe/nativeStreetAssets.ts",
     "src/components/viewer/globe/nativeStreetInstances.ts",
     "src/components/viewer/globe/nativeStreetJunction.ts",
@@ -153,6 +154,7 @@
     "src/components/viewer/globe/nativeStreetPilot.ts",
     "src/components/viewer/globe/nativeStreetProgram.ts",
     "src/components/viewer/globe/nativeStreetReadiness.ts",
+    "src/components/viewer/globe/nativeStreetSources.ts",
     "src/components/viewer/globe/neighborhoodParkGeometry.ts",
     "src/components/viewer/globe/neighborhoodParkLayout.ts",
     "src/components/viewer/globe/parkAccessBridgeGeometry.ts",
@@ -302,6 +304,7 @@
     "src/data/legoFamilySignatures.json",
     "src/data/localTeachingBuildings.json",
     "src/data/localTowerStoreyPrograms.json",
+    "src/data/nativeBridgePilots.json",
     "src/data/nativeParks.json",
     "src/data/nativeStreetModuleBounds.json",
     "src/data/nativeStreetPilots.json",
@@ -505,6 +508,7 @@
     "src/features/pickPlace/geometry.ts",
     "src/features/pickPlace/localTeachingBuildings.ts",
     "src/features/pickPlace/localTowerStoreyPrograms.ts",
+    "src/features/pickPlace/modularBridgeConnections.ts",
     "src/features/pickPlace/nativeBuildingContract.ts",
     "src/features/pickPlace/nativeBuildingRouting.ts",
     "src/features/pickPlace/nativePlacementPreview.ts",
@@ -672,10 +676,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3686,
+    "explicitReferenceCount": 3691,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5470,
-    "requiredLogicalBytes": 12840422273,
+    "requiredFileCount": 5475,
+    "requiredLogicalBytes": 12841486849,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -23859,6 +23863,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/catalogueHeroImages.json",
+        "src/data/nativeBridgePilots.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1357841,
@@ -31535,6 +31540,46 @@
       "lfsOid": "b5a7948c4bc6295ef0ad287efbea84e6a5455dbf1f9ae4cc6268c57003521bae"
     },
     {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb",
+      "sources": [
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 146568,
+      "lfsOid": "fc56d96e008318e3fb9a0edf6fe9ed8dc91014e899fb6e6d1f549dce54d14374"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb",
+      "sources": [
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 143580,
+      "lfsOid": "76babe3579ca81530fbe013b1a088bb14a1bede9486dfcdd50d8c612366a41fc"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb",
+      "sources": [
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 50624,
+      "lfsOid": "809464012e9ec5a0e6f80668b35e4a77a5d256a432fd95e9c90b283f24382f8e"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb",
+      "sources": [
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 140892,
+      "lfsOid": "10562dbbcae0c856a591d78f98bd1fda16434fcdf20d53685c6ceb4ce382fdc9"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb",
+      "sources": [
+        "src/data/nativeBridgePilots.json"
+      ],
+      "logicalBytes": 50624,
+      "lfsOid": "8c2937bf27f8b4136ad61c6b89106f36f52419a86588c91874cf3988e96fbb18"
+    },
+    {
       "url": "/street-kits/site-details-v1/accessible-parking.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -32436,9 +32481,9 @@
         "/street-kits/pilots/"
       ],
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
-      "fileCount": 174,
-      "logicalBytes": 92353281,
-      "pathDigest": "f42ba76385d374b65f41a1d041f36b4ba4440ae1adbbd5a9bbac2ff329e498ec"
+      "fileCount": 179,
+      "logicalBytes": 92885569,
+      "pathDigest": "e9a5be1ff1a5f42f134a83326751a9d5b03d391a57769762d6046763f04ab5a6"
     },
     {
       "name": "sports-park-modules",

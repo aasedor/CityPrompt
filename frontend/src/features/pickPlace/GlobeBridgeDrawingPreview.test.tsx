@@ -1,0 +1,47 @@
+import { act, cleanup, fireEvent, render } from '@testing-library/react';
+import { afterAll, afterEach, expect, it, vi } from 'vitest';
+import { Matrix4 } from 'three';
+import type { SiteZone } from '@/types';
+const harness = vi.hoisted(() => ({ frame: null as null | ((state: { clock: { elapsedTime: number } }) => void),
+  canvas: null as HTMLCanvasElement | null, zone: null as SiteZone | null, camera: null as unknown }));
+vi.mock('@react-three/fiber', () => ({
+  useThree: () => ({gl:{domElement:harness.canvas},camera:harness.camera,invalidate:()=>{}}),
+  useFrame: (callback: typeof harness.frame) => { harness.frame=callback; },
+}));
+vi.mock('@/components/viewer/globe/GlobeStreetDetailLayer', () => ({
+  GlobeStreetDraft: ({ zone }: {zone:SiteZone}) => {harness.zone=zone;return <div data-testid="bridge-model"/>;},
+}));
+vi.mock('./PublicRoadSuggestionMarker', () => ({PublicRoadSuggestionMarker:()=>null}));
+vi.stubEnv('DEV',true);vi.stubEnv('MODE','development');
+const { GlobeStreetDrawingPreview } = await import('./GlobeStreetDrawingPreview');
+const { MODULAR_BRIDGE_ASSETS } = await import('./assetRegistry');
+afterEach(cleanup);afterAll(()=>vi.unstubAllEnvs());
+
+it('keeps the real bridge preview after the second click when the cursor moves elsewhere', () => {
+  harness.canvas=document.createElement('canvas');
+  harness.canvas.getBoundingClientRect=()=>({width:1000,height:800,left:0,top:0}) as DOMRect;
+  harness.camera={matrixWorld:new Matrix4()};
+  const points=[[-114,51],[-114,51+80/111320]];
+  let cursor=points[1];
+  const boundary={id:'site',zone_type:'site_boundary',coordinates:[[-115,50],[-113,50],[-113,52],[-115,52]],
+    properties:{terrain_elevation_m:1000,terrain_strategy:'level',community_3d_mask_existing_tiles:true}} as unknown as SiteZone;
+  const onStatusChange=vi.fn();
+  const props={points:[points[0]],pointHeights:[1000],properties:MODULAR_BRIDGE_ASSETS[0].properties,
+    zones:[boundary],terrainHeight:1000,skipSnapping:true,onStatusChange,
+    raycastSurface:()=>({lngLat:cursor as [number,number],height:1000})};
+  const view=render(<GlobeStreetDrawingPreview {...props}/>);
+  expect(view.queryByTestId('bridge-model')).toBeNull();
+  fireEvent.pointerMove(harness.canvas,{clientX:800,clientY:400});
+  act(()=>harness.frame!({clock:{elapsedTime:1}}));
+  expect(view.queryByTestId('bridge-model')).not.toBeNull();
+  expect(harness.zone?.properties?.plan_route_controls).toEqual(points);
+  view.rerender(<GlobeStreetDrawingPreview {...props} points={points}/>);
+  cursor=[-113.999,51+20/111320];
+  fireEvent.pointerMove(harness.canvas,{clientX:900,clientY:450});
+  act(()=>harness.frame!({clock:{elapsedTime:2}}));
+  expect(view.queryByTestId('bridge-model')).not.toBeNull();
+  expect(harness.zone?.properties?.plan_route_controls).toEqual(points);
+  expect(onStatusChange).toHaveBeenLastCalledWith(null);
+  view.rerender(<GlobeStreetDrawingPreview {...props} points={[points[0]]}/>);
+  expect(view.queryByTestId('bridge-model')).toBeNull();
+});

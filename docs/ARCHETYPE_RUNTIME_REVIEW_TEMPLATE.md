@@ -222,3 +222,7 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot
 alone is not student-ready acceptance. Do not invent a review or approval.
+
+## Two-endpoint bridge draft and persistence regression
+
+For route-capable bridges, verify first-click hover, both confirmed endpoints plus cursor motion, extra click endpoint adjustment, Enter/Finish and the complete click/click/double-click event sequence. Coordinates and sampled-height arrays must retain the same two endpoints; ordinary street bend/duplicate behavior must remain unchanged. Repeat endpoint edits against the actual PostgreSQL enum-backed API, then Undo/Redo/reload and download the exact source. Mocked session tests alone do not prove a valid database query. Keep original fixed saves and production gates distinct from the new route revision.

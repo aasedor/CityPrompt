@@ -6,6 +6,7 @@ import { buildSpecialistStreetProgram, CANAL_VARIANT, BRIDGE_VARIANT, specialist
 import { ELEVATED_RAIL_VARIANT, CIVIC_RAIL_VARIANT, elevatedRailStationProblem } from './elevatedRailProgram';
 import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
 import { pathwaySurfacePolygons } from '@/utils/pathwayFootprint';
+import { modularBridgeRouteProblem, type ModularBridgeProgram } from './modularBridgeProgram';
 
 export function nativeStreetHasPreparedGround(preparedElevation: number | null, hasPreparedApproach: boolean, hasSharedGround: boolean) {
   return Number.isFinite(preparedElevation) || hasPreparedApproach || hasSharedGround;
@@ -19,6 +20,7 @@ export interface NativeStreetProgram {
   meshDetails?:Array<{material:string;positions:number[];indices:number[]}>;
   paving:string;pavingModuleM:number[];minLengthM:number;maxLengthM:number;preparedLevelOnly:boolean;
   baseLiftM:number;palette:Record<string,number[]|undefined>;
+  bridge?: ModularBridgeProgram['bridge'];
 }
 
 /** The same ordered ownership partition used by the original Blender builder. */
@@ -57,6 +59,13 @@ function routeGroundRegions(width:number,length:number,regions:NativeStreetRegio
 }
 
 export function buildNativeStreetProgram(program:NativeStreetProgram,width:number,fixtureLength:number,route:StreetRouteStation[],stops:BrtStop[]=[]) {
+  if (import.meta.env.DEV && program.adapter === 'modular-bridge-v1' && program.bridge) {
+    const problem = modularBridgeRouteProblem({ ...program, bridge: program.bridge }, route, true);
+    if (problem) throw new Error(problem);
+    // The verified modules own deck, stairs and structure. No lawn or paving
+    // rectangle may fill the clear opening underneath the bridge.
+    return [];
+  }
   if(program.adapter==='elevated-rail-v1'||program.adapter==='elevated-station-v1'){
     const problem=specialistRouteProblem(program.adapter==='elevated-rail-v1'?ELEVATED_RAIL_VARIANT:CIVIC_RAIL_VARIANT,route);
     if(problem)throw new Error(problem);

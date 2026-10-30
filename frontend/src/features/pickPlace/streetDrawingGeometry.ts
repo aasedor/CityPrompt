@@ -1,4 +1,5 @@
 import type { SiteZone, SiteZoneProperties } from '@/types';
+import { modularBridgeProgramFor } from '@/components/viewer/globe/modularBridgeProgram';
 import { bufferLineToPolygon, haversineDistance } from '@/components/viewer/mapEngine/geoUtils';
 import { snapRoadEndpoints } from '@/utils/proceduralRoadNetwork';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
@@ -36,9 +37,22 @@ export function streetDrawingGeometry(points: number[][], properties: SiteZonePr
   return { coordinates: snapped.coordinates, properties: snapped.properties };
 }
 
-export function streetPreviewPoints(points: number[][], cursor: number[] | null) {
+export function streetPreviewPoints(points: number[][], cursor: number[] | null, maxPoints = Infinity) {
   const result = points.filter(p => p.length >= 2 && p.slice(0, 2).every(Number.isFinite)).map(p => [...p]);
-  if (result.length && cursor && cursor.slice(0, 2).every(Number.isFinite)
+  if (result.length && result.length < maxPoints && cursor && cursor.slice(0, 2).every(Number.isFinite)
     && haversineDistance(result[result.length - 1], cursor) >= .3) result.push([...cursor]);
   return result;
+}
+
+/** Further clicks adjust the end of a two-point bridge rather than adding an unsupported bend.
+ * Apply the same operation to the height array to retain its point correspondence. */
+export function appendStreetDrawingValue<T>(values: T[], next: T, properties?: SiteZoneProperties | null): T[] {
+  return import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(properties?.road_selected_variant_id) && values.length >= 2
+    ? [values[0], next] : [...values, next];
+}
+
+/** Browser double-click dispatches two click events first. Bridge clicks replace
+ * the endpoint, while ordinary drawings append a duplicate that must be removed. */
+export function finishDoubleClickValues<T>(values:T[], properties?:SiteZoneProperties|null):T[] {
+  return import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(properties?.road_selected_variant_id) ? values : values.slice(0,-1);
 }

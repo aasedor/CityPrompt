@@ -3,13 +3,16 @@ import { canalRoute, canalRouteProblem, canalWalkingHeight, type CanalPoint } fr
 import type {StreetRouteStation} from './nativeStreetPilot';
 import { nativeStreetMaxLength } from './streetRoutePolicy';
 import { hasElevatedStation, isElevatedRail, RAIL_LIFT_X_M, RAIL_LIFT_Y_M, RAIL_PLATFORM_HEIGHT_M, type RailStation } from './elevatedRailProgram';
+import { modularBridgeProgramFor, modularBridgeRouteProblem, modularBridgeWalkingHeight } from './modularBridgeProgram';
 
 export const CANAL_VARIANT='amsterdam_gracht_v1';
 export const BRIDGE_VARIANT='landmark_signature_bridge_v2';
-export const isSpecialistStreet=(variant:unknown)=>variant===CANAL_VARIANT || variant===BRIDGE_VARIANT || isElevatedRail(variant);
+export const isSpecialistStreet=(variant:unknown)=>variant===CANAL_VARIANT || variant===BRIDGE_VARIANT || isElevatedRail(variant) || Boolean(modularBridgeProgramFor(variant));
 export interface SpecialistFixture {kind:string;x:number;y:number;z:number;yaw:number;scale:number;anchorM?:number}
 
 export function specialistRouteProblem(variant:string,route:StreetRouteStation[]):string|null {
+  const bridgeProgram = modularBridgeProgramFor(variant);
+  if (bridgeProgram) return modularBridgeRouteProblem(bridgeProgram, route);
   if(!isSpecialistStreet(variant))return null;
   if(variant===CANAL_VARIANT)return canalRouteProblem(route);
   const min=isElevatedRail(variant)?48:260,max=nativeStreetMaxLength(variant);
@@ -53,6 +56,8 @@ export function specialistFixtures(variant:string,length:number,route:CanalPoint
 
 /** Source-height camera support, in metres above the prepared site. */
 export function specialistWalkingHeight(variant:string,x:number,station:number,length:number,stops:RailStation[]=[],onUpperLevel=false):number|null {
+  const bridgeProgram = modularBridgeProgramFor(variant);
+  if (bridgeProgram) return modularBridgeWalkingHeight(bridgeProgram, x, station, length);
   if(station<0||station>length)return null;
   // The public route stays below the protected tracks, including when a map
   // click initially hits the deck or train roof.
