@@ -29,21 +29,25 @@
 
 ## Task 1: Integrate the two completed histories
 
-- [ ] Record source commits, remote baseline and the running export's uncommitted differences externally.
-- [ ] Fast-forward the integration branch to the student app checkpoint, then merge the catalogue checkpoint without committing unresolved conflicts.
-- [ ] Resolve individual overlaps, preserving both sets of tests; regenerate only derived metadata.
-- [ ] Verify both source commits are ancestors of the resulting merge and inventory remaining local-only differences.
+- [x] Record source commits, remote baseline and the running export's uncommitted differences externally.
+- [x] Fast-forward the integration branch to the student app checkpoint, then merge the catalogue checkpoint without committing unresolved conflicts.
+- [x] Resolve individual overlaps, preserving both sets of tests; regenerate only derived metadata.
+- [x] Verify both source commits are ancestors of the resulting merge and inventory remaining local-only differences.
 
 ## Task 2: Verify the combined release
 
-- [ ] Run focused tests for imported GLBs, surfaces, reports, towers, snapping, intersections, catalogue cards, fixed footprints and bridge corrections.
-- [ ] Run TypeScript, lint, relevant backend tests, hosted asset checks and production build.
+- [x] Run focused tests for imported GLBs, surfaces, reports, towers, snapping, intersections, catalogue cards, fixed footprints and bridge corrections.
+- [x] Run TypeScript, lint, relevant backend tests, hosted asset checks and production build.
 - [ ] Run browser placement/edit/save/reload/walk/free-capture checks on the combined build.
-- [ ] Obtain an independent whole-integration review, address regressions and record honest limits.
+- [x] Obtain an independent whole-integration review, address regressions and record honest limits.
 
 ## Task 3: Capture the handoff branch
 
-- [ ] Commit the coherent integration and a source/asset coverage note after diff checks.
+- [x] Commit the coherent integration and a source/asset coverage note after diff checks.
 - [ ] Verify the remote target has not moved; preserve exact commit and LFS-object availability evidence.
 - [ ] Prepare a checked PR targeting `deployment-version`; promote through the existing CI process only when passing and within the user's branch-update authorization.
 - [ ] Verify remote readback and retain a rollback commit. Keep production deployment a separate action.
+
+## Actual completion boundary
+
+Browser checks covered project/boundary creation, catalogue discovery, hospital placement/rotation, saved reload, tower height editing and quantitative reports. A complete fresh browser walk/free-export/route matrix remains unrun on this combined checkout; earlier local evidence and automated tests are separate. Seven unpublished building pilots still fail the intentional publication preflight. The source consolidation may be proposed as a draft PR, but cannot be merged through failing required CI or treated as security clearance.
