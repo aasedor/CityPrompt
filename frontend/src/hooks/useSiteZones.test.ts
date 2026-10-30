@@ -230,7 +230,7 @@ describe('useSiteZones', () => {
 
     await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
     await waitFor(() => expect(toast).toHaveBeenCalledWith(
-      'Site boundary saved. Nearby map context is unavailable. Open Layers → Load nearby Calgary streets & paths to add existing routes, or keep designing.',
+      'Site boundary saved. Nearby map context is unavailable. You can keep designing.',
       { icon: 'ℹ️', duration: 8000 },
     ));
     expect(toast.error).not.toHaveBeenCalled();

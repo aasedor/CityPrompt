@@ -97,7 +97,6 @@ import { CityPolicyDetailsCard } from '@/features/policyPlans/CityPolicyDetailsC
 import { ZoningCatalogueCard } from '@/features/zoningCatalogue/ZoningCatalogueCard';
 import { resolveZoneInspection } from '@/features/zoningCatalogue/zoningInspection';
 import type { ZoneInspection } from '@/features/zoningCatalogue/types';
-import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
 import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
 import { usePublicDataLayers } from '@/features/publicData/usePublicDataLayers';
@@ -183,7 +182,7 @@ export function ProjectViewPage() {
   }, id, (asset,pose)=>detailPlacementSupport(asset,pose,siteZones.map(zone=>zone.id)));
   const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
   const references = useReferenceLayers(id);
-  const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
+  const transportContext = useMemo(() => existingTransport(references.legacyTransportLayers), [references.legacyTransportLayers]);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [aiGenerateInitialPrompt, setAiGenerateInitialPrompt] = useState<string | undefined>();
   const [aiGenerateInitialTab, setAiGenerateInitialTab] = useState<'image' | undefined>();
@@ -1290,7 +1289,6 @@ export function ProjectViewPage() {
                 <summary className="min-h-11 cursor-pointer text-sm font-bold">Site Context</summary>
                 <p className="mb-3 text-xs text-slate-600">What exists in and around your site.</p>
                 <div className="space-y-3"><StreetNamesControl state={streetNames}/><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend}/>
-                  <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers}/>
                   <PublicDataLayersPanel state={publicData}/><SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment}/></div>
               </details>
               <details className="rounded-2xl border border-slate-300 bg-white/95 p-3" aria-label="Policy">
@@ -1402,7 +1400,6 @@ export function ProjectViewPage() {
           <ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/>
           <SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment} />
           <ShapefileImportButton projectId={project.id} />
-          <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers} />
           <ReferenceLayersPanel layers={references.layers} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer}
             onDelete={references.canEdit ? references.removeLayer : undefined} deletingId={references.deletingId}
             isLoading={references.isLoading} error={references.error} onRetry={() => { void references.refetch(); }} />

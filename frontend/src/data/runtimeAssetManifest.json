@@ -578,7 +578,6 @@
     "src/features/publicData/publicData.ts",
     "src/features/publicData/publicDatasets.ts",
     "src/features/publicData/usePublicDataLayers.ts",
-    "src/features/referenceLayers/CalgaryContextButton.tsx",
     "src/features/referenceLayers/CalgaryDistrictSelect.tsx",
     "src/features/referenceLayers/ExistingLandUse.tsx",
     "src/features/referenceLayers/GlobeReferenceLayer.tsx",

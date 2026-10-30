@@ -198,7 +198,7 @@ export function useSiteZones(projectId: string | undefined) {
           const total = context.buildings.length + context.roads.length + context.water.length + context.parks.length;
           toast.success(`Site ready with ${total} nearby context features`);
         }).catch(() => {
-          toast('Site boundary saved. Nearby map context is unavailable. Open Layers → Load nearby Calgary streets & paths to add existing routes, or keep designing.', {
+          toast('Site boundary saved. Nearby map context is unavailable. You can keep designing.', {
             icon: 'ℹ️', duration: 8000,
           });
         });
