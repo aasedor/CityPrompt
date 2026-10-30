@@ -1,0 +1,23 @@
+# Corrected bridge batch and photographic picker follow-up
+
+Three corrected bridge choices are available as **local trials** on the deployment-version lineage. The timber pilot was checkpointed first; tied-arch and planted-green corrections then passed their separate source-locked visual reviews and bounded browser rehearsals. Nothing was pushed or deployed.
+
+| Local choice | Exact candidate | Fixed plot | Independent visual result |
+| --- | --- | --- | --- |
+| Timber Covered Footbridge | v004 / `0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad` | 44 × 9.2 m | 0 P0 / 0 P1; 8 P2 |
+| Tied-Arch Shared Bridge | v005 / `7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e` | 64.3 × 27.6 m | 0 P0 / 0 P1; 6 P2 |
+| Planted Green Bridge | v005 / `d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066` | 39.1 × 101.4 m | 0 P0 / 0 P1; 3 P2 |
+
+The new tied-arch plan has opposite six-degree end skews and a longer south tie, with every component using one transform. Compact quays replace external city context; v005 adds the guard returns missing in v004. The planted bridge retains its broad viewing pods, gains seated end abutments and inferred stairs, and replaces isolated upright foliage with overlapping low/mid planting and broader crowns. v004 failures and all pinned original Claude sources/GLBs remain preserved. These are architectural-clay concepts; accessibility and engineering compliance are not claimed.
+
+All **205 current development choices** now have decoded photographic hero images: 104 buildings, 42 parks and 59 streets. Each new bridge uses its exact locked photographic reference. The earlier [202-card hero checkpoint](CATALOGUE_HERO_CHECKPOINT_2026-10-29.md) and five parkade originals remain separate historical evidence; its audit was extended after adding these three choices. No archetype source catalogue was rewritten.
+
+The timber browser evidence remains in [its pilot checkpoint](CLAUDE_TIMBER_BRIDGE_PILOT_2026-10-29.md). Tied-arch and planted-green used a new disposable project, `77b1333f-1861-4b4c-84e4-9ff19bc56fa7`, on a 156 × 137 m vacant construction parcel drawn through ordinary UI. Browser picker, native placement, disabled size inputs/no resize corners, rotation (15° tied; 10° green), clean-tab reopen, canvas re-selection, Delete/Undo restoration and free exact-PNG content capture passed. Tied rotation Undo/Redo also passed. A read-only database check confirmed both exact revisions persisted after recovery. The 26.48 MB / 546,955-triangle planted model loaded and captured on this test computer; no performance benchmark is claimed.
+
+Unrun checks remain visible in each full `evidence/v005/runtime-review.md`: live first-person stair traversal, slopes, external/surveyed approaches, move-drag, full failure matrix, actual browser Download, paid rendering and lower-end/many-instance performance. The inherited Connections button and building-labelled rotation handle remain minor UI debt. Only a browser-extension `runtime.onMessage` error was observed; no model-load/application failure appeared in these bounded trials.
+
+Verification: 60 frontend tests across seven files; 49 backend/geometry/registration tests; TypeScript; six exact HTTP payload checks; all 205 hero URLs decoded; canonical fixed-public-realm preflight for 18 local allowed models / 36 payloads; and a current 5,441-record runtime inventory **metadata** check. The canonical preflight required hydrating 21 pre-existing matching LFS pointers from verified local preview bytes. Preview directory junctions correctly fail the preflight's path-containment check, so payload verification used the canonical checkout. Full release hydration is still unproven. Independent code review found no actionable findings.
+
+Production eligibility remains the original twelve reviewed releases. New candidates are `runtime_trial`; their broader runtime review and publication approval remain pending. Heavy original PNGs, phone boards, Blender files and complete as-built scripts stay outside Git in `C:/dev-artifacts/CityPrompt/claude-crossings-practical-20261029/`. Intentional candidate GLBs are staged through Git LFS; unrelated hydrated files remain unstaged.
+
+Private [bridge evidence folder](https://drive.google.com/drive/folders/1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf) and [photographic picker review folder](https://drive.google.com/drive/folders/1-B97Xt1sq8iREDu-qCABsW2lWqBgjLIc). Local delivery manifests preserve verified file IDs, sizes and parents. No paid image/video generation, credit purchase or app-wide Drive upload service was added.

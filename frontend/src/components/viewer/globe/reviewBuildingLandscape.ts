@@ -91,12 +91,15 @@ export function reviewBuildingLandscapePlacement(zone: SiteZone, building?: Buil
     originOffset.makeTranslation(...frame.rectCenterLocal, 0);
   }
   const centred = !building || isNativeClayPlan(extractLegoRecipe(building)!);
+  const bounds = source ? new THREE.Box3().setFromObject(source, true) : null;
+  const centre = bounds && !bounds.isEmpty() ? bounds.getCenter(new THREE.Vector3())
+    : new THREE.Vector3(contract.centre[0], 0, contract.centre[1]);
+  const floor = bounds && !bounds.isEmpty() ? bounds.min.y : 0;
   return { origin: [frame.centroidLng, frame.centroidLat], matrix: originOffset
     .multiply(new THREE.Matrix4().makeRotationZ(yaw))
     .multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2))
     .multiply(instanceMatrix)
-    .multiply(centred ? new THREE.Matrix4().makeTranslation(-contract.centre[0],
-      source ? -new THREE.Box3().setFromObject(source, true).min.y : 0, -contract.centre[1]) : new THREE.Matrix4()) };
+    .multiply(centred ? new THREE.Matrix4().makeTranslation(-centre.x, -floor, -centre.z) : new THREE.Matrix4()) };
 }
 
 /** Prepare an owned runtime clone. Only explicit near-grade ground materials

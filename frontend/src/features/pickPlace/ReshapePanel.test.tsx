@@ -29,8 +29,8 @@ it('keeps a brick podium tower footprint fixed while retaining its storey contro
   fireEvent.change(screen.getByLabelText('Rotation (degrees)'), {target:{value:'5'}});
   fireEvent.click(screen.getByRole('button',{name:'Apply shape'}));
   const actual = rectangleDimensions(onReshape.mock.calls[0][0]);
-  expect(actual.width).toBeCloseTo(57.04,5);
-  expect(actual.depth).toBeCloseTo(47.04,5);
+  expect(actual.width).toBeCloseTo(asset.width + 0.04,5);
+  expect(actual.depth).toBeCloseTo(asset.depth + 0.04,5);
 });
 
 it('keeps a flexible park recognisable without offering an incompatible fixed layout', () => {
@@ -43,6 +43,40 @@ it('keeps a flexible park recognisable without offering an incompatible fixed la
   expect(screen.getByRole('heading',{name:/Flexible Pocket Park/i})).toBeTruthy();
   expect(screen.queryByRole('combobox',{name:'Park layout'})).toBeNull();
   expect(screen.getByLabelText('Plot width (m)')).toBeEnabled();
+});
+
+it('keeps fixed native building dimensions read-only while allowing rotation', () => {
+  const asset = placeAsset('claude_trial_cmu_dock_warehouse');
+  const coordinates = rectangleAt([-114, 51], asset.width, asset.depth, 17);
+  const zone = { id: 'fixed-warehouse', zone_type: 'building', properties: placementProperties(asset), coordinates } as SiteZone;
+  const onReshape = vi.fn();
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={vi.fn()} onReshape={onReshape}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()} />);
+  expect(screen.queryByLabelText('Plot width (m)')).not.toBeInTheDocument();
+  expect(screen.queryByLabelText('Plot depth (m)')).not.toBeInTheDocument();
+  expect(screen.queryByText(/Use a corner to reshape/)).toBeNull();
+  fireEvent.change(screen.getByLabelText('Rotation (degrees)'), { target: { value: '47' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
+  const result = rectangleDimensions(onReshape.mock.calls[0][0]);
+  expect(result.width).toBeCloseTo(asset.width, 3);
+  expect(result.depth).toBeCloseTo(asset.depth, 3);
+  expect(result.degrees).toBeCloseTo(47, 3);
+});
+
+it('repairs an old oversized new-batch plot explicitly and duplicates at snug dimensions',()=>{
+  const asset=placeAsset('claude_trial_old_montreal_limestone_commercial');
+  const coordinates=rectangleAt([-114,51],150,150,27);
+  const zone={id:'oversized',zone_type:'building',properties:placementProperties(asset),coordinates} as SiteZone;
+  const onReshape=vi.fn(),onDuplicate=vi.fn();
+  render(<ReshapePanel zone={zone} disabled={false} onDuplicate={onDuplicate} onReshape={onReshape}
+    onClose={vi.fn()} onDelete={vi.fn()} onMore={vi.fn()}/>);
+  expect(onReshape).not.toHaveBeenCalled(); // Never silently relocate saved projects.
+  fireEvent.click(screen.getByRole('button',{name:'Fit footprint to building'}));
+  const fitted=rectangleDimensions(onReshape.mock.calls[0][0]);
+  expect(fitted.width).toBeCloseTo(asset.width,3);expect(fitted.depth).toBeCloseTo(asset.depth,3);
+  expect(fitted.degrees).toBeCloseTo(27,2);expect(fitted.center).toEqual(rectangleDimensions(coordinates).center);
+  fireEvent.click(screen.getByRole('button',{name:'Place another'}));
+  expect(onDuplicate.mock.calls[0].slice(0,3)).toEqual([asset.id,asset.width,asset.depth]);
 });
 
 it('shows move and rotation instructions without unsupported native-house plot controls', () => {

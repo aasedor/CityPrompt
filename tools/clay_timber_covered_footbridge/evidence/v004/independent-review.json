@@ -1,0 +1,487 @@
+{
+  "schema": "cityprompt.rlasm.independent_architectural_clay_review@1",
+  "candidate": "clay-timber-covered-footbridge-clay-v004",
+  "candidate_directory": "C:/dev-artifacts/CityPrompt/claude-crossings-practical-20261029/timber-v004",
+  "model": "clay-timber-covered-footbridge-clay-v004.glb",
+  "model_sha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+  "reviewer": "Codex independent verifier /root/crossings_review",
+  "reviewed_at_utc": "2026-10-30T00:41:17.184759+00:00",
+  "method": "RLASM v6.1",
+  "review_profile": "architectural_clay",
+  "scope": "Independent holistic source-locked review of exact timber v004 GLB-reimport evidence: identity, six bays, all four clipped end bays, guard optics/continuity, roof, both sides/rear, support contacts, declared inferred approach stairs, bounded landscape, all mandatory cameras and phone boards.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "category_closure_only": false,
+  "decision": "architectural_clay_reviewed",
+  "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_p2": 8,
+  "keeper_approved": false,
+  "runtime_activation_authorized": false,
+  "publication_authorized": false,
+  "inspection_counts": {
+    "exact_sources": 3,
+    "actual_glb_renders": 20,
+    "phone_boards": 4,
+    "all_required_pixels_opened": true,
+    "phone_boards_dimensions": [
+      1080,
+      1920
+    ]
+  },
+  "audit": {
+    "model_sha256_matches_build_report": true,
+    "model_bytes": 482756,
+    "actual_glb_meshes": 12,
+    "actual_glb_materials": 12,
+    "actual_glb_images": 0,
+    "actual_glb_textures": 0,
+    "source_hashes_and_bytes_match_current_locked_catalogue": true,
+    "all_nine_as_built_script_hashes_match": true,
+    "render_source_report": "actual optimized GLB reimport; no geometry/material replacement",
+    "report_roundtrip_delta_m": 0.0,
+    "render_provenance_limit": "Build report, GLB JSON, source hashes and copied as-built script hashes inspected; reviewer did not rerun Blender or independently regenerate renders. Deterministic checks are supporting evidence only."
+  },
+  "findings": [
+    {
+      "category": "exact identity, plan and six-bay rhythm",
+      "result": "pass for architectural clay",
+      "evidence": [
+        "sources/front.png",
+        "sources/oblique.jpg",
+        "sources/top.jpg",
+        "renders/front.png",
+        "renders/rear.png",
+        "renders/aerial.png",
+        "renders/top.png"
+      ],
+      "finding": "Long low-pitched hipped metal roof, warm glulam posts, six equal side bays, end diagonals and louvres, four open knee-braced interior bays, timber deck and paired river-edge supports retain the nominated footbridge identity. Apartment context is intentionally omitted."
+    },
+    {
+      "category": "all four diagonal-clipped end bays",
+      "result": "closed",
+      "evidence": [
+        "renders/front.png",
+        "renders/rear.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/architecture_close.png",
+        "renders/louvre_wall.png",
+        "renders/portal_end.png"
+      ],
+      "finding": "Both ends on both sides show the triangular slat field above the rising diagonal, leaving the triangle below open. No rectangular full-height curtain or extra separate louvre-only bay remains. Close views show the lower slat termination following the brace."
+    },
+    {
+      "category": "guard optics and continuity",
+      "result": "closed",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/facade_close.png",
+        "renders/deck_inside.png",
+        "renders/portal_end.png",
+        "renders/pier_abutment.png"
+      ],
+      "finding": "The glass no longer reads as an opaque blue wall. Faint pane tint/reflection, the continuous cap line and visible geometry behind it establish near-invisible guards along deck and landings. Optical proof is limited by a neutral empty background; no missing guard segment is apparent in the inspected views."
+    },
+    {
+      "category": "roof and envelope",
+      "result": "pass with P2 finish findings",
+      "evidence": [
+        "renders/top.png",
+        "renders/aerial.png",
+        "renders/roof_eaves.png",
+        "renders/architecture_close.png",
+        "renders/portal_end.png",
+        "renders/deck_inside.png"
+      ],
+      "finding": "Standing seams follow both slopes, hips and central ridge form a bounded roof, eaves project coherently and the covered passage stays open. No major unclosed roof plane, floating roof or intrusive timber is visible."
+    },
+    {
+      "category": "supports and physical contacts",
+      "result": "pass for visual clay contacts",
+      "evidence": [
+        "renders/pier_abutment.png",
+        "renders/stream_under.png",
+        "renders/front.png",
+        "renders/rear.png",
+        "renders/rear_north.png"
+      ],
+      "finding": "Headstocks contact the edge beams, round piers reach the lower-path platforms and concrete bank abutments are present beneath the beam ends. The images support visual seating only; capacity, foundations and hidden anchorage are not established."
+    },
+    {
+      "category": "approach access and circulation",
+      "result": "pass for declared stepped concept",
+      "evidence": [
+        "renders/west_approach.png",
+        "renders/east_approach.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/portal_end.png",
+        "renders/deck_inside.png"
+      ],
+      "finding": "Both solid stair runs descend to the prepared neutral grade and meet the raised timber landing/deck without a visible missing upper tread, barrier across the route or unsupported stair flight. Handrails/posts are seated in the clay geometry. Stairs are explicitly inferred additions; no ramp or accessibility/code claim is made."
+    },
+    {
+      "category": "all elevations, framing and complete evidence",
+      "result": "pass with P2 composition limitation",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "boards/phone-01-source-vs-render.png",
+        "boards/phone-02-details.png",
+        "boards/phone-03-details.png",
+        "boards/phone-04-details.png"
+      ],
+      "finding": "All twenty render PNGs and four 1080x1920 boards were directly opened. Whole views include the grade, both approaches, widest module and highest roof with margins. Detail crops establish their named subjects. Looseness and role pairing reduce presentation quality but complementary full-resolution views remain readable."
+    }
+  ],
+  "blockers": [],
+  "p2_findings": [
+    {
+      "id": "P2-INTERIOR-BRACES",
+      "severity": "P2",
+      "views": [
+        "facade_close",
+        "roof_eaves",
+        "rear_north"
+      ],
+      "finding": "The four interior side bays use short straight knee braces; the locked front shows longer, shallower, slightly arched shoulders. Six-bay identity and the open middle bays remain clear.",
+      "finite_fix": "Optional new version: lengthen and shallow the interior braces toward the locked front profile without changing the six-bay schedule."
+    },
+    {
+      "id": "P2-PORTAL-BRACES",
+      "severity": "P2",
+      "views": [
+        "portal_end",
+        "architecture_close",
+        "left_side",
+        "right_side"
+      ],
+      "finding": "Transverse knee braces narrow the portal opening near its top. The locked portal reads as a cleaner rectangular post/header opening. The deck route remains open with usable visible clearance.",
+      "finite_fix": "Optional new version: omit only the outer portal-plane knees while retaining required interior frame bracing."
+    },
+    {
+      "id": "P2-PIER-HEAD",
+      "severity": "P2",
+      "views": [
+        "pier_abutment",
+        "stream_under",
+        "front"
+      ],
+      "finding": "The round piers remain faceted and carry wide tapered headstocks, whereas the locked front reads as a plainer cylinder with a more direct girder bearing. Positive contact is visible in the current clay evidence.",
+      "finite_fix": "Refine cylinder shading/segments and reduce the headstock flare if pursuing closer construction fidelity."
+    },
+    {
+      "id": "P2-ROOF-SOFFIT",
+      "severity": "P2",
+      "views": [
+        "architecture_close",
+        "portal_end",
+        "deck_inside"
+      ],
+      "finding": "The underside of the roof is grey like the metal skin; the locked front shows a warmer timber soffit. This remains a declared clay finish simplification, with roof/frame relationships readable.",
+      "finite_fix": "Give a future bounded soffit surface the timber clay authority, keeping the roof weathering skin unchanged."
+    },
+    {
+      "id": "P2-RIDGE-END",
+      "severity": "P2",
+      "views": [
+        "portal_end",
+        "architecture_close"
+      ],
+      "finding": "A small ridge-cap end stub rises above the hip apex, and a thin dark shadow seam remains at the gable/header/roof junction. No large open roof hole or penetrating timber is visible.",
+      "finite_fix": "Mitre and terminate the ridge cap at the actual hip apex; refine the bounded gable/soffit joint in a later version."
+    },
+    {
+      "id": "P2-BOUNDED-LANDSCAPE",
+      "severity": "P2",
+      "views": [
+        "top",
+        "aerial",
+        "stream_under",
+        "front_corner"
+      ],
+      "finding": "The bounded stream is a flat dark strip and the banks are simple green wedges, omitting the irregular water edge, planting and paving grain in the source setting. Context omission and finite stream termination are explicit scope choices, not a claim to recreate the original site.",
+      "finite_fix": "Optional bounded local polish: add restrained water/bank detail within the same module, without restoring apartment context or oversized ground."
+    },
+    {
+      "id": "P2-DECK-SHADING",
+      "severity": "P2",
+      "views": [
+        "deck_inside",
+        "portal_end"
+      ],
+      "finding": "Broad alternating soft dark patches on the deck partly obscure the otherwise regular board rhythm. Boards and circulation remain legible.",
+      "finite_fix": "Refine neutral fill/sampling or the shadow solution for future evidence; do not paint over or replace geometry in delivered proof."
+    },
+    {
+      "id": "P2-CAMERA-COMPARISON",
+      "severity": "P2",
+      "views": [
+        "front",
+        "front_corner",
+        "left_side",
+        "right_side",
+        "phone-01-source-vs-render",
+        "phone-04-details"
+      ],
+      "finding": "Whole views preserve generous neutral margins but leave the model small, especially the along-axis end views. Phone-01 pairs an orthographic-like side elevation with the locked oblique front and an aerial with the locked top, reducing comparison efficiency. Full-resolution details and true top provide complementary readable proof; no target is clipped or obstructed.",
+      "finite_fix": "For presentation polish, frame the whole views more tightly with safety margin and use matched front-oblique/top comparisons on the phone board."
+    }
+  ],
+  "limitations": [
+    "Architectural-clay visual pass only; not a textured-source keeper or engineering result.",
+    "New stairs are declared teaching assumptions outside the original locked bridge envelope. No accessibility, guard compliance, foundation design, hydraulic capacity or construction certification was assessed.",
+    "The finite water/bank module is not a complete site or terrain-fit solution; neutral QA ground is presentation context.",
+    "No browser, walking/collision, save/reload, AI capture, production activation or publication test/approval is implied.",
+    "No source, model, render, board, build metadata, runtime code or repository file was modified. Only these two independent review records were created."
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/front.png",
+      "sha256": "2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936",
+      "bytes": 1357841,
+      "width": 1024,
+      "height": 768,
+      "role": "sources",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "sources/oblique.jpg",
+      "sha256": "ed7edd0326c69bc43c9086a61d750a56e25b2ff28afb6426324fdaf3f9e4139d",
+      "bytes": 1022875,
+      "width": 1195,
+      "height": 896,
+      "role": "sources",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "sources/top.jpg",
+      "sha256": "bd1125b71008d2e5e0a27a7c36b06f4def0c1957b1e81d8f6e624a346912cdc3",
+      "bytes": 974510,
+      "width": 1195,
+      "height": 896,
+      "role": "sources",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "5932e7aea22f1b026e1ca53e904144defaab0f12c84ff862f2cf69e33621e49e",
+      "bytes": 1354251,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "0fa51fca58c3841d0c1d5957cdb952704ef488d09473fbc599a50c1a09c9b6e6",
+      "bytes": 1478215,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/deck_inside.png",
+      "sha256": "db4d6a4cf28e0241b6488a091db4d9724a5e861c9ce08b3e00517499cb6ba7b6",
+      "bytes": 1488008,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/east_approach.png",
+      "sha256": "ce5b9e7a722563e488914205036c65bcaf682acb499b1583f7d2800e1c790386",
+      "bytes": 1494635,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "a35d2702e86c9211c15bcc8d785be729e0845fb963b2b9be9bdf5f071bf991d8",
+      "bytes": 1391563,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "afa2d4cf66b62d485d2be922f61f06d41713e6eea07c67ba521a1dadbfb4aece",
+      "bytes": 1313029,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "4c20833b20e3598ea32d3cefbf6bb45e3ca64cf81cb2c30ac7dccac2db0895e8",
+      "bytes": 1326214,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "9e488538234c3037f09cac716b36d5ac2574f061a588cd7310d3d0bbb9f3ea28",
+      "bytes": 1364398,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "3640484eeede01581dcee16db30497d21125c836103c5dfae02e21b029ced5ed",
+      "bytes": 1262782,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/louvre_wall.png",
+      "sha256": "a671f411f27e2fca8a72da90916b2a1f5f16cbe5bce9e974bb24933b57c237c4",
+      "bytes": 1433167,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/pier_abutment.png",
+      "sha256": "b21e9d32339c3567e33b03af5eed706bd1d906f9e41fd1d79074761ab8910b24",
+      "bytes": 1416263,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/portal_end.png",
+      "sha256": "bb065efedd66b92180e638496d9cf8cd8f5657120820e93cec23d69ae56b1505",
+      "bytes": 1440996,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "afe297801acfdb8c5781417d522a8b8a8aab57b75958e90e5dd9724c50d8b0c5",
+      "bytes": 1317086,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/rear_north.png",
+      "sha256": "d1da539da1552ae1c85822c1bd6bfc06da2ff71e527871874786fbe00a828b5c",
+      "bytes": 1459824,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "fb2e9775ed5453af10194d192646ed79128cc9760186563af4d84e41721db971",
+      "bytes": 1352537,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "d8721758995021681f4fcb1f8a00726bddceadb0c211b33c287ccaaf28bbc071",
+      "bytes": 1257922,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/roof_eaves.png",
+      "sha256": "011a94a856318092f57056dfcfae94878e32b9b3387af8d93898ea94ec0a55c4",
+      "bytes": 1560303,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/stream_under.png",
+      "sha256": "a197c17e09fff7537384b7358b0cd01c8feba89e4b49934ae85f91af11b0592c",
+      "bytes": 1397302,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "59a12773aed5178cf009bc448a5d24a4e390377f3ae271651f911ab8d2adeef8",
+      "bytes": 1268133,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "renders/west_approach.png",
+      "sha256": "3c5db5758ca34c2d1a7831127aa5525de57e1376fcd78ee8b5d0dc009da4b52a",
+      "bytes": 1483336,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "boards/phone-01-source-vs-render.png",
+      "sha256": "b74cecae6a07da923d7ffa785c19d5e62e6c8663831d8963dea742f235f640f3",
+      "bytes": 1724354,
+      "width": 1080,
+      "height": 1920,
+      "role": "boards",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "boards/phone-02-details.png",
+      "sha256": "17bb6a5c660b2e42cad5ea222b75f2d5c4e009795de2e177757df98b47687141",
+      "bytes": 998128,
+      "width": 1080,
+      "height": 1920,
+      "role": "boards",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "boards/phone-03-details.png",
+      "sha256": "dce2dfec3803f79d77914da424718c69decd02bed747b48ef5d3dcbb8ad8f1d0",
+      "bytes": 1062425,
+      "width": 1080,
+      "height": 1920,
+      "role": "boards",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    },
+    {
+      "path": "boards/phone-04-details.png",
+      "sha256": "ba660e5a98d99885015a1b0ec664e91682db912fadb965f01d41a5f82a000391",
+      "bytes": 531919,
+      "width": 1080,
+      "height": 1920,
+      "role": "boards",
+      "inspection": "Opened directly at original resolution with tools.view_image; visually compared in this independent review"
+    }
+  ]
+}

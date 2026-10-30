@@ -1,0 +1,365 @@
+{
+  "candidate": "clay-planted-green-bridge-clay-v005",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 151,
+    "vertices": 393591,
+    "polygons": 546955,
+    "triangles": 546955,
+    "path": "clay-planted-green-bridge-clay-v005-authoring.blend",
+    "bytes": 12409568,
+    "sha256": "b9af2c0a3f8a44e40908a7025b9df748f557dc95707f87597cc3c7d7164ae54f"
+  },
+  "runtime": {
+    "path": "clay-planted-green-bridge-clay-v005.glb",
+    "bytes": 26480716,
+    "sha256": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+    "meshes": 23,
+    "materials": 23,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 23,
+    "vertices": 393591,
+    "polygons": 546955,
+    "triangles": 546955
+  },
+  "original_bounds_m": [
+    [
+      -19.399999618530273,
+      -50.51116180419922,
+      0.0
+    ],
+    [
+      19.399999618530273,
+      50.51116180419922,
+      9.581430435180664
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -19.399999618530273,
+      -50.51116180419922,
+      0.0
+    ],
+    [
+      19.399999618530273,
+      50.51116180419922,
+      9.581430435180664
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 38.8,
+    "depth": 101.0,
+    "height": 12
+  },
+  "native_dimensions_m": {
+    "width": 38.79999923706055,
+    "depth": 101.02232360839844,
+    "height": 9.581430435180664
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "rock": 1,
+    "soil": 3,
+    "grass": 3,
+    "planting": 1,
+    "shrub": 1,
+    "tree": 1,
+    "lavender": 1,
+    "lavspike": 1,
+    "flower": 1,
+    "poppy": 1,
+    "sage": 2,
+    "moss": 1,
+    "leaf": 2,
+    "straw": 1,
+    "timber": 4,
+    "corten": 3,
+    "steel": 3,
+    "rail": 47,
+    "concrete": 6,
+    "path": 65,
+    "pale": 1,
+    "stone": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/planting_bed.png",
+    "renders/central_path.png",
+    "renders/viewing_pod.png",
+    "renders/pier_column.png",
+    "renders/rail_bollard.png",
+    "renders/water_under.png",
+    "renders/rear_north.png",
+    "renders/south_approach.png",
+    "renders/north_approach.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "GPU",
+  "camera_safety_margin": {
+    "top": {
+      "xmin": 0.3797726035118103,
+      "xmax": 0.6202273964881897,
+      "ymin": 0.08262369781732559,
+      "ymax": 0.9173762798309326
+    },
+    "left_side": {
+      "xmin": 0.0879315733909607,
+      "xmax": 0.9120683073997498,
+      "ymin": 0.4325951635837555,
+      "ymax": 0.5466947555541992
+    },
+    "right_side": {
+      "xmin": 0.08793170005083084,
+      "xmax": 0.9120684266090393,
+      "ymin": 0.4325951635837555,
+      "ymax": 0.546779215335846
+    },
+    "rear": {
+      "xmin": 0.2806797921657562,
+      "xmax": 0.7193204760551453,
+      "ymin": 0.40583738684654236,
+      "ymax": 0.5493355393409729
+    },
+    "rear_side": {
+      "xmin": 0.19142773747444153,
+      "xmax": 0.8850612640380859,
+      "ymin": 0.3683190643787384,
+      "ymax": 0.5478096604347229
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Bounded planted bridge with seated abutments, clear planting envelopes and grade stairs",
+      "box": [
+        -19.4,
+        19.4,
+        -50.5,
+        50.5
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "river": [
+      "Bounded river"
+    ],
+    "banks": [
+      "Bounded planted bank",
+      "Bounded planted bank.001"
+    ],
+    "bank paths": [
+      "Riverside path below deck",
+      "Riverside path below deck.001"
+    ],
+    "end abutments": [
+      "Seated end abutment",
+      "Seated end abutment.001"
+    ],
+    "approach stairs": [
+      "Inferred grade approach tread",
+      "Inferred grade approach tread.001",
+      "Inferred grade approach tread.002",
+      "Inferred grade approach tread.003",
+      "Inferred grade approach tread.004",
+      "Inferred grade approach tread.005",
+      "Inferred grade approach tread.006",
+      "Inferred grade approach tread.007",
+      "Inferred grade approach tread.008",
+      "Inferred grade approach tread.009",
+      "Inferred grade approach tread.010",
+      "Inferred grade approach tread.011",
+      "Inferred grade approach tread.012",
+      "Inferred grade approach tread.013",
+      "Inferred grade approach tread.014",
+      "Inferred grade approach tread.015",
+      "Inferred grade approach tread.016",
+      "Inferred grade approach tread.017",
+      "Inferred grade approach tread.018",
+      "Inferred grade approach tread.019",
+      "Inferred grade approach tread.020",
+      "Inferred grade approach tread.021",
+      "Inferred grade approach tread.022",
+      "Inferred grade approach tread.023",
+      "Inferred grade approach tread.024",
+      "Inferred grade approach tread.025",
+      "Inferred grade approach tread.026",
+      "Inferred grade approach tread.027",
+      "Inferred grade approach tread.028",
+      "Inferred grade approach tread.029",
+      "Inferred grade approach tread.030",
+      "Inferred grade approach tread.031",
+      "Inferred grade approach tread.032",
+      "Inferred grade approach tread.033",
+      "Inferred grade approach tread.034",
+      "Inferred grade approach tread.035",
+      "Inferred grade approach tread.036",
+      "Inferred grade approach tread.037",
+      "Inferred grade approach tread.038",
+      "Inferred grade approach tread.039",
+      "Inferred grade approach tread.040",
+      "Inferred grade approach tread.041",
+      "Inferred grade approach tread.042",
+      "Inferred grade approach tread.043",
+      "Inferred grade approach tread.044",
+      "Inferred grade approach tread.045",
+      "Inferred grade approach tread.046",
+      "Inferred grade approach tread.047",
+      "Inferred grade approach tread.048",
+      "Inferred grade approach tread.049",
+      "Inferred grade approach tread.050",
+      "Inferred grade approach tread.051",
+      "Inferred grade approach tread.052",
+      "Inferred grade approach tread.053",
+      "Inferred grade approach tread.054",
+      "Inferred grade approach tread.055",
+      "Inferred grade approach tread.056",
+      "Inferred grade approach tread.057",
+      "Inferred grade approach tread.058",
+      "Inferred grade approach tread.059"
+    ],
+    "approach guards": [
+      "Approach handrail",
+      "Approach post",
+      "Approach post.001",
+      "Approach post.002",
+      "Approach post.003",
+      "Approach post.004",
+      "Approach post.005",
+      "Approach post.006",
+      "Approach post.007",
+      "Approach post.008",
+      "Approach post.009",
+      "Approach handrail.001",
+      "Approach post.010",
+      "Approach post.011",
+      "Approach post.012",
+      "Approach post.013",
+      "Approach post.014",
+      "Approach post.015",
+      "Approach post.016",
+      "Approach post.017",
+      "Approach post.018",
+      "Approach post.019",
+      "Approach handrail.002",
+      "Approach post.020",
+      "Approach post.021",
+      "Approach post.022",
+      "Approach post.023",
+      "Approach post.024",
+      "Approach post.025",
+      "Approach post.026",
+      "Approach post.027",
+      "Approach post.028",
+      "Approach post.029",
+      "Approach handrail.003",
+      "Approach post.030",
+      "Approach post.031",
+      "Approach post.032",
+      "Approach post.033",
+      "Approach post.034",
+      "Approach post.035",
+      "Approach post.036",
+      "Approach post.037",
+      "Approach post.038",
+      "Approach post.039"
+    ],
+    "bounded riprap": [
+      "bounded riprap rock"
+    ],
+    "deck": [
+      "deck concrete",
+      "deck path",
+      "deck soil",
+      "deck corten",
+      "deck steel"
+    ],
+    "pod thresholds": [
+      "pod thresholds stone"
+    ],
+    "supports": [
+      "supports concrete"
+    ],
+    "railings": [
+      "railings timber",
+      "railings rail",
+      "railings pale"
+    ],
+    "pods": [
+      "Pod slab -1",
+      "Pod walk -1",
+      "Pod bed -1",
+      "Pod girder band -1",
+      "Pod slab +1",
+      "Pod walk +1",
+      "Pod bed +1",
+      "Pod girder band +1"
+    ],
+    "pod fascia -1": [
+      "pod fascia -1 corten"
+    ],
+    "pod railing -1": [
+      "pod railing -1 timber",
+      "pod railing -1 rail"
+    ],
+    "pod fascia +1": [
+      "pod fascia +1 corten"
+    ],
+    "pod railing +1": [
+      "pod railing +1 timber",
+      "pod railing +1 rail"
+    ],
+    "fine grasses flowers and multi-stem trunks": [
+      "fine grasses flowers and multi-stem trunks straw",
+      "fine grasses flowers and multi-stem trunks grass",
+      "fine grasses flowers and multi-stem trunks leaf",
+      "fine grasses flowers and multi-stem trunks sage",
+      "fine grasses flowers and multi-stem trunks lavspike",
+      "fine grasses flowers and multi-stem trunks lavender",
+      "fine grasses flowers and multi-stem trunks timber"
+    ],
+    "layered leaves and individual flower cups": [
+      "layered leaves and individual flower cups sage",
+      "layered leaves and individual flower cups planting",
+      "layered leaves and individual flower cups moss",
+      "layered leaves and individual flower cups leaf",
+      "layered leaves and individual flower cups flower",
+      "layered leaves and individual flower cups poppy",
+      "layered leaves and individual flower cups shrub",
+      "layered leaves and individual flower cups tree"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-30T01:35:25.425899+00:00",
+  "delivery_and_render_seconds": 184.20749399997294,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

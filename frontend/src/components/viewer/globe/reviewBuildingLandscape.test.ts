@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import * as THREE from 'three';
 import type { SiteZone } from '@/types';
 import { rectangleAt } from '@/features/pickPlace/geometry';
-import { prepareReviewBuildingLandscape } from './reviewBuildingLandscape';
+import { prepareReviewBuildingLandscape, reviewBuildingLandscapePlacement } from './reviewBuildingLandscape';
 import { placeAsset, placementProperties } from '@/features/pickPlace/catalogue';
 
 const zone: SiteZone = { id: 'hall', project_id: 'qa', color: '#ffffff', sort_order: 0, created_at: '', updated_at: '',
@@ -39,6 +39,21 @@ function materialAt(scene: THREE.Object3D, x: number, z: number) {
 }
 
 describe('authored city hall ground finish', () => {
+  it('centres site texture placement on the retained hotel geometry after context removal', () => {
+    const hotel = {...zone, properties: placementProperties(placeAsset('claude_scottish_baronial_hotel'))};
+    const retained = new THREE.Group();
+    const geometry = new THREE.BoxGeometry(61.6, 42.4, 56.74252);
+    geometry.translate(0, 21.2, 1.5987415);
+    retained.add(new THREE.Mesh(geometry, new THREE.MeshStandardMaterial()));
+    const bounds = new THREE.Box3().setFromObject(retained, true);
+    const centre = bounds.getCenter(new THREE.Vector3());
+    centre.y = bounds.min.y;
+    const placement = reviewBuildingLandscapePlacement(hotel, undefined, retained)!;
+    centre.applyMatrix4(placement.matrix);
+    expect(centre.x).toBeCloseTo(0, 6);
+    expect(centre.y).toBeCloseTo(0, 6);
+    expect(centre.z).toBeCloseTo(0, 6);
+  });
   it('replaces the hotel’s baked-in perimeter road but keeps its measured entrance and walking strips paved', () => {
     const hotel={...zone,properties:placementProperties(placeAsset('claude_scottish_baronial_hotel'))};
     const source=new THREE.Group(), concrete=new THREE.MeshStandardMaterial(); concrete.name='CLAY_CONCRETE';

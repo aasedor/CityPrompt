@@ -21,9 +21,11 @@ describe('catalogue zoning screening', () => {
     expect(Object.keys(DISTRICT_RULES).sort()).toEqual(catalogue.districts.map(d => d.code).sort());
   });
   it('keeps all 18 activated building revisions unclassified until their actual occupancy is reviewed', () => {
-    expect(release.entries).toHaveLength(18);
-    expect(CLAUDE_BUILDING_RELEASE_ASSETS.map(asset => asset.id).sort()).toEqual(release.entries.map(entry => entry.asset_id).sort());
-    for (const entry of release.entries) {
+    const activated = release.entries.filter(entry => entry.asset_id.startsWith('claude_trial_'));
+    expect(activated).toHaveLength(18);
+    expect(CLAUDE_BUILDING_RELEASE_ASSETS.map(asset => asset.id).sort()).toEqual(activated.map(entry => entry.asset_id).sort());
+    for (const entry of release.entries) expect(BUILDING_PROGRAMS[entry.variant_id]).toBeUndefined();
+    for (const entry of activated) {
       const asset = ZONING_CATALOGUE_BUILDINGS.find(candidate => candidate.id === entry.asset_id)!;
       expect(asset).toMatchObject({ readiness: 'ready', model: { variantId: entry.variant_id, revision: entry.candidate } });
       expect(BUILDING_PROGRAMS[entry.variant_id]).toBeUndefined();

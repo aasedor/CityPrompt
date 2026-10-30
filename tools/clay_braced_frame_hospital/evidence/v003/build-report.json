@@ -1,0 +1,6993 @@
+{
+  "candidate": "clay-braced-frame-hospital-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 657,
+    "vertices": 77638,
+    "polygons": 78760,
+    "triangles": 78760,
+    "path": "clay-braced-frame-hospital-clay-v003-authoring.blend",
+    "bytes": 9638700,
+    "sha256": "72abe84794430363a46b868835d02762e2763ba18b836e348820c16fcc5c4f2c"
+  },
+  "runtime": {
+    "path": "clay-braced-frame-hospital-clay-v003.glb",
+    "bytes": 4184528,
+    "sha256": "5a00ef18894a9bfaf777d53cf3a4814d7f53f58eaf93c6005d29a1e714b36344",
+    "meshes": 21,
+    "materials": 21,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 21,
+    "vertices": 77638,
+    "polygons": 78760,
+    "triangles": 78760
+  },
+  "original_bounds_m": [
+    [
+      -57.0,
+      -48.0,
+      0.0
+    ],
+    [
+      50.0,
+      32.0,
+      39.79999923706055
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -57.0,
+      -48.0,
+      0.0
+    ],
+    [
+      50.0,
+      32.0,
+      39.79999923706055
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 69.0,
+    "depth": 59.0,
+    "height": 40.0
+  },
+  "native_dimensions_m": {
+    "width": 107.0,
+    "depth": 80.0,
+    "height": 39.79999923706055
+  },
+  "native_bottom_center_m": [
+    -3.5,
+    -8.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 9,
+    "joint": 9,
+    "trim": 24,
+    "pale": 25,
+    "stone": 9,
+    "sand": 1,
+    "foundation": 2,
+    "glass": 35,
+    "hardware": 14,
+    "floor": 25,
+    "timber": 36,
+    "planting": 27,
+    "concrete": 19,
+    "steel": 403,
+    "perf": 4,
+    "sign": 1,
+    "signlight": 1,
+    "louvre": 4,
+    "asphalt": 4,
+    "white": 1,
+    "membrane": 4
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/braced_frame.png",
+    "renders/entrance_canopy.png",
+    "renders/roof_canopy.png",
+    "renders/roof_plant.png",
+    "renders/brick_base.png",
+    "renders/interior.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.07667776942253113,
+      "xmax": 0.872006356716156,
+      "ymin": 0.3049410879611969,
+      "ymax": 0.6818377375602722
+    },
+    "front_corner": {
+      "xmin": 0.10634926706552505,
+      "xmax": 0.8349284529685974,
+      "ymin": 0.0755082443356514,
+      "ymax": 0.7339502573013306
+    },
+    "aerial": {
+      "xmin": 0.1682324856519699,
+      "xmax": 0.7776901721954346,
+      "ymin": 0.08437879383563995,
+      "ymax": 0.7432629466056824
+    },
+    "top": {
+      "xmin": 0.12547068297863007,
+      "xmax": 0.8285344839096069,
+      "ymin": 0.07947584241628647,
+      "ymax": 0.7803494334220886
+    },
+    "left_side": {
+      "xmin": 0.2192509025335312,
+      "xmax": 0.9111471176147461,
+      "ymin": 0.2561299800872803,
+      "ymax": 0.6927178502082825
+    },
+    "right_side": {
+      "xmin": 0.08011383563280106,
+      "xmax": 0.7850973606109619,
+      "ymin": 0.2565402090549469,
+      "ymax": 0.701642632484436
+    },
+    "rear": {
+      "xmin": 0.13805104792118073,
+      "xmax": 0.9126220941543579,
+      "ymin": 0.3109321892261505,
+      "ymax": 0.6913256645202637
+    },
+    "rear_side": {
+      "xmin": 0.08835747838020325,
+      "xmax": 0.8808064460754395,
+      "ymin": 0.07835543900728226,
+      "ymax": 0.7684798836708069
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Plant storey set back behind louvres on the clinical roof; canopy on posts",
+      "plant_m": [
+        29.0,
+        33.0
+      ]
+    },
+    {
+      "name": "Exoskeleton columns from the brick base to the roof ring, bracketed to every second slab",
+      "top_m": 37.0
+    },
+    {
+      "name": "Atrium between the clinical block and the ward leg; entrance canopy on rods and two posts",
+      "atrium": [
+        13.0,
+        21.0,
+        -30.0,
+        8.0
+      ]
+    },
+    {
+      "name": "Three volumes on one podium: clinical block south-west, L-shaped ward block north and east, atrium between",
+      "plan": [
+        [
+          -38.0,
+          13.0,
+          -27.0,
+          8.0
+        ],
+        [
+          21.0,
+          31.0,
+          -27.0,
+          26.0
+        ],
+        [
+          -29.0,
+          21.0,
+          8.0,
+          26.0
+        ],
+        [
+          13.0,
+          21.0,
+          -30.0,
+          8.0
+        ]
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "clinical south ground window 0",
+      "face": "clinical south",
+      "u": -23.375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 0",
+      "face": "clinical south",
+      "u": -23.375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 1",
+      "face": "clinical south",
+      "u": -19.125,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 1",
+      "face": "clinical south",
+      "u": -19.125,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south entrance 2",
+      "face": "clinical south",
+      "u": -14.875,
+      "z": 0.15,
+      "width": 3.0,
+      "height": 3.4,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 2",
+      "face": "clinical south",
+      "u": -14.875,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 3",
+      "face": "clinical south",
+      "u": -10.625,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 3",
+      "face": "clinical south",
+      "u": -10.625,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 4",
+      "face": "clinical south",
+      "u": -6.375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 4",
+      "face": "clinical south",
+      "u": -6.375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 5",
+      "face": "clinical south",
+      "u": -2.125,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 5",
+      "face": "clinical south",
+      "u": -2.125,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 6",
+      "face": "clinical south",
+      "u": 2.125,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 6",
+      "face": "clinical south",
+      "u": 2.125,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 7",
+      "face": "clinical south",
+      "u": 6.375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 7",
+      "face": "clinical south",
+      "u": 6.375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 8",
+      "face": "clinical south",
+      "u": 10.625,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 8",
+      "face": "clinical south",
+      "u": 10.625,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 9",
+      "face": "clinical south",
+      "u": 14.875,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 9",
+      "face": "clinical south",
+      "u": 14.875,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 10",
+      "face": "clinical south",
+      "u": 19.125,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 10",
+      "face": "clinical south",
+      "u": 19.125,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south ground window 11",
+      "face": "clinical south",
+      "u": 23.375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south second window 11",
+      "face": "clinical south",
+      "u": 23.375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical south strip window f3",
+      "face": "clinical south",
+      "u": 0.0,
+      "z": 9.8,
+      "width": 50.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical south strip window f4",
+      "face": "clinical south",
+      "u": 0.0,
+      "z": 13.8,
+      "width": 50.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical south strip window f5",
+      "face": "clinical south",
+      "u": 0.0,
+      "z": 17.8,
+      "width": 50.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical south strip window f6",
+      "face": "clinical south",
+      "u": 0.0,
+      "z": 21.8,
+      "width": 50.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical south strip window f7",
+      "face": "clinical south",
+      "u": 0.0,
+      "z": 25.8,
+      "width": 50.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -12.5,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical west ground window 0",
+      "face": "clinical west",
+      "u": -15.032499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west second window 0",
+      "face": "clinical west",
+      "u": -15.032499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west ground window 1",
+      "face": "clinical west",
+      "u": -10.7375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west second window 1",
+      "face": "clinical west",
+      "u": -10.7375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west ground window 2",
+      "face": "clinical west",
+      "u": -6.442499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west second window 2",
+      "face": "clinical west",
+      "u": -6.442499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west ground window 3",
+      "face": "clinical west",
+      "u": -2.147500000000001,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west second window 3",
+      "face": "clinical west",
+      "u": -2.147500000000001,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west ground window 4",
+      "face": "clinical west",
+      "u": 2.147500000000001,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west second window 4",
+      "face": "clinical west",
+      "u": 2.147500000000001,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west ground window 5",
+      "face": "clinical west",
+      "u": 6.442499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west second window 5",
+      "face": "clinical west",
+      "u": 6.442499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west ground window 6",
+      "face": "clinical west",
+      "u": 10.7375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west second window 6",
+      "face": "clinical west",
+      "u": 10.7375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west ground window 7",
+      "face": "clinical west",
+      "u": 15.032499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west second window 7",
+      "face": "clinical west",
+      "u": 15.032499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical west strip window f3",
+      "face": "clinical west",
+      "u": 0.0,
+      "z": 9.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical west strip window f4",
+      "face": "clinical west",
+      "u": 0.0,
+      "z": 13.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical west strip window f5",
+      "face": "clinical west",
+      "u": 0.0,
+      "z": 17.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical west strip window f6",
+      "face": "clinical west",
+      "u": 0.0,
+      "z": 21.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical west strip window f7",
+      "face": "clinical west",
+      "u": 0.0,
+      "z": 25.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -38.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical east ground window 0",
+      "face": "clinical east",
+      "u": -15.032499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east second window 0",
+      "face": "clinical east",
+      "u": -15.032499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east ground window 1",
+      "face": "clinical east",
+      "u": -10.7375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east second window 1",
+      "face": "clinical east",
+      "u": -10.7375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east ground window 2",
+      "face": "clinical east",
+      "u": -6.442499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east second window 2",
+      "face": "clinical east",
+      "u": -6.442499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east ground window 3",
+      "face": "clinical east",
+      "u": -2.147500000000001,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east second window 3",
+      "face": "clinical east",
+      "u": -2.147500000000001,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east ground window 4",
+      "face": "clinical east",
+      "u": 2.147500000000001,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east second window 4",
+      "face": "clinical east",
+      "u": 2.147500000000001,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east ground window 5",
+      "face": "clinical east",
+      "u": 6.442499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east second window 5",
+      "face": "clinical east",
+      "u": 6.442499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east ground window 6",
+      "face": "clinical east",
+      "u": 10.7375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east second window 6",
+      "face": "clinical east",
+      "u": 10.7375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east ground window 7",
+      "face": "clinical east",
+      "u": 15.032499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east second window 7",
+      "face": "clinical east",
+      "u": 15.032499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical east strip window f3",
+      "face": "clinical east",
+      "u": 0.0,
+      "z": 9.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical east strip window f4",
+      "face": "clinical east",
+      "u": 0.0,
+      "z": 13.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical east strip window f5",
+      "face": "clinical east",
+      "u": 0.0,
+      "z": 17.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical east strip window f6",
+      "face": "clinical east",
+      "u": 0.0,
+      "z": 21.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical east strip window f7",
+      "face": "clinical east",
+      "u": 0.0,
+      "z": 25.8,
+      "width": 33.36,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        13.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical north ground window 0",
+      "face": "clinical north",
+      "u": -2.25,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical north second window 0",
+      "face": "clinical north",
+      "u": -2.25,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical north ground window 1",
+      "face": "clinical north",
+      "u": 2.25,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical north second window 1",
+      "face": "clinical north",
+      "u": 2.25,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "clinical north strip window f3",
+      "face": "clinical north",
+      "u": 0.0,
+      "z": 9.8,
+      "width": 8.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical north strip window f4",
+      "face": "clinical north",
+      "u": 0.0,
+      "z": 13.8,
+      "width": 8.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical north strip window f5",
+      "face": "clinical north",
+      "u": 0.0,
+      "z": 17.8,
+      "width": 8.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical north strip window f6",
+      "face": "clinical north",
+      "u": 0.0,
+      "z": 21.8,
+      "width": 8.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "clinical north strip window f7",
+      "face": "clinical north",
+      "u": 0.0,
+      "z": 25.8,
+      "width": 8.0,
+      "height": 2.5,
+      "kind": "strip window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -33.5,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "clinics"
+    },
+    {
+      "id": "ward south ground window 0",
+      "face": "ward south",
+      "u": -2.5,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward south second window 0",
+      "face": "ward south",
+      "u": -2.5,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward south ground window 1",
+      "face": "ward south",
+      "u": 2.5,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward south second window 1",
+      "face": "ward south",
+      "u": 2.5,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward south glazing f0",
+      "face": "ward south",
+      "u": 0.0,
+      "z": 9.7,
+      "width": 9.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward south glazing f1",
+      "face": "ward south",
+      "u": 0.0,
+      "z": 13.7,
+      "width": 9.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward south glazing f2",
+      "face": "ward south",
+      "u": 0.0,
+      "z": 17.7,
+      "width": 9.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward south glazing f3",
+      "face": "ward south",
+      "u": 0.0,
+      "z": 21.7,
+      "width": 9.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward south glazing f4",
+      "face": "ward south",
+      "u": 0.0,
+      "z": 25.7,
+      "width": 9.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward south glazing f5",
+      "face": "ward south",
+      "u": 0.0,
+      "z": 29.7,
+      "width": 9.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward south glazing f6",
+      "face": "ward south",
+      "u": 0.0,
+      "z": 33.7,
+      "width": 9.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        26.0,
+        -27.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward east ground window 0",
+      "face": "ward east",
+      "u": -23.998333333333335,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 0",
+      "face": "ward east",
+      "u": -23.998333333333335,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 1",
+      "face": "ward east",
+      "u": -19.635,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 1",
+      "face": "ward east",
+      "u": -19.635,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east entrance 2",
+      "face": "ward east",
+      "u": -15.271666666666667,
+      "z": 0.15,
+      "width": 3.0,
+      "height": 3.4,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 2",
+      "face": "ward east",
+      "u": -15.271666666666667,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 3",
+      "face": "ward east",
+      "u": -10.908333333333333,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 3",
+      "face": "ward east",
+      "u": -10.908333333333333,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 4",
+      "face": "ward east",
+      "u": -6.544999999999998,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 4",
+      "face": "ward east",
+      "u": -6.544999999999998,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 5",
+      "face": "ward east",
+      "u": -2.181666666666665,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 5",
+      "face": "ward east",
+      "u": -2.181666666666665,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 6",
+      "face": "ward east",
+      "u": 2.181666666666665,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 6",
+      "face": "ward east",
+      "u": 2.181666666666665,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 7",
+      "face": "ward east",
+      "u": 6.545000000000002,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 7",
+      "face": "ward east",
+      "u": 6.545000000000002,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 8",
+      "face": "ward east",
+      "u": 10.908333333333331,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 8",
+      "face": "ward east",
+      "u": 10.908333333333331,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 9",
+      "face": "ward east",
+      "u": 15.271666666666668,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 9",
+      "face": "ward east",
+      "u": 15.271666666666668,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 10",
+      "face": "ward east",
+      "u": 19.634999999999998,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 10",
+      "face": "ward east",
+      "u": 19.634999999999998,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east ground window 11",
+      "face": "ward east",
+      "u": 23.998333333333335,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east second window 11",
+      "face": "ward east",
+      "u": 23.998333333333335,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward east glazing f0",
+      "face": "ward east",
+      "u": 0.0,
+      "z": 9.7,
+      "width": 51.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward east glazing f1",
+      "face": "ward east",
+      "u": 0.0,
+      "z": 13.7,
+      "width": 51.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward east glazing f2",
+      "face": "ward east",
+      "u": 0.0,
+      "z": 17.7,
+      "width": 51.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward east glazing f3",
+      "face": "ward east",
+      "u": 0.0,
+      "z": 21.7,
+      "width": 51.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward east glazing f4",
+      "face": "ward east",
+      "u": 0.0,
+      "z": 25.7,
+      "width": 51.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward east glazing f5",
+      "face": "ward east",
+      "u": 0.0,
+      "z": 29.7,
+      "width": 51.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward east glazing f6",
+      "face": "ward east",
+      "u": 0.0,
+      "z": 33.7,
+      "width": 51.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        31.0,
+        -0.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward north ground window 0",
+      "face": "ward north",
+      "u": -27.857142857142858,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 0",
+      "face": "ward north",
+      "u": -27.857142857142858,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 1",
+      "face": "ward north",
+      "u": -23.57142857142857,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 1",
+      "face": "ward north",
+      "u": -23.57142857142857,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 2",
+      "face": "ward north",
+      "u": -19.285714285714285,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 2",
+      "face": "ward north",
+      "u": -19.285714285714285,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 3",
+      "face": "ward north",
+      "u": -15.0,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 3",
+      "face": "ward north",
+      "u": -15.0,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 4",
+      "face": "ward north",
+      "u": -10.714285714285715,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 4",
+      "face": "ward north",
+      "u": -10.714285714285715,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 5",
+      "face": "ward north",
+      "u": -6.428571428571427,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 5",
+      "face": "ward north",
+      "u": -6.428571428571427,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 6",
+      "face": "ward north",
+      "u": -2.1428571428571423,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 6",
+      "face": "ward north",
+      "u": -2.1428571428571423,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north entrance 7",
+      "face": "ward north",
+      "u": 2.142857142857146,
+      "z": 0.15,
+      "width": 3.0,
+      "height": 3.4,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 7",
+      "face": "ward north",
+      "u": 2.142857142857146,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 8",
+      "face": "ward north",
+      "u": 6.428571428571431,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 8",
+      "face": "ward north",
+      "u": 6.428571428571431,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 9",
+      "face": "ward north",
+      "u": 10.714285714285715,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 9",
+      "face": "ward north",
+      "u": 10.714285714285715,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 10",
+      "face": "ward north",
+      "u": 15.0,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 10",
+      "face": "ward north",
+      "u": 15.0,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 11",
+      "face": "ward north",
+      "u": 19.285714285714285,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 11",
+      "face": "ward north",
+      "u": 19.285714285714285,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 12",
+      "face": "ward north",
+      "u": 23.57142857142857,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 12",
+      "face": "ward north",
+      "u": 23.57142857142857,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north ground window 13",
+      "face": "ward north",
+      "u": 27.857142857142854,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north second window 13",
+      "face": "ward north",
+      "u": 27.857142857142854,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward north glazing f0",
+      "face": "ward north",
+      "u": 0.0,
+      "z": 9.7,
+      "width": 59.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward north glazing f1",
+      "face": "ward north",
+      "u": 0.0,
+      "z": 13.7,
+      "width": 59.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward north glazing f2",
+      "face": "ward north",
+      "u": 0.0,
+      "z": 17.7,
+      "width": 59.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward north glazing f3",
+      "face": "ward north",
+      "u": 0.0,
+      "z": 21.7,
+      "width": 59.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward north glazing f4",
+      "face": "ward north",
+      "u": 0.0,
+      "z": 25.7,
+      "width": 59.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward north glazing f5",
+      "face": "ward north",
+      "u": 0.0,
+      "z": 29.7,
+      "width": 59.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward north glazing f6",
+      "face": "ward north",
+      "u": 0.0,
+      "z": 33.7,
+      "width": 59.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        1.0,
+        26.0,
+        0.0
+      ],
+      "face_tangent": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward west ground window 0",
+      "face": "ward west",
+      "u": -6.51,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward west second window 0",
+      "face": "ward west",
+      "u": -6.51,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward west ground window 1",
+      "face": "ward west",
+      "u": -2.17,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward west second window 1",
+      "face": "ward west",
+      "u": -2.17,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward west ground window 2",
+      "face": "ward west",
+      "u": 2.17,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward west second window 2",
+      "face": "ward west",
+      "u": 2.17,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward west ground window 3",
+      "face": "ward west",
+      "u": 6.51,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward west second window 3",
+      "face": "ward west",
+      "u": 6.51,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward west glazing f0",
+      "face": "ward west",
+      "u": 0.0,
+      "z": 9.7,
+      "width": 16.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward west glazing f1",
+      "face": "ward west",
+      "u": 0.0,
+      "z": 13.7,
+      "width": 16.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward west glazing f2",
+      "face": "ward west",
+      "u": 0.0,
+      "z": 17.7,
+      "width": 16.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward west glazing f3",
+      "face": "ward west",
+      "u": 0.0,
+      "z": 21.7,
+      "width": 16.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward west glazing f4",
+      "face": "ward west",
+      "u": 0.0,
+      "z": 25.7,
+      "width": 16.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward west glazing f5",
+      "face": "ward west",
+      "u": 0.0,
+      "z": 29.7,
+      "width": 16.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward west glazing f6",
+      "face": "ward west",
+      "u": 0.0,
+      "z": 33.7,
+      "width": 16.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -29.0,
+        17.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward leg west ground window 0",
+      "face": "ward leg west",
+      "u": -15.032499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west second window 0",
+      "face": "ward leg west",
+      "u": -15.032499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west ground window 1",
+      "face": "ward leg west",
+      "u": -10.7375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west second window 1",
+      "face": "ward leg west",
+      "u": -10.7375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west ground window 2",
+      "face": "ward leg west",
+      "u": -6.442499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west second window 2",
+      "face": "ward leg west",
+      "u": -6.442499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west ground window 3",
+      "face": "ward leg west",
+      "u": -2.147500000000001,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west second window 3",
+      "face": "ward leg west",
+      "u": -2.147500000000001,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west ground window 4",
+      "face": "ward leg west",
+      "u": 2.147500000000001,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west second window 4",
+      "face": "ward leg west",
+      "u": 2.147500000000001,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west ground window 5",
+      "face": "ward leg west",
+      "u": 6.442499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west second window 5",
+      "face": "ward leg west",
+      "u": 6.442499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west ground window 6",
+      "face": "ward leg west",
+      "u": 10.7375,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west second window 6",
+      "face": "ward leg west",
+      "u": 10.7375,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west ground window 7",
+      "face": "ward leg west",
+      "u": 15.032499999999999,
+      "z": 0.9,
+      "width": 2.6,
+      "height": 3.0,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west second window 7",
+      "face": "ward leg west",
+      "u": 15.032499999999999,
+      "z": 5.8,
+      "width": 2.6,
+      "height": 2.3,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "outpatients"
+    },
+    {
+      "id": "ward leg west glazing f0",
+      "face": "ward leg west",
+      "u": 0.0,
+      "z": 9.7,
+      "width": 33.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward leg west glazing f1",
+      "face": "ward leg west",
+      "u": 0.0,
+      "z": 13.7,
+      "width": 33.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward leg west glazing f2",
+      "face": "ward leg west",
+      "u": 0.0,
+      "z": 17.7,
+      "width": 33.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward leg west glazing f3",
+      "face": "ward leg west",
+      "u": 0.0,
+      "z": 21.7,
+      "width": 33.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward leg west glazing f4",
+      "face": "ward leg west",
+      "u": 0.0,
+      "z": 25.7,
+      "width": 33.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward leg west glazing f5",
+      "face": "ward leg west",
+      "u": 0.0,
+      "z": 29.7,
+      "width": 33.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward leg west glazing f6",
+      "face": "ward leg west",
+      "u": 0.0,
+      "z": 33.7,
+      "width": 33.56,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        21.0,
+        -9.5,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward bar south glazing f0",
+      "face": "ward bar south",
+      "u": 0.16000000000000014,
+      "z": 29.7,
+      "width": 40.88,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -8.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward bar south glazing f1",
+      "face": "ward bar south",
+      "u": 0.16000000000000014,
+      "z": 33.7,
+      "width": 40.88,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        -8.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f0",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 0.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f1",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 4.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f2",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 8.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f3",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 12.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f4",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 16.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f5",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 20.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f6",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 24.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f7",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 28.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "ward atrium back glazing f8",
+      "face": "ward atrium back",
+      "u": 0.0,
+      "z": 32.7,
+      "width": 7.2,
+      "height": 3.0,
+      "kind": "curtain wall",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.32,
+      "frame_inset_m": 0.1,
+      "pane_inset_m": 0.137,
+      "face_origin": [
+        17.0,
+        8.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "wards"
+    },
+    {
+      "id": "atrium south glazing",
+      "face": "atrium south",
+      "u": 0,
+      "z": 0.15,
+      "width": 8.0,
+      "height": 32.85,
+      "kind": "glass atrium",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.1,
+      "frame_inset_m": 0,
+      "pane_inset_m": 0.05,
+      "face_origin": [
+        17.0,
+        -30.0,
+        0.0
+      ],
+      "face_tangent": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "face_inward": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "occupied_space": "atrium hall"
+    }
+  ],
+  "authoring_modules": {
+    "site": [
+      "South sidewalk",
+      "West sidewalk",
+      "East sidewalk",
+      "South street",
+      "West street",
+      "East street",
+      "North lane"
+    ],
+    "road markings": [
+      "road markings white"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026"
+    ],
+    "garden planting": [
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026"
+    ],
+    "envelope": [
+      "clinical south brick base",
+      "clinical south pale carrier",
+      "clinical west brick base",
+      "clinical west pale carrier",
+      "clinical east brick base",
+      "clinical east pale carrier",
+      "clinical north brick base",
+      "clinical north pale carrier",
+      "plant south backing",
+      "plant west backing",
+      "plant east backing",
+      "plant north backing",
+      "ward south brick base",
+      "ward south spandrel carrier",
+      "ward east brick base",
+      "ward east spandrel carrier",
+      "ward north brick base",
+      "ward north spandrel carrier",
+      "ward west brick base",
+      "ward west spandrel carrier",
+      "ward leg west brick base",
+      "ward leg west spandrel carrier",
+      "ward bar south spandrel carrier",
+      "ward atrium back spandrel carrier"
+    ],
+    "brick joints": [
+      "clinical south measured mortar courses",
+      "clinical west measured mortar courses",
+      "clinical east measured mortar courses",
+      "clinical north measured mortar courses",
+      "ward south measured mortar courses",
+      "ward east measured mortar courses",
+      "ward north measured mortar courses",
+      "ward west measured mortar courses",
+      "ward leg west measured mortar courses"
+    ],
+    "clinical south base": [
+      "clinical south clinical south base trim",
+      "clinical south clinical south base glass",
+      "clinical south clinical south base stone",
+      "clinical south clinical south base concrete"
+    ],
+    "clinical south clinical": [
+      "clinical south clinical south clinical glass",
+      "clinical south clinical south clinical trim",
+      "clinical south clinical south clinical pale",
+      "clinical south clinical south clinical hardware",
+      "clinical south clinical south clinical concrete",
+      "clinical south clinical south clinical sign",
+      "clinical south clinical south clinical signlight"
+    ],
+    "clinical south perforation": [
+      "clinical south perforation perf"
+    ],
+    "clinical west base": [
+      "clinical west clinical west base trim",
+      "clinical west clinical west base glass",
+      "clinical west clinical west base stone",
+      "clinical west clinical west base concrete"
+    ],
+    "clinical west clinical": [
+      "clinical west clinical west clinical glass",
+      "clinical west clinical west clinical trim",
+      "clinical west clinical west clinical pale",
+      "clinical west clinical west clinical hardware",
+      "clinical west clinical west clinical concrete"
+    ],
+    "clinical west perforation": [
+      "clinical west perforation perf"
+    ],
+    "clinical east base": [
+      "clinical east clinical east base trim",
+      "clinical east clinical east base glass",
+      "clinical east clinical east base stone",
+      "clinical east clinical east base concrete"
+    ],
+    "clinical east clinical": [
+      "clinical east clinical east clinical glass",
+      "clinical east clinical east clinical trim",
+      "clinical east clinical east clinical pale",
+      "clinical east clinical east clinical hardware",
+      "clinical east clinical east clinical concrete"
+    ],
+    "clinical east perforation": [
+      "clinical east perforation perf"
+    ],
+    "clinical north base": [
+      "clinical north clinical north base trim",
+      "clinical north clinical north base glass",
+      "clinical north clinical north base stone",
+      "clinical north clinical north base concrete"
+    ],
+    "clinical north clinical": [
+      "clinical north clinical north clinical glass",
+      "clinical north clinical north clinical trim",
+      "clinical north clinical north clinical pale",
+      "clinical north clinical north clinical hardware",
+      "clinical north clinical north clinical concrete"
+    ],
+    "clinical north perforation": [
+      "clinical north perforation perf"
+    ],
+    "clinical floors": [
+      "Clinical floor",
+      "Clinical floor.001",
+      "Clinical floor.002",
+      "Clinical floor.003",
+      "Clinical floor.004",
+      "Clinical floor.005",
+      "Clinical floor.006"
+    ],
+    "clinical roof": [
+      "Clinical roof slab",
+      "Clinical terrace membrane"
+    ],
+    "clinical core": [
+      "Clinical core"
+    ],
+    "plant storey": [
+      "plant south plant storey hardware",
+      "plant south plant storey trim",
+      "plant west plant storey hardware",
+      "plant west plant storey trim",
+      "plant east plant storey hardware",
+      "plant east plant storey trim",
+      "plant north plant storey hardware",
+      "plant north plant storey trim",
+      "Plant roof"
+    ],
+    "plant": [
+      "Condenser",
+      "Condenser fan",
+      "Condenser fan.001",
+      "Condenser.001",
+      "Condenser fan.002",
+      "Condenser fan.003",
+      "Condenser.002",
+      "Condenser fan.004",
+      "Condenser fan.005"
+    ],
+    "roof canopy": [
+      "Roof canopy plate",
+      "Roof canopy glass edge",
+      "Roof canopy glass edge.001",
+      "Roof canopy glass edge.002",
+      "Roof canopy glass edge.003",
+      "Roof canopy purlin",
+      "Roof canopy purlin.001",
+      "Roof canopy purlin.002",
+      "Roof canopy purlin.003",
+      "Roof canopy purlin.004",
+      "Roof canopy purlin.005",
+      "Roof canopy purlin.006",
+      "Roof canopy post",
+      "Roof canopy post.001",
+      "Roof canopy post.002",
+      "Roof canopy post.003",
+      "Roof canopy post.004",
+      "Roof canopy post.005",
+      "Roof canopy post.006",
+      "Roof canopy post.007",
+      "Roof canopy post.008"
+    ],
+    "roof canopy frame": [
+      "roof canopy frame steel"
+    ],
+    "ward south base": [
+      "ward south ward south base trim",
+      "ward south ward south base glass",
+      "ward south ward south base stone",
+      "ward south ward south base concrete"
+    ],
+    "ward south curtain wall": [
+      "ward south ward south curtain wall glass",
+      "ward south ward south curtain wall steel"
+    ],
+    "ward south exoskeleton": [
+      "ward south ward south exoskeleton steel"
+    ],
+    "exoskeleton": [
+      "ward south brace",
+      "ward south brace.001",
+      "ward south brace.002",
+      "ward south brace.003",
+      "ward south brace.004",
+      "ward south brace.005",
+      "ward south brace.006",
+      "ward south brace.007",
+      "ward south brace.008",
+      "ward south brace.009",
+      "ward south brace.010",
+      "ward south brace.011",
+      "ward south brace.012",
+      "ward south brace.013",
+      "ward south brace.014",
+      "ward south brace.015",
+      "ward south brace.016",
+      "ward south brace.017",
+      "ward south brace.018",
+      "ward south brace.019",
+      "ward east brace",
+      "ward east brace.001",
+      "ward east brace.002",
+      "ward east brace.003",
+      "ward east brace.004",
+      "ward east brace.005",
+      "ward east brace.006",
+      "ward east brace.007",
+      "ward east brace.008",
+      "ward east brace.009",
+      "ward east brace.010",
+      "ward east brace.011",
+      "ward east brace.012",
+      "ward east brace.013",
+      "ward east brace.014",
+      "ward east brace.015",
+      "ward east brace.016",
+      "ward east brace.017",
+      "ward east brace.018",
+      "ward east brace.019",
+      "ward east brace.020",
+      "ward east brace.021",
+      "ward east brace.022",
+      "ward east brace.023",
+      "ward east brace.024",
+      "ward east brace.025",
+      "ward east brace.026",
+      "ward east brace.027",
+      "ward east brace.028",
+      "ward east brace.029",
+      "ward east brace.030",
+      "ward east brace.031",
+      "ward east brace.032",
+      "ward east brace.033",
+      "ward east brace.034",
+      "ward east brace.035",
+      "ward east brace.036",
+      "ward east brace.037",
+      "ward east brace.038",
+      "ward east brace.039",
+      "ward east brace.040",
+      "ward east brace.041",
+      "ward east brace.042",
+      "ward east brace.043",
+      "ward east brace.044",
+      "ward east brace.045",
+      "ward east brace.046",
+      "ward east brace.047",
+      "ward east brace.048",
+      "ward east brace.049",
+      "ward east brace.050",
+      "ward east brace.051",
+      "ward east brace.052",
+      "ward east brace.053",
+      "ward east brace.054",
+      "ward east brace.055",
+      "ward east brace.056",
+      "ward east brace.057",
+      "ward east brace.058",
+      "ward east brace.059",
+      "ward east brace.060",
+      "ward east brace.061",
+      "ward east brace.062",
+      "ward east brace.063",
+      "ward east brace.064",
+      "ward east brace.065",
+      "ward east brace.066",
+      "ward east brace.067",
+      "ward east brace.068",
+      "ward east brace.069",
+      "ward east brace.070",
+      "ward east brace.071",
+      "ward east brace.072",
+      "ward east brace.073",
+      "ward east brace.074",
+      "ward east brace.075",
+      "ward east brace.076",
+      "ward east brace.077",
+      "ward east brace.078",
+      "ward east brace.079",
+      "ward east brace.080",
+      "ward east brace.081",
+      "ward east brace.082",
+      "ward east brace.083",
+      "ward east brace.084",
+      "ward east brace.085",
+      "ward east brace.086",
+      "ward east brace.087",
+      "ward east brace.088",
+      "ward east brace.089",
+      "ward east brace.090",
+      "ward east brace.091",
+      "ward east brace.092",
+      "ward east brace.093",
+      "ward east brace.094",
+      "ward east brace.095",
+      "ward east brace.096",
+      "ward east brace.097",
+      "ward east brace.098",
+      "ward east brace.099",
+      "ward east brace.100",
+      "ward east brace.101",
+      "ward east brace.102",
+      "ward east brace.103",
+      "ward east brace.104",
+      "ward east brace.105",
+      "ward east brace.106",
+      "ward east brace.107",
+      "ward east brace.108",
+      "ward east brace.109",
+      "ward north brace",
+      "ward north brace.001",
+      "ward north brace.002",
+      "ward north brace.003",
+      "ward north brace.004",
+      "ward north brace.005",
+      "ward north brace.006",
+      "ward north brace.007",
+      "ward north brace.008",
+      "ward north brace.009",
+      "ward north brace.010",
+      "ward north brace.011",
+      "ward north brace.012",
+      "ward north brace.013",
+      "ward north brace.014",
+      "ward north brace.015",
+      "ward north brace.016",
+      "ward north brace.017",
+      "ward north brace.018",
+      "ward north brace.019",
+      "ward north brace.020",
+      "ward north brace.021",
+      "ward north brace.022",
+      "ward north brace.023",
+      "ward north brace.024",
+      "ward north brace.025",
+      "ward north brace.026",
+      "ward north brace.027",
+      "ward north brace.028",
+      "ward north brace.029",
+      "ward north brace.030",
+      "ward north brace.031",
+      "ward north brace.032",
+      "ward north brace.033",
+      "ward north brace.034",
+      "ward north brace.035",
+      "ward north brace.036",
+      "ward north brace.037",
+      "ward north brace.038",
+      "ward north brace.039",
+      "ward north brace.040",
+      "ward north brace.041",
+      "ward north brace.042",
+      "ward north brace.043",
+      "ward north brace.044",
+      "ward north brace.045",
+      "ward north brace.046",
+      "ward north brace.047",
+      "ward north brace.048",
+      "ward north brace.049",
+      "ward north brace.050",
+      "ward north brace.051",
+      "ward north brace.052",
+      "ward north brace.053",
+      "ward north brace.054",
+      "ward north brace.055",
+      "ward north brace.056",
+      "ward north brace.057",
+      "ward north brace.058",
+      "ward north brace.059",
+      "ward north brace.060",
+      "ward north brace.061",
+      "ward north brace.062",
+      "ward north brace.063",
+      "ward north brace.064",
+      "ward north brace.065",
+      "ward north brace.066",
+      "ward north brace.067",
+      "ward north brace.068",
+      "ward north brace.069",
+      "ward north brace.070",
+      "ward north brace.071",
+      "ward north brace.072",
+      "ward north brace.073",
+      "ward north brace.074",
+      "ward north brace.075",
+      "ward north brace.076",
+      "ward north brace.077",
+      "ward north brace.078",
+      "ward north brace.079",
+      "ward north brace.080",
+      "ward north brace.081",
+      "ward north brace.082",
+      "ward north brace.083",
+      "ward north brace.084",
+      "ward north brace.085",
+      "ward north brace.086",
+      "ward north brace.087",
+      "ward north brace.088",
+      "ward north brace.089",
+      "ward north brace.090",
+      "ward north brace.091",
+      "ward north brace.092",
+      "ward north brace.093",
+      "ward north brace.094",
+      "ward north brace.095",
+      "ward north brace.096",
+      "ward north brace.097",
+      "ward north brace.098",
+      "ward north brace.099",
+      "ward north brace.100",
+      "ward north brace.101",
+      "ward north brace.102",
+      "ward north brace.103",
+      "ward north brace.104",
+      "ward north brace.105",
+      "ward north brace.106",
+      "ward north brace.107",
+      "ward north brace.108",
+      "ward north brace.109",
+      "ward north brace.110",
+      "ward north brace.111",
+      "ward north brace.112",
+      "ward north brace.113",
+      "ward north brace.114",
+      "ward north brace.115",
+      "ward north brace.116",
+      "ward north brace.117",
+      "ward north brace.118",
+      "ward north brace.119",
+      "ward west brace",
+      "ward west brace.001",
+      "ward west brace.002",
+      "ward west brace.003",
+      "ward west brace.004",
+      "ward west brace.005",
+      "ward west brace.006",
+      "ward west brace.007",
+      "ward west brace.008",
+      "ward west brace.009",
+      "ward west brace.010",
+      "ward west brace.011",
+      "ward west brace.012",
+      "ward west brace.013",
+      "ward west brace.014",
+      "ward west brace.015",
+      "ward west brace.016",
+      "ward west brace.017",
+      "ward west brace.018",
+      "ward west brace.019",
+      "ward west brace.020",
+      "ward west brace.021",
+      "ward west brace.022",
+      "ward west brace.023",
+      "ward west brace.024",
+      "ward west brace.025",
+      "ward west brace.026",
+      "ward west brace.027",
+      "ward west brace.028",
+      "ward west brace.029",
+      "ward west brace.030",
+      "ward west brace.031",
+      "ward west brace.032",
+      "ward west brace.033",
+      "ward west brace.034",
+      "ward west brace.035",
+      "ward west brace.036",
+      "ward west brace.037",
+      "ward west brace.038",
+      "ward west brace.039",
+      "ward bar south frame brace",
+      "ward bar south frame brace.001",
+      "ward bar south frame brace.002",
+      "ward bar south frame brace.003",
+      "ward bar south frame brace.004",
+      "ward bar south frame brace.005",
+      "ward bar south frame brace.006",
+      "ward bar south frame brace.007",
+      "ward bar south frame brace.008",
+      "ward bar south frame brace.009",
+      "ward bar south frame brace.010",
+      "ward bar south frame brace.011",
+      "ward bar south frame brace.012",
+      "ward bar south frame brace.013",
+      "ward bar south frame brace.014",
+      "ward bar south frame brace.015",
+      "ward bar south frame brace.016",
+      "ward bar south frame brace.017",
+      "ward bar south frame brace.018",
+      "ward bar south frame brace.019"
+    ],
+    "ward east base": [
+      "ward east ward east base trim",
+      "ward east ward east base glass",
+      "ward east ward east base stone",
+      "ward east ward east base concrete"
+    ],
+    "ward east curtain wall": [
+      "ward east ward east curtain wall glass",
+      "ward east ward east curtain wall steel"
+    ],
+    "ward east exoskeleton": [
+      "ward east ward east exoskeleton steel"
+    ],
+    "ward north base": [
+      "ward north ward north base trim",
+      "ward north ward north base glass",
+      "ward north ward north base stone",
+      "ward north ward north base concrete"
+    ],
+    "ward north curtain wall": [
+      "ward north ward north curtain wall glass",
+      "ward north ward north curtain wall steel"
+    ],
+    "ward north exoskeleton": [
+      "ward north ward north exoskeleton steel"
+    ],
+    "ward west base": [
+      "ward west ward west base trim",
+      "ward west ward west base glass",
+      "ward west ward west base stone",
+      "ward west ward west base concrete"
+    ],
+    "ward west curtain wall": [
+      "ward west ward west curtain wall glass",
+      "ward west ward west curtain wall steel"
+    ],
+    "ward west exoskeleton": [
+      "ward west ward west exoskeleton steel"
+    ],
+    "ward leg west base": [
+      "ward leg west ward leg west base trim",
+      "ward leg west ward leg west base glass",
+      "ward leg west ward leg west base stone",
+      "ward leg west ward leg west base concrete"
+    ],
+    "ward leg west curtain wall": [
+      "ward leg west ward leg west curtain wall glass",
+      "ward leg west ward leg west curtain wall steel"
+    ],
+    "ward bar south curtain wall": [
+      "ward bar south ward bar south curtain wall glass",
+      "ward bar south ward bar south curtain wall steel"
+    ],
+    "ward bar south frame exoskeleton": [
+      "ward bar south frame ward bar south frame exoskeleton steel"
+    ],
+    "ward atrium back curtain wall": [
+      "ward atrium back ward atrium back curtain wall glass",
+      "ward atrium back ward atrium back curtain wall steel"
+    ],
+    "ward floors": [
+      "Ward bar floor",
+      "Ward leg floor",
+      "Ward bar floor.001",
+      "Ward leg floor.001",
+      "Ward bar floor.002",
+      "Ward leg floor.002",
+      "Ward bar floor.003",
+      "Ward leg floor.003",
+      "Ward bar floor.004",
+      "Ward leg floor.004",
+      "Ward bar floor.005",
+      "Ward leg floor.005",
+      "Ward bar floor.006",
+      "Ward leg floor.006",
+      "Ward bar floor.007",
+      "Ward leg floor.007",
+      "Ward ground slab"
+    ],
+    "ward roof": [
+      "Ward bar roof",
+      "Ward leg roof",
+      "Ward roof membrane",
+      "Ward leg roof membrane"
+    ],
+    "ward plant": [
+      "Air handler",
+      "Stair penthouse",
+      "Duct run",
+      "Duct run.001",
+      "Duct run.002",
+      "Condenser.003",
+      "Condenser.004",
+      "Condenser.005",
+      "Exhaust stack",
+      "Exhaust stack.001",
+      "Exhaust stack.002",
+      "Exhaust stack.003"
+    ],
+    "atrium": [
+      "Atrium south glass",
+      "Atrium return glass",
+      "Atrium return mullion",
+      "Atrium return glass.001",
+      "Atrium return mullion.001",
+      "Atrium closer",
+      "Atrium diagrid",
+      "Atrium diagrid.001",
+      "Atrium diagrid.002",
+      "Atrium diagrid.003",
+      "Atrium diagrid.004",
+      "Atrium diagrid.005",
+      "Atrium diagrid.006",
+      "Atrium diagrid.007",
+      "Atrium diagrid.008",
+      "Atrium diagrid.009",
+      "Atrium diagrid.010",
+      "Atrium diagrid.011",
+      "Atrium diagrid.012",
+      "Atrium diagrid.013",
+      "Atrium diagrid.014",
+      "Atrium diagrid.015",
+      "Atrium diagrid.016",
+      "Atrium diagrid.017",
+      "Atrium diagrid.018",
+      "Atrium diagrid.019",
+      "Atrium diagrid.020",
+      "Atrium diagrid.021",
+      "Atrium diagrid.022",
+      "Atrium diagrid.023",
+      "Atrium diagrid.024",
+      "Atrium diagrid.025",
+      "Atrium diagrid.026",
+      "Atrium diagrid.027",
+      "Atrium diagrid.028",
+      "Atrium diagrid.029",
+      "Atrium diagrid.030",
+      "Atrium diagrid.031",
+      "Atrium diagrid.032",
+      "Atrium diagrid.033",
+      "Atrium roof glass",
+      "Atrium top edge",
+      "Atrium top edge.001",
+      "Atrium roof rib",
+      "Atrium roof rib.001",
+      "Atrium roof rib.002",
+      "Atrium roof rib.003",
+      "Atrium roof rib.004",
+      "Atrium roof rib.005",
+      "Atrium roof rib.006",
+      "Atrium roof rib.007",
+      "Atrium roof rib.008",
+      "Atrium west glass",
+      "Revolving door drum",
+      "Revolving door canopy",
+      "Revolving door drum.001",
+      "Revolving door canopy.001",
+      "Atrium bridge",
+      "Atrium bridge guard",
+      "Atrium bridge.001",
+      "Atrium bridge guard.001",
+      "Atrium lift",
+      "Atrium floor",
+      "Reception desk"
+    ],
+    "atrium frame": [
+      "atrium frame steel"
+    ],
+    "atrium diagrid nodes": [
+      "atrium diagrid nodes steel"
+    ],
+    "entrance canopy": [
+      "Entrance canopy glass",
+      "Entrance canopy edge",
+      "Entrance canopy edge.001",
+      "Entrance canopy edge.002",
+      "Entrance canopy edge.003",
+      "Canopy tension rod",
+      "Canopy tension rod.001",
+      "Canopy tension rod.002",
+      "Canopy tension rod.003",
+      "Canopy tension rod.004",
+      "Canopy tension rod.005",
+      "Canopy post",
+      "Canopy post.001"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-16T07:44:41.934330+00:00",
+  "delivery_and_render_seconds": 8328.535372092,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

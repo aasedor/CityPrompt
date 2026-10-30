@@ -7,6 +7,7 @@ import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
 import { isLocalTeachingBuilding } from '@/features/pickPlace/nativeBuildingRouting';
 import { computeCentroid } from '../mapEngine/geoUtils';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
+import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
 import { rectangleDimensions } from '@/features/pickPlace/geometry';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { resolveZoneTerrainHeight } from './globeTerrainUtils';
@@ -64,8 +65,11 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
   const gl = useThree(state => state.gl);
   const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
   const { scene } = useGLTF(url, true, true, extendLoader);
+  const buildingOnly = useMemo(() => prepareBuildingOnlyScene(scene, url), [scene, url]);
+  useEffect(() => retainResourceForDeferredDisposal(buildingOnly,
+    value => value.ownedGeometries.forEach(geometry => geometry.dispose())), [buildingOnly]);
   const landscapeGround = useBuildingLandscapeGround(zone);
-  const landscape = useMemo(() => prepareReviewBuildingLandscape(scene, zone, landscapeGround), [scene, zone, landscapeGround]);
+  const landscape = useMemo(() => prepareReviewBuildingLandscape(buildingOnly.clone, zone, landscapeGround), [buildingOnly.clone, zone, landscapeGround]);
   useEffect(() => retainResourceForDeferredDisposal(landscape, value => {
     value.ownedGeometries.forEach(geometry => geometry.dispose());
     value.ownedMaterials.forEach(material => material.dispose());
@@ -82,7 +86,7 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
     value => value.ownedMaterials.forEach(material => material.dispose())), [preparedModel]);
   const [lng, lat] = computeCentroid(zone.coordinates);
   const yaw = rectangleDimensions(zone.coordinates).degrees * Math.PI / 180;
-  const footprints = useMemo(() => reviewBuildingFootprints(scene, yaw), [scene, yaw]);
+  const footprints = useMemo(() => reviewBuildingFootprints(buildingOnly.clone, yaw), [buildingOnly, yaw]);
   const sharedGround = useSharedSiteGround();
   const verifiedGround = useSharedSiteGroundVerification();
   const boundary = getActiveSiteBoundary(zones);

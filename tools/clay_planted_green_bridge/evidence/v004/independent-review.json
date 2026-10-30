@@ -1,0 +1,477 @@
+{
+  "schema": "cityprompt.rlasm.independent_architectural_clay_review@1",
+  "candidate": "clay-planted-green-bridge-clay-v004",
+  "candidate_directory": "C:/dev-artifacts/CityPrompt/claude-crossings-practical-20261029/green-v004",
+  "model": "clay-planted-green-bridge-clay-v004.glb",
+  "model_sha256": "ffb7348e802aed74ef9c3142e5a042ae75926f93f5bb911f3bca2e0220be5721",
+  "reviewer": "Codex separate holistic verifier /root/hospital_v004_verifier",
+  "reviewed_at_utc": "2026-10-30T01:33:54.3700622Z",
+  "method": "RLASM v6.1",
+  "profile": "architectural_clay",
+  "scope": "Fresh holistic source-locked review of all v004 evidence: plan, original pod/bed/path identity, structural relationships, supports/abutments and inferred approaches, planting morphology and coverage, rail/bollard visibility and clearance, bank/water footprint, every elevation/underside, cameras and phone regressions.",
+  "holistic_review_performed": true,
+  "category_closure_only": false,
+  "architectural_clay_pass": false,
+  "decision": "visual_rework_required",
+  "unresolved_p0": 0,
+  "unresolved_p1": 1,
+  "unresolved_p2": 3,
+  "keeper_approved": false,
+  "runtime_activation_authorized": false,
+  "publication_authorized": false,
+  "inspection_counts": {
+    "sources": 3,
+    "actual_glb_renders": 20,
+    "phone_boards": 4,
+    "all_required_pixels_opened": true
+  },
+  "blockers": [
+    {
+      "id": "P1-PLANTING-IDENTITY",
+      "severity": "P1",
+      "category": "source-specific landscape morphology and coverage",
+      "symptom": "The source bridge is defined by lush, interwoven perennial planting, rounded shrubs, grass drifts and spreading small-tree crowns. At normal front and aerial/phone scale v004 instead reads as regularly spaced isolated upright capsule clumps over conspicuous bare soil. Close views show the same pendant/column morphology repeated in shrubs and tree crowns, while grass is a sparse wire fan. Lavender spikes and upright flowers improve variety but do not restore the dominant source planting character.",
+      "evidence": [
+        "sources/front.png",
+        "sources/oblique.jpg",
+        "sources/top.jpg",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/planting_bed.png",
+        "renders/viewing_pod.png",
+        "renders/rail_bollard.png",
+        "boards/phone-01-source-vs-render.png",
+        "boards/phone-02-details.png"
+      ],
+      "classroom_reason": "This changes the primary visible identity of the planted green bridge at normal presentation distance. It is a canopy/coverage/coherence issue, not a demand for leaf textures, species-level botanical realism or fine construction detail.",
+      "cause": "Repeated narrow tall dome clusters and small isolated clump footprints, widely spaced over soil, dominate the beds and tree crowns. Fine accents are disconnected from a continuous low/mid planting layer.",
+      "finite_fix": "Keep structural geometry, reference lock, compact banks and approach stairs. Replace most upright capsule shrub forms with broad irregular low/mid overlapping leaf masses; restore a nearly continuous green understory between distinct larger drifts; use fewer irregular spreading tree crowns; strengthen grass/lavender drifts while retaining actual central-path and pod-threshold clearances. Bound each entire grass fan including lean inside its intended bed envelope. Preserve v004, create a bounded v005 candidate, rerender all 20 views and four boards, and repeat holistic independent review."
+    }
+  ],
+  "findings": [
+    {
+      "category": "plan and original source identity",
+      "result": "structure/topology acceptable; planting blocked",
+      "finding": "Straight central path between roughly equal-width beds, broad paired half-hexagonal planted pods, corten fascia, dark girder bands, concrete crossheads and round columns preserve the source-specific bridge topology. Current broad pod outlines no longer read as small pointed wedges, and small threshold stones avoid a full-width paved cross. Planting remains the single P1."
+    },
+    {
+      "category": "structure/supports/underside",
+      "result": "acceptable classroom clay",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/pier_column.png",
+        "renders/water_under.png",
+        "renders/left_side.png",
+        "renders/right_side.png"
+      ],
+      "finding": "Pod girders, concrete crossheads and paired round columns visibly meet; the main deck has seated land supports and both new end abutments. Columns reach the water or bank. No floating span, unsupported pod or open underside invalidates the clay proof. Structural engineering and submerged foundations are not assessed."
+    },
+    {
+      "category": "end approaches and circulation",
+      "result": "visually connected teaching assumption",
+      "evidence": [
+        "renders/south_approach.png",
+        "renders/north_approach.png",
+        "renders/rear_north.png",
+        "renders/central_path.png",
+        "renders/top.png"
+      ],
+      "finding": "Both inferred stairs meet the deck and prepared grade and align with the main path. The main route is visibly clear; threshold corridors into the pods remain open. Long stair flights and fine handrail details carry no accessibility/code claim."
+    },
+    {
+      "category": "railings and bollards",
+      "result": "usable proof; minor follow-up",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/rail_bollard.png",
+        "renders/planting_bed.png",
+        "renders/viewing_pod.png"
+      ],
+      "finding": "Inner path rails, outer pickets/timber caps and offset bollards are visible. The former mound-through-rail/path problem is no longer a large intrusion. Thin grass blades may touch/cross the rail plane locally; no blocked central pedestrian corridor is visible, and complete plant envelope clearance must not be called numerically verified."
+    },
+    {
+      "category": "compact context",
+      "result": "acceptable bounded river/bank module",
+      "evidence": [
+        "renders/top.png",
+        "renders/rear_side.png",
+        "renders/aerial.png"
+      ],
+      "finding": "External buildings and parking are removed. Limited banks, riprap and water retain the river-crossing relationships needed to review this bridge. Metric scale and bank extent are declared teaching assumptions."
+    },
+    {
+      "category": "cameras and all-elevation regression",
+      "result": "complete proof with presentation polish",
+      "finding": "All 20 PNGs and four boards were opened directly. Whole top, both sides, rear and rear-side include the full delivered module, stairs and crown with margin. Front/front_corner/aerial are deliberately local source-role views, with complete envelope proved elsewhere. glass_close now clearly serves its declared inner-rail role, and rail_bollard includes visible bollards. water_under is dark but its support relationships remain legible."
+    }
+  ],
+  "prior_finding_reconciliation": [
+    {
+      "finding": "v002 undersized pointed pods and paved cross",
+      "status": "closed in current pixels",
+      "reason": "Broader half-hexagonal pods and small north-end stone thresholds retain continuous bed/pod identity without a paved cross."
+    },
+    {
+      "finding": "v003 glass_close foreground occlusion and missing bollard camera",
+      "status": "closed in current pixels",
+      "reason": "Inner-rail detail is unobstructed; rail_bollard shows the bollard and adjacent rail."
+    },
+    {
+      "finding": "v003 severe mound overrun through inner/outer rails",
+      "status": "large intrusion closed; fine grass contact remains P2",
+      "reason": "Substantial clumps now stay on bed/inside pod; no gross foliage hanging through fascia or onto central path observed."
+    },
+    {
+      "finding": "v003 floating deck ends",
+      "status": "closed in current pixels",
+      "reason": "End abutments and both stairs visibly join the deck to prepared grade."
+    },
+    {
+      "finding": "v002/v003 generic coarse planting",
+      "status": "partially improved, remains P1-PLANTING-IDENTITY",
+      "reason": "Lavender is now many separate spikes and flowers have stems, but isolated capsule shrubs, repeated tree crowns and bare-bed fields still change source-visible planting."
+    }
+  ],
+  "p2_findings": [
+    {
+      "id": "P2-THIN-GRASS-CONTACT",
+      "finding": "Fine blades may touch or cross the inner rail by a small local amount. No blocked central path is apparent. Clamp the full lean envelope as part of the next planting correction; exact centimeter clearance was not measured or verified."
+    },
+    {
+      "id": "P2-PRESENTATION-FRAMING",
+      "finding": "Whole side/rear views and fourth phone board are oversafe and small vertically, with large neutral margins. Complete module/support proof is available in complementary close views; tighter presentation framing would improve usability."
+    },
+    {
+      "id": "P2-CLAY-MATERIALS",
+      "finding": "Water is a flat bounded clay surface, corten and timber lack source textures, bollards are lighter than reference, and banks/stair details are simplified. These are honest clay limits rather than independent classroom blockers."
+    }
+  ],
+  "audit": {
+    "model_bytes": 18729524,
+    "model_hash_and_bytes_match_build_report": true,
+    "actual_glb_meshes": 23,
+    "actual_glb_materials": 23,
+    "actual_glb_images": 0,
+    "actual_glb_textures": 0,
+    "all_three_source_locks_match_bytes_and_sha256": true,
+    "all_three_sources_match_available_original_catalogue_bytes": true,
+    "all_ten_locked_script_hashes_match": true,
+    "render_source_report": "actual optimized GLB reimport; no geometry/material replacement",
+    "max_roundtrip_delta_m": 0.0,
+    "native_dimensions_m": {
+      "width": 38.79999923706055,
+      "depth": 101.02232360839844,
+      "height": 9.693490028381348
+    },
+    "runtime_imported": false,
+    "scaling_verified": false,
+    "provenance_limit": "Reviewer inspected sources, relevant authoring code and build report/hash linkage; did not rerun Blender. Deterministic preflight is not visual approval."
+  },
+  "limitations": [
+    "Architectural-clay teaching model only; no textured keeper, structural engineering, accessibility/code, runtime integration, terrain fit, arbitrary stretching/bending/intersection or publication approval.",
+    "Only fixed native size is declared. Grade stairs, bank envelope, metric scale and hidden structure are authored assumptions.",
+    "No glazed architecture exists: glass_close is explicitly an inner-rail inspection alias.",
+    "No sources, GLB, renders, boards, original packages or repository files were changed; only external v004 review JSON and Markdown were written.",
+    "Historical v002 review and original package README were read for finite blocker reconciliation but never used as a substitute for current pixel inspection."
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/front.png",
+      "sha256": "fd3f4b85a8f168fb4684cdcb34750d9654ff8c525d54cfdbb9a7c535a31d32fb",
+      "bytes": 1653127,
+      "width": 1024,
+      "height": 768,
+      "role": "sources",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "sources/oblique.jpg",
+      "sha256": "fa6886dd4070716e9067e08aea9ad459ec8a520f96c7dcdf9d59cfdf6bf1656f",
+      "bytes": 967340,
+      "width": 1195,
+      "height": 896,
+      "role": "sources",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "sources/top.jpg",
+      "sha256": "e865fb21f5bbf2dadcbbf1c8618cf384555c4cea47d13ddd507d3631366243c9",
+      "bytes": 1031836,
+      "width": 1195,
+      "height": 896,
+      "role": "sources",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "7f798ac16b3e7a8b3d54c92cf20919d6833d21d9d51b177f2206b9b70eeefe81",
+      "bytes": 1668806,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "884f496a734259b516f38514c26c266dcdde4c3c703e78e6fcfd227b9ebe2b43",
+      "bytes": 1770173,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/central_path.png",
+      "sha256": "fd6f4aaa657ad8e3c97230930337a24d20da39151ee8dcaaa716443ec4a6e00a",
+      "bytes": 1541285,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "5723a7ac7af1b5cf20417b1252290943564e46fb89e14321c12e5ad4fe243ae4",
+      "bytes": 1436280,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "f2e9afe393c008013591fabbe8933f7da60594d3603f562decb9be7488a483de",
+      "bytes": 1694654,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "cb9d9a02e1d03120ed8d0a66f989ec76316a3934fd256aa3032a713825121472",
+      "bytes": 1733490,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "8e25ab92962185020d806cb20f066ca4964cb968386105a04652ac118c805599",
+      "bytes": 1710989,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "28ce9c41d139eadbb6420010f132cc2ef8be74cb15f4d8bb27160a265d7b27ef",
+      "bytes": 1279088,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/north_approach.png",
+      "sha256": "4e69b57d3010137355804c3ff3fc169ea608ed38dfc524aeda32e02d886b1549",
+      "bytes": 1593009,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/pier_column.png",
+      "sha256": "a139004c0706435303cb30eb5a219ae0496c5f29f433e1032f81cc43b3a204d3",
+      "bytes": 1454169,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/planting_bed.png",
+      "sha256": "c618a6887e94e217086d5922a971d5ed0cd84faa01bde5eb3f4edc27f95f356b",
+      "bytes": 1765175,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/rail_bollard.png",
+      "sha256": "c58e880a7a0dee5f66553c56b08b2e62842dcbc5db0b9d5a723e2da8551443d0",
+      "bytes": 1693264,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/rear_north.png",
+      "sha256": "6d452651c0c584409f6441dd35129656592ac618c7beab548f2fd50476195b15",
+      "bytes": 1585997,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "ec15cfd5d95a491fbdb786b119c7aa3e684f6c7345fae2ff48a2a958797ab9ba",
+      "bytes": 1332446,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "d0844742c566f3b0edc7a2c5f08d86c79d5d82d55f6c181b4edbd5f8b60646c0",
+      "bytes": 1267191,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "1929337a0082a150760cc282906594f23e9a14807d89b01feb87b52fd29f9e22",
+      "bytes": 1277304,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/south_approach.png",
+      "sha256": "7bd059480b8b77eca13c88a87657a289cea6a01020598ffb35d4a56e820152a2",
+      "bytes": 1580319,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "5035ecb3570a92723f3c3b5acf23dd61ae77410aeb69cd203a9fe882872aee06",
+      "bytes": 1433951,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/viewing_pod.png",
+      "sha256": "3fc4cfe92c19a6d8dcb34f1565699a2ff04e02f3baa40b326f4de9a49d96167d",
+      "bytes": 1779454,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "renders/water_under.png",
+      "sha256": "eb3de8f0aaa7ed347ae11d4661b9a69e5e002258fc981c651311c36f65347b3d",
+      "bytes": 1325136,
+      "width": 1440,
+      "height": 1080,
+      "role": "renders",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "boards/phone-01-source-vs-render.png",
+      "sha256": "dfc65f3683365e805cd8f79641f54337d1e0108103a5a7c521d557568c001446",
+      "bytes": 1975420,
+      "width": 1080,
+      "height": 1920,
+      "role": "boards",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "boards/phone-02-details.png",
+      "sha256": "6622bb779e3cd616dd860ec7e1b8a9f62d16a5d6a2d25efa69e17cbe4fa81e21",
+      "bytes": 1207971,
+      "width": 1080,
+      "height": 1920,
+      "role": "boards",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "boards/phone-03-details.png",
+      "sha256": "182546d6f2ec43c9c5d603e1519dc96dca20e99c2e0007dbb476287dbbc4af46",
+      "bytes": 1077920,
+      "width": 1080,
+      "height": 1920,
+      "role": "boards",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    },
+    {
+      "path": "boards/phone-04-details.png",
+      "sha256": "fcabd616b17da300a4f71329e647f002aafd64f2de09f876bbdea09c9cf0dc96",
+      "bytes": 506040,
+      "width": 1080,
+      "height": 1920,
+      "role": "boards",
+      "inspection": "Direct original-resolution pixel inspection via tools.view_image(detail=original)"
+    }
+  ],
+  "locked_scripts": [
+    {
+      "path": "scripts/clay_core.py",
+      "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/geometry.py",
+      "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/contract.py",
+      "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/assemblies.py",
+      "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/family_greenbridge_v004.py",
+      "sha256": "3b7512377941d36c41093c71c1c274ba1729655d68f20fb24d4301ba557e6486",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/family_greenbridge.py",
+      "sha256": "bce06405686cd9757b202e7812cd4f828f31542041efd7adac5b3608acaea4ef",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/geometry_contract.py",
+      "sha256": "7f7c7c3bf18b3a0f02ac3ea1b7a090df9590c2d3d3bb3fbe622e9e8904a4fe15",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/plant_clearance.py",
+      "sha256": "348854453dff2934dfb879042438aae14cf9bf959ce6ec447d6842260c92fa04",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/build_v004.py",
+      "sha256": "278f0e68bd27a6ba5439c310337d07ee5c9016100878f98360e43e1d89902faa",
+      "hash_verified": true
+    },
+    {
+      "path": "scripts/lock_sources.py",
+      "sha256": "186e891b9a3d0b338b0f7b6e26cabf0330d2f4fe1008c108b634adb0dd85926e",
+      "hash_verified": true
+    }
+  ]
+}

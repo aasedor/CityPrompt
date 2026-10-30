@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, deployment-version]
   pull_request:
-    branches: [main]
+    branches: [main, deployment-version]
 
 permissions:
   contents: read
@@ -149,6 +149,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Prepare exact archive-backed frontend assets
+        working-directory: .
+        run: |
+          python -m unittest discover -s scripts/tests -p "test_materialize_frontend_assets.py"
+          python scripts/materialize_frontend_assets.py --fetch-lfs
+
       - name: Audit production and development dependencies
         run: npm audit --audit-level=high
 
@@ -160,6 +166,11 @@ jobs:
 
       - name: Type check
         run: npm run type-check
+
+      - name: Hydrate finite crossing regression fixtures
+        run: |
+          git lfs fetch origin --include="frontend/public/street-kits/claude-20261023/*.glb" --exclude=""
+          git lfs checkout "frontend/public/street-kits/claude-20261023/*.glb"
 
       - name: Run tests
         run: npx vitest run --reporter=verbose
@@ -211,6 +222,10 @@ jobs:
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
+
+      - name: Prepare exact archive-backed frontend assets
+        working-directory: .
+        run: python scripts/materialize_frontend_assets.py --fetch-lfs
 
       - name: Run functional browser workflow
         run: npm run test:e2e

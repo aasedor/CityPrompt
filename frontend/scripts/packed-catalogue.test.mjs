@@ -10,6 +10,29 @@ import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
 
+for (const relative of [
+  'data/cataloguePlanningHistory.json', 'data/catalogueTeaching.json',
+  'data/localTeachingBuildings.json', 'data/classroomStarter.json',
+  'data/buildingPlacementEdges.json', 'data/catalogueHeroImages.json',
+  'data/claudeAssetLocalTrial.json',
+  'features/legoAssembly/buildingOnlyContracts.json',
+  'features/parks/curbBulbContracts.json', 'features/parks/calgarySafetyCatalogue.json',
+  'features/zoningCatalogue/parkUseRules.json',
+  'features/pickPlace/publicRealmOwnershipContracts.json',
+  'components/viewer/globe/publicRealmTrialAssets.json',
+]) {
+  test(`${relative}: combined handoff metadata packs without changing any field`, async () => {
+    const path = resolve('src', relative);
+    const source = readFileSync(path, 'utf8');
+    const transformed = packedCatalogue().transform('', path);
+    assert.notEqual(transformed, null);
+    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
+    assert.deepEqual(decoded.default, JSON.parse(source));
+    assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * .75);
+  });
+}
+
 test('fixed public-realm packing preserves exact review gates, variants and native placement', async () => {
   const path = resolve('src/data/publicRealmRelease20261023.json');
   const source = readFileSync(path, 'utf8');

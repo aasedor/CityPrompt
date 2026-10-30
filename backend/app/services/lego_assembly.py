@@ -35,6 +35,7 @@ from functools import lru_cache
 from typing import Any, Iterable, Literal
 
 from app.services.plan_geometry.archetypes import load_dims_table
+from app.services.building_only_envelopes import building_only_dimensions
 
 
 VALID_ROLES = {"podium", "floor", "setback", "crown", "roof", "attachment", "assembled"}
@@ -1174,7 +1175,14 @@ def plan_vertical_assembly(
     *,
     allow_forced_fit: bool = True,
 ) -> dict[str, Any]:
-    modules = list(modules)
+    # Geometry extraction removes context without changing original library rows.
+    # Fit the exact retained architecture, never shrink it to the smaller plot.
+    retained_modules = []
+    for module in modules:
+        dimensions = building_only_dimensions(module.model_revision,module.model_url,module.delivery_format,module.role)
+        retained_modules.append(replace(module,width_m=dimensions[0],depth_m=dimensions[1],height_m=dimensions[2])
+            if dimensions else module)
+    modules = retained_modules
     if request.model_revision:
         pinned = [module for module in modules if _matches_model_revision(module, request.model_revision)]
         if not pinned:

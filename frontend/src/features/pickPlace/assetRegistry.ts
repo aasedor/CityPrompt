@@ -8,6 +8,8 @@ import claudeFiveTrial from '@/data/claudeFiveTrial.json';
 import parkadeFamilyTrial from '@/data/parkadeFamilyTrial.json';
 import october from '@/data/catalogueOctober2026.json';
 import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
+import buildingOnlyContracts from '@/features/legoAssembly/buildingOnlyContracts.json';
+import { withBuildingOnlyFootprint } from './buildingOnlyFootprint';
 import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
@@ -333,6 +335,11 @@ export const COURT_ONLY_SPORT_ASSETS = courtOnlySportsAssets(import.meta.env.DEV
 export const LOCAL_TOWER_ASSETS = import.meta.env.DEV ? CATALOGUE_BUILDING_ASSETS.filter(asset =>
   asset.id === 'clay_twisting_glass_sky_garden_tower') : [];
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...LOCAL_TOWER_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+  if(asset.kind==='object' && asset.zoneType==='building' && asset.model.revision
+    && Object.prototype.hasOwnProperty.call(buildingOnlyContracts,asset.model.revision)) {
+    asset=withBuildingOnlyFootprint({...asset,description:'Building only, at its authored size. Add streets and site landscape separately. Prepared level site required.',
+      reshapeDescription:'Move and rotate the building. Its architectural geometry keeps its authored dimensions.'});
+  }
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.

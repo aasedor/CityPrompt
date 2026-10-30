@@ -1,0 +1,10 @@
+{
+  "candidate": "clay-braced-frame-hospital-clay-v006",
+  "scope": "Clarifies inherited source-recipe prose; actual geometry and immutable hashed build evidence unchanged",
+  "authoritative_geometry_script": "C:\\dev-artifacts\\CityPrompt\\claude-crossings-practical-20261029\\source\\tools\\clay_braced_frame_hospital\\family_hospital_v006.py",
+  "details": {
+    "site": "20.2x6.4m entrance approach only; no site roads",
+    "atrium": "Seven connected galleries, switchback stairs, structural canopy anchors",
+    "versioning": "v006 advances the pinned historical v001-v005 set. Earlier local v004 correction experiment was never integrated; it is distinct from historicalv004 and retained externally."
+  }
+}

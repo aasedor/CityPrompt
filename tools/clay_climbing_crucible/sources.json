@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "climbing_wall_building",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "climbing_crucible",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "climbing_crucible",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1254544,
+      "sha256": "a2b53e14adb38bae7599241724773027be0f01b112e97c090d51a9737cc5d1c8",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "climbing_crucible",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 815928,
+      "sha256": "8443b0f6a5b3da03d2936bd77ae457ccb085eea419b57ade87abcd2318425bff",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "climbing_crucible",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 896561,
+      "sha256": "cb1a5bf529bebca56c1c8787b626d2204ae17b3b326293575fde4ab2634ed9c9",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

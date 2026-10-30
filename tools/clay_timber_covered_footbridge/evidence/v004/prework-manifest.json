@@ -1,0 +1,498 @@
+{
+  "candidate": "clay-timber-covered-footbridge-clay-v004",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-timber-covered-footbridge",
+  "variant_id": "clay-timber-covered-footbridge-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "urban_pedestrian_footbridge/variant_2 (Timber-Clad Covered Bridge)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 43.6,
+      "depth": 8.8,
+      "height": 7.55
+    },
+    "observed_storeys": 0,
+    "storey_programme": "street option: a covered pedestrian footbridge over a stream; the blocks are context",
+    "plan": "31 m timber deck, six covered bays, bounded banks and two inferred grade-to-deck approach stairs; background blocks omitted",
+    "section_m": {
+      "stream": [
+        -6.5,
+        6.5
+      ],
+      "lower_path": [
+        6.5,
+        10.0
+      ],
+      "bank": [
+        10.0,
+        12.5
+      ],
+      "promenade": [
+        12.5,
+        24.0
+      ],
+      "deck_top": 3.4499999999999997,
+      "eave": 6.75
+    },
+    "facade": "glulam portal frames with knee braces and side diagonals, vertical timber louvres, glass balustrade, timber deck on glulam edge beams, standing-seam zinc roof with deep eaves and hipped ends, round concrete piers",
+    "levels_m": [
+      0.0,
+      0.6,
+      3.4,
+      3.4499999999999997,
+      6.75
+    ],
+    "inferred": "Compact approach stairs are teaching assumptions outside the locked bridge envelope. No accessibility/engineering certification. Stream terminates at module edges."
+  },
+  "roof_contract": {
+    "type": "low-pitched hipped standing-seam zinc roof over the frames",
+    "datum_m": 6.75,
+    "crowns_m": [
+      7.55
+    ]
+  },
+  "identity_contract": {
+    "owner": "timber covered footbridge: glulam frames, vertical louvres and a grey standing-seam roof over a stream, concrete piers, stone-paved approaches"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: warm glulam and louvres, timber deck, grey zinc roof, pale concrete piers, grey stone paving, dark green water, grey bar railings, planted banks, brick blocks",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "a covered walk over the stream; riverside paths beneath"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 31.0,
+    "axis": "x",
+    "junction_finish": "pavers",
+    "bands": [
+      "promenade",
+      "bank",
+      "lower_path",
+      "stream",
+      "lower_path",
+      "bank",
+      "promenade"
+    ]
+  },
+  "contact_contract": [
+    "Piers seated on lower paths",
+    "Edge beams seated on headstocks/abutments",
+    "Slats terminate above diagonal brace",
+    "Continuous clear guards through all bays",
+    "Approach treads connect grade to the exact deck datum"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED",
+    "plot": "actual occupied envelope plus small placement clearance",
+    "ground": "prepared level grade only; stepped approaches, no ramp claim",
+    "unsupported": [
+      "resizing",
+      "terrain deformation",
+      "automatic road intersections"
+    ]
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        0,
+        -74.12,
+        3.6239999999999997
+      ],
+      "target": [
+        0,
+        0,
+        3.3975
+      ]
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -57.81360000000001,
+        -62.2608,
+        15.1
+      ],
+      "target": [
+        0,
+        0,
+        3.3975
+      ]
+    },
+    {
+      "name": "aerial",
+      "location": [
+        51.884,
+        -59.29600000000001,
+        22.65
+      ],
+      "target": [
+        0,
+        0,
+        3.3975
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        111.18
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 61.04
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -74.12,
+        0,
+        4.529999999999999
+      ],
+      "target": [
+        0,
+        0,
+        3.3975
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        74.12,
+        0,
+        4.529999999999999
+      ],
+      "target": [
+        0,
+        0,
+        3.3975
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        74.12,
+        4.529999999999999
+      ],
+      "target": [
+        0,
+        0,
+        3.3975
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        51.884,
+        59.29600000000001,
+        13.59
+      ],
+      "target": [
+        0,
+        0,
+        3.3975
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        2.0,
+        -15.0,
+        4.6499999999999995
+      ],
+      "target": [
+        2.0,
+        -2.0,
+        5.25
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -17.5,
+        -4.5,
+        5.1499999999999995
+      ],
+      "target": [
+        -13.0,
+        0.0,
+        5.65
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -4.0,
+        1.0,
+        4.949999999999999
+      ],
+      "target": [
+        -2.0,
+        -2.1,
+        4.25
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "portal_end",
+      "location": [
+        -21.5,
+        -0.6,
+        5.1499999999999995
+      ],
+      "target": [
+        -13.0,
+        0.0,
+        5.35
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "louvre_wall",
+      "location": [
+        -10.6,
+        -5.6,
+        5.05
+      ],
+      "target": [
+        -11.7,
+        -2.2,
+        5.25
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "roof_eaves",
+      "location": [
+        4.0,
+        -9.0,
+        9.45
+      ],
+      "target": [
+        2.0,
+        -2.6,
+        6.75
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "deck_inside",
+      "location": [
+        -12.0,
+        0.2,
+        5.05
+      ],
+      "target": [
+        6.0,
+        0.0,
+        4.449999999999999
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "pier_abutment",
+      "location": [
+        8.6,
+        -10.5,
+        2.2
+      ],
+      "target": [
+        9.4,
+        0.0,
+        2.1
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "stream_under",
+      "location": [
+        0.0,
+        -14.0,
+        1.2
+      ],
+      "target": [
+        0.0,
+        0.0,
+        2.05
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        4.0,
+        22.0,
+        7.449999999999999
+      ],
+      "target": [
+        0.0,
+        0.0,
+        4.949999999999999
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "west_approach",
+      "location": [
+        -24,
+        -7,
+        6
+      ],
+      "target": [
+        -17,
+        0,
+        2
+      ],
+      "lens": 38,
+      "whole": false
+    },
+    {
+      "name": "east_approach",
+      "location": [
+        24,
+        7,
+        6
+      ],
+      "target": [
+        17,
+        0,
+        2
+      ],
+      "lens": 38,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "portal_end",
+    "louvre_wall",
+    "roof_eaves",
+    "deck_inside",
+    "pier_abutment",
+    "stream_under",
+    "rear_north",
+    "west_approach",
+    "east_approach"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\urban-pedestrian-footbridge\\variant_2.png",
+        "path": "sources/front.png",
+        "bytes": 1357841,
+        "sha256": "2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936"
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\urban-pedestrian-footbridge\\variant_2_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 1022875,
+        "sha256": "ed7edd0326c69bc43c9086a61d750a56e25b2ff28afb6426324fdaf3f9e4139d"
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\urban-pedestrian-footbridge\\variant_2_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 974510,
+        "sha256": "bd1125b71008d2e5e0a27a7c36b06f4def0c1957b1e81d8f6e624a346912cdc3"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0.webp",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_1.png",
+      "variant_1.webp",
+      "variant_1_angle_60.jpg",
+      "variant_1_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_covered_v004.py",
+        "sha256": "45338f2e6c274cd4deea489dcc9a7fad1ad49db24ae418a00506aa612e311d5d"
+      },
+      {
+        "path": "scripts/family_covered.py",
+        "sha256": "c5945d15272db899c6f732bf96dec3d80991f29db4115e43830bff651f1bc7fd"
+      },
+      {
+        "path": "scripts/geometry_contract.py",
+        "sha256": "7f7c7c3bf18b3a0f02ac3ea1b7a090df9590c2d3d3bb3fbe622e9e8904a4fe15"
+      },
+      {
+        "path": "scripts/build_v004.py",
+        "sha256": "927ee8d7d491af448362a1f9f9c5524623fe849b069093039d1287ce4f39b6a4"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "6b4264209cee5e7a142e607a0c6499a3a969ab8b77d5137aabbb4ea3a486d01f"
+      }
+    ],
+    "blender_version": "5.1.2",
+    "python_version": "3.13.9 (main, Jan 16 2026, 12:29:45) [MSC v.1944 64 bit (AMD64)]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-30T00:33:27.211515+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "Windows local Blender; actual render device recorded in build report"
+  }
+}

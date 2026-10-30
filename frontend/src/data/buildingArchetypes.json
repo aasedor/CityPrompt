@@ -25046,6 +25046,14 @@
           "thumbnailUrl": "/archetypes/buildings/calgary-sandstone-heritage/hero.png",
           "variants": [
                 {
+                      "id": "sandstone_claude_clock_tower_v006",
+                      "label": "Sandstone clock-tower block (Claude v006)",
+                      "thumbnailUrl": "/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
+                      "description": "Reviewed four-storey Richardsonian Romanesque civic block surrounding a light court, with steep slate roofs and a copper-spired clock tower. Fixed native architectural-clay geometry; separate from the existing sandstone design.",
+                      "shadeId": null,
+                      "palette": { "primary": "#B8985A" }
+                },
+                {
                       "id": "sandstone_romanesque_revival",
                       "label": "Romanesque Revival",
                       "thumbnailUrl": "/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",

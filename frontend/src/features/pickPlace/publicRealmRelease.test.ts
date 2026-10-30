@@ -12,8 +12,8 @@ describe('exact fixed public-realm release boundary', () => {
     expect(expected).toHaveLength(12);
     expect(publicRealmReleaseRows(false).map(row => row.asset.id)).toEqual(expected);
     expect(PUBLIC_REALM_RELEASE_ASSETS.map(asset => asset.id)).toEqual(expected);
-    expect(publicRealmReleaseRows(true)).toHaveLength(12);
-    expect(manifest.models).toHaveLength(15);
+    expect(publicRealmReleaseRows(true)).toHaveLength(18);
+    expect(manifest.models).toHaveLength(21);
   });
 
   it.each([

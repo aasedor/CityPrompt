@@ -1,0 +1,291 @@
+{
+  "candidate": "clay-student-residence-tower-clay-v004",
+  "model": "clay-student-residence-tower-clay-v004.glb",
+  "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
+  "reviewer": "/root/student_v004_verifier",
+  "reviewer_role": "independent_architectural_clay_verifier",
+  "date": "2026-10-29",
+  "decision": "architectural_clay_pass",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "review_scope": "Holistic exact-source architectural-clay review for practical classroom target",
+  "representation_kind": "architectural_clay",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_p0_count": 0,
+  "unresolved_p1_count": 0,
+  "inspected_files": [
+    {
+      "path": "sources/front.png",
+      "role": "sources",
+      "sha256": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc",
+      "bytes": 1206622,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "sources/oblique.jpg",
+      "role": "sources",
+      "sha256": "d2ecf16c6ffe4b806890db42e133d903535b6747b443362f99a2a185012dc244",
+      "bytes": 930652,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "sources/top.jpg",
+      "role": "sources",
+      "sha256": "0ed3c8e1b63539593ab28a714984d718c13d9f885d94a5efcb62a5c947a8be1e",
+      "bytes": 876613,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/aerial.png",
+      "role": "renders",
+      "sha256": "53559e4ef915bae95bf056fc961a5f09f365a40d7cb20c4c3ce2b36c0c442caf",
+      "bytes": 1522712,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "role": "renders",
+      "sha256": "e3a0a05bc67bec150bdf9d230c70d2992023f20d9ab2035de314fd6379e46e77",
+      "bytes": 1415485,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "role": "renders",
+      "sha256": "67677ac966cbe7b38dc67c695b9f6fa52e486fbf1b1df7630b4590c783d74e5d",
+      "bytes": 1413099,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "role": "renders",
+      "sha256": "87b35c022245d428768334e7d31343e99776975ddc9bb6d05868bee3d6f0ff2d",
+      "bytes": 1580296,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/front.png",
+      "role": "renders",
+      "sha256": "75900ffbe2c0a8eae5ec0f5defbbaeaa9d91653b8a88deb2c58ef9ce02e9c17f",
+      "bytes": 1519997,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "role": "renders",
+      "sha256": "f9bc507412e81cb26abef96231bd8e4a0fee0c8ac08ab2bf2f45e5cf81e63c3d",
+      "bytes": 1350032,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/glazed_base.png",
+      "role": "renders",
+      "sha256": "a779cdd9d3da1d3502de7e7d5feeee10c3ebb16cec2cd3a0a46e0f6f24d67283",
+      "bytes": 1352404,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/interior.png",
+      "role": "renders",
+      "sha256": "aabcd913053e07a52d935b066e3a7ba46f5b1b2a774f95f39a3afca0e0b6bf16",
+      "bytes": 1293298,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/lattice_screen.png",
+      "role": "renders",
+      "sha256": "39e127dda142e5df7b5367e02285f0a66c474965c527ad4965a1b053ffc12e9f",
+      "bytes": 1656496,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/left_side.png",
+      "role": "renders",
+      "sha256": "b24b39d72b4562c41b73dbafc5fbb2981dc9adc96d290dadd7dc836f3cb19931",
+      "bytes": 1350661,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/planted_terrace.png",
+      "role": "renders",
+      "sha256": "4c17c9f46f5c36fe4e89602a8fb93d9583d37e59f6223f02ed2f75fada50dba6",
+      "bytes": 1454984,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/rear_north.png",
+      "role": "renders",
+      "sha256": "23f42c76aa3ca2df04db57f0955312267de849fc601b2ddc86b71ab2f83b2e7a",
+      "bytes": 1395778,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "role": "renders",
+      "sha256": "f35f6903e8905d187196108c226306243204010fddce9cb875e778633cb7759b",
+      "bytes": 1610457,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/rear.png",
+      "role": "renders",
+      "sha256": "2694161145a2460e40822ddd38979b3e127e541414242fc27adfe4907ba57f5b",
+      "bytes": 1387622,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/right_side.png",
+      "role": "renders",
+      "sha256": "c31af9c43fa5238c17936f248545fb445850fb3d0c988a068dd40f53df55f69a",
+      "bytes": 1405210,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/roof_dome.png",
+      "role": "renders",
+      "sha256": "32201eb9f5c43e9db41887053b3c2be79ec458f98f3f84177eb157b7fb3c3d2f",
+      "bytes": 1818852,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/slab_edges.png",
+      "role": "renders",
+      "sha256": "1515b4b1daeea4d00626899f1f61c6f7202f4a522fb800ffde3be68a14cbd8ca",
+      "bytes": 1495967,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "renders/top.png",
+      "role": "renders",
+      "sha256": "6186133e4fdaea999d5b7b2323c907c6ae0f3b985bf43d8b5c673f211753b24a",
+      "bytes": 1625671,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "boards/phone-01-source-vs-render.png",
+      "role": "boards",
+      "sha256": "c4f9bae65049210ee3c8a20a4927e0bf5e04c90f72bab46db9f1df33c849d862",
+      "bytes": 1756482,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "boards/phone-02-details.png",
+      "role": "boards",
+      "sha256": "fe87cf19c3b8648f04e26fbb42ef91bfcd6a1a11457fae648b10d3abdf3dba47",
+      "bytes": 979841,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "boards/phone-03-details.png",
+      "role": "boards",
+      "sha256": "c88688002597e92a2c388eb1e56a1e7cbcf435a7fd4fdce4e2d4be592f2bd837",
+      "bytes": 1037880,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "boards/phone-04-details.png",
+      "role": "boards",
+      "sha256": "a86b90b73fc7bab2ee2e0679356290e1ecb36eed700d4f79811767a7223a2efe",
+      "bytes": 556627,
+      "pixel_inspected": true,
+      "inspection_resolution": "original"
+    },
+    {
+      "path": "source-entry.json",
+      "role": "supporting_reference",
+      "sha256": "6403b48fd0946f16e0610b42a519951c974caaad52bba4beea2e63432efad60a",
+      "bytes": 1360,
+      "pixel_inspected": false
+    },
+    {
+      "path": "prework-manifest.json",
+      "role": "supporting_reference",
+      "sha256": "d561507233a4a72b70fa70843271308c678c6d54ea738a7bd6bcffb2b4601991",
+      "bytes": 10479,
+      "pixel_inspected": false
+    },
+    {
+      "path": "evidence/builder-evidence.json",
+      "role": "supporting_reference",
+      "sha256": "342d6dbf263314675a035dab48d7b0249f641bce1f141c1925a0d2967faf849f",
+      "bytes": 114479,
+      "pixel_inspected": false
+    },
+    {
+      "path": "scripts/family_student_v004.py",
+      "role": "supporting_reference",
+      "sha256": "7bf7fb36cd087c4068398375e6c382d63fc8af1cae046a96593d197fb089c0f6",
+      "bytes": 34427,
+      "pixel_inspected": false
+    },
+    {
+      "path": "metadata-errata.json",
+      "role": "supporting_reference",
+      "sha256": "05edf0c03135a1f9c2197c4f2a2ae21307d8d88881f647a5e274e2bc86c810bd",
+      "bytes": 931,
+      "pixel_inspected": false
+    }
+  ],
+  "counts": {
+    "exact_sources": 3,
+    "actual_glb_reimport_renders": 18,
+    "phone_boards": 4
+  },
+  "previous_p1_closure": [
+    "Oval dome on glazed drum with dense roof garden: visually closed",
+    "Dominant full-storey penthouse: visually closed",
+    "Tall triangulated screen: visually closed",
+    "Three west terraces and physically recessed balcony openings: visually closed"
+  ],
+  "pixel_findings": [
+    "White blade, glazed base, ten-floor upper stack and alternating slab rhythm preserve identity together.",
+    "Oval dome, drum, substantial penthouse and tall screen share coherent roof hierarchy.",
+    "Three west planted terraces and genuine recessed south/east balconies show returns, back glazing and guards.",
+    "All elevations and roof contacts visually inspected; no conspicuous floating or buried components.",
+    "Low front is a detail composition, while full-envelope cameras provide complete roof/elevation evidence."
+  ],
+  "p2_limitations": [
+    "Intermediate white slab edges are more emphatic and uniformly shelf-like than source; stronger dominant-band hierarchy desirable.",
+    "Dome triangular radial grid is denser/busier than source visible rib pattern.",
+    "Faceted repeated planting, semantic glass/materials, furnishings and equipment are intentional clay; full student-room and roof-lounge layout not established.",
+    "Hidden elevations and precise dimensions inferred; accessibility, structure, drainage and code compliance not certified."
+  ],
+  "textured_keeper_approved": false,
+  "runtime_integration_approved": false,
+  "catalogue_publication_approved": false,
+  "engineering_approval": false,
+  "metadata_is_visual_proof": false,
+  "review_note": "Independent original-resolution pixel review, not self-approval or metadata-only assessment. Metadata errata read and consistent with inspected roof/terrace geometry; prose dimensions do not prove visual fidelity. See independent-architectural-clay-review.md for rationale.",
+  "source_reference_sha256": {
+    "sources/front.png": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc",
+    "sources/top.jpg": "0ed3c8e1b63539593ab28a714984d718c13d9f885d94a5efcb62a5c947a8be1e",
+    "sources/oblique.jpg": "d2ecf16c6ffe4b806890db42e133d903535b6747b443362f99a2a185012dc244"
+  },
+  "unresolved_p0_findings": [],
+  "unresolved_p1_findings": []
+}

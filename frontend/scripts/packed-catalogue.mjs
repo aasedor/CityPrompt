@@ -5,6 +5,10 @@ const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|people\/(?:peopleCatalogue|inclusivePeopleCatalogue|peopleAppearancePreviews)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
+// Exact additional registries used by the combined student/catalogue handoff.
+// Keep this allowlist explicit so unrelated JSON retains Vite's normal exports.
+const HANDOFF_CATALOGUES = /\/src\/(?:data\/(?:cataloguePlanningHistory|catalogueTeaching|localTeachingBuildings|classroomStarter|buildingPlacementEdges|catalogueHeroImages|claudeAssetLocalTrial)|features\/(?:legoAssembly\/buildingOnlyContracts|parks\/(?:curbBulbContracts|calgarySafetyCatalogue)|zoningCatalogue\/parkUseRules|pickPlace\/publicRealmOwnershipContracts)|components\/viewer\/globe\/publicRealmTrialAssets)\.json$/;
+
 /** Retain all legacy IDs, reference paths and prompts without compiling several
  * megabytes of JSON into JavaScript object literals. Three already ships this
  * small inflater; no additional browser dependency or network request is needed. */
@@ -50,7 +54,7 @@ export function packedCatalogue() {
       if (filename.endsWith('/src/features/pickPlace/publishedBuildingAssets.ts')) {
         return { code: packPublishedBuildingCatalogue(readFileSync(id, 'utf8')), map: null };
       }
-      if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename)) return null;
+      if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename)) return null;
       return { code: packCatalogue(readFileSync(id, 'utf8')), map: null };
     },
   };

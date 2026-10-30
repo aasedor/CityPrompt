@@ -1,11 +1,13 @@
 import type { PlaceAsset } from './assetRegistry';
+import { hasFixedBuildingFootprint as hasFixedNativeBuildingFootprint } from './fixedBuildingFootprint';
 
 export type BuildingFootprintProgram = NonNullable<PlaceAsset['footprintProgram']>;
 
 /** Storey editing can be supported while the authored plan stays locked. */
 export function hasFixedBuildingFootprint(asset: PlaceAsset | undefined): boolean {
   const program = asset?.footprintProgram;
-  return Boolean(program && (program.editable === false || program.minScale === program.maxScale));
+  return hasFixedNativeBuildingFootprint(asset)
+    || Boolean(program && (program.editable === false || program.minScale === program.maxScale));
 }
 
 export function footprintProgramSupports(program: BuildingFootprintProgram, scale: unknown): boolean {

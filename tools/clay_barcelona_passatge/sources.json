@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "barcelona_passatge",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "barcelona_passatge_v0",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2.webp",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "barcelona_passatge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "barcelona_passatge_v0",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/barcelona-passatge-covered-passage/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1623910,
+      "sha256": "81100da89fdcde1e0491b5d573de22458ec1b903c5a3ec3c89061738bcce0c8c",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "barcelona_passatge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "barcelona_passatge_v0",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/barcelona-passatge-covered-passage/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 973696,
+      "sha256": "91e5b7b486005a0c3be5b9a8edddb951377ef83af5b7957a1d79ff6711267c6b",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "barcelona_passatge",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "barcelona_passatge_v0",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/barcelona-passatge-covered-passage/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 941432,
+      "sha256": "c13e0acab15bcb535ed0b529ffbac5e754d80429c605c90b2ff96ad7ca701648",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

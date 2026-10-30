@@ -1,0 +1,78 @@
+{
+  "entry": {
+    "candidate": "clay-calgary-sandstone-heritage-clay-v006",
+    "family": "rlasm-clay-calgary-sandstone-heritage-claude-v006",
+    "archetype_id": "calgary_sandstone_heritage",
+    "archetype_label": "Calgary sandstone heritage",
+    "variant_id": "sandstone_claude_clock_tower_v006",
+    "variant_label": "Sandstone clock-tower block",
+    "native_floors": 4,
+    "design_dimensions_m": {
+      "width": 48,
+      "depth": 48,
+      "height": 49.5
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
+        "bytes": 1406587,
+        "sha256": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_60.jpg",
+        "bytes": 955727,
+        "sha256": "2fdc718649d51b41c15b269b0aa3adc38d994e44a985905a776fa122d68de8c6"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_90.jpg",
+        "bytes": 860843,
+        "sha256": "c73923f39bcfd440a6df2b7384cf9b15a0ffea08f6a2558600eabc1a5ec3539d"
+      }
+    ],
+    "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+    "limitations": [
+      "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+      "Fixed native geometry; snug bounds derive from complete retained architecture.",
+      "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+    ],
+    "picker": {
+      "id": "claude_sandstone_clock_tower_v006",
+      "group_id": "civic",
+      "reshape_mode": "fixed_native",
+      "width": 95,
+      "depth": 95,
+      "max_size": 600,
+      "description": "Richardsonian Romanesque sandstone civic block with an internal court and copper-spired clock tower.",
+      "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+    }
+  },
+  "model_file": "../candidates/clay-calgary-sandstone-heritage-clay-v006.glb",
+  "review_file": "source-review-adapter.json",
+  "approval": {},
+  "trial": {
+    "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
+    "project_url": "http://127.0.0.1:5176/projects/2715f44e-9ca9-4fc7-976f-350302496ccc",
+    "tested_by": "Codex ordinary browser trial; original independent clay review preserved separately",
+    "tested_at": "2026-10-29T21:14:22.216868+00:00",
+    "evidence": [
+      "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "sandstone-exact-source.png",
+      "all-six-after-reload-screenshot.png",
+      "saved-native-scale-proof.json"
+    ],
+    "checks": {
+      "catalogue_card": true,
+      "exact_variant": true,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": true,
+      "save_reload": true,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    },
+    "notes": "Core card/drop, native scale, rotation, reload and aerial free PNG content passed. Low-view/slope and per-variant min/max/occlusion acceptance remain unrun; no paid render or actual Download action was tested. Extension emits webext-ad-filtering onMessage errors; no app/model loader error remains after sandstone fix. Local pilot only, not activated."
+  }
+}

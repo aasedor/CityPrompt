@@ -32,7 +32,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { BuildingFoundationSurface, useBuildingLandscapeGround } from './BuildingFoundationSurface';
 import { prepareReviewBuildingLandscape, reviewBuildingLandscapePlacement } from './reviewBuildingLandscape';
-import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
+import { retainPreparedModuleResources } from './strictModeResourceDisposal';
 import { WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
@@ -41,6 +41,7 @@ import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntranc
 import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
 import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
 import { buildingWalkRevision } from '@/features/legoAssembly/buildingWalking';
 import { mountBuildingInspection } from '@/features/legoAssembly/buildingInspection';
 import { mountModelBuildingWalking } from '@/features/legoAssembly/mountModelBuildingWalking';
@@ -467,10 +468,11 @@ function LegoStackInstance({
       .map((instance, index) => {
         const scene = sceneByUrl.get(resolveApiFileUrl(instance.model_url));
         if (!scene) return null;
+        const buildingOnly = prepareBuildingOnlyScene(scene, instance.model_url);
         const landscape = zone && isArchitecturalClayPlan(recipe)
-          ? prepareReviewBuildingLandscape(scene, zone, landscapeGround,
-            reviewBuildingLandscapePlacement(zone, building, scene, index)) : null;
-        const prepared = prepareArchitecturalClone(landscape?.clone ?? scene, {
+          ? prepareReviewBuildingLandscape(buildingOnly.clone, zone, landscapeGround,
+            reviewBuildingLandscapePlacement(zone, building, buildingOnly.clone, index)) : null;
+        const prepared = prepareArchitecturalClone(landscape?.clone ?? buildingOnly.clone, {
           renderOrder: LEGO_RENDER_ORDER,
           maxAnisotropy,
           ambientOcclusion: 'disable',
@@ -482,6 +484,7 @@ function LegoStackInstance({
           key: `${instance.asset_id}-${instance.level}-${index}`,
           cloned,
           landscape,
+          buildingOnly,
           transform: legoInstanceTransform(instance),
           bounds: isNativeClayPlan(recipe)
             ? new THREE.Box3().setFromObject(cloned, true)
@@ -490,10 +493,7 @@ function LegoStackInstance({
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
   }, [maxAnisotropy, preserveSourceMaterials, recipe, sceneByUrl, urls, zone, landscapeGround, building]);
-  useEffect(() => retainResourceForDeferredDisposal(modules, values => values.forEach(({ landscape }) => {
-    landscape?.ownedGeometries.forEach(geometry => geometry.dispose());
-    landscape?.ownedMaterials.forEach(material => material.dispose());
-  })), [modules]);
+  useEffect(() => retainPreparedModuleResources(modules), [modules]);
   const detailedReady = isCompleteLegoModuleStack(recipe.instances.length, modules.length);
   const authoredPlot = preservesAuthoredPlotAxes(zone?.properties) ? authoredHomePlotFrame(ring) : undefined;
   const yawRad = authoredPlot ? authoredPlot.yawRad + (building.rotation_degrees ?? 0) * DEG_TO_RAD

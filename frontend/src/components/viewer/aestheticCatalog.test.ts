@@ -35,7 +35,10 @@ describe('building aesthetic reference assets', () => {
       const thumbnailUrls = option.variants?.map((variant) => variant.thumbnailUrl) ?? [];
       expect(thumbnailUrls.every(Boolean), option.id).toBe(true);
       expect(thumbnailUrls.every((url) => availableUrls.has(url ?? '')), option.id).toBe(true);
-      expect(new Set(thumbnailUrls).size, option.id).toBe(thumbnailUrls.length);
+      // Exact model revisions can share their authored reference photograph.
+      // Keep variant identity unique without inventing a different source image.
+      const variantIds = option.variants?.map(variant => variant.id) ?? [];
+      expect(new Set(variantIds).size, option.id).toBe(variantIds.length);
     }
   });
 

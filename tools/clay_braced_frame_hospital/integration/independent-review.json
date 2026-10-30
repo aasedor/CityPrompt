@@ -1,0 +1,517 @@
+{
+  "schema": "cityprompt.rlasm.independent_architectural_clay_review@1",
+  "candidate": "clay-braced-frame-hospital-clay-v006",
+  "candidate_directory": "C:/dev-artifacts/CityPrompt/claude-crossings-practical-20261029/hospital-v006",
+  "model": "clay-braced-frame-hospital-clay-v006.glb",
+  "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad",
+  "reviewer": "Codex independent verifier /root/hospital_v004_verifier",
+  "reviewed_at_utc": "2026-10-29T22:58:03.3029856Z",
+  "method": "RLASM v6.1",
+  "review_profile": "architectural_clay",
+  "scope": "Fresh holistic source-locked architectural-clay review of exact v006 GLB evidence: original variant identity/proportions/topology, all elevations, roof, glazing/apertures, supports and canopy anchors, grade/compact footprint, visible atrium circulation, camera validity and full regressions.",
+  "architectural_clay_pass": true,
+  "holistic_review_performed": true,
+  "category_closure_only": false,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_p2": 3,
+  "keeper_approved": false,
+  "runtime_activation_authorized": false,
+  "publication_authorized": false,
+  "inspection_counts": {
+    "exact_sources": 3,
+    "actual_glb_renders": 22,
+    "phone_boards": 5,
+    "all_required_pixels_opened": true,
+    "phone_boards_dimensions": [
+      1080,
+      1920
+    ]
+  },
+  "audit": {
+    "model_sha256_matches_build_report": true,
+    "model_bytes": 4417092,
+    "model_bytes_match_build_report": true,
+    "actual_glb_meshes": 17,
+    "actual_glb_materials": 17,
+    "actual_glb_images": 0,
+    "actual_glb_textures": 0,
+    "source_hashes_and_bytes_match_prework": true,
+    "source_hashes_match_available_original_catalogue_bytes": true,
+    "all_eight_locked_script_hashes_match": true,
+    "render_source_report": "actual optimized GLB reimport; no geometry/material replacement",
+    "report_roundtrip_delta_m": 0.0,
+    "reported_native_dimensions_m": {
+      "width": 71.00500106811523,
+      "depth": 63.72500228881836,
+      "height": 39.79999923706055
+    },
+    "carrier_audit": "PASS_CARRIER_APERTURES; 207 bounded checks, zero blocked checks; does not prove general room access",
+    "render_provenance_limit": "Build script/report and hash linkage inspected; reviewer did not rerun Blender or independently regenerate renders."
+  },
+  "findings": [
+    {
+      "category": "exact-source identity and massing",
+      "result": "pass for architectural clay",
+      "evidence": [
+        "sources/front.png",
+        "sources/oblique.jpg",
+        "sources/top.jpg",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png"
+      ],
+      "finding": "The source-specific clinical block, pale screened field, brick two-storey podium, tall L-shaped braced ward wing, narrow glazed entrance atrium, raised clinical roof shade and rooftop plant remain legible as one variant. Top-view plan void/roof hierarchy and front asymmetry agree with the locked source roles. Clay surfaces are intentionally simplified and are not textured-source keeper materials."
+    },
+    {
+      "category": "atrium circulation and prior P1",
+      "result": "closed",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/interior.png",
+        "renders/entrance_canopy.png",
+        "renders/canopy_west_anchor.png",
+        "boards/phone-02-details.png",
+        "boards/phone-03-details.png"
+      ],
+      "finding": "Repeated guarded galleries now form visible occupied levels behind the glass, with switchback stair flights and half-landings connecting them. The interior clearly shows a complete flight-to-half-landing relationship, an upper gallery opening through the clinical wall, and the reception/ground area. Front and oblique images retain the source-visible multilevel circulation rhythm. This closes the formerly empty-shaft programme/coherence finding at the teaching-model level."
+    },
+    {
+      "category": "canopy structural contacts",
+      "result": "pass",
+      "evidence": [
+        "renders/canopy_west_anchor.png",
+        "renders/canopy_east_anchor.png",
+        "renders/canopy_ward_anchor.png",
+        "renders/canopy_front_anchors.png",
+        "renders/entrance_canopy.png"
+      ],
+      "finding": "Upper plates and clevises visibly contact actual atrium posts or the ward post/ring-beam junction. Rod lower fittings meet the front steel edge beam. Front posts meet the entrance apron. Sign panels and free glass no longer serve as hanger carriers. Contacts are credible in clay pixels; structural capacities and fine fasteners are outside scope."
+    },
+    {
+      "category": "compact footprint and grade",
+      "result": "pass",
+      "evidence": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/canopy_front_anchors.png"
+      ],
+      "finding": "Only the compact 20.2 x 6.4 m entrance approach projects beyond the building composition. No surrounding roads, crossings, trees or block-wide context slab are delivered in the visible model. The large neutral QA ground is presentation context. Base and post contacts read seated at grade."
+    },
+    {
+      "category": "glazing and apertures",
+      "result": "pass for architectural clay",
+      "evidence": [
+        "renders/brick_base.png",
+        "renders/braced_frame.png",
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/rear_north.png",
+        "renders/interior.png"
+      ],
+      "finding": "Opaque base windows have recessed frames and sills with separated depth. Ward glazing is behind the structural exoskeleton; the atrium glass reveals its galleries and stair programme. The gallery terminal visible in the interior reads as a real wall opening. Local QA-light reflections do not remove the essential relationships from the full evidence set."
+    },
+    {
+      "category": "both sides and rear",
+      "result": "pass with declared hidden-view assumptions",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/rear_north.png"
+      ],
+      "finding": "Brick-base openings and the braced glazed ward envelope continue around all visible secondary elevations. No blank back, floating occupied wing or unclosed major wall is apparent. Source-hidden north/west elevations remain inferred continuations of the visible grammar rather than verified exact historical elevations."
+    },
+    {
+      "category": "roof topology and supports",
+      "result": "pass for classroom clay",
+      "evidence": [
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/roof_canopy.png",
+        "renders/roof_plant.png",
+        "renders/rear_side.png"
+      ],
+      "finding": "The raised shade has visible posts and perimeter framing, roof plant sits on roof planes, and the atrium roof and L-shaped ward roof are bounded. No missing roof, isolated floating cap or major black opening is apparent. Narrow seams and simplified plant remain fine-detail follow-up."
+    },
+    {
+      "category": "cameras, full evidence and phone comparisons",
+      "result": "pass",
+      "evidence": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/interior.png",
+        "boards/phone-01-source-vs-render.png",
+        "boards/phone-02-details.png",
+        "boards/phone-03-details.png",
+        "boards/phone-04-details.png",
+        "boards/phone-05-details.png"
+      ],
+      "finding": "All eight whole-envelope views keep the full model, approach and highest termination inside neutral margins. Detail cameras prove their named contacts or assemblies. The wider, filled interior view now establishes circulation. All 22 render PNGs and five 1080 x 1920 phone boards were opened directly at original resolution; no approval was inferred from file existence or metadata."
+    }
+  ],
+  "blockers": [],
+  "closed_prior_findings": [
+    {
+      "id": "P1-ATRIUM-CIRCULATION",
+      "prior_record": "../hospital-v004/review/independent-architectural-clay-review.json",
+      "prior_record_scope": "External unpublished practical experiment; not the original Claude historical v004 candidate",
+      "closure": "Visible multilevel guarded galleries, connected stair flights/landings, a real gallery portal and useful interior proof now resolve the empty-shaft finding."
+    }
+  ],
+  "p2_findings": [
+    {
+      "id": "P2-CLAY-SURFACE",
+      "finding": "Brick bond, perforation morphology, rooftop equipment and sign graphics remain simplified teaching clay abstractions. They preserve the major identity roles but cannot support textured-keeper claims."
+    },
+    {
+      "id": "P2-QA-LIGHT-REFLECTION",
+      "finding": "Some glass close views show broad circular QA-light highlights. Galleries, stairs and supports remain readable across complementary views. Softer reflection control would improve presentation polish."
+    },
+    {
+      "id": "P2-PHONE-TOP-BOARD",
+      "finding": "The fifth phone board has extensive empty black space around one top-view panel. The full-resolution top render is valid; layout can be improved without geometry work."
+    }
+  ],
+  "limitations": [
+    "This is a holistic architectural-clay visual pass under the practical classroom standard, not keeper_approved or a textured-keeper decision.",
+    "No engineering, code/accessibility, full clinical fit-out, terrain-fit, arbitrary scaling, runtime integration, human activation or publication approval is granted.",
+    "Exact hidden floor planning, north/west elevations and fine stair construction are declared teaching assumptions.",
+    "The review assesses fixed native dimensions of this exact variant and hash only. Catalogue source images remain identity/render-conditioning authority.",
+    "No source, GLB, render, board or build metadata was modified. Only these review records were written. Nothing was committed or pushed."
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/front.png",
+      "sha256": "4e6289d461f2ad8bba095c0e5f7a67751234a066b022a585244f8dbb937e20a4",
+      "bytes": 1295867,
+      "width": 1024,
+      "height": 768,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "sources"
+    },
+    {
+      "path": "sources/oblique.jpg",
+      "sha256": "67e7bf7fa9838b5cded4c385e863aa84e4c267598b0c9bc67909edf92f2f2c8b",
+      "bytes": 924620,
+      "width": 1195,
+      "height": 896,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "sources"
+    },
+    {
+      "path": "sources/top.jpg",
+      "sha256": "1bceac8705902772c973d29c3bca3ff7f9e0cb5a85475c4ac23336571ae1491e",
+      "bytes": 860461,
+      "width": 1195,
+      "height": 896,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "sources"
+    },
+    {
+      "path": "renders/aerial.png",
+      "sha256": "9ce1153ef9e8ec1b46962797c0b79d4e1c1d573d9a56d022f67b627d4d69c969",
+      "bytes": 1605269,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "sha256": "761bce54a7289819e4c40182d06b3ac4278ccbbf028b581e77db951d54c774ff",
+      "bytes": 1689778,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/braced_frame.png",
+      "sha256": "5438a06a9ca37678c188056a19cec586e351d5bf1bb3038a72fc9f4f634656b6",
+      "bytes": 1711547,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/brick_base.png",
+      "sha256": "16f231d29fbb04aa777cf748ffa986b3fb83116af45dff5fa2de9dea777688be",
+      "bytes": 1419466,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/canopy_east_anchor.png",
+      "sha256": "8e56ff9953f057f20b1e72e4171d1b5afbbbe09bf39d9d62abc44c382cd084f6",
+      "bytes": 1415137,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/canopy_front_anchors.png",
+      "sha256": "87cdee6685db43e36d2b152c47ad8e5f8a3be06bb429ffb9f237bf9f0dfbf014",
+      "bytes": 1551354,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/canopy_ward_anchor.png",
+      "sha256": "3a83ca76f6a869f0e6cf8ddd7ae4e1e9917644e47e43b717a7f8004a2b670858",
+      "bytes": 1371536,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/canopy_west_anchor.png",
+      "sha256": "ea8bb6c83b43e575a7c862cccf975705fce6827e0b2c3e8f4721110f5350d9eb",
+      "bytes": 1452765,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/entrance_canopy.png",
+      "sha256": "1fd679146f6c16440db4ebec9b44a75c2828198b87543749be5a33894b4f9184",
+      "bytes": 1535888,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "sha256": "7a9badfe3db328a2179e915b502ac827b28a7cd74140f9d6cd1b1f2f51e67d5d",
+      "bytes": 1383204,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "sha256": "f845db02ae19208c1b6272370603d49f07c76f19cda168a2f6139a5f6345aef1",
+      "bytes": 1685609,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/front.png",
+      "sha256": "ed9465a0dcc763e2569ee78fed9c65681deb1fbb87acd3497a982f57bee4f870",
+      "bytes": 1553814,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "sha256": "feb9393699ff138d1610a40d282aa8a9bd0c3f8ab49ab58160e88ab5fc8f1e2f",
+      "bytes": 1551216,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/interior.png",
+      "sha256": "d30ce36daaad7c6f845feab587e1c8b666e642fe6d7ad19148659fe1d3653842",
+      "bytes": 1667754,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/left_side.png",
+      "sha256": "d3a0e0453c7d3f4e9141adb4b82fa4d8ea273512bfdce78f983aa296f8cab847",
+      "bytes": 1584572,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/rear_north.png",
+      "sha256": "d0276c2eb5f099b8b00fb6fe3f94e1326b5e455dc100eeb3ae4c45c4600b4b59",
+      "bytes": 1655358,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "sha256": "f65db66f8169625c840c8931badcf48b68ac38e054c1f1e1454dea8c2f81ee3e",
+      "bytes": 1687261,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/rear.png",
+      "sha256": "34fa612d4834ebc4aba0bd75cd4c9a58466b6d5619140b3a80cfee8bdd8b20bf",
+      "bytes": 1696737,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/right_side.png",
+      "sha256": "2f3803d3b0cef6cf9c4c2c26c353d926b91e58b646d26a742ddcb2719c80462b",
+      "bytes": 1597564,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/roof_canopy.png",
+      "sha256": "ae369232a4475896f5342d29bd766b7e6f5bbf4adc02cdec218335d97998e4ad",
+      "bytes": 1603054,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/roof_plant.png",
+      "sha256": "e151df72eccabb8552718f480a8eb12fc97cc6d6fb0de9f509cd9c120f41dedb",
+      "bytes": 1539838,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "renders/top.png",
+      "sha256": "e9410b5ff4bcc32bb0ed6698db8469005c33eff2b352851682593f429840c072",
+      "bytes": 1327222,
+      "width": 1440,
+      "height": 1080,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "renders"
+    },
+    {
+      "path": "boards/phone-01-source-vs-render.png",
+      "sha256": "7189a0a51839b98ba677534cdf2d03236cc603c53001c2763c1697948656ed3c",
+      "bytes": 1809999,
+      "width": 1080,
+      "height": 1920,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "boards"
+    },
+    {
+      "path": "boards/phone-02-details.png",
+      "sha256": "15eaff4b1f1f78e00b769de12571d39e5252344e8a6a767b81b08fa7b9b3434e",
+      "bytes": 1310105,
+      "width": 1080,
+      "height": 1920,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "boards"
+    },
+    {
+      "path": "boards/phone-03-details.png",
+      "sha256": "a796cc3b0c38506a55606ac4ff1dcdfa06abfbc6711e005a91077370818a8472",
+      "bytes": 1169303,
+      "width": 1080,
+      "height": 1920,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "boards"
+    },
+    {
+      "path": "boards/phone-04-details.png",
+      "sha256": "969c3b19a164490d0cbdcde82301964bc7cde661e8e0b81d37ac2a7e95c1c954",
+      "bytes": 1206738,
+      "width": 1080,
+      "height": 1920,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "boards"
+    },
+    {
+      "path": "boards/phone-05-details.png",
+      "sha256": "132de44b2d761aa36aa4f49bdabdf25193a4f64f42528145f2dee4221f739c4a",
+      "bytes": 155999,
+      "width": 1080,
+      "height": 1920,
+      "inspection": "Full-resolution pixels opened directly with tools.view_image(detail=original)",
+      "role": "boards"
+    }
+  ],
+  "supporting_files": [
+    {
+      "path": "prework-manifest.json",
+      "sha256": "eb01d705e05d94c22c8b590932dfd863de50c1e457320f2dd8412de2c1d69dba",
+      "bytes": 11936,
+      "inspection": "Supporting provenance/contract or relevant script sections read; metadata is not visual proof"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "b293a69fb0222dee58c52b4a4b940310109d3f7ea441fa9fd8dc410b93acaea1",
+      "bytes": 177376,
+      "inspection": "Supporting provenance/contract or relevant script sections read; metadata is not visual proof"
+    },
+    {
+      "path": "source-entry.json",
+      "sha256": "c530d9eb865fb1e6ae8fad5b2f5d70ba7c1a6a2b547e99203658e9a59983fc0d",
+      "bytes": 1392,
+      "inspection": "Supporting provenance/contract or relevant script sections read; metadata is not visual proof"
+    },
+    {
+      "path": "evidence/builder-evidence.json",
+      "sha256": "7e732fbf033071084087b94870db7a6e23401c4cb2e96753d0762e854956bb05",
+      "bytes": 177544,
+      "inspection": "Supporting provenance/contract or relevant script sections read; metadata is not visual proof"
+    },
+    {
+      "path": "evidence/carrier-aperture-audit.json",
+      "sha256": "e5934bfc9af863eefbaa9f38539fd7ff5180b81f447cff281c2077dde3d45f7c",
+      "bytes": 30480,
+      "inspection": "Supporting provenance/contract or relevant script sections read; metadata is not visual proof"
+    },
+    {
+      "path": "scripts/family_hospital_v006.py",
+      "sha256": "224d83ccca94b03292e001b42d3358a8b6fffa04b3655ea177e6c1a62ba4277e",
+      "bytes": 12266,
+      "inspection": "Supporting provenance/contract or relevant script sections read; metadata is not visual proof"
+    },
+    {
+      "path": "scripts/family_hospital.py",
+      "sha256": "3218201627a4cd7a1e1455155c02362063cc1a9abc63bd82eeaf3968b106c942",
+      "bytes": 41818,
+      "inspection": "Supporting provenance/contract or relevant script sections read; metadata is not visual proof"
+    },
+    {
+      "path": "scripts/build_v006.py",
+      "sha256": "a0bbcd26bf28390d1fb4b92e32c4b3cf82bdf893176b27f27885d607285aa206",
+      "bytes": 5875,
+      "inspection": "Supporting provenance/contract or relevant script sections read; metadata is not visual proof"
+    }
+  ]
+}

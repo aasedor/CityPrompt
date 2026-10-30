@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "climbing_wall_building",
+  "variant_id": "variant_1",
+  "catalogue_variant_id": "climbing_overhang",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "climbing_overhang",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1.png",
+      "file": "variant_1.png",
+      "bytes": 1349697,
+      "sha256": "345d575a53846738cda1d24794ec0cc409cb5f2335cc624a41c403d83eb5bde8",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "climbing_overhang",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_60.jpg",
+      "file": "variant_1_angle_60.jpg",
+      "bytes": 837723,
+      "sha256": "55c334948355972cab086576da047e5d72f85c4682acc308d9507296cfc538ea",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "climbing_wall_building",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "climbing_overhang",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_90.jpg",
+      "file": "variant_1_angle_90.jpg",
+      "bytes": 775997,
+      "sha256": "a6854c9b52d8ccd115ab1110b5466f61cec8486b533d4112577a4561ccdd6bb0",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

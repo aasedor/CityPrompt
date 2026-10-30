@@ -1,0 +1,212 @@
+{
+  "candidate": "clay-tied-arch-shared-bridge-clay-v004",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 23,
+    "vertices": 10953,
+    "polygons": 16790,
+    "triangles": 16790,
+    "path": "clay-tied-arch-shared-bridge-clay-v004-authoring.blend",
+    "bytes": 399482,
+    "sha256": "76d29e2ca89e3cbc8208185a61f92312fc5363308ea834774cbef4436fa1b008"
+  },
+  "runtime": {
+    "path": "clay-tied-arch-shared-bridge-clay-v004.glb",
+    "bytes": 1111808,
+    "sha256": "1db1801d3a8d7fbcd5e96a694838f5eaa1e60ff6a7deea8fa002d650ed0a28ff",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 18,
+    "vertices": 10953,
+    "polygons": 16790,
+    "triangles": 16790
+  },
+  "original_bounds_m": [
+    [
+      -31.099292755126953,
+      -13.857505798339844,
+      0.0
+    ],
+    [
+      32.891414642333984,
+      13.42987060546875,
+      14.10092830657959
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -31.099292755126953,
+      -13.857505798339844,
+      0.0
+    ],
+    [
+      32.891414642333984,
+      13.42987060546875,
+      14.10092830657959
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 68,
+    "depth": 33,
+    "height": 14.5
+  },
+  "native_dimensions_m": {
+    "width": 63.99070739746094,
+    "depth": 27.287376403808594,
+    "height": 14.10092830657959
+  },
+  "native_bottom_center_m": [
+    0.8960609436035156,
+    -0.21381759643554688,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "arch": 2,
+    "steel": 1,
+    "hardware": 1,
+    "red": 1,
+    "path": 1,
+    "concrete": 3,
+    "planting": 2,
+    "grass": 1,
+    "straw": 1,
+    "shrub": 1,
+    "flower": 1,
+    "rail": 2,
+    "paving": 1,
+    "quay": 1,
+    "white": 1,
+    "pale": 1,
+    "stone": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/arch_springing.png",
+    "renders/hangers.png",
+    "renders/planter_divider.png",
+    "renders/cycle_lane.png",
+    "renders/deck_edge.png",
+    "renders/quay_under.png",
+    "renders/rear_north.png",
+    "renders/west_approach.png",
+    "renders/east_approach.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "GPU",
+  "camera_safety_margin": {
+    "aerial": {
+      "xmin": 0.1813078671693802,
+      "xmax": 0.8516875505447388,
+      "ymin": 0.29319071769714355,
+      "ymax": 0.6295875906944275
+    },
+    "top": {
+      "xmin": 0.1733267456293106,
+      "xmax": 0.8454980850219727,
+      "ymin": 0.30591726303100586,
+      "ymax": 0.6880934238433838
+    },
+    "left_side": {
+      "xmin": 0.3572658598423004,
+      "xmax": 0.7194167375564575,
+      "ymin": 0.3383113443851471,
+      "ymax": 0.6277308464050293
+    },
+    "right_side": {
+      "xmin": 0.35498470067977905,
+      "xmax": 0.7084154486656189,
+      "ymin": 0.33410751819610596,
+      "ymax": 0.6277920007705688
+    },
+    "rear": {
+      "xmin": 0.07960592955350876,
+      "xmax": 0.863857626914978,
+      "ymin": 0.37244367599487305,
+      "ymax": 0.6307162046432495
+    },
+    "rear_side": {
+      "xmin": 0.17438286542892456,
+      "xmax": 0.7175773978233337,
+      "ymin": 0.2986697852611542,
+      "ymax": 0.6228796243667603
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Compact trapezoidal tied-arch bridge, raised quays and connected pedestrian approaches",
+      "box": [
+        -34,
+        34,
+        -16.5,
+        16.5
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "bounded canal and raised quays": [
+      "bounded canal and raised quays water",
+      "bounded canal and raised quays quay",
+      "bounded canal and raised quays paving",
+      "bounded canal and raised quays stone",
+      "bounded canal and raised quays concrete",
+      "bounded canal and raised quays rail"
+    ],
+    "deck": [
+      "deck steel",
+      "deck arch",
+      "deck red",
+      "deck path",
+      "deck pale",
+      "deck concrete",
+      "deck planting",
+      "deck white"
+    ],
+    "railings": [
+      "railings rail"
+    ],
+    "arches": [
+      "arches arch",
+      "arches hardware",
+      "arches concrete"
+    ],
+    "planter": [
+      "planter planting",
+      "planter straw",
+      "planter grass",
+      "planter shrub",
+      "planter flower"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-30T01:21:36.303378+00:00",
+  "delivery_and_render_seconds": 155.81551069999114,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

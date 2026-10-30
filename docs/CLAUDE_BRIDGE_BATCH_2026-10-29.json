@@ -1,0 +1,120 @@
+{
+  "schema": "cityprompt.bridge-batch-checkpoint@1",
+  "date_local": "2026-10-29",
+  "base_commit": "ea29465cd",
+  "project": "77b1333f-1861-4b4c-84e4-9ff19bc56fa7",
+  "candidates": [
+    {
+      "candidate": "clay-timber-covered-footbridge-clay-v004",
+      "runtime_sha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+      "review_sha256": "7ed72c830db2a6a5e86bf4cd441fc12d848d32a7d7830134b69ea4c15e9dd56a",
+      "status": "runtime_trial"
+    },
+    {
+      "candidate": "clay-tied-arch-shared-bridge-clay-v005",
+      "runtime_sha256": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+      "review_sha256": "e0465ae05bbb88e5e52fec59784bea2d4bca1634fcd24d6273a50edfc6b4c838",
+      "status": "runtime_trial"
+    },
+    {
+      "candidate": "clay-planted-green-bridge-clay-v005",
+      "runtime_sha256": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+      "review_sha256": "c46decd8cd8f17f0e99161607c75d0444998a8935599e71e6a6a6622d612f949",
+      "status": "runtime_trial"
+    }
+  ],
+  "heroes": {
+    "choices": 205,
+    "buildings": 104,
+    "parks": 42,
+    "streets": 59,
+    "decoded": 205,
+    "missing": 0
+  },
+  "checks": {
+    "frontend_tests": 60,
+    "backend_geometry_registration_tests": 49,
+    "typescript": "pass",
+    "fixed_public_realm_payloads": 36,
+    "runtime_inventory_records": 5441,
+    "runtime_inventory_scope": "tracked metadata only; full release hydration unproven"
+  },
+  "production_ready_count": 12,
+  "local_allowed_count": 18,
+  "prepared_count": 21,
+  "publication_performed": false,
+  "uploads": [
+    {
+      "id": "1FajpJXhsy-umUtHYZQhAYjFnpupHIIMl",
+      "name": "tied-bridge-v004-v005-originals-and-reviews.zip",
+      "bytes": 75077961,
+      "sha256": "a31f186982c70a875e1cb0f747efde9e460a19c95eebc3d197830f8e33d92a2a",
+      "folder": "1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf",
+      "verified": true
+    },
+    {
+      "id": "1cRIuDuYaienewwzOTGPxdXef9_owJYo6",
+      "name": "tied-v005-exact-3D-source.png",
+      "bytes": 1994129,
+      "sha256": "900e86fbf8f8af2b762c6cc9f594d5d130650101966bcedd94a991f76d41bab3",
+      "folder": "1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf",
+      "verified": true
+    },
+    {
+      "id": "1vE59SAAbFBcPOw6SngMunYOi4AZgnRas",
+      "name": "tied-v005-photographic-picker-screenshot.png",
+      "bytes": 114539,
+      "sha256": "e40b404fe19db4cfe0a0cdb7993e4bcb340b2aff1978bf3d775b5515f03ee622",
+      "folder": "1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf",
+      "verified": true
+    },
+    {
+      "id": "1KPLPcESYe8PewNqei1rdr8XR-IBm5fCD",
+      "name": "green-bridge-v004-originals-and-review.zip",
+      "bytes": 51629915,
+      "sha256": "de60c1324d96d284d25ab383f9eb4655b67561e8ab9d58864b8e93dde1af8746",
+      "folder": "1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf",
+      "verified": true
+    },
+    {
+      "id": "10pSIp0lXndr9LPKayEESHtfkJLuNQrPF",
+      "name": "green-bridge-v005-originals-and-review.zip",
+      "bytes": 63317493,
+      "sha256": "988e10e27dbd3c62d1ec8d1528294cd79a8c359856506604e9da5d5f553413b1",
+      "folder": "1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf",
+      "verified": true
+    },
+    {
+      "id": "1WI9U6pxEHNUJp4HbqOIf-44nRwXr8_hL",
+      "name": "green-v005-exact-3D-source.png",
+      "bytes": 2402322,
+      "sha256": "5a0ebfd4bb711d0adb2dcb6e30b38086cde021b4706aefab109c07558a76fb4f",
+      "folder": "1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf",
+      "verified": true
+    },
+    {
+      "id": "1z0JKd5TZ7mSt4_QDP0EkwZ_pPWxGqp6L",
+      "name": "green-v005-photographic-picker-screenshot.png",
+      "bytes": 126341,
+      "sha256": "4f001666e1cf47f9a82e49358049f5594850676044aec9be22593fb6fc5facd3",
+      "folder": "1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf",
+      "verified": true
+    },
+    {
+      "id": "1-UJVrsW47FMvBYG4aOyQ59Y9gFcnknqV",
+      "name": "bridge-batch-review-note.txt",
+      "bytes": 2498,
+      "sha256": "edc90b9177a759f90da36345c02011d6537b05d3b664948a1d018f2d7342694e",
+      "folder": "1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf",
+      "verified": true
+    },
+    {
+      "id": "1N49_j6GpucW2pRvta1XTqDlcDk1JmBYS",
+      "name": "205-card-follow-up-audit.zip",
+      "bytes": 8693463,
+      "sha256": "8a24a887f579982367c91b6eb6cc589f18b325424c216f0e16aa4cc3055d1db8",
+      "folder": "1-B97Xt1sq8iREDu-qCABsW2lWqBgjLIc",
+      "verified": true
+    }
+  ]
+}

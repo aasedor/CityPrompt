@@ -34,6 +34,7 @@ import { projectedFrameFraction, projectFrameRoofHeight } from './projectFrameHe
 import { findUnobstructedProjectFrame } from './projectFrameObstruction';
 import { PLAN_VIEW_FOV_DEGREES, WORKING_VIEW_FOV_DEGREES, distanceForFieldOfView, setWorkingCameraProjection, syncPlanCameraClipping, syncPlanCameraFog } from './planViewCamera';
 import { initialContextCameraIsPaused, watchInitialProjectContext } from './initialProjectContextWatch';
+import { hasFixedBuildingFootprint } from '@/features/pickPlace/buildingFootprintProgram';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
 import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
 /**
@@ -5341,6 +5342,8 @@ export function GlobeSitePlannerMap({
             ? 'Imported GLB | Drag the Move handle to reposition | Drag the amber handle or Q/E to rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && isFixedNativeScene(zone.properties))
             ? 'Fixed-size model | Drag to move | Use the reshape panel to rotate | Esc to deselect'
+            : siteZones.some(zone => zone.id === selectedZoneId && hasFixedBuildingFootprint(assetForZone(zone)))
+            ? 'Drag the Move handle to move | Use Rotation to turn the fixed footprint | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
             ? 'Drag the Move handle to reposition this house | Use the reshape panel to resize or rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)

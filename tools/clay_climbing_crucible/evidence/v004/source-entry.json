@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-climbing-crucible",
+  "variant_id": "clay-climbing-crucible-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "climbing_wall_building/variant_0",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_0.png",
+      "path": "sources/front.png",
+      "bytes": 1254544,
+      "sha256": "a2b53e14adb38bae7599241724773027be0f01b112e97c090d51a9737cc5d1c8"
+    },
+    {
+      "role": "oblique",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 815928,
+      "sha256": "8443b0f6a5b3da03d2936bd77ae457ccb085eea419b57ade87abcd2318425bff"
+    },
+    {
+      "role": "top",
+      "original_path": "/home/user/CityPrompt/frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 896561,
+      "sha256": "cb1a5bf529bebca56c1c8787b626d2204ae17b3b326293575fde4ab2634ed9c9"
+    }
+  ]
+}

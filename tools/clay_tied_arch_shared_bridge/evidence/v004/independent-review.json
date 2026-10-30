@@ -1,0 +1,604 @@
+{
+  "schema": "cityprompt.rlasm.independent_architectural_clay_review@1",
+  "candidate": "clay-tied-arch-shared-bridge-clay-v004",
+  "candidate_directory": "C:/dev-artifacts/CityPrompt/claude-crossings-practical-20261029/tied-v004",
+  "model": "clay-tied-arch-shared-bridge-clay-v004.glb",
+  "model_sha256": "1db1801d3a8d7fbcd5e96a694838f5eaa1e60ff6a7deea8fa002d650ed0a28ff",
+  "reviewer": "Codex independent verifier /root/crossings_review",
+  "reviewed_at_utc": "2026-10-30T01:30:53.861086+00:00",
+  "method": "RLASM v6.1",
+  "review_profile": "architectural_clay",
+  "scope": "Independent holistic exact-source architectural-clay review of identity, opposite six-degree deck end skews, longer south tie, arches/hangers/deck/planter, guards, compact quays and supports, declared inferred stairs, all whole/detail views and phone boards.",
+  "architectural_clay_pass": false,
+  "holistic_review_performed": true,
+  "category_closure_only": false,
+  "decision": "visual_rework_required",
+  "status": "FAIL_INDEPENDENT_ARCHITECTURAL_CLAY",
+  "unresolved_p0": 0,
+  "unresolved_p1": 1,
+  "unresolved_p2": 6,
+  "keeper_approved": false,
+  "runtime_activation_authorized": false,
+  "publication_authorized": false,
+  "inspection_counts": {
+    "exact_sources": 3,
+    "actual_glb_renders": 20,
+    "phone_boards": 4,
+    "all_required_pixels_opened": true,
+    "phone_boards_dimensions": [
+      1080,
+      1920
+    ]
+  },
+  "audit": {
+    "model_sha256_matches_build_report": true,
+    "model_bytes": 1111808,
+    "actual_glb_meshes": 18,
+    "actual_glb_materials": 18,
+    "actual_glb_images": 0,
+    "actual_glb_textures": 0,
+    "source_hashes_and_bytes_match_current_locked_catalogue": true,
+    "all_ten_as_built_script_hashes_match": true,
+    "render_source_report": "actual optimized GLB reimport; no geometry/material replacement",
+    "report_roundtrip_delta_m": 0.0,
+    "render_provenance_limit": "Build report, actual GLB identity, exact source hashes and copied as-built scripts inspected. Reviewer did not rerun Blender or independently regenerate renders; deterministic checks support rather than replace pixel review."
+  },
+  "findings": [
+    {
+      "category": "exact identity and programme",
+      "result": "closed for architectural clay",
+      "finding": "Twin inclined silver-grey tied arches, cross ties and thin hangers, red cycle lane, wider pale footway, continuous dividing planter, bridge-side guards and brick-coloured compact quays retain the exact variant identity.",
+      "evidence": [
+        "sources/front.png",
+        "sources/oblique.jpg",
+        "sources/top.jpg",
+        "renders/front.png",
+        "renders/rear_north.png",
+        "renders/aerial.png"
+      ]
+    },
+    {
+      "category": "opposite end skews and longer south tie",
+      "result": "previous P1 closed",
+      "finding": "Top and aerial evidence show opposite end skews and the longer south tie, rather than the previous uniform parallelogram shear. The single trapezoidal plan map is applied to bridge, quays, bearings and inferred approaches.",
+      "evidence": [
+        "sources/top.jpg",
+        "renders/top.png",
+        "renders/aerial.png",
+        "scripts/tied_arch_plan.py",
+        "scripts/family_tiedarch_v004.py"
+      ]
+    },
+    {
+      "category": "physical support contacts and whole assembly",
+      "result": "closed for architectural clay",
+      "finding": "Arch springings meet their quay plinths; deck bearings/shelves meet the compact quays. No obvious floating carry parts, major missing deck sections or large contact wedges appeared across the whole and underside views. No roof is part of this open bridge.",
+      "evidence": [
+        "renders/arch_springing.png",
+        "renders/quay_under.png",
+        "renders/deck_edge.png",
+        "renders/rear_side.png"
+      ]
+    },
+    {
+      "category": "declared inferred approach stairs",
+      "result": "stairs connect; landing guards remain P1",
+      "finding": "Both stairs meet the raised paved quay and prepared grade. The approach is a declared pedestrian inference, and the cycle lane ends on raised quays with a dismount limitation. No accessible/cycle approach certification is inferred.",
+      "evidence": [
+        "renders/west_approach.png",
+        "renders/east_approach.png"
+      ]
+    },
+    {
+      "category": "camera and evidence coverage",
+      "result": "complete for this review",
+      "finding": "All three exact sources, all 20 full-resolution original reimported-GLB renders and all four regenerated 1080x1920 phone boards were directly opened and inspected. Deterministic metadata did not substitute for pixel inspection.",
+      "evidence": [
+        "sources/front.png",
+        "sources/oblique.jpg",
+        "sources/top.jpg",
+        "renders/aerial.png",
+        "renders/arch_springing.png",
+        "renders/architecture_close.png",
+        "renders/cycle_lane.png",
+        "renders/deck_edge.png",
+        "renders/east_approach.png",
+        "renders/facade_close.png",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/glass_close.png",
+        "renders/hangers.png",
+        "renders/left_side.png",
+        "renders/planter_divider.png",
+        "renders/quay_under.png",
+        "renders/rear.png",
+        "renders/rear_north.png",
+        "renders/rear_side.png",
+        "renders/right_side.png",
+        "renders/top.png",
+        "renders/west_approach.png",
+        "boards/phone-01-source-vs-render.png",
+        "boards/phone-02-details.png",
+        "boards/phone-03-details.png",
+        "boards/phone-04-details.png"
+      ]
+    }
+  ],
+  "blocking_findings": [
+    {
+      "id": "P1-01",
+      "severity": "P1",
+      "category": "complete standalone pedestrian landings",
+      "finding": "Both raised compact quays lack guard returns across their outer transverse edges beside the stairs. The broad paved landing areas terminate at exposed approximately 3.3 m drops. Longitudinal quay guards and stair handrails do not close these platform edges.",
+      "evidence": [
+        "renders/west_approach.png",
+        "renders/east_approach.png",
+        "renders/front_corner.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "boards/phone-03-details.png"
+      ],
+      "source_location": "scripts/family_tiedarch_v004.py: compact_quays; only y=+/-7.85 long-edge quay guards are generated",
+      "consequence": "The newly isolated context is visibly incomplete as a standalone pedestrian crossing. This is an obvious missing guard category, independent of engineering/accessibility certification.",
+      "required_correction": "Preserve v004. In a bounded new version add outer transverse quay guard returns, sharing the existing plan transform, from each long-edge guard to the corresponding upper stair handrail. Keep only the actual stair corridor open. Reimport the new exact GLB, rerender all mandatory views and phone boards, and obtain a fresh holistic review.",
+      "proposed_v005_scope": "The proposed local x=+/-25.95 returns leaving y=-4.73..-0.57 open target the observed omission; joining contacts and clear stair access still require visual verification."
+    }
+  ],
+  "minor_findings": [
+    {
+      "id": "P2-01",
+      "severity": "P2",
+      "category": "planting detail",
+      "finding": "Repeated angular foliage clumps read more coarsely than the fine dense grasses and shrubs in the locked source. The continuous planter identity and lane division remain legible.",
+      "evidence": [
+        "renders/planter_divider.png",
+        "renders/architecture_close.png"
+      ]
+    },
+    {
+      "id": "P2-02",
+      "severity": "P2",
+      "category": "guard infill fidelity",
+      "finding": "The guards use visibly thicker picket infill than the finer source mesh/pickets. The bridge-side guards remain permeable and continuous in the inspected evidence.",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/deck_edge.png"
+      ]
+    },
+    {
+      "id": "P2-03",
+      "severity": "P2",
+      "category": "clay material scope",
+      "finding": "Uniform source-palette clay omits steel weathering and brick/paver bond texture. This is within the declared architectural-clay scope and does not support a textured keeper claim.",
+      "evidence": [
+        "renders/arch_springing.png",
+        "renders/quay_under.png",
+        "renders/west_approach.png"
+      ]
+    },
+    {
+      "id": "P2-04",
+      "severity": "P2",
+      "category": "arch and hanger detailing",
+      "finding": "Faceted arch segments, small joints and simplified hanger fittings remain visible at close range. No gross open contact or detached arch/hanger assembly was apparent.",
+      "evidence": [
+        "renders/arch_springing.png",
+        "renders/hangers.png",
+        "renders/architecture_close.png"
+      ]
+    },
+    {
+      "id": "P2-05",
+      "severity": "P2",
+      "category": "bounded landscape presentation",
+      "finding": "Flat dark water and hard canal/module cutoffs are apparent in whole views. City blocks and extending banks are intentionally omitted; external site integration and canal continuation remain untested.",
+      "evidence": [
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/deck_edge.png"
+      ]
+    },
+    {
+      "id": "P2-06",
+      "severity": "P2",
+      "category": "render framing and surface readability",
+      "finding": "Some whole/end views and phone-board panels leave the model small on the neutral canvas; deck shadows soften lane/planter detail. Phone board 01 compares source top with an oblique aerial, although a separate true top render is available. Complementary full-size views permit the holistic review.",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/cycle_lane.png",
+        "boards/phone-01-source-vs-render.png",
+        "boards/phone-04-details.png"
+      ]
+    }
+  ],
+  "source_binding": [
+    {
+      "path": "sources/front.png",
+      "original_path": "C:/Users/andre/.codex/worktrees/review-spatial-20261026/CityPrompt/frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1.png",
+      "sha256": "e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f",
+      "matches_original": true
+    },
+    {
+      "path": "sources/oblique.jpg",
+      "original_path": "C:/Users/andre/.codex/worktrees/review-spatial-20261026/CityPrompt/frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1_angle_60.jpg",
+      "sha256": "562dd0b5136f4949798e346d6ff8507e3b8a3c7a964edb8911e914965d0ecdde",
+      "matches_original": true
+    },
+    {
+      "path": "sources/top.jpg",
+      "original_path": "C:/Users/andre/.codex/worktrees/review-spatial-20261026/CityPrompt/frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1_angle_90.jpg",
+      "sha256": "f9ad53e48ce5a5253912a3d1161a924c21dd5af38c86dc51605ad6ec855ffd0c",
+      "matches_original": true
+    }
+  ],
+  "as_built_scripts": [
+    {
+      "path": "scripts/clay_core.py",
+      "bytes": 27059,
+      "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/geometry.py",
+      "bytes": 4480,
+      "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/contract.py",
+      "bytes": 2024,
+      "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/assemblies.py",
+      "bytes": 9420,
+      "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/family_tiedarch_v004.py",
+      "bytes": 5059,
+      "sha256": "36a0e247933280257b66095c120a011cdb7aea4a7dba4cf191aee3b7bb88a4bc",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/family_tiedarch.py",
+      "bytes": 35466,
+      "sha256": "41cf2f40bd386867d936c5fafb60d4a3b9e9d8ffc8e96407bc57dbe4cb9e6621",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/tied_arch_plan.py",
+      "bytes": 590,
+      "sha256": "424349c565357c924634e9e303f6afa65158cc158b6f24886f4b0f154adcd91a",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/geometry_contract.py",
+      "bytes": 1121,
+      "sha256": "7f7c7c3bf18b3a0f02ac3ea1b7a090df9590c2d3d3bb3fbe622e9e8904a4fe15",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/build_v004.py",
+      "bytes": 5551,
+      "sha256": "a514772a091bbb0040d4c09cf9cd776a132e9d31ebab618a6a40f6b97a1f97ae",
+      "matches_prework_manifest": true
+    },
+    {
+      "path": "scripts/lock_sources.py",
+      "bytes": 2591,
+      "sha256": "490c4a330b88855c601f140dd55555102e7c2784bb9c3b0a88e030abfbd0f0b0",
+      "matches_prework_manifest": true
+    }
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/front.png",
+      "kind": "exact_source",
+      "bytes": 1241385,
+      "sha256": "e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f",
+      "dimensions_px": [
+        1024,
+        768
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "sources/oblique.jpg",
+      "kind": "exact_source",
+      "bytes": 936813,
+      "sha256": "562dd0b5136f4949798e346d6ff8507e3b8a3c7a964edb8911e914965d0ecdde",
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "sources/top.jpg",
+      "kind": "exact_source",
+      "bytes": 813673,
+      "sha256": "f9ad53e48ce5a5253912a3d1161a924c21dd5af38c86dc51605ad6ec855ffd0c",
+      "dimensions_px": [
+        1195,
+        896
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/aerial.png",
+      "kind": "actual_glb_render",
+      "bytes": 1375059,
+      "sha256": "ed43c3e3b397070b3824f988a6adfd1bd33fbff70554caedf19fec278732f923",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/arch_springing.png",
+      "kind": "actual_glb_render",
+      "bytes": 1489810,
+      "sha256": "9b260c353b883380c71d85770d323a59a92d5775859c3cfb1ff818dc7e96773f",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "kind": "actual_glb_render",
+      "bytes": 1476807,
+      "sha256": "c1cee215af71fbd47de395a7de8c74167120ba3216400f57b5f0ba327a428b94",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/cycle_lane.png",
+      "kind": "actual_glb_render",
+      "bytes": 1465184,
+      "sha256": "d234d81bf04ad4e60fb78b59899ba44f5fd1349114842871564c94690ad1e0a8",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/deck_edge.png",
+      "kind": "actual_glb_render",
+      "bytes": 1369155,
+      "sha256": "cac70911209ad1d6b08a0863dee1f15c64331d1832f468efee75a6a03c6f6718",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/east_approach.png",
+      "kind": "actual_glb_render",
+      "bytes": 1407850,
+      "sha256": "505841766458b65e2582eb0cf9800216f59c9dc4adb832dd90030ca9a37e6c14",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/facade_close.png",
+      "kind": "actual_glb_render",
+      "bytes": 1402302,
+      "sha256": "465b601849a2628080d37d69d4b3c2109a222c4d19639d805898cea267247f1e",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/front.png",
+      "kind": "actual_glb_render",
+      "bytes": 1383072,
+      "sha256": "50ae5c5d9619aaa4ece8d21a8067d7f53f5f2283a3f74083684271df712820c6",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/front_corner.png",
+      "kind": "actual_glb_render",
+      "bytes": 1412497,
+      "sha256": "4ed007a728f28a43ab78f8c75dafbc30c6012606f86f220b8120cb1a563d9a3c",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/glass_close.png",
+      "kind": "actual_glb_render",
+      "bytes": 1375347,
+      "sha256": "93eecc9ccc626d6dc90932ce604e1bca3caffb8ed935a910deb2331982e8fd74",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/hangers.png",
+      "kind": "actual_glb_render",
+      "bytes": 1409017,
+      "sha256": "3adce546d0fac3d6d8d4cca48eddf4e123aad133976c5f38d71d27efb187ae78",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/left_side.png",
+      "kind": "actual_glb_render",
+      "bytes": 1293340,
+      "sha256": "a082e83bd69a72ccf5117b4079e5774a9576699032bf4dd2f8af071257fe28a9",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/planter_divider.png",
+      "kind": "actual_glb_render",
+      "bytes": 1439324,
+      "sha256": "b22a740cf009fceb6f9350a96a7bd41a45cbb9793b2a18946042de7d2d3291c5",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/quay_under.png",
+      "kind": "actual_glb_render",
+      "bytes": 1358824,
+      "sha256": "f62e794c31af11ca52dbd6afd4a0744188757b07aa01748c3089860b18a226d7",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/rear.png",
+      "kind": "actual_glb_render",
+      "bytes": 1309254,
+      "sha256": "84aa3173b1697a1a5cef9248cb045f703705a14f7c1351299f4b1e975fa63dc3",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/rear_north.png",
+      "kind": "actual_glb_render",
+      "bytes": 1380107,
+      "sha256": "5049417ae82c0ea20cb0dd2d99cf79427f2f29ed4e3e8d0f619b89262d1f2437",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/rear_side.png",
+      "kind": "actual_glb_render",
+      "bytes": 1337050,
+      "sha256": "d6e6fd4c6a31aea73f754a0d575b806326da3e654998952e61178dff044508cb",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/right_side.png",
+      "kind": "actual_glb_render",
+      "bytes": 1297226,
+      "sha256": "cd9488dae6ce9279cfc97352144ebea4b43cb928e289c437e7fba3a76cd6ef40",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/top.png",
+      "kind": "actual_glb_render",
+      "bytes": 1365397,
+      "sha256": "55a472c49cf95998d14434357aae9e97622f8efd628a69342a6446eb6332a2c6",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "renders/west_approach.png",
+      "kind": "actual_glb_render",
+      "bytes": 1494212,
+      "sha256": "8326d41addd708dbe375e2ffb41a7527cbca351a169ffd66544dedf7f0c7325d",
+      "dimensions_px": [
+        1440,
+        1080
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "boards/phone-01-source-vs-render.png",
+      "kind": "phone_board",
+      "bytes": 1640265,
+      "sha256": "a01c261a2a0319047b7be258671e7fe87d543436a4901f22394085c278d0886a",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "boards/phone-02-details.png",
+      "kind": "phone_board",
+      "bytes": 983789,
+      "sha256": "5de4e2bfbbaef6ea9ffad61421094e4ceeecdfec66da36828f16e8679b80617f",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "boards/phone-03-details.png",
+      "kind": "phone_board",
+      "bytes": 936378,
+      "sha256": "5f5921781c96adfa47350248c819b8ef0ac3c688b5b345d925626d839fbbb61a",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "directly_opened_at_original_resolution": true
+    },
+    {
+      "path": "boards/phone-04-details.png",
+      "kind": "phone_board",
+      "bytes": 564510,
+      "sha256": "34cc4a296e88e04ea44d3d601017787ffe5e82d4ed0bad34e26ea907d74d2eda",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "directly_opened_at_original_resolution": true
+    }
+  ],
+  "limitations": [
+    "This is architectural-clay review only; v004 fails on one visible missing-guard category.",
+    "No runtime import, hover/placement, saved identity, editing, traversal, slopes, external site approaches, exports or paid-generation flow tested.",
+    "No engineering, structural capacity, guard-code, cycle-access, accessibility or dimensional survey certification.",
+    "Metric scale, compact quays, bearing shelves and stairs are declared teaching inferences; the locked images do not prove their engineering design.",
+    "The proposed v005 correction is not reviewed or approved by this record.",
+    "No keeper, runtime activation, catalogue publication, deployment or source-original modification authorized."
+  ]
+}

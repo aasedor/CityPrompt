@@ -1,0 +1,2255 @@
+{
+  "candidate": "clay-timber-covered-footbridge-clay-v002",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 103,
+    "vertices": 19113,
+    "polygons": 29118,
+    "triangles": 29118,
+    "path": "clay-timber-covered-footbridge-clay-v002-authoring.blend",
+    "bytes": 3108968,
+    "sha256": "14d4987b9809aceda37636c4cb8a958a863b880a4d3904848015659b8a946359"
+  },
+  "runtime": {
+    "path": "clay-timber-covered-footbridge-clay-v002.glb",
+    "bytes": 1664448,
+    "sha256": "31cf6174ea3befe1bae3206f85f76a65f9203a8f8862a39acb4f9bf5d65b75d0",
+    "meshes": 15,
+    "materials": 15,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 15,
+    "vertices": 19113,
+    "polygons": 29118,
+    "triangles": 29118
+  },
+  "original_bounds_m": [
+    [
+      -31.0,
+      -32.04999923706055,
+      0.0
+    ],
+    [
+      30.0,
+      32.04999923706055,
+      16.399999618530273
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -31.0,
+      -32.04999923706055,
+      0.0
+    ],
+    [
+      30.0,
+      32.04999923706055,
+      16.399999618530273
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 48.0,
+    "depth": 48.0,
+    "height": 7.55
+  },
+  "native_dimensions_m": {
+    "width": 61.0,
+    "depth": 64.0999984741211,
+    "height": 16.399999618530273
+  },
+  "native_bottom_center_m": [
+    -0.5,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "timber": 9,
+    "glulam": 2,
+    "deck": 1,
+    "roof": 1,
+    "seam": 1,
+    "concrete": 7,
+    "paving": 4,
+    "joint": 5,
+    "glass": 4,
+    "hardware": 2,
+    "planting": 33,
+    "tree": 24,
+    "brick": 6,
+    "trim": 3
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/portal_end.png",
+    "renders/louvre_wall.png",
+    "renders/roof_eaves.png",
+    "renders/deck_inside.png",
+    "renders/pier_abutment.png",
+    "renders/stream_under.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Covered timber footbridge over a stream: piers on the lower paths, deck ends on the promenades",
+      "box": [
+        -24.0,
+        24.0,
+        -24.0,
+        24.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "North-east block door 0",
+      "face": "North-east block",
+      "u": -30.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block door 1",
+      "face": "North-east block",
+      "u": -27.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block door 2",
+      "face": "North-east block",
+      "u": -24.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block door 3",
+      "face": "North-east block",
+      "u": -21.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block door 4",
+      "face": "North-east block",
+      "u": -18.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block door 5",
+      "face": "North-east block",
+      "u": -15.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block door 6",
+      "face": "North-east block",
+      "u": -12.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block door 7",
+      "face": "North-east block",
+      "u": -9.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f1 0",
+      "face": "North-east block",
+      "u": -30.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f1 1",
+      "face": "North-east block",
+      "u": -27.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f1 2",
+      "face": "North-east block",
+      "u": -24.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f1 3",
+      "face": "North-east block",
+      "u": -21.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f1 4",
+      "face": "North-east block",
+      "u": -18.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f1 5",
+      "face": "North-east block",
+      "u": -15.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f1 6",
+      "face": "North-east block",
+      "u": -12.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f1 7",
+      "face": "North-east block",
+      "u": -9.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f2 0",
+      "face": "North-east block",
+      "u": -30.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f2 1",
+      "face": "North-east block",
+      "u": -27.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f2 2",
+      "face": "North-east block",
+      "u": -24.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f2 3",
+      "face": "North-east block",
+      "u": -21.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f2 4",
+      "face": "North-east block",
+      "u": -18.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f2 5",
+      "face": "North-east block",
+      "u": -15.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f2 6",
+      "face": "North-east block",
+      "u": -12.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f2 7",
+      "face": "North-east block",
+      "u": -9.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f3 0",
+      "face": "North-east block",
+      "u": -30.5,
+      "z": 13.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f3 1",
+      "face": "North-east block",
+      "u": -27.5,
+      "z": 13.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f3 2",
+      "face": "North-east block",
+      "u": -24.5,
+      "z": 13.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f3 3",
+      "face": "North-east block",
+      "u": -21.5,
+      "z": 13.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f3 4",
+      "face": "North-east block",
+      "u": -18.5,
+      "z": 13.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f3 5",
+      "face": "North-east block",
+      "u": -15.5,
+      "z": 13.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f3 6",
+      "face": "North-east block",
+      "u": -12.5,
+      "z": 13.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-east block window f3 7",
+      "face": "North-east block",
+      "u": -9.5,
+      "z": 13.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        -1.0,
+        0.0
+      ],
+      "face_inward": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block door 0",
+      "face": "South-west block",
+      "u": -30.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block door 1",
+      "face": "South-west block",
+      "u": -27.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block door 2",
+      "face": "South-west block",
+      "u": -24.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block door 3",
+      "face": "South-west block",
+      "u": -21.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block door 4",
+      "face": "South-west block",
+      "u": -18.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block door 5",
+      "face": "South-west block",
+      "u": -15.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f1 0",
+      "face": "South-west block",
+      "u": -30.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f1 1",
+      "face": "South-west block",
+      "u": -27.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f1 2",
+      "face": "South-west block",
+      "u": -24.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f1 3",
+      "face": "South-west block",
+      "u": -21.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f1 4",
+      "face": "South-west block",
+      "u": -18.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f1 5",
+      "face": "South-west block",
+      "u": -15.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f2 0",
+      "face": "South-west block",
+      "u": -30.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f2 1",
+      "face": "South-west block",
+      "u": -27.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f2 2",
+      "face": "South-west block",
+      "u": -24.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f2 3",
+      "face": "South-west block",
+      "u": -21.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f2 4",
+      "face": "South-west block",
+      "u": -18.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "South-west block window f2 5",
+      "face": "South-west block",
+      "u": -15.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -17.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block door 0",
+      "face": "North-west block",
+      "u": 13.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block door 1",
+      "face": "North-west block",
+      "u": 16.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block door 2",
+      "face": "North-west block",
+      "u": 19.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block door 3",
+      "face": "North-west block",
+      "u": 22.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block door 4",
+      "face": "North-west block",
+      "u": 25.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block door 5",
+      "face": "North-west block",
+      "u": 28.5,
+      "z": 3.4499999999999997,
+      "width": 1.4,
+      "height": 2.3,
+      "kind": "door",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f1 0",
+      "face": "North-west block",
+      "u": 13.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f1 1",
+      "face": "North-west block",
+      "u": 16.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f1 2",
+      "face": "North-west block",
+      "u": 19.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f1 3",
+      "face": "North-west block",
+      "u": 22.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f1 4",
+      "face": "North-west block",
+      "u": 25.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f1 5",
+      "face": "North-west block",
+      "u": 28.5,
+      "z": 7.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f2 0",
+      "face": "North-west block",
+      "u": 13.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f2 1",
+      "face": "North-west block",
+      "u": 16.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f2 2",
+      "face": "North-west block",
+      "u": 19.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f2 3",
+      "face": "North-west block",
+      "u": 22.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f2 4",
+      "face": "North-west block",
+      "u": 25.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    },
+    {
+      "id": "North-west block window f2 5",
+      "face": "North-west block",
+      "u": 28.5,
+      "z": 10.3,
+      "width": 1.4,
+      "height": 1.7,
+      "kind": "window",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.14,
+      "pane_inset_m": 0.17700000000000002,
+      "face_origin": [
+        -19.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "flat"
+    }
+  ],
+  "authoring_modules": {
+    "stream": [
+      "Stream"
+    ],
+    "paths": [
+      "Lower path west",
+      "Lower path east"
+    ],
+    "banks": [
+      "Planted bank west",
+      "Planted bank east"
+    ],
+    "promenades": [
+      "Promenade west",
+      "Promenade east"
+    ],
+    "paving joints": [
+      "paving joints joint"
+    ],
+    "garden planting": [
+      "Bank shrub 1",
+      "Bank shrub 2",
+      "Bank shrub 3",
+      "Bank shrub 4",
+      "Bank shrub 6",
+      "Bank shrub 7",
+      "Bank shrub 8",
+      "Bank shrub 9",
+      "Bank shrub 11",
+      "Bank shrub 13",
+      "Bank shrub 15",
+      "Bank shrub 16",
+      "Bank shrub 17",
+      "Bank shrub 18",
+      "Bank shrub 19",
+      "Bank shrub 20",
+      "Bank shrub 21",
+      "Bank shrub 22",
+      "Bank shrub 23",
+      "Bank shrub 24",
+      "Bank shrub 25",
+      "Bank shrub 26",
+      "Bank shrub 27",
+      "Bank shrub 28",
+      "Bank shrub 29",
+      "Bank shrub 30",
+      "Bank shrub 31",
+      "Bank shrub 32",
+      "Bank shrub 33",
+      "Bank shrub 34",
+      "Bank shrub 35",
+      "Tree crown 0",
+      "Tree crown 1",
+      "Tree crown 2",
+      "Tree crown 3",
+      "Tree crown 0.001",
+      "Tree crown 1.001",
+      "Tree crown 2.001",
+      "Tree crown 3.001",
+      "Tree crown 0.002",
+      "Tree crown 1.002",
+      "Tree crown 2.002",
+      "Tree crown 3.002",
+      "Tree crown 0.003",
+      "Tree crown 1.003",
+      "Tree crown 2.003",
+      "Tree crown 3.003",
+      "Tree crown 0.004",
+      "Tree crown 1.004",
+      "Tree crown 2.004",
+      "Tree crown 3.004",
+      "Tree crown 0.005",
+      "Tree crown 1.005",
+      "Tree crown 2.005",
+      "Tree crown 3.005"
+    ],
+    "trees": [
+      "Tree trunk",
+      "Tree trunk.001",
+      "Tree trunk.002",
+      "Tree trunk.003",
+      "Tree trunk.004",
+      "Tree trunk.005"
+    ],
+    "railings": [
+      "railings hardware"
+    ],
+    "deck": [
+      "Deck boards"
+    ],
+    "deck structure": [
+      "deck structure joint",
+      "deck structure glulam"
+    ],
+    "frames": [
+      "frames glulam",
+      "frames timber",
+      "frames glass",
+      "frames hardware"
+    ],
+    "roof": [
+      "Zinc roof",
+      "End gable board -1",
+      "End gable board +1"
+    ],
+    "roof seams": [
+      "roof seams seam"
+    ],
+    "abutments": [
+      "Abutment -1",
+      "Abutment cill -1",
+      "Abutment +1",
+      "Abutment cill +1"
+    ],
+    "piers": [
+      "piers concrete",
+      "Pier headstock -1",
+      "Pier headstock +1"
+    ],
+    "envelope": [
+      "North-east block wall",
+      "South-west block wall",
+      "North-west block wall"
+    ],
+    "brick joints": [
+      "North-east block measured mortar courses",
+      "South-west block measured mortar courses",
+      "North-west block measured mortar courses"
+    ],
+    "North-east block": [
+      "North-east block North-east block trim",
+      "North-east block North-east block glass"
+    ],
+    "blocks": [
+      "North-east block body",
+      "South-west block body",
+      "North-west block body"
+    ],
+    "South-west block": [
+      "South-west block South-west block trim",
+      "South-west block South-west block glass"
+    ],
+    "North-west block": [
+      "North-west block North-west block trim",
+      "North-west block North-west block glass"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T17:17:48.181056+00:00",
+  "delivery_and_render_seconds": 7426.788455574002,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

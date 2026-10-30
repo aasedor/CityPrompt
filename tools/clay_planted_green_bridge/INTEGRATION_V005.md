@@ -1,0 +1,22 @@
+# Planted Green Bridge v005 local correction
+
+The pinned original source folder and GLB are preserved byte-identical. The v004 correction and its failed review remain separate evidence. v005 is a new independently reviewed architectural-clay candidate with zero P0/P1.
+
+
+Exact candidate: clay-planted-green-bridge-clay-v005
+SHA-256: d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066
+Native dimensions: [38.79999923706055, 101.02232360839844, 9.581430435180664] m; fixed plot 39.1 x 101.4 m.
+Runtime base: ea29465cd plus this branch's two-bridge integration; checklist 2026-09-24.
+Local project: http://127.0.0.1:5176/projects/77b1333f-1861-4b4c-84e4-9ff19bc56fa7
+Agent student simulation, Edge, 1681x1233 viewport, mouse/keyboard, 2026-10-29 local. A vacant 156x137 m construction parcel was drawn through ordinary UI and prepared level. Earlier projects preserved.
+Move/rotate only; no route bending, stretching or automatic intersections. Native ground retained, GLB base zero, no ownership extraction. Compact banks/quays and inferred pedestrian stairs are included. This is architectural clay, not engineering/accessibility certification.
+Exact hero, GLB and thumbnail HTTP hash readback: ../bridge-batch-http-readback.json in external artifact root. All 18 selected fixed public-realm models/36 payloads pass the canonical local preflight after exact pointer hydration. Read-only database identity confirms both saved revisions after reload and recovery.
+Ordinary UI: photographic card, native placement, disabled dimensions/no resize corners, rotation, clean-tab reopen, canvas re-selection, Delete/Undo restoration and exact free PNG-content capture pass. Tied-arch rotation Undo/Redo was also tested; planted rotation Undo/Redo was not separately tested. No timing/FPS benchmark was measured.
+External evidence: C:/dev-artifacts/CityPrompt/claude-crossings-practical-20261029/green-v005; browser-proof.json, screenshots, exact-3d-source.png; full source/review package and independent visual review.
+Independent asset review: zero P0/P1; P2s remain. Runtime and publication approvals remain pending.
+Private delivery: https://drive.google.com/drive/folders/1kXCtbrgsmzh0CJCO6CyPkZj90FK37dqf
+NOT TESTED: actual browser Download, paid AI generations, first-person traversal, sloped terrain, surveyed/external approaches, automatic site landscape, interrupted/failed saves and lower-end hardware or many-instance performance. The ~26.5 MB planted model loaded and captured on this test computer; that is not a classroom hardware benchmark.
+Inherited minor UI debt: Connections button still present and rotation handle's accessible label says building; neither prevents fixed bridge placement. Browser tool observers sometimes returned a previous async state and were re-read after settling. Logged errors are the browser extension runtime.onMessage rejection; no application/model-load failure observed in this bounded test.
+
+
+Full versioned output is outside the source tree. In-tree intentional deliverables are the exact LFS candidate, authoring scripts, build/source/provenance reports, independent review and runtime checklist. Heavy PNG/phone-board/.blend originals are in the verified Drive package. No source archetype catalogue rewrite.

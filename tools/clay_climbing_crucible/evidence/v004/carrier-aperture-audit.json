@@ -1,0 +1,30 @@
+{
+  "status": "PASS_CARRIER_APERTURES",
+  "scope": "Opaque facade carriers only. Does not prove room access, structural adequacy or visual glass depth.",
+  "checks": [
+    {
+      "opening": "W window",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W slot",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "W door",
+      "face": "west block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    },
+    {
+      "opening": "E door",
+      "face": "east block south",
+      "ray_count": 9,
+      "blocked_samples": []
+    }
+  ]
+}

@@ -1,0 +1,753 @@
+{
+  "candidate": "clay-brick-arch-viaduct-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 254,
+    "vertices": 75034,
+    "polygons": 73520,
+    "triangles": 73520,
+    "path": "clay-brick-arch-viaduct-clay-v003-authoring.blend",
+    "bytes": 7149116,
+    "sha256": "25ce3412040f690f0b5497a9cd20e8d80b89f38725adbc421ee74bb9e5690ed0"
+  },
+  "runtime": {
+    "path": "clay-brick-arch-viaduct-clay-v003.glb",
+    "bytes": 3928328,
+    "sha256": "3d5a0e6fb50d12d19de78c5ea0f992ff5a371d2269fb115e1b2e064f64c84033",
+    "meshes": 32,
+    "materials": 32,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 32,
+    "vertices": 75034,
+    "polygons": 73520,
+    "triangles": 73520
+  },
+  "original_bounds_m": [
+    [
+      -3000.0,
+      -2699.949951171875,
+      0.0
+    ],
+    [
+      3000.0,
+      3300.050048828125,
+      33.0
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -3000.0,
+      -2699.949951171875,
+      0.0
+    ],
+    [
+      3000.0,
+      3300.050048828125,
+      33.0
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 10.0,
+    "depth": 85.8,
+    "height": 13.8
+  },
+  "native_dimensions_m": {
+    "width": 6000.0,
+    "depth": 6000.0,
+    "height": 33.0
+  },
+  "native_bottom_center_m": [
+    0.0,
+    300.050048828125,
+    0.0
+  ],
+  "source_components_by_role": {
+    "wall": 49,
+    "brick": 2,
+    "arch": 42,
+    "joint": 4,
+    "stone": 9,
+    "trim": 1,
+    "glass": 4,
+    "interior": 1,
+    "floor": 1,
+    "sign": 1,
+    "shutter": 1,
+    "ballast": 4,
+    "ballast2": 2,
+    "ballast3": 2,
+    "ground": 1,
+    "timber": 47,
+    "hardware": 2,
+    "red": 1,
+    "white": 4,
+    "pale": 3,
+    "dark": 6,
+    "roof": 3,
+    "setts": 2,
+    "settjoint": 3,
+    "paving": 4,
+    "concrete": 1,
+    "planting": 38,
+    "soil": 1,
+    "pot": 7,
+    "grass": 1,
+    "terrace": 3,
+    "terrace2": 4
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/arch_shopfront.png",
+    "renders/pier_pilasters.png",
+    "renders/track_ballast.png",
+    "renders/parapet_coping.png",
+    "renders/train_cars.png",
+    "renders/cobbled_street.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Brick viaduct from grade: piers, face walls and the near end wall; deck on the arches; ballast and tracks on the deck; shopfronts in the arches",
+      "box": [
+        -5.0,
+        5.0,
+        -42.9,
+        123.0
+      ]
+    }
+  ],
+  "opening_sections": [
+    {
+      "id": "arch 0",
+      "face": "east",
+      "u": -36.9,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 1",
+      "face": "east",
+      "u": -28.7,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 2",
+      "face": "east",
+      "u": -20.5,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 3",
+      "face": "east",
+      "u": -12.3,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 4",
+      "face": "east",
+      "u": -4.100000000000001,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 5",
+      "face": "east",
+      "u": 4.100000000000001,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 6",
+      "face": "east",
+      "u": 12.299999999999997,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 7",
+      "face": "east",
+      "u": 20.499999999999993,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 8",
+      "face": "east",
+      "u": 28.699999999999996,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    },
+    {
+      "id": "arch 9",
+      "face": "east",
+      "u": 36.9,
+      "z": 0.0,
+      "width": 6.0,
+      "height": 7.2,
+      "kind": "shopfront",
+      "clear_wall_cut": true,
+      "carrier_depth_m": 0.3,
+      "frame_inset_m": 0.6,
+      "pane_inset_m": 0.637,
+      "face_origin": [
+        5.0,
+        0.0,
+        0.0
+      ],
+      "face_tangent": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "face_inward": [
+        -1.0,
+        0.0,
+        0.0
+      ],
+      "occupied_space": "shop"
+    }
+  ],
+  "authoring_modules": {
+    "envelope": [
+      "east face",
+      "west face",
+      "south end wall"
+    ],
+    "brick joints": [
+      "east measured mortar courses",
+      "east head joints",
+      "west measured mortar courses",
+      "south end measured mortar courses"
+    ],
+    "arches": [
+      "arch 0 spandrel",
+      "arch 0 arch ring",
+      "arch 1 spandrel",
+      "arch 1 arch ring",
+      "arch 2 spandrel",
+      "arch 2 arch ring",
+      "arch 3 spandrel",
+      "arch 3 arch ring",
+      "arch 4 spandrel",
+      "arch 4 arch ring",
+      "arch 5 spandrel",
+      "arch 5 arch ring",
+      "arch 6 spandrel",
+      "arch 6 arch ring",
+      "arch 7 spandrel",
+      "arch 7 arch ring",
+      "arch 8 spandrel",
+      "arch 8 arch ring",
+      "arch 9 spandrel",
+      "arch 9 arch ring",
+      "arch 10 spandrel",
+      "arch 10 arch ring",
+      "arch 11 spandrel",
+      "arch 11 arch ring",
+      "arch 12 spandrel",
+      "arch 12 arch ring",
+      "arch 13 spandrel",
+      "arch 13 arch ring",
+      "arch 14 spandrel",
+      "arch 14 arch ring",
+      "arch 15 spandrel",
+      "arch 15 arch ring",
+      "arch 16 spandrel",
+      "arch 16 arch ring",
+      "arch 17 spandrel",
+      "arch 17 arch ring",
+      "arch 18 spandrel",
+      "arch 18 arch ring",
+      "arch 19 spandrel",
+      "arch 19 arch ring",
+      "west blind arch 0 spandrel",
+      "west blind arch 0 arch ring",
+      "west blind arch 1 spandrel",
+      "west blind arch 1 arch ring",
+      "west blind arch 2 spandrel",
+      "west blind arch 2 arch ring",
+      "west blind arch 3 spandrel",
+      "west blind arch 3 arch ring",
+      "west blind arch 4 spandrel",
+      "west blind arch 4 arch ring",
+      "west blind arch 5 spandrel",
+      "west blind arch 5 arch ring",
+      "west blind arch 6 spandrel",
+      "west blind arch 6 arch ring",
+      "west blind arch 7 spandrel",
+      "west blind arch 7 arch ring",
+      "west blind arch 8 spandrel",
+      "west blind arch 8 arch ring",
+      "west blind arch 9 spandrel",
+      "west blind arch 9 arch ring",
+      "west blind arch 10 spandrel",
+      "west blind arch 10 arch ring",
+      "west blind arch 11 spandrel",
+      "west blind arch 11 arch ring",
+      "west blind arch 12 spandrel",
+      "west blind arch 12 arch ring",
+      "west blind arch 13 spandrel",
+      "west blind arch 13 arch ring",
+      "west blind arch 14 spandrel",
+      "west blind arch 14 arch ring",
+      "west blind arch 15 spandrel",
+      "west blind arch 15 arch ring",
+      "west blind arch 16 spandrel",
+      "west blind arch 16 arch ring",
+      "west blind arch 17 spandrel",
+      "west blind arch 17 arch ring",
+      "west blind arch 18 spandrel",
+      "west blind arch 18 arch ring",
+      "west blind arch 19 spandrel",
+      "west blind arch 19 arch ring",
+      "south end blind arch spandrel",
+      "south end blind arch arch ring"
+    ],
+    "east": [
+      "east east sign",
+      "east east glass",
+      "east east trim",
+      "east east shutter",
+      "east east dark",
+      "east east wall",
+      "east east stone"
+    ],
+    "west": [
+      "west west wall",
+      "west west dark",
+      "west west stone"
+    ],
+    "south end": [
+      "south end south end wall",
+      "south end south end stone"
+    ],
+    "viaduct body": [
+      "viaduct body wall",
+      "viaduct body concrete"
+    ],
+    "shops": [
+      "shops floor",
+      "shops interior",
+      "shops timber"
+    ],
+    "tracks": [
+      "Ballast bed -2",
+      "Ballast stones ballast2 -2",
+      "Ballast stones ballast3 -2",
+      "Ballast bed +2",
+      "Ballast stones ballast2 +2",
+      "Ballast stones ballast3 +2",
+      "tracks timber",
+      "tracks hardware",
+      "Ballast bed -2.001",
+      "Ballast bed +2.001"
+    ],
+    "far run": [
+      "far run wall",
+      "far run stone",
+      "Far run arches dark",
+      "Far run arches arch"
+    ],
+    "train": [
+      "train dark",
+      "train red",
+      "train white",
+      "train pale",
+      "train glass"
+    ],
+    "site": [
+      "Context ground"
+    ],
+    "street": [
+      "Flagged pavement",
+      "Kerb",
+      "Cobbled street",
+      "Far kerb",
+      "Far pavement",
+      "Sett joints",
+      "Flag joints",
+      "Near end forecourt",
+      "Cross street",
+      "Cross street pavement"
+    ],
+    "gardens": [
+      "West gardens"
+    ],
+    "street furniture": [
+      "street furniture settjoint",
+      "street furniture hardware",
+      "street furniture white",
+      "street furniture timber",
+      "street furniture terrace2",
+      "street furniture stone"
+    ],
+    "planter 2": [
+      "planter 2 pot"
+    ],
+    "garden planting": [
+      "Planter shrub 2",
+      "Planter shrub 3",
+      "Planter shrub 5",
+      "Planter shrub 6",
+      "Planter shrub 8",
+      "Street tree crown",
+      "Street tree crown.001",
+      "Street tree crown.002",
+      "Street tree crown.003",
+      "Street tree crown.004",
+      "Street tree crown.005",
+      "Street tree crown.006",
+      "Street tree crown.007",
+      "Street tree crown.008",
+      "Street tree crown.009",
+      "Street tree crown.010",
+      "Street tree crown.011",
+      "Street tree crown.012",
+      "Street tree crown.013",
+      "Street tree crown.014",
+      "Street tree crown.015",
+      "Street tree crown.016",
+      "Street tree crown.017",
+      "Street tree crown.018",
+      "Street tree crown.019",
+      "Street tree crown.020",
+      "Street tree crown.021",
+      "Street tree crown.022",
+      "Street tree crown.023",
+      "Street tree crown.024",
+      "Street tree crown.025",
+      "Street tree crown.026",
+      "Street tree crown.027",
+      "Street tree crown.028",
+      "Street tree crown.029",
+      "Street tree crown.030",
+      "Street tree crown.031",
+      "Street tree crown.032"
+    ],
+    "planter 3": [
+      "planter 3 pot"
+    ],
+    "planter 5": [
+      "planter 5 pot"
+    ],
+    "planter 6": [
+      "planter 6 pot"
+    ],
+    "planter 8": [
+      "planter 8 pot"
+    ],
+    "street planting": [
+      "Street tree trunk",
+      "Street tree branch",
+      "Street tree branch.001",
+      "Street tree branch.002",
+      "Street tree trunk.001",
+      "Street tree branch.003",
+      "Street tree branch.004",
+      "Street tree branch.005",
+      "Street tree trunk.002",
+      "Street tree branch.006",
+      "Street tree branch.007",
+      "Street tree branch.008",
+      "Street tree trunk.003",
+      "Street tree branch.009",
+      "Street tree branch.010",
+      "Street tree branch.011",
+      "Street tree trunk.004",
+      "Street tree branch.012",
+      "Street tree branch.013",
+      "Street tree branch.014",
+      "Street tree trunk.005",
+      "Street tree branch.015",
+      "Street tree branch.016",
+      "Street tree branch.017",
+      "Street tree trunk.006",
+      "Street tree branch.018",
+      "Street tree branch.019",
+      "Street tree branch.020",
+      "Street tree trunk.007",
+      "Street tree branch.021",
+      "Street tree branch.022",
+      "Street tree branch.023",
+      "Street tree trunk.008",
+      "Street tree branch.024",
+      "Street tree branch.025",
+      "Street tree branch.026",
+      "Street tree trunk.009",
+      "Street tree branch.027",
+      "Street tree branch.028",
+      "Street tree branch.029",
+      "Street tree trunk.010",
+      "Street tree branch.030",
+      "Street tree branch.031",
+      "Street tree branch.032"
+    ],
+    "tree pits": [
+      "tree pits soil"
+    ],
+    "context": [
+      "East terrace",
+      "East terrace roof",
+      "East terrace gable",
+      "West terrace",
+      "West terrace roof",
+      "West terrace gable"
+    ],
+    "East terrace windows": [
+      "East terrace windows dark",
+      "East terrace windows pale",
+      "East terrace windows white",
+      "East terrace windows glass",
+      "East terrace windows stone",
+      "East terrace windows brick",
+      "East terrace windows pot"
+    ],
+    "West terrace windows": [
+      "West terrace windows dark",
+      "West terrace windows pale",
+      "West terrace windows white",
+      "West terrace windows glass",
+      "West terrace windows stone",
+      "West terrace windows brick",
+      "West terrace windows pot"
+    ],
+    "context city": [
+      "context city terrace",
+      "context city roof",
+      "context city terrace2"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-20T02:10:43.764468+00:00",
+  "delivery_and_render_seconds": 7691.853555508002,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { PLACE_ASSETS, placeAsset, placementPlanRequest } from './catalogue';
 import { rectangleAt, rectangleDimensions, resizeRectangleCorner } from './geometry';
+import { hasBuildingOnlyFootprint } from './buildingOnlyFootprint';
+import { hasFixedBuildingFootprint } from './buildingFootprintProgram';
 
 describe('native catalogue placement contracts', () => {
   it('cannot share a preview plan between two homes on identically sized plots', () => {
@@ -17,14 +19,15 @@ describe('native catalogue placement contracts', () => {
     const fixed = coordinates[2];
     const resized = resizeRectangleCorner(coordinates, 0, fixed, asset);
     const dimensions = rectangleDimensions(resized);
-    if (asset.properties.validation_fixed_fixture === true || asset.footprintProgram?.editable === false) {
+    if (asset.properties.validation_fixed_fixture === true || hasFixedBuildingFootprint(asset)) {
       expect(resized).toEqual(coordinates);
     } else {
       expect(dimensions.width).toBeCloseTo(asset.minWidth, 3);
       expect(dimensions.depth).toBeCloseTo(asset.minDepth, 3);
     }
-    expect(dimensions.width - asset.nativeDimensions![0]).toBeGreaterThanOrEqual(3 - 1e-6);
-    expect(dimensions.depth - asset.nativeDimensions![1]).toBeGreaterThanOrEqual(3 - 1e-6);
+    const clearance=hasBuildingOnlyFootprint(asset) ? .02 : 3;
+    expect(dimensions.width - asset.nativeDimensions![0]).toBeGreaterThanOrEqual(clearance - 1e-6);
+    expect(dimensions.depth - asset.nativeDimensions![1]).toBeGreaterThanOrEqual(clearance - 1e-6);
     expect(resized[2][0]).toBeCloseTo(fixed[0], 7);
     expect(resized[2][1]).toBeCloseTo(fixed[1], 7);
   });

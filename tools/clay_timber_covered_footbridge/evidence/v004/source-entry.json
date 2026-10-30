@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-timber-covered-footbridge",
+  "variant_id": "clay-timber-covered-footbridge-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "urban_pedestrian_footbridge/variant_2",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\urban-pedestrian-footbridge\\variant_2.png",
+      "path": "sources/front.png",
+      "bytes": 1357841,
+      "sha256": "2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936"
+    },
+    {
+      "role": "oblique",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\urban-pedestrian-footbridge\\variant_2_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 1022875,
+      "sha256": "ed7edd0326c69bc43c9086a61d750a56e25b2ff28afb6426324fdaf3f9e4139d"
+    },
+    {
+      "role": "top",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\urban-pedestrian-footbridge\\variant_2_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 974510,
+      "sha256": "bd1125b71008d2e5e0a27a7c36b06f4def0c1957b1e81d8f6e624a346912cdc3"
+    }
+  ]
+}

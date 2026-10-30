@@ -1,6 +1,12 @@
 frontend/public/families/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/park-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/street-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_timber_covered_footbridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_tied_arch_shared_bridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_planted_green_bridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_planted_green_bridge/evidence/v004/independent-review.md whitespace=-blank-at-eol
+tools/clay_planted_green_bridge/evidence/v005/independent-review.md whitespace=-blank-at-eol
+tools/clay_timber_covered_footbridge/evidence/v004/independent-review.md whitespace=-blank-at-eol
 frontend/public/native-park-assets/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/native-park-assets/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/street-kits/**/*.png filter=lfs diff=lfs merge=lfs -text
@@ -27,6 +33,7 @@ frontend/public/archetypes/buildings/autonomous_tech_campus/hero.png filter=lfs 
 frontend/public/archetypes/buildings/**/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/**/*.jpg filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/buildings/classroom-heroes/*-street-v1.webp filter=lfs diff=lfs merge=lfs -text
+frontend/public/archetypes/buildings/classroom-heroes/*-photo-v1.webp filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/openspaces/classroom-heroes/*-street-v1.webp filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/openspaces/beer-garden/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/archetypes/openspaces/**/*.png filter=lfs diff=lfs merge=lfs -text
@@ -112,3 +119,99 @@ tools/planning_history/reviewed-inputs/*.json -text whitespace=cr-at-eol
 # Portable local teaching trials; exact reviews retain their original bytes.
 frontend/public/validation-assets/teaching-local/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/validation-assets/teaching-local/*.review.json -text whitespace=cr-at-eol
+frontend/public/validation-assets/claude-local/*.glb filter=lfs diff=lfs merge=lfs -text
+frontend/public/validation-assets/claude-local/*.png filter=lfs diff=lfs merge=lfs -text
+frontend/public/validation-assets/claude-local/*.jpg filter=lfs diff=lfs merge=lfs -text
+
+# Exact reviewed Claude source packages; preserve evidence hashes on Windows.
+tools/clay_climbing_crucible/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_crucible/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_crucible/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_crucible/**/*.json -text whitespace=cr-at-eol
+tools/clay_climbing_crucible/**/*.md -text whitespace=cr-at-eol
+tools/clay_climbing_crucible/**/*.py -text whitespace=cr-at-eol
+tools/clay_climbing_overhang/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_overhang/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_overhang/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_overhang/**/*.json -text whitespace=cr-at-eol
+tools/clay_climbing_overhang/**/*.md -text whitespace=cr-at-eol
+tools/clay_climbing_overhang/**/*.py -text whitespace=cr-at-eol
+tools/clay_climbing_reef/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_reef/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_reef/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_climbing_reef/**/*.json -text whitespace=cr-at-eol
+tools/clay_climbing_reef/**/*.md -text whitespace=cr-at-eol
+tools/clay_climbing_reef/**/*.py -text whitespace=cr-at-eol
+tools/clay_calgary_sandstone_heritage/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_calgary_sandstone_heritage/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_calgary_sandstone_heritage/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_calgary_sandstone_heritage/**/*.json -text whitespace=cr-at-eol
+tools/clay_calgary_sandstone_heritage/**/*.md -text whitespace=cr-at-eol
+tools/clay_calgary_sandstone_heritage/**/*.py -text whitespace=cr-at-eol
+tools/clay_barcelona_passatge/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_barcelona_passatge/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_barcelona_passatge/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_barcelona_passatge/**/*.json -text whitespace=cr-at-eol
+tools/clay_barcelona_passatge/**/*.md -text whitespace=cr-at-eol
+tools/clay_barcelona_passatge/**/*.py -text whitespace=cr-at-eol
+tools/clay_brick_arch_viaduct/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_brick_arch_viaduct/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_brick_arch_viaduct/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_brick_arch_viaduct/**/*.json -text whitespace=cr-at-eol
+tools/clay_brick_arch_viaduct/**/*.md -text whitespace=cr-at-eol
+tools/clay_brick_arch_viaduct/**/*.py -text whitespace=cr-at-eol
+tools/clay_stone_arch_road_bridge/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_stone_arch_road_bridge/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+tools/clay_stone_arch_road_bridge/**/*.png filter=lfs diff=lfs merge=lfs -text
+tools/clay_stone_arch_road_bridge/**/*.json -text whitespace=cr-at-eol
+tools/clay_stone_arch_road_bridge/**/*.md -text whitespace=cr-at-eol
+tools/clay_stone_arch_road_bridge/**/*.py -text whitespace=cr-at-eol
+
+tools/clay_braced_frame_hospital/**/*.glb filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_braced_frame_hospital/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_braced_frame_hospital/**/*.png filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_braced_frame_hospital/**/*.json -text whitespace=cr-at-eol
+
+tools/clay_braced_frame_hospital/**/*.md -text whitespace=cr-at-eol
+
+tools/clay_braced_frame_hospital/**/*.py -text whitespace=cr-at-eol
+
+tools/clay_cantilever_fire_station/**/*.glb filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_cantilever_fire_station/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_cantilever_fire_station/**/*.png filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_cantilever_fire_station/**/*.json -text whitespace=cr-at-eol
+
+tools/clay_cantilever_fire_station/**/*.md -text whitespace=cr-at-eol
+
+tools/clay_cantilever_fire_station/**/*.py -text whitespace=cr-at-eol
+
+tools/clay_student_residence_tower/**/*.glb filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_student_residence_tower/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_student_residence_tower/**/*.png filter=lfs diff=lfs merge=lfs -text
+
+tools/clay_student_residence_tower/**/*.json -text whitespace=cr-at-eol
+
+tools/clay_student_residence_tower/**/*.md -text whitespace=cr-at-eol
+
+tools/clay_student_residence_tower/**/*.py -text whitespace=cr-at-eol
+
+tools/claude_practical_build_support/*.py -text whitespace=cr-at-eol
+
+tools/claude_practical_build_support/*.md -text whitespace=cr-at-eol
+
+# Preserve independent Markdown review bytes, including intentional hard line breaks.
+tools/clay_braced_frame_hospital/integration/independent-review.md -text whitespace=-blank-at-eol,-blank-at-eof
+
+# Preserve independent Markdown review bytes, including intentional hard line breaks.
+tools/clay_cantilever_fire_station/integration/independent-review.md -text whitespace=-blank-at-eol,-blank-at-eof
+
+# Preserve independent Markdown review bytes, including intentional hard line breaks.
+tools/clay_student_residence_tower/integration/independent-review.md -text whitespace=-blank-at-eol,-blank-at-eof
