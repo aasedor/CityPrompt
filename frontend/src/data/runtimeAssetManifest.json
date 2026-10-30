@@ -23593,6 +23593,7 @@
       "url": "/archetypes/streets/urban-pedestrian-footbridge/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1357841,
@@ -32154,8 +32155,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21494,
-    "unclassifiedRuntimePathDigest": "925fe7426b40b8c04d1bbb75d16502cee8c12ccb8a26d1b8004218e7e793ce01",
+    "unclassifiedRuntimeFileCount": 21496,
+    "unclassifiedRuntimePathDigest": "7b8ee5fdd972b4e8e31368c11a768b6167fb1da1301365437cb3675298c4fa2c",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",

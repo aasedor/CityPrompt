@@ -1,0 +1,403 @@
+{
+  "candidate": "clay-timber-covered-footbridge-clay-v004",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 186,
+    "vertices": 5916,
+    "polygons": 9068,
+    "triangles": 9068,
+    "path": "clay-timber-covered-footbridge-clay-v004-authoring.blend",
+    "bytes": 258103,
+    "sha256": "afa0f07b9765ea8eab71c86c5459fbb68fc097993b6bcc9f03758844c268abe7"
+  },
+  "runtime": {
+    "path": "clay-timber-covered-footbridge-clay-v004.glb",
+    "bytes": 482756,
+    "sha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+    "meshes": 12,
+    "materials": 12,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 12,
+    "vertices": 5916,
+    "polygons": 9068,
+    "triangles": 9068
+  },
+  "original_bounds_m": [
+    [
+      -21.810806274414062,
+      -4.434999942779541,
+      0.0
+    ],
+    [
+      21.810806274414062,
+      4.434999942779541,
+      7.550000190734863
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -21.810806274414062,
+      -4.434999942779541,
+      0.0
+    ],
+    [
+      21.810806274414062,
+      4.434999942779541,
+      7.550000190734863
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 43.6,
+    "depth": 8.8,
+    "height": 7.55
+  },
+  "native_dimensions_m": {
+    "width": 43.621612548828125,
+    "depth": 8.869999885559082,
+    "height": 7.550000190734863
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "timber": 83,
+    "glulam": 2,
+    "deck": 1,
+    "roof": 1,
+    "seam": 1,
+    "concrete": 7,
+    "paving": 40,
+    "joint": 1,
+    "glass": 1,
+    "hardware": 46,
+    "planting": 2
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/portal_end.png",
+    "renders/louvre_wall.png",
+    "renders/roof_eaves.png",
+    "renders/deck_inside.png",
+    "renders/pier_abutment.png",
+    "renders/stream_under.png",
+    "renders/rear_north.png",
+    "renders/west_approach.png",
+    "renders/east_approach.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "GPU",
+  "camera_safety_margin": {
+    "front": {
+      "xmin": 0.08194883912801743,
+      "xmax": 0.9180511832237244,
+      "ymin": 0.4100925624370575,
+      "ymax": 0.6033685207366943
+    },
+    "front_corner": {
+      "xmin": 0.15500305593013763,
+      "xmax": 0.7534042000770569,
+      "ymin": 0.3463890552520752,
+      "ymax": 0.6088163256645203
+    },
+    "aerial": {
+      "xmin": 0.22671756148338318,
+      "xmax": 0.8712748289108276,
+      "ymin": 0.29540789127349854,
+      "ymax": 0.6315830945968628
+    },
+    "top": {
+      "xmin": 0.1426801085472107,
+      "xmax": 0.8573198914527893,
+      "ymin": 0.4031236469745636,
+      "ymax": 0.5968763828277588
+    },
+    "left_side": {
+      "xmin": 0.3915996253490448,
+      "xmax": 0.6084002256393433,
+      "ymin": 0.36285626888275146,
+      "ymax": 0.6242169141769409
+    },
+    "right_side": {
+      "xmin": 0.39159974455833435,
+      "xmax": 0.6084003448486328,
+      "ymin": 0.36285626888275146,
+      "ymax": 0.6242169141769409
+    },
+    "rear": {
+      "xmin": 0.08215612918138504,
+      "xmax": 0.9178441762924194,
+      "ymin": 0.408748060464859,
+      "ymax": 0.6033884882926941
+    },
+    "rear_side": {
+      "xmin": 0.11668496578931808,
+      "xmax": 0.7781786322593689,
+      "ymin": 0.3377625644207001,
+      "ymax": 0.6147335767745972
+    }
+  },
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Bounded timber bridge with clipped louvres and connected approach stairs",
+      "box": [
+        -21.8,
+        21.8,
+        -4.4,
+        4.4
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "stream": [
+      "Bounded stream beneath bridge"
+    ],
+    "paths": [
+      "Bounded lower riverside path",
+      "Bounded lower riverside path.001"
+    ],
+    "banks": [
+      "Bounded planted bank",
+      "Bounded planted bank.001"
+    ],
+    "landings": [
+      "Compact upper landing",
+      "Compact upper landing.001"
+    ],
+    "approach stairs": [
+      "Approach stair tread -1 0",
+      "Approach stair tread -1 1",
+      "Approach stair tread -1 2",
+      "Approach stair tread -1 3",
+      "Approach stair tread -1 4",
+      "Approach stair tread -1 5",
+      "Approach stair tread -1 6",
+      "Approach stair tread -1 7",
+      "Approach stair tread -1 8",
+      "Approach stair tread -1 9",
+      "Approach stair tread -1 10",
+      "Approach stair tread -1 11",
+      "Approach stair tread -1 12",
+      "Approach stair tread -1 13",
+      "Approach stair tread -1 14",
+      "Approach stair tread -1 15",
+      "Approach stair tread -1 16",
+      "Approach stair tread -1 17",
+      "Approach stair tread 1 0",
+      "Approach stair tread 1 1",
+      "Approach stair tread 1 2",
+      "Approach stair tread 1 3",
+      "Approach stair tread 1 4",
+      "Approach stair tread 1 5",
+      "Approach stair tread 1 6",
+      "Approach stair tread 1 7",
+      "Approach stair tread 1 8",
+      "Approach stair tread 1 9",
+      "Approach stair tread 1 10",
+      "Approach stair tread 1 11",
+      "Approach stair tread 1 12",
+      "Approach stair tread 1 13",
+      "Approach stair tread 1 14",
+      "Approach stair tread 1 15",
+      "Approach stair tread 1 16",
+      "Approach stair tread 1 17"
+    ],
+    "approach guards": [
+      "Approach stair handrail",
+      "Approach guard post",
+      "Approach guard post.001",
+      "Approach guard post.002",
+      "Approach guard post.003",
+      "Approach guard post.004",
+      "Approach guard post.005",
+      "Approach stair handrail.001",
+      "Approach guard post.006",
+      "Approach guard post.007",
+      "Approach guard post.008",
+      "Approach guard post.009",
+      "Approach guard post.010",
+      "Approach guard post.011",
+      "Approach stair handrail.002",
+      "Approach guard post.012",
+      "Approach guard post.013",
+      "Approach guard post.014",
+      "Approach guard post.015",
+      "Approach guard post.016",
+      "Approach guard post.017",
+      "Approach stair handrail.003",
+      "Approach guard post.018",
+      "Approach guard post.019",
+      "Approach guard post.020",
+      "Approach guard post.021",
+      "Approach guard post.022",
+      "Approach guard post.023"
+    ],
+    "landing guards": [
+      "Landing outer edge guard",
+      "Landing guard post",
+      "Landing guard post.001",
+      "Landing guard post.002",
+      "Landing outer edge guard.001",
+      "Landing guard post.003",
+      "Landing guard post.004",
+      "Landing guard post.005",
+      "Landing outer edge guard.002",
+      "Landing guard post.006",
+      "Landing guard post.007",
+      "Landing guard post.008",
+      "Landing outer edge guard.003",
+      "Landing guard post.009",
+      "Landing guard post.010",
+      "Landing guard post.011"
+    ],
+    "railings": [
+      "railings hardware"
+    ],
+    "deck": [
+      "Deck boards"
+    ],
+    "deck structure": [
+      "deck structure joint",
+      "deck structure glulam"
+    ],
+    "corrected end-bay louvres": [
+      "Diagonal-clipped end-bay timber slat",
+      "Diagonal-clipped end-bay timber slat.001",
+      "Diagonal-clipped end-bay timber slat.002",
+      "Diagonal-clipped end-bay timber slat.003",
+      "Diagonal-clipped end-bay timber slat.004",
+      "Diagonal-clipped end-bay timber slat.005",
+      "Diagonal-clipped end-bay timber slat.006",
+      "Diagonal-clipped end-bay timber slat.007",
+      "Diagonal-clipped end-bay timber slat.008",
+      "Diagonal-clipped end-bay timber slat.009",
+      "Diagonal-clipped end-bay timber slat.010",
+      "Diagonal-clipped end-bay timber slat.011",
+      "Diagonal-clipped end-bay timber slat.012",
+      "Diagonal-clipped end-bay timber slat.013",
+      "Diagonal-clipped end-bay timber slat.014",
+      "Diagonal-clipped end-bay timber slat.015",
+      "Diagonal-clipped end-bay timber slat.016",
+      "Diagonal-clipped end-bay timber slat.017",
+      "Diagonal-clipped end-bay timber slat.018",
+      "Diagonal-clipped end-bay timber slat.019",
+      "Diagonal-clipped end-bay timber slat.020",
+      "Diagonal-clipped end-bay timber slat.021",
+      "Diagonal-clipped end-bay timber slat.022",
+      "Diagonal-clipped end-bay timber slat.023",
+      "Diagonal-clipped end-bay timber slat.024",
+      "Diagonal-clipped end-bay timber slat.025",
+      "Diagonal-clipped end-bay timber slat.026",
+      "Diagonal-clipped end-bay timber slat.027",
+      "Diagonal-clipped end-bay timber slat.028",
+      "Diagonal-clipped end-bay timber slat.029",
+      "Diagonal-clipped end-bay timber slat.030",
+      "Diagonal-clipped end-bay timber slat.031",
+      "Diagonal-clipped end-bay timber slat.032",
+      "Diagonal-clipped end-bay timber slat.033",
+      "Diagonal-clipped end-bay timber slat.034",
+      "Diagonal-clipped end-bay timber slat.035",
+      "Diagonal-clipped end-bay timber slat.036",
+      "Diagonal-clipped end-bay timber slat.037",
+      "Diagonal-clipped end-bay timber slat.038",
+      "Diagonal-clipped end-bay timber slat.039",
+      "Diagonal-clipped end-bay timber slat.040",
+      "Diagonal-clipped end-bay timber slat.041",
+      "Diagonal-clipped end-bay timber slat.042",
+      "Diagonal-clipped end-bay timber slat.043",
+      "Diagonal-clipped end-bay timber slat.044",
+      "Diagonal-clipped end-bay timber slat.045",
+      "Diagonal-clipped end-bay timber slat.046",
+      "Diagonal-clipped end-bay timber slat.047",
+      "Diagonal-clipped end-bay timber slat.048",
+      "Diagonal-clipped end-bay timber slat.049",
+      "Diagonal-clipped end-bay timber slat.050",
+      "Diagonal-clipped end-bay timber slat.051",
+      "Diagonal-clipped end-bay timber slat.052",
+      "Diagonal-clipped end-bay timber slat.053",
+      "Diagonal-clipped end-bay timber slat.054",
+      "Diagonal-clipped end-bay timber slat.055",
+      "Diagonal-clipped end-bay timber slat.056",
+      "Diagonal-clipped end-bay timber slat.057",
+      "Diagonal-clipped end-bay timber slat.058",
+      "Diagonal-clipped end-bay timber slat.059",
+      "Diagonal-clipped end-bay timber slat.060",
+      "Diagonal-clipped end-bay timber slat.061",
+      "Diagonal-clipped end-bay timber slat.062",
+      "Diagonal-clipped end-bay timber slat.063",
+      "Diagonal-clipped end-bay timber slat.064",
+      "Diagonal-clipped end-bay timber slat.065",
+      "Diagonal-clipped end-bay timber slat.066",
+      "Diagonal-clipped end-bay timber slat.067",
+      "Diagonal-clipped end-bay timber slat.068",
+      "Diagonal-clipped end-bay timber slat.069",
+      "Diagonal-clipped end-bay timber slat.070",
+      "Diagonal-clipped end-bay timber slat.071",
+      "Diagonal-clipped end-bay timber slat.072",
+      "Diagonal-clipped end-bay timber slat.073",
+      "Diagonal-clipped end-bay timber slat.074",
+      "Diagonal-clipped end-bay timber slat.075",
+      "Diagonal-clipped end-bay timber slat.076",
+      "Diagonal-clipped end-bay timber slat.077",
+      "Diagonal-clipped end-bay timber slat.078",
+      "Diagonal-clipped end-bay timber slat.079"
+    ],
+    "frames": [
+      "frames glulam",
+      "frames timber",
+      "frames glass",
+      "frames hardware"
+    ],
+    "roof": [
+      "Zinc roof",
+      "End gable board -1",
+      "End gable board +1"
+    ],
+    "roof seams": [
+      "roof seams seam"
+    ],
+    "abutments": [
+      "Abutment -1",
+      "Abutment cill -1",
+      "Abutment +1",
+      "Abutment cill +1"
+    ],
+    "piers": [
+      "piers concrete",
+      "Pier headstock -1",
+      "Pier headstock +1"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-30T00:36:02.998528+00:00",
+  "delivery_and_render_seconds": 155.29209760006052,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

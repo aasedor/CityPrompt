@@ -1431,6 +1431,83 @@
         "centerNativeClay": true,
         "ownershipSha256": "5aab6b165834398fbe0f2a7d154e0a65edd21bb112849235be65f3c953ad7337"
       }
+    },
+    {
+      "candidate": "clay-timber-covered-footbridge-clay-v004",
+      "category": "street",
+      "source_sha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+      "review_sha256": "7ed72c830db2a6a5e86bf4cd441fc12d848d32a7d7830134b69ea4c15e9dd56a",
+      "runtime_sha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+      "thumbnail_sha256": "2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936",
+      "status": "runtime_trial",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+        "evidence_sha256": "7ed72c830db2a6a5e86bf4cd441fc12d848d32a7d7830134b69ea4c15e9dd56a",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "pending",
+        "runtime_sha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+        "evidence_sha256": null
+      },
+      "asset": {
+        "id": "claude_public_realm:timber-covered-footbridge:0dbeb2731dbe",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Timber Covered Footbridge",
+        "description": "Fixed bridge with bounded structural supports and approaches. Move and rotate; prepared level site required. Native dimensions; no stretching or automatic intersections.",
+        "thumbnail": "/street-kits/claude-20261023/2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936.png",
+        "model": {
+          "variantId": "urban_pedestrian_footbridge_v2",
+          "revision": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 44.0,
+        "depth": 9.2,
+        "minWidth": 44.0,
+        "minDepth": 9.2,
+        "maxSize": 600,
+        "nativeDimensions": [
+          43.621612548828125,
+          8.869999885559082,
+          7.550000190734863
+        ],
+        "reshapeDescription": "Move and rotate the complete bridge. Its authored geometry stays fixed.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "urban_pedestrian_footbridge",
+          "road_selected_variant_id": "urban_pedestrian_footbridge_v2",
+          "public_realm_release_asset": "claude_public_realm:timber-covered-footbridge:0dbeb2731dbe",
+          "native_public_realm_url": "/street-kits/claude-20261023/0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad.glb"
+        },
+        "maxWidth": 44.0,
+        "maxDepth": 9.2
+      },
+      "fixture": {
+        "id": "claude_public_realm:timber-covered-footbridge:0dbeb2731dbe",
+        "title": "Timber Covered Footbridge",
+        "kind": "street",
+        "dimensions": [
+          44.0,
+          9.2
+        ],
+        "sha256": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+        "url": "/street-kits/claude-20261023/0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad.glb",
+        "surfaceRegions": [],
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
     }
   ]
 }

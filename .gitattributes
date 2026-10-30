@@ -1,6 +1,8 @@
 frontend/public/families/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/park-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/street-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_timber_covered_footbridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_timber_covered_footbridge/evidence/v004/independent-review.md whitespace=-blank-at-eol
 frontend/public/native-park-assets/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/native-park-assets/*.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/street-kits/**/*.png filter=lfs diff=lfs merge=lfs -text
