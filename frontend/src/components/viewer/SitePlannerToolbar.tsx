@@ -32,6 +32,7 @@ interface SitePlannerToolbarProps {
   advancedSlot?: ReactNode;
   onLeavePlacement?: () => void;
   streetInPlacement?: boolean;
+  groundSurfaceInPlacement?: boolean;
   streetPlacement?: { label: string; description: string; properties: SiteZoneProperties };
 }
 function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
@@ -43,7 +44,7 @@ function mapToolToCoreTool(tool: SiteZoneType | null): CoreToolId | null {
 }
 export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, measureActive = false,
   onMeasureModeChange, isGlobeMode = false, layout = 'default', bottomSlot, uploadSlot,
-  onSiteBoundary, placementSlot, advancedSlot, onLeavePlacement, streetPlacement, streetInPlacement = false }: SitePlannerToolbarProps) {
+  onSiteBoundary, placementSlot, advancedSlot, onLeavePlacement, streetPlacement, streetInPlacement = false, groundSurfaceInPlacement = false }: SitePlannerToolbarProps) {
   const { activeSitePlannerTool, setActiveSitePlannerTool, streetViewPegman, setStreetViewActive,
     settings, updateSettings } = useViewerStore();
   const parksSubtype: ParksSubtype = 'park';
@@ -119,7 +120,7 @@ export function SitePlannerToolbar({ onShowGuide, onToggleHistory, historyOpen, 
       </div>
       <div className="flex flex-wrap gap-2" aria-label="Other areas">
         <button type="button" aria-pressed={activeSitePlannerTool === 'water'} onClick={() => activateAdvanced('water')} className={buttonStyle(activeSitePlannerTool === 'water')}>Water</button>
-        <button type="button" aria-pressed={activeSitePlannerTool === 'development_area'} onClick={() => { leaveOtherModes(); setActiveSitePlannerTool('development_area',{ground_surface_material:'grass'}); }} className={buttonStyle(activeSitePlannerTool === 'development_area')}>Ground surface</button>
+        {!groundSurfaceInPlacement && <button type="button" aria-pressed={activeSitePlannerTool === 'development_area'} onClick={() => { leaveOtherModes(); setActiveSitePlannerTool('development_area',{ground_surface_material:'grass'}); }} className={buttonStyle(activeSitePlannerTool === 'development_area')}>Ground surface</button>}
       </div>
       {uploadSlot}
     </div>}

@@ -17,7 +17,7 @@ import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type
 import { useParams, Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Trees, Video, Wand2, X } from 'lucide-react';
+import { ArrowLeft, Camera, CheckCircle, FileDown, Layers3, MapPin, Share2, Sparkles, Trash2, Trees, Video, Wand2, X } from 'lucide-react';
 import { buildingsApi, projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi, videoRenderApi } from '@/services/api';
 import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
@@ -1295,8 +1295,19 @@ export function ProjectViewPage() {
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
               streetInPlacement
+              groundSurfaceInPlacement
               advancedSlot={<div ref={setMapToolsTarget} className="grid gap-2" aria-label="3D viewing tools" />}
               placementSlot={<PlacementPalette projectId={id} primaryAction={<div className="grid gap-2">
+                <button type="button" aria-pressed={activeSitePlannerTool === 'development_area'}
+                  onClick={() => {
+                    cancelPlacement(); useViewerStore.getState().setStreetViewActive(false);
+                    handleMeasureModeChange(false);
+                    setActiveSitePlannerTool('development_area', { ground_surface_material: 'grass' });
+                  }}
+                  className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+                  title="Draw a ground surface">
+                  <Layers3 size={20} aria-hidden="true" /> Ground surface
+                </button>
                 <button type="button"
                   onClick={async () => {
                     const result = await projectDetails.refetch();
