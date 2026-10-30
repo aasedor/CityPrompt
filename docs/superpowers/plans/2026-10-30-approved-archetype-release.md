@@ -53,7 +53,8 @@ cohort record and this spec/plan. Do not change trial booleans or seed activatio
   40-storey programme without 20/30 derivatives, preserving existing placements.
 - [x] Apply the minimal registration change.
 - [x] GREEN: narrow tests and frontend type-check; inspect production roster.
-- [ ] Independently review and commit this source unit.
+- [x] Independently review and commit this source unit (`ea5fd745e`; no
+  Critical/Important findings; 143 focused tests and type-check passed).
 
 ## Task 3: Hospital pilot and remaining reviewed building batch
 
