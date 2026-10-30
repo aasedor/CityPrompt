@@ -167,3 +167,32 @@ async def test_stale_bridge_polygon_cannot_hide_a_collision_behind_its_previous_
         await check_neighbours(stale, crossing(140))
     with pytest.raises(ValueError, match="bridge"):
         await check_neighbours(crossing(140), stale)
+
+
+async def test_neighbour_query_uses_only_the_persisted_road_enum():
+    from sqlalchemy import Enum
+    from sqlalchemy.dialects import postgresql
+    from app.models.models import SiteZone
+
+    enum = SiteZone.__table__.c.zone_type.type
+    strict_enum = Enum(*enum.enums, name=enum.name, validate_strings=True)
+    validate_bound_enum = strict_enum.bind_processor(postgresql.dialect())
+    selected_types = set()
+    project_id = uuid.uuid4()
+    result = MagicMock()
+    result.scalars.return_value.all.return_value = []
+
+    async def execute(statement):
+        compiled = statement.compile(dialect=postgresql.dialect())
+        assert project_id in compiled.params.values()
+        for parameter in compiled.binds.values():
+            if getattr(parameter.type, "name", None) != "zone_type":
+                continue
+            values = parameter.value if parameter.expanding else [parameter.value]
+            selected_types.update(validate_bound_enum(value) for value in values)
+        return result
+
+    database = SimpleNamespace(execute=execute)
+    coordinates, properties = bridge()
+    await _validate_elevated_rail_neighbours(database, project_id, coordinates, properties)
+    assert selected_types == {"road"}

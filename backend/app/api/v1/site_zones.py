@@ -999,9 +999,9 @@ async def _validate_elevated_rail_neighbours(
     """Keep the old rail gate and source-locked bridge reservations under the project lock."""
     from app.services.native_bridge_clearance import validate_modular_bridge_overlap
 
-    result = await db.execute(
-        select(SiteZone).where(SiteZone.project_id == project_id, SiteZone.zone_type.in_(("road", "street", "path")))
-    )
+    # Native paths and bridges persist as road; street/path are runtime aliases,
+    # not members of PostgreSQL's zone_type enum.
+    result = await db.execute(select(SiteZone).where(SiteZone.project_id == project_id, SiteZone.zone_type == "road"))
     zones = [zone for zone in result.scalars().all() if zone.id != exclude_id]
     neighbours = [(list(to_shape(z.geometry).exterior.coords), z.properties or {}) for z in zones]
     if zone_type == "road":
