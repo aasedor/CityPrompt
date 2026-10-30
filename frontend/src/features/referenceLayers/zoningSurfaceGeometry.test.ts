@@ -15,6 +15,14 @@ function area(geometry: THREE.BufferGeometry) {
   return sum;
 }
 describe('globe district surfaces', () => {
+  it.each([['CR20-C20/R20', '#f58c7d'], ['S-CRI', '#cbedff']])('renders %s with the published RGB rather than the old generic grey', (code, hex) => {
+    const result = zoningSurfaceGeometry({ ...data, districts: [{ ...data.districts[0], code, label: code }] }, 1100);
+    const expected = new THREE.Color(hex);
+    expect(result.fill.attributes.color.getX(0)).toBeCloseTo(expected.r, 6);
+    expect(result.fill.attributes.color.getY(0)).toBeCloseTo(expected.g, 6);
+    expect(result.fill.attributes.color.getZ(0)).toBeCloseTo(expected.b, 6);
+    result.fill.dispose();
+  });
   it('preserves polygon holes, uses legend colours, and leaves source data untouched', () => {
     const hole: Position[] = [[-114.1195,51.0105],[-114.1185,51.0105],[-114.1185,51.0115],[-114.1195,51.0115],[-114.1195,51.0105]];
     const withHole = { ...data, districts: [{...data.districts[0], polygon: [ring,hole]}] };

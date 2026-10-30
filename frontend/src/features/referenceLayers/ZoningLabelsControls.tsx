@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { ChevronDown, ExternalLink, Map as MapIcon } from 'lucide-react';
 import { ZONING_SOURCE } from './zoningLabels';
 import { zoningColor } from './zoningAppearance';
+import { CALGARY_COLOUR_SOURCE } from './calgaryBylaw';
 import type { ZoningLabelsState } from './useZoningLabels';
 
 export function ZoningLabelsControls({ state, onInspect }: { state: ZoningLabelsState; onInspect?: (id: string) => void }) {
@@ -55,7 +56,7 @@ export function ZoningLabelsControls({ state, onInspect }: { state: ZoningLabels
           </div>)}
         </dl>
       </details>}
-      <p className="text-[10px] leading-relaxed text-[#5c554d]">City district codes · CityPrompt presentation colours. Proposed studies have separate layer controls.</p>
+      <p className="text-[10px] leading-relaxed text-[#5c554d]"><a href={CALGARY_COLOUR_SOURCE} target="_blank" rel="noreferrer" className="underline underline-offset-2">City of Calgary land-use class colours</a>. Proposed studies have separate layer controls.</p>
       <a className="flex min-h-11 items-center gap-2 border-t border-[#151515]/10 pt-2 text-[10px] leading-relaxed text-[#5c554d] underline decoration-[#151515]/30 underline-offset-2 hover:text-[#151515]" href={ZONING_SOURCE} target="_blank" rel="noreferrer"><span>Calgary land-use districts{state.data ? ` · loaded ${state.data.loadedAt.slice(0, 10)}` : ''}</span><ExternalLink aria-hidden="true" size={12} className="shrink-0" /></a>
     </>}
   </section>;
