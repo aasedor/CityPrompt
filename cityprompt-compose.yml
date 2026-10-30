@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: devuser
       POSTGRES_PASSWORD: devpassword
     ports:
-      - "5433:5432"
+      - "127.0.0.1:5433:5432"
     volumes:
       - cityprompt_postgres_data:/var/lib/postgresql/data
       - ./backend/scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql
@@ -24,7 +24,7 @@ services:
     image: redis:7.2-alpine
     container_name: cityprompt-redis
     ports:
-      - "6380:6379"
+      - "127.0.0.1:6380:6379"
     volumes:
       - cityprompt_redis_data:/data
     healthcheck:
@@ -41,8 +41,8 @@ services:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     ports:
-      - "9002:9000"
-      - "9003:9001"
+      - "127.0.0.1:9002:9000"
+      - "127.0.0.1:9003:9001"
     volumes:
       - cityprompt_minio_data:/data
 
