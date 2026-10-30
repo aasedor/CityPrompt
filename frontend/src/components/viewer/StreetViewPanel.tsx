@@ -1,3 +1,4 @@
+import streetViewStylePresets from '@/data/streetViewStylePresets.json';
 import {AnimateRenderButton} from './AnimateRenderButton';
 /**
  * StreetViewPanel — floating panel that appears when the street view pegman
@@ -35,83 +36,7 @@ const COMPASS_LABELS: Record<number, string> = {
   180: 'S', 225: 'SW', 270: 'W', 315: 'NW',
 };
 
-const STREET_VIEW_STYLES = [
-  // ── Realistic — photo-style final-stage visualization ──
-  {
-    id: 'photorealistic',
-    label: 'Photo',
-    prompt: 'Hyper-photorealistic street-level architectural visualization. Camera positioned at exact human eye-level using a 35mm prime lens at f/8 aperture ensuring deep focus and edge-to-edge sharpness. Golden hour on a clear day with warm low-angle directional sunlight casting long crisp high-contrast shadows across the sidewalk. Subtle hyper-realistic environmental details: specular reflections of adjacent buildings visible in glass facades, slight atmospheric haze, photorealistic street trees. Rendered in the style of Unreal Engine 5 with path-traced global illumination, 8K resolution, architectural digest photography.',
-  },
-  {
-    id: 'photomontage',
-    label: 'Montage',
-    prompt: 'Professional architectural photomontage at street level, indistinguishable from a real photograph taken by a surveyor documenting an existing building. Shot on a Canon EOS R5 with a 35mm prime lens at f/8, ISO 200, from a tripod at exactly 1.6 meters height. The proposed building appears as if it has existed on this site for 1-2 years -- subtle concrete dust at the base, minor rainwater staining below window reveals, fingerprints and smudges on ground-floor entrance glass, worn threshold stones at doorways. The building sits within completely real street context: existing pavement with authentic repair patches and gum stains, real street furniture, actual adjacent buildings with their genuine patina and signage. Reflections in the new building ground-floor glazing show the actual street scene opposite including existing buildings and parked vehicles. Shadows cast by the new building fall correctly onto the real pavement and neighbouring facades matching the sun position. Slight depth of field -- building in sharp focus, background softening naturally beyond 80 meters. Overcast-bright sky with soft diffused light eliminating harsh shadows, typical of UK planning verified view photography. Natural sensor noise at ISO 200, subtle lens barrel distortion at frame edges. This is a planning application verified view, not an architectural marketing image.',
-  },
-  {
-    id: 'atmospheric',
-    label: 'Atmospheric',
-    prompt: 'Premium real-time path-traced street-level architectural render (D5/Lumion/Unreal Engine 5 quality). Camera at human eye height (1.6m), 35mm prime lens at f/5.6 with deep but natural focus — foreground architectural detail tack-sharp, a gentle depth-of-field falloff softening the distant streetscape. Warm late-afternoon golden-hour sun, soft directional key light casting long clean shadows across the sidewalk. Soft path-traced global illumination with realistic ambient occlusion in reveals, recesses, and under canopies, plus clean contact shadows where elements meet the ground. Physically-based materials respond accurately to the light: low-iron glass with true reflections and subtle refraction, brushed stainless steel, board-formed and precast concrete, natural stone, warm timber cladding. Lush naturally-scattered street trees and planting. Subtle atmospheric perspective and a faint volumetric haze give depth — distant buildings read slightly cooler and softer. Balanced high dynamic range with clean controlled exposure, gentle bloom on the brightest highlights only, a refined filmic colour grade, and crisp edge-to-edge clarity. Award-winning architectural-magazine quality — premium, polished, and photoreal, not theatrical. For all existing surrounding context, treat the captured scene as ground truth to be sharpened, not reimagined: resolve the existing buildings, street, and landscape into their true real-world appearance while preserving their actual massing, proportions, and materials. Do not beautify, restyle, idealize, or replace existing structures. Reserve the premium polish for the proposed building only.',
-  },
-  {
-    id: 'winter',
-    label: 'Winter',
-    prompt: 'Photorealistic winter street-level architectural scene. Snow accumulation on all horizontal surfaces -- rooftops, ledges, window sills, and parapets show realistic drift patterns. Bare deciduous trees with visible branch architecture and zero foliage. Evergreen conifers with heavy snow-load clumps on branches. Frost visible on metal railings, glass surfaces, and exposed stone. Plowed street surfaces with salt-grit residue, thin slush patches, and tire tracks in compacted snow. Cobblestone crevices packed with white snow while dark wet stone crowns create high-contrast grid pattern. Snow piled in sculptural windrows at curb edges. Warm incandescent glow spilling from shop windows and entrance lobbies contrasting against the cool winter palette. Pale blue-grey overcast sky with soft diffuse winter daylight. Low sun angle casting long blue-tinted shadows. Exhaled breath vapor from any figures. Increased specular reflectivity on all horizontal surfaces by 20% to simulate melt and ice sheen. Snow-capped stone lintels and frosted wrought-iron fences on heritage buildings.',
-  },
-  // ── Concept — hand-drawn / painterly early-stage exploration ──
-  {
-    id: 'watercolour',
-    label: 'Watercolour',
-    prompt: 'A beautiful, evocative architectural watercolour painting on rough cold-pressed watercolour paper. The artistic style is intentionally loose, expressive, and highly atmospheric, heavily utilizing traditional wet-on-wet painting techniques with visible fluid brushstrokes and natural unpredictable pigment bleeds at the edges of forms. Architecture outlined very loosely with delicate jittery black ink pen linework mimicking a masterful ink and wash architectural sketch. Colour palette of highly translucent luminous pastels — soft ochre and raw sienna for stone and facades, muted atmospheric cyan for sky, sap green and viridian for foliage, concentrated splashes of colour on awnings and signage to draw the eye. Lighting is bright and ethereal, leaving generous amounts of stark white negative space on the textured paper to represent glaring sunlight — the paper itself creates the highlights since watercolourists cannot paint white. Pigment granulation visible in shadow areas. Foreground facades rendered with tighter detail, background elements dissolve into soft suggestive washes. Masterful traditional media, concept art, architectural sketch.',
-  },
-  {
-    id: 'charcoal',
-    label: 'Charcoal',
-    prompt: 'A highly detailed expressive architectural hand-sketch rendered in charcoal and graphite pencil on heavy textured cream sketching paper. The drawing style features loose kinetic gestural linework that accurately captures the perspective and vanishing points of the street. Full tonal range from deep compressed charcoal blacks in shadow areas to soft smudged mid-tones to bright paper whites on sunlit surfaces. Shading achieved through meticulous architectural crosshatching and subtle graphite smudging establishing volume and depth of recessed windows, doorways, and building facades. The image is strictly monochromatic with zero colour applied. The edges of the streetscape fade out loosely into the white of the paper giving it an authentic unfinished rapid-ideation sketchbook aesthetic. Foreground architecture sharp and detailed, background dissolves into atmospheric smudged tones. Visible charcoal texture and paper grain throughout. Precise architectural illustration, master draftsman techniques.',
-  },
-  {
-    id: 'marker-render',
-    label: 'Marker',
-    prompt: 'A classic handcrafted architectural marker rendering on smooth bleedproof presentation paper. The scene is drafted with precise straight black ink linework using a technical pen defining all architectural edges and material boundaries. Colour and shading applied using simulated alcohol-based Copic design markers. The image must clearly display characteristic overlapping streaky marker strokes with visible stroke direction following surface planes, and subtle ink bleeds at the edges of colour blocks. Colour palette is vibrant but highly controlled — warm greys and ochres for building facades, olive and sap greens for landscape, bold teal and cerulean for sky. Stark white gaps deliberately left between marker strokes to represent highlights and reflected light. Bright optimistic illustrative lighting. White gel pen highlights on glass reflections and material edges. Entourage elements like trees and street furniture rendered in quick confident marker strokes. Traditional architectural presentation board aesthetic, retro design illustration, highly tactile.',
-  },
-  {
-    id: 'pen-and-ink',
-    label: 'Pen & Ink',
-    prompt: 'A detailed architectural pen-and-ink line drawing of the streetscape on cream drawing paper. Strict ink-only linework with absolutely zero colour and zero tonal smudging — every mark is a deliberate line drawn by a technical pen. Strong perspective with vanishing points and accurate eye-level composition. Building facades defined by precise technical-pen linework with cross-hatching for shadow areas — denser hatching in deeper shadows, sparser hatching in mid-tones, cream paper showing through for highlights. Line-weight variation: delicate hairlines for distant elements, confident heavier lines for foreground edges. Stippling for foliage, paving texture, and weathered surfaces. Street furniture and entourage drawn with quick economical line work. Background facades dissolve into lighter sketchy linework. Cream paper glowing through as the brightest tones. Urban-sketcher tradition, masterful technical pen drawing, architectural illustration.',
-  },
-  // ── Stylized — bold, graphic, distinctive ──
-  // (Plan group omitted — street view excludes orthographic styles by design.)
-  {
-    id: 'clay-model',
-    label: 'Clay',
-    prompt: 'A pristine physical white clay architectural massing model of the entire streetscape. The entirety of the scene — buildings, streets, sidewalks, trees, street furniture — is constructed from a single matte untextured white plaster material. There are absolutely zero colours or distinct material finishes present anywhere. All visual definition relies exclusively on high-quality Ambient Occlusion rendering to define sharp edges, depth, and spatial relationships of intersecting geometric volumes. Lighting is soft highly diffused studio softbox setup casting smooth gradient shadows across the pure white forms, emphasizing architectural massing and volumetric proportions without visual distractions. Trees represented as simplified smooth white sculptural forms. The scene resembles a physical foam-board scale model photographed in a professional studio. Minimalist clean exhibition-quality physical scale model, architectural review presentation.',
-  },
-  {
-    id: 'collage',
-    label: 'Collage',
-    prompt: 'A vibrant post-digital architectural collage depicting the streetscape as a highly stylized mixed media composition resembling a physical mood board. Architecture represented by flat unshaded blocks of pastel colours and oversized mismatched photographic textures of brick concrete and wood applied like rough paper cut-outs with visible torn edges. Trees and landscape elements are vintage botanical illustration cut-outs pasted at varied scales. The sky is an abstract geometric pattern rather than realistic. Pedestrian figures represented by monochromatic vintage photographic cut-outs with stark white paper borders pasted seemingly at varied scales into the scene. Lighting is intentionally flat and illustrative emphasizing the overlapping layers and surreal disjointed scale of different elements. Visible paper texture and adhesive marks throughout. Avant-garde architectural visualization, artistic narrative presentation, Dadaist pop-art influences, design competition aesthetic.',
-  },
-  {
-    id: 'pixel-art',
-    label: 'Pixel Art',
-    prompt: '16-bit pixel art architectural streetscape, strictly grid-aligned with every element constructed from uniform square pixels on a rigid pixel grid. Nearest-neighbour scaling with absolutely zero anti-aliasing, zero smoothing, zero sub-pixel rendering -- only hard stepped pixel edges throughout. Strict limited palette of exactly 16 carefully chosen colours. All shading and tonal transitions achieved exclusively through deliberate checkerboard dithering patterns and ordered Bayer-matrix dithering -- zero smooth gradients anywhere. Each window is an exact small pixel rectangle, each brick course a precise alternating pixel row, each roofline a clean 2:1 stepped pixel diagonal. Dark selective outlines on architectural edges transitioning to lighter colour outlines on sunlit sides. Warm amber pixel-glow from windows contrasting against cool blue-purple evening sky. Atmospheric pixel haze in the background with reduced palette depth for distance. Trees as stylized rounded pixel clusters with dithered foliage. SNES Final Fantasy VI town background, Chrono Trigger overworld, classic 16-bit JRPG city scene, demoscene pixel art, waneella atmospheric pixel cityscape.',
-  },
-  // ── Accurate — geometry-faithful architectural photography ──
-  {
-    id: 'survey',
-    label: 'Survey',
-    prompt: 'A precise large-format architectural survey photograph of the streetscape. Rigorously frontal with a level camera and corrected verticals, edge-to-edge tack-sharp clarity, and even flat democratic daylight that reveals every material and detail with no drama and no deep shadow. Neutral true-to-life colour, clinical encyclopedic precision, deadpan and objective — closer to a technical record than a marketing image. Treat the captured massing as exact ground truth: preserve the true proportions, footprint, floor heights, window openings, and materials precisely, resolving them into a real photograph. Never restyle, embellish, beautify, or reinterpret the geometry.',
-  },
-  {
-    id: 'documentary',
-    label: 'Documentary',
-    prompt: 'A deadpan documentary colour photograph of the streetscape in the New Topographics tradition. Flat even overcast-bright daylight, a calm neutral eye-level composition, restrained true-to-life colour, and an honest banal-beautiful ordinariness with no dramatization or idealization. Natural medium-format clarity and fine grain. Treat the captured scene as ground truth: keep the real massing, proportions, and materials exactly as modelled, resolving them faithfully into a plain, believable photograph rather than a styled render.',
-  },
-  {
-    id: 'human-scale',
-    label: 'Human scale',
-    prompt: 'An honest contemporary architectural photograph at human eye level in natural available light, showing the building genuinely in use — ordinary people walking, sitting, talking, and cycling through the real space, with authentic surroundings and candid everyday life. Warm, lived-in, and true to how the place will actually feel to a person on the sidewalk. Preserve the true massing, proportions, floor heights, and materials exactly as modelled; add only people, life, and natural light, and never restyle or alter the architecture itself.',
-  },
-] as const;
+const STREET_VIEW_STYLES: ReadonlyArray<{ readonly id: string; readonly label: string; readonly prompt: string }> = streetViewStylePresets;
 
 // UI grouping for the style picker — Plan group omitted because street view
 // excludes orthographic styles by design.

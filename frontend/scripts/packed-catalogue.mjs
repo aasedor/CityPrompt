@@ -9,6 +9,8 @@ const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|
 // Keep this allowlist explicit so unrelated JSON retains Vite's normal exports.
 const HANDOFF_CATALOGUES = /\/src\/(?:data\/(?:cataloguePlanningHistory|catalogueTeaching|localTeachingBuildings|classroomStarter|buildingPlacementEdges|catalogueHeroImages|claudeAssetLocalTrial)|features\/(?:legoAssembly\/buildingOnlyContracts|parks\/(?:curbBulbContracts|calgarySafetyCatalogue)|zoningCatalogue\/parkUseRules|pickPlace\/publicRealmOwnershipContracts)|components\/viewer\/globe\/publicRealmTrialAssets)\.json$/;
 
+const STATIC_METADATA = /\/src\/(?:data\/(?:archetypeVisualSystem|catalogueOctober2026|claudeBuildingRelease|claudeFiveTrial|courtOnlySports|finalFiveBuildingBatch|flexibleParks|localTowerStoreyPrograms|neighborhoodParkV0StickerKit|parkadeFamilyTrial|stickerMethodPilots|transportStandardEntries|aiRenderStylePresets|streetViewStylePresets)|features\/(?:policyPlans\/data\/(?:beltlinePlanIndex|localPlanIndex)|referenceLayers\/calgaryBylawCatalogue))\.json$/;
+
 /** Retain all legacy IDs, reference paths and prompts without compiling several
  * megabytes of JSON into JavaScript object literals. Three already ships this
  * small inflater; no additional browser dependency or network request is needed. */
@@ -54,7 +56,7 @@ export function packedCatalogue() {
       if (filename.endsWith('/src/features/pickPlace/publishedBuildingAssets.ts')) {
         return { code: packPublishedBuildingCatalogue(readFileSync(id, 'utf8')), map: null };
       }
-      if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename)) return null;
+      if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename) && !STATIC_METADATA.test(filename)) return null;
       return { code: packCatalogue(readFileSync(id, 'utf8')), map: null };
     },
   };

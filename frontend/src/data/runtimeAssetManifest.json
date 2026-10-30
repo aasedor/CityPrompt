@@ -277,6 +277,7 @@
     "src/components/viewer/videoSceneContract.ts",
     "src/components/viewer/videoSourceQuality.ts",
     "src/config/imageModels.ts",
+    "src/data/aiRenderStylePresets.json",
     "src/data/archetypeReferenceAvailability.json",
     "src/data/archetypeShadeMap.ts",
     "src/data/archetypeVisualSystem.json",
@@ -320,6 +321,8 @@
     "src/data/streetManual.json",
     "src/data/streetPathArchetypes.json",
     "src/data/streetRoutePolicy.json",
+    "src/data/streetViewStylePresets.json",
+    "src/data/transportStandardEntries.json",
     "src/data/transportStandards.ts",
     "src/data/validationCatalogue.json",
     "src/features/admin/AdminBuildingsPage.tsx",
@@ -17847,7 +17850,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 6779
     },
@@ -17885,7 +17888,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 19052
     },
@@ -17922,7 +17925,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 19043
     },
@@ -17959,7 +17962,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 21743
     },
@@ -17996,7 +17999,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 25848
     },
@@ -18033,7 +18036,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 23857
     },
@@ -18071,7 +18074,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 18447
     },
@@ -18109,7 +18112,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 16930
     },
@@ -18147,7 +18150,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 17591
     },
@@ -18185,7 +18188,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 16166
     },
@@ -18223,7 +18226,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 11879
     },
@@ -18260,7 +18263,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 16026
     },
@@ -18300,7 +18303,7 @@
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
         "src/data/streetPathArchetypes.json",
-        "src/data/transportStandards.ts"
+        "src/data/transportStandardEntries.json"
       ],
       "logicalBytes": 18368
     },

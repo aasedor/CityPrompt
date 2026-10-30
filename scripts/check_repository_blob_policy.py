@@ -21,6 +21,12 @@ DEFAULT_MAX_BYTES = 1024 * 1024
 # runtime models, imagery and arbitrary JSON keep the ordinary limit.
 SOURCE_JSON_BUDGETS = {
     "frontend/src/data/buildingArchetypes.json": (3 * 1024 * 1024, "archetypes"),
+    # Expanded native layouts and their generated addressability index remain
+    # readable source metadata. Exact-path caps do not exempt binary assets or
+    # arbitrary JSON, and explicitly stricter callers still take precedence.
+    "frontend/src/data/nativeParks.json": (1280 * 1024, "layouts"),
+    "backend/app/data/nativeParks.json": (1280 * 1024, "layouts"),
+    "frontend/src/data/runtimeAssetManifest.json": (1536 * 1024, "explicitReferences"),
     "frontend/src/features/policyPlans/data/east-calgaryUrbanForm.json": (2 * 1024 * 1024, "features"),
     "frontend/src/features/policyPlans/data/heritageUrbanForm.json": (2 * 1024 * 1024, "features"),
     "frontend/src/features/policyPlans/data/south-shaganappiUrbanForm.json": (2 * 1024 * 1024, "features"),

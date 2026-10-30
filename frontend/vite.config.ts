@@ -124,6 +124,10 @@ export default defineConfig(({ command, mode }) => {
     },
   },
   build: {
+    // Conservative standard minification keeps the expanded metadata/runtime
+    // inside the existing JS budget; no unsafe transforms or feature removal.
+    minify: 'terser',
+    terserOptions: { compress: { passes: 3 } },
     // Keep the route graph available to the bundle budget check. Render does
     // not serve this file to application code, and the file is only a few KB.
     manifest: true,

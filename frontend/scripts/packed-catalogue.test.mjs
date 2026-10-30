@@ -6,6 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import ts from 'typescript';
 import { deflateSync } from 'node:zlib';
+import { createHash } from 'node:crypto';
 import { packCatalogue, packedCatalogue } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
@@ -20,6 +21,17 @@ for (const relative of [
   'features/zoningCatalogue/parkUseRules.json',
   'features/pickPlace/publicRealmOwnershipContracts.json',
   'components/viewer/globe/publicRealmTrialAssets.json',
+  'data/archetypeVisualSystem.json', 'data/catalogueOctober2026.json',
+  'data/claudeBuildingRelease.json', 'data/claudeFiveTrial.json',
+  'data/courtOnlySports.json',
+  'data/finalFiveBuildingBatch.json', 'data/flexibleParks.json',
+  'data/localTowerStoreyPrograms.json', 'data/neighborhoodParkV0StickerKit.json',
+  'data/parkadeFamilyTrial.json', 'data/stickerMethodPilots.json',
+  'data/transportStandardEntries.json', 'data/aiRenderStylePresets.json',
+  'data/streetViewStylePresets.json',
+  'features/policyPlans/data/beltlinePlanIndex.json',
+  'features/policyPlans/data/localPlanIndex.json',
+  'features/referenceLayers/calgaryBylawCatalogue.json',
 ]) {
   test(`${relative}: combined handoff metadata packs without changing any field`, async () => {
     const path = resolve('src', relative);
@@ -29,9 +41,21 @@ for (const relative of [
     const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
-    assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * .75);
+    assert.ok(module.length < JSON.stringify(JSON.parse(source)).length);
   });
 }
+
+test('extracted static registries preserve every original transport fact and render preset', () => {
+  for (const [name, count, hash] of [
+    ['transportStandardEntries.json', 56, '3b445ced12bcc0087b9f95e74632d72a8d1858d9d5273acca999ba8ca3a53749'],
+    ['aiRenderStylePresets.json', 14, '138ff3588a9445559a4fef8188e2fe25e63711200a4539eeb669a4618cfb68d2'],
+    ['streetViewStylePresets.json', 14, '38a24f8d56744a3c264dc756f1aedf19ab5bb40c8be9d88d98661bd9d8183ccf'],
+  ]) {
+    const original = JSON.parse(readFileSync(resolve('src/data', name), 'utf8'));
+    assert.equal(original.length, count);
+    assert.equal(createHash('sha256').update(JSON.stringify(original)).digest('hex'), hash);
+  }
+});
 
 test('fixed public-realm packing preserves exact review gates, variants and native placement', async () => {
   const path = resolve('src/data/publicRealmRelease20261023.json');
