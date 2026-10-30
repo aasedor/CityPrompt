@@ -13,6 +13,7 @@ the original bytes come back and generation proceeds un-isolated.
 
 import io
 import logging
+from functools import lru_cache
 
 from PIL import Image
 
@@ -20,6 +21,14 @@ logger = logging.getLogger(__name__)
 
 _BACKDROP_RGB = (240, 240, 240)
 _CROP_MARGIN_FRAC = 0.06
+
+
+@lru_cache(maxsize=1)
+def _u2net_session():
+    """Retain the existing U2-Net model when rembg changes its own default."""
+    from rembg import new_session
+
+    return new_session("u2net")
 
 
 def rembg_available() -> bool:
@@ -45,7 +54,7 @@ def isolate_building(image_bytes: bytes) -> bytes:
         return image_bytes
 
     try:
-        matted = Image.open(io.BytesIO(remove(image_bytes))).convert("RGBA")
+        matted = Image.open(io.BytesIO(remove(image_bytes, session=_u2net_session()))).convert("RGBA")
 
         bbox = matted.getbbox()
         if bbox is None:
