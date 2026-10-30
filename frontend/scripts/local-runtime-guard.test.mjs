@@ -39,3 +39,11 @@ test('module-only catalogue audits skip the server guard to avoid recursion', as
   await localRuntimeGuard().configureServer({ config: { server: { middlewareMode: true }, env: {} } });
   await assert.rejects(localRuntimeGuard().configureServer({ config: { server: {}, env: {} } }), /VITE_GOOGLE_MAPS_API_KEY is missing/);
 });
+
+test('explicit offline test mode needs no provider key while normal development still fails closed', async () => {
+  await localRuntimeGuard().configureServer({ config: { mode: 'test', server: {}, env: {} } });
+  await assert.rejects(
+    localRuntimeGuard().configureServer({ config: { mode: 'development', server: {}, env: {} } }),
+    /VITE_GOOGLE_MAPS_API_KEY is missing/,
+  );
+});

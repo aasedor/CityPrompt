@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-/** Functional browser verification for City Prompt's student workflow. */
+/** Offline auth/project UI checks; actual Google 3D needs a separate keyed trial. */
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
@@ -16,7 +16,11 @@ export default defineConfig({
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npm run dev -- --host 127.0.0.1 --port 5173',
+    // Tests mock backend APIs and exercise the provider-free map fallback.
+    // Explicit test mode keeps real developer/provider credentials out of CI;
+    // normal dev/build/preview continue to use their existing startup guards.
+    command: 'npm run dev -- --mode test --host 127.0.0.1 --port 5173',
+    env: { VITE_GOOGLE_MAPS_API_KEY: '', VITE_MAPBOX_TOKEN: '' },
     url: 'http://127.0.0.1:5173',
     timeout: 180_000,
     reuseExistingServer: !process.env.CI,
