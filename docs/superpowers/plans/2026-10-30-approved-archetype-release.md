@@ -37,22 +37,22 @@ Vitest, pytest, private model storage and the existing Render deployment lineage
 **Files:** seven `tools/clay_*/integration/promotion.json` packages; approval
 cohort record and this spec/plan. Do not change trial booleans or seed activation.
 
-- [ ] Record exact IDs/revisions from the comparison, with held findings visible.
-- [ ] Verify seven GLBs, reviews and reference locks from existing local objects.
-- [ ] Add the user's exact quote/date/model hash to the seven approval inputs.
-- [ ] Run narrow catalogue-promotion tests; verify all original trial rows remain
+- [x] Record exact IDs/revisions from the comparison, with held findings visible.
+- [x] Verify seven GLBs, reviews and reference locks from existing local objects.
+- [x] Add the user's exact quote/date/model hash to the seven approval inputs.
+- [x] Run narrow catalogue-promotion tests; verify all original trial rows remain
   unchanged. Publication preflight must still reject unfinished trials.
-- [ ] Review and commit the coherent authorization unit.
+- [x] Review and commit the coherent authorization unit (`e74bb10a1`, 38 tests).
 
 ## Task 2: Already published native40 tower discovery
 
 **Files:** `assetRegistry.ts` and narrow production-consumer tests; optional
 `localTowerStoreyPrograms.ts` only if required to separate scoped derivatives.
 
-- [ ] RED: production must expose the exact approved native40 ID/hash and fixed
+- [x] RED: production must expose the exact approved native40 ID/hash and fixed
   40-storey programme without 20/30 derivatives, preserving existing placements.
-- [ ] Apply the minimal registration change.
-- [ ] GREEN: narrow tests and frontend type-check; inspect production roster.
+- [x] Apply the minimal registration change.
+- [x] GREEN: narrow tests and frontend type-check; inspect production roster.
 - [ ] Independently review and commit this source unit.
 
 ## Task 3: Hospital pilot and remaining reviewed building batch

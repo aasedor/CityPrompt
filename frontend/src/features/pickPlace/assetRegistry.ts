@@ -332,8 +332,10 @@ export function courtOnlySportsAssets(localPilots: boolean): PlaceAsset[] {
   }));
 }
 export const COURT_ONLY_SPORT_ASSETS = courtOnlySportsAssets(import.meta.env.DEV);
-export const LOCAL_TOWER_ASSETS = import.meta.env.DEV ? CATALOGUE_BUILDING_ASSETS.filter(asset =>
-  asset.id === 'clay_twisting_glass_sky_garden_tower') : [];
+/** Published native40 is discoverable; alternate height programmes stay local. */
+export const LOCAL_TOWER_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset =>
+  asset.readiness === 'ready' && asset.id === 'clay_twisting_glass_sky_garden_tower'
+  && asset.model.variantId === 'glass_tower_twisted' && asset.model.revision === 'glass-tower-twisted-clay-v005');
 export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...LOCAL_TOWER_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
   if(asset.kind==='object' && asset.zoneType==='building' && asset.model.revision
     && Object.prototype.hasOwnProperty.call(buildingOnlyContracts,asset.model.revision)) {
