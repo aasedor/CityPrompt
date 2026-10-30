@@ -1263,6 +1263,19 @@
       "current": true
     },
     {
+      "asset_id": "clay_twisting_glass_sky_garden_tower",
+      "variant_id": "glass_tower_twisted",
+      "revision": "glass-tower-twisted-clay-v005",
+      "dimensions_m": [
+        43.4902229309082,
+        44.02606964111328,
+        147.6999969482422
+      ],
+      "storeys": 40,
+      "fixed": true,
+      "current": true
+    },
+    {
       "asset_id": "trial_sandstone_civic",
       "variant_id": "sandstone_romanesque_revival",
       "revision": "calgary-sandstone-heritage-clay-v007",
@@ -1298,19 +1311,6 @@
         20.43000030517578
       ],
       "storeys": 5,
-      "fixed": true,
-      "current": true
-    },
-    {
-      "asset_id": "clay_twisting_glass_sky_garden_tower",
-      "variant_id": "glass_tower_twisted",
-      "revision": "glass-tower-twisted-clay-v005",
-      "dimensions_m": [
-        43.4902229309082,
-        44.02606964111328,
-        147.6999969482422
-      ],
-      "storeys": 40,
       "fixed": true,
       "current": true
     },
