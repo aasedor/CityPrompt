@@ -59,11 +59,11 @@ export function streetNameLabels(features: unknown[], bounds: StreetBounds): Str
     .slice(0,STREET_NAME_LIMIT).map(({ id,label,anchor,segment })=>({ id,label,anchor,segment }));
 }
 
-/** Sprite baseline in screen coordinates (positive Y up). Recompute from the
- * projected road segment after camera movement, then rotate by 90 degrees. */
-export function perpendicularLabelRotation(dx: number, dy: number): number | null {
+/** Keep the sprite baseline parallel to the projected road (positive Y up),
+ * recomputing after camera movement and flipping upside-down text to stay readable. */
+export function parallelLabelRotation(dx: number, dy: number): number | null {
   if (!Number.isFinite(dx) || !Number.isFinite(dy) || Math.hypot(dx,dy) < 1e-6) return null;
-  let angle = Math.atan2(dy,dx) + Math.PI/2;
+  let angle = Math.atan2(dy,dx);
   while (angle > Math.PI/2) angle -= Math.PI;
   while (angle <= -Math.PI/2) angle += Math.PI;
   return angle;

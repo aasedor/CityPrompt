@@ -6,7 +6,7 @@ import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/d
 import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
 import type { ZoningOverlay, ZoningLabel } from './zoningLabels';
 import { GlobeZoningSurface } from './GlobeZoningSurface';
-import { perpendicularLabelRotation, type StreetName } from './streetNames';
+import { parallelLabelRotation, type StreetName } from './streetNames';
 import type { ZoningPreferences } from './zoningAppearance';
 
 const NO_HIT = () => {};
@@ -101,7 +101,7 @@ export function GlobeMapLabels({ entries, terrainHeight, name }: {
       if (roadSegment) {
         roadStart.copy(roadSegment[0]).project(camera);
         roadEnd.copy(roadSegment[1]).project(camera);
-        const rotation = perpendicularLabelRotation((roadEnd.x-roadStart.x)*size.width, (roadEnd.y-roadStart.y)*size.height);
+        const rotation = parallelLabelRotation((roadEnd.x-roadStart.x)*size.width, (roadEnd.y-roadStart.y)*size.height);
         if (rotation === null) { child.visible = false; continue; }
         material.rotation = rotation;
       }
