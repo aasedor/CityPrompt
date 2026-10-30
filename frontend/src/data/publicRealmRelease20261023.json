@@ -1508,6 +1508,160 @@
         "preserveNativeGround": true,
         "centerNativeClay": true
       }
+    },
+    {
+      "candidate": "clay-tied-arch-shared-bridge-clay-v005",
+      "category": "street",
+      "source_sha256": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+      "review_sha256": "e0465ae05bbb88e5e52fec59784bea2d4bca1634fcd24d6273a50edfc6b4c838",
+      "runtime_sha256": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+      "thumbnail_sha256": "e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f",
+      "status": "runtime_trial",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+        "evidence_sha256": "e0465ae05bbb88e5e52fec59784bea2d4bca1634fcd24d6273a50edfc6b4c838",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "pending",
+        "runtime_sha256": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+        "evidence_sha256": null
+      },
+      "asset": {
+        "id": "claude_public_realm:tied-arch-shared-bridge:7900ce3b41b0",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Tied-Arch Shared Bridge",
+        "description": "Fixed bridge with bounded structural supports and approaches. Move and rotate; prepared level site required. Native dimensions; no stretching or automatic intersections.",
+        "thumbnail": "/street-kits/claude-20261023/e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f.png",
+        "model": {
+          "variantId": "shared_cycle_pedestrian_bridge_v1",
+          "revision": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 64.3,
+        "depth": 27.6,
+        "minWidth": 64.3,
+        "minDepth": 27.6,
+        "maxSize": 600,
+        "nativeDimensions": [
+          63.99070739746094,
+          27.287376403808594,
+          14.10092830657959
+        ],
+        "reshapeDescription": "Move and rotate the complete bridge. Its authored geometry stays fixed.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "shared_cycle_pedestrian_bridge",
+          "road_selected_variant_id": "shared_cycle_pedestrian_bridge_v1",
+          "public_realm_release_asset": "claude_public_realm:tied-arch-shared-bridge:7900ce3b41b0",
+          "native_public_realm_url": "/street-kits/claude-20261023/7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e.glb"
+        },
+        "maxWidth": 64.3,
+        "maxDepth": 27.6
+      },
+      "fixture": {
+        "id": "claude_public_realm:tied-arch-shared-bridge:7900ce3b41b0",
+        "title": "Tied-Arch Shared Bridge",
+        "kind": "street",
+        "dimensions": [
+          64.3,
+          27.6
+        ],
+        "sha256": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+        "url": "/street-kits/claude-20261023/7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e.glb",
+        "surfaceRegions": [],
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
+    },
+    {
+      "candidate": "clay-planted-green-bridge-clay-v005",
+      "category": "street",
+      "source_sha256": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+      "review_sha256": "c46decd8cd8f17f0e99161607c75d0444998a8935599e71e6a6a6622d612f949",
+      "runtime_sha256": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+      "thumbnail_sha256": "fd3f4b85a8f168fb4684cdcb34750d9654ff8c525d54cfdbb9a7c535a31d32fb",
+      "status": "runtime_trial",
+      "visual_review": {
+        "status": "passed",
+        "scope": "complete_runtime_derivative",
+        "runtime_sha256": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+        "evidence_sha256": "c46decd8cd8f17f0e99161607c75d0444998a8935599e71e6a6a6622d612f949",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      },
+      "runtime_review": {
+        "status": "pending",
+        "runtime_sha256": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+        "evidence_sha256": null
+      },
+      "asset": {
+        "id": "claude_public_realm:planted-green-bridge:d7dddc9371b5",
+        "kind": "object",
+        "definitionVersion": 1,
+        "readiness": "pilot",
+        "label": "Planted Green Bridge",
+        "description": "Fixed bridge with bounded structural supports and approaches. Move and rotate; prepared level site required. Native dimensions; no stretching or automatic intersections.",
+        "thumbnail": "/street-kits/claude-20261023/fd3f4b85a8f168fb4684cdcb34750d9654ff8c525d54cfdbb9a7c535a31d32fb.png",
+        "model": {
+          "variantId": "landscape_park_pedestrian_bridge_v2",
+          "revision": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+          "method": "fixed_public_realm_v1"
+        },
+        "calgaryGuide": {
+          "groupId": "street_other",
+          "basis": "form_reference"
+        },
+        "zoneType": "road",
+        "reshapeMode": "fixed_native",
+        "width": 39.1,
+        "depth": 101.4,
+        "minWidth": 39.1,
+        "minDepth": 101.4,
+        "maxSize": 600,
+        "nativeDimensions": [
+          38.79999923706055,
+          101.02232360839844,
+          9.581430435180664
+        ],
+        "reshapeDescription": "Move and rotate the complete bridge. Its authored geometry stays fixed.",
+        "properties": {
+          "community_3d_mask_existing_tiles": true,
+          "pick_place_automatic_3d": true,
+          "road_archetype_id": "landscape_park_pedestrian_bridge",
+          "road_selected_variant_id": "landscape_park_pedestrian_bridge_v2",
+          "public_realm_release_asset": "claude_public_realm:planted-green-bridge:d7dddc9371b5",
+          "native_public_realm_url": "/street-kits/claude-20261023/d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066.glb"
+        },
+        "maxWidth": 39.1,
+        "maxDepth": 101.4
+      },
+      "fixture": {
+        "id": "claude_public_realm:planted-green-bridge:d7dddc9371b5",
+        "title": "Planted Green Bridge",
+        "kind": "street",
+        "dimensions": [
+          39.1,
+          101.4
+        ],
+        "sha256": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+        "url": "/street-kits/claude-20261023/d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066.glb",
+        "surfaceRegions": [],
+        "preserveNativeGround": true,
+        "centerNativeClay": true
+      }
     }
   ]
 }

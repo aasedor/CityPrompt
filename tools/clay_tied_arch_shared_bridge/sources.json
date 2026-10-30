@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "shared_cycle_pedestrian_bridge",
+  "variant_id": "variant_1",
+  "catalogue_variant_id": "shared_cycle_pedestrian_bridge_v1",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0.webp",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_2.png",
+    "variant_2.webp",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "shared_cycle_pedestrian_bridge",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "shared_cycle_pedestrian_bridge_v1",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1.png",
+      "file": "variant_1.png",
+      "bytes": 1241385,
+      "sha256": "e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "shared_cycle_pedestrian_bridge",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "shared_cycle_pedestrian_bridge_v1",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1_angle_60.jpg",
+      "file": "variant_1_angle_60.jpg",
+      "bytes": 936813,
+      "sha256": "562dd0b5136f4949798e346d6ff8507e3b8a3c7a964edb8911e914965d0ecdde",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "shared_cycle_pedestrian_bridge",
+      "variant_id": "variant_1",
+      "catalogue_variant_id": "shared_cycle_pedestrian_bridge_v1",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1_angle_90.jpg",
+      "file": "variant_1_angle_90.jpg",
+      "bytes": 813673,
+      "sha256": "f9ad53e48ce5a5253912a3d1161a924c21dd5af38c86dc51605ad6ec855ffd0c",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

@@ -2,6 +2,10 @@ frontend/public/families/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/park-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/street-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
 tools/clay_timber_covered_footbridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_tied_arch_shared_bridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_planted_green_bridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
+tools/clay_planted_green_bridge/evidence/v004/independent-review.md whitespace=-blank-at-eol
+tools/clay_planted_green_bridge/evidence/v005/independent-review.md whitespace=-blank-at-eol
 tools/clay_timber_covered_footbridge/evidence/v004/independent-review.md whitespace=-blank-at-eol
 frontend/public/native-park-assets/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/native-park-assets/*.png filter=lfs diff=lfs merge=lfs -text

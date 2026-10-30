@@ -13,3 +13,5 @@ The inventory was regenerated from the canonical checkout after restoring 376 pr
 Private review folder: https://drive.google.com/drive/folders/1-B97Xt1sq8iREDu-qCABsW2lWqBgjLIc
 
 External originals and delivery receipts: `C:/dev-artifacts/CityPrompt/claude-crossings-practical-20261029/hero-audit/`. No push or deployment.
+
+Follow-up after the three bridge corrections: **205 / 205** current local hero URLs decode (104 buildings, 42 parks, 59 streets). All three new choices use their locked photographic references. The original 202-card audit above remains a historical checkpoint. The verified `205-card-follow-up-audit.zip` is in the same private hero folder; its receipt is in the local delivery manifest. See [the bridge batch checkpoint](CLAUDE_BRIDGE_BATCH_2026-10-29.md).

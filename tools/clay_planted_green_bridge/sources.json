@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "landscape_park_pedestrian_bridge",
+  "variant_id": "variant_2",
+  "catalogue_variant_id": "landscape_park_pedestrian_bridge_v2",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0.webp",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "landscape_park_pedestrian_bridge",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "landscape_park_pedestrian_bridge_v2",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/landscape-park-pedestrian-bridge/variant_2.png",
+      "file": "variant_2.png",
+      "bytes": 1653127,
+      "sha256": "fd3f4b85a8f168fb4684cdcb34750d9654ff8c525d54cfdbb9a7c535a31d32fb",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "landscape_park_pedestrian_bridge",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "landscape_park_pedestrian_bridge_v2",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/landscape-park-pedestrian-bridge/variant_2_angle_60.jpg",
+      "file": "variant_2_angle_60.jpg",
+      "bytes": 967340,
+      "sha256": "fa6886dd4070716e9067e08aea9ad459ec8a520f96c7dcdf9d59cfdf6bf1656f",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "landscape_park_pedestrian_bridge",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "landscape_park_pedestrian_bridge_v2",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/landscape-park-pedestrian-bridge/variant_2_angle_90.jpg",
+      "file": "variant_2_angle_90.jpg",
+      "bytes": 1031836,
+      "sha256": "e865fb21f5bbf2dadcbbf1c8618cf384555c4cea47d13ddd507d3631366243c9",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

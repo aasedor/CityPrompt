@@ -1,0 +1,507 @@
+{
+  "candidate": "clay-tied-arch-shared-bridge-clay-v005",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-tied-arch-shared-bridge",
+  "variant_id": "clay-tied-arch-shared-bridge-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "shared_cycle_pedestrian_bridge/variant_1 (Steel Arch Suspended Deck)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 68,
+      "depth": 33,
+      "height": 14.5
+    },
+    "observed_storeys": 0,
+    "storey_programme": "street option: a tied-arch cycle and pedestrian bridge over a canal; the quays and blocks are context",
+    "plan": "46 m centre span, 13-degree heading; opposite six-degree end skews, south tie about six percent longer; one transform governs all bridge, bearing and quay geometry",
+    "section_m": {
+      "cycle_lane": [
+        2.3,
+        5.9
+      ],
+      "planter": [
+        0.6,
+        2.3
+      ],
+      "footway": [
+        -5.9,
+        0.6
+      ],
+      "edge_ties": [
+        5.9,
+        6.4
+      ],
+      "deck_level": 3.3,
+      "soffit": 2.6999999999999997,
+      "water": 0.0
+    },
+    "facade": "silver-grey box arches leaning inward with cross ties, slim hangers, edge-tie girders, red cycle lane, planter of grasses and shrubs, pale footway, picket railings, brick quays",
+    "levels_m": [
+      0.0,
+      3.3,
+      13.3
+    ],
+    "inferred": "Metric scale, compact quays, bearing shelves and grade-to-quay pedestrian stairs are teaching assumptions. External city blocks omitted. Cycle lane ends on raised quays; stairs imply dismount, not an accessible cycle approach."
+  },
+  "roof_contract": {
+    "type": "open street option; no roof",
+    "datum_m": 3.3,
+    "crowns_m": [
+      13.3
+    ]
+  },
+  "identity_contract": {
+    "owner": "twin inclined steel tied arches with hangers over a canal, red cycle lane and pale footway split by a raised planter"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: silver-grey steel, red cycle surface, pale concrete footway, green and straw grasses, grey planter, brick quays, dark canal water",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "cycle lane, footway, planter"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 13.2,
+    "axis": "x",
+    "junction_finish": "pavers",
+    "bands": [
+      "edge_tie",
+      "cycle_lane",
+      "planter",
+      "footway",
+      "edge_tie"
+    ]
+  },
+  "contact_contract": [
+    "All bridge, bearing and quay contacts share the same trapezoidal plan transform",
+    "Arch springings seat on quay plinths",
+    "Deck end bearings seat on quay shelves",
+    "Two inferred pedestrian stairs physically connect raised quays to grade"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED",
+    "ground": "prepared level grade only; bounded canal scene, pedestrian stairs at ends",
+    "unsupported": [
+      "stretching",
+      "bending",
+      "automatic intersections",
+      "sloped ground",
+      "engineering or accessibility certification"
+    ]
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -30.43146301510084,
+        -4.3572661393379875,
+        5
+      ],
+      "target": [
+        0.269941265212638,
+        -1.1692440777422823,
+        6.7
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -40.32397235686716,
+        -57.545815623316535,
+        32
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        80.91999999999999,
+        -92.48,
+        43.5
+      ],
+      "target": [
+        0,
+        0,
+        6.525
+      ]
+    },
+    {
+      "name": "top",
+      "location": [
+        0,
+        0,
+        173.39999999999998
+      ],
+      "target": [
+        0,
+        0.001,
+        0
+      ],
+      "ortho_scale": 95.19999999999999
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -115.6,
+        0,
+        8.7
+      ],
+      "target": [
+        0,
+        0,
+        6.525
+      ]
+    },
+    {
+      "name": "right_side",
+      "location": [
+        115.6,
+        0,
+        8.7
+      ],
+      "target": [
+        0,
+        0,
+        6.525
+      ]
+    },
+    {
+      "name": "rear",
+      "location": [
+        0,
+        115.6,
+        8.7
+      ],
+      "target": [
+        0,
+        0,
+        6.525
+      ]
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        80.91999999999999,
+        92.48,
+        26.1
+      ],
+      "target": [
+        0,
+        0,
+        6.525
+      ]
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        4.723972141221165,
+        -20.46177136048994,
+        5
+      ],
+      "target": [
+        0.0,
+        0.0,
+        7
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -3.526285140193436,
+        -18.261276904197068,
+        16
+      ],
+      "target": [
+        0.89980421737546,
+        -3.897480259140941,
+        12
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -7.113372379649209,
+        -5.336946202148365,
+        4.9
+      ],
+      "target": [
+        -2.1122206952682268,
+        -6.850730039493583,
+        4.1
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "arch_springing",
+      "location": [
+        -27.011008543516034,
+        -19.577936084232768,
+        5.7
+      ],
+      "target": [
+        -21.656886592074514,
+        -11.311656495853063,
+        4.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "hangers",
+      "location": [
+        -14.109433692886897,
+        -6.541592579421725,
+        5
+      ],
+      "target": [
+        11.441407789917669,
+        -3.8242587587101475,
+        7.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "planter_divider",
+      "location": [
+        -15.184932910531614,
+        0.18897679463874395,
+        5.1
+      ],
+      "target": [
+        -4.1874770241379995,
+        0.4700705049681523,
+        3.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "cycle_lane",
+      "location": [
+        -21.01384408915562,
+        -0.5409509207257193,
+        4.9
+      ],
+      "target": [
+        8.665791351302946,
+        6.1058720051204265,
+        3.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "deck_edge",
+      "location": [
+        -6.181046821650942,
+        -15.795264608084446,
+        2.9
+      ],
+      "target": [
+        -0.5876515871439147,
+        -6.6013859380343485,
+        2.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "quay_under",
+      "location": [
+        -8.078488349072146,
+        -17.2596276090801,
+        1.3
+      ],
+      "target": [
+        -19.487401295704704,
+        -4.4990210868773,
+        1.4
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        -13.04716115194417,
+        56.51346375754365,
+        22
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "west_approach",
+      "location": [
+        -37.333550698683716,
+        -21.961082719413703,
+        8
+      ],
+      "target": [
+        -26.035693421857584,
+        -8.679204125266802,
+        2.7
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "east_approach",
+      "location": [
+        32.81858694162414,
+        20.918721203823885,
+        8
+      ],
+      "target": [
+        27.205438904445682,
+        3.612479788383578,
+        2.7
+      ],
+      "lens": 35,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "arch_springing",
+    "hangers",
+    "planter_divider",
+    "cycle_lane",
+    "deck_edge",
+    "quay_under",
+    "rear_north",
+    "west_approach",
+    "east_approach"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\shared-cycle-pedestrian-bridge\\variant_1.png",
+        "path": "sources/front.png",
+        "bytes": 1241385,
+        "sha256": "e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f"
+      },
+      {
+        "role": "oblique",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\shared-cycle-pedestrian-bridge\\variant_1_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 936813,
+        "sha256": "562dd0b5136f4949798e346d6ff8507e3b8a3c7a964edb8911e914965d0ecdde"
+      },
+      {
+        "role": "top",
+        "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\shared-cycle-pedestrian-bridge\\variant_1_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 813673,
+        "sha256": "f9ad53e48ce5a5253912a3d1161a924c21dd5af38c86dc51605ad6ec855ffd0c"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0.webp",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_tiedarch_v005.py",
+        "sha256": "da5a511d67cdf13fcb3c54cb33af31d6a6c62bde4ea1c7d9903d77a416b9dfa4"
+      },
+      {
+        "path": "scripts/family_tiedarch.py",
+        "sha256": "41cf2f40bd386867d936c5fafb60d4a3b9e9d8ffc8e96407bc57dbe4cb9e6621"
+      },
+      {
+        "path": "scripts/family_tiedarch_v004.py",
+        "sha256": "36a0e247933280257b66095c120a011cdb7aea4a7dba4cf191aee3b7bb88a4bc"
+      },
+      {
+        "path": "scripts/tied_arch_plan.py",
+        "sha256": "424349c565357c924634e9e303f6afa65158cc158b6f24886f4b0f154adcd91a"
+      },
+      {
+        "path": "scripts/geometry_contract.py",
+        "sha256": "7f7c7c3bf18b3a0f02ac3ea1b7a090df9590c2d3d3bb3fbe622e9e8904a4fe15"
+      },
+      {
+        "path": "scripts/build_v005.py",
+        "sha256": "d107158c7f0cc0a6803f2cb798d4bdf9da18356acaab6cd9afe73680d383bbc2"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "490c4a330b88855c601f140dd55555102e7c2784bb9c3b0a88e030abfbd0f0b0"
+      }
+    ],
+    "blender_version": "5.1.2",
+    "python_version": "3.13.9 (main, Jan 16 2026, 12:29:45) [MSC v.1944 64 bit (AMD64)]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-30T01:28:39.074860+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "Windows local Blender; actual render device recorded in build report"
+  }
+}

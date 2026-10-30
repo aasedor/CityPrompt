@@ -19890,6 +19890,7 @@
       "url": "/archetypes/streets/landscape-park-pedestrian-bridge/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1653127,
@@ -22599,6 +22600,7 @@
       "url": "/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1241385,
@@ -32155,8 +32157,8 @@
     }
   ],
   "cleanupCandidates": {
-    "unclassifiedRuntimeFileCount": 21496,
-    "unclassifiedRuntimePathDigest": "7b8ee5fdd972b4e8e31368c11a768b6167fb1da1301365437cb3675298c4fa2c",
+    "unclassifiedRuntimeFileCount": 21500,
+    "unclassifiedRuntimePathDigest": "e83afce7dea2ff42a316d7104f970a3549c103bda25d7f44d29e730fb7cd9d6f",
     "unclassifiedRuntimePathSample": [
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_60.jpg",
       "/archetypes/buildings/adaptive_reuse_warehouse_lofts/variant_0_angle_90.jpg",

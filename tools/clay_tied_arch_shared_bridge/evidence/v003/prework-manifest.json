@@ -1,0 +1,464 @@
+{
+  "candidate": "clay-tied-arch-shared-bridge-clay-v003",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "clay-tied-arch-shared-bridge",
+  "variant_id": "clay-tied-arch-shared-bridge-v1",
+  "representation_kind": "architectural_clay",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "source_archetype": "shared_cycle_pedestrian_bridge/variant_1 (Steel Arch Suspended Deck)",
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 52.0,
+      "depth": 13.2,
+      "height": 14.3
+    },
+    "observed_storeys": 0,
+    "storey_programme": "street option: a tied-arch cycle and pedestrian bridge over a canal; the quays and blocks are context",
+    "plan": "46 m span on a 13-degree skew across a 40 m canal (top view), parallelogram deck with its ends parallel to the quay copings, seven box ties parallel to the quays, 12.8 m deck: 3.6 m red cycle lane, 1.7 m raised planter, 6.5 m footway, edge ties",
+    "section_m": {
+      "cycle_lane": [
+        2.3,
+        5.9
+      ],
+      "planter": [
+        0.6,
+        2.3
+      ],
+      "footway": [
+        -5.9,
+        0.6
+      ],
+      "edge_ties": [
+        5.9,
+        6.4
+      ],
+      "deck_level": 3.3,
+      "soffit": 2.6999999999999997,
+      "water": 0.0
+    },
+    "facade": "silver-grey box arches leaning inward with cross ties, slim hangers, edge-tie girders, red cycle lane, planter of grasses and shrubs, pale footway, picket railings, brick quays",
+    "levels_m": [
+      0.0,
+      3.3,
+      13.3
+    ],
+    "inferred": "the deck structure, the bearing shelves, the canal width away from the bridge and the blocks are teaching assumptions"
+  },
+  "roof_contract": {
+    "type": "open street option; no roof",
+    "datum_m": 3.3,
+    "crowns_m": [
+      13.3
+    ]
+  },
+  "identity_contract": {
+    "owner": "twin inclined steel tied arches with hangers over a canal, red cycle lane and pale footway split by a raised planter"
+  },
+  "material_contract": {
+    "profile": "source-palette clay: silver-grey steel, red cycle surface, pale concrete footway, green and straw grasses, grey planter, brick quays, dark canal water",
+    "textured_keeper": false
+  },
+  "programme_contract": {
+    "storeys": 0,
+    "ground": "cycle lane, footway, planter"
+  },
+  "street_contract": {
+    "kind": "fixed_native_section",
+    "width_m": 13.2,
+    "axis": "x",
+    "junction_finish": "pavers",
+    "bands": [
+      "edge_tie",
+      "cycle_lane",
+      "planter",
+      "footway",
+      "edge_tie"
+    ]
+  },
+  "contact_contract": [
+    "Canal surface at grade zero",
+    "Quay walls from grade",
+    "Arch springings on chamfered plinths on the quays",
+    "Deck ends on bearing shelves at the quay walls",
+    "Deck hung from the arches and landing on the quays",
+    "Blocks on the quays and a pier"
+  ],
+  "runtime_contract": {
+    "scale": "fixed_native_only",
+    "installation": "not installed",
+    "review": "NOT TESTED"
+  },
+  "camera_roster": [
+    {
+      "name": "front",
+      "location": [
+        -29.718286975949674,
+        -4.192616477225065,
+        5.0
+      ],
+      "target": [
+        0.0,
+        -1.2315649293520698,
+        6.699999999999999
+      ],
+      "lens": 24,
+      "whole": false
+    },
+    {
+      "name": "front_corner",
+      "location": [
+        -29.231101943557057,
+        -51.90591237322518,
+        30.0
+      ],
+      "target": [
+        1.9487401295704705,
+        1.4762062164811216,
+        6.3
+      ],
+      "lens": 32,
+      "whole": false
+    },
+    {
+      "name": "aerial",
+      "location": [
+        23.384881554845645,
+        -39.758555438656465,
+        38.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        5.3
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "top",
+      "location": [
+        0.0,
+        -2.0,
+        90.0
+      ],
+      "target": [
+        0.0,
+        -1.999,
+        0.0
+      ],
+      "ortho_scale": 62.0,
+      "whole": false
+    },
+    {
+      "name": "left_side",
+      "location": [
+        -48.718503239261764,
+        -13.300160932780033,
+        13.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        7.3
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "right_side",
+      "location": [
+        48.718503239261764,
+        3.0371198548461162,
+        11.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        7.3
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear",
+      "location": [
+        0.0,
+        64.0,
+        9.3
+      ],
+      "target": [
+        0.0,
+        0.0,
+        8.3
+      ],
+      "lens": 28,
+      "whole": false
+    },
+    {
+      "name": "rear_side",
+      "location": [
+        9.743700647852352,
+        53.56471593310823,
+        34.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6.3
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "facade_close",
+      "location": [
+        1.9487401295704705,
+        -21.102484154973492,
+        3.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6.699999999999999
+      ],
+      "lens": 26,
+      "whole": false
+    },
+    {
+      "name": "architecture_close",
+      "location": [
+        -6.820590453496647,
+        -19.02182721289471,
+        16.3
+      ],
+      "target": [
+        0.0,
+        -4.105216431173567,
+        12.3
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "glass_close",
+      "location": [
+        -7.794960518281882,
+        -5.49430322280713,
+        4.9
+      ],
+      "target": [
+        -3.4102952267483233,
+        -7.150414158522556,
+        4.1
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "arch_springing",
+      "location": [
+        -28.256731878771824,
+        -19.865533977286177,
+        5.699999999999999
+      ],
+      "target": [
+        -22.41051149006041,
+        -11.485644512838252,
+        4.5
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "hangers",
+      "location": [
+        -14.615550971778529,
+        -6.658438960096829,
+        5.0
+      ],
+      "target": [
+        9.743700647852352,
+        -4.216205335659717,
+        7.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "planter_divider",
+      "location": [
+        -14.615550971778529,
+        0.3204289728982346,
+        5.1
+      ],
+      "target": [
+        -3.897480259140941,
+        0.537021533535288,
+        3.8
+      ],
+      "lens": 40,
+      "whole": false
+    },
+    {
+      "name": "cycle_lane",
+      "location": [
+        -20.46177136048994,
+        -0.4134948884889207,
+        4.9
+      ],
+      "target": [
+        9.743700647852352,
+        6.354726974612216,
+        3.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "deck_edge",
+      "location": [
+        -8.769330583067116,
+        -16.392816998202267,
+        2.9
+      ],
+      "target": [
+        -1.9487401295704705,
+        -6.915617987786097,
+        2.8
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "quay_under",
+      "location": [
+        -10.718070712637587,
+        -17.869023214683388,
+        1.3
+      ],
+      "target": [
+        -19.487401295704704,
+        -4.4990210868773,
+        1.4
+      ],
+      "lens": 35,
+      "whole": false
+    },
+    {
+      "name": "rear_north",
+      "location": [
+        -8.0,
+        60.0,
+        20.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        6.3
+      ],
+      "lens": 28,
+      "whole": false
+    }
+  ],
+  "mandatory_review_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "arch_springing",
+    "hangers",
+    "planter_divider",
+    "cycle_lane",
+    "deck_edge",
+    "quay_under",
+    "rear_north"
+  ],
+  "source_contract": {
+    "sources": [
+      {
+        "role": "front",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1.png",
+        "path": "sources/front.png",
+        "bytes": 1241385,
+        "sha256": "e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f"
+      },
+      {
+        "role": "oblique",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1_angle_60.jpg",
+        "path": "sources/oblique.jpg",
+        "bytes": 936813,
+        "sha256": "562dd0b5136f4949798e346d6ff8507e3b8a3c7a964edb8911e914965d0ecdde"
+      },
+      {
+        "role": "top",
+        "original_path": "/home/user/CityPrompt/frontend/public/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1_angle_90.jpg",
+        "path": "sources/top.jpg",
+        "bytes": 813673,
+        "sha256": "f9ad53e48ce5a5253912a3d1161a924c21dd5af38c86dc51605ad6ec855ffd0c"
+      }
+    ],
+    "exact_variant_only": true,
+    "no_generated_substitute_references": true,
+    "sibling_variants_excluded": [
+      "variant_0.png",
+      "variant_0.webp",
+      "variant_0_angle_60.jpg",
+      "variant_0_angle_90.jpg",
+      "variant_2.png",
+      "variant_2.webp",
+      "variant_2_angle_60.jpg",
+      "variant_2_angle_90.jpg",
+      "variant_3.png",
+      "variant_3.webp",
+      "variant_3_angle_60.jpg",
+      "variant_3_angle_90.jpg"
+    ]
+  },
+  "provenance": {
+    "scripts": [
+      {
+        "path": "scripts/clay_core.py",
+        "sha256": "a9e3568410110d81684d115d693a657ff77fc7de5ac24332050d3e4fea508e61"
+      },
+      {
+        "path": "scripts/geometry.py",
+        "sha256": "d1cf30eb9b9a7cd685ebf56faddcd1f2b3e3483fca27f4d994600d72ee9cf6fe"
+      },
+      {
+        "path": "scripts/contract.py",
+        "sha256": "87076ab35dd89e71049935b435a647b8113ea803d84f048d1966438fa6e6a59a"
+      },
+      {
+        "path": "scripts/assemblies.py",
+        "sha256": "f04ff49066676f34c96c1013ae1eec1dff946c8772aa6b9bf2b911b96e59acce"
+      },
+      {
+        "path": "scripts/family_tiedarch.py",
+        "sha256": "41cf2f40bd386867d936c5fafb60d4a3b9e9d8ffc8e96407bc57dbe4cb9e6621"
+      },
+      {
+        "path": "scripts/build.py",
+        "sha256": "1e15a52ccb581854f916acda0b25b62e0ea63270587312d431f196a567238d9e"
+      },
+      {
+        "path": "scripts/lock_sources.py",
+        "sha256": "490c4a330b88855c601f140dd55555102e7c2784bb9c3b0a88e030abfbd0f0b0"
+      }
+    ],
+    "blender_version": "4.2.0",
+    "python_version": "3.11.17 (main, Oct  1 2026, 15:41:07) [GCC 13.3.0]",
+    "generation_api_calls": 0,
+    "build_started_utc": "2026-10-19T22:17:20.684835+00:00",
+    "render_source": "actual optimized GLB reimport only",
+    "host": "linux container, Cycles CPU"
+  }
+}

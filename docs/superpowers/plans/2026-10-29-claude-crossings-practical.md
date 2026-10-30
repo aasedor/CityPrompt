@@ -60,10 +60,10 @@
 
 ## Task4 — additional bridges
 
-- [ ] Repeat finite source-lock/correct/review/integrate/browser-test workflow for the three recorded bridge types.
-- [ ] Preserve original review limitations and keep any remaining blockers visible.
+- [x] Repeat finite source-lock/correct/review/integrate/browser-test workflow for the three recorded bridge types.
+- [x] Preserve original review limitations and keep any remaining blockers visible.
 
 ## Task5 — delivery
 
-- [ ] Upload completed free source originals/screenshots with dated batch notes and persisted verified Drive receipts.
-- [ ] Report the exact candidates actually available, tested paths, remaining limitations and commit/release status.
+- [x] Upload completed free source originals/screenshots with dated batch notes and persisted verified Drive receipts.
+- [x] Report the exact candidates actually available, tested paths, remaining limitations and commit/release status. See docs/CLAUDE_BRIDGE_BATCH_2026-10-29.md and its JSON companion.

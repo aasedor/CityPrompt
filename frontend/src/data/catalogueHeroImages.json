@@ -201,5 +201,7 @@
   "claude_fire_station_v010": "/archetypes/buildings/modern_fire_station/variant_2.png",
   "claude_hospital_v006": "/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
   "claude_student_residence_v004": "/archetypes/buildings/student-residence-tower/variant_0.png",
-  "claude_public_realm:timber-covered-footbridge:0dbeb2731dbe": "/archetypes/streets/urban-pedestrian-footbridge/variant_2.png"
+  "claude_public_realm:timber-covered-footbridge:0dbeb2731dbe": "/archetypes/streets/urban-pedestrian-footbridge/variant_2.png",
+  "claude_public_realm:tied-arch-shared-bridge:7900ce3b41b0": "/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1.png",
+  "claude_public_realm:planted-green-bridge:d7dddc9371b5": "/archetypes/streets/landscape-park-pedestrian-bridge/variant_2.png"
 }
