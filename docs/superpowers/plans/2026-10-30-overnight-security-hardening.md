@@ -50,4 +50,3 @@
 ## Morning continuation
 
 Heartbeat `city-prompt-overnight-hardening-and-qa` provides bounded continuation during the night. Stop paid submissions by 08:30 America/Edmonton on 30 October. Shared budget, durable receipts, rulings and remaining work live in `C:/dev-artifacts/CityPrompt/overnight-hardening-20261030/`; consult them before resuming. Report exact completed fixes, verification results, remaining release blockers and actual delivered media, without claiming a security certification.
-

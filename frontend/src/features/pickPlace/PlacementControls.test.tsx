@@ -39,6 +39,23 @@ function ImportedHarness({ width, depth }: { width: number; depth: number }) {
 const current = () => JSON.parse(screen.getByTestId('draft').textContent!) as PlacementDraft;
 afterEach(()=>{cleanup();vi.unstubAllGlobals();});
 describe('pre-placement reshaping', () => {
+  it.each([false, true])('shows readable imported dimensions in narrow=%s controls while rotation preserves native precision', narrow => {
+    const width = 24.000001907348633, depth = 26.499999046325684;
+    if (narrow) vi.stubGlobal('matchMedia', () => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+    render(<ImportedHarness width={width} depth={depth} />);
+    if (narrow) {
+      expect(screen.getByText('24 × 26.5 m · 0°')).toBeVisible();
+      fireEvent.click(screen.getByRole('button', { name: 'Size & rotation' }));
+    }
+    expect(screen.getByText('Fixed size 24 × 26.5 m. Move or rotate to fit.')).toBeVisible();
+    expect(screen.queryByText(/original plot/)).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Placement degrees'), { target: { value: '45' } });
+    expect(current()).toMatchObject({ width, depth, degrees: 45 });
+    fireEvent.keyDown(window, { key: 'q' });
+    expect(current()).toMatchObject({ width, depth, degrees: 60 });
+    expect(screen.getByText('Fixed size 24 × 26.5 m. Move or rotate to fit.')).toBeVisible();
+  });
+
   it.each([{ width: 1.02, depth: 1.11 }, { width: 1200, depth: 2000 }])(
     'rotates an imported $width × $depth m GLB without exposing size changes or imposing building-size bounds', ({ width, depth }) => {
       render(<ImportedHarness width={width} depth={depth} />);

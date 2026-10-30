@@ -5078,7 +5078,7 @@ export function GlobeSitePlannerMap({
       </>}
 
       {!isInitialCameraApplied && (
-        <div className="absolute inset-0 z-40 flex items-center justify-center bg-black text-white">
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black text-white">
           <div className="flex flex-col items-center gap-3 rounded-xl border border-white/10 bg-gray-950/80 px-5 py-4 shadow-2xl backdrop-blur-sm">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-amber-400/25 border-t-amber-300" />
             <div className="text-center">

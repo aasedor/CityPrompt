@@ -41,7 +41,7 @@ describe('new project location', () => {
     vi.mocked(geocodingApi.resolve).mockResolvedValue({ latitude: 51.01848, longitude: -114.12376, address: 'Currie, Calgary' });
     setup();
     await screen.findByRole('heading', { name: 'Create New Project' });
-    fireEvent.change(screen.getByPlaceholderText('e.g., Riverside Development Phase 1'), { target: { value: 'Currie exercise' } });
+    fireEvent.change(screen.getByRole('textbox', { name: /^Project Name/ }), { target: { value: 'Currie exercise' } });
     fireEvent.change(screen.getByPlaceholderText('Search for an address...'), { target: { value: 'Currie, Calgary' } });
     fireEvent.click(screen.getByRole('button', { name: 'Create Project' }));
     await waitFor(() => expect(projectsApi.create).toHaveBeenCalledWith({

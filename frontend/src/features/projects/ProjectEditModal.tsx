@@ -145,8 +145,8 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
         </div>
 
         <div className="mt-5 space-y-4">
-          <div>
-            <label className="mb-1 block text-sm font-medium text-primary-950/70">Project Name *</label>
+          <label className="block">
+            <span className="mb-1 block text-sm font-medium text-primary-950/70">Project Name *</span>
             <input
               type="text"
               value={name}
@@ -154,7 +154,7 @@ export function ProjectEditModal({ project, isSaving, onClose, onSave }: Project
               className="input-base w-full"
               autoFocus
             />
-          </div>
+          </label>
 
           <div>
             <label className="mb-1 block text-sm font-medium text-primary-950/70">Description</label>

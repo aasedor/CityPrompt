@@ -237,6 +237,9 @@ jobs:
       - name: Run functional browser workflow
         run: npm run test:e2e
 
+      - name: Check first-click import during globe startup
+        run: npm run test:e2e:startup
+
   # -------------------------------------------------------
   # Docker build verification
   # -------------------------------------------------------
