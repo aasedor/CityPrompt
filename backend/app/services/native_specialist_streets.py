@@ -1,10 +1,12 @@
-"""Server placement contract for immutable canal and fixed-span bridge programs."""
+"""Server placement contracts for native canal, rail and bridge programs."""
 
 import json
 import math
 import re
 from pathlib import Path
 from app.services.street_route_policy import MAX_REPEATABLE_STREET_LENGTH_M
+from app.services.native_modular_bridge import MODULAR_BRIDGE_IDENTITIES, is_modular_bridge, modular_bridge_profile
+from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 
 CANAL_POLICY = json.loads((Path(__file__).resolve().parents[1] / "data/canalRoutePolicy.json").read_text())
 
@@ -19,7 +21,9 @@ CONTRACTS = {
 
 def is_native_specialist(properties):
     props = properties or {}
-    return props.get("road_selected_variant_id") in CONTRACTS and not props.get("validation_fixed_fixture")
+    return is_modular_bridge(props) or (
+        props.get("road_selected_variant_id") in CONTRACTS and not props.get("validation_fixed_fixture")
+    )
 
 
 def validate_specialist_ground(properties, boundary_properties):
@@ -32,9 +36,36 @@ def validate_specialist_ground(properties, boundary_properties):
 
 def validate_specialist_properties(properties):
     props = properties or {}
+    if (
+        props.get("road_archetype_id") in {parent for parent, _ in MODULAR_BRIDGE_IDENTITIES.values()}
+        and not is_modular_bridge(props)
+        and (
+            (props.get("road_selected_variant_id") is None and props.get("plan_centerline") is not None)
+            or resolve_public_realm_catalog_identity(
+                "street", props["road_archetype_id"], props.get("road_selected_variant_id")
+            )
+            is None
+        )
+    ):
+        raise ValueError(
+            "This bridge variant has no trusted executable route; keep fixed scenes in their native rectangle."
+        )
     if not is_native_specialist(props):
         return
-    parent, width, minimum, maximum = CONTRACTS[props["road_selected_variant_id"]]
+    modular_bridge = is_modular_bridge(props)
+    if modular_bridge:
+        if props.get("validation_fixed_fixture"):
+            raise ValueError("Draw this modular bridge as a route; it is not a fixed scene fixture.")
+        profile = modular_bridge_profile(props["road_selected_variant_id"])
+        program = profile["program"]
+        parent, width = profile["sourceArchetypeId"], profile["widthM"]
+        minimum, maximum = program["minLengthM"], program["maxLengthM"]
+        if props.get("connect_to_public_road"):
+            raise ValueError("This pedestrian bridge cannot connect directly to an ordinary public road.")
+        if isinstance(props.get("lane_count"), bool) or props.get("lane_count") != 0:
+            raise ValueError("Keep this pedestrian bridge’s zero motor lanes and original native width.")
+    else:
+        parent, width, minimum, maximum = CONTRACTS[props["road_selected_variant_id"]]
     if props["road_selected_variant_id"] in (
         "student_elevated_garden_rail_v1",
         "skytrain_elevated_corridor_v0",
@@ -51,6 +82,8 @@ def validate_specialist_properties(properties):
             route = None
     if not isinstance(route, list) or len(route) < 2:
         raise ValueError("Draw two endpoints for this straight specialist street.")
+    if modular_bridge and len(route) != 2:
+        raise ValueError("Draw exactly two endpoints for this straight modular bridge.")
     if any(
         not isinstance(p, list)
         or len(p) != 2
@@ -58,6 +91,8 @@ def validate_specialist_properties(properties):
         for p in route
     ):
         raise ValueError("Specialist street route coordinates are invalid.")
+    if modular_bridge and any(not (-180 <= point[0] <= 180 and -90 <= point[1] <= 90) for point in route):
+        raise ValueError("Modular bridge route coordinates must be valid longitude and latitude.")
     sx = 111320 * math.cos(math.radians(route[0][1]))
     local = [((p[0] - route[0][0]) * sx, (p[1] - route[0][1]) * 111320) for p in route]
     if props["road_selected_variant_id"] == "amsterdam_gracht_v1":

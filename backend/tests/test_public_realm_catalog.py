@@ -24,8 +24,11 @@ def test_backend_public_realm_trust_index_matches_all_frontend_parents_and_varia
     parks = _frontend_variants("openSpaceArchetypes.json")
     streets = _frontend_variants("streetPathArchetypes.json")
     native = Path(__file__).resolve().parents[2] / "frontend/src/data/nativeStreetPilots.json"
-    for row in json.loads(native.read_text(encoding="utf-8")):
-        streets[row["sourceArchetypeId"]] = tuple(sorted(set((*streets.get(row["sourceArchetypeId"], ()), row["id"]))))
+    for path in (native, native.with_name("nativeBridgePilots.json")):
+        for row in json.loads(path.read_text(encoding="utf-8")):
+            streets[row["sourceArchetypeId"]] = tuple(
+                sorted(set((*streets.get(row["sourceArchetypeId"], ()), row["id"])))
+            )
     for row in json.loads(native.with_name("streetManual.json").read_text(encoding="utf-8")):
         parent = row["archetypeId"]
         streets[parent] = tuple(sorted(set((*streets[parent], row["variantId"]))))

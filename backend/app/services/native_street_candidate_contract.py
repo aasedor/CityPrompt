@@ -14,6 +14,8 @@ from pathlib import Path
 from functools import lru_cache
 from app.services.street_route_policy import native_street_max_length
 from app.services.surface_path import SURFACE_PATH_WIDTHS as _SURFACE_PATH_WIDTHS
+from app.services.native_modular_bridge import validate_modular_bridge_profile
+from app.services.native_street_registry import load_native_street_rows, native_street_roster
 
 from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 from app.services.public_realm_lego import (
@@ -36,9 +38,7 @@ _APPEARANCE_BY_FINISH = {
 @lru_cache(maxsize=1)
 def flush_native_street_junction_levels() -> dict[str, float]:
     """Mirror native section classification for exact car-free surface joins."""
-    rows = json.loads(
-        (Path(__file__).resolve().parents[1] / "data/nativeStreetPilots.json").read_text(encoding="utf-8")
-    )
+    rows = load_native_street_rows()
     allowed = {
         selection.variant_id
         for capability in native_street_runtime_capabilities()
@@ -49,6 +49,8 @@ def flush_native_street_junction_levels() -> dict[str, float]:
         program = row.get("program")
         if row["id"] not in allowed or not program or row["id"] == "student_main_street_v1":
             continue
+        if program["adapter"] == "modular-bridge-v1":
+            continue  # Elevated spans do not supply an at-grade junction surface.
         bands = row["sections"]
         narrow = program["adapter"] == "narrow-pathway-v1"
         if not narrow and any(
@@ -69,7 +71,7 @@ def flush_native_street_junction_levels() -> dict[str, float]:
 @lru_cache(maxsize=1)
 def native_street_runtime_capabilities() -> tuple[PublicRealmFamilyCapability, ...]:
     data_dir = Path(__file__).resolve().parents[1] / "data"
-    roster = json.loads((data_dir / "classroomStarter.json").read_text(encoding="utf-8"))
+    roster = native_street_roster()
     allowed = {row["variantId"]: row for row in roster["entries"] if row["representation"] == "native-modules"}
     candidates = build_native_street_candidate_catalog(data_dir / "nativeStreetPilots.json")
     accepted = []
@@ -94,12 +96,13 @@ def build_native_street_candidate_catalog(
 ) -> PublicRealmCapabilityCatalog:
     """Compile an explicit review-only catalogue from the staged source lock."""
 
-    rows = json.loads(manifest_path.read_text(encoding="utf-8"))
+    rows = load_native_street_rows(manifest_path)
     if not isinstance(rows, list) or not rows:
         raise ValueError("Native street candidate manifest must be a nonempty list")
     capabilities: list[PublicRealmFamilyCapability] = []
     seen: set[str] = set()
     for row in rows:
+        validate_modular_bridge_profile(row)
         pilot_id = row["id"]
         parent_id = row["sourceArchetypeId"]
         if not _ID.fullmatch(pilot_id) or not _ID.fullmatch(parent_id) or pilot_id in seen:
@@ -141,6 +144,7 @@ def build_native_street_candidate_catalog(
             ("reference", row["referenceSha256"]),
         ]
         program = row.get("program")
+        modular_bridge = program is not None and program.get("adapter") == "modular-bridge-v1"
         if program is not None:
             digest = hashlib.sha256(json.dumps(program, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
             if row.get("programSha256") != digest:
@@ -170,12 +174,12 @@ def build_native_street_candidate_catalog(
             compatibility=PublicRealmCompatibility(
                 target_type="street_segment",
                 nominal_row_width_m=width,
-                min_row_width_m=round(width - 0.05, 3),
-                max_row_width_m=round(width + 0.05, 3),
+                min_row_width_m=width if modular_bridge else round(width - 0.05, 3),
+                max_row_width_m=width if modular_bridge else round(width + 0.05, 3),
                 min_length_m=route_policy["minLengthM"] if route_policy else 8,
                 max_length_m=(
                     native_street_max_length(pilot_id)
-                    if flexible_canals
+                    if flexible_canals and not modular_bridge
                     else route_policy["maxLengthM"] if route_policy else 2_000
                 ),
             ),

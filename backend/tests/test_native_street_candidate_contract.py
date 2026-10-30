@@ -53,6 +53,9 @@ def test_new_route_capabilities_do_not_convert_saved_fixed_rectangles():
 def test_native_street_generated_mirrors_and_rosters_are_identical():
     backend_data = Path(__file__).resolve().parents[1] / "app/data"
     assert json.loads(MANIFEST.read_text()) == json.loads((backend_data / "nativeStreetPilots.json").read_text())
+    assert json.loads(MANIFEST.with_name("nativeBridgePilots.json").read_text()) == json.loads(
+        (backend_data / "nativeBridgePilots.json").read_text()
+    )
 
     def native(path):
         return [row for row in json.loads(path.read_text())["entries"] if row["representation"] == "native-modules"]
@@ -70,7 +73,11 @@ def test_frontend_runtime_fixtures_keep_their_trusted_saved_identity():
 
 def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review():
     catalog = build_native_street_candidate_catalog(MANIFEST)
-    rows = {row["id"]: row for row in json.loads(MANIFEST.read_text(encoding="utf-8"))}
+    rows = {
+        row["id"]: row
+        for path in (MANIFEST, MANIFEST.with_name("nativeBridgePilots.json"))
+        for row in json.loads(path.read_text(encoding="utf-8"))
+    }
     assert {cap.selections[0].variant_id for cap in catalog.capabilities} == {
         "student_main_street_v1",
         "student_market_street_v1",
@@ -104,6 +111,7 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         "student_neighbourhood_cycle_street_v1",
         "student_separated_walking_cycling_greenway_v1",
         "student_neighbourhood_transit_stop_street_v1",
+        "timber_covered_bridge_route_v1",
     }
     assert catalog.prompt_vocabulary == ""
     active = build_public_realm_capability_catalog()

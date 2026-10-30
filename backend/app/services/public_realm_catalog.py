@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
+from app.services.native_street_registry import load_native_street_rows
 
 
 PublicRealmCatalogKind = Literal["park", "street"]
@@ -58,7 +59,7 @@ def public_realm_catalog_variants() -> dict[PublicRealmCatalogKind, dict[str, tu
         for parent, variants in validation[kind].items():
             normalized[kind][parent] = tuple(sorted(set((*normalized[kind].get(parent, ()), *variants))))
     # Native identities may originate in the explicit validation cohort above.
-    for row in json.loads((_DATA_DIR / "nativeStreetPilots.json").read_text(encoding="utf-8")):
+    for row in load_native_street_rows(_DATA_DIR / "nativeStreetPilots.json"):
         parent, variant = row["sourceArchetypeId"], row["id"]
         if parent not in normalized["street"]:
             raise RuntimeError(f"Native street parent is absent from catalogue: {parent}")

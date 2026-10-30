@@ -277,6 +277,14 @@ def _validate_direct_3d_project_zones(
                 # approval, environment and native footprint may have changed
                 # since this exact browser-owned scene was compiled.
                 validate_fixed_public_realm(zone.zone_type, source_geometry, zone.properties or {})
+            from app.services.native_modular_bridge import is_modular_bridge
+
+            if kind == "street" and is_modular_bridge(zone.properties):
+                from app.services.native_specialist_streets import validate_specialist_ground
+
+                validate_specialist_ground(zone.properties, boundaries[0].properties if len(boundaries) == 1 else None)
+                if not isinstance((zone.properties or {}).get(PUBLIC_REALM_RECIPE_PROPERTY), dict):
+                    raise ValueError("Modular bridge capture needs its current exact native source recipe.")
             current_source_hash = community_3d_source_hash(
                 zone.zone_type,
                 source_geometry,
@@ -718,6 +726,10 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     """Mirror the browser's executable street-axis eligibility, fail closed."""
 
     properties = zone.properties or {}
+    from app.services.native_modular_bridge import is_modular_bridge
+
+    if is_modular_bridge(properties):
+        return False  # Stairs and the raised deck never supply an at-grade junction.
     # Junction anchoring requires a centerline BOTH sides derive identically.
     # Without a valid persisted plan_centerline, the browser walks polygon
     # vertices while this proof takes the minimum-rotated-rectangle axis —

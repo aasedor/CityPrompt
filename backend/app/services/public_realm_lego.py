@@ -63,6 +63,10 @@ def public_realm_fallback_marker(
     """
 
     props = properties or {}
+    from app.services.native_modular_bridge import is_modular_bridge
+
+    if is_modular_bridge(props):
+        return None  # A raised source-module bridge cannot become a flat street.
     # Saved validation rectangles retain their separate native assembly binding.
     # A fixed native assembly must never be labelled a generic fallback.
     if props.get("validation_fixed_fixture") is True:
@@ -2087,10 +2091,17 @@ def public_realm_capability_fingerprint(
 
 
 def _catalog_prompt(capabilities: tuple[PublicRealmFamilyCapability, ...]) -> str:
+    from app.services.native_modular_bridge import MODULAR_BRIDGE_IDENTITIES
+    from app.services.native_street_registry import native_street_roster
+
+    ready_bridges = {row["variantId"] for row in native_street_roster()["entries"] if row.get("status") == "ready"}
+    pending_bridges = MODULAR_BRIDGE_IDENTITIES.keys() - ready_bridges
     lines = ["EXECUTABLE PUBLIC REALM LEGO CATALOG " "(select only exact archetype and variant identifiers below):"]
     if not capabilities:
         return lines[0] + "\n- No executable public-realm families are available."
     for capability in capabilities:
+        if any(selection.variant_id in pending_bridges for selection in capability.selections):
+            continue  # Explicit local execution does not approve AI planning discovery.
         sources: dict[str, list[str]] = {}
         for selection in capability.selections:
             sources.setdefault(selection.archetype_id, []).append(selection.variant_id)
@@ -2685,9 +2696,11 @@ def plan_public_realm_zone_recipe(
     """
 
     props = properties or {}
+    from app.services.native_modular_bridge import is_modular_bridge
+
     # Adding a route capability must not silently convert existing assembly
     # fixtures. Strict planner requests still require an executable recipe.
-    if props.get("validation_fixed_fixture") is True and not strict:
+    if props.get("validation_fixed_fixture") is True and not strict and not is_modular_bridge(props):
         return None
     from app.services.native_brt import validate_brt_properties
 
@@ -2751,20 +2764,32 @@ def plan_public_realm_zone_recipe(
 
         if validate_street_plan_centerline_wgs84(geometry_wgs84, props["plan_centerline"]):
             centerline_metric = project_geometry(LineString(props["plan_centerline"]), transformer)
-    target = (
-        StreetSegmentTarget(row_width_m=surface_path_width(props), length_m=round(path_line.length, 3))
-        if path_line is not None
-        else _target_from_metric_geometry(
-            metric_geometry,
-            props,
-            target_type=target_types.pop(),
-            # Strictness controls failure behavior, not recipe geometry.  Every
-            # emitted V1 recipe must use the same target policy so a manual compile
-            # and Direct's later canonical replan cannot disagree.
-            attest_segment_width=True,
-            centerline_metric=centerline_metric,
+    if is_modular_bridge(props):
+        from app.services.native_modular_bridge import modular_bridge_route_length
+
+        width = props["width"]
+        if centerline_metric is None:
+            raise ValueError("Modular bridge needs its current two-endpoint route inside the occupied footprint.")
+        ribbon = centerline_metric.buffer(width / 2, cap_style=2, join_style=2)
+        if not ribbon.buffer(0.1).covers(metric_geometry) or not metric_geometry.buffer(0.1).covers(ribbon):
+            raise ValueError("Keep the complete modular bridge footprint at its native width and route length.")
+        target = StreetSegmentTarget(
+            row_width_m=width, length_m=round(modular_bridge_route_length(props["plan_centerline"]), 3)
         )
-    )
+    else:
+        target = (
+            StreetSegmentTarget(row_width_m=surface_path_width(props), length_m=round(path_line.length, 3))
+            if path_line is not None
+            else _target_from_metric_geometry(
+                metric_geometry,
+                props,
+                target_type=target_types.pop(),
+                # Strictness controls failure behavior, not recipe geometry. Every
+                # emitted V1 recipe uses the same target policy for later capture.
+                attest_segment_width=True,
+                centerline_metric=centerline_metric,
+            )
+        )
     exact_variant_id = variant_id or next(
         (
             candidate_variant
@@ -2821,7 +2846,7 @@ def plan_public_realm_zone_recipe(
             catalog=catalog,
         )
     except PublicRealmPlanningError:
-        if strict:
+        if strict or is_modular_bridge(props):
             raise
         return None
 
