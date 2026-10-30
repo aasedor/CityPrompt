@@ -378,8 +378,14 @@ class Settings(BaseSettings):
         if self.app_debug:
             raise ValueError("APP_DEBUG must be false in production")
 
-        if self.jwt_secret_key.strip() in _UNSAFE_JWT_SECRET_VALUES:
-            raise ValueError("JWT_SECRET_KEY must be set to a strong secret in production")
+        secret = self.jwt_secret_key.strip().lower()
+        placeholder = re.search(r"change[-_ ]?(?:this|me)|replace|placeholder|(?:^|[-_ ])your(?:[-_ ]|$)", secret)
+        repeated = re.fullmatch(r"(.{1,16})\1+", secret)
+        if len(secret.encode("utf-8")) < 32 or secret in _UNSAFE_JWT_SECRET_VALUES or placeholder or repeated:
+            raise ValueError(
+                "JWT_SECRET_KEY must be a unique random secret of at least 32 bytes in production; "
+                "defaults, placeholders and repeated values are not allowed"
+            )
 
         origins = self.cors_origins
         if not origins:

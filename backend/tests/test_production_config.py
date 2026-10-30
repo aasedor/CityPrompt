@@ -2,6 +2,8 @@ import pytest
 
 from app.core.config import Settings, _git_common_dir, _settings_env_files
 
+STRONG_TEST_SECRET = "f5b632e9cf61a7840b3e98521a649c7d4e817f308a596b2cd064e37f8c912a65"
+
 
 def test_primary_checkout_resolves_one_shared_and_two_local_env_files(tmp_path):
     project_root = tmp_path / "city-prompt"
@@ -49,7 +51,7 @@ def test_production_rejects_localhost_cors_origin():
             _env_file=None,
             app_env="production",
             app_debug=False,
-            jwt_secret_key="safe-production-secret",
+            jwt_secret_key=STRONG_TEST_SECRET,
             allowed_origins="https://cityprompt.example,http://localhost:5175",
         )
 
@@ -60,7 +62,7 @@ def test_production_rejects_debug_mode():
             _env_file=None,
             app_env="production",
             app_debug=True,
-            jwt_secret_key="safe-production-secret",
+            jwt_secret_key=STRONG_TEST_SECRET,
             allowed_origins="https://cityprompt.example",
         )
 
@@ -70,7 +72,7 @@ def test_production_accepts_explicit_safe_origin():
         _env_file=None,
         app_env="production",
         app_debug=False,
-        jwt_secret_key="safe-production-secret",
+        jwt_secret_key=STRONG_TEST_SECRET,
         allowed_origins="https://cityprompt.example",
     )
 
@@ -84,7 +86,7 @@ def test_production_accepts_render_worker_env_contract():
         _env_file=None,
         app_env="production",
         app_debug=False,
-        jwt_secret_key="safe-production-secret",
+        jwt_secret_key=STRONG_TEST_SECRET,
         allowed_origins="https://cityprompt.ca,https://www.cityprompt.ca,https://threed-platform-frontend.onrender.com",
         frontend_url="https://cityprompt.ca",
         google_redirect_uri="https://threed-platform-api.onrender.com/api/v1/auth/oauth/google/callback",
