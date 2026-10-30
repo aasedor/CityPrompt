@@ -15,7 +15,8 @@ it('starts with category tiles, drills into existing groups and returns without 
     expect(screen.queryByRole('article')).not.toBeInTheDocument();
     const choices = CLASSROOM_CHOICES.filter(c => c.domain === domain
       && (domain !== 'street_pathway' || c.placements[0]?.kind === 'street' || isBridgeChoice(c)));
-    for (const group of CALGARY_GROUPS.filter(g => g.domain === domain && choices.some(c => choiceMatchesGroup(c, g.id)))) {
+    expect(screen.queryByRole('button', { name: 'Browse Other streets & global inspiration' })).not.toBeInTheDocument();
+    for (const group of CALGARY_GROUPS.filter(g => g.domain === domain && g.id !== 'street_other' && choices.some(c => choiceMatchesGroup(c, g.id)))) {
       const tile = screen.getByRole('button', { name: `Browse ${group.label}` });
       fireEvent.click(tile);
       const matching = choices.filter(c => choiceMatchesGroup(c, group.id));

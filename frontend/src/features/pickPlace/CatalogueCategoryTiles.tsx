@@ -10,7 +10,7 @@ export function CatalogueCategoryTiles({ domain, choices, onChoose, onBrowseAll,
 }) {
   const options = choices.filter(c => c.domain === domain
     && (domain !== 'street_pathway' || c.placements[0]?.kind === 'street' || isBridgeChoice(c)));
-  const groups = CALGARY_GROUPS.filter(g => g.domain === domain).map(g => ({...g, count:options.filter(c => choiceMatchesGroup(c,g.id)).length})).filter(g => g.count > 0);
+  const groups = CALGARY_GROUPS.filter(g => g.domain === domain && g.id !== 'street_other').map(g => ({...g, count:options.filter(c => choiceMatchesGroup(c,g.id)).length})).filter(g => g.count > 0);
   const noun = domain === 'building' ? 'buildings' : domain === 'park_plaza' ? 'parks' : 'streets';
   return <div className="space-y-4 p-1">
     <div className="flex flex-wrap items-center justify-between gap-2">
