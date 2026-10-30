@@ -68,7 +68,7 @@ for (const source of ['process', 'dotenv']) {
     const server = await createServer({
       configFile: join(FRONTEND, 'vite.config.ts'), root, mode: 'test',
       cacheDir: join(root, 'cache'), publicDir: false,
-      server: { middlewareMode: true, watch: null },
+      server: { middlewareMode: true, watch: null, hmr: false },
       optimizeDeps: { noDiscovery: true },
       plugins: [{
         name: 'synthetic-environment-fixture', enforce: 'post',
