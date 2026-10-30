@@ -30,3 +30,17 @@ object buffering inside an asynchronous endpoint.
 The previous source checkpoint remains available at `bb593c68f`. No paid image
 or video generation, live deployment or additional catalogue activation is part
 of this follow-up. Confidential runtime credentials remain outside the repository.
+
+## Verified checkpoint
+
+- Independent review found no unresolved Critical or Important findings. Related
+  file/security checks passed 92 cases; the reviewer independently ran 15 lifecycle cases.
+- Full backend passed 3,148 tests with three skips using a fresh migrated test
+  database. Ruff, Black and the existing mypy boundary passed.
+- Both retained imported originals still match their hashes after the API restart;
+  anonymous requests are rejected and all saved routes/buildings remain present.
+- The independent local health probe improved from a 1,359 ms peak to 218 ms
+  during ten concurrent original downloads. Total transfer time increased from
+  2.328 to 4.157 seconds; no general internet throughput claim is implied.
+- Final hosted artifact and current-head CI results belong in the delivery
+  receipts and existing review PR. Publication approval remains a separate gate.

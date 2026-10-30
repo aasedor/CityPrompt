@@ -39,6 +39,9 @@ release decision. Keep draft PR #38 open while its publication gate is failing.
   Maps, Mapbox, API, telemetry and public flags. Unused provider credentials and
   prefix-collision names stay out of browser environment objects. The unused
   frontend `VITE_FAL_KEY` Compose injection was removed; `FAL_KEY` stays server-side.
+- Original files stream in 64 KiB chunks with storage operations off the API
+  event loop. Read-only authorization releases its database connection before
+  transfer; storage bodies and clients close on completion, errors and cancellation.
 
 ## Installation and compatibility
 
@@ -73,7 +76,7 @@ These source changes do not reconfigure any existing desktop containers.
 
 ## Verification and evidence boundaries
 
-- Full upgraded backend after the reviewed OAuth fixes: **3,133 passed, 3 skipped**, using a fresh disposable
+- Full upgraded backend after the reviewed file-streaming fixes: **3,148 passed, 3 skipped**, using a fresh disposable
   PostgreSQL database migrated through 033. The test database was removed.
 - Full frontend including the OAuth flow: **4,226 passed, 23 skipped** under
   Node 20. Full TypeScript, strict ESLint and the existing dead-code check pass
@@ -105,6 +108,16 @@ These source changes do not reconfigure any existing desktop containers.
 - Deployment-secret and network-boundary checks pass with synthetic credentials
   and parsed source profiles; CI runs them before the separate publication gate.
   They do not establish actual image-layer or running-firewall behavior.
+- File delivery passes 92 related checks, with 15 lifecycle cases independently
+  rerun. A finite local trial transferred ten copies of a 29.4 MB original with
+  exact hashes. Independent-process health latency peaked at 1,359 ms before the
+  change and 218 ms afterward. Aggregate transfers took 2.328 and 4.157 seconds,
+  respectively: this favors bounded memory and API responsiveness, and is not an
+  internet classroom-capacity benchmark.
+- Runtime manifest freshness passes for 5,470 records. Its source inventory now
+  includes the new OAuth and session-refresh helpers; asset hashes and catalogue
+  activation are unchanged. The broader checkout still has 4,573 missing or LFS
+  pointer records; this is separate from the hydrated production packet below.
 
 The fresh portable production packet contains **186 choices, 585 distinct
 dependencies and 3,730 public files / 1,672,384,795 bytes**. Its payloads and
@@ -134,7 +147,8 @@ services and projects remain available.
    revocation remain follow-up items. Historical proxy / telemetry logs and
    previously built image layers were not audited or retroactively erased;
    no actual credential leak was observed in this work.
-4. A clean Linux/Python 3.11 container installation, Linux prefork integration,
+4. Hosted CI has built clean Linux images with the updated dependency set.
+   Container startup on the recipient's infrastructure, Linux prefork integration,
    actual U2-Net inference and recipient-hosted acceptance remain unverified.
    Native decoder/process isolation and infrastructure controls require the
    deployment operator's configuration and review.
