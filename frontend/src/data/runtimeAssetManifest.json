@@ -8299,6 +8299,8 @@
     {
       "url": "/archetypes/buildings/parkade-classic-concrete/front.png",
       "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8308,6 +8310,8 @@
     {
       "url": "/archetypes/buildings/parkade-green-terraces/front.png",
       "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8317,6 +8321,8 @@
     {
       "url": "/archetypes/buildings/parkade-mobility-courtyard/front.png",
       "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8326,6 +8332,8 @@
     {
       "url": "/archetypes/buildings/parkade-solar-ribbon/front.png",
       "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
@@ -8335,6 +8343,8 @@
     {
       "url": "/archetypes/buildings/parkade-urban-brick/front.png",
       "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/buildingArchetypes.json",
         "src/data/parkadeFamilyTrial.json",
         "src/features/pickPlace/publishedBuildingAssets.ts"
       ],

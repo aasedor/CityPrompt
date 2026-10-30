@@ -3,8 +3,8 @@
   "domains": {
     "building": {
       "authoritativeRoot": "/archetypes/buildings/",
-      "availableCount": 246,
-      "completeCount": 224,
+      "availableCount": 251,
+      "completeCount": 229,
       "incompleteCount": 23,
       "incomplete": [
         {
@@ -2261,6 +2261,31 @@
           "availableUrls": [
             "/archetypes/buildings/final-urban-grocery/front.png"
           ]
+        },
+        "parkade-classic-concrete": {
+          "availableUrls": [
+            "/archetypes/buildings/parkade-classic-concrete/front.png"
+          ]
+        },
+        "parkade-urban-brick": {
+          "availableUrls": [
+            "/archetypes/buildings/parkade-urban-brick/front.png"
+          ]
+        },
+        "parkade-green-terraces": {
+          "availableUrls": [
+            "/archetypes/buildings/parkade-green-terraces/front.png"
+          ]
+        },
+        "parkade-solar-ribbon": {
+          "availableUrls": [
+            "/archetypes/buildings/parkade-solar-ribbon/front.png"
+          ]
+        },
+        "parkade-mobility-courtyard": {
+          "availableUrls": [
+            "/archetypes/buildings/parkade-mobility-courtyard/front.png"
+          ]
         }
       }
     },
@@ -4240,6 +4265,7 @@
         },
         "calgary_alley": {
           "availableUrls": [
+            "/archetypes/streets/calgary-alley/section.svg",
             "/archetypes/streets/calgary-alley/section_stylized.png",
             "/archetypes/streets/calgary-alley/section_stylized.webp",
             "/archetypes/streets/calgary-alley/variant_0.png"
@@ -4544,8 +4570,7 @@
             "/archetypes/streets/advisory-bike-lane-street/variant_1.png",
             "/archetypes/streets/advisory-bike-lane-street/variant_1.webp",
             "/archetypes/streets/advisory-bike-lane-street/variant_2.png",
-            "/archetypes/streets/advisory-bike-lane-street/variant_2.webp",
-            "/archetypes/streets/calgary-alley/section.svg"
+            "/archetypes/streets/advisory-bike-lane-street/variant_2.webp"
           ]
         },
         "speed_cushion_street": {
@@ -4872,6 +4897,11 @@
     "parisian_corner_with_dome",
     "parisian_mid_rise",
     "parisian_midrise_block",
+    "parkade-classic-concrete",
+    "parkade-green-terraces",
+    "parkade-mobility-courtyard",
+    "parkade-solar-ribbon",
+    "parkade-urban-brick",
     "parkitecture",
     "parkitecture_recreational",
     "passage_couvert",
@@ -5350,6 +5380,11 @@
     "parisian_corner_with_dome",
     "parisian_mid_rise",
     "parisian_midrise_block",
+    "parkade-classic-concrete",
+    "parkade-green-terraces",
+    "parkade-mobility-courtyard",
+    "parkade-solar-ribbon",
+    "parkade-urban-brick",
     "parkitecture",
     "parkitecture_recreational",
     "passage_couvert",

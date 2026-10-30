@@ -173,6 +173,12 @@ jobs:
           git lfs fetch origin --include="frontend/public/street-kits/claude-20261023/*.glb" --exclude=""
           git lfs checkout "frontend/public/street-kits/claude-20261023/*.glb"
 
+      - name: Hydrate exact build illustration assets
+        working-directory: .
+        run: |
+          git lfs fetch origin --include="frontend/public/render-style-examples/*.png,frontend/public/policy-maps/citywide-2026-v1/**/*.webp" --exclude=""
+          git lfs checkout "frontend/public/render-style-examples/*.png" "frontend/public/policy-maps/citywide-2026-v1/**/*.webp"
+
       - name: Run tests
         run: npx vitest run --reporter=verbose
 
