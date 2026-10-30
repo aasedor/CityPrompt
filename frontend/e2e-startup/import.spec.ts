@@ -26,6 +26,10 @@ test('opens Import GLB on the first click while the real globe is preparing', as
     const path = new URL(route.request().url()).pathname;
     let body: unknown = [];
     if (path.endsWith('/auth/me')) body = { id: 'student', email: 'student@example.com', role: 'user', is_active: true, render_credits: 0 };
+    else if (path === '/api/v1/render/image-models') body = {
+      default_model: 'gpt-image-2', credit_balance: 0, credit_exempt: false,
+      models: [{ id: 'gpt-image-2', available: false }],
+    };
     else if (path === '/api/v1/projects/startup-project') body = {
       id: 'startup-project', name: 'Startup exercise', status: 'draft', buildings: [], documents: [], construction_phases: [],
       location: { latitude: 51.05, longitude: -114.08, address: 'Calgary' },

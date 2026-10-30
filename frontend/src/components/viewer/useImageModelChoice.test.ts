@@ -88,3 +88,16 @@ it('preserves an explicit engine when availability changes or storage is corrupt
   const reopened = renderHook(() => useImageModelChoice({ projectId: 'a', compareByDefault: false }));
   expect(reopened.result.current.imageModel).toBe('gpt-image-2.5-sunburst');
 });
+
+it.each([null, [], {}, {default_model:'gpt-image-2',models:null},
+  {default_model:'gpt-image-2',models:[null]},
+  {default_model:'unknown-engine',models:[],credit_balance:999,credit_exempt:true}])(
+  'keeps the project usable when discovery returns malformed metadata %j', async response => {
+    vi.mocked(rendersApi.imageModels).mockResolvedValue(response as unknown as Awaited<ReturnType<typeof rendersApi.imageModels>>);
+    const hook=renderHook(()=>useImageModelChoice({compareByDefault:false}));
+    await waitFor(()=>expect(hook.result.current.availability).toEqual({default_model:'gpt-image-2',models:[]}));
+    expect(hook.result.current.imageModel).toBe('gpt-image-2');
+    expect(hook.result.current.availability?.credit_balance).toBeUndefined();
+    expect(hook.result.current.availability?.credit_exempt).toBeUndefined();
+  },
+);

@@ -26,7 +26,16 @@ export function useImageModelChoice({ compareByDefault = true, projectId, accoun
   }, [key]);
   useEffect(() => {
     let active = true;
-    void rendersApi.imageModels().catch(() => ({ default_model: DEFAULT_OPENAI_IMAGE_MODEL, models: [] } as ImageModelAvailability)).then(result => {
+    const unavailable = (): ImageModelAvailability => ({ default_model: DEFAULT_OPENAI_IMAGE_MODEL, models: [] });
+    void rendersApi.imageModels().then(result => {
+      // Discovery is read-only. A malformed proxy/older-server response must
+      // not crash the project or invent account balances and model access.
+      return result && Array.isArray(result.models)
+        && result.models.every(model => model && typeof model.id === 'string'
+          && (model.available === null || typeof model.available === 'boolean'))
+        && (PAID_IMAGE_MODELS.some(model => model.id === result.default_model) || result.default_model === 'gpt-image-2-2026-04-21')
+        ? result : unavailable();
+    }).catch(unavailable).then(result => {
       if (active) setDiscovery({ accountRevision, value: result });
     });
     return () => { active = false; };
