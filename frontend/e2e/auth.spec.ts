@@ -9,7 +9,7 @@ test.describe('Auth flow', () => {
 
     // Email and password inputs are present
     await expect(page.getByLabel('Email')).toBeVisible();
-    await expect(page.getByLabel('Password')).toBeVisible();
+    await expect(page.getByLabel('Password', { exact: true })).toBeVisible();
 
     // Link to register page exists
     const registerLink = page.getByRole('link', { name: 'Sign up' });
@@ -25,7 +25,7 @@ test.describe('Auth flow', () => {
     // Form fields
     await expect(page.getByLabel('Full Name')).toBeVisible();
     await expect(page.getByLabel('Email')).toBeVisible();
-    await expect(page.getByLabel('Password')).toBeVisible();
+    await expect(page.getByLabel('Password', { exact: true })).toBeVisible();
 
     // Link back to login
     const loginLink = page.getByRole('link', { name: 'Sign in' });
@@ -55,7 +55,7 @@ test.describe('Auth flow', () => {
 
     await page.getByLabel('Full Name').fill('New User');
     await page.getByLabel('Email').fill('newuser@example.com');
-    await page.getByLabel('Password').fill('securepassword123');
+    await page.getByLabel('Password', { exact: true }).fill('securepassword123');
 
     await page.getByRole('button', { name: 'Create account' }).click();
 
@@ -115,7 +115,7 @@ test.describe('Auth flow', () => {
     await page.goto('/login');
 
     await page.getByLabel('Email').fill('testuser@example.com');
-    await page.getByLabel('Password').fill('password123');
+    await page.getByLabel('Password', { exact: true }).fill('password123');
 
     await page.getByRole('button', { name: 'Sign in' }).click();
 
@@ -136,7 +136,7 @@ test.describe('Auth flow', () => {
     await page.goto('/login');
 
     await page.getByLabel('Email').fill('bad@example.com');
-    await page.getByLabel('Password').fill('wrongpassword');
+    await page.getByLabel('Password', { exact: true }).fill('wrongpassword');
 
     await page.getByRole('button', { name: 'Sign in' }).click();
 

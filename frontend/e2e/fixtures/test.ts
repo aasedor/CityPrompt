@@ -50,6 +50,19 @@ export const test = base.extend<CityPromptFixtures>({
         body: '[]',
       });
     });
+    await page.route('**/api/v1/projects/*/details', async (route) => {
+      await route.fulfill({ status: 200, contentType: 'application/json',
+        body: JSON.stringify({ version: 1, revision: 0, can_edit: true,
+          benches: [], trees: [], props: [], surfaces: [] }) });
+    });
+    await page.route('**/api/v1/local-render/presets', async (route) => {
+      await route.fulfill({ status: 200, contentType: 'application/json',
+        body: JSON.stringify({ presets: [], credit_cost: 0 }) });
+    });
+    await page.route('**/api/v1/render/direct-3d-attempts/capabilities', async (route) => {
+      await route.fulfill({ status: 200, contentType: 'application/json',
+        body: JSON.stringify({ enabled: true, images_enabled: true, video_enabled: false }) });
+    });
     // Reference layers are optional project context, loaded on workspace entry.
     await page.route('**/api/v1/reference-layers/projects/*', async (route) => {
       await route.fulfill({

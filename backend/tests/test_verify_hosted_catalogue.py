@@ -87,7 +87,7 @@ class Storage:
         return {"Body": body}
 
 
-def test_shipped_contract_covers_current_release_including_published_parkades():
+def test_shipped_contract_covers_published_release_and_identifies_local_pilots():
     root = Path(__file__).parents[2]
     rows = verify.load_expected(
         root / "backend/app/data/native_model_contract.json",
@@ -96,13 +96,21 @@ def test_shipped_contract_covers_current_release_including_published_parkades():
     )
     release = json.loads((root / "frontend/src/data/claudeBuildingRelease.json").read_text(encoding="utf-8"))
     additions = {entry["asset_id"]: entry for entry in release["entries"]}
-    assert len(additions) == 18
-    assert len(rows) == 64 + len(additions)
-    assert sum(row["local_trial_only"] for row in rows) == 0
+    assert len(additions) == 25
+    assert len(rows) == 68 + len(additions)
+    assert {row["asset_id"] for row in rows if row["local_trial_only"]} == {
+        "claude_climbing_crucible_v004",
+        "claude_climbing_overhang_v007",
+        "claude_climbing_reef_v009",
+        "claude_sandstone_clock_tower_v006",
+        "claude_fire_station_v010",
+        "claude_hospital_v006",
+        "claude_student_residence_v004",
+    }
     assert len({row["asset_id"] for row in rows}) == len(rows)
     added_rows = [row for row in rows if row["asset_id"] in additions]
     assert len(added_rows) == len(additions)
-    assert len([row for row in rows if row["asset_id"] not in additions]) == 64
+    assert len([row for row in rows if row["asset_id"] not in additions]) == 68
     for row in added_rows:
         entry = additions[row["asset_id"]]
         assert (row["candidate"], row["variant_id"], row["sha256"]) == (

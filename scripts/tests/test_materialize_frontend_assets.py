@@ -64,3 +64,53 @@ class FrontendArchiveMaterializationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Unsafe|escaped'):
             self.run_materializer()
         self.assertEqual(self.calls, [])
+
+    def startup_kit(self, **overrides):
+        row = {'url': '/park-kits/neighborhood-park-rustic-v0/test.glb',
+               'sha256': hashlib.sha256(self.payload).hexdigest(), 'bytes': len(self.payload), **overrides}
+        path = self.root / 'frontend/src/data/neighborhoodParkV0StickerKit.json'
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({'assets': {'test': row}}))
+        return row, self.root / ('frontend/public' + row['url'])
+
+    def test_materializes_pinned_startup_preloads(self):
+        row, target = self.startup_kit()
+        result = self.run_materializer()
+        self.assertEqual(target.read_bytes(), self.payload)
+        self.assertEqual(result['startup_outputs'], 1)
+        self.assertIn((row['url'], row['sha256']), self.calls)
+
+    def test_replaces_only_a_matching_lfs_pointer(self):
+        row, target = self.startup_kit()
+        target.parent.mkdir(parents=True)
+        target.write_text(f"version https://git-lfs.github.com/spec/v1\noid sha256:{row['sha256']}\nsize {row['bytes']}\n")
+        self.run_materializer()
+        self.assertEqual(target.read_bytes(), self.payload)
+
+    def test_preserves_conflicting_startup_payload(self):
+        _, target = self.startup_kit()
+        target.parent.mkdir(parents=True)
+        target.write_bytes(b'existing local work')
+        with self.assertRaisesRegex(ValueError, 'SHA-256'):
+            self.run_materializer()
+        self.assertEqual(target.read_bytes(), b'existing local work')
+
+    def test_rejects_mismatched_pointer_without_replacing_it(self):
+        row, target = self.startup_kit()
+        target.parent.mkdir(parents=True)
+        pointer = f"version https://git-lfs.github.com/spec/v1\noid sha256:{'0' * 64}\nsize {row['bytes']}\n".encode()
+        target.write_bytes(pointer)
+        with self.assertRaisesRegex(ValueError, 'pointer differs'):
+            self.run_materializer()
+        self.assertEqual(target.read_bytes(), pointer)
+
+    def test_rejects_startup_size_mismatch_before_writing(self):
+        _, target = self.startup_kit(bytes=len(self.payload) + 1)
+        with self.assertRaisesRegex(ValueError, 'size'):
+            self.run_materializer()
+        self.assertFalse(target.exists())
+
+    def test_rejects_startup_asset_outside_its_finite_kit(self):
+        self.startup_kit(url='/unrelated/test.glb')
+        with self.assertRaisesRegex(ValueError, 'startup kit'):
+            self.run_materializer()

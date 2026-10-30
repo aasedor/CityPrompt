@@ -168,6 +168,7 @@ jobs:
         run: npm run type-check
 
       - name: Hydrate finite crossing regression fixtures
+        working-directory: .
         run: |
           git lfs fetch origin --include="frontend/public/street-kits/claude-20261023/*.glb" --exclude=""
           git lfs checkout "frontend/public/street-kits/claude-20261023/*.glb"
