@@ -283,20 +283,64 @@ def test_unknown_repeat_family_needs_backend_support(package):
 def test_failed_write_restores_manifest_and_removes_only_new_deliveries(package, monkeypatch):
     root, path = package
     before = (root / LIBRARY).read_bytes()
-    original_write = Path.write_text
+    original_replace = Path.replace
 
-    def fail_picker(target, *args, **kwargs):
+    def fail_picker(temporary, target):
         if target == root / PICKER:
             raise OSError("simulated disk failure")
-        return original_write(target, *args, **kwargs)
+        return original_replace(temporary, target)
 
-    monkeypatch.setattr(Path, "write_text", fail_picker)
+    monkeypatch.setattr(Path, "replace", fail_picker)
     with pytest.raises(OSError, match="disk failure"):
         prepare(root, path, apply=True)
     assert (root / LIBRARY).read_bytes() == before
     assert not (root / LIBRARY.parent / "models/test-new-v001.glb").exists()
     assert not (root / LIBRARY.parent / "evidence/test-new-v001.json").exists()
     check(root)
+
+
+def test_windows_mapped_git_reader_retries_without_changing_publication_checks(package, monkeypatch):
+    import errno
+    from tools import catalogue_promotion as promotion
+
+    root, path = package
+    original_replace = Path.replace
+    blocked = 0
+
+    def transient_reader(temporary, target):
+        nonlocal blocked
+        if target == root / LIBRARY and blocked < 2:
+            blocked += 1
+            raise OSError(errno.EINVAL, 'mapped Git reader prevents truncation')
+        return original_replace(temporary, target)
+
+    monkeypatch.setattr(promotion, '_WINDOWS', True, raising=False)
+    monkeypatch.setattr(Path, 'replace', transient_reader)
+    prepare(root, path, apply=True)
+    assert blocked == 2
+    assert len(check(root)['entries']) == 2
+
+
+def test_persistent_mapped_reader_keeps_last_good_manifest(package, monkeypatch):
+    import errno
+    from tools import catalogue_promotion as promotion
+
+    root, path = package
+    before = (root / LIBRARY).read_bytes()
+    original_replace = Path.replace
+
+    def persistent_reader(temporary, target):
+        if target == root / LIBRARY:
+            raise OSError(errno.EINVAL, 'persistent mapped reader')
+        return original_replace(temporary, target)
+
+    monkeypatch.setattr(promotion, '_WINDOWS', True, raising=False)
+    monkeypatch.setattr(Path, 'replace', persistent_reader)
+    with pytest.raises(OSError, match='persistent mapped reader'):
+        prepare(root, path, apply=True)
+    assert (root / LIBRARY).read_bytes() == before
+    assert not (root / LIBRARY.parent / 'models/test-new-v001.glb').exists()
+    assert not list((root / LIBRARY).parent.glob('.promotion-*.tmp'))
 
 
 def test_clay_dry_run_does_not_require_legacy_seed(package, monkeypatch):

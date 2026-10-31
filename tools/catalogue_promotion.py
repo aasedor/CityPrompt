@@ -9,13 +9,17 @@ from __future__ import annotations
 import argparse
 import ast
 import copy
+import errno
 import hashlib
 import json
 import math
+import os
 from pathlib import Path
 import re
 import shutil
 import tempfile
+import time
+from typing import Callable, TypeVar
 
 from tools.rlasm_clay_library import REPO_ROOT, _glb_counts, _validate_payload
 
@@ -45,6 +49,36 @@ TRIAL_CHECKS = (
     "close_and_occluded_capture",
     "no_console_errors",
 )
+_WINDOWS = os.name == "nt"
+_T = TypeVar("_T")
+
+
+def _retry_mapped_write(write: Callable[[], _T]) -> _T:
+    """Git's short-lived mapped readers can prevent Windows file truncation."""
+    for attempt in range(50):
+        try:
+            return write()
+        except OSError as exc:
+            if not _WINDOWS or exc.errno != errno.EINVAL or attempt == 49:
+                raise
+            time.sleep(0.1)
+    raise AssertionError("Unreachable write retry")
+
+
+def _atomic_write(path: Path, data: bytes) -> None:
+    # Git permits replacement while its mapped readers retain the old file;
+    # truncating that same file fails on Windows and can expose partial JSON.
+    fd, temporary = tempfile.mkstemp(prefix=".promotion-", suffix=".tmp", dir=path.parent)
+    try:
+        with os.fdopen(fd, "wb") as handle:
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        if path.exists():
+            shutil.copymode(path, temporary)
+        _retry_mapped_write(lambda: Path(temporary).replace(path))
+    finally:
+        Path(temporary).unlink(missing_ok=True)
 
 
 def digest(path: Path) -> str:
@@ -333,14 +367,14 @@ def prepare(root: Path, package: Path, *, apply: bool = False, trial_only: bool 
                 (root / dest).parent.mkdir(parents=True, exist_ok=True)
                 if not (root / dest).exists():
                     shutil.copyfile(src, root / dest)
-            (root / LIBRARY).write_text(encoded(payload), encoding="utf-8", newline="\n")
-            (root / PICKER).write_text(output, encoding="utf-8", newline="\n")
+            _atomic_write(root / LIBRARY, encoded(payload).encode("utf-8"))
+            _atomic_write(root / PICKER, output.encode("utf-8"))
         except Exception:
             for path, original in backups.items():
                 if original is None:
                     (root / path).unlink(missing_ok=True)
-                else:
-                    (root / path).write_bytes(original)
+                elif (root / path).read_bytes() != original:
+                    _atomic_write(root / path, original)
             raise
     return [p.as_posix() for p in paths]
 
@@ -366,7 +400,7 @@ def main() -> None:
         payload = check(REPO_ROOT, hydrated=not args.metadata_only)
         print(f"PASS: {len(payload['entries'])} buildings ({'metadata only' if args.metadata_only else 'hydrated'})")
     elif args.command == "sync":
-        (REPO_ROOT / PICKER).write_text(picker_source(read(REPO_ROOT / LIBRARY)), encoding="utf-8", newline="\n")
+        _atomic_write(REPO_ROOT / PICKER, picker_source(read(REPO_ROOT / LIBRARY)).encode("utf-8"))
         print(PICKER)
     elif args.command == "template":
         entry = copy.deepcopy(read(REPO_ROOT / LIBRARY)["entries"][0])
