@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+from dataclasses import replace
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -258,6 +259,7 @@ def _privacy(client, bucket, key):
 
 
 def verify_catalogue(expected, bindings, bucket, storage, anonymous):
+    from app.services.building_only_envelopes import building_only_dimensions, building_only_envelopes
     from app.services.lego_assembly import descriptor_from_library_entry
 
     results = []
@@ -312,6 +314,17 @@ def verify_catalogue(expected, bindings, bucket, storage, anonymous):
                         metadata_=metadata,
                     )
                 )
+                if descriptor and descriptor.model_revision in building_only_envelopes():
+                    retained = building_only_dimensions(
+                        descriptor.model_revision, descriptor.model_url, descriptor.delivery_format, descriptor.role
+                    )
+                    if retained:
+                        # The planner applies this exact geometry extraction while
+                        # retaining the original GLB and Model Library metadata.
+                        # A different source hash cannot borrow its reviewed bounds.
+                        if building_only_envelopes()[descriptor.model_revision]["sourceSha256"] != wanted["sha256"]:
+                            raise ValueError("Retained bounds belong to a different source model")
+                        descriptor = replace(descriptor, width_m=retained[0], depth_m=retained[1], height_m=retained[2])
                 valid = (
                     descriptor
                     and descriptor.role == wanted.get("role", "assembled")

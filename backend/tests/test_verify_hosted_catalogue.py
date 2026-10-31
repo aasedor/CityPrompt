@@ -144,6 +144,49 @@ def test_exact_runtime_binding_private_bytes_and_hash_are_verified():
     assert all(body.closed for body in private.bodies)
 
 
+@pytest.mark.parametrize("change", [None, "url", "hash", "dimensions"])
+def test_retained_building_bounds_follow_runtime_without_changing_original_seed(change, monkeypatch):
+    from tools.rlasm_clay_library import clay_seed_rows
+
+    root = Path(__file__).parents[2]
+    library_path = root / "seed/model-library/rlasm-architectural-clay/library.json"
+    wanted = next(
+        row
+        for row in verify.load_expected(
+            root / "backend/app/data/native_model_contract.json",
+            library_path,
+            [root / "seed/claude-five-trial/library.json"],
+        )
+        if row["asset_id"] == "claude_climbing_overhang_v007"
+    )
+    library = json.loads(library_path.read_text(encoding="utf-8"))
+    row = next(row for row in clay_seed_rows(library) if row["metadata"]["rlasm"]["candidate"] == wanted["candidate"])
+    original = json.dumps(row, sort_keys=True)
+    assert row["metadata"]["lego"]["width_m"] > wanted["dimensions_m"][0]
+    if change == "url":
+        row["model_url"] = "/api/v1/files/library/unreviewed.glb"
+    elif change == "hash":
+        wanted["sha256"] = row["metadata"]["rlasm"]["model_sha256"] = "0" * 64
+    elif change == "dimensions":
+        wanted["dimensions_m"] = [wanted["dimensions_m"][0] + 1, *wanted["dimensions_m"][1:]]
+    calls = []
+
+    def stored_model(client, bucket, key, expected):
+        calls.append(expected["sha256"])
+        return None
+
+    monkeypatch.setattr(verify, "_stored_model", stored_model)
+    result = verify.verify_catalogue([wanted], [row], "private-test", Storage(), Storage(denied=True))[0]
+    if change:
+        assert result["status"] == "failed"
+        assert "invalid_runtime_binding" in result["issues"]
+        assert not calls
+    else:
+        assert result["status"] == "verified"
+        assert calls and set(calls) == {wanted["sha256"]}
+        assert json.dumps(row, sort_keys=True) == original
+
+
 def module_fixture():
     path = (
         Path(__file__).parents[2]
