@@ -8,7 +8,6 @@ import { LandingPage } from '@/features/landing/LandingPage';
 import { ProjectListPage } from '@/features/projects/ProjectListPage';
 import { SharedProjectPage } from '@/features/projects/SharedProjectPage';
 import { InvitationPage } from '@/features/projects/InvitationPage';
-import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
 import { OAuthCallbackPage } from '@/features/auth/OAuthCallbackPage';
 import { ForgotPasswordPage } from '@/features/auth/ForgotPasswordPage';
@@ -82,7 +81,7 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
 
       {/* Auth routes */}
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<LandingPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/oauth/callback" element={<OAuthCallbackPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />

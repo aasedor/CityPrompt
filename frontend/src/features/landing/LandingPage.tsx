@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LoginForm } from '@/features/auth/LoginPage';
+import { safeReturnTo } from '@/features/auth/returnTo';
 import { useAuthStore } from '@/store';
 import './LandingPage.css';
 
@@ -12,16 +13,21 @@ import streetFilm from './media/tree-lined-street.mp4';
 const mediaAssets: Record<string, string> = { 'kensington-aerial.png': aerialImage, 'kensington-context.png': contextImage, 'tree-lined-street.png': streetImage, 'tree-lined-street.mp4': streetFilm };
 const media = (name: string) => mediaAssets[name];
 
-function StudioEntry({ authenticated }: { authenticated: boolean }) {
+function StudioEntry({ authenticated, returnTo }: { authenticated: boolean; returnTo: string }) {
   return <aside className="login-card" id="studio" aria-labelledby="login-title">
     <p className="eyebrow">Urban Studies 451</p>
     <h2 id="login-title">{authenticated ? 'Continue your work.' : 'Your project starts here.'}</h2>
     <p className="login-intro">{authenticated ? 'Open your saved projects to continue designing.' : 'Sign in to create a project or continue your saved work.'}</p>
-    {authenticated ? <Link className="pill login-submit" to="/projects">Continue to projects</Link> : <LoginForm />}
+    {authenticated ? <Link className="pill login-submit" to={returnTo}>Continue to projects</Link> : <LoginForm returnTo={returnTo} />}
   </aside>;
 }
 
 export function LandingPage() {
+  const location = useLocation();
+  const fromLocation = location.state?.from;
+  const returnTo = safeReturnTo(new URLSearchParams(location.search).get('returnTo') || (fromLocation
+    ? `${fromLocation.pathname || '/projects'}${fromLocation.search || ''}${fromLocation.hash || ''}`
+    : '/projects'));
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
   const isLoading = useAuthStore(state => state.isLoading);
   const [showRender, setShowRender] = useState(false);
@@ -30,7 +36,7 @@ export function LandingPage() {
 
     <header className="wrap nav"><a className="brand" href="#main-content" aria-label="City Prompt home"><img src="/images/city-prompt-logo.png" alt="" />CITY PROMPT</a><nav className="navlinks" aria-label="Main navigation"><a href="#how-it-works">Project steps</a><a href="#perspectives">See the context</a><a className="pill" href="#studio">{isAuthenticated ? 'Your projects' : 'Sign in'}</a></nav></header>
     <main id="main-content">
-      <section className="hero" aria-labelledby="hero-title"><img src={aerialImage} alt="Kensington Courtyard design study showing the proposal within surrounding streets, transit, buildings and hillside terrain" /><div className="wrap hero-inner"><div className="hero-top"><p className="eyebrow"><span className="dot"></span>Your final-project workspace</p></div><div className="hero-bottom"><div className="hero-story"><p className="course-name">Urban Studies 451 <span>Planning in the Canadian City</span></p><h1 id="hero-title">Build your<br />final project.</h1><p className="hero-copy">City Prompt is a tool to help you understand, build and visualize your final project for Urban Studies 451.</p><div className="hero-actions"><a className="text-link" href="#how-it-works">Start with the steps <span>↓</span></a></div></div><StudioEntry authenticated={isAuthenticated} /></div></div></section>
+      <section className="hero" aria-labelledby="hero-title"><img src={aerialImage} alt="Kensington Courtyard design study showing the proposal within surrounding streets, transit, buildings and hillside terrain" /><div className="wrap hero-inner"><div className="hero-top"><p className="eyebrow"><span className="dot"></span>Your final-project workspace</p></div><div className="hero-bottom"><div className="hero-story"><p className="course-name">Urban Studies 451 <span>Planning in the Canadian City</span></p><h1 id="hero-title">Build your<br />final project.</h1><p className="hero-copy">City Prompt is a tool to help you understand, build and visualize your final project for Urban Studies 451.</p><div className="hero-actions"><a className="text-link" href="#how-it-works">Start with the steps <span>↓</span></a></div></div><StudioEntry authenticated={isAuthenticated} returnTo={returnTo} /></div></div></section>
       <div className="wrap rail"><span className="eyebrow">Site → Design → Present</span><span>Kensington study · Illustrative AI render</span></div>
       <section className="wrap intro" id="how-it-works" aria-labelledby="steps-title">
         <div className="section-top"><div><p className="eyebrow">A guide to getting started</p><h2 id="steps-title">Five steps for<br />your final project.</h2></div><p className="section-note">Use these steps to develop your proposal in City Prompt. Refer to your course assignment for submission requirements and assessment criteria.</p></div>
