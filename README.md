@@ -1,5 +1,7 @@
 # City Prompt
 
+[![CI](https://github.com/aasedor/CityPrompt/actions/workflows/ci.yml/badge.svg?branch=deployment-version)](https://github.com/aasedor/CityPrompt/actions/workflows/ci.yml)
+
 City Prompt is an interactive urban-design workspace for turning a site,
 planning intent, and a catalogue of building and public-realm archetypes into
 editable 2D plans, explorable 3D scenes, and presentation renders.
@@ -178,6 +180,15 @@ All new building-family work must follow the canonical
 [the high-quality building memory](docs/HIGH_QUALITY_3D_BUILDING_MEMORY.md).
 Older Sticker Method/V98 packages are historical compatibility records, not
 authority for new construction or keeper promotion.
+
+## Repository guide
+
+- [HANDOFF.md](HANDOFF.md): current state of the repository, live deployment
+  model, verification gates and open items for whoever takes the project over.
+- [docs/README.md](docs/README.md): index of the canonical documents; dated
+  files in `docs/` are historical records.
+- [PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md): the active release checklist.
+- [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
 
 ## Contributing
 

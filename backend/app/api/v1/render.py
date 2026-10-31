@@ -408,7 +408,7 @@ def _build_gemini_url(settings, model: str | None = None) -> str:
             f"?key={settings.gemini_api_key}"
         )
     else:
-        # Vertex AI path â€” requires Generative AI API enabled on project
+        # Vertex AI path — requires Generative AI API enabled on project
         location = "us-central1"
         return (
             f"https://{location}-aiplatform.googleapis.com/v1/"
@@ -427,7 +427,7 @@ def _get_auth_headers(settings) -> dict[str, str]:
     headers = {"Content-Type": "application/json"}
 
     if not settings.gemini_api_key:
-        # Vertex AI â€” need Bearer token
+        # Vertex AI — need Bearer token
         import google.auth
         import google.auth.transport.requests
 

@@ -873,7 +873,7 @@
           "id": "classic_brownstone_modern_infill",
           "label": "Contemporary Infill",
           "thumbnailUrl": "/archetypes/buildings/classic_brownstone_streetwall/variant_3.png",
-          "description": "Modern infill within a traditional streetwall â€” glass and steel facade with bronze-anodized frames respecting the cornice line and setback.",
+          "description": "Modern infill within a traditional streetwall — glass and steel facade with bronze-anodized frames respecting the cornice line and setback.",
           "facadeDetail": {
             "primaryMaterial": "floor-to-ceiling glass panels",
             "secondaryMaterial": "bronze-anodized aluminum mullions",
@@ -2369,11 +2369,11 @@
           "id": "modernist_civic_glass_volume",
           "label": "Transparent Glass Volume",
           "thumbnailUrl": "/archetypes/buildings/modernist_civic_block/variant_3.png",
-          "description": "Fully glazed modernist civic block â€” a transparent volume revealing public functions inside, with minimal steel structure and night-time civic glow.",
+          "description": "Fully glazed modernist civic block — a transparent volume revealing public functions inside, with minimal steel structure and night-time civic glow.",
           "facadeDetail": {
             "primaryMaterial": "full-height structural glass walls",
             "secondaryMaterial": "slender steel cruciform columns",
-            "groundFloor": "continuous glass at grade â€” no visual barrier to public",
+            "groundFloor": "continuous glass at grade — no visual barrier to public",
             "colorScheme": "transparent glass, silver steel, warm interior light"
           },
           "roofDetail": {
@@ -3317,7 +3317,7 @@
           "facadeDetail": {
             "primaryMaterial": "exposed concrete frame with mushroom columns",
             "secondaryMaterial": "floor-to-ceiling glass infill between concrete bays",
-            "groundFloor": "open concrete colonnade with cafÃ© tables",
+            "groundFloor": "open concrete colonnade with café tables",
             "colorScheme": "raw concrete, clear glass, steel frames"
           },
           "roofDetail": {
@@ -4203,7 +4203,7 @@
             "colorScheme": "pearl white shell, warm interior glow through perforations"
           },
           "roofDetail": {
-            "form": "continuous flowing shell â€” no distinct roof line",
+            "form": "continuous flowing shell — no distinct roof line",
             "material": "GFRC panels continuing from walls seamlessly"
           },
           "shadeId": null,
@@ -4624,7 +4624,7 @@
             "primaryMaterial": "polychrome glazed terra cotta in geometric patterns",
             "secondaryMaterial": "turquoise and gold chevron tile borders",
             "groundFloor": "colorful mosaic entry surround with bronze doors",
-            "colorScheme": "turquoise, gold, orange, cream â€” polychrome palette"
+            "colorScheme": "turquoise, gold, orange, cream — polychrome palette"
           },
           "roofDetail": {
             "form": "stepped pyramid crown with polychrome accents",
@@ -4837,7 +4837,7 @@
           "description": "Egyptian Revival theater with battered pylons, lotus column entry, winged sun disc ornament, and hieroglyphic-inspired geometric patterns.",
           "facadeDetail": {
             "primaryMaterial": "painted concrete in sand and gold tones",
-            "secondaryMaterial": "cast plaster Egyptian ornament â€” lotus columns, scarabs",
+            "secondaryMaterial": "cast plaster Egyptian ornament — lotus columns, scarabs",
             "groundFloor": "battered pylon entry with lotus-capital columns",
             "colorScheme": "sand gold, turquoise accents, black and gold ornament"
           },
@@ -5174,7 +5174,7 @@
           "facadeDetail": {
             "primaryMaterial": "plain tadelakt (polished lime plaster) exterior",
             "secondaryMaterial": "ornate zellige mosaic and carved plaster inside courtyard",
-            "groundFloor": "plain wooden door in unadorned wall â€” hidden garden within",
+            "groundFloor": "plain wooden door in unadorned wall — hidden garden within",
             "colorScheme": "plain exterior, interior: turquoise zellige, carved white plaster"
           },
           "roofDetail": {
@@ -5329,11 +5329,11 @@
           "facadeDetail": {
             "primaryMaterial": "seamless white cement render",
             "secondaryMaterial": "frameless recessed glass slots",
-            "groundFloor": "flush glass entry â€” near-invisible door in white wall",
+            "groundFloor": "flush glass entry — near-invisible door in white wall",
             "colorScheme": "pure white, reflective water, minimal green"
           },
           "roofDetail": {
-            "form": "flat â€” indistinguishable from walls",
+            "form": "flat — indistinguishable from walls",
             "material": "white-rendered parapet merging with facade"
           },
           "shadeId": null,
@@ -5348,12 +5348,12 @@
           "description": "Board-formed concrete courtyard block with raked gravel zen garden, single specimen tree, and precise rectangular openings.",
           "facadeDetail": {
             "primaryMaterial": "smooth board-formed concrete (Tadao Ando style)",
-            "secondaryMaterial": "precisely cut rectangular window openings â€” no frames",
+            "secondaryMaterial": "precisely cut rectangular window openings — no frames",
             "groundFloor": "concrete threshold opening to raked gravel courtyard",
             "colorScheme": "raw concrete, raked white gravel, single green tree"
           },
           "roofDetail": {
-            "form": "flat concrete slab â€” seamless",
+            "form": "flat concrete slab — seamless",
             "material": "exposed concrete with hidden drainage"
           },
           "shadeId": null,
@@ -5482,7 +5482,7 @@
         "groundFloor": "flush pivot entry door (same material as facade), full-height glazed panel revealing interior stair",
         "upperFloors": "one or two precisely placed openings, material continuity wall-to-sky, deep window reveals",
         "cornice": "knife-edge parapet, invisible from street level",
-        "colorScheme": "monochromatic â€” either all dark brick, all white render, or all grey concrete"
+        "colorScheme": "monochromatic — either all dark brick, all white render, or all grey concrete"
       },
       "roofDetail": {
         "form": "flat with invisible parapet",
@@ -5496,11 +5496,11 @@
           "id": "minimalist_infill_glass_slot",
           "label": "Glass Slot House",
           "thumbnailUrl": "/archetypes/buildings/minimalist_infill_townhouse/variant_0.png",
-          "description": "Ultra-narrow glass slot townhouse â€” full-height glazing on the street side, white-painted brick party walls, and a skylit stairwell visible from outside.",
+          "description": "Ultra-narrow glass slot townhouse — full-height glazing on the street side, white-painted brick party walls, and a skylit stairwell visible from outside.",
           "facadeDetail": {
             "primaryMaterial": "full-height structural glass front wall",
             "secondaryMaterial": "white-painted reclaimed brick side walls visible through glass",
-            "groundFloor": "flush glass door with no frame â€” entire front is glass",
+            "groundFloor": "flush glass door with no frame — entire front is glass",
             "colorScheme": "clear glass, white interior walls, warm wood floors"
           },
           "roofDetail": {
@@ -5536,15 +5536,15 @@
           "id": "minimalist_infill_brick_monolith",
           "label": "Brick Monolith",
           "thumbnailUrl": "/archetypes/buildings/minimalist_infill_townhouse/variant_2.png",
-          "description": "Monolithic brick townhouse â€” single material from ground to roof, no trim, windows as precise cut-outs, and a single pivoting front door.",
+          "description": "Monolithic brick townhouse — single material from ground to roof, no trim, windows as precise cut-outs, and a single pivoting front door.",
           "facadeDetail": {
-            "primaryMaterial": "continuous dark brick â€” walls, reveals, sills all brick",
-            "secondaryMaterial": "none â€” pure monolithic brick expression",
-            "groundFloor": "large pivoting brick-faced door â€” barely visible closed",
+            "primaryMaterial": "continuous dark brick — walls, reveals, sills all brick",
+            "secondaryMaterial": "none — pure monolithic brick expression",
+            "groundFloor": "large pivoting brick-faced door — barely visible closed",
             "colorScheme": "uniform dark buff brick, frameless glass recessed 200mm"
           },
           "roofDetail": {
-            "form": "flat â€” brick parapet continues monolithic expression",
+            "form": "flat — brick parapet continues monolithic expression",
             "material": "brick parapet with hidden membrane behind"
           },
           "shadeId": null,
@@ -5556,10 +5556,10 @@
           "id": "minimalist_infill_concrete_cantilever",
           "label": "Concrete Cantilever",
           "thumbnailUrl": "/archetypes/buildings/minimalist_infill_townhouse/variant_3.png",
-          "description": "Cantilevered concrete townhouse â€” upper floor projects dramatically over ground-floor glass, with board-formed texture and a single tree in front.",
+          "description": "Cantilevered concrete townhouse — upper floor projects dramatically over ground-floor glass, with board-formed texture and a single tree in front.",
           "facadeDetail": {
             "primaryMaterial": "board-formed concrete upper volume",
-            "secondaryMaterial": "fully glazed ground floor â€” structural glass supporting cantilever",
+            "secondaryMaterial": "fully glazed ground floor — structural glass supporting cantilever",
             "groundFloor": "transparent glass base with single concrete column",
             "colorScheme": "raw concrete above, glass below, single tree"
           },
@@ -5748,7 +5748,7 @@
           "id": "parisian_modern_insertion",
           "label": "Contemporary Parisian Infill",
           "thumbnailUrl": "/archetypes/buildings/parisian_midrise_block/variant_2.png",
-          "description": "Modern infill respecting Haussmann streetwall â€” glass and steel at setback, stone-clad base matching neighbors, planted terraces at mansard level.",
+          "description": "Modern infill respecting Haussmann streetwall — glass and steel at setback, stone-clad base matching neighbors, planted terraces at mansard level.",
           "facadeDetail": {
             "primaryMaterial": "limestone-clad lower floors matching adjacent Haussmann",
             "secondaryMaterial": "setback glass and metal upper floors",
@@ -5768,7 +5768,7 @@
           "id": "parisian_post_haussmann",
           "label": "Post-Haussmann Brick & Stone",
           "thumbnailUrl": "/archetypes/buildings/parisian_midrise_block/variant_3.png",
-          "description": "Post-Haussmann (1920s-30s) with brick upper floors, stone base, geometric iron balconies, and bow windows â€” transitioning to early modernism.",
+          "description": "Post-Haussmann (1920s-30s) with brick upper floors, stone base, geometric iron balconies, and bow windows — transitioning to early modernism.",
           "facadeDetail": {
             "primaryMaterial": "red-brown brick with stone banding at floor levels",
             "secondaryMaterial": "geometric art deco iron balconies",
@@ -5969,7 +5969,7 @@
           "description": "Contemporary glass corner building respecting Parisian scale, with a dramatic full-height glass corner revealing the interior, limestone-clad flanking walls.",
           "facadeDetail": {
             "primaryMaterial": "limestone-clad solid flanking walls",
-            "secondaryMaterial": "full-height structural glass corner â€” no mullions at turn",
+            "secondaryMaterial": "full-height structural glass corner — no mullions at turn",
             "groundFloor": "glass corner retail space with views in two directions",
             "colorScheme": "cream limestone sides, transparent glass corner, warm glow"
           },
@@ -6101,7 +6101,7 @@
           "description": "Contemporary Austrian alpine building with dark larch cladding, large picture windows framing mountain views, and a simple pitched roof.",
           "facadeDetail": {
             "primaryMaterial": "dark-stained larch vertical board cladding",
-            "secondaryMaterial": "large frameless picture windows â€” mountain view frames",
+            "secondaryMaterial": "large frameless picture windows — mountain view frames",
             "groundFloor": "concrete plinth merging into hillside with flush timber door",
             "colorScheme": "dark larch, frameless glass, concrete plinth, white snow"
           },
@@ -6415,7 +6415,7 @@
         "colorScheme": "warm grey and silver panels, clear glass, bright wayfinding accents, green roof podium"
       },
       "roofDetail": {
-        "form": "flat at multiple levels â€” podium and tower",
+        "form": "flat at multiple levels — podium and tower",
         "material": "green roof on podium, membrane with solar on tower roof",
         "features": "rooftop amenity space, solar arrays, mechanical penthouse, transit canopy structure at ground level",
         "aerialAppearance": "tower rising from green-roofed podium, solar panels on tower roof, transit infrastructure below"
@@ -6848,14 +6848,14 @@
           "thumbnailUrl": "/archetypes/buildings/glass_tower_podium_modern/variant_3.png",
           "description": "Ultra-minimal dark glass tower with near-invisible mullions, a monolithic obsidian appearance, and a subtle slot entry at the base.",
           "facadeDetail": {
-            "primaryMaterial": "dark grey low-E glass â€” near-opaque from outside",
-            "secondaryMaterial": "recessed black aluminum mullions â€” near invisible",
+            "primaryMaterial": "dark grey low-E glass — near-opaque from outside",
+            "secondaryMaterial": "recessed black aluminum mullions — near invisible",
             "groundFloor": "understated slot entry in dark stone base",
             "colorScheme": "dark monolithic glass, black stone base, minimal"
           },
           "roofDetail": {
-            "form": "flat â€” clean termination with no crown",
-            "material": "dark glass parapet â€” seamless top edge"
+            "form": "flat — clean termination with no crown",
+            "material": "dark glass parapet — seamless top edge"
           },
           "shadeId": null,
           "palette": {
@@ -6943,7 +6943,7 @@
         "accentMaterial": "polished granite at base, decorative lighting at crown",
         "groundFloor": "interconnected lobby and retail at podium level, covered public plaza, water features",
         "upperFloors": "all-glass curtain wall with varied tints between towers, sky bridges connecting towers, expressed floor plates",
-        "cornice": "varied tower crowns â€” flat-top, angled, or illuminated",
+        "cornice": "varied tower crowns — flat-top, angled, or illuminated",
         "colorScheme": "reflective glass in blue-silver tones, white structure, polished stone base"
       },
       "roofDetail": {
@@ -6982,7 +6982,7 @@
           "maxFloors": 6,
           "suggestedFloorHeight": 3.8,
           "suggestedAreaSqm": 8000,
-          "description": "Horizontal glass office campus â€” 3-4 story interconnected glass pavilions around landscaped courtyards, with covered walkways and water features.",
+          "description": "Horizontal glass office campus — 3-4 story interconnected glass pavilions around landscaped courtyards, with covered walkways and water features.",
           "facadeDetail": {
             "primaryMaterial": "floor-to-ceiling clear glass walls",
             "secondaryMaterial": "white steel colonnade and walkway canopies",
@@ -7114,7 +7114,7 @@
       },
       "renderPrompt": {
         "mapOverlay": "Replace the colored building block with a photorealistic civic monumental institution. Keep the exact same building footprint and height. Bold contemporary civic building with monumental stone or concrete forms, large-scale glazed entry hall, public forecourt, and institutional gravitas. 4-8 storey. Maintain the surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
-        "roofView": "Replace the colored block viewed from above with a sculptural roof form â€” possibly green roof, dramatic overhang, or copper-clad geometric volume. Keep surrounding context exactly as-is.",
+        "roofView": "Replace the colored block viewed from above with a sculptural roof form — possibly green roof, dramatic overhang, or copper-clad geometric volume. Keep surrounding context exactly as-is.",
         "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, neon, unrealistic colors"
       },
       "facadeDetail": {
@@ -7127,7 +7127,7 @@
         "colorScheme": "warm grey stone or concrete, clear glass main hall, bronze or corten accents"
       },
       "roofDetail": {
-        "form": "sculptural â€” cantilever, fold, or dramatic overhang",
+        "form": "sculptural — cantilever, fold, or dramatic overhang",
         "material": "standing-seam metal, copper, or green roof on flat sections",
         "features": "skylights to main hall, sculptural form visible from distance, concealed mechanical",
         "aerialAppearance": "distinctive sculptural roof form, possible copper or green surface, dramatic geometry"
@@ -7158,7 +7158,7 @@
           "id": "civic_monumental_modernist",
           "label": "Modernist Civic Monument",
           "thumbnailUrl": "/archetypes/buildings/civic_monumental_institution/variant_1.png",
-          "description": "Modernist monumental institution in concrete and glass â€” massive cantilevered volumes, open ground floor, and sculpture garden.",
+          "description": "Modernist monumental institution in concrete and glass — massive cantilevered volumes, open ground floor, and sculpture garden.",
           "facadeDetail": {
             "primaryMaterial": "board-formed concrete with massive cantilevers",
             "secondaryMaterial": "continuous strip glazing between concrete bands",
@@ -7198,7 +7198,7 @@
           "id": "civic_monumental_contemporary",
           "label": "Contemporary Civic Landmark",
           "thumbnailUrl": "/archetypes/buildings/civic_monumental_institution/variant_3.png",
-          "description": "Bold contemporary civic building as a landmark â€” dramatic cantilevers, gold-colored cladding, public roof terrace, and transparent ground floor.",
+          "description": "Bold contemporary civic building as a landmark — dramatic cantilevers, gold-colored cladding, public roof terrace, and transparent ground floor.",
           "facadeDetail": {
             "primaryMaterial": "gold-anodized aluminum panels",
             "secondaryMaterial": "structural glass walls at ground level",
@@ -7338,7 +7338,7 @@
             "colorScheme": "silver titanium, fractured glass, dramatic shadows"
           },
           "roofDetail": {
-            "form": "sculptural â€” no conventional roof, forms collide",
+            "form": "sculptural — no conventional roof, forms collide",
             "material": "titanium panels continuing from walls"
           },
           "shadeId": null,
@@ -7354,7 +7354,7 @@
           "maxFloors": 4,
           "suggestedFloorHeight": 5.0,
           "suggestedAreaSqm": 5000,
-          "description": "Converted industrial building as museum â€” retained brick and steel structure, bold modern insertion in glass and steel, turbine hall as gallery.",
+          "description": "Converted industrial building as museum — retained brick and steel structure, bold modern insertion in glass and steel, turbine hall as gallery.",
           "facadeDetail": {
             "primaryMaterial": "retained industrial brick walls",
             "secondaryMaterial": "modern glass and steel insertion/extension",
@@ -7383,7 +7383,7 @@
           },
           "roofDetail": {
             "form": "living green roof continuous with surrounding landscape",
-            "material": "intensive green roof â€” building nearly invisible from above"
+            "material": "intensive green roof — building nearly invisible from above"
           },
           "shadeId": null,
           "palette": {
@@ -7494,7 +7494,7 @@
             "colorScheme": "raw concrete, single window, interior garden glimpse"
           },
           "roofDetail": {
-            "form": "flat concrete â€” seamless with walls",
+            "form": "flat concrete — seamless with walls",
             "material": "exposed concrete with hidden drainage"
           },
           "shadeId": null,
@@ -7529,12 +7529,12 @@
           "description": "SANAA-inspired white abstract box on a narrow lane with irregularly placed windows of different sizes, ultra-thin walls, and an ethereal quality.",
           "facadeDetail": {
             "primaryMaterial": "thin white-painted steel panel walls",
-            "secondaryMaterial": "irregularly placed windows â€” varying sizes, no pattern",
+            "secondaryMaterial": "irregularly placed windows — varying sizes, no pattern",
             "groundFloor": "simple white door flush with wall",
             "colorScheme": "pure white, irregular windows, minimal"
           },
           "roofDetail": {
-            "form": "flat â€” barely distinguishable from walls",
+            "form": "flat — barely distinguishable from walls",
             "material": "white steel panel continuing from walls"
           },
           "shadeId": null,
@@ -7551,7 +7551,7 @@
             "primaryMaterial": "black steel plate panels",
             "secondaryMaterial": "natural timber, clear glass, and concrete in composition",
             "groundFloor": "pivoting black steel entry door with timber handle",
-            "colorScheme": "black steel, natural timber, concrete, glass â€” balanced"
+            "colorScheme": "black steel, natural timber, concrete, glass — balanced"
           },
           "roofDetail": {
             "form": "asymmetric mono-pitch",
@@ -7709,7 +7709,7 @@
           "facadeDetail": {
             "primaryMaterial": "original timber frame with bengara (red oxide) stain",
             "secondaryMaterial": "bamboo sudare blinds and wooden display shelves",
-            "groundFloor": "open facade â€” retractable panels opening cafe to street",
+            "groundFloor": "open facade — retractable panels opening cafe to street",
             "colorScheme": "bengara red timber, bamboo, earth tones, garden green"
           },
           "roofDetail": {
@@ -7881,7 +7881,7 @@
           "id": "eco_bioclimatic_living_building",
           "label": "Living Building Challenge",
           "thumbnailUrl": "/archetypes/buildings/eco_urban_bioclimatic_block/variant_2.png",
-          "description": "Living Building with net-positive energy, rainwater harvesting, composting toilets, living walls, and regenerative landscape â€” fully self-sufficient.",
+          "description": "Living Building with net-positive energy, rainwater harvesting, composting toilets, living walls, and regenerative landscape — fully self-sufficient.",
           "facadeDetail": {
             "primaryMaterial": "reclaimed timber and recycled steel structure",
             "secondaryMaterial": "full-coverage living green walls with native species",
@@ -7906,7 +7906,7 @@
             "primaryMaterial": "rammed earth walls with visible color layers",
             "secondaryMaterial": "heavy timber post-and-beam frame",
             "groundFloor": "thick rammed earth walls with deep-set timber openings",
-            "colorScheme": "earth tones â€” ochre, sienna, umber â€” natural timber"
+            "colorScheme": "earth tones — ochre, sienna, umber — natural timber"
           },
           "roofDetail": {
             "form": "timber structure with natural ventilation chimneys",
@@ -8174,7 +8174,7 @@
         "accentMaterial": "brushed stainless steel railings, teak timber decking on terraces",
         "groundFloor": "open-air lobby with cross-ventilation, resort reception, pool deck access, tropical garden",
         "upperFloors": "deep terraces stepping back with each floor, plunge pools on select units, timber louvre screens, tropical planting",
-        "cornice": "no traditional cornice â€” building steps back creating organic profile",
+        "cornice": "no traditional cornice — building steps back creating organic profile",
         "colorScheme": "white facades, natural timber screens, turquoise pool water, green tropical planting, blue sky"
       },
       "roofDetail": {
@@ -8261,7 +8261,7 @@
             "colorScheme": "natural cliff stone, cave interiors, azure sea"
           },
           "roofDetail": {
-            "form": "terraces cut into cliff â€” no conventional roof",
+            "form": "terraces cut into cliff — no conventional roof",
             "material": "stone terrace with canvas shade sails"
           },
           "shadeId": null,
@@ -8370,7 +8370,7 @@
             "primaryMaterial": "painted concrete in bright Caribbean colors",
             "secondaryMaterial": "timber louvered breezeway screens and balconies",
             "groundFloor": "open-air market arcade with painted concrete columns",
-            "colorScheme": "turquoise, coral, yellow â€” bright Caribbean palette"
+            "colorScheme": "turquoise, coral, yellow — bright Caribbean palette"
           },
           "roofDetail": {
             "form": "corrugated metal with wide ventilated eaves",
@@ -8545,12 +8545,12 @@
           "id": "custom_prompt_modern_neutral",
           "label": "Modern Neutral Baseline",
           "thumbnailUrl": "/archetypes/buildings/custom_prompt_ready_archetype/variant_0.png",
-          "description": "Clean modern building in neutral tones â€” a flexible baseline for custom prompt modifications. Simple rectangular form with glass and concrete.",
+          "description": "Clean modern building in neutral tones — a flexible baseline for custom prompt modifications. Simple rectangular form with glass and concrete.",
           "facadeDetail": {
             "primaryMaterial": "smooth white concrete panels",
             "secondaryMaterial": "clear glass in dark aluminum frames",
             "groundFloor": "glass entry with concrete canopy",
-            "colorScheme": "white concrete, dark frames, clear glass â€” neutral"
+            "colorScheme": "white concrete, dark frames, clear glass — neutral"
           },
           "roofDetail": {
             "form": "flat with clean parapet",
@@ -8721,11 +8721,11 @@
             "primaryMaterial": "colliding volumes in different materials",
             "secondaryMaterial": "fractured glass, rusted steel, raw concrete intersecting",
             "groundFloor": "angular entry cut through colliding volumes",
-            "colorScheme": "clashing materials â€” rust, glass, concrete, sharp angles"
+            "colorScheme": "clashing materials — rust, glass, concrete, sharp angles"
           },
           "roofDetail": {
-            "form": "no conventional roof â€” angular planes collide",
-            "material": "various â€” each volume has different material"
+            "form": "no conventional roof — angular planes collide",
+            "material": "various — each volume has different material"
           },
           "shadeId": null,
           "palette": {
@@ -8764,7 +8764,7 @@
           "maxFloors": 1,
           "suggestedFloorHeight": 4.0,
           "suggestedAreaSqm": 300,
-          "description": "Experimental pneumatic/tensile membrane structure â€” inflated ETFE cushions, cable-net walls, and a lightweight form that glows at night.",
+          "description": "Experimental pneumatic/tensile membrane structure — inflated ETFE cushions, cable-net walls, and a lightweight form that glows at night.",
           "facadeDetail": {
             "primaryMaterial": "ETFE pneumatic cushion panels",
             "secondaryMaterial": "stainless steel cable-net structure",
@@ -8787,8 +8787,8 @@
           "description": "3D-printed concrete experimental building with visible print layers creating organic curved forms, impossible with traditional construction.",
           "facadeDetail": {
             "primaryMaterial": "3D-printed concrete with visible layer lines",
-            "secondaryMaterial": "organic curved openings â€” no right angles",
-            "groundFloor": "flowing organic entry â€” printed in continuous curve",
+            "secondaryMaterial": "organic curved openings — no right angles",
+            "groundFloor": "flowing organic entry — printed in continuous curve",
             "colorScheme": "grey printed concrete, organic curves, layer texture"
           },
           "roofDetail": {

@@ -89,7 +89,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
       const response = await siteZonesApi.previewLayouts(zone.id);
       setLayoutPreview(zone.id, response.options); // Resets imageUrls to {}
       clearLockedLayers();
-      toast.success(`Generated ${response.options.length} layout options â€” rendering previews...`);
+      toast.success(`Generated ${response.options.length} layout options — rendering previews...`);
     } catch {
       toast.error('Failed to generate layout options');
     } finally {
@@ -105,7 +105,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
       await siteZonesApi.applyLayout(zone.id, chosen.option_index, chosen);
       clearLayoutPreview();
       clearLockedLayers();
-      toast.success('Layout applied â€” buildings created');
+      toast.success('Layout applied — buildings created');
       onApplied();
     } catch {
       toast.error('Failed to apply layout');
@@ -122,7 +122,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
     try {
       const response = await siteZonesApi.regenerateLayout(zone.id, lockedLayers);
       setLayoutPreview(zone.id, response.options); // Resets imageUrls to {}
-      toast.success(`Regenerated ${response.options.length} layout options â€” rendering previews...`);
+      toast.success(`Regenerated ${response.options.length} layout options — rendering previews...`);
     } catch {
       toast.error('Failed to regenerate layout');
     } finally {
@@ -136,7 +136,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
     lockedLayers.green_spaces.length > 0
   );
 
-  // Not yet previewing â€” show the trigger button
+  // Not yet previewing — show the trigger button
   if (!isPreviewActive) {
     return (
       <button
@@ -152,7 +152,7 @@ export function LayoutPreviewPanel({ zone, onApplied, referenceContext, siblingZ
 
   const renderingCount = renderingIndices.size;
 
-  // Previewing â€” show option cards with AI-rendered images
+  // Previewing — show option cards with AI-rendered images
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">

@@ -40,10 +40,10 @@ import { hasFixedBuildingFootprint } from '@/features/pickPlace/buildingFootprin
 import { useWorkingViewQuality } from './useWorkingViewQuality';
 import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
 /**
- * GlobeSitePlannerMap.tsx â€” Google Earth-style 3D globe with SiteForge tools.
+ * GlobeSitePlannerMap.tsx — Google Earth-style 3D globe with SiteForge tools.
  *
  * Full-screen globe with drawing handled at the DOM level (not inside R3F).
- * GlobeControls always enabled â€” drawing uses click vs drag detection.
+ * GlobeControls always enabled — drawing uses click vs drag detection.
  */
 
 import { useContext, useEffect, useRef, useState, useCallback, useMemo } from 'react';
@@ -262,7 +262,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 const DEG_TO_RAD = Math.PI / 180;
 const RAD_TO_DEG = 180 / Math.PI;
 
-// Default fallback elevation (Calgary) â€” used until dynamic fetch completes
+// Default fallback elevation (Calgary) — used until dynamic fetch completes
 const DEFAULT_TERRAIN_ELEVATION = 1045;
 const DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = 120;
 const MIN_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND = DEFAULT_INITIAL_CAMERA_HEIGHT_ABOVE_GROUND;
@@ -1733,7 +1733,7 @@ export function GlobeSitePlannerMap({
   const hasDrawingTool = activeSitePlannerTool !== null;
   const linear = isLinearTool(activeSitePlannerTool);
 
-  // LOD settlement state â€” true when 3D tiles have fully loaded
+  // LOD settlement state — true when 3D tiles have fully loaded
   const referenceOverlayGroup = useRef<THREE.Group>(null);
   const policyMapRef = useRef<PolicyMapHandle>(null);
   const zoningRaycaster = useMemo(() => new THREE.Raycaster(), []);
@@ -1826,7 +1826,7 @@ export function GlobeSitePlannerMap({
   const cameraElevation = pitchFromNadirToCameraElevation(pitchAngle);
   const cameraElevationBadge = getCameraElevationBadge(cameraElevation);
 
-  // Zone overlay visibility â€” flipped off by the AI render pipeline
+  // Zone overlay visibility — flipped off by the AI render pipeline
   // so the captured screenshot contains only the real satellite/3D tiles,
   // without colored polygon fills baked into it. Default true so users
   // normally see their drawn zones.
@@ -1995,7 +1995,7 @@ export function GlobeSitePlannerMap({
     setBuildingModelsVisible((visible) => !visible);
   }, [buildingModelsVisible]);
 
-  // Dynamic terrain elevation â€” fetched from Google Elevation API on mount
+  // Dynamic terrain elevation — fetched from Google Elevation API on mount
   const [terrainElevation, setTerrainElevation] = useState(DEFAULT_TERRAIN_ELEVATION);
   const roadSurfaceZones = useMemo(() => roadDisplayZones(connectedSceneZones, roadNetwork.data), [connectedSceneZones, roadNetwork.data]);
   const terraceScene = useMemo(() => buildTerraceScene(connectedSceneZones, terrainElevation), [connectedSceneZones, terrainElevation]);
@@ -2844,7 +2844,7 @@ export function GlobeSitePlannerMap({
     return () => { stop(); if (stopInitialContextWatchRef.current === stop) stopInitialContextWatchRef.current = null; };
   }, [projectZoneFocusKey, sceneReady, isTerrainReady, globeControlsReady, applyCameraPose]);
 
-  // Drawing state â€” managed at DOM level
+  // Drawing state — managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
   const [publicRoadSnapEnabled, setPublicRoadSnapEnabled] = useState(true);
   const [skipStreetSnapping, setSkipStreetSnapping] = useState(false);
@@ -3999,7 +3999,7 @@ export function GlobeSitePlannerMap({
         return;
       }
 
-      // Escape â€” remove pegman or deselect zone
+      // Escape — remove pegman or deselect zone
       if (e.key === 'Escape') {
         if (streetViewPegman?.position) {
           setStreetViewActive(false);
@@ -4060,7 +4060,7 @@ export function GlobeSitePlannerMap({
         }
       }
 
-      // WASD / Arrow keys â€” nudge selected zone relative to the current view heading.
+      // WASD / Arrow keys — nudge selected zone relative to the current view heading.
       const movement = getGlobeNavigationMovement(new Set([key]));
       if ((movement.forward !== 0 || movement.strafe !== 0) && selectedZoneId) {
         e.preventDefault();
@@ -4246,7 +4246,7 @@ export function GlobeSitePlannerMap({
     return () => window.clearInterval(interval);
   }, [drawingPoints.length, hasDrawingTool, updateCenterConnectionState]);
 
-  // Canvas onPointerMissed â€” fires when click doesn't hit any R3F mesh
+  // Canvas onPointerMissed — fires when click doesn't hit any R3F mesh
   // We use this + onCreated to handle globe clicks at the Canvas level
   const handleCanvasClick = useCallback((e: MouseEvent) => {
     if (cleanupPicking) {
@@ -4638,7 +4638,7 @@ export function GlobeSitePlannerMap({
               entrancePointerHitRef.current=null;
               return;
             }
-            // Every click adds a point â€” dblclick handler will pop the duplicate
+            // Every click adds a point — dblclick handler will pop the duplicate
             handleCanvasClickRef.current?.(e);
           };
 
@@ -4675,7 +4675,7 @@ export function GlobeSitePlannerMap({
             if (!start || draggedSincePointerDownRef.current) return;
             const dx = e.clientX - start.x;
             const dy = e.clientY - start.y;
-            if ((dx * dx + dy * dy) > 36) draggedSincePointerDownRef.current = true; // 6px threshold â€” forgiving for globe orbiting
+            if ((dx * dx + dy * dy) > 36) draggedSincePointerDownRef.current = true; // 6px threshold — forgiving for globe orbiting
           };
 
           const handlePointerUp = () => {
@@ -4963,7 +4963,7 @@ export function GlobeSitePlannerMap({
               terrainHeight={terrainElevation}
             />
 
-          {/* Edit mode â€” vertex handles when zone selected in Select mode */}
+          {/* Edit mode — vertex handles when zone selected in Select mode */}
             {!placementDraft && !interactionPaused && !hasDrawingTool && !measureModeActive && selectedZoneId && (() => {
               const zone = siteZones.find(z => z.id === selectedZoneId);
               return zone ? (
@@ -5328,7 +5328,7 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
-      {/* 3D Globe badge + pitch + LOD status â€” offset below back button */}
+      {/* 3D Globe badge + pitch + LOD status — offset below back button */}
       {!walkMode && !entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
           {detailEditing ? (detailInteraction?.moving ? 'Click the map to move this item · Esc to cancel' : detailInteraction?.editing ? 'Use Move, Rotate or Delete in the panel · Click another item to select it' : 'Choose an item to place · Click a placed item to edit · Drag to pan · Scroll to zoom')

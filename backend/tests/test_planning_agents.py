@@ -1,4 +1,4 @@
-﻿"""Planning Agents â€” deterministic merge, conflict surfacing, panel resilience.
+﻿"""Planning Agents — deterministic merge, conflict surfacing, panel resilience.
 
 All offline: canned tool_use messages, patched Anthropic client. Structural
 assertions only (never on LLM prose).
@@ -317,7 +317,7 @@ async def test_panel_drops_out_of_scope_and_demotes_uncited_policy(monkeypatch):
 @pytest.mark.anyio
 async def test_panel_recovers_stringified_nested_payload(monkeypatch):
     """claude-sonnet-5 quirk observed live: the tool input arrives as
-    {"recommendations": "<JSON string of the WHOLE payload>"} â€” must parse."""
+    {"recommendations": "<JSON string of the WHOLE payload>"} — must parse."""
     import json as json_module
 
     inner = {

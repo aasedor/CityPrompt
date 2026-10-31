@@ -153,7 +153,7 @@ Evidence and generated builds are outside Git under `C:/dev-artifacts/CityPrompt
 | Tuscan Arcade Villa | `autumn-villa-clay-v004` |
 | Grand Deco Cinema | `autumn-cinema-clay-v004` |
 | Mass-timber Library | `neighbourhood-library-clay-v003` |
-| Corner CafÃ© & Apartments | `neighbourhood-corner-cafe-clay-v010` |
+| Corner Café & Apartments | `neighbourhood-corner-cafe-clay-v010` |
 | Victorian Grand Station | `victorian-station-interior-clay-v007` |
 | Timber Art & Design School | `interior-school-clay-v003` |
 | Mediterranean Courtyard Hotel | `interior-hotel-clay-v006` |
