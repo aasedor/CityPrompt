@@ -25752,7 +25752,8 @@
         "src/data/catalogueHeroImages.json",
         "src/data/publicRealmRelease20261023.json"
       ],
-      "logicalBytes": 1505682
+      "logicalBytes": 1505682,
+      "lfsOid": "1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7"
     },
     {
       "url": "/park-kits/claude-20261023/395418e0134ab65633bb5cc487f2e963c47278f9b1ecfe6f9687324abc87cab8.jpg",
@@ -32816,7 +32817,7 @@
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
       "fileCount": 503,
       "logicalBytes": 434305560,
-      "pathDigest": "09e2c7b87eff8165a249710ffa271ec4366e5a30f5f15542903e1929dfbe83fc"
+      "pathDigest": "2fcb914174da7d7f170ae385fee4fa73a046bdc80ab348205e746aef822f0408"
     },
     {
       "name": "public-realm-skins",

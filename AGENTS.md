@@ -76,6 +76,6 @@ Both waves remain local-only; do not publish either without explicit approval.
 
 Follow `docs/BUILDING_CATALOGUE_WORKFLOW.md` for reviewed local pilots, exact-byte
 activation, generated picker cards, selective seeding/readback and a checked PR
-to main. `python -m tools.catalogue_promotion check` is the publication preflight.
+to `deployment-version`. `python -m tools.catalogue_promotion check` is the publication preflight.
 Trial entries cannot pass publication CI. This workflow does not change the RLASM
 6.1 visual method or grant keeper approval.

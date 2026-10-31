@@ -2,8 +2,8 @@
 
 ## Supported branch
 
-Security fixes are applied to `main`. Historical pilot branches are not
-supported release lines.
+Security fixes are applied to `deployment-version` and mirrored to `main`.
+Historical pilot branches are not supported release lines.
 
 ## Reporting
 
