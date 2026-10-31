@@ -45,7 +45,7 @@ $result = foreach ($record in $records) {
     $statusLines = @(& git -C $record.path status --porcelain 2>$null)
     $statusExitCode = $LASTEXITCODE
     $statusOk = $statusExitCode -eq 0
-    & git -C $repo merge-base --is-ancestor $record.head origin/main 2>$null
+    & git -C $repo merge-base --is-ancestor $record.head origin/deployment-version 2>$null
     $merged = $LASTEXITCODE -eq 0
     [pscustomobject]@{
         path = $record.path

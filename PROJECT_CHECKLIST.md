@@ -26,11 +26,12 @@ available.
 
 ## Repository gates
 
-- [x] Latest fixes can fast-forward onto local `main`.
+- [x] Latest fixes can fast-forward onto local `deployment-version`.
 - [x] Broken nested-repository metadata is removed.
 - [x] Tracked smoke output and obvious root-level binary clutter are removed.
 - [x] Forbidden legacy public-asset trees are removed.
-- [x] Public documentation consistently names City Prompt and `cityprompt/main`.
+- [x] Public documentation consistently names City Prompt and
+      `deployment-version` as the canonical branch, with `main` as its mirror.
 - [x] All Markdown links resolve, excluding explicit external or archived
       historical references.
 - [x] No credentials or local-machine secrets exist in the current tree.
@@ -65,8 +66,10 @@ available.
 
 ## Release steps
 
-- [ ] Push the reviewed `main` commits to `cityprompt/main`.
-- [ ] Make required GitHub checks mandatory in branch protection.
+- [ ] Bring `main` up to date with the reviewed `deployment-version` tip and
+      keep it mirrored after each release sync.
+- [ ] Make required GitHub checks mandatory in branch protection on
+      `deployment-version` (only `main` is protected today).
 - [ ] Remove merged remote pilot branches only after unique-commit and asset
       audits.
 - [ ] Tag the first clean release.
