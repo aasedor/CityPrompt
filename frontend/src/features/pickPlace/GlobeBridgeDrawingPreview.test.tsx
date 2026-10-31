@@ -12,21 +12,29 @@ vi.mock('@/components/viewer/globe/GlobeStreetDetailLayer', () => ({
   GlobeStreetDraft: ({ zone }: {zone:SiteZone}) => {harness.zone=zone;return <div data-testid="bridge-model"/>;},
 }));
 vi.mock('./PublicRoadSuggestionMarker', () => ({PublicRoadSuggestionMarker:()=>null}));
-vi.stubEnv('DEV',true);vi.stubEnv('MODE','development');
+vi.stubEnv('DEV',false);vi.stubEnv('MODE','production');
 const { GlobeStreetDrawingPreview } = await import('./GlobeStreetDrawingPreview');
 const { MODULAR_BRIDGE_ASSETS } = await import('./assetRegistry');
 afterEach(cleanup);afterAll(()=>vi.unstubAllEnvs());
 
-it('keeps the real bridge preview after the second click when the cursor moves elsewhere', () => {
+it.each([
+  ['timber_covered_bridge_route_v1',80], ['planted_green_bridge_route_v1',190],
+  ['brick_arch_viaduct_route_v1',140], ['rail_through_truss_route_v1',150],
+  ['stone_arch_road_bridge_route_v1',120], ['tied_arch_shared_bridge_route_v1',65],
+  ['steel_truss_road_bridge_route_v1',35], ['swooping_cycle_flyover_route_v1',350],
+  ['cable_stayed_cycle_ring_route_v1',185], ['weathering_steel_v_footbridge_route_v1',55],
+] as const)('keeps the production %s preview after the second click when the cursor moves elsewhere', (variant,lengthM) => {
   harness.canvas=document.createElement('canvas');
   harness.canvas.getBoundingClientRect=()=>({width:1000,height:800,left:0,top:0}) as DOMRect;
   harness.camera={matrixWorld:new Matrix4()};
-  const points=[[-114,51],[-114,51+80/111320]];
+  const points=[[-114,51],[-114,51+lengthM/111320]];
   let cursor=points[1];
   const boundary={id:'site',zone_type:'site_boundary',coordinates:[[-115,50],[-113,50],[-113,52],[-115,52]],
     properties:{terrain_elevation_m:1000,terrain_strategy:'level',community_3d_mask_existing_tiles:true}} as unknown as SiteZone;
   const onStatusChange=vi.fn();
-  const props={points:[points[0]],pointHeights:[1000],properties:MODULAR_BRIDGE_ASSETS[0].properties,
+  const asset=MODULAR_BRIDGE_ASSETS.find(item=>item.id===variant);
+  if(!asset)throw new Error(`Production bridge missing: ${variant}`);
+  const props={points:[points[0]],pointHeights:[1000],properties:asset.properties,
     zones:[boundary],terrainHeight:1000,skipSnapping:true,onStatusChange,
     raycastSurface:()=>({lngLat:cursor as [number,number],height:1000})};
   const view=render(<GlobeStreetDrawingPreview {...props}/>);

@@ -47,12 +47,12 @@ export function streetPreviewPoints(points: number[][], cursor: number[] | null,
 /** Further clicks adjust the end of a two-point bridge rather than adding an unsupported bend.
  * Apply the same operation to the height array to retain its point correspondence. */
 export function appendStreetDrawingValue<T>(values: T[], next: T, properties?: SiteZoneProperties | null): T[] {
-  return import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(properties?.road_selected_variant_id) && values.length >= 2
+  return modularBridgeProgramFor(properties?.road_selected_variant_id) && values.length >= 2
     ? [values[0], next] : [...values, next];
 }
 
 /** Browser double-click dispatches two click events first. Bridge clicks replace
  * the endpoint, while ordinary drawings append a duplicate that must be removed. */
 export function finishDoubleClickValues<T>(values:T[], properties?:SiteZoneProperties|null):T[] {
-  return import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(properties?.road_selected_variant_id) ? values : values.slice(0,-1);
+  return modularBridgeProgramFor(properties?.road_selected_variant_id) ? values : values.slice(0,-1);
 }

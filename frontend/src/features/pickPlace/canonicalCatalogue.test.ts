@@ -5,7 +5,7 @@ import expansion from '@/data/classroomExpansion.json';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
-import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS, LOCAL_TOWER_ASSETS, isPlaceable } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS, LOCAL_TOWER_ASSETS, MODULAR_BRIDGE_ASSETS, hasDrawnBridgeReplacement, isPlaceable } from './assetRegistry';
 
 describe('canonical discovery and identity', () => {
   it('exposes the exact twisting tower as its own editable local choice',()=>{
@@ -29,7 +29,7 @@ describe('canonical discovery and identity', () => {
       !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
       && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId));
     // Three court-only cards join existing sport choices; volleyball has no other native layout.
-    expect(CANONICAL_CHOICES).toHaveLength(roster.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + MANUAL_STREET_ASSETS.length + FLEXIBLE_PARK_ASSETS.length + PATHWAY_ASSETS.length + remainingLocal.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + PUBLIC_REALM_RELEASE_ASSETS.length + LOCAL_TOWER_ASSETS.length - 3);
+    expect(CANONICAL_CHOICES).toHaveLength(roster.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + MANUAL_STREET_ASSETS.length + FLEXIBLE_PARK_ASSETS.length + PATHWAY_ASSETS.length + remainingLocal.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + PUBLIC_REALM_RELEASE_ASSETS.length + LOCAL_TOWER_ASSETS.length + MODULAR_BRIDGE_ASSETS.length - PUBLIC_REALM_RELEASE_ASSETS.filter(hasDrawnBridgeReplacement).length - 3);
     for (const entry of roster) {
       const choice = CANONICAL_CHOICES.find(c => c.placements.some(asset => asset.properties.green_space_archetype_id === entry.archetype_id && asset.model.variantId === entry.variant_id)
         || c.option.id === entry.archetype_id && c.placements[0]?.model.variantId === entry.variant_id);

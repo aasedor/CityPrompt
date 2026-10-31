@@ -36,7 +36,21 @@ function approvedIdentity(row) {
 }
 
 export function productionRuntimeSourceText(path, text) {
-  if (path.replaceAll('\\', '/') !== registryPath) return text;
+  const normalized = path.replaceAll('\\', '/');
+  if (normalized === 'src/data/nativeBridgeRelease.json') {
+    const receipt = JSON.parse(text);
+    if (receipt?.schema !== 'cityprompt.native-bridge-release@1' || !Array.isArray(receipt.entries)
+      || receipt.entries.some(entry=>!entry?.profile || typeof entry.profileCanonical !== 'string'))
+      throw new Error('Invalid native bridge receipt for asset inventory');
+    // This duplicate is escaped JSON used by admission checks, not another asset
+    // path. Scan the complete profile itself; retain every exact module URL.
+    return JSON.stringify({...receipt,entries:receipt.entries.map(entry=>{
+      const inventoryEntry={...entry};
+      delete inventoryEntry.profileCanonical;
+      return inventoryEntry;
+    })});
+  }
+  if (normalized !== registryPath) return text;
   const manifest = JSON.parse(text);
   if (manifest?.schema !== 'cityprompt.fixed-public-realm-release@1' || manifest.release_id !== 'claude-20261023'
     || !Array.isArray(manifest.models)) fail('unsupported schema or model list');

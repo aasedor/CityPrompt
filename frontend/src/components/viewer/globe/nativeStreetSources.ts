@@ -1,5 +1,5 @@
 import streets from '@/data/nativeStreetPilots.json';
-import bridges from '@/data/nativeBridgePilots.json';
+import { nativeBridgeSources } from './nativeBridgeSources';
 import type { NativeStreetProgram } from './nativeStreetProgram';
 
 type NativeModule = { sha256: string; bytes: number; url: string };
@@ -8,8 +8,8 @@ type NativeStreetSource = Omit<typeof streets[number], 'modules' | 'program'> & 
   program?: NativeStreetProgram;
 };
 
-/** New bridge adapters remain local pilots until their exact runtime review.
- * Keep their data and modules out of production discovery and bundle payload. */
-export const nativeStreetSources: NativeStreetSource[] = [...streets, ...(import.meta.env.DEV && import.meta.env.MODE === 'development' ? bridges : [])]
+/** The bridge receipt supplies reviewed production profiles. Held bridge data
+ * and modules remain outside production discovery and bundle payload. */
+export const nativeStreetSources: NativeStreetSource[] = [...streets, ...nativeBridgeSources]
   .map(row => ({ ...row, program:row.program as NativeStreetProgram, modules: Object.fromEntries(Object.entries(row.modules)
     .filter((entry): entry is [string, NativeModule] => entry[1] !== undefined)) }));

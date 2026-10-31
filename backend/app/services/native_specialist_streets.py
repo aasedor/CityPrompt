@@ -7,6 +7,7 @@ from pathlib import Path
 from app.services.street_route_policy import MAX_REPEATABLE_STREET_LENGTH_M
 from app.services.native_modular_bridge import MODULAR_BRIDGE_IDENTITIES, is_modular_bridge, modular_bridge_profile
 from app.services.native_source_bridge import SOURCE_BRIDGE_LANES
+from app.services.native_bridge_release import native_bridge_available
 from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 
 CANAL_POLICY = json.loads((Path(__file__).resolve().parents[1] / "data/canalRoutePolicy.json").read_text())
@@ -55,6 +56,8 @@ def validate_specialist_properties(properties):
         return
     modular_bridge = is_modular_bridge(props)
     if modular_bridge:
+        if not native_bridge_available(props.get("road_selected_variant_id")):
+            raise ValueError("This bridge route is waiting for its exact production release review.")
         if props.get("validation_fixed_fixture"):
             raise ValueError("Draw this modular bridge as a route; it is not a fixed scene fixture.")
         profile = modular_bridge_profile(props["road_selected_variant_id"])

@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
+import { encodeZ85, decodeZ85, Z85_ALPHABET } from './z85-codec.mjs';
 
-const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|nativeBridgePilots|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion|streetManual|nativeStreetModuleBounds|publicRealmRelease20261023)\.json$/;
+const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|nativeBridgePilots|nativeBridgeRelease|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion|streetManual|nativeStreetModuleBounds|publicRealmRelease20261023)\.json$/;
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|people\/(?:peopleCatalogue|inclusivePeopleCatalogue|peopleAppearancePreviews)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
@@ -14,7 +15,7 @@ const STATIC_METADATA = /\/src\/(?:data\/(?:archetypeVisualSystem|catalogueOctob
 /** Retain all legacy IDs, reference paths and prompts without compiling several
  * megabytes of JSON into JavaScript object literals. Three already ships this
  * small inflater; no additional browser dependency or network request is needed. */
-export function packCatalogue(source) {
+export function packCatalogue(source, { encoding = 'base64' } = {}) {
   JSON.parse(source); // Reject invalid JSON before emitting a browser module.
   // Strip whitespace only outside strings. Re-stringifying parsed objects loses
   // signed zero, which occurs in authored model offsets and must round-trip.
@@ -24,11 +25,19 @@ export function packCatalogue(source) {
   // Only the smallest stream ships; browser decoding and authored bytes stay exact.
   const packed = [8, 6, 9, 7, 5, 4, 3, 2, 1]
     .flatMap(memLevel => [0, 1].map(strategy => deflateSync(bytes, { level: 9, memLevel, strategy })))
-    .reduce((a, b) => b.length < a.length ? b : a).toString('base64');
+    .reduce((a, b) => b.length < a.length ? b : a);
+  let decoder = `const bytes = Uint8Array.from(atob(${JSON.stringify(packed.toString('base64'))}), character => character.charCodeAt(0));`;
+  if (encoding === 'z85') {
+    const padded = new Uint8Array(Math.ceil(packed.length / 4) * 4);
+    padded.set(packed);
+    decoder = `// Z85 v1 / RFC32, with an exact unpadded deflate length.
+const Z85_ALPHABET = ${JSON.stringify(Z85_ALPHABET)};
+const bytes = (${decodeZ85.toString()})(${JSON.stringify(encodeZ85(padded))},${packed.length});`;
+  }
   // Validated constant data: discard decoding only when its value is unused.
   return `import { unzlibSync, strFromU8 } from 'three/examples/jsm/libs/fflate.module.js';
 export default /* @__PURE__ */ (() => {
-const bytes = Uint8Array.from(atob(${JSON.stringify(packed)}), character => character.charCodeAt(0));
+${decoder}
 return JSON.parse(strFromU8(unzlibSync(bytes)));
 })();`;
 }
@@ -74,7 +83,7 @@ export function packedCatalogue() {
       if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename) && !STATIC_METADATA.test(filename)) return null;
       const source = readFileSync(id, 'utf8');
       return { code: packCatalogue(filename.endsWith('/src/data/classroomStarter.json')
-        ? productionStarter(source) : source), map: null };
+        ? productionStarter(source) : source, { encoding: /\/src\/data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes)\.json$/.test(filename) ? 'z85' : 'base64' }), map: null };
     },
   };
 }

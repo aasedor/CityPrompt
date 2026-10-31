@@ -4,10 +4,14 @@ import { buildNativeStreetProgram, type NativeStreetProgram } from './nativeStre
 import { CATALOGUE_ASSETS, LOCAL_TOWER_ASSETS, validateRegistry } from '@/features/pickPlace/assetRegistry';
 import { CANONICAL_CHOICES, filterCanonicalChoices } from '@/features/pickPlace/canonicalCatalogue';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from '@/features/pickPlace/claudeBuildingRelease';
+import drawnBridges from '@/data/nativeBridgePilots.json';
 
 describe('three additional native street programs', () => {
   it('offers the consolidated classroom selection with distinct exact identities', () => {
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'street')).toHaveLength(44);
+    expect(drawnBridges).toHaveLength(10);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'street')).toHaveLength(44 + drawnBridges.length);
+    expect(CATALOGUE_ASSETS.filter(a => drawnBridges.some(row => row.id === a.model.variantId))
+      .map(a => a.model.variantId).sort()).toEqual(drawnBridges.map(row => row.id).sort());
     expect(CLAUDE_BUILDING_RELEASE_ASSETS).toHaveLength(25);
     const buildingReleaseIds = new Set(CLAUDE_BUILDING_RELEASE_ASSETS.map(a => a.id));
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building' && !buildingReleaseIds.has(a.id))).toHaveLength(79+LOCAL_TOWER_ASSETS.length);

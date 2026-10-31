@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import type { SiteZone } from '@/types';
-import { CANONICAL_CHOICES } from './canonicalCatalogue';
+import { CANONICAL_CHOICES, resolveCatalogueRoster } from './canonicalCatalogue';
 import { canonicalStreetAsset, canonicalStreetForZone, streetDesignUpdate } from './canonicalStreetPlacement';
 import { streetAssetForZone, streetCoordinateUpdate } from './streetPlacement';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
@@ -8,6 +8,7 @@ import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/stre
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { LEGACY_SECTION_STREET_ASSETS, PATHWAY_ASSETS } from './assetRegistry';
 import { bufferPathwayToPolygon } from '@/utils/pathwayFootprint';
+import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
 
 it('uses the rendered section width for every current eligible street variant', () => {
   for (const choice of CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway' && c.placements.every(a => a.kind === 'street'))) {
@@ -21,8 +22,12 @@ it('uses the rendered section width for every current eligible street variant', 
 });
 
 it('rejects fixed native scenes before they can inherit a procedural section or preset', () => {
-  const fixed = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway'
-    && c.placements.some(a => a.model.method === 'fixed_public_realm_v1'));
+  const historical = PUBLIC_REALM_RELEASE_ASSETS.filter(asset => asset.zoneType === 'road');
+  const { choices: fixed, unavailable } = resolveCatalogueRoster(historical.map(asset => ({
+    domain: 'street', archetype_id: String(asset.properties.road_archetype_id),
+    variant_id: asset.model.variantId, placement_id: asset.id,
+  })));
+  expect(unavailable).toEqual([]);
   expect(fixed).toHaveLength(9);
   for (const choice of fixed) {
     const asset = choice.placements[0];

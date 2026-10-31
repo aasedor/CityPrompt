@@ -23,7 +23,7 @@ export function specialistConnectionProblem(candidate:Pick<SiteZone,'coordinates
   for(const zone of next){
     const variant=zone.properties?.road_selected_variant_id;
     if(!isSpecialistStreet(variant)||isFixedNativeScene(zone.properties))continue;
-    if (import.meta.env.DEV && modularBridgeProgramFor(variant)) {
+    if (modularBridgeProgramFor(variant)) {
       for (const other of next.filter(z=>z.zone_type==='road'&&z.id!==zone.id)) {
         const problem=modularBridgeConnectionProblem(zone,other);
         if (problem) return problem;

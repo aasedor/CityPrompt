@@ -265,11 +265,21 @@
   "variantId": "timber_covered_bridge_route_v1",
   "placementId": "timber_covered_bridge_route_v1",
   "revision": "4275b01adc0228982522fa7e5201d026e5823ee264f549e4ebda29ef56ebeeed",
-  "status": "local-pilot-runtime-pending",
+  "status": "prepared-level-production-pilot",
   "review": {
-    "asset": "derived-pilot-pending",
-    "runtime": "NOT TESTED"
-  }
+    "asset": "source-locked-bridge-only",
+    "runtime": "prepared-level-scoped-pass",
+    "evidence": "docs/showcase/TIMBER_DRAWN_BRIDGE_RUNTIME_REVIEW_2026-10-30.md",
+    "releaseReceipt": "nativeBridgeRelease.json",
+    "limitations": "Full end-to-end walking and hosted production trial remain NOT TESTED."
+  },
+  "dependencies": [
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb"
+  ]
 },
     {
       "domain": "street",
@@ -278,10 +288,13 @@
       "variantId": "planted_green_bridge_route_v1",
       "placementId": "planted_green_bridge_route_v1",
       "revision": "8f6984387ce9cb2ce1a67724ad6cac7f2eb093980fad074c4267775c315c30a9",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Individual Undo/Redo NOT TESTED. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED."
       },
       "dependencies": [
         "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_stair.glb",
@@ -302,10 +315,13 @@
       "variantId": "brick_arch_viaduct_route_v1",
       "placementId": "brick_arch_viaduct_route_v1",
       "revision": "8d08d3198c319e64b24b047c168c7fc7f70bac0c27413486a75a18224da9bcb3",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Brick Undo/Redo passed in development. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED. Elevated concept span; no pedestrian walking access or automatic road/rail junctions."
       },
       "dependencies": [
         "public:street-kits/pilots/brick_arch_viaduct_route_v1/bridge_left_end.glb",
@@ -320,10 +336,13 @@
       "variantId": "rail_through_truss_route_v1",
       "placementId": "rail_through_truss_route_v1",
       "revision": "7a52155f5281a1c24fac0f4a101c7b063d1146885d04758e175574177d0fa8be",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Individual Undo/Redo NOT TESTED. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED. Elevated concept span; no pedestrian walking access or automatic road/rail junctions."
       },
       "dependencies": [
         "public:street-kits/pilots/rail_through_truss_route_v1/bridge_left_end.glb",
@@ -339,10 +358,13 @@
       "variantId": "stone_arch_road_bridge_route_v1",
       "placementId": "stone_arch_road_bridge_route_v1",
       "revision": "a256213669fee5c69ec63dbc19b400b68bb778ad579c7afe993970e88bd33076",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Individual Undo/Redo NOT TESTED. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED. Elevated concept span; no pedestrian walking access or automatic road/rail junctions."
       },
       "dependencies": [
         "public:street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_left_end.glb",
@@ -357,10 +379,13 @@
       "variantId": "tied_arch_shared_bridge_route_v1",
       "placementId": "tied_arch_shared_bridge_route_v1",
       "revision": "578ad2d4ad34c6857a6683b006516588b5de8c3ffc8c80b7eefef3b50b7af08e",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Individual Undo/Redo NOT TESTED. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED."
       },
       "dependencies": [
         "public:street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_left_end.glb",
@@ -375,10 +400,13 @@
       "variantId": "steel_truss_road_bridge_route_v1",
       "placementId": "steel_truss_road_bridge_route_v1",
       "revision": "b12e3e379cacb8138809d730432afa8dc5ad624e577976d156993f742fb0f26b",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Individual Undo/Redo NOT TESTED. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED. Elevated concept span; no pedestrian walking access or automatic road/rail junctions."
       },
       "dependencies": [
         "public:street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_left_end.glb",
@@ -394,10 +422,13 @@
       "variantId": "swooping_cycle_flyover_route_v1",
       "placementId": "swooping_cycle_flyover_route_v1",
       "revision": "3d630322a51347ed91e820ee5409a8a7bf0a9a6ab46048852eec4d859cba4006",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Individual Undo/Redo NOT TESTED. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED."
       },
       "dependencies": [
         "public:street-kits/pilots/swooping_cycle_flyover_route_v1/bridge_topology.glb",
@@ -411,10 +442,13 @@
       "variantId": "cable_stayed_cycle_ring_route_v1",
       "placementId": "cable_stayed_cycle_ring_route_v1",
       "revision": "4f117d8cdd59208d6ff9f60b8a16f26872110897abc3c15ae64df97243b8c684",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Individual Undo/Redo NOT TESTED. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED."
       },
       "dependencies": [
         "public:street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_core.glb",
@@ -430,10 +464,13 @@
       "variantId": "weathering_steel_v_footbridge_route_v1",
       "placementId": "weathering_steel_v_footbridge_route_v1",
       "revision": "29f94dbf5c21b80b5ed1309b2989d22bde1fa46574f4da3eb21f84ac0fd63f44",
-      "status": "local-pilot-runtime-pending",
+      "status": "prepared-level-production-pilot",
       "review": {
-        "asset": "derived-pilot-pending",
-        "runtime": "NOT TESTED"
+        "asset": "source-locked-bridge-only",
+        "runtime": "prepared-level-scoped-pass",
+        "evidence": "docs/reviews/remaining-drawn-bridges-2026-10-30.md",
+        "releaseReceipt": "nativeBridgeRelease.json",
+        "limitations": "Production-browser rehearsal pending. Individual Undo/Redo NOT TESTED. Full per-style walking, hosted acceptance and ordinary Download file remain NOT TESTED."
       },
       "dependencies": [
         "public:street-kits/pilots/weathering_steel_v_footbridge_route_v1/bridge_topology.glb",

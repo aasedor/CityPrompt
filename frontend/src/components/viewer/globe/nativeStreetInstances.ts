@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { NativeStreetPose } from './nativeStreetPilot';
 import { deformSourceBridgePoint } from './sourceSpanBridgeProgram';
+import { nativeBridgeDeformationAllowed } from './nativeBridgeSources';
 
 /** Preserve every original mesh, material and node transform while batching
  * identical modules. No decimation, changed scale or skipped cycles. */
@@ -16,7 +17,8 @@ export function instanceStreetModule(scene: THREE.Group, poses: NativeStreetPose
       items.push(pose);groups.set(key,items);
     }
     for(const items of groups.values()){
-    const deformation=import.meta.env.DEV?items[0].bridgeDeformation:undefined;
+    const deformation=items[0].bridgeDeformation;
+    if (deformation && !items.every(nativeBridgeDeformationAllowed)) throw new Error('This module has no released bridge deformation contract.');
     const geometry=deformation?object.geometry.clone().applyMatrix4(object.matrixWorld):object.geometry;
     if(deformation){
       const positions=geometry.getAttribute('position');
