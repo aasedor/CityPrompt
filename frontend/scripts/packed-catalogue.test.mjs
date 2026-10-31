@@ -12,6 +12,34 @@ import { packCatalogue, packedCatalogue, productionStarter } from './packed-cata
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
 
+for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['nativeStreetPilots.json', 4000]]) {
+  test(`${filename}: production transport recovers bridge headroom without changing catalogue values`, async () => {
+    const path = resolve('src/data', filename), source = readFileSync(path, 'utf8');
+    const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
+    assert.deepEqual(decoded.default, JSON.parse(source));
+    assert.ok(module.length < packCatalogue(source).length - minimumSaving, 'Recover bundle space through lossless transport, retaining every catalogue field');
+  });
+}
+
+test('denser transport retains UTF8, signed zero and short final binary blocks', async () => {
+  for (let length = 0; length < 24; length++) {
+    const source = JSON.stringify({ label: 'é — "quoted" '+ 'abcdefghijk'.slice(0, length % 11).repeat(length), offset: [-1, 0] }).replace('[-1,0]', '[-1,-0]');
+    const module = packCatalogue(source, { encoding: 'z85' }).replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const minified = await minify(module, { module: true, compress: { passes: 3 } });
+    const decoded = await import(`data:text/javascript,${encodeURIComponent(minified.code)}`);
+    assert.deepEqual(decoded.default, JSON.parse(source));
+    assert.ok(Object.is(decoded.default.offset[1], -0));
+  }
+});
+
+test('unused denser transport is eliminated with its decoding work', async () => {
+  const source = readFileSync(resolve('src/data/nativeStreetPilots.json'), 'utf8');
+  const module = packCatalogue(source, { encoding: 'z85' }).replace('export default ', 'const unused = ');
+  const result = await minify(module + '\nexport const ready = true;', { module: true, compress: { passes: 3 } });
+  assert.ok(result.code.length < 1024);
+});
+
 test('production minification removes only unused catalogue decoding and preserves used bridge values', async () => {
   const source = readFileSync(resolve('src/data/nativeBridgePilots.json'), 'utf8');
   const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
