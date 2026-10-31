@@ -44,14 +44,18 @@ Always verify on localhost:5174 before committing. Check that cards load, render
 
 ### Canonical remote and branch
 - `origin` → `https://github.com/aasedor/CityPrompt.git`
-- `origin/main` is the canonical integration and release branch.
+- `origin/deployment-version` is the canonical integration and release branch
+  and GitHub's default branch.
+- `origin/main` is a synchronized mirror of `deployment-version`. Do not base
+  work on it or open pull requests against it; bring it up to date from
+  `deployment-version` after each release sync.
 - `cityprompt-authorized`, `upstream`, and any other remotes are comparison or
   upstream sources. Do not push to them unless the user explicitly changes the
   authorized destination.
 
 Before pushing, fetch `origin`, confirm the local branch is based on
-`origin/main`, and run the complete relevant checks. Never force-push the
-shared `main` branch.
+`origin/deployment-version`, and run the complete relevant checks. Never
+force-push the shared `deployment-version` or `main` branches.
 
 ### Canonical building method
 All new building-family construction, rebuilds, and keeper reviews use
@@ -192,6 +196,6 @@ Several key files are very large. Read specific line ranges instead of whole fil
 
 Follow `docs/BUILDING_CATALOGUE_WORKFLOW.md` for reviewed local pilots, exact-byte
 activation, generated picker cards, selective seeding/readback and a checked PR
-to main. `python -m tools.catalogue_promotion check` is the publication preflight.
+to `deployment-version`. `python -m tools.catalogue_promotion check` is the publication preflight.
 Trial entries cannot pass publication CI. This workflow does not change the RLASM
 6.1 visual method or grant keeper approval.

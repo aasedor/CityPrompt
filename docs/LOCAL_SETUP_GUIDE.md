@@ -49,7 +49,7 @@ docker compose version
 git lfs install
 git clone https://github.com/aasedor/CityPrompt.git
 cd CityPrompt
-git switch main
+git switch deployment-version
 ~~~
 
 The asset catalogue uses Git LFS. If images or GLB files contain short text

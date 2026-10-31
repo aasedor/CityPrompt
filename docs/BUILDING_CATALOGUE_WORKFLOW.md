@@ -15,7 +15,7 @@ evidence. Keep failing or untested applicable checks open.
 
 ## 1. Build and independently review
 
-Start a clean `codex/<building-name>` worktree from `origin/main`. Read
+Start a clean `codex/<building-name>` worktree from `origin/deployment-version`. Read
 `CLAUDE.md`, `RLASM_LATEST_METHOD.md` and `RLASM_REPOSITORY_POLICY.md`.
 Lock the exact parent and variant's authoritative front, oblique and top images.
 Build a versioned GLB, inspect every required view and phone board, then obtain
@@ -173,7 +173,7 @@ Commit the coherent publication. With user authorization to publish:
 ```powershell
 git fetch origin
 git push -u origin <your-codex-branch>
-gh pr create --repo aasedor/CityPrompt --base main --head <your-codex-branch> --title "Publish reviewed <building>" --body-file <reviewed-pr-description-file>
+gh pr create --repo aasedor/CityPrompt --base deployment-version --head <your-codex-branch> --title "Publish reviewed <building>" --body-file <reviewed-pr-description-file>
 gh pr checks <PR-number> --repo aasedor/CityPrompt
 gh pr merge <PR-number> --repo aasedor/CityPrompt --squash
 ```
@@ -183,10 +183,11 @@ picker/review drift without heavyweight LFS downloads and exercises the full
 promotion sequence against small real GLB fixtures. The hydrated local check
 and actual student trial remain mandatory evidence in the PR.
 
-On another local machine: pull main, hydrate the published models and their
-locked reference images, run the clay seed dry run/install/verify against that
-machine's services, then refresh City Prompt. **Git main, local database
-installation and live website deployment are three separate checkpoints.**
+On another local machine: pull `deployment-version`, hydrate the published
+models and their locked reference images, run the clay seed dry
+run/install/verify against that machine's services, then refresh City Prompt.
+**Git `deployment-version`, local database installation and live website
+deployment are three separate checkpoints.**
 Publishing to Git does not silently modify cityprompt.ca.
 
 ## Contributor prompt

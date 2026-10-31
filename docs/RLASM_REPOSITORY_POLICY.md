@@ -3,7 +3,7 @@
 **Status:** active
 **Method authority:** RLASM v6.1
 **Canonical remote:** `https://github.com/aasedor/CityPrompt.git`
-**Canonical branch:** `origin/main`
+**Canonical branch:** `origin/deployment-version` (`origin/main` is its synchronized mirror)
 
 This policy keeps exact-source building work reviewable without turning the
 active Git repository into an experiment cache. It complements
@@ -91,11 +91,11 @@ remove a dirty worktree to make status output quieter.
 ## Branch and history hygiene
 
 - Delete merged pilot branches after verifying their tips are contained in
-  `origin/main`.
+  `origin/deployment-version`.
 - Classify unmerged branches as promote, archive, or drop before deletion.
 - Preserve unique valuable commits with an immutable tag or verified Git
   bundle.
-- Never force-push shared `main` during ordinary cleanup.
+- Never force-push shared `deployment-version` or `main` during ordinary cleanup.
 - Treat an in-place history rewrite as a scheduled migration requiring a
   remote freeze, verified mirror backup, credential rotation, collaborator
   notice, and mandatory reclone.

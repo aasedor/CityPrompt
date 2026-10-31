@@ -1,8 +1,10 @@
 # Contributing to City Prompt
 
-City Prompt uses `main` as its canonical working and integration branch. Keep
-changes small, verified, and easy to review; do not leave completed work on
-long-lived pilot branches.
+City Prompt uses `deployment-version` as its canonical working, integration
+and release branch; it is also GitHub's default branch. `main` is kept as a
+synchronized mirror of it and is not a development target. Keep changes small,
+verified, and easy to review; do not leave completed work on long-lived pilot
+branches.
 
 Before substantial work, read [AGENTS.md](AGENTS.md) and
 [CLAUDE.md](CLAUDE.md). Building-family work also requires
@@ -21,10 +23,10 @@ docker compose up -d --build
 See [docs/LOCAL_SETUP_GUIDE.md](docs/LOCAL_SETUP_GUIDE.md) for complete setup
 and troubleshooting.
 
-## Working on main
+## Working on deployment-version
 
 1. Start from a clean tree: `git status --short --branch`.
-2. Fetch and fast-forward from `cityprompt/main`.
+2. Fetch and fast-forward from `origin/deployment-version`.
 3. Work on one named initiative at a time.
 4. Use a temporary branch or worktree only when concurrent or risky work needs
    isolation, and integrate it promptly.
