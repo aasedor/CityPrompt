@@ -1,5 +1,7 @@
-# Standalone dev stack for the CityPrompt clone, port-shifted so it can run
-# alongside the Playground devplatform stack. Untracked on purpose.
+# Optional standalone development stack, port-shifted so its data services can
+# run alongside the default docker-compose.yml stack. The backend also publishes
+# port 8000 so the frontend's default API URL keeps working when only this stack
+# is running; scripts/tests/test_compose_data_ports.py pins both bindings.
 # Usage: docker compose -f cityprompt-compose.yml -p cityprompt up -d
 services:
   db:

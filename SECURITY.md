@@ -2,7 +2,7 @@
 
 ## Supported branch
 
-Security fixes are applied to `deployment-version` and mirrored to `main`.
+Security fixes are applied to `deployment-version`. `main` is frozen and unused.
 Historical pilot branches are not supported release lines.
 
 ## Reporting

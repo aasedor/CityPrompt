@@ -1,4 +1,4 @@
-# City Prompt â€” current application handoff, 26 October 2026
+# City Prompt — current application handoff, 26 October 2026
 
 Target repository: `beemanbesh/2D-Maps2`.
 New branch: `codex/luxmodus-current-20261026`.

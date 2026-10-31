@@ -230,7 +230,7 @@ def add_court(marking, asphalt) -> None:
             arc_line(f"Three point {direction}", (12.38, 0, z), 6.75, math.pi - 1.18, math.pi + 1.18, marking)
         curve_line(f"Three straight A {direction}", [(baseline_x, -6.6, z), (direction * 12.7, -6.6, z)], 0.035, marking)
         curve_line(f"Three straight B {direction}", [(baseline_x, 6.6, z), (direction * 12.7, 6.6, z)], 0.035, marking)
-    # Restrained dark crack linesâ€”the surface owns these, never the GLBs.
+    # Restrained dark crack lines—the surface owns these, never the GLBs.
     crack = bpy.data.materials["Asphalt crack"]
     cracks = [
         [(-10.8, -6.2, z + 0.002), (-9.4, -5.3, z + 0.002), (-8.6, -5.7, z + 0.002), (-7.3, -4.8, z + 0.002)],

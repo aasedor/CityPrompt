@@ -1,6 +1,6 @@
 import aiRenderStylePresets from '@/data/aiRenderStylePresets.json';
 /**
- * useAIRender â€” React hook for the Vertex AI Imagen 3 render pipeline.
+ * useAIRender — React hook for the Vertex AI Imagen 3 render pipeline.
  *
  * Sends a map screenshot (with colored zone polygon overlays) and a structured
  * prompt to the backend, which proxies the request to Google Cloud Vertex AI
@@ -33,28 +33,28 @@ export interface AIRenderStyle {
   prompt: string;
   /** Optional negative prompt fragments */
   negative?: string;
-  /** img2img strength override for this style (0â€“1). Higher = more transformation. */
+  /** img2img strength override for this style (0–1). Higher = more transformation. */
   strength?: number;
 }
 
 export interface AIRenderOptions {
-  /** Style preset id â€” maps to a prompt template */
+  /** Style preset id — maps to a prompt template */
   style?: string;
   /** Free-form prompt appended after the style prompt */
   customPrompt?: string;
-  /** 0â€“1 â€” how closely the AI follows the source image (strength) */
+  /** 0–1 — how closely the AI follows the source image (strength) */
   controlStrength?: number;
-  /** Number of denoising steps (20â€“35 recommended) */
+  /** Number of denoising steps (20–35 recommended) */
   steps?: number;
   /** Guidance scale */
   guidanceScale?: number;
   /** Optional reference image URL or data-URI for style transfer */
   referenceImageUrl?: string;
-  /** Reference strength (0â€“1) */
+  /** Reference strength (0–1) */
   referenceStrength?: number;
-  /** Archetype positive prompt â€” appended to the style prompt */
+  /** Archetype positive prompt — appended to the style prompt */
   archetypePrompt?: string;
-  /** Archetype negative prompt â€” appended to the negative prompt */
+  /** Archetype negative prompt — appended to the negative prompt */
   archetypeNegative?: string;
   /** Reference image URLs from archetype selections */
   referenceImageUrls?: string[];
@@ -62,7 +62,7 @@ export interface AIRenderOptions {
   seed?: number;
   /** Override output image dimensions */
   imageSize?: { width: number; height: number } | string;
-  /** Render style id â€” alias for style, used by expanded catalog */
+  /** Render style id — alias for style, used by expanded catalog */
   renderStyleId?: string;
   /**
    * Map-overlay prompt from enriched archetype metadata.
@@ -77,7 +77,7 @@ export interface AIRenderOptions {
    */
   siteBoundaryCoords?: number[][];
   /**
-   * All site zones â€” used for structured zone-by-zone prompt generation.
+   * All site zones — used for structured zone-by-zone prompt generation.
    */
   siteZones?: SiteZone[];
   /** Gemini model ID override (e.g. 'gemini-3-pro-image-preview') */
@@ -116,11 +116,11 @@ export interface UseAIRenderReturn {
   renderPreviews: (map: MapboxMap, options?: AIRenderOptions) => Promise<AIRenderResult[]>;
   /** Generate a full-quality render with a locked seed. */
   renderFull: (map: MapboxMap, options: AIRenderOptions, seed: number, singleView?: boolean) => Promise<AIRenderResult | null>;
-  /** 4-face render results â€” one per bearing */
+  /** 4-face render results — one per bearing */
   faceRenders: FaceRender[];
   /** Whether a render is currently in flight */
   isRendering: boolean;
-  /** 0â€“100 progress estimate (indeterminate: stays at -1 while waiting) */
+  /** 0–100 progress estimate (indeterminate: stays at -1 while waiting) */
   progress: number;
   /** Status message for the UI */
   statusMessage: string;
@@ -147,7 +147,7 @@ export interface UseAIRenderReturn {
 }
 
 // ---------------------------------------------------------------------------
-// Style presets (kept for UI compatibility â€” the structured prompt overrides)
+// Style presets (kept for UI compatibility — the structured prompt overrides)
 // ---------------------------------------------------------------------------
 
 export const AI_RENDER_STYLES: AIRenderStyle[] = aiRenderStylePresets as AIRenderStyle[];
@@ -176,7 +176,7 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   atmospheric: {
     id: 'atmospheric',
     label: 'Atmospheric',
-    prompt: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. CRITICAL: Replace all colored polygon fills with photorealistic building materials â€” real brick, stone, glass, concrete, metal roofing. No flat colored surfaces. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose overhead. Ground-level haze creating depth layers. Wet surfaces with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
+    prompt: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. CRITICAL: Replace all colored polygon fills with photorealistic building materials — real brick, stone, glass, concrete, metal roofing. No flat colored surfaces. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose overhead. Ground-level haze creating depth layers. Wet surfaces with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
   },
   'site-plan': {
     id: 'site-plan',
@@ -191,7 +191,7 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   'site-plan-watercolor': {
     id: 'site-plan-watercolor',
     label: 'Site Plan WC',
-    prompt: 'Near-top-down architectural site plan as a hand-painted watercolor on textured paper, 15-20 degrees from nadir. Soft translucent washes â€” warm ochre for buildings, sage green for parks, soft grey for roads, ultramarine for water. Faint pencil construction lines beneath washes. Trees as loose circular watercolor daubs. Shadows as soft blue-grey washes. White paper glowing through as highlights. Pigment granulation, wet-on-wet blooms, bleeding edges at zone boundaries. Architectural competition entry quality.',
+    prompt: 'Near-top-down architectural site plan as a hand-painted watercolor on textured paper, 15-20 degrees from nadir. Soft translucent washes — warm ochre for buildings, sage green for parks, soft grey for roads, ultramarine for water. Faint pencil construction lines beneath washes. Trees as loose circular watercolor daubs. Shadows as soft blue-grey washes. White paper glowing through as highlights. Pigment granulation, wet-on-wet blooms, bleeding edges at zone boundaries. Architectural competition entry quality.',
   },
   winter: {
     id: 'winter',
@@ -226,12 +226,12 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
   'clay-maquette': {
     id: 'clay-maquette',
     label: 'Clay Maquette',
-    prompt: 'Photorealistic macro photography of a physical architectural scale model carved from a single block of PURE WHITE matte plaster. CRITICAL: Every single element â€” buildings, trees, roads, parks, vehicles â€” is the SAME pure white material with ZERO color. No green, no gray, no brown, no color of any kind. Only white plaster with shadows defining form. Studio lighting with soft overhead softbox and deep ambient occlusion shadows. High-angle isometric view with tilt-shift miniature effect. Monochromatic white architectural maquette on white base board.',
+    prompt: 'Photorealistic macro photography of a physical architectural scale model carved from a single block of PURE WHITE matte plaster. CRITICAL: Every single element — buildings, trees, roads, parks, vehicles — is the SAME pure white material with ZERO color. No green, no gray, no brown, no color of any kind. Only white plaster with shadows defining form. Studio lighting with soft overhead softbox and deep ambient occlusion shadows. High-angle isometric view with tilt-shift miniature effect. Monochromatic white architectural maquette on white base board.',
   },
   blueprint: {
     id: 'blueprint',
     label: 'Blueprint',
-    prompt: 'Architectural blueprint cyanotype on aged blueprint paper. Strict orthographic projection straight down. Pure white linework on deep Prussian-blue ground â€” crisp construction lines, building footprints, property lines, hatched landscape patterns. Trees as small white circular symbols. Faint vintage paper mottling. No tonal shading, no gradients, no realistic materials. Mid-20th-century architectural drafting convention.',
+    prompt: 'Architectural blueprint cyanotype on aged blueprint paper. Strict orthographic projection straight down. Pure white linework on deep Prussian-blue ground — crisp construction lines, building footprints, property lines, hatched landscape patterns. Trees as small white circular symbols. Faint vintage paper mottling. No tonal shading, no gradients, no realistic materials. Mid-20th-century architectural drafting convention.',
   },
 };
 
@@ -243,7 +243,7 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
 const API_BASE = import.meta.env.VITE_API_URL || '';
 const RENDER_API_URL = `${API_BASE}/api/v1/render/generate`;
 
-/** Timeout for the backend request (3 minutes â€” Imagen 3 can be slow) */
+/** Timeout for the backend request (3 minutes — Imagen 3 can be slow) */
 const RENDER_TIMEOUT = 300_000;
 
 /** The 4 face bearings */
@@ -286,7 +286,7 @@ async function captureMapCanvasBase64(map: MapboxMap): Promise<string> {
       const reader = new FileReader();
       reader.onloadend = () => {
         const dataUri = reader.result as string;
-        // Strip the "data:image/png;base64," prefix â€” backend wants raw base64
+        // Strip the "data:image/png;base64," prefix — backend wants raw base64
         const base64 = dataUri.split(',')[1];
         resolve(base64);
       };
@@ -512,7 +512,7 @@ function generateBinaryMask(
     }
 
     drawnCount++;
-    console.log(`[AIRender] Mask: drew zone "${zone.name || zone.id}" (${zone.zone_type}) â€” ${pixels.length} vertices`);
+    console.log(`[AIRender] Mask: drew zone "${zone.name || zone.id}" (${zone.zone_type}) — ${pixels.length} vertices`);
   }
   console.log(`[AIRender] Mask complete: ${drawnCount}/${siteZones.length} zones drawn on ${w}x${h} canvas (DPR=${dpr})`);
 
@@ -540,8 +540,8 @@ function loadImage(src: string | Blob): Promise<HTMLImageElement> {
 /**
  * Stitch the AI-rendered result back onto the original screenshot using a
  * hybrid approach:
- *  1) Polygon clip to site boundary â€” controls horizontal extent
- *  2) Pixel-diff ABOVE building zones â€” captures 3D vertical extent
+ *  1) Polygon clip to site boundary — controls horizontal extent
+ *  2) Pixel-diff ABOVE building zones — captures 3D vertical extent
  *     without bleeding horizontally outside the boundary
  */
 async function stitchWithBoundaryMask(
@@ -748,7 +748,7 @@ function calculatePerspectiveHeadroom(
   // Vertical shift: building height projected onto screen Y-axis.
   // At higher pitch angles, buildings appear to lean more "up-screen".
   // sin(pitch) is correct: at pitch=0 (top-down) shift is 0,
-  // at pitch=60Â° (oblique) shift is large.
+  // at pitch=60° (oblique) shift is large.
   const pitchRad = pitch * Math.PI / 180;
   const verticalShift = buildingHeightM * pixelsPerMeter * Math.sin(pitchRad);
 
@@ -797,7 +797,7 @@ function generateSingleZoneMask(
       // Gemini room to render the building's full 3D height.
       // Bottom and sides stay locked to the polygon; top extends upward.
       const headroom = calculatePerspectiveHeadroom(map, buildingHeight);
-      console.log(`[AIRender] Building mask headroom: ${headroom.toFixed(0)}px for ${buildingHeight}m height, pitch=${map.getPitch().toFixed(1)}Â°`);
+      console.log(`[AIRender] Building mask headroom: ${headroom.toFixed(0)}px for ${buildingHeight}m height, pitch=${map.getPitch().toFixed(1)}°`);
 
       // Find the top-most Y coordinate of the polygon
       const devicePixels = pixels.map(p => ({ x: p.x * dpr, y: p.y * dpr }));
@@ -908,7 +908,7 @@ function generateCombinedMask(
 
 /**
  * Build a zone-specific prompt for per-zone rendering.
- * Simple, natural language â€” Gemini handles spatial reasoning natively.
+ * Simple, natural language — Gemini handles spatial reasoning natively.
  */
 
 // â”€â”€ Color utilities for variant-specific polygon colors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -971,7 +971,7 @@ function colorName(hex: string): string {
 
 /**
  * Build a GROUND PLANE prompt for Pass 1 of the two-pass pipeline.
- * Renders parks, roads, plazas â€” no vertical structures.
+ * Renders parks, roads, plazas — no vertical structures.
  */
 function buildGroundPlanePrompt(groundZones: SiteZone[], options: AIRenderOptions): string {
   const entries: ZonePromptEntry[] = groundZones.map(z => {
@@ -1041,7 +1041,7 @@ function _buildSingleZonePrompt(zone: SiteZone, options: AIRenderOptions, _allZo
   }
   return buildGroundPlanePrompt([zone], options);
 }
-void _buildSingleZonePrompt; // suppress unused warning â€” kept for fallback use
+void _buildSingleZonePrompt; // suppress unused warning — kept for fallback use
 
 /**
  * Build a natural-language description from archetype metadata.
@@ -1087,7 +1087,7 @@ function buildArchetypeDescription(
 
   return defaultZoneDescription(zoneType);
 }
-void buildArchetypeDescription; // suppress unused warning â€” kept for fallback use
+void buildArchetypeDescription; // suppress unused warning — kept for fallback use
 
 /** Extract N keywords from verbose description text, joining with '+' */
 function condenseToKeywords(text: string | undefined, maxTokens = 4): string {
@@ -1147,7 +1147,7 @@ function buildCompressedZoneLabel(entry: ZonePromptEntry, imageIndex?: number, c
     else scale = 'multi-story';
   }
 
-  // Custom-style zone: the user's own description IS the spec â€” keep it intact.
+  // Custom-style zone: the user's own description IS the spec — keep it intact.
   // Prefer the zone's own name; a retained (but overridden) archetype title
   // would contradict the custom description.
   if (entry.customPromptText) {
@@ -1163,7 +1163,7 @@ function buildCompressedZoneLabel(entry: ZonePromptEntry, imageIndex?: number, c
     return `[${entry.color}] ${name} | ${scale} | match style of Image ${imageIndex}`;
   }
 
-  // Materials/features â€” priority zones get more keywords for richer detail
+  // Materials/features — priority zones get more keywords for richer detail
   const maxKeywords = priority ? 6 : 3;
   let features = '';
 
@@ -1209,7 +1209,7 @@ function buildCompressedZoneLabel(entry: ZonePromptEntry, imageIndex?: number, c
 }
 
 /**
- * Build a SCHEMA AVANZATO format prompt â€” structured labels instead of paragraphs.
+ * Build a SCHEMA AVANZATO format prompt — structured labels instead of paragraphs.
  * Targets 2,200-2,500 chars for optimal Gemini 3 Pro attention.
  */
 function buildSCHEMAPrompt(
@@ -1265,13 +1265,13 @@ function buildSCHEMAPrompt(
   }
 
   // â”€â”€ CONTEXT â”€â”€
-  lines.push('CONTEXT: Preserve all unmasked satellite imagery exactly as-is. Rendered zones must blend naturally at edges â€” match tones, lighting, and scale of adjacent satellite context.');
+  lines.push('CONTEXT: Preserve all unmasked satellite imagery exactly as-is. Rendered zones must blend naturally at edges — match tones, lighting, and scale of adjacent satellite context.');
 
   // â”€â”€ ZONES â”€â”€
   if (zoneEntries.length > 0) {
     // Custom-style prompts get more room when the prompt covers a single zone
     // (Pass 2 per-building) than in a crowded multi-zone prompt. LLM-expanded
-    // descriptions run 80-140 words (~600-900 chars) â€” budgets sized to carry
+    // descriptions run 80-140 words (~600-900 chars) — budgets sized to carry
     // most of that through rather than truncating what the user paid to generate.
     const customCharBudget = mode === 'building' || zoneEntries.length === 1 ? 900 : 600;
     lines.push('ZONES:');
@@ -1283,9 +1283,9 @@ function buildSCHEMAPrompt(
 
   // â”€â”€ MANDATORY â”€â”€
   if (isClay) {
-    lines.push('MANDATORY: ALL elements rendered as pure white matte plaster/clay. Every building, street, park, tree â€” everything is the same white material. Only shadows and form define shapes. Zero color, zero texture, zero real materials.');
+    lines.push('MANDATORY: ALL elements rendered as pure white matte plaster/clay. Every building, street, park, tree — everything is the same white material. Only shadows and form define shapes. Zero color, zero texture, zero real materials.');
   } else {
-    lines.push('MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials â€” no colored polygon fill visible on any surface. Replace ALL colored overlays with appropriate materials.');
+    lines.push('MANDATORY: Each zone renders ONLY within its colored polygon boundary. Realistic rooftop materials — no colored polygon fill visible on any surface. Replace ALL colored overlays with appropriate materials.');
   }
 
   // â”€â”€ PROHIBITIONS â”€â”€
@@ -1464,12 +1464,12 @@ async function compositeZoneRender(
       }
 
       ctx.putImageData(currentData, 0, 0);
-      console.log(`[AIRender] compositeZoneRender: BUILDING "${zone.name || zone.zone_type}" â€” polygon clip + pixel-diff ${rw}x${rh}px above`);
+      console.log(`[AIRender] compositeZoneRender: BUILDING "${zone.name || zone.zone_type}" — polygon clip + pixel-diff ${rw}x${rh}px above`);
     } else {
-      console.log(`[AIRender] compositeZoneRender: BUILDING "${zone.name || zone.zone_type}" â€” polygon clip only (no headroom region)`);
+      console.log(`[AIRender] compositeZoneRender: BUILDING "${zone.name || zone.zone_type}" — polygon clip only (no headroom region)`);
     }
   } else {
-    console.log(`[AIRender] compositeZoneRender: ${zone.zone_type} â€” strict polygon clip`);
+    console.log(`[AIRender] compositeZoneRender: ${zone.zone_type} — strict polygon clip`);
   }
 
   return canvas.toDataURL('image/png');
@@ -1689,7 +1689,7 @@ function getActiveFaceLabel(bearing: number): 'front' | 'right' | 'rear' | 'left
 
 
 // ---------------------------------------------------------------------------
-// Structured prompt builder â€” Spatial-to-Render Orchestration
+// Structured prompt builder — Spatial-to-Render Orchestration
 // ---------------------------------------------------------------------------
 
 const catalog = (archetypeCatalog as any)?.archetypes as any[] | undefined;
@@ -1699,7 +1699,7 @@ interface ZonePromptEntry {
   zoneType: string;
   zoneName: string;
   descriptionText?: string; // User-editable description from the text box
-  customPromptText?: string; // Custom-style zone: expanded (or raw) user prompt â€” passed intact, never condensed
+  customPromptText?: string; // Custom-style zone: expanded (or raw) user prompt — passed intact, never condensed
   floors?: number;          // Number of stories
   heightM?: number;         // Building height in meters
   archetypeTitle?: string;
@@ -1849,7 +1849,7 @@ function collectZonePromptEntries(zones: SiteZone[]): ZonePromptEntry[] {
   for (const zone of zones) {
     if (!zone.coordinates?.length) continue;
 
-    // Skip site_boundary â€” it's never composited and including it in the
+    // Skip site_boundary — it's never composited and including it in the
     // prompt risks the AI drawing visible boundary lines/edges
     if (zone.zone_type === 'site_boundary') continue;
 
@@ -1946,7 +1946,7 @@ function defaultZoneDescription(zoneType: string): string {
     case 'building':
       return 'photorealistic commercial/mixed-use buildings with glass and concrete facades, ground-floor retail, multiple stories';
     case 'residential':
-      return 'photorealistic residential buildings â€” townhouses or apartment blocks with warm materials, balconies, and landscaped entries';
+      return 'photorealistic residential buildings — townhouses or apartment blocks with warm materials, balconies, and landscaped entries';
     case 'road':
     case 'street':
     case 'path':
@@ -1959,7 +1959,7 @@ function defaultZoneDescription(zoneType: string): string {
     case 'parking':
       return 'paved surface parking lot with painted parking stalls, directional arrows, concrete wheel stops, LED pole lighting, and perimeter landscaping with low hedges';
     case 'water':
-      return 'water feature â€” pond, fountain, or reflecting pool with clean blue water and stone edges';
+      return 'water feature — pond, fountain, or reflecting pool with clean blue water and stone edges';
     case 'development_area':
       return 'mixed-use urban development with varied building heights, active ground floors, and public realm';
     default:
@@ -1968,7 +1968,7 @@ function defaultZoneDescription(zoneType: string): string {
 }
 
 /**
- * Build the multi-zone prompt â€” narrative prose for Gemini.
+ * Build the multi-zone prompt — narrative prose for Gemini.
  * Uses the same Subject + Environment + Materials + Lighting + Camera formula
  * as the two-pass pipeline, but describes all zones in a single prompt.
  */
@@ -1979,7 +1979,7 @@ function buildStructuredPrompt(options: AIRenderOptions): string {
 }
 
 /**
- * Master prompt builder â€” generates a simple, natural-language prompt
+ * Master prompt builder — generates a simple, natural-language prompt
  * from zone data and archetype card metadata for Gemini.
  */
 function buildPrompt(options: AIRenderOptions): string {
@@ -2177,7 +2177,7 @@ async function getCustomZonePhotoCards(
     if (b64) {
       cards.push({
         image_base64: b64,
-        label: `User reference photo for ${zoneName} â€” match the architectural style, materials, and colors shown`,
+        label: `User reference photo for ${zoneName} — match the architectural style, materials, and colors shown`,
         zone_color: zoneColor,
       });
     }
@@ -2199,7 +2199,7 @@ async function callVertexAI(
   thinkingBudget?: number,
   imageSize?: string,
 ): Promise<{ imageDataUri: string; seed: number }> {
-  console.log('[AIRender] Calling Vertex AI via backend â€” prompt length:', prompt.length, 'mask:', !!maskBase64, 'negative:', !!negativePrompt, 'guidance:', guidanceScale, 'model:', model || 'default', 'archetypeImages:', archetypeImages?.length || 0);
+  console.log('[AIRender] Calling Vertex AI via backend — prompt length:', prompt.length, 'mask:', !!maskBase64, 'negative:', !!negativePrompt, 'guidance:', guidanceScale, 'model:', model || 'default', 'archetypeImages:', archetypeImages?.length || 0);
 
   const body: Record<string, unknown> = {
     image_base64: imageBase64,
@@ -2244,11 +2244,11 @@ async function callVertexAI(
 
   const { image_base64: resultBase64, seed: resultSeed } = resp.data;
   if (!resultBase64) {
-    throw new Error('Backend returned no image_base64 â€” check backend logs or VITE_API_URL config');
+    throw new Error('Backend returned no image_base64 — check backend logs or VITE_API_URL config');
   }
   const imageDataUri = `data:image/png;base64,${resultBase64}`;
 
-  console.log('[AIRender] Vertex AI success â€” image size:', resultBase64.length, 'chars');
+  console.log('[AIRender] Vertex AI success — image size:', resultBase64.length, 'chars');
   return { imageDataUri, seed: resultSeed ?? seed };
 }
 
@@ -2349,7 +2349,7 @@ export function useAIRender(): UseAIRenderReturn {
       const controller = new AbortController();
       abortRef.current = controller;
 
-      // Plan zones carry semantic hints, not archetype IDs â€” resolve once here.
+      // Plan zones carry semantic hints, not archetype IDs — resolve once here.
       if (options.siteZones?.length) {
         options = { ...options, siteZones: prepareZonesForRender(options.siteZones) };
       }
@@ -2406,9 +2406,9 @@ export function useAIRender(): UseAIRenderReturn {
               'Enhance the satellite imagery context in the white-masked area to show realistic winter conditions. ' +
               'Add snow accumulation on existing rooftops, bare deciduous trees with visible branch structure, ' +
               'frost on surfaces, and muted winter tones. Make existing buildings look like real buildings with ' +
-              'visible facades, windows, and architectural detail â€” not grey blocks. ' +
+              'visible facades, windows, and architectural detail — not grey blocks. ' +
               'Preserve all road markings, parking lots, and infrastructure detail. ' +
-              'Do NOT alter the black-masked zones â€” they are already rendered. ' +
+              'Do NOT alter the black-masked zones — they are already rendered. ' +
               'Match the winter lighting and snow coverage of the adjacent rendered zones for seamless blending.';
 
             const pass2Seed = seed + 1;
@@ -2426,7 +2426,7 @@ export function useAIRender(): UseAIRenderReturn {
 
             if (pass2DataUri) {
               renderResult.imageUrl = pass2DataUri;
-              console.log('[AIRender] Winter Pass 2 complete â€” context enhanced');
+              console.log('[AIRender] Winter Pass 2 complete — context enhanced');
             }
           } catch (pass2Err) {
             console.warn('[AIRender] Winter Pass 2 failed, using Pass 1 result:', pass2Err);
@@ -2508,7 +2508,7 @@ export function useAIRender(): UseAIRenderReturn {
 
         setResult(renderResult);
         setProgress(100);
-        setStatusMessage('Complete â€” zone rendered');
+        setStatusMessage('Complete — zone rendered');
         setIsRendering(false);
         return renderResult;
       } catch (err: unknown) {
@@ -2645,7 +2645,7 @@ export function useAIRender(): UseAIRenderReturn {
 
           setResult(fullResult);
           setProgress(100);
-          setStatusMessage('Complete â€” full quality render');
+          setStatusMessage('Complete — full quality render');
           setIsRendering(false);
           return fullResult;
         }
@@ -2704,7 +2704,7 @@ export function useAIRender(): UseAIRenderReturn {
         }
 
         setProgress(100);
-        setStatusMessage(`Complete â€” ${successfulFaces.length}/4 faces rendered`);
+        setStatusMessage(`Complete — ${successfulFaces.length}/4 faces rendered`);
         setIsRendering(false);
         return frontFace?.result ?? null;
       } catch (err: unknown) {
@@ -2857,7 +2857,7 @@ export function useAIRender(): UseAIRenderReturn {
         };
 
         // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-        // PASS 1: GROUND PLANE (parks, roads, plazas â€” all at once)
+        // PASS 1: GROUND PLANE (parks, roads, plazas — all at once)
         // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
         if (groundZones.length > 0) {
           setStatusMessage(`Pass 1/${totalSteps > 1 ? '2' : '1'}: Rendering ground plane (${groundZones.length} zones)...`);
@@ -2896,7 +2896,7 @@ export function useAIRender(): UseAIRenderReturn {
 
             // For site-plan: include top-down reference as additional image
             const groundArchetypeImages: Array<{ image_base64: string; label: string; zone_color?: string }> = topDownBase64
-              ? [{ image_base64: topDownBase64, label: 'Top-down orthographic view of the site â€” use this as the spatial layout reference for the site plan. Maintain exact zone positions and proportions as shown in this nadir view.' }]
+              ? [{ image_base64: topDownBase64, label: 'Top-down orthographic view of the site — use this as the spatial layout reference for the site plan. Maintain exact zone positions and proportions as shown in this nadir view.' }]
               : [];
 
             // Custom-style zones: attach user-uploaded reference photos
@@ -2940,7 +2940,7 @@ export function useAIRender(): UseAIRenderReturn {
             }
 
             currentStep++;
-            console.log(`[AIRender] Pass 1 complete â€” ground plane rendered`);
+            console.log(`[AIRender] Pass 1 complete — ground plane rendered`);
           } catch (groundErr) {
             console.warn('[AIRender] Pass 1 (ground plane) failed:', groundErr);
           }
@@ -2971,7 +2971,7 @@ export function useAIRender(): UseAIRenderReturn {
                   color: z.id === zone.id ? getZoneRenderColor(z.id, z.color || '#E03C31') : '#ffffff',
                   label: z.name || z.zone_type,
                   zone_type: z.zone_type,
-                  // NO height â€” flat polygon only
+                  // NO height — flat polygon only
                 },
                 geometry: {
                   type: 'Polygon' as const,
@@ -3059,7 +3059,7 @@ export function useAIRender(): UseAIRenderReturn {
             // For site-plan: add top-down reference to archetype images
             const allBuildingImages = [
               ...(buildingArchetypeImages || []),
-              ...(topDownBase64 ? [{ image_base64: topDownBase64, label: 'Top-down orthographic view â€” use as spatial layout reference. Maintain exact zone positions and proportions.' }] : []),
+              ...(topDownBase64 ? [{ image_base64: topDownBase64, label: 'Top-down orthographic view — use as spatial layout reference. Maintain exact zone positions and proportions.' }] : []),
             ];
 
             const { imageDataUri } = await callVertexAI(
@@ -3073,7 +3073,7 @@ export function useAIRender(): UseAIRenderReturn {
               options.model,
               options.projectId,
               allBuildingImages.length > 0 ? allBuildingImages : undefined,
-              undefined, // thinkingBudget â€” single building, let backend auto-default
+              undefined, // thinkingBudget — single building, let backend auto-default
             );
 
             // Composite with headroom-expanded clip
@@ -3094,7 +3094,7 @@ export function useAIRender(): UseAIRenderReturn {
         for (const [layerId, visibility] of Object.entries(layerVisibilityBackup)) {
           if (map.getLayer(layerId)) {
             if (KEEP_HIDDEN_DURING_RENDER.includes(layerId)) {
-              // Keep hidden â€” the render overlay replaces these visually
+              // Keep hidden — the render overlay replaces these visually
               map.setLayoutProperty(layerId, 'visibility', 'none');
             } else {
               map.setLayoutProperty(layerId, 'visibility', visibility as 'none' | 'visible');
@@ -3157,7 +3157,7 @@ export function useAIRender(): UseAIRenderReturn {
 
         setResult(finalResult);
         setProgress(100);
-        setStatusMessage(`Complete â€” ${successfulZones.length} zones rendered (2-pass)`);
+        setStatusMessage(`Complete — ${successfulZones.length} zones rendered (2-pass)`);
         setIsRendering(false);
         return finalResult;
       } catch (err: unknown) {

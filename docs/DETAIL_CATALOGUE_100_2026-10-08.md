@@ -1,4 +1,4 @@
-# Standalone detail catalogue â€” 100 choices (2026-10-08)
+# Standalone detail catalogue — 100 choices (2026-10-08)
 
 ## Scope
 
@@ -49,7 +49,7 @@ Existing prepared-ground/fallback terrain logic and two-probes-per-frame budget 
 
 ## Trial and evidence
 
-Local project: `099fdc75-8eb1-4849-b602-8eebecef296e` (Bench detail editor Â· pilot).
+Local project: `099fdc75-8eb1-4849-b602-8eebecef296e` (Bench detail editor · pilot).
 Added cherry tree, contemporary path light, meadow grass, street planter and ivy
 pergola in open ground through the UI. Verified movement, 15-degree rotation,
 removal/undo, save and full reload. Final trial: 3 original benches, 4 trees,

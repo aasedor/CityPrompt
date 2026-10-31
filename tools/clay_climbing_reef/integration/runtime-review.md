@@ -16,7 +16,7 @@ Untested: low views, slopes/natural terrain, mixed street/park neighbourhood and
 Console: repeated third-party webext-ad-filtering onMessage errors remain; no claim of a completely empty console.
 Packaging: full public-asset production build remains unverified due existing D: space blocker. No deployment, push, paid generation or human activation performed.
 
-# Runtime integration review â€” <archetype / exact variant>
+# Runtime integration review — <archetype / exact variant>
 
 Copy this template into the candidate evidence package. Complete it using
 [Runtime integration for every archetype](ARCHETYPE_RUNTIME_INTEGRATION.md).

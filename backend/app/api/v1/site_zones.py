@@ -2923,7 +2923,7 @@ def compose_zone_prompt(zone: SiteZone, all_zones: list | None = None, site_cont
         if ctx_parts:
             parts.append("SITE CONTEXT: " + ". ".join(ctx_parts))
 
-        # Urban DNA planning directives (applied scenario) â€” advisory guidance
+        # Urban DNA planning directives (applied scenario) — advisory guidance
         # the planning-agent panel produced; the layout engine still draws.
         directives = site_context.get("planning_directives")
         if isinstance(directives, dict) and directives.get("parameters"):
@@ -3009,7 +3009,7 @@ def _build_site_context(boundary_zone: SiteZone, contained_zones: list[SiteZone]
     }
 
     # Urban DNA planning directives (written by POST /urban-dna/scenarios/{id}/apply).
-    # Absent for zones that never applied a scenario â€” output is unchanged then.
+    # Absent for zones that never applied a scenario — output is unchanged then.
     directives = boundary_props.get("_urban_dna_directives")
     if isinstance(directives, dict) and directives.get("parameters"):
         context["planning_directives"] = directives
@@ -3868,7 +3868,7 @@ async def revert_to_version(
     if entry.action == "update" and entry.previous_snapshot:
         snapshot = entry.previous_snapshot
     elif entry.action == "update":
-        # No previous_snapshot stored â€” find the prior entry for this zone
+        # No previous_snapshot stored — find the prior entry for this zone
         prev_result = await db.execute(
             select(ZoneHistory)
             .where(ZoneHistory.zone_id == entry.zone_id)

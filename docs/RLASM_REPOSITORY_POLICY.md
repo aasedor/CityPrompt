@@ -3,7 +3,7 @@
 **Status:** active
 **Method authority:** RLASM v6.1
 **Canonical remote:** `https://github.com/aasedor/CityPrompt.git`
-**Canonical branch:** `origin/deployment-version` (`origin/main` is its synchronized mirror)
+**Canonical branch:** `origin/deployment-version` (`origin/main` is frozen and unused)
 
 This policy keeps exact-source building work reviewable without turning the
 active Git repository into an experiment cache. It complements
