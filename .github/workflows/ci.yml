@@ -187,6 +187,14 @@ jobs:
         run: npx vitest run --reporter=verbose
 
       - name: Build production bundle
+        # Keep optional map code and the existing live catalogue in the size gate.
+        # These public build-only fixtures never contact a provider or deploy.
+        env:
+          VITE_API_URL: https://api.example.invalid
+          VITE_WS_URL: wss://api.example.invalid
+          VITE_GOOGLE_MAPS_API_KEY: test-maps-key
+          VITE_MAPBOX_TOKEN: pk.test-mapbox-token
+          VITE_CLAUDE_FIVE_TRIAL: "true"
         run: npm run build
 
       - name: Validate archetype assets

@@ -7,9 +7,21 @@ import assert from 'node:assert/strict';
 import ts from 'typescript';
 import { deflateSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
+import { minify } from 'terser';
 import { packCatalogue, packedCatalogue, productionStarter } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
+
+test('production minification removes only unused catalogue decoding and preserves used bridge values', async () => {
+  const source = readFileSync(resolve('src/data/nativeBridgePilots.json'), 'utf8');
+  const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const options = { module: true, compress: { passes: 3 } };
+  const used = await minify(module, options);
+  const decoded = await import(`data:text/javascript;base64,${Buffer.from(used.code).toString('base64')}`);
+  assert.deepEqual(decoded.default, JSON.parse(source));
+  const unused = await minify(module.replace('export default ', 'const unused = ') + '\nexport const ready = true;', options);
+  assert.ok(unused.code.length < 1024, 'An unreferenced registry must not retain its compressed data or decoding work');
+});
 
 for (const relative of [
   'data/cataloguePlanningHistory.json', 'data/catalogueTeaching.json',
@@ -114,7 +126,7 @@ for (const filename of ['peopleCatalogue.json', 'inclusivePeopleCatalogue.json',
   });
 }
 
-for (const filename of ['streetManual.json', 'nativeStreetModuleBounds.json']) {
+for (const filename of ['streetManual.json', 'nativeStreetModuleBounds.json', 'nativeBridgePilots.json']) {
   test(`${filename}: production packing preserves every street rule and exact geometric bound`, async () => {
     const path = resolve('src/data', filename);
     const source = readFileSync(path, 'utf8');
