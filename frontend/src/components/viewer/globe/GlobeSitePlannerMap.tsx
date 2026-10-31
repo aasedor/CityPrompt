@@ -1,3 +1,4 @@
+import { rotateCoordsAroundCentroid } from './plotRotation';
 import { modularBridgeProgramFor } from './modularBridgeProgram';
 import {pickReferenceFeature, resolveReferenceSelection, type ReferenceSelection} from '@/features/referenceLayers/referenceInspection';
 import {ReferenceFeatureDetails} from '@/features/referenceLayers/ReferenceFeatureDetails';
@@ -310,16 +311,6 @@ function isBuildingZoneType(zoneType: SiteZoneType | string | null | undefined):
   return zoneType === 'building' || zoneType === 'residential' || zoneType === 'development_area';
 }
 
-function rotateCoordsAroundCentroid(coords: number[][], centroid: [number, number], deltaRad: number): number[][] {
-  const cos = Math.cos(deltaRad);
-  const sin = Math.sin(deltaRad);
-  const [cx, cy] = centroid;
-  return coords.map((c) => {
-    const rx = c[0] - cx;
-    const ry = c[1] - cy;
-    return [cx + rx * cos - ry * sin, cy + rx * sin + ry * cos];
-  });
-}
 export const DEFAULT_INITIAL_CAMERA_PITCH_DEGREES = 60;
 export const MAX_GLOBE_CAMERA_PITCH_DEGREES = 100;
 const ZONE_FIT_INITIAL_CAMERA_MULTIPLIER = 1.15;

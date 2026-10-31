@@ -62,6 +62,10 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 | C7 Failure and recovery | NOT TESTED | |
 | C8 Low/aerial views, exact capture and any AI-image comparison | NOT TESTED | Same-camera source/output; count, outline, location, scale, access, material/function, additions; pass/review/fallback |
 | C9 Student controls and supported inputs | NOT TESTED | |
+
+For fixed-native buildings, record Q/E and rotation-field evidence at the actual
+site latitude: metre dimensions/right angles preserved, exact model retained
+after save/reopen. A displayed angle alone does not prove detailed-model fit.
 | B1 Native placement | NOT TESTED | |
 | B2 Measured entrance evidence | NOT TESTED | |
 | B3 Entrance authoring | NOT TESTED | |

@@ -127,6 +127,12 @@ context generation retains its protected footprint and access routes.
 | C8 Visibility | Inspect low views from several directions plus aerial and exact 3D capture. No persistent proxy, duplicate surface, floating base, buried path, hidden gap, or furniture obstructing a route. Preserve surrounding context and capture ownership. When AI imagery is used, compare it with the exact same-camera source for count, location, outline, scale, function, access and invented elements; record automatic pass, human review or fallback. A visually attractive image alone is not faithful evidence. |
 | C9 Student use | Complete the advertised placement/connection workflow through ordinary controls, without API-authored geometry or numeric offsets supplied by a developer. Check keyboard, pointer, and supported viewport behavior; report touch separately if not tested. |
 
+For fixed-native building rotation, exercise Q/E as well as the rotation field
+at the actual site latitude. Rotation must preserve metre dimensions and right
+angles; rotating raw longitude/latitude distorts the plot away from the equator
+and can replace a valid detailed model with planned massing. Reopen the saved
+scene and verify its detailed representation, not only the inspector's angle.
+
 Street previews must validate unfinished routes before calling strict geometry
 builders. A short, bent or oversized draft must keep drawing controls available
 and explain the route requirement; detailed geometry resumes when it is valid.
