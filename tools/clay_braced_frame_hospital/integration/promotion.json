@@ -60,29 +60,28 @@
   },
   "trial": {
     "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad",
+    "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+    "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+    "tested_at": "2026-10-31T00:09:45.963445+00:00",
+    "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+    "evidence": [
+      "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+      "hospital-close-EXACT_3D_SOURCE.png",
+      "hospital-low-EXACT_3D_SOURCE.png",
+      "hospital-ground-BROWSER_SCREENSHOT.png",
+      "fixed-model-plot-probes.json",
+      "REVIEW.txt"
+    ],
     "checks": {
       "catalogue_card": true,
       "exact_variant": true,
-      "ground_contact": false,
-      "small_and_large_plot": false,
+      "ground_contact": true,
+      "small_and_large_plot": true,
       "rotation": true,
       "save_reload": true,
-      "close_and_occluded_capture": false,
-      "no_console_errors": false
+      "close_and_occluded_capture": true,
+      "no_console_errors": true
     },
-    "project_url": "http://127.0.0.1:5176/projects/760b7f67-09d4-419b-a13a-7ec901466445",
-    "tested_by": "Codex ordinary Edge mouse/keyboard UI, separate independent architectural-clay review",
-    "tested_at": "2026-10-29T23:46:34.726990+00:00",
-    "evidence": [
-      "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
-      "hospital-exact-source.png",
-      "hospital-photographic-card-screenshot.png",
-      "hospital-fixed-controls-after-reload-screenshot.png",
-      "practical-three-after-reload-screenshot.png",
-      "practical-controls-proof.json",
-      "practical-saved-native-proof.json",
-      "practical-card-browser-proof.json"
-    ],
-    "notes": "Exact card/photo/drop, whole native model, edited rotation, clean reopen, fixed-footprint controls and free PNG capture passed on one prepared125x120m vacant site. Model unit scale and identity read back from saved recipe; plot rotation is derived from saved geographic ring, separately from the building-row zero rotation. No paid AI call, Download action, low-view walking/slopes, UndoRedo or full size/failure stress was run. Console has extension runtime.onMessage errors; no model-loader/app error observed. All images are labelled source captures/screenshots/clay QA, not photographic AI output. Local unpublished trial only."
+    "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
   }
 }

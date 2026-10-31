@@ -177,6 +177,7 @@
     "src/components/viewer/globe/pedestrianCapture.ts",
     "src/components/viewer/globe/peopleFollowCamera.ts",
     "src/components/viewer/globe/planViewCamera.ts",
+    "src/components/viewer/globe/plotRotation.ts",
     "src/components/viewer/globe/preparedEntranceGround.ts",
     "src/components/viewer/globe/preparedPublicRoads.ts",
     "src/components/viewer/globe/preparedSiteEdges.ts",

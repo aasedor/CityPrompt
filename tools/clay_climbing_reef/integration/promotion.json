@@ -59,25 +59,28 @@
   },
   "trial": {
     "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
-    "project_url": "http://127.0.0.1:5176/projects/2715f44e-9ca9-4fc7-976f-350302496ccc",
-    "tested_by": "Codex ordinary browser trial; original independent clay review preserved separately",
-    "tested_at": "2026-10-29T21:14:22.215831+00:00",
+    "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+    "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+    "tested_at": "2026-10-31T00:09:45.963445+00:00",
+    "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
     "evidence": [
-      "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
-      "reef-exact-source.png",
-      "all-six-after-reload-screenshot.png",
-      "saved-native-scale-proof.json"
+      "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+      "reef-close-EXACT_3D_SOURCE.png",
+      "reef-low-EXACT_3D_SOURCE.png",
+      "reef-ground-BROWSER_SCREENSHOT.png",
+      "fixed-model-plot-probes.json",
+      "REVIEW.txt"
     ],
     "checks": {
       "catalogue_card": true,
       "exact_variant": true,
-      "ground_contact": false,
-      "small_and_large_plot": false,
+      "ground_contact": true,
+      "small_and_large_plot": true,
       "rotation": true,
       "save_reload": true,
-      "close_and_occluded_capture": false,
-      "no_console_errors": false
+      "close_and_occluded_capture": true,
+      "no_console_errors": true
     },
-    "notes": "Core card/drop, native scale, rotation, reload and aerial free PNG content passed. Low-view/slope and per-variant min/max/occlusion acceptance remain unrun; no paid render or actual Download action was tested. Extension emits webext-ad-filtering onMessage errors; no app/model loader error remains after sandstone fix. Local pilot only, not activated."
+    "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
   }
 }

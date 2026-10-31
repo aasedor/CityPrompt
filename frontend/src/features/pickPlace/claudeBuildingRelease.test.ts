@@ -17,7 +17,7 @@ describe('finite Claude architectural-clay building release', () => {
     expect(warehouse?.properties.validation_native_url).toBeUndefined();
   });
 
-  it('registers the original eighteen and seven local trial candidates at native scale', () => {
+  it('registers all twenty-five approved candidates at native scale', () => {
     expect(cohort.entries).toHaveLength(25);
     const staged = CATALOGUE_BUILDING_ASSETS.filter(asset => asset.id.startsWith('claude_trial_'));
     expect(staged.length).toBeGreaterThan(0);
@@ -57,7 +57,7 @@ describe('finite Claude architectural-clay building release', () => {
     }
   });
 
-  it('keeps the seven pending runtime trials outside production discovery', async () => {
+  it('publishes the seven completed and approved runtime candidates in production', async () => {
     vi.stubEnv('DEV', false);
     vi.stubEnv('MODE', 'production');
     vi.resetModules();
@@ -67,8 +67,8 @@ describe('finite Claude architectural-clay building release', () => {
     for (const member of next) {
       const raw = CATALOGUE_BUILDING_ASSETS.find(asset => asset.id === member.asset_id)!;
       expect(raw.model.revision).toBe(member.candidate);
-      expect(raw.readiness).toBe('pilot');
-      expect(production.some(asset => asset.id === member.asset_id)).toBe(false);
+      expect(raw.readiness).toBe('ready');
+      expect(production.filter(asset => asset.id === member.asset_id)).toHaveLength(1);
     }
   });
 

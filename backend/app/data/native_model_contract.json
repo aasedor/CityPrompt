@@ -1263,58 +1263,6 @@
       "current": true
     },
     {
-      "asset_id": "clay_twisting_glass_sky_garden_tower",
-      "variant_id": "glass_tower_twisted",
-      "revision": "glass-tower-twisted-clay-v005",
-      "dimensions_m": [
-        43.4902229309082,
-        44.02606964111328,
-        147.6999969482422
-      ],
-      "storeys": 40,
-      "fixed": true,
-      "current": true
-    },
-    {
-      "asset_id": "trial_sandstone_civic",
-      "variant_id": "sandstone_romanesque_revival",
-      "revision": "calgary-sandstone-heritage-clay-v007",
-      "dimensions_m": [
-        59.40999984741211,
-        60.010000228881836,
-        44
-      ],
-      "storeys": 3,
-      "fixed": true,
-      "current": true
-    },
-    {
-      "asset_id": "clay_classic_courtyard_motel",
-      "variant_id": "hotel_roadside_motel",
-      "revision": "highway-motor-hotel-clay-v002",
-      "dimensions_m": [
-        24.8799991607666,
-        37.7400016784668,
-        7.21999979019165
-      ],
-      "storeys": 1,
-      "fixed": true,
-      "current": true
-    },
-    {
-      "asset_id": "clay_beltline_brick_midrise",
-      "variant_id": "beltline_brick_modern",
-      "revision": "calgary-beltline-mid-rise-clay-v003",
-      "dimensions_m": [
-        34.15999984741211,
-        34.15999984741211,
-        20.43000030517578
-      ],
-      "storeys": 5,
-      "fixed": true,
-      "current": true
-    },
-    {
       "asset_id": "claude_climbing_crucible_v004",
       "variant_id": "climbing_crucible",
       "revision": "clay-climbing-crucible-clay-v004",
@@ -1402,6 +1350,58 @@
         47.8994140625
       ],
       "storeys": 12,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_twisting_glass_sky_garden_tower",
+      "variant_id": "glass_tower_twisted",
+      "revision": "glass-tower-twisted-clay-v005",
+      "dimensions_m": [
+        43.4902229309082,
+        44.02606964111328,
+        147.6999969482422
+      ],
+      "storeys": 40,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "trial_sandstone_civic",
+      "variant_id": "sandstone_romanesque_revival",
+      "revision": "calgary-sandstone-heritage-clay-v007",
+      "dimensions_m": [
+        59.40999984741211,
+        60.010000228881836,
+        44
+      ],
+      "storeys": 3,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_classic_courtyard_motel",
+      "variant_id": "hotel_roadside_motel",
+      "revision": "highway-motor-hotel-clay-v002",
+      "dimensions_m": [
+        24.8799991607666,
+        37.7400016784668,
+        7.21999979019165
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "clay_beltline_brick_midrise",
+      "variant_id": "beltline_brick_modern",
+      "revision": "calgary-beltline-mid-rise-clay-v003",
+      "dimensions_m": [
+        34.15999984741211,
+        34.15999984741211,
+        20.43000030517578
+      ],
+      "storeys": 5,
       "fixed": true,
       "current": true
     },

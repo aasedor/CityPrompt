@@ -228,3 +228,25 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot
 alone is not student-ready acceptance. Do not invent a review or approval.
+
+
+## Superseding bounded runtime acceptance — 30 October 2026
+
+Exact candidate: `clay-braced-frame-hospital-clay-v006`, SHA256 `c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad`.
+Source: `73272b55bb18df64110ea862e55dc5e2e69f5143`. Project: http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d.
+Evidence: https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD. Prior source-review/asset approval retained.
+
+| Check | Current result |
+| --- | --- |
+| Exact card, placed variant, saved/reopened identity | PASS: ordinary UI plus exact source provenance/readback |
+| Fixed native size and supported rotations | PASS: Q/E now preserves metric rectangle; all seven retain detailed lego_assembly after reopen |
+| Small/native/large plot limits | PASS: separate API probes at 0.5/1/3x; 422/200/200, accepted model scales [1,1,1]. Browser resize is intentionally unavailable |
+| Prepared level ground, low and oblique contact | PASS: hospital-ground-BROWSER_SCREENSHOT.png and hospital-low-EXACT_3D_SOURCE.png |
+| Close capture with partially out-of-frame form | PASS: exact free PNGs, current source; low façade fills/occludes frame |
+| Browser error console | PASS: empty error logs in fresh QA tab |
+| Natural/sloping ground, independent novice study | NOT TESTED; not the advertised prepared-site scope |
+| Detailed interior navigation, construction/accessibility compliance | NOT TESTED; concept model limitation |
+| Mixed street/park route continuity, delete/Undo/Redo/fault stress | NOT TESTED per exact variant; shared regression evidence remains separate |
+| Paid image/video and Download-link action | NOT TESTED. Displayed original PNG bytes saved unchanged; no paid submission |
+
+This is a bounded desktop agent simulation. Site boundary setup and restoration of the distorted test fixture used the API; actual building selection, placement, corrected rotation, reopen and captures used ordinary UI controls. No human approval or broader runtime result is inferred from these checks.

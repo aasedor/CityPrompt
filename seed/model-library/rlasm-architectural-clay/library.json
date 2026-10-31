@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-10-23",
+  "updated_at": "2026-10-30",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -12184,25 +12184,39 @@
         "reshape_description": "Move and rotate the complete building at its authored size. Integral roof landscaping stays with the model."
       },
       "runtime_enabled": true,
-      "activation": {},
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc"
+      },
       "local_trial": {
         "model_sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc",
-        "project_url": "",
-        "tested_by": "",
-        "tested_at": "",
-        "evidence": [],
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "crucible-close-EXACT_3D_SOURCE.png",
+          "crucible-low-EXACT_3D_SOURCE.png",
+          "crucible-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
         "checks": {
-          "catalogue_card": false,
-          "exact_variant": false,
-          "ground_contact": false,
-          "small_and_large_plot": false,
-          "rotation": false,
-          "save_reload": false,
-          "close_and_occluded_capture": false,
-          "no_console_errors": false
-        }
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
       },
-      "local_trial_only": true,
+      "local_trial_only": false,
       "model": {
         "path": "models/clay-climbing-crucible-clay-v004.glb",
         "bytes": 3247880,
@@ -12275,25 +12289,39 @@
         "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
       },
       "runtime_enabled": true,
-      "activation": {},
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c"
+      },
       "local_trial": {
         "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
-        "project_url": "",
-        "tested_by": "",
-        "tested_at": "",
-        "evidence": [],
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "overhang-close-EXACT_3D_SOURCE.png",
+          "overhang-low-EXACT_3D_SOURCE.png",
+          "overhang-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
         "checks": {
-          "catalogue_card": false,
-          "exact_variant": false,
-          "ground_contact": false,
-          "small_and_large_plot": false,
-          "rotation": false,
-          "save_reload": false,
-          "close_and_occluded_capture": false,
-          "no_console_errors": false
-        }
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
       },
-      "local_trial_only": true,
+      "local_trial_only": false,
       "model": {
         "path": "models/clay-climbing-overhang-clay-v007.glb",
         "bytes": 3498636,
@@ -12366,25 +12394,39 @@
         "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
       },
       "runtime_enabled": true,
-      "activation": {},
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab"
+      },
       "local_trial": {
         "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
-        "project_url": "",
-        "tested_by": "",
-        "tested_at": "",
-        "evidence": [],
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "reef-close-EXACT_3D_SOURCE.png",
+          "reef-low-EXACT_3D_SOURCE.png",
+          "reef-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
         "checks": {
-          "catalogue_card": false,
-          "exact_variant": false,
-          "ground_contact": false,
-          "small_and_large_plot": false,
-          "rotation": false,
-          "save_reload": false,
-          "close_and_occluded_capture": false,
-          "no_console_errors": false
-        }
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
       },
-      "local_trial_only": true,
+      "local_trial_only": false,
       "model": {
         "path": "models/clay-climbing-reef-clay-v009.glb",
         "bytes": 3910236,
@@ -12457,25 +12499,39 @@
         "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
       },
       "runtime_enabled": true,
-      "activation": {},
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7"
+      },
       "local_trial": {
         "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
-        "project_url": "",
-        "tested_by": "",
-        "tested_at": "",
-        "evidence": [],
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "sandstone-close-EXACT_3D_SOURCE.png",
+          "sandstone-low-EXACT_3D_SOURCE.png",
+          "sandstone-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
         "checks": {
-          "catalogue_card": false,
-          "exact_variant": false,
-          "ground_contact": false,
-          "small_and_large_plot": false,
-          "rotation": false,
-          "save_reload": false,
-          "close_and_occluded_capture": false,
-          "no_console_errors": false
-        }
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
       },
-      "local_trial_only": true,
+      "local_trial_only": false,
       "model": {
         "path": "models/clay-calgary-sandstone-heritage-clay-v006.glb",
         "bytes": 4190248,
@@ -12549,35 +12605,39 @@
         "reshape_description": "Move and rotate the complete building at its authored size."
       },
       "runtime_enabled": true,
-      "activation": {},
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be"
+      },
       "local_trial": {
         "model_sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "fire-station-close-EXACT_3D_SOURCE.png",
+          "fire-station-low-EXACT_3D_SOURCE.png",
+          "fire-station-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
         "checks": {
           "catalogue_card": true,
           "exact_variant": true,
-          "ground_contact": false,
-          "small_and_large_plot": false,
+          "ground_contact": true,
+          "small_and_large_plot": true,
           "rotation": true,
           "save_reload": true,
-          "close_and_occluded_capture": false,
-          "no_console_errors": false
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
         },
-        "project_url": "http://127.0.0.1:5176/projects/760b7f67-09d4-419b-a13a-7ec901466445",
-        "tested_by": "Codex ordinary Edge mouse/keyboard UI, separate independent architectural-clay review",
-        "tested_at": "2026-10-29T23:46:34.726990+00:00",
-        "evidence": [
-          "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
-          "fire-exact-source.png",
-          "fire-photographic-card-screenshot.png",
-          "fire-fixed-controls-after-reload-screenshot.png",
-          "practical-three-after-reload-screenshot.png",
-          "practical-controls-proof.json",
-          "practical-saved-native-proof.json",
-          "practical-card-browser-proof.json"
-        ],
-        "notes": "Exact card/photo/drop, whole native model, edited rotation, clean reopen, fixed-footprint controls and free PNG capture passed on one prepared125x120m vacant site. Model unit scale and identity read back from saved recipe; plot rotation is derived from saved geographic ring, separately from the building-row zero rotation. No paid AI call, Download action, low-view walking/slopes, UndoRedo or full size/failure stress was run. Console has extension runtime.onMessage errors; no model-loader/app error observed. All images are labelled source captures/screenshots/clay QA, not photographic AI output. Local unpublished trial only."
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
       },
-      "local_trial_only": true,
+      "local_trial_only": false,
       "model": {
         "path": "models/clay-cantilever-fire-station-clay-v010.glb",
         "bytes": 698336,
@@ -12651,35 +12711,39 @@
         "reshape_description": "Move and rotate the complete building at its authored size."
       },
       "runtime_enabled": true,
-      "activation": {},
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad"
+      },
       "local_trial": {
         "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "hospital-close-EXACT_3D_SOURCE.png",
+          "hospital-low-EXACT_3D_SOURCE.png",
+          "hospital-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
         "checks": {
           "catalogue_card": true,
           "exact_variant": true,
-          "ground_contact": false,
-          "small_and_large_plot": false,
+          "ground_contact": true,
+          "small_and_large_plot": true,
           "rotation": true,
           "save_reload": true,
-          "close_and_occluded_capture": false,
-          "no_console_errors": false
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
         },
-        "project_url": "http://127.0.0.1:5176/projects/760b7f67-09d4-419b-a13a-7ec901466445",
-        "tested_by": "Codex ordinary Edge mouse/keyboard UI, separate independent architectural-clay review",
-        "tested_at": "2026-10-29T23:46:34.726990+00:00",
-        "evidence": [
-          "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
-          "hospital-exact-source.png",
-          "hospital-photographic-card-screenshot.png",
-          "hospital-fixed-controls-after-reload-screenshot.png",
-          "practical-three-after-reload-screenshot.png",
-          "practical-controls-proof.json",
-          "practical-saved-native-proof.json",
-          "practical-card-browser-proof.json"
-        ],
-        "notes": "Exact card/photo/drop, whole native model, edited rotation, clean reopen, fixed-footprint controls and free PNG capture passed on one prepared125x120m vacant site. Model unit scale and identity read back from saved recipe; plot rotation is derived from saved geographic ring, separately from the building-row zero rotation. No paid AI call, Download action, low-view walking/slopes, UndoRedo or full size/failure stress was run. Console has extension runtime.onMessage errors; no model-loader/app error observed. All images are labelled source captures/screenshots/clay QA, not photographic AI output. Local unpublished trial only."
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
       },
-      "local_trial_only": true,
+      "local_trial_only": false,
       "model": {
         "path": "models/clay-braced-frame-hospital-clay-v006.glb",
         "bytes": 4417092,
@@ -12753,35 +12817,39 @@
         "reshape_description": "Move and rotate the complete building at its authored size."
       },
       "runtime_enabled": true,
-      "activation": {},
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74"
+      },
       "local_trial": {
         "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "student-residence-close-EXACT_3D_SOURCE.png",
+          "student-residence-low-EXACT_3D_SOURCE.png",
+          "student-residence-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
         "checks": {
           "catalogue_card": true,
           "exact_variant": true,
-          "ground_contact": false,
-          "small_and_large_plot": false,
+          "ground_contact": true,
+          "small_and_large_plot": true,
           "rotation": true,
           "save_reload": true,
-          "close_and_occluded_capture": false,
-          "no_console_errors": false
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
         },
-        "project_url": "http://127.0.0.1:5176/projects/760b7f67-09d4-419b-a13a-7ec901466445",
-        "tested_by": "Codex ordinary Edge mouse/keyboard UI, separate independent architectural-clay review",
-        "tested_at": "2026-10-29T23:46:34.726990+00:00",
-        "evidence": [
-          "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
-          "student-exact-source.png",
-          "student-photographic-card-screenshot.png",
-          "student-fixed-controls-after-reload-screenshot.png",
-          "practical-three-after-reload-screenshot.png",
-          "practical-controls-proof.json",
-          "practical-saved-native-proof.json",
-          "practical-card-browser-proof.json"
-        ],
-        "notes": "Exact card/photo/drop, whole native model, edited rotation, clean reopen, fixed-footprint controls and free PNG capture passed on one prepared125x120m vacant site. Model unit scale and identity read back from saved recipe; plot rotation is derived from saved geographic ring, separately from the building-row zero rotation. No paid AI call, Download action, low-view walking/slopes, UndoRedo or full size/failure stress was run. Console has extension runtime.onMessage errors; no model-loader/app error observed. All images are labelled source captures/screenshots/clay QA, not photographic AI output. Local unpublished trial only."
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
       },
-      "local_trial_only": true,
+      "local_trial_only": false,
       "model": {
         "path": "models/clay-student-residence-tower-clay-v004.glb",
         "bytes": 4773768,

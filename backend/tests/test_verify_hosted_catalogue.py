@@ -98,15 +98,7 @@ def test_shipped_contract_covers_published_release_and_identifies_local_pilots()
     additions = {entry["asset_id"]: entry for entry in release["entries"]}
     assert len(additions) == 25
     assert len(rows) == 68 + len(additions)
-    assert {row["asset_id"] for row in rows if row["local_trial_only"]} == {
-        "claude_climbing_crucible_v004",
-        "claude_climbing_overhang_v007",
-        "claude_climbing_reef_v009",
-        "claude_sandstone_clock_tower_v006",
-        "claude_fire_station_v010",
-        "claude_hospital_v006",
-        "claude_student_residence_v004",
-    }
+    assert not any(row["local_trial_only"] for row in rows)
     assert len({row["asset_id"] for row in rows}) == len(rows)
     added_rows = [row for row in rows if row["asset_id"] in additions]
     assert len(added_rows) == len(additions)
