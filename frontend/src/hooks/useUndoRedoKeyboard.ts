@@ -16,11 +16,12 @@ export function useUndoRedoKeyboard(paused = false) {
 
       const isMod = e.ctrlKey || e.metaKey;
       if (!isMod) return;
+      const key = e.key.toLowerCase();
 
-      if (e.key === 'z' && !e.shiftKey) {
+      if (key === 'z' && !e.shiftKey) {
         e.preventDefault();
         undo();
-      } else if ((e.key === 'z' && e.shiftKey) || e.key === 'y') {
+      } else if ((key === 'z' && e.shiftKey) || key === 'y') {
         e.preventDefault();
         redo();
       }
