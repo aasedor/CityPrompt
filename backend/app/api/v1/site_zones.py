@@ -25,7 +25,11 @@ from app.services.native_parks import plan_native_park
 from app.services.public_realm_lego import plan_public_realm_zone_recipe, PublicRealmPlanningError
 from app.services.native_brt import validate_brt_properties, validate_brt_ground, is_native_brt
 from app.services.native_tram import validate_tram_properties, validate_tram_ground, is_native_tram
-from app.services.native_specialist_streets import validate_specialist_properties, validate_specialist_ground, is_native_specialist
+from app.services.native_specialist_streets import (
+    validate_specialist_properties,
+    validate_specialist_ground,
+    is_native_specialist,
+)
 from app.services.elevated_rail import validate_rail_overlap
 from app.services.community_3d_scope import community_3d_building_overlaps
 from app.services.public_road_connection import public_road_connection_fits
@@ -78,6 +82,7 @@ from app.services.plan_boundary_identity import (
     plan_boundary_fingerprint,
 )
 from app.services.residual_landscape import (
+    community_3d_kind_for_source,
     community_3d_source_hash,
     lock_residual_landscape_project,
     mark_community_3d_stale,
@@ -214,10 +219,10 @@ def _assert_optional_boundary_covers(
 
 
 _FLEXIBLE_PARK_VARIANTS = {
-    'pocket-v1': ('urban_pocket_park', 'urban_pocket_park_v0'),
-    'greenway-v1': ('linear_park_greenway', 'linear_park_greenway_v0'),
-    'shade-courtyard-v1': ('urban_pocket_park', 'urban_pocket_park_v1'),
-    'meadow-grove-v1': ('urban_pocket_park', 'urban_pocket_park_v2'),
+    "pocket-v1": ("urban_pocket_park", "urban_pocket_park_v0"),
+    "greenway-v1": ("linear_park_greenway", "linear_park_greenway_v0"),
+    "shade-courtyard-v1": ("urban_pocket_park", "urban_pocket_park_v1"),
+    "meadow-grove-v1": ("urban_pocket_park", "urban_pocket_park_v2"),
 }
 
 
@@ -229,36 +234,43 @@ def _validate_park_ground(properties: dict, active_boundary: SiteZone | None) ->
     """
     if active_boundary is not None:
         boundary_props = active_boundary.properties or {}
-        if boundary_props.get('terrain_strategy') == 'landscape' or boundary_props.get('community_3d_mask_existing_tiles') is not True:
-            raise ValueError('Keep this park on a prepared level site.')
+        if (
+            boundary_props.get("terrain_strategy") == "landscape"
+            or boundary_props.get("community_3d_mask_existing_tiles") is not True
+        ):
+            raise ValueError("Keep this park on a prepared level site.")
         return
-    height = properties.get('terrain_elevation_m')
-    if (properties.get('community_3d_mask_existing_tiles') is False
-            or properties.get('terrain_strategy') == 'landscape'
-            or properties.get('park_terrain') is not None):
-        raise ValueError('This park needs a level footprint. Use prepared ground for this park.')
+    height = properties.get("terrain_elevation_m")
+    if (
+        properties.get("community_3d_mask_existing_tiles") is False
+        or properties.get("terrain_strategy") == "landscape"
+        or properties.get("park_terrain") is not None
+    ):
+        raise ValueError("This park needs a level footprint. Use prepared ground for this park.")
     if isinstance(height, bool) or not isinstance(height, (int, float)) or not math.isfinite(height):
-        raise ValueError('The park ground is not loaded yet. Wait for the map, then place the park again.')
+        raise ValueError("The park ground is not loaded yet. Wait for the map, then place the park again.")
 
 
 def _validate_flexible_park(
-    polygon: Polygon, properties: dict, active_boundary: SiteZone | None,
+    polygon: Polygon,
+    properties: dict,
+    active_boundary: SiteZone | None,
 ) -> None:
     """Keep shape-first catalogue parks inside their executable metric contract."""
-    programme = properties.get('pick_place_flexible_park')
+    programme = properties.get("pick_place_flexible_park")
     expected = _FLEXIBLE_PARK_VARIANTS.get(programme)
     if expected is None or expected != (
-        properties.get('green_space_archetype_id'),
-        properties.get('green_space_selected_variant_id'),
+        properties.get("green_space_archetype_id"),
+        properties.get("green_space_selected_variant_id"),
     ):
-        raise ValueError('Choose one of the available flexible park designs again.')
+        raise ValueError("Choose one of the available flexible park designs again.")
     _validate_park_ground(properties, active_boundary)
     try:
-        plan_public_realm_zone_recipe('green_space', polygon, properties, strict=True)
+        plan_public_realm_zone_recipe("green_space", polygon, properties, strict=True)
     except PublicRealmPlanningError as exc:
         raise ValueError(
-            'This outline is outside the supported size or shape for this park. '
-            'Adjust its corners or choose the other flexible park.'
+            "This outline is outside the supported size or shape for this park. "
+            "Adjust its corners or choose the other flexible park."
         ) from exc
 
 
@@ -981,11 +993,24 @@ async def _ensure_project_access(
     return project
 
 
-async def _validate_elevated_rail_neighbours(db, project_id, coordinates, properties, exclude_id=None):
-    result = await db.execute(select(SiteZone).where(SiteZone.project_id == project_id, SiteZone.zone_type == 'road'))
-    neighbours = [(list(to_shape(z.geometry).exterior.coords), z.properties or {})
-                  for z in result.scalars().all() if z.id != exclude_id]
-    validate_rail_overlap(coordinates, properties or {}, neighbours)
+async def _validate_elevated_rail_neighbours(
+    db, project_id, coordinates, properties, exclude_id=None, zone_type="road"
+):
+    """Keep the old rail gate and source-locked bridge reservations under the project lock."""
+    from app.services.native_bridge_clearance import validate_modular_bridge_overlap
+
+    # Native paths and bridges persist as road; street/path are runtime aliases,
+    # not members of PostgreSQL's zone_type enum.
+    result = await db.execute(select(SiteZone).where(SiteZone.project_id == project_id, SiteZone.zone_type == "road"))
+    zones = [zone for zone in result.scalars().all() if zone.id != exclude_id]
+    neighbours = [(list(to_shape(z.geometry).exterior.coords), z.properties or {}) for z in zones]
+    if zone_type == "road":
+        validate_rail_overlap(
+            coordinates,
+            properties or {},
+            [source for source, zone in zip(neighbours, zones) if zone.zone_type == "road"],
+        )
+    validate_modular_bridge_overlap(coordinates, properties or {}, neighbours)
 
 
 async def _assert_new_catalogue_building_clear(db, project_id, zone_type, polygon, properties):
@@ -996,26 +1021,38 @@ async def _assert_new_catalogue_building_clear(db, project_id, zone_type, polygo
     compile-scope validation; this guard protects ordinary catalogue placement.
     """
     properties = properties or {}
-    if (zone_type not in ('building', 'residential') or not properties.get('pick_place_asset')
-            or properties.get('_imported_from') or properties.get('_plan_snapshot_id')
-            or properties.get('_plan_role') == 'framework_height'):
+    if (
+        zone_type not in ("building", "residential")
+        or not properties.get("pick_place_asset")
+        or properties.get("_imported_from")
+        or properties.get("_plan_snapshot_id")
+        or properties.get("_plan_role") == "framework_height"
+    ):
         return
-    result = await db.execute(select(SiteZone).where(
-        SiteZone.project_id == project_id,
-        SiteZone.zone_type.in_(('building', 'residential')),
-    ))
-    candidate = SimpleNamespace(id='new-placement', zone_type=zone_type, geometry=polygon, properties=properties)
+    result = await db.execute(
+        select(SiteZone).where(
+            SiteZone.project_id == project_id,
+            SiteZone.zone_type.in_(("building", "residential")),
+        )
+    )
+    candidate = SimpleNamespace(id="new-placement", zone_type=zone_type, geometry=polygon, properties=properties)
     for neighbour in result.scalars().all():
         props = neighbour.properties or {}
-        if (props.get('_imported_from') or props.get('_plan_snapshot_id')
-                or props.get('_plan_role') == 'framework_height'):
+        if (
+            props.get("_imported_from")
+            or props.get("_plan_snapshot_id")
+            or props.get("_plan_role") == "framework_height"
+        ):
             continue
         if community_3d_building_overlaps([candidate, neighbour]):
-            label = neighbour.name or props.get('development_archetype_label') or 'another saved building'
-            raise HTTPException(status_code=422, detail=(
-                f'This placement overlaps {label}. Reload the saved plan and place it in a clear area. '
-                'Your existing buildings have not been changed.'
-            ))
+            label = neighbour.name or props.get("development_archetype_label") or "another saved building"
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    f"This placement overlaps {label}. Reload the saved plan and place it in a clear area. "
+                    "Your existing buildings have not been changed."
+                ),
+            )
 
 
 @router.get("/projects/{project_id}/road-network")
@@ -1178,7 +1215,11 @@ async def create_zone(
         )
 
     await _assert_new_catalogue_building_clear(
-        db, project_id, zone_in.zone_type, candidate_polygon, zone_in.properties,
+        db,
+        project_id,
+        zone_in.zone_type,
+        candidate_polygon,
+        zone_in.properties,
     )
     try:
         validate_brt_properties(zone_in.properties)
@@ -1187,17 +1228,19 @@ async def create_zone(
         validate_brt_ground(zone_in.properties, active_boundary.properties if active_boundary else None)
         validate_specialist_properties(zone_in.properties)
         validate_specialist_ground(zone_in.properties, active_boundary.properties if active_boundary else None)
-        if zone_in.zone_type == 'road':
-            await _validate_elevated_rail_neighbours(db, project_id, coords, zone_in.properties)
+        if zone_in.zone_type in ("road", "street", "path"):
+            await _validate_elevated_rail_neighbours(
+                db, project_id, coords, zone_in.properties, zone_type=zone_in.zone_type
+            )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
-    if (zone_in.properties or {}).get('green_space_native_layout') is not None:
+    if (zone_in.properties or {}).get("green_space_native_layout") is not None:
         try:
             plan_native_park(candidate_polygon, zone_in.properties)
             _validate_park_ground(zone_in.properties, active_boundary)
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
-    if (zone_in.properties or {}).get('pick_place_flexible_park') is not None:
+    if (zone_in.properties or {}).get("pick_place_flexible_park") is not None:
         try:
             _validate_flexible_park(candidate_polygon, zone_in.properties, active_boundary)
         except ValueError as exc:
@@ -1233,11 +1276,12 @@ async def create_zone(
     await db.flush()
     await db.refresh(zone)
 
-    if (zone.properties or {}).get('user_generated_source_id'):
+    if (zone.properties or {}).get("user_generated_source_id"):
         from app.services.user_generated_models import attach_generated_model
         from app.api.v1.lego_assembly import _stamp_community_3d
-        generated = await attach_generated_model(db, zone, user, zone.properties['user_generated_source_id'])
-        _stamp_community_3d(zone, 'building', datetime.now(timezone.utc).isoformat(), 'meshy', building=generated)
+
+        generated = await attach_generated_model(db, zone, user, zone.properties["user_generated_source_id"])
+        _stamp_community_3d(zone, "building", datetime.now(timezone.utc).isoformat(), "meshy", building=generated)
 
     # Keep boundary creation atomic and fast. Surrounding OSM context is useful
     # enrichment, but Overpass can take tens of seconds or be unavailable. The
@@ -1254,7 +1298,7 @@ async def create_zone(
         ),
     )
 
-    if (zone.properties or {}).get('user_generated_source_id'):
+    if (zone.properties or {}).get("user_generated_source_id"):
         # Attaching the model updates the row after its initial refresh. Load
         # database-generated timestamps explicitly before synchronous history serialization.
         await db.flush()
@@ -1278,7 +1322,9 @@ async def create_zone(
 
 
 @router.get("/{zone_id}/public-road-context")
-async def public_road_context(zone_id: uuid.UUID, user: User = Depends(require_auth), db: AsyncSession = Depends(get_db)):
+async def public_road_context(
+    zone_id: uuid.UUID, user: User = Depends(require_auth), db: AsyncSession = Depends(get_db)
+):
     result = await db.execute(select(SiteZone).where(SiteZone.id == zone_id))
     zone = result.scalar_one_or_none()
     if not zone:
@@ -1287,12 +1333,16 @@ async def public_road_context(zone_id: uuid.UUID, user: User = Depends(require_a
     if zone.zone_type != "site_boundary":
         raise HTTPException(status_code=400, detail="Choose a site boundary for nearby road suggestions.")
     try:
-        return await fetch_public_road_context(to_shape(zone.geometry),
-            clear_inside=(zone.properties or {}).get("community_3d_mask_existing_tiles") is True)
+        return await fetch_public_road_context(
+            to_shape(zone.geometry),
+            clear_inside=(zone.properties or {}).get("community_3d_mask_existing_tiles") is True,
+        )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except httpx.HTTPError as exc:
-        raise HTTPException(status_code=503, detail="Nearby roads could not load. You can keep drawing or retry the lookup.") from exc
+        raise HTTPException(
+            status_code=503, detail="Nearby roads could not load. You can keep drawing or retry the lookup."
+        ) from exc
 
 
 @router.post("/{zone_id}/fetch-context", response_model=OSMContextResponse)
@@ -1462,10 +1512,16 @@ async def update_zone(
             updated_coordinates = coords
             boundary_geometry_changed = zone.zone_type == "site_boundary" and zone_geometry_changed
             candidate_polygon = Polygon(coords)
-            # A revised study boundary must save independently of existing
-            # objects. Keep their geometry intact; student_report already
-            # records objects outside the boundary as planning advice.
-            if zone.zone_type != "site_boundary":
+            # Boundary edits must preserve the same containment contract as
+            # initial placement. Reject before mutating or invalidating 3D.
+            if zone.zone_type == "site_boundary":
+                await _assert_boundary_covers_existing_zones(
+                    db,
+                    zone.project_id,
+                    candidate_polygon,
+                    exclude_zone_id=zone.id,
+                )
+            else:
                 active_boundary = await _active_site_boundary(
                     db,
                     zone.project_id,
@@ -1500,7 +1556,7 @@ async def update_zone(
             zone_type=requested_zone_type,
             properties=connection_properties,
         )
-    native_properties = update_data.get('properties', zone.properties) or {}
+    native_properties = update_data.get("properties", zone.properties) or {}
     try:
         validate_brt_properties(native_properties)
         validate_tram_properties(native_properties)
@@ -1508,27 +1564,38 @@ async def update_zone(
             tram_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
             validate_tram_ground(native_properties, tram_boundary.properties if tram_boundary else None)
         validate_specialist_properties(native_properties)
-        if requested_zone_type == 'road':
-            await _validate_elevated_rail_neighbours(db, zone.project_id, updated_coordinates or before_snapshot['coordinates'], native_properties, zone.id)
+        if requested_zone_type in ("road", "street", "path"):
+            await _validate_elevated_rail_neighbours(
+                db,
+                zone.project_id,
+                updated_coordinates or before_snapshot["coordinates"],
+                native_properties,
+                zone.id,
+                zone_type=requested_zone_type,
+            )
         if is_native_specialist(native_properties):
             specialist_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
-            validate_specialist_ground(native_properties, specialist_boundary.properties if specialist_boundary else None)
+            validate_specialist_ground(
+                native_properties, specialist_boundary.properties if specialist_boundary else None
+            )
         if is_native_brt(native_properties):
             brt_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
             validate_brt_ground(native_properties, brt_boundary.properties if brt_boundary else None)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
-    if native_properties.get('green_space_native_layout') is not None:
+    if native_properties.get("green_space_native_layout") is not None:
         try:
-            plan_native_park(Polygon(updated_coordinates or before_snapshot['coordinates']), native_properties)
+            plan_native_park(Polygon(updated_coordinates or before_snapshot["coordinates"]), native_properties)
             native_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
             _validate_park_ground(native_properties, native_boundary)
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
-    if native_properties.get('pick_place_flexible_park') is not None:
+    if native_properties.get("pick_place_flexible_park") is not None:
         try:
             flexible_boundary = await _active_site_boundary(db, zone.project_id, for_update=True)
-            _validate_flexible_park(Polygon(updated_coordinates or before_snapshot['coordinates']), native_properties, flexible_boundary)
+            _validate_flexible_park(
+                Polygon(updated_coordinates or before_snapshot["coordinates"]), native_properties, flexible_boundary
+            )
         except ValueError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
     for field, value in update_data.items():
@@ -3153,6 +3220,8 @@ async def generate_all(
 
     for zone in all_zones:
         if zone.zone_type not in ("building", "residential", "development_area"):
+            continue
+        if community_3d_kind_for_source(zone.zone_type, zone.properties) != "building":
             continue
         # AI-planner framework bands ("≤6 storeys", "≤27+ storeys") share
         # zone_type development_area but are height-reference OVERLAYS, not

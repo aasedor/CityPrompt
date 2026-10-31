@@ -18,7 +18,9 @@ from app.services.lego_assembly import descriptor_from_library_entry
 def test_exact_model_bindings_are_accepted_by_real_runtime_descriptor():
     _, rows = seed.load_bindings()
     for row in rows:
-        entry = SimpleNamespace(id=uuid.UUID(row["id"]), name=row["name"], model_url=row["model_url"], metadata_=row["metadata"])
+        entry = SimpleNamespace(
+            id=uuid.UUID(row["id"]), name=row["name"], model_url=row["model_url"], metadata_=row["metadata"]
+        )
         module = descriptor_from_library_entry(entry)
         assert module is not None
         assert module.source_variant_id == row["variantId"]
@@ -46,6 +48,7 @@ def test_installs_exact_starters_into_isolated_database_and_bucket_without_overw
     if not url or os.getenv("CITYPROMPT_TEST_S3") != "1":
         pytest.skip("Set CITYPROMPT_TEST_DATABASE_URL and CITYPROMPT_TEST_S3=1 for disposable DB/S3 seed verification")
     from app.services.render_attempt_storage import _client
+
     client, live_bucket = _client()
     suffix = uuid.uuid4().hex
     schema, bucket = "test_classroom_seed_" + suffix, "cityprompt-restore-" + suffix
@@ -62,7 +65,13 @@ def test_installs_exact_starters_into_isolated_database_and_bucket_without_overw
         metadata.create_all(engine, checkfirst=False)
         roster, rows = seed.load_bindings()
         with Session(engine) as db:
-            owner = User(id=uuid.uuid4(), email=f"{suffix}@test.invalid", full_name="Disposable seed owner", role="editor", is_active=True)
+            owner = User(
+                id=uuid.uuid4(),
+                email=f"{suffix}@test.invalid",
+                full_name="Disposable seed owner",
+                role="editor",
+                is_active=True,
+            )
             db.add(owner)
             db.commit()
             initial = seed.synchronize(db, client, bucket, roster, rows)

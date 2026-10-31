@@ -1,5 +1,12 @@
 # RLASM v6.1 — integrated proven methodology
 
+Housing teaching evidence (2026-10-25): Victory house clay-v004 and side-split
+clay-v003 passed separate holistic architectural-clay review with zero P0/P1.
+Exact model/review hashes are synchronized as `housing_teaching_batch` in both
+machine companions. See `docs/HOUSING_TEACHING_REVIEW_2026-10-25.md`. These are
+fixed-scale offline candidates; runtime integration remains NOT TESTED and
+seed activation is false. This evidence addition does not change RLASM v6.1.
+
 **Method name:** Reference-Locked Atomic Sticker-and-Massing (RLASM)
 **Revision:** v6.1, 2026-09-28
 **Purpose:** build source-specific, physically credible, reviewable 3D building
@@ -57,6 +64,18 @@ Booleans, zero-fallback counters, and contact metadata are audit evidence; they
 never override the rendered comparison.
 
 ## What we learned
+
+Teaching Wave 2 evidence (2026-10-25): the Bauhaus workshop pilot passed separate
+holistic architectural-clay review after finite door/optics/stair corrections.
+Its complete source and exact-GLB review, including the remaining P2 handrail
+finish and untested runtime boundary, are documented in
+`ARCHITECTURE_TEACHING_WAVE2_REVIEW_2026-10-25.md`. Both machine companions carry
+the same `teaching_style_wave2` evidence record; this does not change method 6.1.
+The finite scale-up also passed: De Stijl studio clay-v004 and Mughal-inspired
+pavilion clay-v002 each have zero P0/P1/P2. The studio corrections prove plane
+support, envelope closure and the source grey header; the pavilion proves actual
+cusped arch openings, dome/eave bearing and its source red roof. Both retain
+fourteen exact-GLB views, explicit source inference and NOT TESTED runtime status.
 
 ### 1. The exact archetype is the goalpost
 

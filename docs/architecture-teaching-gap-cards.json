@@ -1,0 +1,32 @@
+{
+  "status": "Undergraduate teaching drafts; no catalogue activation or UI installation",
+  "principle": "Keep building use, architectural style and planning approach separate. One building does not certify a neighbourhood planning approach.",
+  "cards": [
+    {
+      "archetype_id": "prairie_school_house",
+      "variant_id": "roman_brick_hip_roof",
+      "title": "Prairie School house",
+      "building_type": "Detached single-family house",
+      "architectural_style": "Prairie School",
+      "description": "Prairie School houses use low roofs, broad eaves and bands of windows to emphasize the horizon. Rooms often connect more openly to one another and to the landscape.",
+      "look_for": ["Low hipped roof with broad eaves", "Horizontal window and stone bands", "Broad chimney and restrained asymmetry"],
+      "main_idea": "Connect domestic space to the horizontal landscape.",
+      "source_url": "https://www.flwright.org/explore/prairie-style",
+      "source_design": "Original generated design; not a named historic Wright building",
+      "planning_approaches": []
+    },
+    {
+      "archetype_id": "postmodern_neighbourhood_library",
+      "variant_id": "broken_pediment_reading_room",
+      "title": "Postmodern neighbourhood library",
+      "building_type": "Civic library",
+      "architectural_style": "Postmodernism",
+      "description": "Postmodern architecture combines familiar historical forms with modern materials, colour and playful changes of scale. Buildings may use oversized pediments, contrasting shapes or symbolic entrances to communicate with people and respond to their surroundings.",
+      "look_for": ["An oversized broken pediment", "Contrasting colours and geometric openings", "A strongly marked public entrance"],
+      "main_idea": "Make architecture expressive and readable through references and visual play.",
+      "source_url": "https://historicengland.org.uk/images-books/publications/iha-post-modern-architecture/",
+      "source_design": "Original generated design; not a reconstruction of a named historic building",
+      "planning_approaches": []
+    }
+  ]
+}

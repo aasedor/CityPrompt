@@ -35,6 +35,34 @@ function wideStandingActor() {
 
 const legPoint = (actor: ReturnType<typeof wideStandingActor>, name: string) => actor.root.getObjectByName(name)!.getWorldPosition(new Vector3());
 describe('saved action poses',()=>{
+  it.each([1, -1])('retargets each rig side without crossing arms and retains a moving wave (left sign %s)', sign => {
+    const source = new Group(), rig = new Group(); source.add(rig); rig.scale.set(1.1, .98, 1);
+    const body = new Mesh(new BoxGeometry(.4, 1.75, .25), new MeshBasicMaterial()); body.position.y = .875; source.add(body);
+    for (const side of ['l', 'r']) {
+      const upper = new Bone(), lower = new Bone(), hand = new Bone();
+      upper.name = `upperarm_${side}`; lower.name = `lowerarm_${side}`; hand.name = `hand_${side}`;
+      upper.position.set((side === 'l' ? sign : -sign) * .2, 1.4, 0);
+      lower.position.y = -.25; hand.position.y = -.25;
+      rig.add(upper); upper.add(lower); lower.add(hand);
+    }
+    const actor = createPeopleActor(source, ['Idle', 'Walk'].map(name => new AnimationClip(name, 1, [])), { idleClip: 'Idle', walkClip: 'Walk', walkStrideMeters: 1.2 });
+    const pose = createPeopleActionPose(actor);
+    const point = (name: string) => actor.root.worldToLocal(actor.root.getObjectByName(name)!.getWorldPosition(new Vector3()));
+    for (const action of ['sitting', 'waving', 'reading', 'using_phone', 'talking', 'pointing', 'stretching', 'dancing', 'cheering', 'waiting'] as const) {
+      pose.sample(action, 0, true);
+      for (const side of ['l', 'r']) {
+        const outward = side === 'l' ? sign : -sign;
+        expect(point(`lowerarm_${side}`).x * outward, `${action} elbow`).toBeGreaterThan(.15);
+        expect(actor.root.getObjectByName(`lowerarm_${side}`)!.position.length()).toBeCloseTo(.25);
+        expect(actor.root.getObjectByName(`hand_${side}`)!.position.length()).toBeCloseTo(.25);
+      }
+    }
+    pose.sample('waving', 0, true); const first = point('hand_r');
+    expect(first.y).toBeGreaterThan(1.65);
+    pose.sample('waving', .5, true); expect(point('hand_r').distanceTo(first)).toBeGreaterThan(.005);
+    pose.sample('reading'); expect(point('hand_l').z).toBeGreaterThan(.1); expect(point('hand_r').z).toBeGreaterThan(.1);
+    actor.dispose();
+  });
   it('relaxes a wide idle stance to hip width without stretching legs or tilting shoes', () => {
     const actor = wideStandingActor(), pose = createPeopleActionPose(actor);
     actor.pose(0, 'idle');

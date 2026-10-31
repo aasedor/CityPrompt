@@ -6,7 +6,7 @@ on:
       ref:
         description: Commit, tag, or branch to verify
         required: true
-        default: main
+        default: deployment-version
         type: string
 
 permissions:
@@ -39,6 +39,9 @@ jobs:
 
       - name: Initialize Git LFS
         run: git lfs install --local
+
+      - name: Materialize exact archive-backed runtime files
+        run: python scripts/materialize_frontend_assets.py --fetch-lfs
 
       - name: Fetch manifest-required LFS objects
         shell: bash

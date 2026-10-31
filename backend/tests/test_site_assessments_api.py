@@ -20,20 +20,28 @@ SITE = box(-114.12, 51.01, -114.119, 51.011)
 @pytest.fixture
 async def environment(monkeypatch):
     db = AsyncMock()
-    boundary = SimpleNamespace(id=ZONE, project_id=uuid.uuid4(), zone_type="site_boundary",
-                               is_active_boundary=True, geometry=from_shape(SITE, srid=4326))
+    boundary = SimpleNamespace(
+        id=ZONE,
+        project_id=uuid.uuid4(),
+        zone_type="site_boundary",
+        is_active_boundary=True,
+        geometry=from_shape(SITE, srid=4326),
+    )
     project = SimpleNamespace(id=boundary.project_id, metadata_={"scene_details": {"revision": 4}})
+
     async def execute(statement):
         result = MagicMock()
-        model = statement.column_descriptions[0]['entity']
+        model = statement.column_descriptions[0]["entity"]
         result.scalar_one_or_none.return_value = project if model is Project else boundary
         return result
+
     db.execute.side_effect = execute
     permission = AsyncMock(return_value="owner")
     calculation = AsyncMock(return_value={"property_count": 2})
     monkeypatch.setattr(endpoint, "check_project_permission", permission)
     monkeypatch.setattr(endpoint, "get_site_assessment", calculation)
-    app = FastAPI(); app.include_router(endpoint.router)
+    app = FastAPI()
+    app.include_router(endpoint.router)
     app.dependency_overrides[require_auth] = lambda: SimpleNamespace(id=uuid.uuid4())
     app.dependency_overrides[get_db] = lambda: db
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
@@ -93,18 +101,20 @@ async def test_viewers_can_calculate_but_do_not_replace_saved_evidence(environme
     permission.return_value = "viewer"
     response = await client.post(f"/zones/{ZONE}", json={"coordinates": list(SITE.exterior.coords)})
     assert response.status_code == 200
-    assert 'site_assessment' not in project.metadata_
+    assert "site_assessment" not in project.metadata_
     db.flush.assert_not_awaited()
 
 
 @pytest.mark.asyncio
 async def test_boundary_changed_during_lookup_does_not_save_stale_result(environment):
     client, boundary, permission, calculation, project, db = environment
+
     async def calculate(site):
         boundary.geometry = from_shape(box(-114.121, 51.01, -114.119, 51.011), srid=4326)
         return {"property_count": 2}
+
     calculation.side_effect = calculate
     response = await client.post(f"/zones/{ZONE}", json={"coordinates": list(SITE.exterior.coords)})
     assert response.status_code == 409
-    assert 'site_assessment' not in project.metadata_
+    assert "site_assessment" not in project.metadata_
     db.flush.assert_not_awaited()

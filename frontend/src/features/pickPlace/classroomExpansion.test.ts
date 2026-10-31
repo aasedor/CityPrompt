@@ -32,10 +32,10 @@ describe('classroom park additions', () => {
   });
   it('offers each added park through ordinary search with its exact native layout', () => {
     for (const entry of parks) {
-      const choice = filterCanonicalChoices('park_plaza', entry.title).find(c => c.option.id === entry.archetype_id);
+      const choice = filterCanonicalChoices('park_plaza', entry.title).find(c => c.placements.some(asset => asset.model.variantId === entry.variant_id));
       expect(choice).toBeDefined();
-      expect(choice!.placements).toHaveLength(1);
-      const asset = choice!.placements[0];
+      if (!choice!.groupedVariants) expect(choice!.placements).toHaveLength(1);
+      const asset = choice!.placements.find(asset => asset.model.variantId === entry.variant_id)!;
       const layout = nativeParkLayouts.find(p => p.variantId === entry.variant_id)!;
       expect(asset.model.variantId).toBe(entry.variant_id);
       expect(asset.model.revision).toBe(layout.contentRevision);

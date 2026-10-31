@@ -25,13 +25,17 @@ celery_app.conf.update(
     task_soft_time_limit=300,  # 5 minute soft limit
     worker_prefetch_multiplier=1,
     worker_max_tasks_per_child=50,
+    task_default_queue=settings.celery_default_queue,
     task_routes={
-        "cityprompt.direct3d.render": {"queue": "direct3d"},
-        "cityprompt.direct3d.maintain": {"queue": "direct3d-maintenance"},
+        "cityprompt.direct3d.render": {"queue": settings.direct_3d_queue_name},
+        "cityprompt.direct3d.maintain": {"queue": settings.direct_3d_queue_name + "-maintenance"},
         **({"process_document": {"queue": "classroom-documents"}} if settings.classroom_release else {}),
     },
-    beat_schedule=({"recover-direct3d": {"task": "cityprompt.direct3d.maintain", "schedule": 30.0}}
-                   if settings.direct_3d_jobs_enabled else {}),
+    beat_schedule=(
+        {"recover-direct3d": {"task": "cityprompt.direct3d.maintain", "schedule": 30.0}}
+        if settings.direct_3d_jobs_enabled
+        else {}
+    ),
 )
 
 # Import tasks so they register with Celery

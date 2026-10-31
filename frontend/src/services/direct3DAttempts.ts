@@ -41,6 +41,22 @@ export function createDirect3DAttemptClient(options: {
     clear(attempt.project_id, attempt.idempotency_key);
     return data;
   };
+  const resume = async <T>(saved: ImageAttempt): Promise<RecoveredImage<T>> => {
+    const name = identity(saved.project_id);
+    const deadline = now() + 420_000;
+    let attempt = saved;
+    while (attempt.status === 'queued' || attempt.status === 'running') {
+      if (identity(saved.project_id) !== name) throw new Error('Sign in again to recover the saved image.');
+      if (now() >= deadline) throw new Error('Your image attempt is saved and may still be running. Use “Recover recent images” to check it; no new image is requested.');
+      await wait(2000);
+      try { attempt = (await api.get<ImageAttempt>(`${ROOT}/${attempt.id}`)).data; }
+      catch { throw new Error('The connection stopped, but your image attempt is saved. Use “Recover recent images” after reconnecting.'); }
+    }
+    if (identity(saved.project_id) !== name) throw new Error('Sign in again to recover the saved image.');
+    if (attempt.status === 'completed') return recover<T>(attempt);
+    clear(saved.project_id, attempt.idempotency_key);
+    throw new Error(attempt.error?.message ?? 'The image did not finish. This attempt will not retry automatically.');
+  };
   const generate = async <T>(request: { project_id: string }): Promise<T> => {
     const mode = await capabilities();
     if (!mode.images_enabled) throw new Error('AI images are paused. You can still download your exact 3D view.');
@@ -70,20 +86,9 @@ export function createDirect3DAttemptClient(options: {
       throw error;
     }
     stored.setItem(name, JSON.stringify({ key, attemptId: attempt.id }));
-    const deadline = now() + 420_000;
-    while (attempt.status === 'queued' || attempt.status === 'running') {
-      if (identity(request.project_id) !== name) throw new Error('Sign in again to recover the saved image.');
-      if (now() >= deadline) throw new Error('Your image attempt is saved and may still be running. Use “Recover recent images” to check it; no new image is requested.');
-      await wait(2000);
-      try { attempt = (await api.get<ImageAttempt>(`${ROOT}/${attempt.id}`)).data; }
-      catch { throw new Error('The connection stopped, but your image attempt is saved. Use “Recover recent images” after reconnecting.'); }
-    }
-    if (identity(request.project_id) !== name) throw new Error('Sign in again to recover the saved image.');
-    if (attempt.status === 'completed') return (await recover<T>(attempt)).response;
-    clear(request.project_id, key);
-    throw new Error(attempt.error?.message ?? 'The image did not finish. This attempt will not retry automatically.');
+    return (await resume<T>(attempt)).response;
   };
-  return { capabilities, list, recover, generate, acknowledge: (attempt: ImageAttempt) => {
+  return { capabilities, list, recover, resume, generate, acknowledge: (attempt: ImageAttempt) => {
     if (attempt.status === 'failed' || attempt.status === 'unknown') clear(attempt.project_id, attempt.idempotency_key);
   } };
 }

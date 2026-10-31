@@ -80,9 +80,7 @@ class RenderAnimationPreflightResponse(BaseModel):
 
 def _configured(settings):
     if not settings.kling_animation_enabled:
-        raise HTTPException(
-            503, "Saved-render animation is not enabled on this server."
-        )
+        raise HTTPException(503, "Saved-render animation is not enabled on this server.")
     if not settings.fal_key:
         raise HTTPException(503, "FAL_KEY is not configured on the server.")
     try:
@@ -93,19 +91,12 @@ def _configured(settings):
 
 def _source_render(project, render_id: uuid.UUID, *, require_finished: bool = True) -> tuple[dict, str]:
     render = next(
-        (
-            item
-            for item in (project.metadata_ or {}).get("saved_renders", [])
-            if item.get("id") == str(render_id)
-        ),
+        (item for item in (project.metadata_ or {}).get("saved_renders", []) if item.get("id") == str(render_id)),
         None,
     )
     if not render:
         raise HTTPException(404, "Finished render not found in this project.")
-    strategy = (
-        render.get("presentation_strategy")
-        or str(render.get("outcome") or "").partition("·")[2].strip()
-    )
+    strategy = render.get("presentation_strategy") or str(render.get("outcome") or "").partition("·")[2].strip()
     if (
         require_finished
         and render.get("variant") != "provider_original"
@@ -123,9 +114,7 @@ def _source_render(project, render_id: uuid.UUID, *, require_finished: bool = Tr
         or not url.path.startswith(prefix)
         or url.path[len(prefix) :] not in {"png", "jpg", "jpeg", "webp"}
     ):
-        raise HTTPException(
-            400, "The full-resolution finished render is not stored in this project."
-        )
+        raise HTTPException(400, "The full-resolution finished render is not stored in this project.")
     return render, url.path.removeprefix("/api/v1/files/")
 
 
@@ -133,9 +122,7 @@ def _read_source(key: str) -> bytes:
     from app.api.v1.files import _s3_client
 
     settings = get_settings()
-    return (
-        _s3_client().get_object(Bucket=settings.s3_bucket_name, Key=key)["Body"].read()
-    )
+    return _s3_client().get_object(Bucket=settings.s3_bucket_name, Key=key)["Body"].read()
 
 
 async def _load_source(key):
@@ -158,16 +145,9 @@ def _check_budget(project, user, settings):
     # overrun the same bounded per-project allowance used by route videos.
     reserved = sum(item.get("provider") == "kling" for item in attempts)
     if reserved >= PILOT_MAX_PROVIDER_CALLS:
-        raise HTTPException(
-            409, "This project has reached its saved-render animation allowance."
-        )
-    if (
-        not is_admin_or_above(user)
-        and user.render_credits < settings.kling_animation_credit_cost
-    ):
-        raise HTTPException(
-            402, f"Animation requires {settings.kling_animation_credit_cost} credits."
-        )
+        raise HTTPException(409, "This project has reached its saved-render animation allowance.")
+    if not is_admin_or_above(user) and user.render_credits < settings.kling_animation_credit_cost:
+        raise HTTPException(402, f"Animation requires {settings.kling_animation_credit_cost} credits.")
     return _visible_usage(project, attempts, "kling")
 
 
@@ -200,12 +180,8 @@ async def preflight_animation(
         provider_width=prepared.width,
         provider_height=prepared.height,
         source_padded=prepared is not source,
-        estimated_cost_usd=estimate_kling_cost(
-            settings.kling_animation_cost_per_second_usd
-        ),
-        credit_cost=(
-            0 if is_admin_or_above(user) else settings.kling_animation_credit_cost
-        ),
+        estimated_cost_usd=estimate_kling_cost(settings.kling_animation_cost_per_second_usd),
+        credit_cost=(0 if is_admin_or_above(user) else settings.kling_animation_credit_cost),
         model=settings.kling_animation_endpoint,
         attempts_remaining=usage.attempts_remaining,
     )
@@ -224,24 +200,16 @@ async def animate_render(
     if not req.scene_direction:
         request_data.pop("scene_direction")
     fingerprint = revision_sha256(request_data)
-    attempts = [
-        dict(item) for item in (project.metadata_ or {}).get("video_pilot_attempts", [])
-    ]
+    attempts = [dict(item) for item in (project.metadata_ or {}).get("video_pilot_attempts", [])]
     existing = next(
         (item for item in attempts if item.get("request_id") == str(req.request_id)),
         None,
     )
     if existing:
-        if existing.get("request_sha256") != fingerprint or existing.get(
-            "requested_by"
-        ) != str(user.id):
-            raise HTTPException(
-                409, "This request ID already belongs to another video request."
-            )
+        if existing.get("request_sha256") != fingerprint or existing.get("requested_by") != str(user.id):
+            raise HTTPException(409, "This request ID already belongs to another video request.")
         await db.commit()
-        return _public_attempt(
-            existing
-        )  # Never submit again, including an unknown outcome.
+        return _public_attempt(existing)  # Never submit again, including an unknown outcome.
 
     settings = get_settings()
     _configured(settings)
@@ -269,9 +237,7 @@ async def animate_render(
         "camera_motion": "slow_push_in",
         "duration_seconds": ANIMATION_SECONDS,
         "created_at": _now(),
-        "estimated_cost_usd": estimate_kling_cost(
-            settings.kling_animation_cost_per_second_usd
-        ),
+        "estimated_cost_usd": estimate_kling_cost(settings.kling_animation_cost_per_second_usd),
         "credit_cost": settings.kling_animation_credit_cost,
         "source_storage_key": source_key,
     }
@@ -365,9 +331,7 @@ async def animate_render(
             settings.fal_key, entry["model"], build_kling_arguments(start_image_url, entry["scene_direction"])
         )
         # FIRST operation after the receipt: durable provider identity, before polling.
-        entry = await _update_attempt(
-            db, req.project_id, attempt_id, status="queued", interaction_id=request_id
-        )
+        entry = await _update_attempt(db, req.project_id, attempt_id, status="queued", interaction_id=request_id)
     except Exception as exc:
         await db.rollback()
         entry = await _update_attempt(
@@ -376,11 +340,7 @@ async def animate_render(
             attempt_id,
             status="queued" if request_id else "submission_unknown",
             interaction_id=request_id,
-            error=(
-                "Receipt recovery needed. "
-                if request_id
-                else "Submission outcome is unknown. "
-            )
+            error=("Receipt recovery needed. " if request_id else "Submission outcome is unknown. ")
             + _safe_error(exc, settings.fal_key)
             + " No new generation will be submitted automatically.",
         )
@@ -393,9 +353,7 @@ async def animate_render(
     return _public_attempt(entry)
 
 
-async def _recovery_update(
-    db, project_id, attempt_id, lease_id, *, release=False, **changes
-):
+async def _recovery_update(db, project_id, attempt_id, lease_id, *, release=False, **changes):
     project = await _locked_project(db, project_id)
     meta = dict(project.metadata_ or {})
     attempts = [dict(item) for item in meta.get("video_pilot_attempts", [])]
@@ -413,11 +371,7 @@ async def _recovery_update(
                         ApiUsageLog.task_id == str(attempt_id),
                         ApiUsageLog.operation == "kling_render_animation",
                     )
-                    .values(
-                        status=(
-                            "success" if changes["status"] == "complete" else "failed"
-                        )
-                    )
+                    .values(status=("success" if changes["status"] == "complete" else "failed"))
                 )
             if release:
                 entry.update(poll_lease_id=None, poll_lease_until=None)
@@ -446,8 +400,7 @@ async def recover_animation(
         (
             dict(item)
             for item in (project.metadata_ or {}).get("video_pilot_attempts", [])
-            if item.get("id") == str(attempt_id)
-            and item.get("mode") == "saved_render_animation"
+            if item.get("id") == str(attempt_id) and item.get("mode") == "saved_render_animation"
         ),
         None,
     )
@@ -455,11 +408,7 @@ async def recover_animation(
         raise HTTPException(404, "Saved-render animation not found.")
     if entry.get("requested_by") != str(user.id):
         raise HTTPException(403, "Only the requester can recover this animation job.")
-    if (
-        entry.get("video_url")
-        or entry.get("status") == "failed"
-        or not entry.get("interaction_id")
-    ):
+    if entry.get("video_url") or entry.get("status") == "failed" or not entry.get("interaction_id"):
         await db.commit()
         return _public_attempt(entry)
     settings = get_settings()
@@ -476,15 +425,11 @@ async def recover_animation(
         project_id,
         str(attempt_id),
         poll_lease_id=lease_id,
-        poll_lease_until=(
-            datetime.now(timezone.utc) + timedelta(seconds=POLL_LEASE_SECONDS)
-        ).isoformat(),
+        poll_lease_until=(datetime.now(timezone.utc) + timedelta(seconds=POLL_LEASE_SECONDS)).isoformat(),
     )
     changes = {}
     try:
-        status, url = await poll_kling_request(
-            settings.fal_key, entry["model"], entry["interaction_id"]
-        )
+        status, url = await poll_kling_request(settings.fal_key, entry["model"], entry["interaction_id"])
         changes = {"status": status, "error": None}
         if url:
             # Keep the completed remote address before download/storage can fail.
@@ -522,7 +467,5 @@ async def recover_animation(
             + _safe_error(exc, settings.fal_key)
             + " Try checking this saved request again; no new generation will be submitted."
         }
-    entry = await _recovery_update(
-        db, project_id, attempt_id, lease_id, release=True, **changes
-    )
+    entry = await _recovery_update(db, project_id, attempt_id, lease_id, release=True, **changes)
     return _public_attempt(entry)

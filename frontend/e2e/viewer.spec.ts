@@ -96,27 +96,37 @@ test.describe('Integrated project workspace', () => {
 
     await expect(page).toHaveURL(/\/projects\/proj-1$/);
     await expect(page.getByText('Riverside Development', { exact: true })).toBeVisible();
-    await expect(page.getByText('Master Plan', { exact: true }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: '2 Design', exact: true })).toHaveAttribute('aria-current', 'step');
+    for (const name of ['Buildings', 'Parks', 'Streets', 'Import GLB']) {
+      await expect(page.getByRole('button', { name, exact: true })).toBeVisible();
+    }
   });
 
   test('shows the current plan, 3D, image, and video workflow controls', async ({ page }) => {
     await page.goto('/projects/proj-1');
     await revealPlanningTools(page);
 
-    await expect(page.getByText('Master Plan', { exact: true }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Generate to 3D' })).toBeVisible();
+    await expect(page.getByText('3D appears automatically', { exact: true })).toBeVisible();
     await page.getByRole('button', { name: 'Render this view', exact: true }).click();
     await expect(page.getByRole('button', { name: 'Image', exact: true })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Video', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Video preview · free', exact: true })).toBeVisible();
+    // An empty design must explain what is missing before offering capture.
+    await expect(page.getByRole('button', { name: 'Image', exact: true })).toBeDisabled();
+    await expect(page.getByText('Add a building, park, street, or detail first. A site boundary is optional.')).toBeVisible();
   });
 
-  test('prevents 3D generation until the planning workflow is complete', async ({ page }) => {
+  test('opens the simple GLB uploader and closes it without a file', async ({ page }) => {
     await page.goto('/projects/proj-1');
     await revealPlanningTools(page);
 
-    const generate3D = page.getByRole('button', { name: 'Generate to 3D' });
-    await expect(generate3D).toBeDisabled();
-    await expect(generate3D).toHaveAttribute('title', /site boundary|plan|scenario/i);
+    await page.getByRole('button', { name: 'Import GLB', exact: true }).click();
+    const dialog = page.getByRole('dialog', { name: 'Import your building', exact: true });
+    await expect(dialog.getByLabel('GLB building file')).toBeVisible();
+    await expect(dialog.getByRole('button', { name: 'Upload', exact: true })).toBeDisabled();
+    await expect(dialog.getByLabel('Building name (optional)', { exact: true })).toBeHidden();
+    await dialog.getByRole('button', { name: 'Cancel', exact: true }).click();
+    await expect(dialog).toBeHidden();
+    await expect(page.getByRole('button', { name: 'Import GLB', exact: true })).toBeVisible();
   });
 
   test('provides a route back to the project list', async ({ page }) => {

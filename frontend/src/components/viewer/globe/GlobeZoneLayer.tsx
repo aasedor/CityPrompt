@@ -1,4 +1,7 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import {groundSurfaceFor,createGroundSurfaceTexture} from '@/features/groundSurfaces/groundSurfaces';
+import { isDrawnParking } from '@/features/parks/drawnParking';
+import { createDrawnParkingTexture } from '@/features/parks/drawnParkingTexture';
 import { useSiteLandscapeTexture } from '@/features/siteLandscape/useSiteLandscapeTexture';
 /**
  * GlobeZoneLayer.tsx — Renders SiteForge zones on the 3D tile globe.
@@ -465,6 +468,10 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
   const isBuilding = communityKind === 'building';
   const isSiteBoundary = zone.zone_type === 'site_boundary';
   const isWaterSurface = zone.zone_type === 'water';
+  const surfaceFinish=groundSurfaceFor(zone);
+  const parkingSurface=useMemo(()=>isDrawnParking(zone)?createDrawnParkingTexture(zone):null,[zone]);
+  const surfaceTexture=useMemo(()=>parkingSurface?.texture??(surfaceFinish?createGroundSurfaceTexture(surfaceFinish):null),[surfaceFinish,parkingSurface]);
+  useDeferredDisposable(surfaceTexture);
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
   const boundaryOpacity = siteBoundaryOpacity(zone.properties);
   const residualLandscapeRecipe = useMemo(
@@ -509,6 +516,7 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
     isPreparedBoundary
     || isCompiledGround
     || isWaterSurface
+    || Boolean(surfaceFinish)
     || shouldFilterObjectTerrainHeight(zone.zone_type)
   );
   // Drawn buildings are editable massing immediately. Generate to 3D swaps
@@ -521,7 +529,7 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
     isBuilding,
     isCompiledCommunity,
     isCompiledGround,
-    isPark: communityKind === 'park' || isWaterSurface,
+    isPark: communityKind === 'park' || isWaterSurface || Boolean(surfaceFinish),
     isPreparedBoundary,
   });
   // Densify imported flat zones too (not just green_space): a long corridor needs
@@ -665,6 +673,15 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
   // when the polygon changes or unmounts. A long drape session otherwise
   // leaked one fill/outline pair per terrain update.
   useDeferredLocalGeometryDisposal(geoData);
+  const surfaceGeo=useMemo(()=>{
+    if(!surfaceFinish||!geoData?.flatTopGeo)return null;
+    const geometry=geoData.flatTopGeo.clone(),p=geometry.getAttribute('position');
+    const uv=new THREE.Float32BufferAttribute(p.count*2,2);
+    for(let i=0;i<p.count;i++)uv.setXY(i,parkingSurface?(p.getX(i)-parkingSurface.minX)/parkingSurface.widthM:p.getX(i)/2,
+      parkingSurface?(p.getY(i)-parkingSurface.minY)/parkingSurface.heightM:p.getY(i)/2);
+    geometry.setAttribute('uv',uv);return geometry;
+  },[surfaceFinish,geoData,parkingSurface]);
+  useDeferredDisposable(surfaceGeo);
 
   const preparedEdgeProfile = useMemo(() => isPreparedBoundary ? readPreparedEdges(zone) : null, [isPreparedBoundary, zone]);
   const [preparedOriginLng, preparedOriginLat] = centroid;
@@ -1144,7 +1161,7 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
   // replaces one coherent surface instead of leaving a partially draped mesh.
   const sharedFillGeo = useMemo(() => {
     if (!usesSharedGround || sharedFrameHeight === null || isExtrudedBuilding) return null;
-    const source = importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo
+    const source = surfaceGeo ?? importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo
       ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData?.flatTopGeo;
     if (!source) return null;
     // A zone can enter a retained boundary after its old live drape mutated
@@ -1162,7 +1179,7 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
     }, 4, 60000, (sharedGround.snapshot ?? sharedGround.draftLayout) ? createSharedGroundTriangulation((sharedGround.snapshot ?? sharedGround.draftLayout)!, centroid[0], centroid[1]) : undefined);
     authored.dispose();
     return conformed;
-  }, [usesSharedGround, sharedFrameHeight, sharedGround, isExtrudedBuilding, importedOrthoGeo, orthoGeo,
+  }, [usesSharedGround, sharedFrameHeight, sharedGround, isExtrudedBuilding, surfaceGeo, importedOrthoGeo, orthoGeo,
     importedFillGeo, preparedSiteGeo, woonerfGroundGeo, publicRealmBaseGeo, compiledGroundGeo, geoData, centroid]);
   useDeferredDisposable(sharedFillGeo);
 
@@ -1206,11 +1223,11 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
           network as one solid ground polygon that contains park parcels
           (no carve-out), so a lower park order leaves parks hidden under a
           gray slab. Real roadway strips (street detail) still draw above. */}
-      {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary || isWaterSurface) && (
+      {!isExtrudedBuilding && geoData.flatTopGeo && (showThisPlanningOverlay || drapeActive || isCompiledGround || isPreparedBoundary || isWaterSurface || surfaceFinish) && (
         <mesh
           ref={flatMeshRef}
-          geometry={sharedFillGeo ?? importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData.flatTopGeo}
-          renderOrder={isSiteBoundary ? 100 : isWaterSurface ? 121 : communityKind === 'park' ? 120.5 : 120}
+          geometry={sharedFillGeo ?? surfaceGeo ?? importedOrthoGeo ?? orthoGeo ?? importedFillGeo ?? preparedSiteGeo ?? woonerfGroundGeo ?? publicRealmBaseGeo ?? compiledGroundGeo ?? geoData.flatTopGeo}
+          renderOrder={surfaceFinish ? 123 : isSiteBoundary ? 100 : isWaterSurface ? 121 : communityKind === 'park' ? 120.5 : 120}
           frustumCulled={false}
           onPointerDown={handleZonePointerDown}
           // Pure planning washes (the translucent boundary/zone fills) are
@@ -1218,14 +1235,14 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
           // captures so they never tint the render. Compiled/drape surfaces
           // stay captured — they ARE the designed ground.
           userData={
-            sectionOwnsGround || (!isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround && !isWaterSurface)
+            surfaceFinish ? undefined : sectionOwnsGround || (!isPreparedBoundary && !isCompiledGround && !drapeActive && !isWoonerfGround && !isWaterSurface)
               ? DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA
               : undefined
           }
         >
           {/* key remounts the material when the ground drape toggles so the
               map define recompiles (toggling `map` in place leaves it white) */}
-          {sectionOwnsGround ? (
+          {surfaceFinish ? <meshStandardMaterial color="#ffffff" map={surfaceTexture!} roughness={.96} side={THREE.DoubleSide} depthTest depthWrite polygonOffset polygonOffsetFactor={-6} polygonOffsetUnits={-12}/> : sectionOwnsGround ? (
             // Retain the editor hit target, but not an independently seated
             // slab covering street bands or recessed park assemblies.
             <meshBasicMaterial colorWrite={false} depthWrite={false} />
@@ -1438,7 +1455,7 @@ export function GlobeZoneLayer({
   return (
     <>
       {zones.map((zone) => {
-        const role = direct3DGroundRoleForCommunityKind(resolveCommunity3DKind(zone));
+        const role = groundSurfaceFor(zone) ? 'landscape' : direct3DGroundRoleForCommunityKind(resolveCommunity3DKind(zone));
         const preparedTerrain = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
         return (
           <group

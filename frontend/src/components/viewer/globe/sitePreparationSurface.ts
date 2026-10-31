@@ -76,7 +76,8 @@ export function resolvePreparedSiteTerrainForZone(
 
 /** Split every authored edge at boundary intersections, then test every open
  * interval. Vertex/quartile sampling can miss a narrow concave notch. */
-export function preparedSiteContainsZone(boundary: SiteZone, zone: SiteZone): boolean {
+export function preparedSiteContainsZone(boundary: SiteZone, zone: SiteZone, boundaryToleranceM = 0.02): boolean {
+  if (!Number.isFinite(boundaryToleranceM) || boundaryToleranceM < 0) return false;
   const origin = boundary.coordinates[0];
   if (!origin) return false;
   const east = 111320 * Math.cos(origin[1] * Math.PI / 180);
@@ -86,8 +87,8 @@ export function preparedSiteContainsZone(boundary: SiteZone, zone: SiteZone): bo
   const outer = local(boundary.coordinates), inner = local(zone.coordinates);
   if (!outer || !inner) return false;
   // Planner projection round trips can move a shared edge by centimetres.
-  // Keep these objects on the prepared datum without relaxing tile clipping
-  // or allowing meaningful encroachment into unprepared context.
+  // Keep these objects on the prepared datum without relaxing tile clipping.
+  // Native-fit callers can request a much tighter numerical seam.
   const inside = (point: TileMaskPoint) => pointInTileMaskRing(point, outer)
     || outer.some((a, index) => {
       const b = outer[(index + 1) % outer.length];
@@ -95,7 +96,7 @@ export function preparedSiteContainsZone(boundary: SiteZone, zone: SiteZone): bo
       const lengthSquared = dx * dx + dy * dy;
       const t = lengthSquared === 0 ? 0 : Math.max(0, Math.min(1,
         ((point.x - a.x) * dx + (point.y - a.y) * dy) / lengthSquared));
-      return (point.x - a.x - t * dx) ** 2 + (point.y - a.y - t * dy) ** 2 <= 0.02 ** 2;
+      return (point.x - a.x - t * dx) ** 2 + (point.y - a.y - t * dy) ** 2 <= boundaryToleranceM ** 2;
     });
   if (!inner.every(inside)) return false;
   const cross = (a: TileMaskPoint, b: TileMaskPoint) => a.x * b.y - a.y * b.x;

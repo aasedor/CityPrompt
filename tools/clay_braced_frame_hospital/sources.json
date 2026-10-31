@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "regional_hospital_medical_center",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "regional_hospital_contemporary_teaching",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "regional_hospital_medical_center",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "regional_hospital_contemporary_teaching",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1295867,
+      "sha256": "4e6289d461f2ad8bba095c0e5f7a67751234a066b022a585244f8dbb937e20a4",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "regional_hospital_medical_center",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "regional_hospital_contemporary_teaching",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 924620,
+      "sha256": "67e7bf7fa9838b5cded4c385e863aa84e4c267598b0c9bc67909edf92f2f2c8b",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "regional_hospital_medical_center",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "regional_hospital_contemporary_teaching",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 860461,
+      "sha256": "1bceac8705902772c973d29c3bca3ff7f9e0cb5a85475c4ac23336571ae1491e",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

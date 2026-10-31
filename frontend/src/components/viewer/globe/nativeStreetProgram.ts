@@ -4,6 +4,9 @@ import { stationNormals } from './streetMesh3D';
 import { buildBrtStreetProgram, type BrtStop } from './brtStreetProgram';
 import { buildSpecialistStreetProgram, CANAL_VARIANT, BRIDGE_VARIANT, specialistRouteProblem } from './specialistStreetProgram';
 import { ELEVATED_RAIL_VARIANT, CIVIC_RAIL_VARIANT, elevatedRailStationProblem } from './elevatedRailProgram';
+import { PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS } from './publicRealmDepthPolicy';
+import { pathwaySurfacePolygons } from '@/utils/pathwayFootprint';
+import { modularBridgeRouteProblem, type ModularBridgeProgram } from './modularBridgeProgram';
 
 export function nativeStreetHasPreparedGround(preparedElevation: number | null, hasPreparedApproach: boolean, hasSharedGround: boolean) {
   return Number.isFinite(preparedElevation) || hasPreparedApproach || hasSharedGround;
@@ -17,6 +20,7 @@ export interface NativeStreetProgram {
   meshDetails?:Array<{material:string;positions:number[];indices:number[]}>;
   paving:string;pavingModuleM:number[];minLengthM:number;maxLengthM:number;preparedLevelOnly:boolean;
   baseLiftM:number;palette:Record<string,number[]|undefined>;
+  bridge?: ModularBridgeProgram['bridge'];
 }
 
 /** The same ordered ownership partition used by the original Blender builder. */
@@ -33,7 +37,35 @@ export function nativeStreetGroundCells(width:number,length:number,regions:Nativ
   return cells;
 }
 
+/** A source study's full-ROW cross_link is a pedestrian access footprint,
+ * not an authored network crossing at every furniture repetition. Keep its
+ * paving through sidewalks/planting, but let the native travel bands continue.
+ * Local crossings and source markings remain independently authored geometry;
+ * the shared junction renderer still owns actual road intersections. */
+function routeGroundRegions(width:number,length:number,regions:NativeStreetRegion[]):NativeStreetRegion[] {
+  const travel=regions.filter(r=>['asphalt','cycle'].includes(r.material??'')
+    && r.depth>=length-1e-6 && Math.abs(r.y)<1e-6);
+  return regions.flatMap(region=>{
+    if(region.material!=='paving' || Math.abs(region.x)>1e-6 || Math.abs(region.y)>1e-6
+      || Math.abs(region.width-width)>1e-6 || region.depth>=length-1e-6)return [region];
+    let spans=[[-width/2,width/2]];
+    for(const band of travel){
+      const low=band.x-band.width/2,high=band.x+band.width/2;
+      spans=spans.flatMap(([a,b])=>high<=a||low>=b?[[a,b]]
+        : [[a,Math.min(b,low)],[Math.max(a,high),b]].filter(([start,end])=>end-start>1e-6));
+    }
+    return spans.map(([a,b])=>({...region,x:(a+b)/2,width:b-a}));
+  });
+}
+
 export function buildNativeStreetProgram(program:NativeStreetProgram,width:number,fixtureLength:number,route:StreetRouteStation[],stops:BrtStop[]=[]) {
+  if (import.meta.env.DEV && ['modular-bridge-v1','source-span-bridge-v1'].includes(program.adapter) && program.bridge) {
+    const problem = modularBridgeRouteProblem({ ...program, bridge: program.bridge }, route, true);
+    if (problem) throw new Error(problem);
+    // The verified modules own deck, stairs and structure. No lawn or paving
+    // rectangle may fill the clear opening underneath the bridge.
+    return [];
+  }
   if(program.adapter==='elevated-rail-v1'||program.adapter==='elevated-station-v1'){
     const problem=specialistRouteProblem(program.adapter==='elevated-rail-v1'?ELEVATED_RAIL_VARIANT:CIVIC_RAIL_VARIANT,route);
     if(problem)throw new Error(problem);
@@ -52,6 +84,11 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
   if(!segments.length)return [];
   const stations=[segments[0].from,...segments.map(s=>s.to)];
   const normals=stationNormals(stations);
+  // Ground paths may cross a building's shallow landscaped footing. Seat their
+  // finish at the shared public-realm datum, retaining ordinary depth testing
+  // against actual walls, steps and raised park equipment.
+  const baseLiftM=program.adapter==='narrow-pathway-v1'
+    ? Math.max(program.baseLiftM,PUBLIC_REALM_GROUND_SURFACE_LIFT_METERS) : program.baseLiftM;
   const point=(x:number,station:number,z:number):number[]=>{
     const index=segments.findIndex(s=>station<=s.start+s.length+1e-7);
     const i=index<0?segments.length-1:index,segment=segments[i];
@@ -60,12 +97,27 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
     // bend meet at one offset station rather than inheriting the previous arm.
     const nx=normals[i].x+(normals[i+1].x-normals[i].x)*t;
     const ny=normals[i].y+(normals[i+1].y-normals[i].y)*t;
-    return [segment.from.x+(segment.to.x-segment.from.x)*t-nx*x,segment.from.y+(segment.to.y-segment.from.y)*t-ny*x,z+program.baseLiftM];
+    return [segment.from.x+(segment.to.x-segment.from.x)*t-nx*x,segment.from.y+(segment.to.y-segment.from.y)*t-ny*x,z+baseLiftM];
   };
   const quad=(material:string,vertices:number[][])=>{
     const group=groups.get(material)??{positions:[],indices:[]};const n=group.positions.length/3;
     group.positions.push(...vertices.flat());group.indices.push(n,n+1,n+2,n,n+2,n+3);groups.set(material,group);
   };
+  if (program.adapter==='narrow-pathway-v1') {
+    // A path may double back or cross itself. One unioned walking surface
+    // keeps full-width round joins, avoids overlapping base triangles and
+    // preserves the lawn inside an enclosed loop.
+    const surface=pathwaySurfacePolygons(route.map(p=>[p.x,p.y]),width);
+    const group={positions:[] as number[],indices:[] as number[]};
+    for (const polygon of surface) {
+      const rings=polygon.map(ring=>ring.slice(0,-1).map(([x,y])=>new THREE.Vector2(x,y)));
+      const points=rings.flat(), first=group.positions.length/3;
+      const faces=THREE.ShapeUtils.triangulateShape(rings[0],rings.slice(1));
+      group.positions.push(...points.flatMap(p=>[p.x,p.y,baseLiftM]));
+      group.indices.push(...faces.flatMap(face=>face.map(index=>first+index)));
+    }
+    groups.set('paving',group);
+  }
   const clipAtStation=(vertices:number[][], boundary:number, keepAfter:boolean):number[][]=>{
     const result:number[][]=[];
     for(let i=0;i<vertices.length;i++){
@@ -86,13 +138,14 @@ export function buildNativeStreetProgram(program:NativeStreetProgram,width:numbe
       if(height>0){const low=[a,b,c,d].map(v=>[v[0],v[1],v[2]-height]);for(let j=0;j<4;j++)quad(material,[[a,b,c,d][j],low[j],low[(j+1)%4],[a,b,c,d][(j+1)%4]]);}
     }
   };
-  const cells=nativeStreetGroundCells(width,fixtureLength,program.surfaceRegions);
+  const cells=nativeStreetGroundCells(width,fixtureLength,routeGroundRegions(width,fixtureLength,program.surfaceRegions));
   const centers=total<=fixtureLength?[total/2]:Array.from({length:Math.ceil(total/fixtureLength)},(_,i)=>fixtureLength*(i+.5));
   for(const center of centers){
     for(const cell of cells){
       const {x,y,width:w,depth:d}=cell,material=cell.material!;
       const a=x-w/2,b=x+w/2,c=y-d/2,e=y+d/2;
-      rect(material,a,b,center+c,center+e,0);
+      if(program.adapter!=='narrow-pathway-v1')rect(material,a,b,center+c,center+e,0);
+      else if(material!=='paving')rect(material,a,b,center+c,center+e,.0005);
       if(material==='paving' && program.paving==='stone'){
         for(let j=1;j<Math.trunc(d/.8);j++)rect('edge',a,b,center+c+j*.8-.0045,center+c+j*.8+.0045,.002);
         for(let j=1;j<Math.trunc(w/1.2);j++)rect('edge',a+j*1.2-.0045,a+j*1.2+.0045,center+c,center+e,.002);

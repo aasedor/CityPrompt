@@ -1,4 +1,4 @@
-/** Paid and local image engines shared by the render selectors. Keep legacy renders readable. */
+/** Supported image engines shared by the render selectors. Keep legacy renders readable. */
 // Safe fallback before account capability discovery; never silently send an
 // unavailable new model or retry a paid request with another engine.
 export const DEFAULT_OPENAI_IMAGE_MODEL = 'gpt-image-2';
@@ -15,19 +15,14 @@ export const GOOGLE_IMAGE_MODELS = [
 ] as const;
 export type PaidImageModel = OpenAIImageModel | typeof GOOGLE_IMAGE_MODELS[number]['id'];
 export const PAID_IMAGE_MODELS = [...OPENAI_IMAGE_MODELS, ...GOOGLE_IMAGE_MODELS];
-export const LOCAL_IMAGE_MODELS = [
-  { id: 'qwen-image', label: 'Qwen Image 2.1', option: 'Qwen Image 2.1 · High quality · Local · Free' },
-  { id: 'flux-klein', label: 'FLUX.2 Klein 4B', option: 'FLUX.2 Klein · Fast preview · Local · Free' },
-] as const;
-export type LocalImageModel = typeof LOCAL_IMAGE_MODELS[number]['id'];
-export type ImageEngine = PaidImageModel | LocalImageModel;
-export function isLocalImageModel(model: string): model is LocalImageModel {
-  return LOCAL_IMAGE_MODELS.some(entry => entry.id === model);
-}
+export type ImageEngine = PaidImageModel;
 export type ImageModelChoice = ImageEngine | 'compare-all-three';
 export type ImageModelAvailability = {
   default_model: OpenAIImageModel;
-  models: Array<{ id: ImageEngine; available: boolean | null }>;
+  /** Server-effective weekly balance; absent on older servers. */
+  credit_balance?: number;
+  credit_exempt?: boolean;
+  models: Array<{ id: ImageEngine; available: boolean | null; minimum_credit_cost?: number }>;
 };
 
 export function imageModelsForChoice(choice: ImageModelChoice): ImageEngine[] {
@@ -37,7 +32,10 @@ export function imageModelsForChoice(choice: ImageModelChoice): ImageEngine[] {
 }
 
 export function imageModelLabel(model: string): string {
-  return [...PAID_IMAGE_MODELS, ...LOCAL_IMAGE_MODELS].find((entry) => entry.id === model)?.label ?? model;
+  // Labels only: these retired engines cannot be selected for new jobs.
+  if (model === 'qwen-image') return 'Qwen Image 2.1';
+  if (model === 'flux-klein') return 'FLUX.2 Klein 4B';
+  return PAID_IMAGE_MODELS.find((entry) => entry.id === model)?.label ?? model;
 }
 
 export function imageModelUnavailable(availability: ImageModelAvailability | null, id: string): boolean {

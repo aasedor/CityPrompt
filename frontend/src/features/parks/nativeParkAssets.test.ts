@@ -1,10 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+// @ts-expect-error -- Node APIs are provided by Vitest.
+import { Buffer } from 'node:buffer';
 
 function payload(document: object) {
   const json = new TextEncoder().encode(JSON.stringify(document));
-  const bytes = new Uint8Array(20 + json.length);
+  // Node 20 WebCrypto requires a native Node backing buffer, rather than
+  // jsdom's separate ArrayBuffer realm. The browser payload bytes are identical.
+  const bytes = Buffer.alloc(20 + json.length);
   const view = new DataView(bytes.buffer);
   view.setUint32(0, 0x46546c67, true);
   view.setUint32(12, json.length, true);

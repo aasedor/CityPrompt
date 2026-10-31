@@ -24,13 +24,13 @@ function StudyOverlay({ layer, terrainHeight }: { layer: ReferenceLayer; terrain
       const anchor = zoningAnchor(zone.rings);
       return anchor ? [{ id: zone.id, label: studyZoneName(zone), anchor, polygon: zone.rings, color: zone.color }] : [];
     }),
-  }), [layer.bounds, layer.created_at, layer.feature_collection]);
+  }), [layer]);
   const boundary = useMemo<ZoningOverlay>(() => {
     const points = studyMetadata(layer)?.boundaryCoordinates ?? [];
     return { bounds: layer.bounds, loadedAt: layer.created_at, districts: points.length < 3 ? [] : [
       { id: 'study-site-boundary', label: '', anchor: points[0], polygon: [closedRing(points)] },
     ] };
-  }, [layer.bounds, layer.created_at, layer.feature_collection]);
+  }, [layer]);
   return <group name={`study-layer:${layer.id}`}>
     <GlobeZoningLabels data={data} terrainHeight={terrainHeight} enabled labels lines fill fillOpacity={layer.opacity} />
     <GlobeZoningLabels data={boundary} terrainHeight={terrainHeight} enabled labels={false} lines fill={false} fillOpacity={0} />
@@ -50,5 +50,5 @@ function ReferenceOutline({ layer }: { layer: ReferenceLayer }) {
     }
     return { type: 'FeatureCollection', network: '5a', retrieved: layer.created_at, sources: {}, featureCount: features.length, features };
   }, [layer.feature_collection, layer.created_at, layer.source_filename]);
-  return <GlobeTransportVectors data={data} mapId={`reference:${layer.id}`} opacity={layer.opacity} color={layer.color} order={990} />;
+  return <GlobeTransportVectors data={data} mapId={`reference:${layer.id}`} opacity={layer.opacity} color={layer.color} order={990} pointRadius={layer.id.startsWith('public-data:') ? 2.5 : undefined} />;
 }

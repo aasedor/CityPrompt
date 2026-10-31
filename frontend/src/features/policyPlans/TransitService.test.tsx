@@ -21,7 +21,7 @@ const stops: TransportSnapshot = { ...routes, network: 'service-stops', featureC
   features: [{ type: 'Feature', id: 'stop', properties: { category: 'service-stop', source: 'stops', name: 'WB Example', stopNumber: '1234',
     routes: [{ number: '7', name: 'Marda Loop' }, { number: '9', name: 'Dalhousie' }] }, geometry: { type: 'Point', coordinates: [-114.1, 51.05] } }] };
 const fetchMap = vi.fn(async (url: string) => ({ ok: true, json: async () => url.endsWith('service-stops.geojson') ? stops : routes }));
-function wrapper({ children }: { children: ReactNode }) {
+function TestWrapper({ children }: { children: ReactNode }) {
   const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: false } } }));
   return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
 }
@@ -38,7 +38,7 @@ describe('Calgary Transit service layers', () => {
     expect(stopData.sources['stop-routes'].updated).toBeTruthy();
   });
   it('loads routes and stops independently, keeps them vector-only and persists route selection', async () => {
-    const { result, rerender } = renderHook(({ project }) => useCityPolicyMaps(project), { wrapper, initialProps: { project: 'service' } });
+    const { result, rerender } = renderHook(({ project }) => useCityPolicyMaps(project), { wrapper: TestWrapper, initialProps: { project: 'service' } });
     const layer = (id: string) => result.current.layers.find(l => l.map.id === id)!;
     expect(fetchMap).not.toHaveBeenCalled();
     act(() => result.current.setEnabled('service-routes', true));
@@ -73,7 +73,7 @@ describe('Calgary Transit service layers', () => {
   });
 
   it('offers separate existing-service controls without a PDF source selector', async () => {
-    const { result } = renderHook(() => useCityPolicyMaps('ui'), { wrapper });
+    const { result } = renderHook(() => useCityPolicyMaps('ui'), { wrapper: TestWrapper });
     act(() => result.current.setEnabled('service-routes', true));
     await waitFor(() => expect(result.current.layers.find(l => l.map.id === 'service-routes')?.vectorData).toBeDefined());
     render(<CityPolicyMapsPanel state={result.current} />);

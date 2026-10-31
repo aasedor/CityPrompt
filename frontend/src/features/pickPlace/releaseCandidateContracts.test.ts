@@ -51,52 +51,49 @@ describe('release candidate native placement contracts (not browser acceptance)'
   });
 
   describe.each(candidates)('$candidate', entry => {
-    it('accepts default, minimum and maximum plots without changing native identity or dimensions', () => {
+    it('keeps default placement fixed and preserves metric identity for default and legacy saved plots', () => {
       const asset = placeAsset(entry.picker.id);
       const native = entry.model.native_dimensions_m;
       const expectedDimensions = [native.width, native.depth, native.height];
       expect(asset.model).toMatchObject({ variantId: entry.variant_id, revision: entry.candidate });
       expect(asset.reshapeMode).toBe('fixed_native');
       render(createElement(DraftHarness, { assetId: asset.id }));
+      expect(screen.queryByLabelText('Placement width')).toBeNull();
+      expect(screen.queryByLabelText('Placement depth')).toBeNull();
+      expect(draftValue()).toMatchObject({ assetId: asset.id, width: asset.width, depth: asset.depth });
+      // Saved plot metadata remains compatible at its historical limits even
+      // though new student placement no longer offers plot resizing.
       for (const [width, depth] of [[asset.width, asset.depth], [asset.minWidth, asset.minDepth], [asset.maxWidth ?? asset.maxSize, asset.maxDepth ?? asset.maxSize]]) {
-        change('Placement width', width);
-        change('Placement depth', depth);
-        const draft = draftValue();
-        expect(draft.inputError).toBeUndefined();
-        expect([draft.width, draft.depth]).toEqual([width, depth]);
         expect(width).toBeGreaterThanOrEqual(native.width + 3 - 1e-6);
         expect(depth).toBeGreaterThanOrEqual(native.depth + 3 - 1e-6);
-        expect(placementPlanRequest(asset, draft.width, draft.depth)).toMatchObject({
-          target_width_m: width, target_depth_m: depth, target_floors: entry.native_floors,
+        expect(placementPlanRequest(asset, width, depth)).toMatchObject({
+          target_width_m: asset.footprintProgram?.editable === false ? native.width : width,
+          target_depth_m: asset.footprintProgram?.editable === false ? native.depth : depth, target_floors: entry.native_floors,
           archetype_id: entry.variant_id, native_home_plot: false, allow_forced_fit: false,
         });
         const properties = placementProperties(asset, 1097, rectangleAt(center, width, depth));
         expect(properties.model_native_dimensions_m).toEqual(expectedDimensions);
         expect(properties.pick_place_model_revision).toBe(entry.candidate);
         const contract = nativeBuildingContract({ properties });
-        expect(contract).toMatchObject({ revision: entry.candidate, rigid: true, heightM: native.height, storeys: entry.native_floors });
+        expect(contract).toMatchObject({ revision: entry.candidate,
+          rigid: entry.variant_id !== 'art_deco_cream_terracotta', heightM: native.height, storeys: entry.native_floors });
         expect(contract?.asset.nativeDimensions).toEqual(expectedDimensions);
       }
       // These are compiler request/metadata contracts. Actual GLB instance
       // scales are verified separately by backend compilation tests.
     });
 
-    it('blocks undersized width and depth independently and recovers at the exact limits', () => {
+    it('rotates default placement while keeping the complete fixed plot size', () => {
       const asset = placeAsset(entry.picker.id);
       render(createElement(DraftHarness, { assetId: asset.id }));
-      change('Placement width', asset.minWidth - 0.1);
-      expect(draftValue().inputError).toBeTruthy();
-      change('Placement depth', asset.minDepth);
-      expect(draftValue().inputError).toBeTruthy();
-      change('Placement width', asset.minWidth);
+      expect(screen.queryByLabelText('Placement width')).toBeNull();
+      expect(screen.queryByLabelText('Placement depth')).toBeNull();
+      expect(screen.getByRole('status').textContent).toContain('Fixed-size model');
+      fireEvent.keyDown(window, { key: 'q' });
+      expect(draftValue()).toMatchObject({ assetId: asset.id, width: asset.width, depth: asset.depth, degrees: 15 });
+      change('Placement degrees', -90);
+      expect(draftValue()).toMatchObject({ assetId: asset.id, width: asset.width, depth: asset.depth, degrees: 270 });
       expect(draftValue().inputError).toBeUndefined();
-      change('Placement depth', asset.minDepth - 0.1);
-      expect(draftValue().inputError).toBeTruthy();
-      change('Placement width', asset.maxWidth ?? asset.maxSize);
-      expect(draftValue().inputError).toBeTruthy();
-      change('Placement depth', asset.minDepth);
-      expect(draftValue().inputError).toBeUndefined();
-      expect(draftValue().assetId).toBe(asset.id);
     });
 
     it('rotates the minimum plot without rounding it below its limit or changing saved properties', () => {
@@ -106,6 +103,8 @@ describe('release candidate native placement contracts (not browser acceptance)'
       const original = JSON.stringify(zone.properties);
       const onReshape = vi.fn();
       render(createElement(ReshapePanel, { zone, disabled: false, onReshape, onClose: vi.fn(), onDelete: vi.fn(), onDuplicate: vi.fn(), onMore: vi.fn() }));
+      expect(screen.queryByLabelText('Plot width (m)')).toBeNull();
+      expect(screen.queryByLabelText('Plot depth (m)')).toBeNull();
       change('Rotation (degrees)', 37);
       fireEvent.click(screen.getByRole('button', { name: 'Apply shape' }));
       expect(onReshape).toHaveBeenCalledOnce();
@@ -128,5 +127,24 @@ describe('release candidate native placement contracts (not browser acceptance)'
       expect(nativeBuildingContract(unavailable)).toBeUndefined();
       expect(saved.properties?.pick_place_model_revision).toBe(entry.candidate);
     });
+  });
+
+  it('validates independent width and depth limits for an adaptable park and recovers at exact limits', () => {
+    const asset = placeAsset('neighbourhood_park');
+    expect(asset.reshapeMode).toBe('adaptive_layout');
+    render(createElement(DraftHarness, { assetId: asset.id }));
+    change('Placement width', asset.minWidth - .1);
+    expect(draftValue().inputError).toBeTruthy();
+    change('Placement depth', asset.minDepth);
+    expect(draftValue().inputError).toBeTruthy();
+    change('Placement width', asset.minWidth);
+    expect(draftValue().inputError).toBeUndefined();
+    change('Placement depth', asset.minDepth - .1);
+    expect(draftValue().inputError).toBeTruthy();
+    change('Placement width', asset.maxWidth ?? asset.maxSize);
+    expect(draftValue().inputError).toBeTruthy();
+    change('Placement depth', asset.minDepth);
+    expect(draftValue().inputError).toBeUndefined();
+    expect(draftValue()).toMatchObject({ assetId: asset.id, width: asset.maxWidth ?? asset.maxSize, depth: asset.minDepth });
   });
 });

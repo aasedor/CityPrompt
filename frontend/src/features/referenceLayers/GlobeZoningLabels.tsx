@@ -6,13 +6,14 @@ import { DIRECT_3D_CAPTURE_EXCLUDE_USER_DATA } from '@/components/viewer/globe/d
 import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
 import type { ZoningOverlay, ZoningLabel } from './zoningLabels';
 import { GlobeZoningSurface } from './GlobeZoningSurface';
+import { parallelLabelRotation, type StreetName } from './streetNames';
 import type { ZoningPreferences } from './zoningAppearance';
 
 const NO_HIT = () => {};
 const RAD = Math.PI / 180;
 
 /** Display-only cartography: excluded from captures, raycasting and terrain masks. */
-type Props = ZoningPreferences & { data?: ZoningOverlay; terrainHeight: number };
+type Props = Omit<ZoningPreferences, 'clipToSite'> & { data?: ZoningOverlay; terrainHeight: number };
 
 export function GlobeZoningLabels(props: Props) {
   // Off removes the entire overlay, including its per-frame label work.
@@ -28,7 +29,7 @@ function ActiveZoningMap({ data, labels, lines, fill, fillOpacity, terrainHeight
 
 /** Shared, non-interactive cartographic lettering; never included in AI captures. */
 export function GlobeMapLabels({ entries, terrainHeight, name }: {
-  entries: Pick<ZoningLabel, 'id' | 'label' | 'anchor'>[]; terrainHeight: number; name: string;
+  entries: (Pick<ZoningLabel, 'id' | 'label' | 'anchor'> & Pick<StreetName, 'segment'>)[]; terrainHeight: number; name: string;
 }) {
   const sprites = useMemo(() => {
     const group = new THREE.Group();
@@ -68,6 +69,11 @@ export function GlobeMapLabels({ entries, terrainHeight, name }: {
       sprite.raycast = NO_HIT;
       sprite.renderOrder = 995;
       WGS84_ELLIPSOID.getCartographicToPosition(district.anchor[1] * RAD, district.anchor[0] * RAD, (Number.isFinite(terrainHeight) ? terrainHeight : 0) + 2, sprite.position);
+      if (district.segment) sprite.userData.roadSegment = district.segment.map(point => {
+        const world = new THREE.Vector3();
+        WGS84_ELLIPSOID.getCartographicToPosition(point[1] * RAD, point[0] * RAD, (Number.isFinite(terrainHeight) ? terrainHeight : 0) + 2, world);
+        return world;
+      });
       group.add(sprite);
     }
     return group;
@@ -80,6 +86,8 @@ export function GlobeMapLabels({ entries, terrainHeight, name }: {
   }), [sprites]);
   const projected = useMemo(() => new THREE.Vector3(), []);
   const cameraLocal = useMemo(() => new THREE.Vector3(), []);
+  const roadStart = useMemo(() => new THREE.Vector3(), []);
+  const roadEnd = useMemo(() => new THREE.Vector3(), []);
   useFrame(({ camera, size }) => {
     // Screen-space collision cells keep dense blocks readable when zoomed out.
     const occupied = new Set<string>();
@@ -88,11 +96,21 @@ export function GlobeMapLabels({ entries, terrainHeight, name }: {
       projected.copy(child.position).project(camera);
       child.visible = cameraLocal.z < 0 && projected.z >= -1 && projected.z <= 1 && Math.abs(projected.x) < 1 && Math.abs(projected.y) < 1;
       if (!child.visible) continue;
-      const { widthPx, heightPx } = child.userData;
+      const { widthPx, heightPx, roadSegment } = child.userData;
+      const material = (child as THREE.Sprite).material;
+      if (roadSegment) {
+        roadStart.copy(roadSegment[0]).project(camera);
+        roadEnd.copy(roadSegment[1]).project(camera);
+        const rotation = parallelLabelRotation((roadEnd.x-roadStart.x)*size.width, (roadEnd.y-roadStart.y)*size.height);
+        if (rotation === null) { child.visible = false; continue; }
+        material.rotation = rotation;
+      }
+      const cosine = Math.abs(Math.cos(material.rotation)), sine = Math.abs(Math.sin(material.rotation));
+      const collisionWidth = widthPx*cosine + heightPx*sine, collisionHeight = widthPx*sine + heightPx*cosine;
       const x = (projected.x + 1) * size.width / 2, y = (projected.y + 1) * size.height / 2;
       const cells: string[] = [];
-      for (let ix = Math.floor((x - widthPx / 2 - 3) / 24); ix <= Math.floor((x + widthPx / 2 + 3) / 24); ix++) {
-        for (let iy = Math.floor((y - heightPx / 2 - 3) / 24); iy <= Math.floor((y + heightPx / 2 + 3) / 24); iy++) cells.push(`${ix}:${iy}`);
+      for (let ix = Math.floor((x - collisionWidth / 2 - 3) / 24); ix <= Math.floor((x + collisionWidth / 2 + 3) / 24); ix++) {
+        for (let iy = Math.floor((y - collisionHeight / 2 - 3) / 24); iy <= Math.floor((y + collisionHeight / 2 + 3) / 24); iy++) cells.push(`${ix}:${iy}`);
       }
       if (cells.some(cell => occupied.has(cell))) { child.visible = false; continue; }
       cells.forEach(cell => occupied.add(cell));

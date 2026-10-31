@@ -5,6 +5,8 @@ import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetProgram';
 import { BRT_VARIANT } from '@/components/viewer/globe/brtStreetProgram';
 import { TRAM_VARIANT } from '@/components/viewer/globe/tramStreetProgram';
+import { isSurfacePath } from './surfacePath';
+import { bufferPathwayToPolygon } from '@/utils/pathwayFootprint';
 
 const SNAP_DISTANCE_M = 6;
 // Avoid inconsistent point-on-edge classification and projection round-off.
@@ -43,6 +45,20 @@ export function snapStreetToBoundary(points: number[][], width: number, boundary
       const inward = (next.x - start.x) * nx + (next.y - start.y) * ny;
       const sideways = Math.abs((next.x - start.x) * ux + (next.y - start.y) * uy);
       if (inward < width) return [];
+      // A small skew in a parcel edge must not insert two artificial bends in
+      // an otherwise straight road. Keep the authored axis, inset its full end
+      // cap, and let the complete-envelope check below enforce containment.
+      const routeLength = Math.hypot(next.x-end.x, next.y-end.y);
+      const ax = (next.x-end.x)/routeLength, ay = (next.y-end.y)/routeLength;
+      const alignment = ax*nx+ay*ny;
+      if (!straightOnly && alignment >= Math.cos(3*Math.PI/180)) {
+        const clearance = width/2*Math.abs(ax*ux+ay*uy)+INSET_M;
+        const offset = (clearance-((end.x-edge.x)*nx+(end.y-edge.y)*ny))/alignment;
+        const alignedStart = { x:end.x+ax*offset, y:end.y+ay*offset };
+        const alongEdge = (alignedStart.x-a.x)*ux+(alignedStart.y-a.y)*uy;
+        if (Math.abs(offset) <= SNAP_DISTANCE_M && alongEdge >= margin && alongEdge <= length-margin)
+          return [{distance:Math.abs(offset),route:[world(alignedStart),...route.slice(1)]}];
+      }
       // Straight approaches need no extra handle. Oblique approaches reserve a
       // full segment for the bend so the rounder retains a normal end cap.
       const approach = { x: start.x + nx * width * 1.25, y: start.y + ny * width * 1.25 };
@@ -54,6 +70,8 @@ export function snapStreetToBoundary(points: number[][], width: number, boundary
     if (candidates.length) result = reverse ? candidates[0].route.reverse() : candidates[0].route;
   }
   // The entire rounded street must fit, including concave parcel recesses.
-  const footprint = bufferLineToPolygon(roundAuthoredStreetRoute(result, width, properties), width).map(local);
+  const centerline = roundAuthoredStreetRoute(result,width,properties);
+  const footprint = (isSurfacePath({zone_type:'road',properties})
+    ? bufferPathwayToPolygon(centerline,width) : bufferLineToPolygon(centerline,width)).map(local);
   return envelopeFits(footprint, ring) ? result : points;
 }

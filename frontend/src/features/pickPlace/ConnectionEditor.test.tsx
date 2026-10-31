@@ -66,18 +66,26 @@ describe('connection controls',()=>{
     expect(screen.getByRole('option',{name:'Calgary local street 1'})).toHaveValue('first');
     expect(screen.getByRole('option',{name:'Calgary local street 2'})).toHaveValue('second');
   });
-  it('offers mapped pedestrian targets, omits motor roads and saves the ground-level review',async()=>{
-    const park={...house,id:'park',zone_type:'green_space' as const,properties:{green_space_archetype_id:'urban_pocket_park'}};
+  it('retains an already saved mapped target without offering other retired routes for new connections',async()=>{
+    const park={...house,id:'park',zone_type:'green_space' as const,properties:{green_space_archetype_id:'urban_pocket_park',pedestrian_park_entrance:{version:1,edge:0,position:0.5,streetId:'existing:path'}}};
     const path={id:'existing:path',kind:'path' as const,label:'Riverside path',widthM:3,points:[[-114,51],[-114.001,51]] as [number,number][]};
     const onSave=vi.fn().mockResolvedValue(undefined);
-    render(<ConnectionEditor zone={park} zones={[park]} transportContext={{lines:[path,{...path,id:'motor',kind:'road',label:'Motor road'}]}} disabled={false} onSave={onSave} onClose={vi.fn()}/>);
-    fireEvent.click(screen.getByRole('checkbox',{name:'Choose and lock a park entrance'}));
+    render(<ConnectionEditor zone={park} zones={[park]} transportContext={{lines:[path,{...path,id:'motor',kind:'road',label:'Motor road'},{...path,id:'existing:other',label:'Other retired path'}]}} disabled={false} onSave={onSave} onClose={vi.fn()}/>);
     expect(screen.queryByRole('option',{name:/Motor road/})).toBeNull();
-    fireEvent.change(screen.getByLabelText('Sidewalk target'),{target:{value:'existing:path'}});
+    expect(screen.queryByRole('option',{name:/Other retired path/})).toBeNull();
+    expect(screen.getByLabelText('Sidewalk target')).toHaveValue('existing:path');
     fireEvent.click(screen.getByRole('checkbox',{name:/I checked that this is suitable/}));
     fireEvent.click(screen.getByRole('button',{name:'Save connections'}));
     await waitFor(()=>expect(onSave).toHaveBeenCalled());
     expect(onSave.mock.calls[0][0].pedestrian_park_entrance).toMatchObject({streetId:'existing:path',existingGroundConfirmed:true});
+  });
+  it('offers authored streets but no retired mapped routes to a new park',()=>{
+    const park={...house,id:'park',zone_type:'green_space' as const,properties:{green_space_archetype_id:'urban_pocket_park'}};
+    const path={id:'existing:path',kind:'path' as const,label:'Riverside path',widthM:3,points:[[-114,51],[-114.001,51]] as [number,number][]};
+    render(<ConnectionEditor zone={park} zones={[park,road]} transportContext={{lines:[path]}} disabled={false} onSave={vi.fn()} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('checkbox',{name:'Choose and lock a park entrance'}));
+    expect(screen.queryByRole('option',{name:/Riverside path/})).toBeNull();
+    expect(screen.getAllByRole('option').some(option=>option.getAttribute('value')===road.id)).toBe(true);
   });
   it('saves an explicit native-house anchor without dropping other properties',async()=>{
     const onSave=vi.fn().mockResolvedValue(undefined),onClose=vi.fn();

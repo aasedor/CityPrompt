@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
+from starlette.concurrency import run_in_threadpool
 
 from app.core.database import get_db
 from app.core.security import require_auth
@@ -81,6 +82,10 @@ _LEGO_ENGINE = "compiler"  # generation_engine is String(20) — keep short
 _TAG_REUSE_KEY_LIMIT = 3
 # Compiler modules are ~50-150 KB; anything near this cap is the wrong file.
 _MAX_UPLOAD_BYTES = 75 * 1024 * 1024
+_MAX_BATCH_BYTES = 256 * 1024 * 1024
+_MAX_BATCH_FILES = 100
+_MAX_JSON_BYTES = 4 * 1024 * 1024
+_MAX_THUMBNAIL_BYTES = 8 * 1024 * 1024
 
 
 class LegoAssemblyPlanRequest(BaseModel):
@@ -343,7 +348,7 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 ),
             )
     else:
-        from app.services.building_flex_contract import trusted_house_footprint_target
+        from app.services.building_flex_contract import trusted_building_footprint_target
 
         geometry = _community_source_geometry(zone)
         if geometry.geom_type == "MultiPolygon":
@@ -372,7 +377,7 @@ def _locked_building_target(zone: SiteZone) -> tuple[float, float, int, str, flo
                 width = round(math.hypot((ring[1][0] - ring[0][0]) * east, (ring[1][1] - ring[0][1]) * 111_320), 1)
                 depth = round(math.hypot((ring[2][0] - ring[1][0]) * east, (ring[2][1] - ring[1][1]) * 111_320), 1)
         try:
-            authored_footprint = trusted_house_footprint_target(properties)
+            authored_footprint = trusted_building_footprint_target(properties)
         except ValueError as exc:
             raise HTTPException(status_code=409, detail=str(exc)) from exc
         if authored_footprint is not None:
@@ -897,10 +902,12 @@ def _module_storage_key(
 
 
 async def _parse_json_upload(upload: UploadFile, label: str) -> Any:
-    raw = await upload.read()
+    raw = await upload.read(_MAX_JSON_BYTES + 1)
+    if len(raw) > _MAX_JSON_BYTES:
+        raise HTTPException(413, f"{label} is capped at 4 MB.")
     try:
         return json.loads(raw.decode("utf-8"))
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    except (UnicodeDecodeError, json.JSONDecodeError, RecursionError) as exc:
         raise HTTPException(status_code=400, detail=f"{label} is not valid JSON: {exc}") from exc
 
 
@@ -954,10 +961,13 @@ async def import_compiler_manifest(
     reuse_keys = [str(k) for k in (manifest_data.get("reuse_keys") or []) if str(k or "").strip()]
 
     uploads: dict[str, bytes] = {}
+    if len(files) > _MAX_BATCH_FILES:
+        raise HTTPException(413, "Import at most 100 GLBs per request.")
+    total_bytes = 0
     for upload in files:
         if not upload.filename:
             continue
-        data = await upload.read()
+        data = await upload.read(min(_MAX_UPLOAD_BYTES, _MAX_BATCH_BYTES - total_bytes) + 1)
         if len(data) > _MAX_UPLOAD_BYTES:
             raise HTTPException(
                 status_code=413,
@@ -966,7 +976,27 @@ async def import_compiler_manifest(
                     f"module GLBs are capped at {_MAX_UPLOAD_BYTES // 1_048_576} MB per file"
                 ),
             )
-        uploads[_basename(upload.filename)] = data
+        total_bytes += len(data)
+        if total_bytes > _MAX_BATCH_BYTES:
+            raise HTTPException(413, "Module GLBs are capped at 256 MB per request.")
+        filename = _basename(upload.filename)
+        if filename in uploads:
+            raise HTTPException(400, "Upload each module filename only once.")
+        uploads[filename] = data
+
+    # A supplied validation report is provenance, never an attestation of the
+    # actual bytes. Validate the entire batch before writing even its first
+    # object, including on force=true and for the assembled preview.
+    from app.services.glb_import import inspect_glb
+
+    for data in uploads.values():
+        await run_in_threadpool(inspect_glb, data, "metres", max_upload_bytes=_MAX_UPLOAD_BYTES)
+
+    thumb_data = None
+    if thumbnail is not None:
+        thumb_data = await thumbnail.read(_MAX_THUMBNAIL_BYTES + 1)
+        if len(thumb_data) > _MAX_THUMBNAIL_BYTES:
+            raise HTTPException(413, "The thumbnail is capped at 8 MB.")
 
     # Storage helpers live in the Celery module; deferred import matches the
     # codebase convention (see admin.py, model_cache.py) and keeps tests free
@@ -979,8 +1009,7 @@ async def import_compiler_manifest(
     thumbnail_url: str | None = None
     if thumbnail is not None:
         thumb_key = f"library/lego/{user.id}/{family}/preview.png"
-        thumb_data = await thumbnail.read()
-        _upload_to_storage(thumb_key, thumb_data, "image/png")
+        await run_in_threadpool(_upload_to_storage, thumb_key, thumb_data, "image/png")
         thumb_version = hashlib.sha256(thumb_data).hexdigest()[:12]
         thumbnail_url = f"{_file_proxy_url(thumb_key)}?v={thumb_version}"
 
@@ -1025,7 +1054,7 @@ async def import_compiler_manifest(
         lod = max(0, int(module.get("lod") or 0))
         key = _module_storage_key(user.id, family, role, variant_key, lod)
         module_bytes = uploads[filename]
-        _upload_to_storage(key, module_bytes, "model/gltf-binary")
+        await run_in_threadpool(_upload_to_storage, key, module_bytes, "model/gltf-binary")
         content_hash = hashlib.sha256(module_bytes).hexdigest()
         model_url = f"{_file_proxy_url(key)}?v={content_hash[:12]}"
 
@@ -1229,73 +1258,102 @@ def _public_realm_recipe_for_zone(
     strict = bool(isinstance(properties.get("_plan_scenario"), str) and properties.get("_plan_scenario", "").strip())
     source_geometry = _community_source_geometry(zone)
     from app.services.fixed_public_realm import validate_fixed_public_realm
+
     try:
         if validate_fixed_public_realm(zone.zone_type, source_geometry, properties):
             return None  # The exact fixed native browser model owns this scene.
     except ValueError as exc:
-        raise HTTPException(status_code=422, detail={
-            'code': 'fixed_public_realm_incompatible', 'message': str(exc),
-            'zone_id': str(zone.id), 'kind': kind,
-        }) from exc
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "code": "fixed_public_realm_incompatible",
+                "message": str(exc),
+                "zone_id": str(zone.id),
+                "kind": kind,
+            },
+        ) from exc
     if not strict:
         from app.services.local_claude_trials import validate_local_claude_public_realm
+
         try:
             if validate_local_claude_public_realm(zone.zone_type, source_geometry, properties):
                 # The exact browser-mounted review model owns this fixed scene.
                 # Never compile a second generic park or stretchable road.
                 return None
         except ValueError as exc:
-            raise HTTPException(status_code=422, detail={
-                'code': 'local_trial_incompatible', 'message': str(exc),
-                'zone_id': str(zone.id), 'kind': kind,
-            }) from exc
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "local_trial_incompatible",
+                    "message": str(exc),
+                    "zone_id": str(zone.id),
+                    "kind": kind,
+                },
+            ) from exc
     migrated_variant_id: str | None = None
     centerline_normalized = False
     if kind == "street":
         if strict:
             properties, migrated_variant_id = normalize_legacy_ai_street_variant_properties(properties)
-        # Import lazily: the plan generator owns metric centreline validation
-        # and conservative recovery, while this API owns ORM/proof mutation.
-        from app.services.plan_geometry.generator import (
-            recover_street_plan_centerline_wgs84,
-            validate_street_plan_centerline_wgs84,
-        )
+        from app.services.surface_path import surface_path_centerline_metric
 
-        had_centerline = "plan_centerline" in properties
-        centerline_is_valid = had_centerline and (
-            validate_street_plan_centerline_wgs84(
-                source_geometry,
-                properties.get("plan_centerline"),
+        try:
+            path_line = surface_path_centerline_metric(source_geometry, properties)
+        except ValueError as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "invalid_pathway_source",
+                    "message": str(exc),
+                    "zone_id": str(zone.id),
+                    "kind": kind,
+                },
+            ) from exc
+        # A trusted flat path owns its winding route, including crossings and
+        # retraces. Generic vehicle-axis recovery would replace that design.
+        if path_line is None:
+            # Import lazily: the plan generator owns metric centreline validation
+            # and conservative recovery, while this API owns ORM/proof mutation.
+            from app.services.plan_geometry.generator import (
+                recover_street_plan_centerline_wgs84,
+                validate_street_plan_centerline_wgs84,
             )
-        )
-        if not centerline_is_valid:
-            recovered_centerline = recover_street_plan_centerline_wgs84(source_geometry)
-            if recovered_centerline and validate_street_plan_centerline_wgs84(
-                source_geometry,
-                recovered_centerline,
-            ):
-                properties["plan_centerline"] = recovered_centerline
-                centerline_normalized = True
-            elif had_centerline:
-                # Never let malformed/stale authored metadata survive a
-                # recompile. Manual zones may fall back to their legacy
-                # geometry renderer; strict AI plans must fail closed.
-                properties.pop("plan_centerline", None)
-                centerline_normalized = True
-                if strict:
-                    raise HTTPException(
-                        status_code=422,
-                        detail={
-                            "code": "invalid_plan_centerline",
-                            "message": (
-                                "Street plan_centerline does not describe the "
-                                "current zone geometry and could not be safely "
-                                "recovered."
-                            ),
-                            "zone_id": str(zone.id),
-                            "kind": kind,
-                        },
-                    )
+
+            had_centerline = "plan_centerline" in properties
+            centerline_is_valid = had_centerline and (
+                validate_street_plan_centerline_wgs84(
+                    source_geometry,
+                    properties.get("plan_centerline"),
+                )
+            )
+            if not centerline_is_valid:
+                recovered_centerline = recover_street_plan_centerline_wgs84(source_geometry)
+                if recovered_centerline and validate_street_plan_centerline_wgs84(
+                    source_geometry,
+                    recovered_centerline,
+                ):
+                    properties["plan_centerline"] = recovered_centerline
+                    centerline_normalized = True
+                elif had_centerline:
+                    # Never let malformed/stale authored metadata survive a
+                    # recompile. Manual zones may fall back to their legacy
+                    # geometry renderer; strict AI plans must fail closed.
+                    properties.pop("plan_centerline", None)
+                    centerline_normalized = True
+                    if strict:
+                        raise HTTPException(
+                            status_code=422,
+                            detail={
+                                "code": "invalid_plan_centerline",
+                                "message": (
+                                    "Street plan_centerline does not describe the "
+                                    "current zone geometry and could not be safely "
+                                    "recovered."
+                                ),
+                                "zone_id": str(zone.id),
+                                "kind": kind,
+                            },
+                        )
 
     if migrated_variant_id is not None or centerline_normalized:
         zone.properties = properties
@@ -1413,13 +1471,19 @@ def _stamp_community_3d(
         # Revalidate its bytes and rectangle here before excluding a fallback;
         # a saved namespace claim alone cannot grant detailed-model readiness.
         from app.services.fixed_public_realm import validate_fixed_public_realm
+
         try:
             fixed_native_scene = validate_fixed_public_realm(zone.zone_type, source_geometry, properties)
         except ValueError as exc:
-            raise HTTPException(status_code=422, detail={
-                'code': 'fixed_public_realm_incompatible', 'message': str(exc),
-                'zone_id': str(zone.id), 'kind': kind,
-            }) from exc
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "code": "fixed_public_realm_incompatible",
+                    "message": str(exc),
+                    "zone_id": str(zone.id),
+                    "kind": kind,
+                },
+            ) from exc
         if public_realm_recipe is None:
             # A family-pending archetype uses the historical source-fitted
             # procedural representation, but an older exact V1 recipe must
@@ -1633,9 +1697,10 @@ def _planned_massing_dimensions(zone: SiteZone) -> tuple[int | None, float]:
     """Resolve the planner's authoritative height without inventing a family."""
     properties = zone.properties or {}
     from app.services.model_contract import native_model_facts
+
     native = native_model_facts(properties)
-    if native and native['fixed']:
-        return _positive_int(native['storeys']), _column_height_meters(native['dimensions_m'][2])
+    if native and native["fixed"]:
+        return _positive_int(native["storeys"]), _column_height_meters(native["dimensions_m"][2])
     floors = _positive_int(properties.get("floor_count")) or _positive_int(properties.get("floors"))
     floor_height = _positive_float(properties.get("floor_height")) or 3.2
     height = (
@@ -2113,7 +2178,9 @@ async def place_community_3d(
             # The locked boundary's saved preference wins over a request that
             # may have started planning before another tab changed the toggle.
             automatic_trees = (boundary.properties or {}).get("community_3d_automatic_trees")
-            include_landscape = automatic_trees if isinstance(automatic_trees, bool) else body.include_residual_landscape
+            include_landscape = (
+                automatic_trees if isinstance(automatic_trees, bool) else body.include_residual_landscape
+            )
             if not include_landscape:
                 existing_landscape = (boundary.properties or {}).get("community_3d_landscape")
                 # Automatic object recompiles do not own a landscape the
@@ -2150,7 +2217,7 @@ async def place_community_3d(
                 source_zones.append(
                     ResidualSourceZone(
                         zone_id=str(zone.id),
-                        native_selection=properties.get('green_space_native_layout'),
+                        native_selection=properties.get("green_space_native_layout"),
                         kind=_community_3d_kind(zone) or str(zone.zone_type),
                         role=str(role) if role is not None else None,
                         geometry=to_shape(zone.geometry),
@@ -2185,14 +2252,18 @@ async def place_community_3d(
         source_locked_rlasm = False
         source_locked_user_generated = False
         if kind == "building":
-            if (zone.properties or {}).get('user_generated_source_id'):
+            if (zone.properties or {}).get("user_generated_source_id"):
                 from app.services.user_generated_models import has_user_generated_binding
+
                 linked_building = project_buildings_by_id.get(str(zone.building_id))
                 if item.recipe is not None or not has_user_generated_binding(zone, linked_building):
-                    raise HTTPException(status_code=422, detail='The selected user generated model is unavailable. Choose it again from the building picker.')
+                    raise HTTPException(
+                        status_code=422,
+                        detail="The selected user generated model is unavailable. Choose it again from the building picker.",
+                    )
                 building = linked_building
                 building.footprint = zone.geometry
-                building_generator = 'meshy'
+                building_generator = "meshy"
                 source_locked_user_generated = True
             elif item.recipe is not None:
                 building, building_created = await _place_recipe_on_zone(db, zone, item.recipe)

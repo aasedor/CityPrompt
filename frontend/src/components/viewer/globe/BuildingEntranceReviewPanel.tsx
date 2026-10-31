@@ -5,6 +5,7 @@ import { resolveZoneLabel } from '../mapEngine/geoUtils';
 import { buildingGroundProblemMessage } from './buildingGroundProblemMessage';
 import type { LegoGroundingIssue } from './buildingGroundContact';
 import type { BuildingEntranceReview } from './buildingEntranceReview';
+import { buildingCaptureIssues, isBuildingAccessAdvisory } from './buildingCaptureReadiness';
 
 export function BuildingEntranceReviewPanel({zones,reviews,issues,groundRevision,groundCurrent,onClose,onSelect}:{
   zones:SiteZone[];reviews:BuildingEntranceReview[];issues:LegoGroundingIssue[];
@@ -21,11 +22,15 @@ export function BuildingEntranceReviewPanel({zones,reviews,issues,groundRevision
     {!groundCurrent&&<p role="status" className="mb-3 text-sm text-slate-700">Ground is updating or unavailable. Current entrance measurements will appear when it is ready.</p>}
     <ul className="space-y-3">{houses.map(zone=>{
       const owns=(id:string)=>zone.building_id===id||zone.building_ids?.includes(id);
-      const issue=groundCurrent?issues.find(item=>owns(item.buildingId)):undefined;
+      const issue=groundCurrent?(buildingCaptureIssues(issues).find(item=>owns(item.buildingId))
+        ?? issues.find(item=>owns(item.buildingId))):undefined;
       const review=groundCurrent&&!issue?reviews.find(item=>owns(item.buildingId)&&item.groundRevision===groundRevision):undefined;
       return <li key={zone.id} className="rounded-lg border border-slate-300 bg-white p-3 text-slate-900">
         <p className="font-semibold">{zone.name?.trim() || resolveZoneLabel(zone)}</p>
-        {issue?<p className="my-2 text-sm">{buildingGroundProblemMessage(issue.reason)}</p>:review?<>
+        {issue?<><p className="my-2 text-sm">{buildingGroundProblemMessage(issue.reason)}</p>
+          {isBuildingAccessAdvisory(issue.reason)&&<p className="my-2 text-sm">{buildingCaptureIssues(issues).length
+            ? 'This entrance connection is advisory. Resolve the ground placement checks before rendering.'
+            : 'Rendering is available. This entrance connection remains a design advisory.'}</p>}</>:review?<>
           <p className="my-2 text-sm">{review.generatedSteps>0?`${review.generatedSteps} generated ${review.generatedSteps===1?'step':'steps'}`:'Nearly level approach'} · {Math.abs(review.riseM).toFixed(2)} m {review.riseM<0?'down':'up'} from sidewalk to model base</p>
           <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
             <dt>Clear walking width</dt><dd>{review.clearWidthM.toFixed(2)} m</dd>

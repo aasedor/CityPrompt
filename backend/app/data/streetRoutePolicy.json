@@ -1,0 +1,4 @@
+{
+  "maxRepeatableLengthM": 2000,
+  "fixedSpanMaxLengthM": { "landmark_signature_bridge_v2": 480 }
+}

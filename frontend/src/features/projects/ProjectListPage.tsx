@@ -306,8 +306,8 @@ export function ProjectListPage() {
             </button>
           </div>
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-primary-950/70 mb-1">Project Name *</label>
+            <label className="block">
+              <span className="block text-sm font-medium text-primary-950/70 mb-1">Project Name *</span>
               <input
                 type="text"
                 placeholder="e.g., Riverside Development Phase 1"
@@ -317,7 +317,7 @@ export function ProjectListPage() {
                 className="input-base w-full"
                 autoFocus
               />
-            </div>
+            </label>
             <div>
               <label className="block text-sm font-medium text-primary-950/70 mb-1">Description</label>
               <textarea
@@ -534,8 +534,7 @@ export function ProjectListPage() {
               </p>
             </div>
             <div className="absolute right-3 top-3 flex gap-2">
-              {expandedRender.project.permission !== 'viewer' && <AnimateRenderButton projectId={expandedRender.project.id} render={expandedRender.render}
-                onImageSaved={() => { void queryClient.invalidateQueries({ queryKey: ['projects', currentUser?.id, 'saved-renders'] }); }} />}
+              {expandedRender.project.permission !== 'viewer' && <AnimateRenderButton projectId={expandedRender.project.id} render={expandedRender.render} />}
               <button
                 type="button"
                 onClick={() => {

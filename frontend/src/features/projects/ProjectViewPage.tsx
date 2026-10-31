@@ -17,7 +17,7 @@ import { lazy, Suspense, useState, useCallback, useMemo, useRef, useEffect, type
 import { useParams, Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { ArrowLeft, Camera, CheckCircle, FileDown, MapPin, Share2, Sparkles, Trash2, Trees, Video, Wand2, X } from 'lucide-react';
+import { ArrowLeft, Camera, CheckCircle, FileDown, Layers3, MapPin, Share2, Sparkles, Trash2, Trees, Video, Wand2, X } from 'lucide-react';
 import { buildingsApi, projectsApi, rendersApi, resolveApiFileUrl, siteZonesApi, videoRenderApi } from '@/services/api';
 import type { SavedRender, SiteZone } from '@/types';
 import { AIGenerateModal } from '@/components/buildings/AIGenerateModal';
@@ -27,6 +27,7 @@ import { ShareModal } from '@/components/sharing/ShareModal';
 import { SitePlannerToolbar } from '@/components/viewer/SitePlannerToolbar';
 import { PlacementPalette } from '@/features/pickPlace/PlacementPalette';
 import { ReshapePanel } from '@/features/pickPlace/ReshapePanel';
+import { buildingOnlySelectionCoordinates } from '@/features/pickPlace/buildingOnlySelection';
 import { parkOutlineProblem } from '@/features/pickPlace/parkOutline';
 import { flexibleParkFitProblem, isFlexiblePark } from '@/features/parks/flexibleParkFit';
 import { StreetRoutePanel } from '@/features/pickPlace/StreetRoutePanel';
@@ -34,12 +35,16 @@ import { duplicateStreet } from '@/features/pickPlace/duplicateStreet';
 import { streetConnectionProblem } from '@/features/pickPlace/streetConnectionProblem';
 import { publicRoadConnectionFits } from '@/features/pickPlace/publicRoadConnection';
 import { ConnectionEditor } from '@/features/pickPlace/ConnectionEditor';
+import {groundSurfaceFor,groundSurfaceProblem} from '@/features/groundSurfaces/groundSurfaces';
+import {GroundSurfacePanel} from '@/features/groundSurfaces/GroundSurfacePanel';
+import { DrawnParkingPanel } from '@/features/parks/DrawnParkingPanel';
+import { drawnParkingProperties, isDrawnParking, parkingOutlineProblem } from '@/features/parks/drawnParking';
 import type { EntrancePickRequest } from '@/features/pickPlace/pickBuildingEntrance';
 import { TerraceEditor } from '@/features/pickPlace/TerraceEditor';
 import { saveAutomaticParkGround } from '@/features/pickPlace/saveAutomaticParkGround';
 import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
-import { assetForZone, placeAsset, type PlaceAssetId } from '@/features/pickPlace/catalogue';
+import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
 import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 import { brtConnectionProblem } from '@/features/pickPlace/brtConnections';
@@ -68,6 +73,7 @@ import { ZoneLegend } from '@/components/viewer/ZoneLegend';
 import { StreetViewPanel } from '@/components/viewer/StreetViewPanel';
 import { ProjectPdfDownloadButton } from './ProjectPdfDownloadButton';
 import { StudioControls, StudioDialog, StudioSaveStatus, StudioToolSheet } from './StudioControls';
+import { polygonOutlineProblem } from '@/utils/polygonOutline';
 import { ReadOnlyProject } from './ReadOnlyProject';
 import { StudentWorkflowNav, StudentStepPanel, studentLandscapeNeedsRefresh, studentStreetAccessNotice, type StudentStep } from './StudentWorkflow';
 import { defaultStudentStep } from './studentNavigation';
@@ -91,9 +97,10 @@ import { CityPolicyDetailsCard } from '@/features/policyPlans/CityPolicyDetailsC
 import { ZoningCatalogueCard } from '@/features/zoningCatalogue/ZoningCatalogueCard';
 import { resolveZoneInspection } from '@/features/zoningCatalogue/zoningInspection';
 import type { ZoneInspection } from '@/features/zoningCatalogue/types';
-import { CalgaryContextButton } from '@/features/referenceLayers/CalgaryContextButton';
 import { existingTransport } from '@/features/referenceLayers/existingTransport';
 import { ReferenceLayersPanel } from '@/features/referenceLayers/ReferenceLayersPanel';
+import { usePublicDataLayers } from '@/features/publicData/usePublicDataLayers';
+import { PublicDataLayersPanel } from '@/features/publicData/PublicDataLayersPanel';
 import { SiteElevation } from '@/features/referenceLayers/SiteElevation';
 import { ShapefileImportButton } from './ShapefileImportButton';
 import { LayersPanel } from './LayersPanel';
@@ -163,7 +170,6 @@ export function ProjectViewPage() {
   const [showPlanningReport, setShowPlanningReport] = useState(false);
   const [editingBenchDetails, setEditingBenchDetails] = useState(false);
   const [editingProjectDetails,setEditingProjectDetails]=useState(false);
-  const [projectDetailTool,setProjectDetailTool]=useState<'parking' | undefined>();
   const [showDetailCatalogue, setShowDetailCatalogue] = useState(false);
   const projectDetails=useProjectDetails(id);
   const detailPlacement = useDetailPlacement(projectDetails.data, async next => {
@@ -176,7 +182,7 @@ export function ProjectViewPage() {
   }, id, (asset,pose)=>detailPlacementSupport(asset,pose,siteZones.map(zone=>zone.id)));
   const closePlanningReport = useCallback(() => setShowPlanningReport(false), []);
   const references = useReferenceLayers(id);
-  const transportContext = useMemo(() => existingTransport(references.layers), [references.layers]);
+  const transportContext = useMemo(() => existingTransport(references.legacyTransportLayers), [references.legacyTransportLayers]);
   const [aiGenerateBuildingId, setAiGenerateBuildingId] = useState<string | null>(null);
   const [aiGenerateInitialPrompt, setAiGenerateInitialPrompt] = useState<string | undefined>();
   const [aiGenerateInitialTab, setAiGenerateInitialTab] = useState<'image' | undefined>();
@@ -200,6 +206,7 @@ export function ProjectViewPage() {
   const [globeRenderPosition, setGlobeRenderPosition] = useState<{ x: number; y: number } | null>(null);
   const [isDraggingGlobeRender, setIsDraggingGlobeRender] = useState(false);
   const [globeRefs, setGlobeRefs] = useState<{
+    clearBuildingSelection?: () => void;
     getMapCentre?: () => { lng: number; lat: number };
     canvas: HTMLCanvasElement;
     camera: any;
@@ -308,6 +315,11 @@ export function ProjectViewPage() {
     lightboxImageUrl,
   } = useViewerStore();
 
+  const closeObjectProperties = useCallback(() => {
+    globeRefs?.clearBuildingSelection?.();
+    selectZone(null);
+  }, [globeRefs, selectZone]);
+
   const {
     siteZones,
     siteZonesLoading,
@@ -324,6 +336,7 @@ export function ProjectViewPage() {
   const siteAssessment = useSiteAssessment(siteZones, id);
   const streetNames = useStreetNames(id, siteZones, exploration);
   const zoningLabels = useZoningLabels(id, siteZones, exploration);
+  const publicData = usePublicDataLayers(id, siteZones);
   const localPolicy = useLocalAreaPolicy(id, siteZones, exploration);
   const cityPolicyMaps = useCityPolicyMaps(id);
   const [zoningSelection, setZoningSelection] = useState<{ projectId?: string; zone: ZoneInspection | null; overlay: typeof zoningLabels.data } | null>(null);
@@ -369,7 +382,7 @@ export function ProjectViewPage() {
     useViewerStore.getState().setStreetViewActive(false);
     if (isFlexiblePark(asset.properties)) {
       cancelPlacement();
-      setActiveSitePlannerTool('green_space', asset.properties);
+      setActiveSitePlannerTool('green_space', placementProperties(asset));
       return;
     }
     setPlacementDraft({ assetId, width: width ?? asset.width, depth: depth ?? asset.depth, degrees,
@@ -404,7 +417,20 @@ export function ProjectViewPage() {
     finally { placementPending.current = false; }
   };
   const reshapeObject = (zoneId: string, coordinates: number[][]): boolean => {
+    if (siteZones.find(zone => zone.id === zoneId)?.zone_type === 'site_boundary') {
+      const problem = polygonOutlineProblem(coordinates, 'site boundary');
+      if (problem) { toast.error(problem, {id:'boundary-outline-validation',position:'top-center'}); return false; }
+    }
     const zone = siteZones.find(item => item.id === zoneId);
+    if (zone && groundSurfaceFor(zone)) {
+      const problem=groundSurfaceProblem(coordinates,getActiveSiteBoundary(siteZones));
+      if(problem){toast.error(problem,{position:'top-center'});return false;}
+      if (isDrawnParking(zone)) {
+        const outlineProblem = parkingOutlineProblem(coordinates);
+        if (outlineProblem) { toast.error(outlineProblem, { position: 'top-center' }); return false; }
+      }
+      if(isSaving)return false;
+    }
     if (zone && isFixedSectionStreet(zone)) coordinates = snapConnectedStreetEdit(zone, coordinates, siteZones);
     if (zone?.zone_type === 'road') {
       const snapped = snapStreetBoundaryPlacement({ ...zone, ...streetCoordinateUpdate(zone, coordinates) }, siteZones, getActiveSiteBoundary(siteZones));
@@ -427,14 +453,13 @@ export function ProjectViewPage() {
         ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates) ?? flexibleParkFitProblem(coordinates,zone.properties)
         : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
-          parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined) : null)
+          parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined, streetUpdate?.properties ?? zone.properties) : null)
         ?? placementProblem(footprint, siteZones,
           publicRoadConnectionFits(zone, footprint, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId,
-          { allowStreetIntersections: isFixedSectionStreet(zone) });
+          { allowStreetIntersections: isFixedSectionStreet(zone), properties:streetUpdate?.properties ?? zone.properties });
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
     }
-    handleZoneUpdated(zoneId, coordinates);
-    return true;
+    return handleZoneUpdated(zoneId, coordinates) !== false;
   };
 
   // --- Imported shapefile "layers" (zones grouped by properties._imported_from) ---
@@ -1165,7 +1190,7 @@ export function ProjectViewPage() {
             projectSurfaces={projectDetails.data?.surfaces}
             siteZones={visibleZones}
             allSiteZones={siteZones}
-            referenceLayers={studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers}
+            referenceLayers={[...(studyMap.layer ? [...references.visibleLayers.filter(layer=>!studyMetadata(layer)),studyMap.layer] : references.visibleLayers), ...publicData.layers]}
             siteAssessment={siteAssessment.mapData}
             streetNames={studyMap.editing ? { ...streetNames, enabled: false } : streetNames}
               zoningLabels={studyMap.editing ? {...zoningLabels,enabled:false} : zoningLabels}
@@ -1178,6 +1203,21 @@ export function ProjectViewPage() {
             buildings={visibleBuildings}
             onZoneCreated={(coordinates, type, properties) => {
               if (properties?.cartography_study) return references.canEdit && studyMap.complete(coordinates);
+              if (type === 'site_boundary') {
+                const problem = polygonOutlineProblem(coordinates, 'site boundary');
+                if (problem) {
+                  toast.error(`${problem} Use Backspace to remove the last corner, or Esc to clear the drawing.`, {id:'boundary-outline-validation',position:'top-center'});
+                  return false;
+                }
+              }
+              if (groundSurfaceFor({properties})) {
+                const problem=groundSurfaceProblem(coordinates,getActiveSiteBoundary(siteZones));
+                if(problem){toast.error(problem,{position:'top-center'});return false;}
+                if (isDrawnParking({ properties })) {
+                  const outlineProblem = parkingOutlineProblem(coordinates);
+                  if (outlineProblem) { toast.error(outlineProblem, { position: 'top-center' }); return false; }
+                }
+              }
               if (['building', 'residential', 'green_space'].includes(type)) {
                 const snapped = snapPlacement(coordinates, siteZones, getActiveSiteBoundary(siteZones), undefined, properties, type);
                 if (snapped.problem) { toast.error(snapped.problem, { position: 'top-center' }); return false; }
@@ -1203,10 +1243,10 @@ export function ProjectViewPage() {
                   ?? streetConnectionProblem({coordinates,properties},siteZones)
                   ?? nativeStreetRouteProblem({coordinates,properties},getActiveSiteBoundary(siteZones))
                   ?? streetRouteProblem(coordinates, streetSectionWidth({zone_type:type, properties}),
-                  parsePersistedCenterline(properties?.plan_route_controls) ?? undefined)
+                  parsePersistedCenterline(properties?.plan_route_controls) ?? undefined, properties)
                   ?? placementProblem(coordinates, siteZones,
                     publicRoadConnectionFits({ zone_type: type, properties }, coordinates, getActiveSiteBoundary(siteZones))
-                      ? null : getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true });
+                      ? null : getActiveSiteBoundary(siteZones), undefined, { allowStreetIntersections: true, properties });
                 if (problem) { toast.error(problem, {id:'street-route-validation',position:'top-center'}); return false; }
               }
               handleZoneCreated(coordinates, type, properties);
@@ -1228,9 +1268,14 @@ export function ProjectViewPage() {
           style={entrancePick ? {display:'none'} : undefined}
           className={`pointer-events-none absolute inset-x-3 bottom-3 z-30 min-h-0 max-h-[42dvh] overflow-y-auto overscroll-contain lg:inset-x-auto lg:left-4 lg:top-28 lg:bottom-16 lg:w-64 lg:max-h-none lg:overflow-y-auto lg:pr-2 ${activeSitePlannerTool || placementDraft || showDetailCatalogue || (selectedZone && (assetForZone(selectedZone) || isFixedSectionStreet(selectedZone))) ? 'hidden lg:block' : ''}`}
         >
-          <StudioToolSheet navigation={<StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />}>
+          <StudioToolSheet navigation={<StudentWorkflowNav step={activeStudentStep} onChange={changeStudentStep} />}
+            notice={(pendingDrafts.length > 0 || saveError || siteZonesError) && <StudioSaveStatus
+              saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice}
+              loadError={Boolean(siteZonesError)} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
+              discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />}>
             {activeStudentStep !== 'design' && !showGlobeRender && !showVideoRender && <StudentStepPanel
-              siteOptions={<StreetNamesControl state={streetNames} />}
+              siteOptions={null}
+              walkControls={<div ref={setWalkControlTarget} />}
               step={activeStudentStep} hasSite={Boolean(cityPromptWorkflow.activeBoundary && isPersistedZoneId(cityPromptWorkflow.activeBoundary.id))}
               drawingSite={activeSitePlannerTool === 'site_boundary'} location={project.location?.address}
               canRender={cityPromptWorkflow.canRender} renderReason={cityPromptWorkflow.renderReason}
@@ -1239,18 +1284,37 @@ export function ProjectViewPage() {
               automatic3DStatus={automatic3D.status} automatic3DMessage={automatic3D.message}
               onSite={() => { setStudentStep('site'); handleSiteBoundary(); }} onDesign={() => changeStudentStep('design')}
               onImage={handleOpenGlobeRender} onVideo={handleOpenVideoRender} onRefreshLandscape={automatic3D.retry} onRetry3D={automatic3D.retry} />}
-            {activeStudentStep === 'site' && (pendingDrafts.length > 0 || saveError) && <StudioSaveStatus
-              saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice}
-              loadError={false} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
-              discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />}
-            {activeStudentStep === 'site' && <div className="mt-3 space-y-3"><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} /><LocalAreaPlanPanel state={localPolicyPanel} /><CityPolicyMapsPanel state={cityPolicyPanel} /><ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/><SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment} /></div>}
+            {activeStudentStep === 'site' && <div className="mt-3 space-y-3">
+              <details open className="rounded-2xl border border-slate-300 bg-white/95 p-3" aria-label="Site Context">
+                <summary className="min-h-11 cursor-pointer text-sm font-bold">Site Context</summary>
+                <p className="mb-3 text-xs text-slate-600">What exists in and around your site.</p>
+                <div className="space-y-3"><StreetNamesControl state={streetNames}/><ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend}/>
+                  <PublicDataLayersPanel state={publicData}/><SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment}/></div>
+              </details>
+              <details className="rounded-2xl border border-slate-300 bg-white/95 p-3" aria-label="Policy">
+                <summary className="min-h-11 cursor-pointer text-sm font-bold">Policy</summary>
+                <p className="mb-3 text-xs text-slate-600">Plans and policies for your site and its surroundings.</p>
+                <div className="space-y-3"><LocalAreaPlanPanel state={localPolicyPanel}/><CityPolicyMapsPanel state={cityPolicyPanel}/></div>
+              </details>
+              <ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/>
+            </div>}
             <div hidden={activeStudentStep !== 'design'}>
             <SitePlannerToolbar
               streetPlacement={CALGARY_LOCAL_PLACEMENT}
               streetInPlacement
+              groundSurfaceInPlacement
               advancedSlot={<div ref={setMapToolsTarget} className="grid gap-2" aria-label="3D viewing tools" />}
-              placementSlot={<PlacementPalette primaryAction={<div className="grid gap-2">
-                <div ref={setWalkControlTarget} />
+              placementSlot={<PlacementPalette projectId={id} primaryAction={<div className="grid gap-2">
+                <button type="button" aria-pressed={activeSitePlannerTool === 'development_area'}
+                  onClick={() => {
+                    cancelPlacement(); useViewerStore.getState().setStreetViewActive(false);
+                    handleMeasureModeChange(false);
+                    setActiveSitePlannerTool('development_area', { ground_surface_material: 'grass' });
+                  }}
+                  className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-900 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+                  title="Draw a ground surface">
+                  <Layers3 size={20} aria-hidden="true" /> Ground surface
+                </button>
                 <button type="button"
                   onClick={async () => {
                     const result = await projectDetails.refetch();
@@ -1266,14 +1330,11 @@ export function ProjectViewPage() {
               </div>} selected={placementDraft?.assetId ?? null} onPick={pickObject} onCancel={cancelPlacement}
                 status={automatic3D.status} message={automatic3D.message} onRetry={automatic3D.retry} canRefreshDetail={automatic3D.canRefreshDetail}
                 onBrowseChange={open => { setShowCatalogue(open); if (open) { setShowDetailCatalogue(false); detailPlacement.choose(null); } }}
-                onDrawParkingLot={async () => {
-                  const result = await projectDetails.refetch();
-                  if (!result.data) { toast.error('Parking lots could not load. Please try again.'); return; }
-                  if (!result.data.can_edit) { toast.error('You need edit access to draw a parking lot.'); return; }
-                  cancelPlacement(); setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
+                onDrawParkingLot={() => {
+                  cancelPlacement(); selectZone(null); handleMeasureModeChange(false);
                   useViewerStore.getState().setStreetViewActive(false);
                   detailPlacement.choose(null); setShowDetailCatalogue(false);
-                  setProjectDetailTool('parking'); setEditingProjectDetails(true);
+                  setActiveSitePlannerTool('parking', drawnParkingProperties());
                 }}
                 onPickGenerated={model => {
                   setActiveSitePlannerTool(null); selectZone(null); setMeasureActive(false);
@@ -1311,8 +1372,8 @@ export function ProjectViewPage() {
               bottomSlot={
                 !showGlobeRender && !showVideoRender ? (
                   <div className="flex flex-col gap-1">
-                    <StudioSaveStatus saving={isSaving} draftCount={pendingDrafts.length} draftsPersistOnDevice={draftsPersistOnDevice} loadError={Boolean(siteZonesError)} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
-                      discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />
+                    {pendingDrafts.length === 0 && !saveError && !siteZonesError && <StudioSaveStatus saving={isSaving} draftCount={0} draftsPersistOnDevice={draftsPersistOnDevice} loadError={false} onRetry={() => pendingDrafts.forEach(retryDraft)} onReload={() => { void reloadSavedVersion(); }}
+                      discardableCount={discardableDrafts.length} onDiscardRejected={() => discardableDrafts.forEach(discardDraft)} saveError={saveError} />}
 
                     <button type="button" data-tour="ai-render-btn" onClick={() => changeStudentStep('present')}
                       className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border-2 border-slate-950 bg-[#c9ff3d] px-3 py-2 text-sm font-bold text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-700">
@@ -1332,13 +1393,13 @@ export function ProjectViewPage() {
         </div>
         {showReferenceLayers && !showPlanningReport && <aside aria-label="Map layers" className="absolute bottom-20 right-3 top-32 z-40 flex max-w-[calc(100vw-1.5rem)] flex-col gap-3 overflow-y-auto rounded-xl bg-white/95 p-3 shadow-xl sm:right-4 sm:top-20">
           <div className="sticky -top-3 z-10 flex items-center justify-between bg-white py-1"><h2 className="font-semibold text-slate-900">Map layers</h2><button onClick={() => setShowReferenceLayers(false)} aria-label="Close layers" className="flex h-11 w-11 items-center justify-center"><X size={18} /></button></div>
+          <PublicDataLayersPanel state={publicData} />
           <ZoningLabelsControls state={zoningLabels} onInspect={inspectZoningLegend} />
           <LocalAreaPlanPanel state={localPolicyPanel} />
           <CityPolicyMapsPanel state={cityPolicyPanel} />
           <ZoningStudyPanel projectId={project.id} projectName={project.name} zones={siteZones} layers={references.layers} canEdit={references.canEdit} isLoading={references.isLoading} zoningData={zoningLabels.data} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer} mapDrawing={studyMap.controls}/>
           <SiteAssessmentPanel zones={siteZones} projectId={id} state={siteAssessment} />
           <ShapefileImportButton projectId={project.id} />
-          <CalgaryContextButton projectId={project.id} zones={siteZones} layers={references.layers} />
           <ReferenceLayersPanel layers={references.layers} hiddenIds={references.hiddenIds} onToggle={references.toggleLayer}
             onDelete={references.canEdit ? references.removeLayer : undefined} deletingId={references.deletingId}
             isLoading={references.isLoading} error={references.error} onRetry={() => { void references.refetch(); }} />
@@ -1361,10 +1422,10 @@ export function ProjectViewPage() {
         {showShare && <ShareModal projectId={project.id} projectName={project.name} onClose={() => setShowShare(false)} />}
         {showTour && <OnboardingTour placementMode forceShow onComplete={() => setShowTour(false)} />}
 
-        {editingProjectDetails && projectDetails.data && <ProjectDetailEditor project={project} zones={siteZones} data={projectDetails.data} initialTool={projectDetailTool} onClose={()=>setEditingProjectDetails(false)}/>}
+        {editingProjectDetails && projectDetails.data && <ProjectDetailEditor project={project} zones={siteZones} data={projectDetails.data} onClose={()=>setEditingProjectDetails(false)}/>}
         {showDetailCatalogue && <DetailPlacementPanel placement={detailPlacement} canEdit={Boolean(projectDetails.data?.can_edit)}
           onClose={() => { setShowDetailCatalogue(false); detailPlacement.choose(null); }}
-          onArrange={() => { detailPlacement.choose(null); setShowDetailCatalogue(false); setProjectDetailTool(undefined); setEditingProjectDetails(true); }} />}
+          onArrange={() => { detailPlacement.choose(null); setShowDetailCatalogue(false); setEditingProjectDetails(true); }} />}
         {/* Zone properties panel */}
         {selectedZone && !entrancePick && assetForZone(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
           <ReshapePanel key={`${selectedZone.id}:${JSON.stringify(selectedZone.coordinates)}`} zone={selectedZone} disabled={isSaving}
@@ -1373,13 +1434,16 @@ export function ProjectViewPage() {
             zones={siteZones} onUpdateParkLayout={data => updateZone.mutateAsync({zoneId:selectedZone.id,data,previousData:{coordinates:selectedZone.coordinates,properties:selectedZone.properties}})}
             onUpdateDesign={properties => {
               const footprintChanged=properties.building_footprint_scale!==selectedZone.properties?.building_footprint_scale;
-              const problem=footprintChanged ? placementProblem(selectedZone.coordinates,siteZones,getActiveSiteBoundary(siteZones),selectedZone.id,{properties}) : null;
+              const nextAsset=assetForZone({properties});
+              const coordinates=nextAsset ? buildingOnlySelectionCoordinates(selectedZone,nextAsset) : selectedZone.coordinates;
+              const resized=coordinates!==selectedZone.coordinates;
+              const problem=footprintChanged || resized ? placementProblem(coordinates,siteZones,getActiveSiteBoundary(siteZones),selectedZone.id,{properties}) : null;
               if(problem){toast.error(problem,{position:'top-center'});return;}
-              updateZone.mutate({ zoneId: selectedZone.id, data: { properties }, previousData: { properties: selectedZone.properties } });
+              updateZone.mutate({ zoneId: selectedZone.id, data: { properties,...(resized?{coordinates}:{}) },
+                previousData: { properties: selectedZone.properties,...(resized?{coordinates:selectedZone.coordinates}:{}) } });
             }}
             onTerrace={['building','residential','green_space'].includes(selectedZone.zone_type)?()=>setTerraceZoneId(selectedZone.id):undefined}
-            onConnections={()=>setConnectionZoneId(selectedZone.id)}
-            onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={() => selectZone(null)}
+            onReshape={coordinates => reshapeObject(selectedZone.id, coordinates)} onClose={closeObjectProperties}
             onDelete={() => deleteZone.mutate(selectedZone.id)} onDuplicate={pickObject} onMore={() => setAdvancedZoneId(selectedZone.id)} />
         )}
         {selectedZone && !entrancePick && isFixedSectionStreet(selectedZone) && advancedZoneId !== selectedZone.id && !placementDraft && !showHistory && !measureActive && (
@@ -1391,8 +1455,8 @@ export function ProjectViewPage() {
               const problem = specialistConnectionProblem(copy, siteZones) ?? brtConnectionProblem(copy, siteZones)
                 ?? streetConnectionProblem(copy, siteZones)
                 ?? nativeStreetRouteProblem(copy, boundary)
-                ?? streetRouteProblem(copy.coordinates, Number(copy.properties.width), parsePersistedCenterline(copy.properties.plan_route_controls) ?? undefined)
-                ?? placementProblem(copy.coordinates, siteZones, boundary, undefined, { allowStreetIntersections: true });
+                ?? streetRouteProblem(copy.coordinates, Number(copy.properties.width), parsePersistedCenterline(copy.properties.plan_route_controls) ?? undefined, copy.properties)
+                ?? placementProblem(copy.coordinates, siteZones, boundary, undefined, { allowStreetIntersections: true, properties:copy.properties });
               if (problem) throw new Error(problem);
               const created = await createZone.mutateAsync(copy);
               selectZone(created.id);
@@ -1405,10 +1469,10 @@ export function ProjectViewPage() {
                 ?? brtConnectionProblem({...selectedZone,...data},siteZones)
                 ?? streetConnectionProblem({...selectedZone,...data},siteZones)
                 ?? streetRouteProblem(data.coordinates, Number(data.properties.width),
-                parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined)
+                parsePersistedCenterline(data.properties.plan_route_controls) ?? undefined, data.properties)
                 ?? placementProblem(data.coordinates, siteZones,
                   publicRoadConnectionFits({ ...selectedZone, ...data }, data.coordinates, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), selectedZone.id,
-                  { allowStreetIntersections: true });
+                  { allowStreetIntersections: true, properties:data.properties });
               if (problem) { toast.error(problem); return; }
               updateZone.mutate({ zoneId: selectedZone.id, data,
                 previousData: { coordinates: selectedZone.coordinates, properties: selectedZone.properties } });
@@ -1417,10 +1481,11 @@ export function ProjectViewPage() {
             onPublicConnection={enabled => updateZone.mutate({zoneId: selectedZone.id, data: {
               properties: {...selectedZone.properties, connect_to_public_road: enabled},
             }, previousData: { properties: selectedZone.properties }})}
-            onConnections={()=>setConnectionZoneId(selectedZone.id)}
-            onClose={()=>selectZone(null)} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
+            onClose={closeObjectProperties} onDelete={()=>deleteZone.mutate(selectedZone.id)} onMore={()=>setAdvancedZoneId(selectedZone.id)} />
         )}
-        {selectedZone && !entrancePick && ((!assetForZone(selectedZone) && !isFixedSectionStreet(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
+        {selectedZone && isDrawnParking(selectedZone) && <DrawnParkingPanel zone={selectedZone} disabled={isSaving} onClose={closeObjectProperties} onDelete={()=>deleteZone.mutate(selectedZone.id)} onChange={properties=>updateZone.mutate({zoneId:selectedZone.id,data:{properties},previousData:{properties:selectedZone.properties}})}/>}
+        {selectedZone && groundSurfaceFor(selectedZone) && !isDrawnParking(selectedZone) && <GroundSurfacePanel zone={selectedZone} disabled={isSaving} onClose={closeObjectProperties} onDelete={()=>deleteZone.mutate(selectedZone.id)} onChange={properties=>updateZone.mutate({zoneId:selectedZone.id,data:{properties},previousData:{properties:selectedZone.properties}})}/>}
+        {selectedZone && !groundSurfaceFor(selectedZone) && !entrancePick && ((!assetForZone(selectedZone) && !isFixedSectionStreet(selectedZone)) || advancedZoneId === selectedZone.id) && !showHistory && !measureActive && (
           <ZonePropertiesPanel
             key={selectedZone.id}
             belowGlobeControls
@@ -1429,7 +1494,6 @@ export function ProjectViewPage() {
             }) : undefined}
             zone={selectedZone}
             savedVersionReload={savedVersionReload}
-            onConnections={['building','residential','green_space','road'].includes(selectedZone.zone_type) ? ()=>setConnectionZoneId(selectedZone.id) : undefined}
             onUpdate={(zoneId, data) => {
               const previousZone = siteZones.find((z) => z.id === zoneId);
               updateZone.mutate({
@@ -1442,7 +1506,7 @@ export function ProjectViewPage() {
               if (siteZones) rebufferRoadOnUpdate(zoneId, data, siteZones, handleZoneUpdated);
             }}
             onDelete={(zoneId) => deleteZone.mutate(zoneId)}
-            onClose={() => selectZone(null)}
+            onClose={closeObjectProperties}
             onAIGenerate={(buildingId, prompt, tab) => {
               setAiGenerateInitialPrompt(prompt);
               setAiGenerateInitialTab(tab);
@@ -1604,7 +1668,7 @@ export function ProjectViewPage() {
                 <RenderSourceNote render={renderLightbox} />
               </div>
               <div className="absolute top-3 right-3 flex gap-2">
-                <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} onImageSaved={rememberSavedRender} />
+                <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} />
                 <button
                   type="button"
                   onClick={() => handleEditRender(renderLightbox)}
@@ -1795,7 +1859,7 @@ export function ProjectViewPage() {
                 }
               }}
               onDelete={(zoneId) => deleteZone.mutate(zoneId)}
-              onClose={() => selectZone(null)}
+              onClose={closeObjectProperties}
               onAIGenerate={(buildingId, prompt, tab) => {
                 setAiGenerateInitialPrompt(prompt);
                 setAiGenerateInitialTab(tab);
@@ -2051,7 +2115,7 @@ export function ProjectViewPage() {
               <RenderSourceNote render={renderLightbox} />
             </div>
             <div className="absolute top-3 right-3 flex gap-2">
-              <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} onImageSaved={rememberSavedRender} />
+              <AnimateRenderButton projectId={project.id} render={renderLightbox} onSaved={rememberSavedVideo} />
               <button
                 type="button"
                 onClick={() => handleEditRender(renderLightbox)}

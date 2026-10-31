@@ -36,12 +36,15 @@ export interface SourceCropRect {
 }
 
 interface CaptureOptions {
+  signal?: AbortSignal;
   canvas: HTMLCanvasElement;
   durationSeconds?: number;
   fps?: number;
   bitrate?: number;
   renderFrame: (frame: DeterministicVideoFrame) => Promise<void> | void;
 }
+
+type ResolvedCaptureOptions = CaptureOptions & {durationSeconds:number;fps:number;bitrate:number};
 
 const clampPositiveInteger = (value: number, fallback: number) => (
   Number.isFinite(value) && value > 0 ? Math.max(1, Math.round(value)) : fallback
@@ -175,16 +178,21 @@ async function supportedEncoderConfiguration(
   return null;
 }
 
-const waitForEncoderCapacity = async (encoder: VideoEncoder, maxQueueSize = 6) => {
+const waitForEncoderCapacity = async (encoder: VideoEncoder, maxQueueSize = 6, signal?:AbortSignal) => {
+  signal?.throwIfAborted();
   while (encoder.encodeQueueSize > maxQueueSize) {
-    await new Promise<void>((resolve) => {
-      encoder.addEventListener('dequeue', () => resolve(), { once: true });
+    await new Promise<void>((resolve,reject) => {
+      const cleanup=()=>{encoder.removeEventListener('dequeue',ready);signal?.removeEventListener('abort',abort);};
+      const ready=()=>{cleanup();resolve();};
+      const abort=()=>{cleanup();reject(signal?.reason);};
+      encoder.addEventListener('dequeue',ready,{once:true});
+      signal?.addEventListener('abort',abort,{once:true});
     });
   }
 };
 
 async function captureWithWebCodecs(
-  options: Required<Omit<CaptureOptions, 'renderFrame'>> & Pick<CaptureOptions, 'renderFrame'>,
+  options: ResolvedCaptureOptions,
   frames: DeterministicVideoFrame[],
   config: VideoEncoderConfig,
 ): Promise<DeterministicVideoCaptureResult> {
@@ -213,9 +221,11 @@ async function captureWithWebCodecs(
 
   try {
     for (const frame of frames) {
+      options.signal?.throwIfAborted();
       await options.renderFrame(frame);
+      options.signal?.throwIfAborted();
       if (encoderError) throw encoderError;
-      await waitForEncoderCapacity(encoder);
+      await waitForEncoderCapacity(encoder,6,options.signal);
       const videoFrame = new VideoFrameClass(options.canvas, {
         timestamp: frame.timestampMicroseconds,
         duration: frame.durationMicroseconds,
@@ -230,6 +240,7 @@ async function captureWithWebCodecs(
       }
     }
     await encoder.flush();
+    options.signal?.throwIfAborted();
     if (encoderError) throw encoderError;
     muxer.finalize();
   } finally {
@@ -249,7 +260,7 @@ async function captureWithWebCodecs(
 }
 
 async function captureWithMediaRecorder(
-  options: Required<Omit<CaptureOptions, 'renderFrame'>> & Pick<CaptureOptions, 'renderFrame'>,
+  options: ResolvedCaptureOptions,
   frames: DeterministicVideoFrame[],
 ): Promise<DeterministicVideoCaptureResult> {
   if (typeof MediaRecorder === 'undefined' || typeof options.canvas.captureStream !== 'function') {
@@ -275,7 +286,9 @@ async function captureWithMediaRecorder(
   try {
     recorder.start(500);
     for (const frame of frames) {
+      options.signal?.throwIfAborted();
       await options.renderFrame(frame);
+      options.signal?.throwIfAborted();
       track?.requestFrame?.();
       // MediaRecorder has no caller-supplied timestamps. Pace its compatibility
       // path at 24 fps; the primary WebCodecs path remains fully offline.
@@ -309,6 +322,7 @@ async function captureWithMediaRecorder(
 export async function captureDeterministicVideo(
   options: CaptureOptions,
 ): Promise<DeterministicVideoCaptureResult> {
+  options.signal?.throwIfAborted();
   const durationSeconds = clampPositiveInteger(
     options.durationSeconds ?? CITY_PROMPT_VIDEO_DURATION_SECONDS,
     CITY_PROMPT_VIDEO_DURATION_SECONDS,
@@ -323,11 +337,14 @@ export async function captureDeterministicVideo(
     fps,
     bitrate,
   );
+  options.signal?.throwIfAborted();
 
   if (config) {
     try {
       return await captureWithWebCodecs(completeOptions, frames, config);
     } catch (error) {
+      options.signal?.throwIfAborted();
+      if((error as Error)?.name==='AbortError')throw error;
       console.warn('[Video Render] Fixed-frame H.264 encoding failed; using the WebM compatibility path.', error);
     }
   }

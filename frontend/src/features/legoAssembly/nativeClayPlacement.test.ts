@@ -44,5 +44,6 @@ describe('native clay placement', () => {
     expect(isArchitecturalClayPlan({ fit: { ...fit, delivery_format: 'architectural_clay' } })).toBe(true);
     expect(isArchitecturalClayPlan({ fit: { ...fit, delivery_format: 'architectural_clay_module_v1' } })).toBe(true);
     expect(isNativeClayPlan({ fit: { ...fit, delivery_format: 'architectural_clay_module_v1' } })).toBe(false);
+    expect(isNativeClayPlan({ fit: { ...fit, native_scale_locked: true, delivery_format: 'architectural_clay_module_v1' } })).toBe(true);
   });
 });

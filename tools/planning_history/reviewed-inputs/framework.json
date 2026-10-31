@@ -1,0 +1,804 @@
+{
+  "schema": "cityprompt.planning-history-framework@1",
+  "asOf": "2026-10-25",
+  "scope": "Undergraduate historical interpretation; eras overlap and indicate design associations,not construction dates.",
+  "eraOrder": [
+    "early_traditions",
+    "industrial_streetcar",
+    "reform_interwar",
+    "postwar",
+    "late_twentieth",
+    "contemporary",
+    "context_dependent"
+  ],
+  "eras": {
+    "early_traditions": {
+      "label": "Earlier traditions",
+      "dates": "Before c. 1850",
+      "description": "Earlier urban and building traditions remain visible through inherited patterns and later reinterpretations.",
+      "designIdea": "Ask how land, settlement, local materials and inherited forms shape a place.",
+      "canadianContext": "Colonial ports, settlements and surveys overlay longstanding Indigenous lands and planning systems.",
+      "internationalContext": "International examples retain their own histories; this period is not a universal stage of progress.",
+      "sourceIds": [
+        "cip_reconciliation",
+        "canadian_styles"
+      ],
+      "searchTerms": [
+        "preindustrial",
+        "pre-industrial",
+        "1700s",
+        "1800s"
+      ]
+    },
+    "industrial_streetcar": {
+      "label": "Industrial and streetcar city",
+      "dates": "c. 1850–1914",
+      "description": "Railways, industry, main streets and expanding urban neighbourhoods reshape many cities.",
+      "designIdea": "Compare the block, street, workplace and daily trip rather than only the facade.",
+      "canadianContext": "Canadian rail and port cities grew with shops, workplaces and varied housing; development also involved exclusion and dispossession.",
+      "internationalContext": "Paris boulevards, iron-and-glass markets and other international references offer comparisons.",
+      "sourceIds": [
+        "cip_history",
+        "ncc_capital",
+        "canadian_styles",
+        "toronto_fabric"
+      ],
+      "searchTerms": [
+        "Victorian",
+        "railway",
+        "streetcar",
+        "1850s",
+        "1860s",
+        "1870s",
+        "1880s",
+        "1890s",
+        "1900s"
+      ]
+    },
+    "reform_interwar": {
+      "label": "Reform and interwar city",
+      "dates": "c. 1900–1945",
+      "description": "Housing reform, garden suburbs, civic improvement and new architectural movements overlap.",
+      "designIdea": "Connect design proposals with health, housing, public space and who benefits.",
+      "canadianContext": "Adams garden suburbs and the 1919 planning institute sit alongside early 20th-century housing and commercial growth.",
+      "internationalContext": "Garden City, Arts and Crafts, Bauhaus and De Stijl have different origins and aims.",
+      "sourceIds": [
+        "cip_history",
+        "tcp_history",
+        "canadian_styles"
+      ],
+      "searchTerms": [
+        "Edwardian",
+        "interwar",
+        "prewar",
+        "pre-war",
+        "1900s",
+        "1910s",
+        "1920s",
+        "1930s",
+        "1940s"
+      ]
+    },
+    "postwar": {
+      "label": "Postwar expansion",
+      "dates": "c. 1945–1975",
+      "description": "Rapid housing growth, road building, new suburbs and large institutional projects transform Canadian cities.",
+      "designIdea": "Compare access, housing production, open space and the consequences of redevelopment.",
+      "canadianContext": "CMHC plan books, Don Mills and urban-renewal debates provide contrasting Canadian cases.",
+      "internationalContext": "International modernism and neighbourhood-unit ideas were adapted to different settings.",
+      "sourceIds": [
+        "cmhc_1954",
+        "don_mills",
+        "canadian_modern",
+        "strathcona"
+      ],
+      "searchTerms": [
+        "postwar",
+        "post-war",
+        "post war",
+        "1940s",
+        "1950s",
+        "1960s",
+        "1970s"
+      ]
+    },
+    "late_twentieth": {
+      "label": "Late 20th-century change",
+      "dates": "c. 1970–2000",
+      "description": "Conservation, community action, urban regeneration, new housing approaches and renewed transit planning overlap.",
+      "designIdea": "Ask how a project changes inherited neighbourhoods and whose choices it expands.",
+      "canadianContext": "Rehabilitation, mixed-income neighbourhoods and Vancouver tower-and-podium development are useful comparisons.",
+      "internationalContext": "Postmodernism, New Urbanism and other international influences enter different local debates.",
+      "sourceIds": [
+        "strathcona",
+        "stlawrence",
+        "vancouver",
+        "cnu",
+        "stlawrence_city",
+        "jacobs_spadina"
+      ],
+      "searchTerms": [
+        "late twentieth",
+        "late20th",
+        "1970s",
+        "1980s",
+        "1990s"
+      ]
+    },
+    "contemporary": {
+      "label": "Contemporary city",
+      "dates": "c. 2000–present",
+      "description": "Housing intensification, climate response, mobility and public-space redesign shape current planning debates.",
+      "designIdea": "Consider housing choice, daily access, environmental processes and distribution of benefits.",
+      "canadianContext": "Missing-middle reforms, the CMHC catalogue and Vancouver 2026 ODP are current examples; Indigenous-led planning continues.",
+      "internationalContext": "Canadian cities exchange ideas about complete neighbourhoods, transit, public space and adaptation internationally.",
+      "sourceIds": [
+        "cmhc_catalogue",
+        "vancouver_odp",
+        "senakw",
+        "ecology"
+      ],
+      "searchTerms": [
+        "current",
+        "recent",
+        "contemporary",
+        "2000s",
+        "2010s",
+        "2020s"
+      ]
+    },
+    "context_dependent": {
+      "label": "Era not specified",
+      "dates": "Context dependent",
+      "description": "This component or long-running tradition does not establish one design era from the available evidence.",
+      "designIdea": "Use its placement, connections and documented reference to investigate its history.",
+      "canadianContext": "A path, court, industrial enclosure or generic planted space can serve many kinds of Canadian neighbourhood.",
+      "internationalContext": "A regional tradition can continue across periods; functional equipment alone does not date a design.",
+      "sourceIds": [
+        "canadian_styles",
+        "cip_history"
+      ],
+      "searchTerms": [
+        "context dependent",
+        "era not specified",
+        "cross-era"
+      ]
+    }
+  },
+  "planningOrder": [
+    "new_urbanism",
+    "tod",
+    "compact",
+    "place",
+    "heritage",
+    "ecology",
+    "garden_city",
+    "city_beautiful",
+    "vancouverism",
+    "haussmann",
+    "complete",
+    "shared",
+    "active",
+    "child",
+    "auto",
+    "modernist_plan",
+    "biophilic",
+    "landscape",
+    "missing_middle",
+    "historic_urbanism",
+    "complete_neighbourhoods",
+    "indigenous_planning",
+    "nonmarket_housing",
+    "housing_delivery"
+  ],
+  "planning": {
+    "new_urbanism": {
+      "label": "New Urbanism",
+      "description": "Compact, connected neighbourhoods combining different uses and housing choices.",
+      "designIdea": "Walkable daily life and well-defined shared public space.",
+      "componentLimit": "A compatible frontage or street is one component; a whole-plan assessment is needed.",
+      "sourceIds": [
+        "cnu"
+      ]
+    },
+    "tod": {
+      "label": "Transit-oriented development",
+      "description": "Integrating land use with walking, cycling and useful public transport.",
+      "designIdea": "Access to activities with less dependence on cars.",
+      "componentLimit": "A station or tall building alone does not establish TOD, service quality or equitable outcomes.",
+      "sourceIds": [
+        "tod"
+      ]
+    },
+    "compact": {
+      "label": "Compact infill",
+      "description": "Adding development within an existing built-up area; form and scale can vary.",
+      "designIdea": "Use serviced land carefully while considering existing residents and housing choices.",
+      "componentLimit": "Building form does not prove affordability, tenure or absence of displacement.",
+      "sourceIds": [
+        "mmh",
+        "vancouver_odp"
+      ]
+    },
+    "place": {
+      "label": "Public-life / placemaking principles",
+      "description": "Organising places around activities and the needs of the people who use them.",
+      "designIdea": "Comfort, sociability and meaningful local use.",
+      "componentLimit": "Benches and attractive paving do not establish a community-led placemaking process.",
+      "sourceIds": [
+        "place"
+      ]
+    },
+    "heritage": {
+      "label": "Heritage continuity / adaptive reuse",
+      "description": "Retaining or adapting inherited buildings and urban patterns.",
+      "designIdea": "Continuity, cultural identity and reuse of existing fabric.",
+      "componentLimit": "A newly generated historic-looking model does not prove a real conservation project.",
+      "sourceIds": [
+        "strathcona",
+        "ncc_capital"
+      ]
+    },
+    "ecology": {
+      "label": "Green infrastructure",
+      "description": "Treating water, habitat, planting and built development as related systems.",
+      "designIdea": "Resilience and care for environmental processes.",
+      "componentLimit": "Model appearance cannot establish stormwater capacity, biodiversity or carbon performance.",
+      "sourceIds": [
+        "ecology"
+      ]
+    },
+    "garden_city": {
+      "label": "Garden City / garden-suburb connections",
+      "description": "Combining settlement, landscape, local work and long-term community stewardship.",
+      "designIdea": "Healthy living and shared community benefit.",
+      "componentLimit": "Green space alone is not Garden City planning; land, governance, jobs and housing matter.",
+      "sourceIds": [
+        "garden_city",
+        "tcp_history",
+        "cip_history"
+      ]
+    },
+    "city_beautiful": {
+      "label": "Civic composition / City Beautiful",
+      "description": "Coordinating civic buildings, axes and public spaces into a formal composition.",
+      "designIdea": "Civic identity and a prominent public realm.",
+      "componentLimit": "A single Classical building or symmetrical garden is insufficient evidence.",
+      "sourceIds": [
+        "ncc_capital"
+      ]
+    },
+    "vancouverism": {
+      "label": "Vancouverism",
+      "description": "Slender towers combined with lower urban edges, public space and an emphasis on sustainable movement.",
+      "designIdea": "Density with attention to light, views and street life.",
+      "componentLimit": "The tower-and-podium model alone cannot establish public benefits or the neighbourhood framework.",
+      "sourceIds": [
+        "vancouver"
+      ]
+    },
+    "haussmann": {
+      "label": "Haussmannian urbanism",
+      "description": "Metropolitan restructuring through boulevards, infrastructure and coordinated urban frontage.",
+      "designIdea": "Connectivity and a deliberate city image.",
+      "componentLimit": "A boulevard replica is an illustration of this tradition, not a reproduction of its social history.",
+      "sourceIds": [
+        "haussmann"
+      ]
+    },
+    "complete": {
+      "label": "Complete Streets",
+      "description": "Allocating street space for safe access by people using different modes and with different abilities.",
+      "designIdea": "Inclusive mobility and context-sensitive street design.",
+      "componentLimit": "A section alone does not verify crossings, speeds, networks or accessibility compliance.",
+      "sourceIds": [
+        "complete"
+      ]
+    },
+    "shared": {
+      "label": "Shared-street / woonerf principles",
+      "description": "Low-speed shared space that places pedestrian use and social activity at the centre.",
+      "designIdea": "Streets as inhabited public spaces.",
+      "componentLimit": "Shared appearance without speed management and accessible navigation is insufficient.",
+      "sourceIds": [
+        "shared"
+      ]
+    },
+    "active": {
+      "label": "Walking / cycling network priority",
+      "description": "Providing connected, useful routes for walking and cycling.",
+      "designIdea": "Direct everyday access and alternatives to driving.",
+      "componentLimit": "A disconnected fragment does not establish a usable network.",
+      "sourceIds": [
+        "tod",
+        "complete"
+      ]
+    },
+    "child": {
+      "label": "Child-friendly / school-street principles",
+      "description": "Designing daily routes and outdoor spaces around children’s access, play and comfort.",
+      "designIdea": "Independent movement and inclusive play.",
+      "componentLimit": "Safety and accessibility need detailed design and operational checks.",
+      "sourceIds": [
+        "complete",
+        "place"
+      ]
+    },
+    "auto": {
+      "label": "Car-oriented layouts / road hierarchy",
+      "description": "Organising frontage, access or movement around motor vehicles and a hierarchy of roads.",
+      "designIdea": "Vehicle access and circulation.",
+      "componentLimit": "This describes a spatial priority, not the political beliefs of designers or users.",
+      "sourceIds": [
+        "don_mills_roads",
+        "cmhc_1954"
+      ]
+    },
+    "modernist_plan": {
+      "label": "Modernist planning",
+      "description": "A comparison lens for freestanding slabs, separated circulation and large-scale composition.",
+      "designIdea": "Discuss functional organisation and the relationship of buildings to open space.",
+      "componentLimit": "Architectural Modernism and Modernist planning are different; a slab alone proves neither master-plan intent nor historical authorship.",
+      "sourceIds": [
+        "canadian_modern",
+        "don_mills",
+        "strathcona"
+      ]
+    },
+    "biophilic": {
+      "label": "Biophilic design principles",
+      "description": "Strengthening people’s experience of nature through the built environment.",
+      "designIdea": "Human–nature connection.",
+      "componentLimit": "Visible greenery is an opportunity to discuss the principle, not proof of health or environmental outcomes.",
+      "sourceIds": [
+        "biophilic"
+      ]
+    },
+    "landscape": {
+      "label": "Landscape-led / naturalistic public realm",
+      "description": "Composing routes, views and activities around landscape character.",
+      "designIdea": "Restoration, outdoor experience and attention to the site.",
+      "componentLimit": "A park does not establish a complete landscape-urbanism philosophy or an Olmsted attribution.",
+      "sourceIds": [
+        "picturesque"
+      ]
+    },
+    "missing_middle": {
+      "label": "Missing-middle housing",
+      "description": "House-scale multi-unit homes and clusters, including duplexes, fourplexes, townhouses and cottage courts.",
+      "designIdea": "Expand housing choice at a modest building scale.",
+      "componentLimit": "Form alone does not establish affordability, tenure or zoning eligibility. A detached house alone is not multi-unit housing.",
+      "sourceIds": [
+        "mmh",
+        "cmhc_catalogue"
+      ]
+    },
+    "historic_urbanism": {
+      "label": "Historic main-street / streetcar urbanism",
+      "description": "Fine-grained blocks, street-facing entrances, local shops and housing form an inherited urban pattern.",
+      "designIdea": "Explore relationships between daily trips, frontages and the street network.",
+      "componentLimit": "A historic-looking street does not document its actual age, former transit service or social history.",
+      "sourceIds": [
+        "mmh",
+        "cip_history",
+        "vernacular"
+      ]
+    },
+    "complete_neighbourhoods": {
+      "label": "Complete neighbourhoods",
+      "description": "Connect diverse homes with everyday shops, services, parks and community facilities.",
+      "designIdea": "Make daily needs accessible to different residents.",
+      "componentLimit": "One facility cannot establish access, service capacity or equitable outcomes across a neighbourhood.",
+      "sourceIds": [
+        "vancouver_odp",
+        "stlawrence"
+      ]
+    },
+    "indigenous_planning": {
+      "label": "Indigenous planning and self-determination",
+      "description": "Planning grounded in Indigenous authority, knowledge, relationships and community priorities.",
+      "designIdea": "Learn whose land and governance shape the city and how Indigenous-led planning continues.",
+      "componentLimit": "This is not an aesthetic. No existing model receives this label from timber, landscaping or cultural-looking motifs.",
+      "sourceIds": [
+        "cip_reconciliation",
+        "senakw"
+      ]
+    },
+    "nonmarket_housing": {
+      "label": "Social, non-profit and co-operative housing",
+      "description": "Housing organised through public, non-profit or co-operative institutions and tenure arrangements.",
+      "designIdea": "Compare who owns, manages, funds and can access housing.",
+      "componentLimit": "Ownership, tenure, rent and affordability cannot be established by the appearance or name of a model.",
+      "sourceIds": [
+        "nonmarket_history",
+        "stlawrence"
+      ]
+    },
+    "housing_delivery": {
+      "label": "Standardized small-house delivery",
+      "description": "Pattern-book plans and coordinated housing programmes connect individual dwelling design with the supply of homes.",
+      "designIdea": "Compare the design of a home with how many homes and their neighbourhoods are delivered.",
+      "componentLimit": "An isolated model does not establish a government programme, present affordability, ownership or a street pattern.",
+      "sourceIds": [
+        "cmhc_1954",
+        "victory_housing"
+      ]
+    }
+  },
+  "styles": {
+    "contemporary_gabled": {
+      "label": "Contemporary gabled",
+      "description": "Simple pitched-roof volumes with restrained detailing and contemporary openings or cladding.",
+      "designIdea": "Use a familiar house silhouette in a current design.",
+      "sourceIds": [
+        "cmhc_catalogue",
+        "banff_styles"
+      ]
+    },
+    "contextual_brick": {
+      "label": "Contextual brick contemporary",
+      "description": "Contemporary homes using brick, entrance rhythms and proportions that respond to an existing streetscape.",
+      "designIdea": "Add housing while relating to the surrounding urban fabric.",
+      "sourceIds": [
+        "vancouver_odp",
+        "vernacular"
+      ]
+    }
+  },
+  "sources": {
+    "riba_neo": {
+      "label": "RIBA: Neoclassicism",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/neoclassical-movement/",
+      "status": "inherited_teaching_reference"
+    },
+    "riba_brut": {
+      "label": "RIBA: Brutalism",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/brutalism-movement/",
+      "status": "inherited_teaching_reference"
+    },
+    "riba_mod": {
+      "label": "RIBA: Modernism",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/modernism-movement/",
+      "status": "inherited_teaching_reference"
+    },
+    "riba_goth": {
+      "label": "RIBA: Gothic Revival",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/gothic-revival-movement/",
+      "status": "inherited_teaching_reference"
+    },
+    "riba_arts": {
+      "label": "RIBA: Arts and Crafts",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/arts-and-crafts-movement/",
+      "status": "inherited_teaching_reference"
+    },
+    "riba_deco": {
+      "label": "RIBA: Art Deco",
+      "url": "https://www.riba.org/explore/riba-collections/architectural-styles/art-deco-movement/",
+      "status": "inherited_teaching_reference"
+    },
+    "gsa": {
+      "label": "US General Services Administration: architectural styles",
+      "url": "https://www.gsa.gov/real-estate/explore-historic-buildings/explore-by-architectural-style",
+      "status": "inherited_teaching_reference"
+    },
+    "georgian": {
+      "label": "National Park Service: Georgian architecture at Independence Hall",
+      "url": "https://www.nps.gov/inde/learn/historyculture/places-independencehall-architecture.htm",
+      "status": "inherited_teaching_reference"
+    },
+    "vernacular": {
+      "label": "Historic England: vernacular houses",
+      "url": "https://historicengland.org.uk/images-books/publications/dlsg-vernacular-houses/",
+      "status": "inherited_teaching_reference"
+    },
+    "newengland": {
+      "label": "Historic New England: architectural style guide",
+      "url": "https://www.historicnewengland.org/preservation/for-homeowners-communities/your-old-or-historic-home/architectural-style-guide/",
+      "status": "inherited_teaching_reference"
+    },
+    "scottish": {
+      "label": "Historic Environment Scotland: Abbotsford",
+      "url": "https://portal.historicenvironment.scot/apex/f?p=1505:300:::::VIEWTYPE,VIEWREF:designation,GDL00001",
+      "status": "inherited_teaching_reference"
+    },
+    "machiya": {
+      "label": "Kyoto Center for Community Collaboration: Kyo-machiya",
+      "url": "https://kyoto-machisen.jp/machiya/",
+      "status": "inherited_teaching_reference"
+    },
+    "modernisme": {
+      "label": "Barcelona City Council: market architecture",
+      "url": "https://www.meet.barcelona/en/visit-and-love-it/barcelonas-markets",
+      "status": "inherited_teaching_reference"
+    },
+    "second_empire": {
+      "label": "Parks Canada: Second Empire style in Canadian architecture",
+      "url": "https://www.publications.gc.ca/site/eng/9.864315/publication.html",
+      "status": "inherited_teaching_reference"
+    },
+    "parkitecture": {
+      "label": "National Park Service: NPS Rustic / Parkitecture",
+      "url": "https://www.nps.gov/subjects/architecture/parkitecture.htm",
+      "status": "inherited_teaching_reference"
+    },
+    "biophilic": {
+      "label": "Living Future: Biophilic Design Basics",
+      "url": "https://living-future.org/biophilic-design/overview/",
+      "status": "inherited_teaching_reference"
+    },
+    "cnu": {
+      "label": "Congress for the New Urbanism: Charter",
+      "url": "https://www.cnu.org/who-we-are/charter-new-urbanism",
+      "status": "inherited_teaching_reference"
+    },
+    "tod": {
+      "label": "ITDP: TOD Standard",
+      "url": "https://tod.itdp.org/tod-standard.html",
+      "status": "inherited_teaching_reference"
+    },
+    "complete": {
+      "label": "National Complete Streets Coalition: Complete Streets",
+      "url": "https://www.smartgrowthamerica.org/program-of-work/complete-streets/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Safe street access across walking, cycling, transit and driving, ages and abilities; design approach is not guaranteed performance."
+    },
+    "shared": {
+      "label": "NACTO: residential shared streets",
+      "url": "https://nacto.org/publication/urban-street-design-guide/streets/residential-shared-street/",
+      "status": "inherited_teaching_reference"
+    },
+    "garden_city": {
+      "label": "Town and Country Planning Association: Garden City Principles",
+      "url": "https://www.tcpa.org.uk/garden-city-principles/",
+      "status": "inherited_teaching_reference"
+    },
+    "vancouver": {
+      "label": "City of Vancouver: Vancouverism",
+      "url": "https://vancouver.ca/home-property-development/planning-zoning-development.aspx",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Slender towers, low-rise edges, light/views, parks, walkability and sustainable movement as an urban-design approach."
+    },
+    "haussmann": {
+      "label": "City of Paris: Haussmann and the transformation of Paris",
+      "url": "https://www.paris.fr/pages/haussmann-l-homme-qui-a-transforme-paris-23091",
+      "status": "inherited_teaching_reference"
+    },
+    "ecology": {
+      "label": "US EPA: green infrastructure",
+      "url": "https://www.epa.gov/green-infrastructure",
+      "status": "inherited_teaching_reference"
+    },
+    "picturesque": {
+      "label": "National Park Service: Olmsted design principles",
+      "url": "https://www.nps.gov/frla/learn/historyculture/olmsted-theory-and-design-principles.htm",
+      "status": "inherited_teaching_reference"
+    },
+    "halifax": {
+      "label": "Canadian Register of Historic Places: Halifax Public Gardens",
+      "url": "https://www.historicplaces.ca/en/rep-reg/place-lieu.aspx?id=3221",
+      "status": "inherited_teaching_reference"
+    },
+    "place": {
+      "label": "Project for Public Spaces: What is placemaking?",
+      "url": "https://www.pps.org/article/what-is-placemaking",
+      "status": "inherited_teaching_reference"
+    },
+    "cip_history": {
+      "label": "Canadian Institute of Planners: history",
+      "url": "https://www.cip-icu.ca/our-history/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Institute founded in 1919; Adams garden-suburb work; revival in 1952 during postwar planning demand."
+    },
+    "cip_reconciliation": {
+      "label": "Canadian Institute of Planners: reconciliation",
+      "url": "https://www.cip-icu.ca/reconciliation/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Planning participated in colonial land division and suppression of Indigenous planning; Indigenous systems continue."
+    },
+    "senakw": {
+      "label": "Squamish Nation: Sen̓áḵw",
+      "url": "https://www.squamish.net/partnerships-entities/partnerships/senakw/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Nation-led return and development of ancestral village lands;2003 land return and 2019 community vote."
+    },
+    "don_mills": {
+      "label": "City of Toronto: postwar North York and Don Mills",
+      "url": "https://www.toronto.ca/explore-enjoy/history-art-culture/online-exhibits/web-exhibits/web-exhibits-community-neighbourhoods/progress-economy-heart-celebrating-100-years-of-north-york/progress-economy-heart-living-in-north-york/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "1950s suburban growth, modernist houses, winding roads and culs-de-sac in the planned Don Mills community."
+    },
+    "don_mills_roads": {
+      "label": "City of Toronto: Don Mills development history",
+      "url": "https://www.toronto.ca/wp-content/uploads/2017/11/90be-City-Planning-SIPA-DonMills-Crossing-Development-History.pdf",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "1950s employment districts and automobile access; later transit investment creates a different planning opportunity."
+    },
+    "cmhc_1954": {
+      "label": "CMHC: Small house designs, 1954",
+      "url": "https://publications.gc.ca/site/eng/9.821302/publication.html",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "National pattern-book plans for bungalows and split-levels in 1954; house forms are not one architectural style."
+    },
+    "cmhc_catalogue": {
+      "label": "CMHC: Housing Design Catalogue",
+      "url": "https://www.housingcatalogue.cmhc-schl.gc.ca/about",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Current standardised housing designs draw on the 1940s–1970s plan-book tradition; includes modest multi-unit forms."
+    },
+    "canadian_modern": {
+      "label": "Manitoba Historic Resources: Modern architecture",
+      "url": "https://www.gov.mb.ca/chc/hrb/internal_reports/pdfs/modern_architecture_brief_guide.pdf",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "International modernist influences developed earlier abroad and gained Manitoba expression particularly after WWII."
+    },
+    "canadian_styles": {
+      "label": "Manitoba Historic Resources: identifying architectural styles",
+      "url": "https://www.gov.mb.ca/chc/hrb/pdf/how_to_series_5-intro.pdf",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Regional guide distinguishes historic styles, modern movements and building traditions/types."
+    },
+    "banff_styles": {
+      "label": "Town of Banff: architectural styles",
+      "url": "https://www.banff.ca/255/Banffs-Architectural-Styles",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Craftsman 1905–1930, postwar Ranch and International examples, and rustic park traditions in Canadian context."
+    },
+    "mmh": {
+      "label": "Opticos Design: Missing Middle Housing",
+      "url": "https://missingmiddlehousing.com/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "House-scale multi-unit/clustered forms; many precedents before 1940; term coined in 2010. No one aesthetic."
+    },
+    "tcp_history": {
+      "label": "TCPA: Garden City movement history",
+      "url": "https://www.tcpa.org.uk/about/our-history/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Garden City Association founded 1899; town/country and social reform; continuing participation and environmental work."
+    },
+    "ncc_capital": {
+      "label": "National Capital Commission: capital planning history",
+      "url": "https://ncc-ccn.gc.ca/blog/big-ideas-that-built-canadas-capital",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Ottawa Improvement Commission 1899; successive Todd, Bennett, Cauchon and Gréber visions;1950 plan and later railway relocation."
+    },
+    "strathcona": {
+      "label": "City of Vancouver: Strathcona neighbourhood history",
+      "url": "https://vancouver.ca/news-calendar/strathcona.aspx",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "1950s redevelopment/freeway proposals, demolition and resident resistance;1968 rehabilitation agreement."
+    },
+    "africville": {
+      "label": "Halifax Regional Municipality: urban-renewal history",
+      "url": "https://cdn.halifax.ca/sites/default/files/documents/about-the-city/regional-community-planning/Centre_Plan_Package_A_Ministerial_Approved_Version_Nov_22_2019_ONLINE.pdf",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Historical account of Africville destruction, displacement and later apology; cited as historical evidence, not current planning policy."
+    },
+    "nonmarket_history": {
+      "label": "National Housing Council: non-market housing history",
+      "url": "https://nhc-cnl.ca/publications/post/scaling-up-the-non-market-housing-sector-",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Public/non-profit housing policy and institutional development from the 1930s–1960s onward; tenure requires institutional evidence."
+    },
+    "stlawrence": {
+      "label": "University of Toronto: St Lawrence mixed-income housing research",
+      "url": "https://www.utoronto.ca/news/mixed-income-housing-one-answer-out-control-home-prices",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Interview with housing researcher David Hulchanski on St Lawrence mixed-use, mixed-income, co-operative and public housing."
+    },
+    "vancouver_odp": {
+      "label": "City of Vancouver: Official Development Plan, 2026",
+      "url": "https://vancouver.ca/home-property-development/vancouver-official-development-plan.aspx",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "City-wide ODP adopted31March 2026; complete neighbourhoods, equity, reconciliation, resilience and coordinated land use/infrastructure."
+    },
+    "vancouver_odp_change": {
+      "label": "City of Vancouver: plan replacement and amendments",
+      "url": "https://vancouver.ca/home-property-development/zoning-land-use-document-library-amendments.aspx",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "2022 Vancouver Plan rescinded/replaced by the 2026 ODP. Current plan status checked25October 2026."
+    },
+    "west_coast": {
+      "label": "District of West Vancouver: West Coast Style",
+      "url": "https://westvancouver.ca/arts-culture/heritage/west-coast-style",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Regional modernism relates architecture to site, landscape and postwar construction."
+    },
+    "bauhaus": {
+      "label": "UNESCO: Bauhaus history 1919–1933",
+      "url": "https://whc.unesco.org/en/news/1954/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "The Bauhaus school operated 1919–1933; its design movement circulated internationally."
+    },
+    "destijl": {
+      "label": "Rietveld Schröder House: architecture",
+      "url": "https://www.rietveldschroderhuis.nl/en",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "1924 house and De Stijl-inspired planes/colour/space; original model is not a reconstruction."
+    },
+    "mughal": {
+      "label": "UNESCO: Fatehpur Sikri",
+      "url": "https://whc.unesco.org/en/list/255/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Late 16th-century Mughal court-city context; no claim that the generic pavilion reproduces a named monument."
+    },
+    "prairie": {
+      "label": "Frank Lloyd Wright Trust: Prairie style",
+      "url": "https://www.flwright.org/explore/prairie-style",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Early 20th-century horizontal houses and landscape connection; a style differs from the geographic Canadian Prairies."
+    },
+    "postmodern": {
+      "label": "Historic England: Post-Modern architecture",
+      "url": "https://historicengland.org.uk/images-books/publications/iha-post-modern-architecture/",
+      "accessed": "2026-10-25",
+      "status": "previous_teaching_research",
+      "supports": "Late 20th-century historical references, communication, form and colour; contemporary reinterpretations continue."
+    },
+    "toronto_fabric": {
+      "label": "City of Toronto: Cabbagetown urban fabric",
+      "url": "https://www.toronto.ca/city-government/planning-development/planning-studies-initiatives/cabbagetown-southwest-heritage-conservation-district-plan/research-and-analysis-cabbagetown-southwest-hcd-plan/",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Late 19th-century housing, early 20th-century industry, conversions and renewed conservation interest from the 1970s."
+    },
+    "stlawrence_city": {
+      "label": "City of Toronto: St Lawrence neighbourhood history",
+      "url": "https://www.toronto.ca/legdocs/mmis/2008/te/bgrd/backgroundfile-9479.pdf",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "The planned St Lawrence neighbourhood of medium-rise apartments and low-rise townhouses opened east of George Street in 1977."
+    },
+    "jacobs_spadina": {
+      "label": "City of Toronto: Spadina Expressway historical account",
+      "url": "https://www.toronto.ca/legdocs/mmis/2013/pw/bgrd/backgroundfile-61472.pdf",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "A 1971 commitment limited the expressway extension south of Eglinton; useful community/transport-planning history."
+    },
+    "jacobs_council": {
+      "label": "City of Toronto: Jane Jacobs civic recognition",
+      "url": "https://www.toronto.ca/legdocs/2006/minutes/council/cc060425.pdf",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Council credited Jacobs with neighbourhood advocacy and opposition to the Spadina Expressway; not used for biographical dates."
+    },
+    "victory_housing": {
+      "label": "Veterans Affairs Canada: Victory Housing, Acton",
+      "url": "https://veterans.gc.ca/en/remembrance/memorials/canada/victory-housing",
+      "accessed": "2026-10-25",
+      "status": "checked_for_this_research",
+      "supports": "Local heritage account of wartime/Victory housing, its modest form and housing-delivery context; community inventory entry, not an exhaustive national typology."
+    }
+  },
+  "curriculumGaps": [
+    "Indigenous authority and nation-specific planning require institutional/contextual evidence; no appearance-only tags.",
+    "Tenure,co-operative governance,affordability and displacement need case studies,not facade classifications.",
+    "Source-only families require exact-variant review before student teaching claims."
+  ]
+}

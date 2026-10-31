@@ -3,6 +3,8 @@ import { clipStreetGeometryOutsideJunction, streetJunctionContainsPoint } from '
 import { nativeLocalJunction, type NativeStreetJunction, type NativeStreetPlacement } from './nativeStreetJunction';
 import { TRIAL_GROUND_MATERIALS } from './publicRealmTrial';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
+import { preparePublicRealmOwnedScene } from './publicRealmOwnership';
+import type { PublicRealmReleaseFixture } from '@/features/pickPlace/publicRealmRelease';
 
 type LocalCut = ReturnType<typeof nativeLocalJunction>;
 const toENU = new THREE.Matrix4().makeRotationX(Math.PI / 2);
@@ -67,8 +69,10 @@ function clearRigidIslands(source: THREE.BufferGeometry, meshToENU: THREE.Matrix
 }
 
 export function trimNativeStreetModel(scene: THREE.Object3D, placement: NativeStreetPlacement['placement'], junctions: NativeStreetJunction[]) {
-  const clone = scene.clone(true);
-  const owned: THREE.BufferGeometry[] = [];
+  const prepared = 'ownershipSha256' in placement.asset
+    ? preparePublicRealmOwnedScene(scene, placement.asset as PublicRealmReleaseFixture) : undefined;
+  const clone = prepared?.clone ?? scene.clone(true);
+  const owned: THREE.BufferGeometry[] = prepared?.ownedGeometries ?? [];
   const remove: THREE.Object3D[] = [];
   const cuts = junctions.map((junction) => nativeLocalJunction(junction, placement));
   clone.updateMatrixWorld(true);

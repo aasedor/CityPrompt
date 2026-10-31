@@ -1,11 +1,13 @@
-import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
+import { Suspense, useEffect, useMemo, useRef } from 'react';
 import type { ThreeEvent } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { EastNorthUpFrame } from '3d-tiles-renderer/r3f';
 import type { SiteZone } from '@/types';
 import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
+import { isLocalTeachingBuilding } from '@/features/pickPlace/nativeBuildingRouting';
 import { computeCentroid } from '../mapEngine/geoUtils';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
+import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
 import { rectangleDimensions } from '@/features/pickPlace/geometry';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import { resolveZoneTerrainHeight } from './globeTerrainUtils';
@@ -17,14 +19,19 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { useSharedSiteGround, useSharedSiteGroundVerification } from './SharedSiteGroundProvider';
 import { preparedEntranceGround } from './preparedEntranceGround';
 import { reviewBuildingFootprints, reviewBuildingGroundContact } from './reviewBuildingGround';
-import { BuildingFoundationSurface } from './BuildingFoundationSurface';
+import { BuildingFoundationSurface, useBuildingLandscapeGround } from './BuildingFoundationSurface';
 import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { prepareReviewBuildingGlass } from './reviewBuildingGlass';
+import { prepareReviewBuildingLandscape } from './reviewBuildingLandscape';
 import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import { useBuildingEntranceApproach, BuildingEntranceApproachMesh } from './BuildingEntranceApproaches';
 import { computeFootprintFrame } from './buildingPlacement';
 import { entranceReviewRevision, type BuildingEntranceReview } from './buildingEntranceReview';
+import { BuildingModelBoundary } from './BuildingModelBoundary';
+import { buildingAssetRevision } from '@/features/pickPlace/buildingAssetRecovery';
+import { useThree } from '@react-three/fiber';
+import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
 
 type BuildingClick = (buildingId: string, hit?: NativeEntranceHit, phase?: 'pointerdown') => void;
 
@@ -51,18 +58,23 @@ function PendingGroundIssue({ zone, reason, report }: { zone: SiteZone; reason: 
 
 /** Isolated local-review GLB. A bad candidate leaves a visible fallback and
  * never takes down the project view or another building. */
-class ReviewBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() { return { failed: true }; }
-  render() { return this.state.failed ? this.props.fallback : this.props.children; }
-}
-
 function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuildingClick }: {
   url: string; zone: SiteZone; zones: SiteZone[]; terrainHeight: number; onGroundingIssue?: GroundReporter; onBuildingClick?: BuildingClick;
 }) {
   const frameRef = useRef<THREE.Group>(null);
-  const { scene } = useGLTF(url);
-  const preparedModel = useMemo(() => prepareReviewBuildingGlass(scene), [scene]);
+  const gl = useThree(state => state.gl);
+  const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
+  const { scene } = useGLTF(url, true, true, extendLoader);
+  const buildingOnly = useMemo(() => prepareBuildingOnlyScene(scene, url), [scene, url]);
+  useEffect(() => retainResourceForDeferredDisposal(buildingOnly,
+    value => value.ownedGeometries.forEach(geometry => geometry.dispose())), [buildingOnly]);
+  const landscapeGround = useBuildingLandscapeGround(zone);
+  const landscape = useMemo(() => prepareReviewBuildingLandscape(buildingOnly.clone, zone, landscapeGround), [buildingOnly.clone, zone, landscapeGround]);
+  useEffect(() => retainResourceForDeferredDisposal(landscape, value => {
+    value.ownedGeometries.forEach(geometry => geometry.dispose());
+    value.ownedMaterials.forEach(material => material.dispose());
+  }), [landscape]);
+  const preparedModel = useMemo(() => prepareReviewBuildingGlass(landscape.clone), [landscape]);
   const model = useMemo(() => {
     const clone = centreNativeClayClone(preparedModel.clone);
     // Draw authored geometry after the prepared surface, whose depth remains
@@ -74,7 +86,7 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
     value => value.ownedMaterials.forEach(material => material.dispose())), [preparedModel]);
   const [lng, lat] = computeCentroid(zone.coordinates);
   const yaw = rectangleDimensions(zone.coordinates).degrees * Math.PI / 180;
-  const footprints = useMemo(() => reviewBuildingFootprints(scene, yaw), [scene, yaw]);
+  const footprints = useMemo(() => reviewBuildingFootprints(buildingOnly.clone, yaw), [buildingOnly, yaw]);
   const sharedGround = useSharedSiteGround();
   const verifiedGround = useSharedSiteGroundVerification();
   const boundary = getActiveSiteBoundary(zones);
@@ -133,7 +145,7 @@ function BuildingGLB({ url, zone, zones, terrainHeight, onGroundingIssue, onBuil
       zone.building_id ? { building_id: zone.building_id } : {})) };
   return <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>
     <group ref={frameRef} name={`review-building-${zone.id}`}>
-      {geometry && <BuildingFoundationSurface geometry={geometry} renderOrder={150} userData={userData}/>}
+      {geometry && <BuildingFoundationSurface geometry={geometry} renderOrder={150} userData={userData} frame={footprintFrame} zone={zone}/>}
       <group rotation={[0, 0, yaw]}
         onPointerDown={event => {
           event.stopPropagation();
@@ -161,8 +173,11 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIss
   const storedTerrain = Number(zone.properties?.terrain_elevation_m);
   const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight)
     ?? resolveZoneTerrainHeight(null, Number.isFinite(storedTerrain) ? storedTerrain : null, terrainHeight);
-  if (!url || zone.coordinates.length < 4) return null;
-  return <ReviewBoundary key={url} fallback={<>
+  if (zone.coordinates.length < 4) return null;
+  if (!url) return isLocalTeachingBuilding(zone)
+    ? <PendingGroundIssue zone={zone} reason="review_model_revision_unavailable" report={onGroundingIssue}/>
+    : null;
+  return <BuildingModelBoundary key={url + buildingAssetRevision(zone)} request={url} zone={zone} fallback={<>
     <PendingGroundIssue zone={zone} reason="review_model_unavailable" report={onGroundingIssue}/>
     <EastNorthUpFrame lat={lat * Math.PI / 180} lon={lng * Math.PI / 180} height={height}>
       <mesh name="review-building-error" userData={{ reviewBuildingStatus: 'error' }} position={[0, 0, 4]}>
@@ -177,5 +192,5 @@ export function GlobeReviewBuilding({ zone, zones, terrainHeight, onGroundingIss
         </mesh>
       </EastNorthUpFrame>
     </>}><BuildingGLB url={url} zone={zone} zones={zones} terrainHeight={terrainHeight}
-      onGroundingIssue={onGroundingIssue} onBuildingClick={onBuildingClick}/></Suspense></ReviewBoundary>;
+      onGroundingIssue={onGroundingIssue} onBuildingClick={onBuildingClick}/></Suspense></BuildingModelBoundary>;
 }

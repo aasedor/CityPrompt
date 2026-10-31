@@ -1,6 +1,8 @@
 import { hasNativePark, nativeParkEditProperties, nativeParkFitProblem } from '@/features/parks/nativeParkRegistry';
+import { isDrawnParking } from '@/features/parks/drawnParking';
 import { runProjectWrite } from '@/utils/projectWriteQueue';
 import { mergeSavedSiteLandscape } from '@/features/siteLandscape/automaticSiteTrees';
+import {boundaryEditProblem} from '@/features/pickPlace/boundaryEdit';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient, useIsMutating } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
@@ -131,6 +133,11 @@ export function useSiteZones(projectId: string | undefined) {
         properties: vars.properties,
       };
       upsertDraft(draft);
+      const viewer = useViewerStore.getState();
+      if (isDrawnParking(vars) && viewer.activeSitePlannerTool === 'parking' && useUndoRedoStore.getState().projectId === projectId) {
+        viewer.setActiveSitePlannerTool(null);
+        viewer.selectZone(`temp-${vars.requestId}`);
+      }
       return { draft, optimisticId: `temp-${vars.requestId}` };
     },
     onSuccess: (createdZone, _vars, context) => {
@@ -152,6 +159,12 @@ export function useSiteZones(projectId: string | undefined) {
         useUndoRedoStore.getState().pushAction(
           createZoneCreateAction(projectId, createdZone, queryClient),
         );
+      }
+      if (isDrawnParking(createdZone)) {
+        const viewer = useViewerStore.getState();
+        if (viewer.activeSitePlannerTool === null && viewer.selectedZoneId === context?.optimisticId) {
+          viewer.selectZone(createdZone.id);
+        }
       }
       if (createdZone.zone_type === 'site_boundary') {
         // A project can have only one active boundary. Leave drawing mode and
@@ -185,8 +198,8 @@ export function useSiteZones(projectId: string | undefined) {
           const total = context.buildings.length + context.roads.length + context.water.length + context.parks.length;
           toast.success(`Site ready with ${total} nearby context features`);
         }).catch(() => {
-          toast('Site boundary saved. Nearby map context is unavailable for now; you can keep designing.', {
-            icon: 'ℹ️',
+          toast('Site boundary saved. Nearby map context is unavailable. You can keep designing.', {
+            icon: 'ℹ️', duration: 8000,
           });
         });
       }
@@ -208,6 +221,10 @@ export function useSiteZones(projectId: string | undefined) {
       runProjectWrite(queryClient, projectId!, async () => {
         const latest = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId])
           ?.find(zone => zone.id === vars.zoneId);
+        if (latest?.zone_type === 'site_boundary' && vars.data.coordinates) {
+          const problem=boundaryEditProblem(vars.data.coordinates,queryClient.getQueryData<SiteZone[]>(['site-zones',projectId])??[],vars.zoneId);
+          if(problem)throw new Error(problem);
+        }
         if (latest?.zone_type === 'site_boundary' && vars.data.properties) {
           // Compilation may have finished while this form save was queued.
           // Landscape controls save independently; retain their current state
@@ -237,6 +254,11 @@ export function useSiteZones(projectId: string | undefined) {
     },
     onError: async (err: unknown, vars, attempt) => {
       recordFailedEdit(vars.zoneId, err, attempt);
+      if (isBoundaryRejection(err)) {
+        await queryClient.refetchQueries({queryKey:['site-zones',projectId]});
+        toast.error(getApiErrorMessage(err));
+        return;
+      }
       if (apiStatus(err) === 409) {
         await queryClient.refetchQueries({ queryKey: ['site-zones', projectId] });
         toast.error('This drawing has a newer saved version. Review the latest version before applying your change again.');
@@ -351,6 +373,10 @@ export function useSiteZones(projectId: string | undefined) {
     const zones = queryClient.getQueryData<SiteZone[]>(['site-zones', projectId]);
     const prevZone = zones?.find((z) => z.id === zoneId);
     const prevCoords = prevZone?.coordinates;
+    if(prevZone?.zone_type==='site_boundary') {
+      const problem=boundaryEditProblem(coordinates,zones??[],zoneId);
+      if(problem){toast.error(problem);return false;}
+    }
 
     updateCoordinates({ zoneId, coordinates, revision: prevZone?.updated_at }).then((result) => {
       queryClient.invalidateQueries({ queryKey: ['site-zones', projectId] });
@@ -361,6 +387,12 @@ export function useSiteZones(projectId: string | undefined) {
         );
       }
     }).catch(async (err: unknown) => {
+      if(prevZone?.zone_type==='site_boundary') {
+        // A concurrent edit can invalidate the early check. Drop the live drag
+        // preview and show the authoritative saved boundary again.
+        selectZone(null);
+        void queryClient.refetchQueries({queryKey:['site-zones',projectId]});
+      }
       if (isBoundaryRejection(err)) {
         toast.error(getApiErrorMessage(err));
         return;

@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { scrubOAuthCallbackUrl } from './OAuthCallbackPage';
 
@@ -7,12 +7,17 @@ describe('scrubOAuthCallbackUrl', () => {
     window.history.replaceState(null, '', '/');
   });
 
-  it('removes OAuth credentials from the visible URL immediately', () => {
+  it.each(['?access_token=secret-access&refresh_token=secret-refresh', '#access_token=secret-access&refresh_token=secret-refresh'])('scrubs %s before releasing startup telemetry', (suffix) => {
     window.history.replaceState(
       null,
       '',
-      '/oauth/callback?access_token=secret-access&refresh_token=secret-refresh',
+      '/oauth/callback' + suffix,
     );
+    const telemetry = vi.fn(() => {
+      expect(window.location.search).toBe('');
+      expect(window.location.hash).toBe('');
+    });
+    window.addEventListener('cityprompt:oauth-scrubbed', telemetry, { once: true });
 
     scrubOAuthCallbackUrl();
 
@@ -20,5 +25,6 @@ describe('scrubOAuthCallbackUrl', () => {
     expect(window.location.search).toBe('');
     expect(window.location.href).not.toContain('secret-access');
     expect(window.location.href).not.toContain('secret-refresh');
+    expect(telemetry).toHaveBeenCalledOnce();
   });
 });

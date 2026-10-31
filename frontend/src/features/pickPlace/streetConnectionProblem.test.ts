@@ -15,6 +15,28 @@ const street=(id:string,variant:string,points:number[][]):SiteZone=>{
 };
 describe('ordinary route junction preflight',()=>{
   const main=street('main','student_main_street_v1',[[-120,0],[120,0]]);
+  it.each([30,37,45,60,75,90,105,120,135,143,150])('joins T and X routes at %s degrees without changing the chosen angle',degrees=>{
+   for(const variant of ['student_separated_walking_cycling_greenway_v1','student_quiet_residential_street_v1']) {
+    const host=street('through',variant,[[-100,0],[100,0]]);
+    const angle=degrees*Math.PI/180;
+    const far=[80*Math.cos(angle),80*Math.sin(angle)];
+    for(const points of [[[0,0],far],[far,[0,0]],[far.map(v=>-v),far]]) {
+      const branch=street('branch',variant,points);
+      const before=JSON.stringify(branch);
+      expect(streetConnectionProblem(branch,[host])).toBeNull();
+      const nodes=detectConnectedStreetIntersections([host,branch],true);
+      expect(nodes).toHaveLength(1);
+      expect(nodes[0].armCount).toBe(points[0][0]===0&&points[0][1]===0||points[1][0]===0&&points[1][1]===0?3:4);
+      const layout=resolveStreetJunctionLayout(nodes[0],[host,branch]);
+      expect(layout).not.toBeNull();
+      if(variant==='student_separated_walking_cycling_greenway_v1') {
+        expect(layout!.sections![0].roadZ).toBeCloseTo(.025);
+        expect(layout!.sections![1].edgeZ).toBeCloseTo(.025);
+      }
+      expect(JSON.stringify(branch)).toBe(before);
+    }
+   }
+  });
   it.each(['student_quiet_residential_street_v1','student_planted_shared_lane_v1','student_market_street_v1'])('accepts complete native T and X joins for %s',variant=>{
     expect(streetConnectionProblem(street('a',variant,[[0,0],[0,100]]),[main])).toBeNull();
     expect(streetConnectionProblem(street('a',variant,[[0,-100],[0,100]]),[main])).toBeNull();
@@ -32,6 +54,26 @@ describe('ordinary route junction preflight',()=>{
     expect(streetConnectionProblem(north,[main])).toBeNull();
     expect(streetConnectionProblem(south,[main])).toBeNull();
     expect(streetConnectionProblem(south,[main,north])).toMatch(/junction/);
+  });
+  it('accepts a complete neighbourhood cycle-street T',()=>{
+    const variant='student_neighbourhood_cycle_street_v1';
+    const through=street('through',variant,[[0,-90],[0,90]]);
+    const branch=street('branch',variant,[[0,0],[57,0]]);
+    expect(streetConnectionProblem(branch,[through])).toBeNull();
+    const network=[through,branch];
+    const nodes=detectConnectedStreetIntersections(network,true);
+    expect(nodes).toHaveLength(1);
+    expect(nodes[0].armCount).toBe(3);
+    expect(resolveStreetJunctionLayout(nodes[0],network)).not.toBeNull();
+  });
+  it.each([
+    {label:'shallow crossing',points:[[-10,-60],[10,60]]},
+    {label:'short host approach',points:[[0,85],[57,85]]},
+    {label:'parallel overlap',points:[[1,-80],[1,80]]},
+  ])('keeps a cycle-street $label rejected',({points})=>{
+    const variant='student_neighbourhood_cycle_street_v1';
+    const through=street('through',variant,[[0,-90],[0,90]]);
+    expect(streetConnectionProblem(street('branch',variant,points),[through])).toMatch(/junction/);
   });
 });
 

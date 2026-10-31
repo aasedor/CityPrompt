@@ -7,11 +7,167 @@ import { CALGARY_LOCAL_PLACEMENT } from './streetPlacement';
 import { snapStreetBoundaryPlacement, streetBoundaryEditCoordinates } from './streetBoundaryPlacement';
 import { streetDrawingGeometry } from './streetDrawingGeometry';
 import { streetCoordinateUpdate } from './streetPlacement';
+import { streetConnectionProblem } from './streetConnectionProblem';
+import { detectConnectedStreetIntersections } from '@/components/viewer/globe/streetGraphIntersections';
+import { buildSectionJunctionGeometry, resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJunctionGeometry';
+import { CLASSROOM_CHOICES } from './canonicalCatalogue';
+import savedGreenway from './__fixtures__/savedGreenwayJunction.json';
+import stressGreenway from './__fixtures__/studentStressGreenway.json';
+import { pointInPark } from '@/components/viewer/globe/neighborhoodParkLayout';
 const ll=(x:number,y:number)=>[-114+x/metersPerDegLon(51),51+y/METERS_PER_DEG_LAT];
 const site={id:'site',zone_type:'site_boundary',coordinates:rectangleAt(ll(0,0),200,200)} as SiteZone;
 const asset=CALGARY_LOCAL_PLACEMENT,width=asset.sectionWidth;
-const street=(x:number):SiteZone=>{const points=[ll(x,-40),ll(x,40)];return {id:'road',zone_type:'road',project_id:'',color:'',sort_order:0,created_at:'',updated_at:'',coordinates:bufferLineToPolygon(points,width),properties:{...asset.properties,plan_centerline:points,plan_route_controls:points}};};
+const street=(x:number):SiteZone=>{const points=[ll(x,-40),ll(x,40)];return {id:'road',zone_type:'road',project_id:'',color:'',sort_order:0,created_at:'',updated_at:'',coordinates:bufferLineToPolygon(points,width),properties:{...asset.properties,plan_centerline:points,plan_route_controls:points,public_realm_lego:{schema_version:1,family_id:'street_local_public_realm',family_version:1,kind:'street',generator:'street_section',archetype_id:'calgary_local',variant_id:'calgary_local_v0',profile_id:'calgary-local-v1',profile_version:1,appearance_kit_id:'calgary_contemporary_native',target:{target_type:'street_segment',row_width_m:16},catalog_fingerprint:'a'.repeat(64),capability_fingerprint:'b'.repeat(64),recipe_hash:'c'.repeat(64)}}};};
 describe('street full-width boundary placement',()=>{
+ it('joins near the end of the browser stress-test greenway without fabricating a fourth arm',()=>{
+  const host={...street(0),...stressGreenway} as SiteZone;
+  const asset=CLASSROOM_CHOICES.flatMap(c=>c.placements).find(a=>a.model.variantId==='student_separated_walking_cycling_greenway_v1')!;
+  const end=host.properties!.plan_route_controls as number[][];
+  const anchor=end[end.length-1],sx=metersPerDegLon(anchor[1]);
+  const points=[[anchor[0]+62/sx,anchor[1]+10.5/METERS_PER_DEG_LAT],[anchor[0]+.5/sx,anchor[1]+10.5/METERS_PER_DEG_LAT]];
+  const draft={...host,id:'draft-street',...streetDrawingGeometry(points,asset.properties,[host])};
+  expect(streetConnectionProblem(draft,[host])).toBeNull();
+  const network=[host,draft],nodes=detectConnectedStreetIntersections(network,true);
+  expect(nodes).toHaveLength(1);
+  expect(nodes[0].armCount).toBe(3);
+  const layout=resolveStreetJunctionLayout(nodes[0],network)!;
+  expect(layout).not.toBeNull();
+  expect(layout.surfaceFootprint?.length).toBeGreaterThan(0);
+  const geometry=buildSectionJunctionGeometry(layout);
+  const positions=geometry.promenadePaving.getAttribute('position');
+  expect(positions.count).toBeGreaterThan(0);
+  expect(positions.getZ(0)).toBeCloseTo(.025,6);
+  const local=(p:number[])=>({x:(p[0]-nodes[0].longitude)*metersPerDegLon(nodes[0].latitude),y:(p[1]-nodes[0].latitude)*METERS_PER_DEG_LAT});
+  const corridors=network.map(zone=>zone.coordinates.map(local));
+  for(let i=0;i<positions.count;i+=3) {
+   const x=(positions.getX(i)+positions.getX(i+1)+positions.getX(i+2))/3;
+   const y=(positions.getY(i)+positions.getY(i+1)+positions.getY(i+2))/3;
+   expect(corridors.some(ring=>pointInPark({x,y},ring))).toBe(true);
+   const ax=positions.getX(i+1)-positions.getX(i),ay=positions.getY(i+1)-positions.getY(i);
+   const bx=positions.getX(i+2)-positions.getX(i),by=positions.getY(i+2)-positions.getY(i);
+   expect(ax*by-ay*bx).toBeGreaterThan(0);
+  }
+  Object.values(geometry).forEach(mesh=>mesh.dispose());
+ });
+ it('recognises the locked saved greenway as a junction graph axis',()=>{
+  const host={...street(0),...savedGreenway.host} as SiteZone;
+  const draft={...street(0),...savedGreenway.draft} as SiteZone;
+  const nodes=detectConnectedStreetIntersections([host,draft],true);
+  expect(nodes).toHaveLength(1);
+  expect(nodes[0].armCount).toBe(3);
+ });
+ it('joins a cycle-street draft to the exact saved separated-greenway recipe and route',()=>{
+  const cycle=CLASSROOM_CHOICES.flatMap(choice=>choice.placements).find(row=>row.model.variantId==='student_neighbourhood_cycle_street_v1')!;
+  const host={...street(0),...savedGreenway.host} as SiteZone;
+  const points=savedGreenway.draft.properties.plan_route_controls;
+  const draft={...host,id:'cycle-branch',...streetDrawingGeometry(points,cycle.properties,[host])};
+  expect(streetConnectionProblem(draft,[host])).toBeNull();
+  const nodes=detectConnectedStreetIntersections([host,draft],true);
+  expect(nodes).toHaveLength(1);
+  expect(nodes[0].armCount).toBe(3);
+  const layout=resolveStreetJunctionLayout(nodes[0],[host,draft]);
+  expect(layout).not.toBeNull();
+  expect(layout!.pedestrianAxes).toEqual([true,false]);
+  expect(layout!.sections![0].low).toBeCloseTo(1.5);
+  expect(layout!.sections![0].high).toBeCloseTo(5);
+  const geometry=buildSectionJunctionGeometry(layout!);
+  expect(geometry.promenadePaving.getAttribute('position').count).toBeGreaterThan(0);
+  for(const mesh of Object.values(geometry)) {
+   expect([...mesh.getAttribute('position').array].every(Number.isFinite)).toBe(true);
+   mesh.dispose();
+  }
+ });
+ it('keeps legacy trail semantics excluded when the saved native recipe is invalid',()=>{
+  const host={...street(0),...savedGreenway.host,properties:{...savedGreenway.host.properties,
+   public_realm_lego:{...savedGreenway.host.properties.public_realm_lego,recipe_hash:'invalid'}}} as SiteZone;
+  const draft={...street(0),...savedGreenway.draft} as SiteZone;
+  expect(detectConnectedStreetIntersections([host,draft],true)).toHaveLength(0);
+  expect(streetConnectionProblem(draft,[host])).toMatch(/junction/);
+ });
+ it.each([57,67])('draws and revalidates a near-kerb %s m cycle-street T',length=>{
+  const cycle=CLASSROOM_CHOICES.flatMap(choice=>choice.placements).find(row=>row.model.variantId==='student_neighbourhood_cycle_street_v1')!;
+  const line=[ll(0,-80),ll(0,80)];
+  const host={...street(0),id:'cycle-host',coordinates:bufferLineToPolygon(line,13),
+   properties:{...cycle.properties,plan_centerline:line,plan_route_controls:line}};
+  const before=JSON.stringify(host),points=[ll(length+6,.7),ll(6,0)];
+  const draft={...host,id:'cycle-branch',...streetDrawingGeometry(points,cycle.properties,[site,host])};
+  const result=snapStreetBoundaryPlacement(draft,[site,host],site);
+  expect(result.problem).toBeNull();
+  const controls=result.properties.plan_route_controls as number[][];
+  expect(controls[0]).toEqual(points[0]);
+  expect((controls[1][0]+114)*metersPerDegLon(51)).toBeCloseTo(0,3);
+  const network=[host,{...draft,...result}];
+  const nodes=detectConnectedStreetIntersections(network,true);
+  expect(nodes).toHaveLength(1);
+  expect(nodes[0].armCount).toBe(3);
+  expect(resolveStreetJunctionLayout(nodes[0],network)).not.toBeNull();
+  expect(result.properties.plan_centerline).toEqual(controls);
+  expect(JSON.stringify(host)).toBe(before);
+ });
+ it('aligns a nearly collinear end connection without moving the saved host street',()=>{
+  const host=street(0),points=[ll(.8,39.2),ll(.8,80)];
+  const candidate={...street(0),id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
+  const before=JSON.stringify(host);
+  expect(streetConnectionProblem(candidate,[host])).toBeTruthy();
+  const result=snapStreetBoundaryPlacement(candidate,[host],site);
+  expect(result.problem).toBeNull();
+  const line=result.properties.plan_centerline as number[][];
+  expect((line[0][0]+114)*metersPerDegLon(51)).toBeCloseTo(0,3);
+  expect((line[0][1]-51)*METERS_PER_DEG_LAT).toBeCloseTo(40,3);
+  expect(result.properties.plan_route_controls).toEqual(line);
+  expect(JSON.stringify(host)).toBe(before);
+ });
+ it('recovers a crossing just below the supported angle only after complete geometry validation',()=>{
+  const host=street(0),angle=61*Math.PI/180;
+  const points=[ll(-45*Math.cos(angle),-45*Math.sin(angle)),ll(45*Math.cos(angle),45*Math.sin(angle))];
+  const candidate={...street(0),id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
+  expect(streetConnectionProblem(candidate,[host])).toBeTruthy();
+  const result=snapStreetBoundaryPlacement(candidate,[host],site);
+  expect(result.problem).toBeNull();
+  const saved={...candidate,...result},network=[host,saved];
+  const nodes=detectConnectedStreetIntersections(network,true);
+  expect(nodes).toHaveLength(1);
+  expect(resolveStreetJunctionLayout(nodes[0],network)).not.toBeNull();
+  expect(result.properties.plan_route_controls).toEqual(result.properties.plan_centerline);
+  const line=result.properties.plan_centerline as number[][];
+  for(const [index,point] of line.entries())expect(Math.hypot((point[0]-points[index][0])*metersPerDegLon(51),(point[1]-points[index][1])*METERS_PER_DEG_LAT)).toBeLessThanOrEqual(3);
+ });
+ it('keeps unsupported duplicates and large-angle corrections rejected',()=>{
+  const host=street(0);
+  for(const points of [[ll(1,-40),ll(1,40)],[ll(-10,-45),ll(10,45)]]) {
+   const candidate={...street(0),id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...asset.properties,plan_centerline:points}};
+   const result=snapStreetBoundaryPlacement(candidate,[host],site);
+   expect(result.problem).toMatch(/junction/);
+   expect(result.coordinates).toBe(candidate.coordinates);
+  }
+ });
+ it('uses the same bounded recovery for a fresh picker route and its save without a forged recipe',()=>{
+  const host=street(0),asset=CLASSROOM_CHOICES.flatMap(choice=>choice.placements).find(row=>row.model.variantId==='student_quiet_residential_street_v1')!;
+  const angle=46*Math.PI/180,points=[ll(-45*Math.cos(angle),-45*Math.sin(angle)),ll(45*Math.cos(angle),45*Math.sin(angle))];
+  const result=streetDrawingGeometry(points,asset.properties,[site,host]);
+  const candidate={...host,...result,id:'draft-street'};
+  expect(streetConnectionProblem(candidate,[host])).toBeNull();
+  expect(result.properties.public_realm_lego).toBeUndefined();
+  expect(result.properties.plan_route_controls).toEqual(result.properties.plan_centerline);
+  expect(result).toEqual(streetDrawingGeometry(points,asset.properties,[site,host]));
+ });
+ it('rejects a nearby junction correction that would overlap occupied land',()=>{
+  const host=street(0),points=[ll(.8,39.2),ll(.8,80)];
+  const candidate={...host,id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
+  const blocker={...site,id:'occupied',zone_type:'building' as const,coordinates:rectangleAt(ll(-7.9,60),.2,20),properties:{}};
+  const before=JSON.stringify(candidate),result=snapStreetBoundaryPlacement(candidate,[host,blocker],site);
+  expect(result.problem).toBeTruthy();
+  expect(result.coordinates).toBe(candidate.coordinates);
+  expect(JSON.stringify(candidate)).toBe(before);
+ });
+ it('rejects junction snapping that would push the full street outside the site',()=>{
+  const host=street(0),points=[ll(.8,39.2),ll(.8,99.8)];
+  const candidate={...host,id:'draft-street',coordinates:bufferLineToPolygon(points,width),properties:{...host.properties,plan_centerline:points,plan_route_controls:points}};
+  expect(placementProblem(candidate.coordinates,[host],site,undefined,{allowStreetIntersections:true})).toBeNull();
+  const result=snapStreetBoundaryPlacement(candidate,[host],site);
+  expect(result.problem).toMatch(/junction/);
+  expect(result.coordinates).toBe(candidate.coordinates);
+ });
  it('preserves sparse bend handles through boundary validation and the coordinate-save pipeline',()=>{
   const original=street(0);
   const controls=[ll(0,-40),ll(5,-15),ll(0,10),ll(10,40)];

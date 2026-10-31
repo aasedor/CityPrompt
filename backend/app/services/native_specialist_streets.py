@@ -1,89 +1,141 @@
-"""Server placement contract for immutable canal and fixed-span bridge programs."""
+"""Server placement contracts for native canal, rail and bridge programs."""
+
 import json
 import math
 import re
 from pathlib import Path
+from app.services.street_route_policy import MAX_REPEATABLE_STREET_LENGTH_M
+from app.services.native_modular_bridge import MODULAR_BRIDGE_IDENTITIES, is_modular_bridge, modular_bridge_profile
+from app.services.native_source_bridge import SOURCE_BRIDGE_LANES
+from app.services.public_realm_catalog import resolve_public_realm_catalog_identity
 
-CANAL_POLICY = json.loads((Path(__file__).resolve().parents[1] / 'data/canalRoutePolicy.json').read_text())
+CANAL_POLICY = json.loads((Path(__file__).resolve().parents[1] / "data/canalRoutePolicy.json").read_text())
 
 CONTRACTS = {
-    'student_elevated_garden_rail_v1': ('elevated_garden_rail', 26, 48, 288),
-    'skytrain_elevated_corridor_v0': ('skytrain_elevated_corridor', 26, 48, 288),
-    'elevated_rail_transit_corridor_v0': ('elevated_rail_transit_corridor', 26, 48, 288),
-    'amsterdam_gracht_v1': ('amsterdam_gracht', 36, CANAL_POLICY['minLengthM'], CANAL_POLICY['maxLengthM']),
-    'landmark_signature_bridge_v2': ('landmark_signature_bridge', 36, 260, 480),
+    "student_elevated_garden_rail_v1": ("elevated_garden_rail", 26, 48, MAX_REPEATABLE_STREET_LENGTH_M),
+    "skytrain_elevated_corridor_v0": ("skytrain_elevated_corridor", 26, 48, MAX_REPEATABLE_STREET_LENGTH_M),
+    "elevated_rail_transit_corridor_v0": ("elevated_rail_transit_corridor", 26, 48, MAX_REPEATABLE_STREET_LENGTH_M),
+    "amsterdam_gracht_v1": ("amsterdam_gracht", 36, CANAL_POLICY["minLengthM"], CANAL_POLICY["maxLengthM"]),
+    "landmark_signature_bridge_v2": ("landmark_signature_bridge", 36, 260, 480),
 }
 
 
 def is_native_specialist(properties):
     props = properties or {}
-    return props.get('road_selected_variant_id') in CONTRACTS and not props.get('validation_fixed_fixture')
+    return is_modular_bridge(props) or (
+        props.get("road_selected_variant_id") in CONTRACTS and not props.get("validation_fixed_fixture")
+    )
 
 
 def validate_specialist_ground(properties, boundary_properties):
     if not is_native_specialist(properties):
         return
     boundary = boundary_properties or {}
-    if boundary.get('terrain_strategy') == 'landscape' or boundary.get('community_3d_mask_existing_tiles') is not True:
-        raise ValueError('Keep this specialist street on a prepared level site with existing surfaces cleared.')
+    if boundary.get("terrain_strategy") == "landscape" or boundary.get("community_3d_mask_existing_tiles") is not True:
+        raise ValueError("Keep this specialist street on a prepared level site with existing surfaces cleared.")
 
 
 def validate_specialist_properties(properties):
     props = properties or {}
+    if (
+        props.get("road_archetype_id") in {parent for parent, _ in MODULAR_BRIDGE_IDENTITIES.values()}
+        and not is_modular_bridge(props)
+        and (
+            (props.get("road_selected_variant_id") is None and props.get("plan_centerline") is not None)
+            or resolve_public_realm_catalog_identity(
+                "street", props["road_archetype_id"], props.get("road_selected_variant_id")
+            )
+            is None
+        )
+    ):
+        raise ValueError(
+            "This bridge variant has no trusted executable route; keep fixed scenes in their native rectangle."
+        )
     if not is_native_specialist(props):
         return
-    parent, width, minimum, maximum = CONTRACTS[props['road_selected_variant_id']]
-    if props['road_selected_variant_id'] in ('student_elevated_garden_rail_v1','skytrain_elevated_corridor_v0','elevated_rail_transit_corridor_v0') and props.get('connect_to_public_road'):
-        raise ValueError('Elevated rail cannot connect directly to an ordinary public road.')
-    if props.get('road_archetype_id') != parent or props.get('width') != width:
-        raise ValueError('Keep this specialist street’s original section and catalogue identity.')
-    route = props.get('plan_centerline')
+    modular_bridge = is_modular_bridge(props)
+    if modular_bridge:
+        if props.get("validation_fixed_fixture"):
+            raise ValueError("Draw this modular bridge as a route; it is not a fixed scene fixture.")
+        profile = modular_bridge_profile(props["road_selected_variant_id"])
+        program = profile["program"]
+        parent, width = profile["sourceArchetypeId"], profile["widthM"]
+        minimum, maximum = program["minLengthM"], program["maxLengthM"]
+        if props.get("connect_to_public_road"):
+            raise ValueError("This pedestrian bridge cannot connect directly to an ordinary public road.")
+        lanes = SOURCE_BRIDGE_LANES.get(props["road_selected_variant_id"], 0)
+        if isinstance(props.get("lane_count"), bool) or props.get("lane_count") != lanes:
+            raise ValueError("Keep this bridge’s source traffic lanes and original native width.")
+    else:
+        parent, width, minimum, maximum = CONTRACTS[props["road_selected_variant_id"]]
+    if props["road_selected_variant_id"] in (
+        "student_elevated_garden_rail_v1",
+        "skytrain_elevated_corridor_v0",
+        "elevated_rail_transit_corridor_v0",
+    ) and props.get("connect_to_public_road"):
+        raise ValueError("Elevated rail cannot connect directly to an ordinary public road.")
+    if props.get("road_archetype_id") != parent or props.get("width") != width:
+        raise ValueError("Keep this specialist street’s original section and catalogue identity.")
+    route = props.get("plan_centerline")
     if isinstance(route, str):
         try:
             route = json.loads(route)
         except ValueError:
             route = None
     if not isinstance(route, list) or len(route) < 2:
-        raise ValueError('Draw two endpoints for this straight specialist street.')
-    if any(not isinstance(p, list) or len(p) != 2 or any(isinstance(n, bool) or not isinstance(n, (int,float)) or not math.isfinite(n) for n in p) for p in route):
-        raise ValueError('Specialist street route coordinates are invalid.')
-    sx = 111320*math.cos(math.radians(route[0][1]))
-    local = [((p[0]-route[0][0])*sx, (p[1]-route[0][1])*111320) for p in route]
-    if props['road_selected_variant_id'] == 'amsterdam_gracht_v1':
-        segments = [(b[0]-a[0], b[1]-a[1]) for a,b in zip(local,local[1:])]
-        segments = [p for p in segments if math.hypot(*p)>1e-6]
+        raise ValueError("Draw two endpoints for this straight specialist street.")
+    if modular_bridge and len(route) != 2:
+        raise ValueError("Draw exactly two endpoints for this straight modular bridge.")
+    if any(
+        not isinstance(p, list)
+        or len(p) != 2
+        or any(isinstance(n, bool) or not isinstance(n, (int, float)) or not math.isfinite(n) for n in p)
+        for p in route
+    ):
+        raise ValueError("Specialist street route coordinates are invalid.")
+    if modular_bridge and any(not (-180 <= point[0] <= 180 and -90 <= point[1] <= 90) for point in route):
+        raise ValueError("Modular bridge route coordinates must be valid longitude and latitude.")
+    sx = 111320 * math.cos(math.radians(route[0][1]))
+    local = [((p[0] - route[0][0]) * sx, (p[1] - route[0][1]) * 111320) for p in route]
+    if props["road_selected_variant_id"] == "amsterdam_gracht_v1":
+        segments = [(b[0] - a[0], b[1] - a[1]) for a, b in zip(local, local[1:])]
+        segments = [p for p in segments if math.hypot(*p) > 1e-6]
         length = sum(math.hypot(*p) for p in segments)
-        if not minimum-.01 <= length <= maximum+.01:
-            raise ValueError(f'Keep this canal route {minimum}–{maximum} m long so its full banks fit.')
-        for a,b in zip(segments,segments[1:]):
-            if (a[0]*b[0]+a[1]*b[1])/math.hypot(*a)/math.hypot(*b)<-.5:
-                raise ValueError('Use a gentler canal bend so the banks do not fold over each other.')
+        if not minimum - 0.01 <= length <= maximum + 0.01:
+            raise ValueError(f"Keep this canal route {minimum}–{maximum} m long so its full banks fit.")
+        for a, b in zip(segments, segments[1:]):
+            if (a[0] * b[0] + a[1] * b[1]) / math.hypot(*a) / math.hypot(*b) < -0.5:
+                raise ValueError("Use a gentler canal bend so the banks do not fold over each other.")
         return
-    dx,dy = local[-1]
-    length = math.hypot(dx,dy)
-    if not minimum-.01 <= length <= maximum+.01:
-        raise ValueError(f'Keep this route {minimum}–{maximum} m long for its complete crossing and approaches.')
+    dx, dy = local[-1]
+    length = math.hypot(dx, dy)
+    tolerance = 1e-6 if modular_bridge and program.get("adapter") == "source-span-bridge-v1" else 0.01
+    if not minimum - tolerance <= length <= maximum + tolerance:
+        raise ValueError(
+            f"Keep this route {math.ceil(minimum)}–{math.floor(maximum)} m long for its complete crossing and approaches."
+        )
     previous = -1
-    for x,y in local:
-        station = (x*dx+y*dy)/length
-        if abs(x*dy-y*dx)/length > .05 or station < previous-.01:
-            raise ValueError('Keep this specialist route straight; its structure cannot bend.')
+    for x, y in local:
+        station = (x * dx + y * dy) / length
+        if abs(x * dy - y * dx) / length > 0.05 or station < previous - 0.01:
+            raise ValueError("Keep this specialist route straight; its structure cannot bend.")
         previous = station
-    if props['road_selected_variant_id'] in ('skytrain_elevated_corridor_v0','elevated_rail_transit_corridor_v0'):
-        stops = props.get('road_native_stops', [])
-        if not isinstance(stops,list) or len(stops)>4:
-            raise ValueError('Choose at most four elevated rail stations.')
-        ids,positions=set(),[]
+    if props["road_selected_variant_id"] in ("skytrain_elevated_corridor_v0", "elevated_rail_transit_corridor_v0"):
+        stops = props.get("road_native_stops", [])
+        if not isinstance(stops, list) or len(stops) > 4:
+            raise ValueError("Choose at most four elevated rail stations.")
+        ids, positions = set(), []
         for stop in stops:
-            if not isinstance(stop,dict) or set(stop)!={'id','stationM'}:
-                raise ValueError('A rail station must contain only its identity and position.')
-            identity,position=stop['id'],stop['stationM']
-            if not isinstance(identity,str) or not re.fullmatch(r'[a-zA-Z0-9_-]{1,80}',identity) or identity in ids:
-                raise ValueError('A rail station needs a unique identity.')
-            if isinstance(position,bool) or not isinstance(position,(int,float)) or not math.isfinite(position):
-                raise ValueError('A rail station needs a valid position.')
-            if position<24 or position>length-24+.001:
-                raise ValueError('Leave 24 m at each route end for the complete station and stairs.')
-            if any(abs(position-old)<52 for old in positions):
-                raise ValueError('Place rail stations at least 52 m apart.')
-            ids.add(identity);positions.append(position)
+            if not isinstance(stop, dict) or set(stop) != {"id", "stationM"}:
+                raise ValueError("A rail station must contain only its identity and position.")
+            identity, position = stop["id"], stop["stationM"]
+            if not isinstance(identity, str) or not re.fullmatch(r"[a-zA-Z0-9_-]{1,80}", identity) or identity in ids:
+                raise ValueError("A rail station needs a unique identity.")
+            if isinstance(position, bool) or not isinstance(position, (int, float)) or not math.isfinite(position):
+                raise ValueError("A rail station needs a valid position.")
+            if position < 24 or position > length - 24 + 0.001:
+                raise ValueError("Leave 24 m at each route end for the complete station and stairs.")
+            if any(abs(position - old) < 52 for old in positions):
+                raise ValueError("Place rail stations at least 52 m apart.")
+            ids.add(identity)
+            positions.append(position)

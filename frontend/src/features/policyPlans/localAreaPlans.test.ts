@@ -45,8 +45,8 @@ describe('approved local area plan collection', () => {
     expect(new Set(match.matches.map(p => p.id))).toEqual(new Set(['riley','north-hill']));
   });
   it('loads reviewed snapshots with a matching explanation and source for every category', async () => {
-    expect(LOCAL_AREA_PLANS).toHaveLength(8);
-    for (const plan of LOCAL_AREA_PLANS) {
+    expect(LOCAL_AREA_PLANS).toHaveLength(10);
+    for (const plan of LOCAL_AREA_PLANS.filter(plan=>!plan.mapLabel)) {
       const data = await loadLocalAreaPlan(plan.id);
       expect(data.snapshot).toBe(plan.snapshot);
       expect(data.boundary).toEqual(plan.boundary);

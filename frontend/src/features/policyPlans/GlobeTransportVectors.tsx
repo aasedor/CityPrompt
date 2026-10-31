@@ -16,12 +16,12 @@ export function disposeTransportObjects(objects: Array<LineSegments2 | THREE.Mes
   });
 }
 /** Geographic ground contact, sampled incrementally, never projected from the camera. */
-export function GlobeTransportVectors({ data, mapId, opacity, order, color }: {
-  data: TransportSnapshot; mapId: string; opacity: number; order: number; color?: string;
+export function GlobeTransportVectors({ data, mapId, opacity, order, color, pointRadius }: {
+  data: TransportSnapshot; mapId: string; opacity: number; order: number; color?: string; pointRadius?: number;
 }) {
   const size = useThree(state => state.size), invalidate = useThree(state => state.invalidate);
   const tiles = useContext(TilesRendererContext), ground = useSharedSiteGround();
-  const resources = useMemo(() => buildGroundedTransport(data, mapId, order), [data, mapId, order]);
+  const resources = useMemo(() => buildGroundedTransport(data, mapId, order, { pointRadius }), [data, mapId, order, pointRadius]);
   const run = useRef({ index: 0, epoch: 0, changed: 0, lastCamera: new THREE.Matrix4(), nextScan: 0, queue: [] as GroundNode[], rescan: true });
   const scratch = useMemo(() => ({ frustum: new THREE.Frustum(), matrix: new THREE.Matrix4(), sphere: new THREE.Sphere(), ray: new THREE.Raycaster() }), []);
   useEffect(() => retainResourceForDeferredDisposal(resources, value => value.dispose()), [resources]);

@@ -1,0 +1,74 @@
+{
+  "victory": {
+    "archetypeId": "wartime_victory_house",
+    "variantId": "cream_clapboard_steep_side_gable",
+    "title": "Wartime / Victory house",
+    "use": "Residential",
+    "form": "Detached house, one full storey plus occupied attic",
+    "aesthetic": "Wartime small-house vernacular",
+    "designPeriod": "1940s to early 1950s association",
+    "dateBasis": "approximate_design_association",
+    "constructionYear": null,
+    "tenure": "not_inferred",
+    "affordability": "not_inferred",
+    "runtimeActivation": false,
+    "description": "A compact home with a steep roof, shallow eaves and simple openings. Wartime housing programmes helped provide homes for defence workers and returning veterans. This original teaching design illustrates the form; it does not copy a particular historic house.",
+    "lookFor": [
+      "Steep side-gabled roof",
+      "Simple clapboard walls",
+      "Attic windows in the end gables"
+    ],
+    "planningConnections": [
+      "Wartime and postwar housing delivery",
+      "Standardized small-house production",
+      "Later adaptation of existing neighbourhoods"
+    ],
+    "designQuestion": "How could this small home accommodate change while retaining its useful existing structure?",
+    "componentLimit": "The isolated house does not establish a street layout, current affordability, ownership or a complete housing programme.",
+    "sourceUrls": [
+      "https://veterans.gc.ca/en/remembrance/memorials/canada/victory-housing"
+    ],
+    "evidenceBasis": "Primary historical context plus exact original generated reference pixels; metric size and internal plan inferred.",
+    "modelSha256": "4b0df5c7fecb6b4a48002da119096b964fd03570503df1cb5fca91ae000fa2bb",
+    "independentReviewSha256": "f542c010629a3930e97e1016c28bd6f8c573e47de7b30489b0d53dd3861a24ce",
+    "reviewScope": "holistic_architectural_clay",
+    "runtimeIntegration": "NOT TESTED",
+    "seedActivation": false
+  },
+  "split": {
+    "archetypeId": "postwar_side_split_house",
+    "variantId": "cream_siding_brick_raised_sleeping_wing",
+    "title": "Postwar side-split house",
+    "use": "Residential",
+    "form": "Detached house with staggered living, lower and upper levels",
+    "aesthetic": "Mid-century suburban vernacular",
+    "designPeriod": "1950s to 1970s association; split-levels appear in CMHC's 1954 catalogue",
+    "dateBasis": "approximate_design_association",
+    "constructionYear": null,
+    "tenure": "not_inferred",
+    "affordability": "not_inferred",
+    "runtimeActivation": false,
+    "description": "A split-level offsets parts of the house by a short stair flight. Here the living wing meets raised bedrooms and a lower recreation level. Split-level is a form, while the picture window, simple roofs and restrained siding express this example's mid-century aesthetic.",
+    "lookFor": [
+      "Windows at staggered heights",
+      "A low living wing beside a raised sleeping wing",
+      "Picture window and restrained brick/siding palette"
+    ],
+    "planningConnections": [
+      "Postwar suburban expansion",
+      "Small-house design and household space",
+      "Retrofit and changing household needs"
+    ],
+    "designQuestion": "How do the staggered levels affect daily movement and the possibilities for adapting the home?",
+    "componentLimit": "A split-level does not establish car dependence or tenure. Its internal stairs create access questions; no accessibility compliance is claimed.",
+    "sourceUrls": [
+      "https://publications.gc.ca/site/eng/9.821302/publication.html"
+    ],
+    "evidenceBasis": "CMHC 1954 catalogue establishes the historical form. Exact exterior follows an original generated design; dimensions and internal plan are inferred.",
+    "modelSha256": "e5b80f45a78909bd0910f29bf0587d99c4bcb3225e7418e8d06e94c4dbfdf00f",
+    "independentReviewSha256": "abdd14e52b1f7909554e50505ced1d09a7df748d8b0ee3f7c4f146f08a8dd4c5",
+    "reviewScope": "holistic_architectural_clay",
+    "runtimeIntegration": "NOT TESTED",
+    "seedActivation": false
+  }
+}

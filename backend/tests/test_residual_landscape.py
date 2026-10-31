@@ -8,6 +8,8 @@ from shapely.geometry import Polygon, box, shape
 from shapely.ops import transform, unary_union
 
 from app.services.residual_landscape import (
+    authored_surface_source_hash,
+    community_3d_kind_for_source,
     ResidualSourceZone,
     build_residual_landscape_recipe,
     community_3d_representation_hash,
@@ -22,6 +24,20 @@ from app.services.site_engine import WGS84_CRS, build_transformer, project_geome
 METRIC_CRS = CRS.from_epsg(32612)
 TO_WGS84 = build_transformer(METRIC_CRS, WGS84_CRS)
 TO_METRIC = build_transformer(WGS84_CRS, METRIC_CRS)
+
+
+@pytest.mark.parametrize("material", ["grass", "black_pavers", "cobblestone", "snow"])
+def test_ground_finishes_have_no_generated_building_owner_even_with_legacy_building_roles(material):
+    assert (
+        community_3d_kind_for_source(
+            "development_area",
+            {"ground_surface_material": material, "_plan_role": "building", "development_archetype_id": "housing"},
+        )
+        is None
+    )
+    assert community_3d_kind_for_source("development_area", {"ground_surface_material": "invalid"}) == "building"
+
+
 ORIGIN_E = 707_000.0
 ORIGIN_N = 5_655_000.0
 
@@ -533,3 +549,15 @@ def test_shared_stale_transition_is_idempotent_and_preserves_diagnostics():
         "stale_reason": "Floors changed",
     }
     assert not mark_community_3d_stale(zone, reason="Repeated change")
+
+
+def test_drawn_parking_capture_tracks_recipe_and_row_direction():
+    geometry = box(-114.08, 51.04, -114.079, 51.041)
+    props = {"ground_surface_material": "asphalt"}
+    plain = authored_surface_source_hash(geometry, props)
+    props.update(parking_layout_version=1, parking_row_direction="auto")
+    automatic = authored_surface_source_hash(geometry, props)
+    assert automatic == "2a608fc376cb58d3a79ce75cb192867f01d62e1ca66edd7a25fb93d9526a4cf5"
+    assert automatic != plain
+    props["parking_row_direction"] = "across"
+    assert authored_surface_source_hash(geometry, props) != automatic

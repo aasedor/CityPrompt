@@ -31,6 +31,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from pyproj import CRS, Transformer
+from app.services.shapefile_resources import validate_archive, validate_shapefile_components
 
 # Guardrails so a pathological upload can't exhaust memory or flood the client.
 MAX_FEATURES = 2000
@@ -87,6 +88,8 @@ def _close_enough(a: Any, b: Any, tol: float) -> bool:
 
 def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
     """Parse a zipped shapefile (bytes) into reprojected WGS84 polygon features."""
+    if len(data) > 25 * 1024 * 1024:
+        raise ShapefileImportError("Shapefiles must be 25 MB or smaller.")
     # pyshp is imported lazily: a missing optional dependency should surface as a
     # clean 400 on this endpoint, never crash the whole API at import time.
     try:
@@ -102,9 +105,14 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
     except zipfile.BadZipFile as e:
         raise ShapefileImportError("Uploaded file is not a valid .zip archive.") from e
 
-    names = [n for n in zf.namelist() if not n.endswith("/")]
+    try:
+        names = validate_archive(zf)
+    except ValueError as exc:
+        zf.close()
+        raise ShapefileImportError(str(exc)) from exc
     shp_name = next((n for n in names if n.lower().endswith(".shp")), None)
     if not shp_name:
+        zf.close()
         raise ShapefileImportError("No .shp file found inside the archive.")
 
     base = shp_name[:-4]
@@ -112,10 +120,19 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
     shx_name = _sibling(names, base, ".shx")
     prj_name = _sibling(names, base, ".prj")
     if not dbf_name:
+        zf.close()
         raise ShapefileImportError(
             "Archive is missing the .dbf component. Please zip all shapefile "
             "parts together (.shp, .dbf, .shx, .prj)."
         )
+
+    try:
+        shp_data, dbf_data = zf.read(shp_name), zf.read(dbf_name)
+        shx_data = zf.read(shx_name) if shx_name else None
+        validate_shapefile_components(shp_data, dbf_data, shx_data)
+    except (ValueError, zipfile.BadZipFile, RuntimeError) as exc:
+        zf.close()
+        raise ShapefileImportError(str(exc)) from exc
 
     result = ParsedShapefile()
 
@@ -137,6 +154,8 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
         result.warnings.append("No .prj file found; assuming coordinates are already lon/lat (WGS84).")
         result.detected_crs = "Assumed WGS84 (no .prj)"
 
+    zf.close()
+
     def reproject(ring: list[list[float]]) -> list[list[float]]:
         if transformer is None:
             return [[float(x), float(y)] for x, y in ring]
@@ -148,9 +167,9 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
     # --- Read geometry + attributes from in-memory file objects.
     try:
         reader = shapefile.Reader(
-            shp=io.BytesIO(zf.read(shp_name)),
-            dbf=io.BytesIO(zf.read(dbf_name)),
-            shx=io.BytesIO(zf.read(shx_name)) if shx_name else None,
+            shp=io.BytesIO(shp_data),
+            dbf=io.BytesIO(dbf_data),
+            shx=io.BytesIO(shx_data) if shx_data else None,
         )
     except Exception as e:  # noqa: BLE001
         raise ShapefileImportError(f"Failed to read shapefile geometry: {e}") from e
@@ -167,6 +186,11 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
 
     def emit_polygon(poly: Any, zone_type: str, props: dict[str, Any]) -> None:
         """Reproject a shapely Polygon's exterior ring and append one feature."""
+        if len(result.features) >= MAX_FEATURES:
+            warning = f"Stopped at {MAX_FEATURES} features; the file contains more."
+            if warning not in result.warnings:
+                result.warnings.append(warning)
+            return
         # Thin out redundant vertices (dense contours / hi-res parcels) so the
         # globe doesn't raycast thousands of near-identical points per zone.
         if simplify_tol > 0:
@@ -238,6 +262,7 @@ def parse_shapefile_zip(data: bytes) -> ParsedShapefile:
             continue
 
     result.feature_count = len(result.features)
+    reader.close()
     if result.feature_count == 0 and result.skipped_count > 0:
         result.warnings.append("No usable geometry found in the shapefile (only empty or unsupported shapes).")
     return result

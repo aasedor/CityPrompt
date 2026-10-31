@@ -1,5 +1,12 @@
 # High-Quality 3D Building Production Memory
 
+Housing teaching evidence (2026-10-25): Victory house clay-v004 and side-split
+clay-v003 passed separate holistic architectural-clay review with zero P0/P1.
+Exact model/review hashes are synchronized as `housing_teaching_batch` in both
+machine companions. See `docs/HOUSING_TEACHING_REVIEW_2026-10-25.md`. These are
+fixed-scale offline candidates; runtime integration remains NOT TESTED and
+seed activation is false. This evidence addition does not change RLASM v6.1.
+
 This is the persistent production memory for turning City Prompt archetypes and variants into high-quality modular GLB families. It captures the construction rules established through the Kinnaird, Chicago, Gothic, glass, Nordic, industrial and Parisian pilots.
 
 The memory has two forms:
@@ -29,6 +36,44 @@ Footprint controls appear only for exact variants with a trusted reviewed band;
 their horizontal transform remains independent from the authored height.
 
 ## The quality target
+
+Teaching Wave 2 pilot, 2026-10-25: Bauhaus-inspired workshop clay-v003 passed
+independent holistic architectural-clay review with zero P0/P1 and one P2
+handrail endpoint finish. Preserve source-specific flat doors; keep inspection
+emitters out of glass reflections; guard intermediate landings and prove both
+stair connections. Two rejected full versions remain immutable. The generated
+top/rear labels are explicitly corrected in source provenance. All fourteen
+exact-GLB views and both phone boards passed; runtime remains NOT TESTED and
+activation is false. See `ARCHITECTURE_TEACHING_WAVE2_REVIEW_2026-10-25.md` and
+the synchronized `teaching_style_wave2` evidence records. This evidence addition
+does not alter the current executable rule version.
+
+Teaching Wave 2 scale-up: De Stijl artist studio clay-v004 and Mughal-inspired
+reading pavilion clay-v002 passed separate holistic reviews with zero P0/P1/P2.
+Preserve raised grey headers across colour-plane joins, close shared walls up to
+the higher roof underside and seat projecting fins. For arcades, cut real cusped
+voids and prove the inner faces, roof brackets and occupied reading bays. Source
+roof colour and dome silhouette govern over the prompt. Keep every rejected
+version. All three final models remain fixed scale, external and unactivated;
+their exact byte hashes and reviews are bound in the same evidence record.
+
+Teaching-style local pilot, 2026-10-25: Prairie School house clay-v004 passed
+independent holistic architectural-clay review with zero P0/P1 after rejecting
+mirrored/drifting extra reference proposals and calibrating hip rise against
+normalized source pixels. Three compatible front/oblique/top sources satisfy
+the source minimum; unseen elevations remain explicit architectural inferences.
+All fourteen exact-GLB views and both phone boards were reviewed afresh. This
+does not grant textured keeper approval or runtime activation. See
+`ARCHITECTURE_TEACHING_GAPS_2026-10-25.md` and the matching machine pilot record.
+
+The second teaching build, Postmodern neighbourhood library clay-v002, also
+passed independent holistic architectural-clay review with zero P0/P1. It has
+physical circular wall apertures and occupied library depth. A coincident
+frame/carrier reveal in v001 produced triangular artefacts; the finite v002
+correction separates the structural cut by 35mm while retaining the clear
+frame diameter. Its generated "top" source is high aerial, explicitly recorded
+in provenance. Both fixed-native models remain uninstalled and unactivated.
+See `ARCHITECTURE_TEACHING_BUILD_REVIEW_2026-10-25.md` for exact hashes and limits.
 
 Large civic local pilot, 2026-10-02: Gothic Community Church v005 passed
 independent architectural-clay review before starting the bounded Timber

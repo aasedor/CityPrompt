@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { createSessionRefreshCoordinator, RefreshLockTimeoutError } from './sessionRefresh';
 import { createDirect3DAttemptClient } from './direct3DAttempts';
 import type { ImageModelAvailability, PaidImageModel } from '@/config/imageModels';
 import { isPublicReadRequest, shouldAttemptTokenRefresh } from './authRefreshPolicy';
-import { assetAccountIdentity, createAssetAccess, type AssetContext } from './assetAccess';
+import { assetAccountIdentity, assetSessionIdentity, createAssetAccess, type AssetContext } from './assetAccess';
 import type {
   Project,
   Building,
@@ -65,7 +66,7 @@ export const direct3DAttempts = createDirect3DAttemptClient({
 const assetAccess = createAssetAccess({
   baseUrl: API_BASE_URL,
   origin: () => window.location.origin,
-  session: () => assetAccountIdentity(localStorage.getItem('access_token')),
+  session: () => assetSessionIdentity(localStorage.getItem('access_token')),
   projectTicket: async (id) => (await api.post(`/api/v1/shares/projects/${id}/asset-ticket`)).data,
   fileTicket: async (file_path) => (await api.post('/api/v1/files/read-ticket', { file_path })).data,
 });
@@ -112,6 +113,9 @@ function normalizeSavedRender(render: SavedRender): SavedRender {
 function formatApiDetail(detail: unknown): string | null {
   if (typeof detail === 'string') {
     const trimmed = detail.trim();
+    if (trimmed.startsWith('Polygon boundary self-intersects or overlaps')) {
+      return 'This outline has crossing or overlapping edges. Move its corners so the edges do not cross.';
+    }
     return trimmed || null;
   }
   if (Array.isArray(detail)) {
@@ -156,6 +160,32 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+const refreshSession = createSessionRefreshCoordinator({
+  storage: () => localStorage,
+  exchange: async refreshToken => (
+    await api.post<AuthTokens>('/api/v1/auth/refresh', { refresh_token: refreshToken })
+  ).data,
+  withLock: async work => {
+    if (typeof navigator === 'undefined' || !navigator.locks) return work();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => { controller.abort(); }, 20000);
+    try {
+      return await navigator.locks.request(
+        'cityprompt-auth-refresh', { mode: 'exclusive', signal: controller.signal },
+        async () => {
+          clearTimeout(timeout);
+          return work();
+        },
+      );
+    } catch (error) {
+      if (controller.signal.aborted) throw new RefreshLockTimeoutError('Sign-in renewal is busy. Try again shortly.');
+      throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
+  },
+});
+
 // Response interceptor for automatic token refresh on 401
 api.interceptors.response.use(
   (response) => response,
@@ -170,18 +200,17 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refresh_token');
       if (refreshToken) {
         try {
-          const { data } = await api.post('/api/v1/auth/refresh', {
-            refresh_token: refreshToken,
-          });
-          localStorage.setItem('access_token', data.access_token);
-          localStorage.setItem('refresh_token', data.refresh_token);
+          const data = await refreshSession(refreshToken);
           originalRequest.headers.Authorization = `Bearer ${data.access_token}`;
           return api(originalRequest);
-        } catch {
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('refresh_token');
-          assetAccess.clear();
-          if (!/^\/(?:shared|invite)\//.test(window.location.pathname)) window.location.href = '/login';
+        } catch (refreshError) {
+          if (!(refreshError instanceof RefreshLockTimeoutError)
+              && localStorage.getItem('refresh_token') === refreshToken) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            assetAccess.clear();
+            if (!/^\/(?:shared|invite)\//.test(window.location.pathname)) window.location.href = '/login';
+          }
         }
       }
     }
@@ -225,6 +254,10 @@ export interface AuthTokens {
 }
 
 export const authApi = {
+  exchangeOAuthCode: async (code: string, codeVerifier: string): Promise<AuthTokens> => {
+    const { data } = await api.post('/api/v1/auth/oauth/exchange', { code, code_verifier: codeVerifier });
+    return data;
+  },
   register: async (email: string, password: string, fullName?: string): Promise<AuthUser> => {
     const { data } = await api.post('/api/v1/auth/register', {
       email,
@@ -1337,9 +1370,18 @@ export interface UserGeneratedBuilding {
   id: string; project_id: string; name: string; preview_url: string | null;
   model_url: string; floor_count: number | null; height_meters: number;
   width_m: number; depth_m: number; size_estimated: boolean;
+  source_kind?: 'generated' | 'imported_glb';
 }
 
 export const modelLibraryApi = {
+  importGlb: async (projectId: string, file: File, name: string, units: string, targetHeight?: number): Promise<UserGeneratedBuilding> => {
+    const body = new FormData();
+    body.append('file', file); body.append('name', name); body.append('units', units);
+    if (targetHeight !== undefined) body.append('target_height_m', String(targetHeight));
+    const { data } = await api.post(`/api/v1/model-library/projects/${projectId}/import-glb`, body,
+      { headers: { 'Content-Type': 'multipart/form-data' }, timeout: 120_000 });
+    return data;
+  },
   userGenerated: async (): Promise<UserGeneratedBuilding[]> => {
     const { data } = await api.get('/api/v1/model-library/user-generated');
     return data;
@@ -1505,6 +1547,7 @@ export const rendersApi = {
       representation_hash: string;
       building_id?: string;
     }>;
+    authored_surface_claims?: Array<{ zone_id: string; source_hash: string }>;
     residual_landscape_claim?: {
       boundary_id: string;
       source_hash: string;

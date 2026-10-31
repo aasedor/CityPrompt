@@ -1,3 +1,4 @@
+import { BELTLINE_DESIGNATIONS } from './beltlineDesignations';
 import { RILEY_DESIGNATIONS, type RileyDesignation } from './rileyDesignations';
 
 type Explanation = Pick<RileyDesignation, 'summary' | 'considerations'>;
@@ -66,6 +67,7 @@ const explanations: Record<string, Explanation> = {
 
 export type DesignationReference = Pick<RileyDesignation, 'name' | 'color' | 'section' | 'page' | 'pdfPage'>;
 export function localDesignations(id: string, references: DesignationReference[]): RileyDesignation[] {
+  if (BELTLINE_DESIGNATIONS[id]) return BELTLINE_DESIGNATIONS[id];
   if (id === 'riley') return RILEY_DESIGNATIONS;
   return references.map(reference => {
     const explanation = explanations[reference.name];

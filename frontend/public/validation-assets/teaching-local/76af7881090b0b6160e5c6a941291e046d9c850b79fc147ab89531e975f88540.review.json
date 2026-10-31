@@ -1,0 +1,471 @@
+{
+  "schema": "cityprompt.rlasm.independent_architectural_clay_review@1",
+  "candidate": "mughal-reading-pavilion-clay-v002",
+  "candidate_path": "C:/dev-artifacts/CityPrompt/teaching-wave2-20261025/mughal-reading-pavilion-clay-v002",
+  "model_sha256": "21ca71237504d6804a2eba435c25c0f4379793b68ad6ab9e6ff6450a7e3596c5",
+  "reviewer": {
+    "name": "Independent RLASM architectural-clay verifier",
+    "agent": "/root/teaching_wave2_visual_review",
+    "independent_of_builder": true
+  },
+  "review_date": "2026-10-25",
+  "review_method": "RLASM v6.1 architectural-clay delivery profile and rlasm-expert/references/review-contract.md",
+  "review_scope": "Holistic, source-locked, adversarial offline architectural-clay review. Every one of the 14 mandatory exact-GLB render originals was opened individually at 1600x1200. All four source panels, original board, locked-source board and both 1080x1920 phone boards were opened at original resolution.",
+  "holistic": true,
+  "category_closure_only": false,
+  "mandatory_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contacts",
+    "reading_programme",
+    "entrance_low"
+  ],
+  "inspected_every_mandatory_view": true,
+  "full_resolution_pixel_inspection": true,
+  "render_dimensions_px": [
+    1600,
+    1200
+  ],
+  "phone_boards": [
+    "boards/phone-source-comparison.png",
+    "boards/phone-construction.png"
+  ],
+  "phone_board_dimensions_px": [
+    1080,
+    1920
+  ],
+  "source_origin": "Original generated teaching building; not a named historic reconstruction",
+  "source_limits": [
+    "The top source is a high aerial, not an orthographic surveyed plan.",
+    "The source dome is a low rounded cap. The prompt's strongly onion-shaped dome and 7 m overall height do not override the locked pixels.",
+    "Dome silhouette and diameter were judged primarily against the front and compatible street obliques. The generated high aerial is a qualitative topology reference; its apparent dome-to-roof proportions are not treated as a metric plan measurement.",
+    "Native metric scale, internal four-pier/crossing-beam support grid, furniture plan and concealed construction are architectural inferences.",
+    "Clay intentionally simplifies stone joints, carved mouldings, fine weathering and material finish. No source-conditioned PBR or textured keeper claim is made.",
+    "The building is open-air with no glazing. The legacy glass_close filename explicitly serves as the arch-section proof camera."
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/original-board.png",
+      "bytes": 2748609,
+      "sha256": "aa163bff1a7081a90152d81b5f5561f3afe25be0cfb01644003f2f3efe75d900",
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "sources/front.png",
+      "bytes": 548391,
+      "sha256": "923f736c1b3dd9490b6e6fb20a61ac2fbe8960a69dfda06a8ea4cce4bcbd7747",
+      "dimensions_px": [
+        764,
+        483
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "sources/oblique.png",
+      "bytes": 553446,
+      "sha256": "714ebbd17362443fba2d1976de5bdffe67dde7c5442500b21ba4ac41cbccda94",
+      "dimensions_px": [
+        764,
+        483
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "sources/top.png",
+      "bytes": 747783,
+      "sha256": "713cb0be0d7968903d4eab97021b1cdea47eafae241e011e530a19d81880abb8",
+      "dimensions_px": [
+        764,
+        534
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "sources/rear_oblique.png",
+      "bytes": 637617,
+      "sha256": "7264393b03ae1dc99399b6fc9be358248f05a21e78c7b25e3e6d351986e7be64",
+      "dimensions_px": [
+        764,
+        534
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "bytes": 1112998,
+      "sha256": "cb2b7706d39689beb70efb495e7b727b35b4dd12bf12bd4ab83f2e52ea5f0303",
+      "dimensions_px": [
+        1800,
+        620
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1675326,
+      "sha256": "bd17115f134230cc39d16e07dde7b8b3e0f8dc84a4eb4f0dd247a4bd09f45f33",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1732358,
+      "sha256": "fddde5dbfe47265def0cffc8b68c1317a6189cda00db0739df434553a68ada65",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1668971,
+      "sha256": "6b781e73afe4434cc806057199bbe1a0bce0feb21dd02986e532ae5fa94692bb",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1577843,
+      "sha256": "896f963e4e78b29312a5d7234850b179900eb251342280a3de52d8fe2bbe7a1a",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1678559,
+      "sha256": "ece6fc07ee005bda7819dfa5eb57c862eff396ca66a1fc9a2f5adc7c62a92932",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1678381,
+      "sha256": "5de59971a7aed8e03e310adb64c08edb04ce88ed6ddb6b9b7737bf1db114cc84",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1681624,
+      "sha256": "d6f3e44893e56df2f8e443e9571b6f7829871999430c049774e89e38836da36f",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1721428,
+      "sha256": "71ca3fd03903d3af1da6c4c42e416f0e0d5ea306820b99f664302fdf45f48fe8",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1808145,
+      "sha256": "48a4b697626ad34e253f1e15ff7f844c5860ad92c4fb82be6e758ab43038c055",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1639864,
+      "sha256": "7ce2d1cfc4a126f492e884b6aa754fc9a0f642eaa65dd7a2d4097c89c2bd5540",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1789648,
+      "sha256": "54be09d652bdb2115b55d93c3cc40797e3219705b9f4e8e7eed454406542b891",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/roof_contacts.png",
+      "bytes": 1626063,
+      "sha256": "b5b729cabf7e13848b4514e27e1a87525c5a917e2cde96a74bea1a8962a78476",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/reading_programme.png",
+      "bytes": 1766572,
+      "sha256": "fceab7bb47c510823eb20dc61086fdb3a13b93b550a90879b32cd2c8a04ab1e7",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/entrance_low.png",
+      "bytes": 1821643,
+      "sha256": "53b6fcf10c3dc14ff0a140624dcd639522af8faa69eecf17a6bc307655038d95",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "bytes": 1274528,
+      "sha256": "fd6430c8cc3cd55822221527c874b4844820d7780448282d5f775b6f557e5cb0",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "bytes": 937408,
+      "sha256": "191ab4e6c3f9810194c8cb3a79f1675999be82e49c643f354cce51e187c62ac3",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    }
+  ],
+  "model_file_audit": {
+    "path": "mughal-reading-pavilion-clay-v002.glb",
+    "bytes": 1357136,
+    "sha256": "21ca71237504d6804a2eba435c25c0f4379793b68ad6ab9e6ff6450a7e3596c5",
+    "textures": 0,
+    "images": 0,
+    "meshes": 12,
+    "buffers_with_external_uri": [],
+    "cameras": 0,
+    "model_hash_matches_requested": true
+  },
+  "supporting_evidence": [
+    {
+      "path": "sources/source-provenance.json",
+      "bytes": 2529,
+      "sha256": "82afefa5522216c690238d23bf8adcae3a699d7b80aba5bd5da6ffee0abb21c0",
+      "inspection": "supporting_document_read"
+    },
+    {
+      "path": "evidence/review-input-manifest.json",
+      "bytes": 4394,
+      "sha256": "cee9c3ec89b6e255aac1f727914fff106a218f521e6be77805551e6e8c2f5629",
+      "inspection": "supporting_hash_inventory"
+    },
+    {
+      "path": "evidence/native-entrance-contract.json",
+      "bytes": 622,
+      "sha256": "1d61323f3492d897886f69e54728b761d944c132ecac1f522109a0696e8a4a47",
+      "inspection": "supporting_document_read"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "bytes": 1665,
+      "sha256": "6408f6f913381ea2f6088004e013c34847803452a2f2532e276f7e78a36b8c8a",
+      "inspection": "supporting_document_read"
+    },
+    {
+      "path": "review/builder-visual-review.json",
+      "bytes": 1413,
+      "sha256": "b9693a318b600a8b9554d6406c74d55ad4dd7bc3414a04d010ba9f85cc318d16",
+      "inspection": "supporting_document_read"
+    },
+    {
+      "path": "build-report.json",
+      "bytes": 33886,
+      "sha256": "b34e2b5f2cdbd1f602a0bd407a0ea55da124f29b340aad0893884adf05e687eb",
+      "inspection": "relevant_summary_render_origin_bounds_contacts_fields_read"
+    },
+    {
+      "path": "scripts/family_pavilion.py",
+      "bytes": 14166,
+      "sha256": "0838617acfc61132f6b2d64f0222be0b366da7c840b749ba0714c42c99e1a510",
+      "inspection": "source_ratios_roof_dome_arch_and_support_construction_lines_read"
+    }
+  ],
+  "pixel_findings": [
+    {
+      "category": "source_identity_and_ratios",
+      "result": "pass_for_clay",
+      "evidence": [
+        "sources/front.png",
+        "sources/oblique.png",
+        "sources/rear_oblique.png",
+        "sources/top.png",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/rear_side.png",
+        "renders/architecture_close.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "observation": "The square open reading pavilion retains three cusped arches per elevation, red piers and parapet, pale arch returns, projecting pale chajja, paired brackets, central red octagonal drum, low rounded pale dome and small finial. The street-view dome width/rise and overall crown hierarchy remain close to the source. The high aerial corroborates the square roof, central dome and perimeter parapet rather than supplying surveyed dimensions."
+    },
+    {
+      "category": "complete_envelope_and_elevations",
+      "result": "pass_for_clay",
+      "evidence": [
+        "renders/front.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/top.png",
+        "renders/aerial.png"
+      ],
+      "observation": "All four orientations show a complete repeated three-arch grammar with seated pier feet, closed spandrels, roof and parapet. Open-air views extend through to opposite arcades. The red native plinth and pale floor lip continue around the square, with centred front/rear approaches. No blank secondary carrier, missing arch face, open roof corner or detached stage was observed."
+    },
+    {
+      "category": "full_thickness_arch_sections_and_inner_faces",
+      "result": "pass_for_clay",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/glass_close.png",
+        "renders/entrance_low.png",
+        "renders/left_side.png",
+        "renders/right_side.png"
+      ],
+      "observation": "The cusped profiles are real full-depth openings. Front borders, deep curved pale intrados, jamb returns and opposite inner faces remain visible. The opening is not blocked by an opaque wall or optical sheet. The legacy glass_close directly proves the arch section, occupied depth and roof support; glazing is correctly absent."
+    },
+    {
+      "category": "internal_support_and_crossing_beams",
+      "result": "pass_visual_concept_geometry",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/glass_close.png",
+        "renders/entrance_low.png",
+        "renders/front_corner.png",
+        "renders/rear_side.png"
+      ],
+      "observation": "Combined close and oblique views show the internal bearing-pier arrangement, seated feet/capitals and crossing roof beams reaching the surrounding bearing zone. Supports meet the floor and beam grid without visible hovering or disconnected endpoints. This inferred four-pier grid is a visually credible clay load path, not engineering verification."
+    },
+    {
+      "category": "roof_dome_drum_and_bracket_contacts",
+      "result": "pass_for_clay",
+      "evidence": [
+        "renders/architecture_close.png",
+        "renders/roof_contacts.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/front_corner.png"
+      ],
+      "observation": "The roof field is red within a continuous perimeter, restoring the source palette. The square deck is closed and projects as the pale chajja. The unobstructed contact close shows paired brackets bearing against the deck underside and wall zone. The octagonal drum seats on the roof, its stringcourses remain bounded, and the pale rounded dome and finial are seated without exposed roof slots or protruding members."
+    },
+    {
+      "category": "reading_programme_and_clear_route",
+      "result": "pass_for_clay",
+      "evidence": [
+        "renders/reading_programme.png",
+        "renders/glass_close.png",
+        "renders/facade_close.png",
+        "renders/entrance_low.png"
+      ],
+      "observation": "Stocked bookshelves, an open book on a supported reading table, chairs and cushioned benches establish reading use. The corrected programme close frames these objects directly. The central cross remains visually open between internal piers and through the central arch; furniture occupies side zones. This is authored offline circulation only, not an app route or accessibility test."
+    },
+    {
+      "category": "native_plinth_and_steps",
+      "result": "pass_for_clay",
+      "evidence": [
+        "renders/entrance_low.png",
+        "renders/front.png",
+        "renders/rear.png",
+        "renders/front_corner.png",
+        "renders/rear_side.png"
+      ],
+      "observation": "Three complete approach steps meet the native plinth floor, while the outer base and pier feet visibly bear on the support surface. No large exported site platform is implied. The source-native stepped approach is retained; an accessible route is not claimed."
+    },
+    {
+      "category": "cameras_phone_boards_and_regression",
+      "result": "pass_evidence",
+      "evidence": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/roof_contacts.png",
+        "renders/reading_programme.png",
+        "renders/entrance_low.png",
+        "boards/phone-source-comparison.png",
+        "boards/phone-construction.png"
+      ],
+      "observation": "All 14 originals were opened separately rather than approving from a contact sheet or file counters. Whole-building views include native grade, full footprint, roof and finial with neutral safety margin. Closes have useful exposure and frame their named evidence. Both phone boards were opened at 1080x1920. The parent-supplied v001 pale-roof, bracket-occlusion and weak programme-camera blockers are visibly closed in v002; prior versions were not altered."
+    }
+  ],
+  "findings": [],
+  "unresolved_p0": [],
+  "unresolved_p1": [],
+  "unresolved_p2": [],
+  "unresolved_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
+  },
+  "blockers": [],
+  "decision": "approved_offline_architectural_clay",
+  "review_complete": true,
+  "architectural_clay_reviewed": true,
+  "architectural_clay_approved": true,
+  "keeper_approved": false,
+  "textured_keeper_approved": false,
+  "runtime_activation": false,
+  "runtime_integration_verified": false,
+  "catalogue_activation": false,
+  "publication_approved": false,
+  "accessibility_approved": false,
+  "engineering_approved": false,
+  "continuous_scaling_approved": false,
+  "remaining_limits": "Approval applies only to this exact GLB and source/evidence hashes for offline architectural clay. Runtime placement, terrain fit, live entry/exit controls, accessible approach, engineering, arbitrary resizing and catalogue activation remain untested/unapproved.",
+  "mutations": "Only this new review JSON was written with exclusive creation. No existing model, source, render, lifecycle or Git source file was modified."
+}

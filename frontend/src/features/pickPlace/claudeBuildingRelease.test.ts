@@ -17,8 +17,8 @@ describe('finite Claude architectural-clay building release', () => {
     expect(warehouse?.properties.validation_native_url).toBeUndefined();
   });
 
-  it('registers staged members of the finite eighteen-building cohort at native scale', () => {
-    expect(cohort.entries).toHaveLength(18);
+  it('registers all twenty-five approved candidates at native scale', () => {
+    expect(cohort.entries).toHaveLength(25);
     const staged = CATALOGUE_BUILDING_ASSETS.filter(asset => asset.id.startsWith('claude_trial_'));
     expect(staged.length).toBeGreaterThan(0);
     for (const asset of staged) {
@@ -45,13 +45,30 @@ describe('finite Claude architectural-clay building release', () => {
     }
   });
 
-  it('publishes every reviewed release member once through the canonical production catalogue', () => {
-    for (const member of cohort.entries) {
+  it('preserves all original eighteen published identities in the production catalogue', () => {
+    const original = cohort.entries.filter(member => member.asset_id.startsWith('claude_trial_'));
+    expect(original).toHaveLength(18);
+    for (const member of original) {
       const matches = CATALOGUE_BUILDING_ASSETS.filter(asset => asset.id === member.asset_id);
       expect(matches, member.candidate).toHaveLength(1);
       expect(matches[0].readiness, member.candidate).toBe('ready');
       expect(PUBLISHED_BUILDING_ASSETS.filter(asset => asset.id === member.asset_id), member.candidate).toHaveLength(1);
       expect(CATALOGUE_ASSETS.filter(asset => asset.id === member.asset_id), member.candidate).toHaveLength(1);
+    }
+  });
+
+  it('publishes the seven completed and approved runtime candidates in production', async () => {
+    vi.stubEnv('DEV', false);
+    vi.stubEnv('MODE', 'production');
+    vi.resetModules();
+    const { CATALOGUE_ASSETS: production } = await import('./assetRegistry');
+    const next = cohort.entries.filter(member => !member.asset_id.startsWith('claude_trial_'));
+    expect(next).toHaveLength(7);
+    for (const member of next) {
+      const raw = CATALOGUE_BUILDING_ASSETS.find(asset => asset.id === member.asset_id)!;
+      expect(raw.model.revision).toBe(member.candidate);
+      expect(raw.readiness).toBe('ready');
+      expect(production.filter(asset => asset.id === member.asset_id)).toHaveLength(1);
     }
   });
 

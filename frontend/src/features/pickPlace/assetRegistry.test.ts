@@ -4,6 +4,24 @@ import { assetForZone, placeAsset, placementProperties } from './catalogue';
 import { CALGARY_LOCAL_PLACEMENT, CALGARY_LOCAL_WIDTH_M, isCalgaryLocalRoute } from './streetPlacement';
 
 describe('placeable asset registry', () => {
+  it('discovers the local twisting tower and rejects impossible complete-height metadata',()=>{
+    const tower=placeAsset('clay_twisting_glass_sky_garden_tower');
+    expect(CATALOGUE_ASSETS.some(asset=>asset.id===tower.id)).toBe(true);
+    expect(tower.storeyProgram?.supportedStoreys).toEqual([20,30,40]);
+    for(const choices of [[],[20,30],[20,20,40],[19,30,40],[20,30.5,40]]){
+      expect(validateRegistry([{...tower,storeyProgram:{...tower.storeyProgram!,supportedStoreys:choices}}]))
+        .toContain(`Invalid storey metadata: ${tower.id}`);
+    }
+  });
+  it('describes isolated models as buildings with their retained architecture dimensions', () => {
+    const cbe=placeAsset('claude_trial_calgary_cbe_brutalist_hq');
+    expect(cbe.description).toContain('Building only');
+    expect(cbe.reshapeDescription).not.toContain('surrounding geometry');
+    expect(cbe.model.revision).toBe('clay-calgary-cbe-brutalist-hq-clay-v004');
+    expect(cbe.nativeDimensions?.[0]).toBeCloseTo(43.3,4);
+    expect(cbe.nativeDimensions?.[1]).toBeCloseTo(40.6,4);
+    expect(cbe.width).toBe(43.4);
+  });
   it('rejects duplicate identities, incompatible categories and mismatched variants', () => {
     expect(validateRegistry(CATALOGUE_ASSETS)).toEqual([]);
     expect(validateRegistry([...CATALOGUE_ASSETS, CATALOGUE_ASSETS[0]])).toContain(`Duplicate or empty asset ID: ${CATALOGUE_ASSETS[0].id}`);

@@ -32,6 +32,29 @@ beforeEach(async () => {
 });
 
 describe('local area plan workflow', () => {
+  it('browses, clips and explains each Beltline concept map with its own source', async () => {
+    render(setup()({zones:[site(-114.08,51.04)]}));
+    fireEvent.click(screen.getByRole('switch'));
+    await screen.findByText('Land Use Concept legend');
+    expect(screen.getByRole('switch')).toHaveAccessibleName('Show Beltline Part 1 policy map');
+    expect(screen.getByText(/Beltline Part 1.*Land Use Concept/)).toBeInTheDocument();
+    expect(screen.getByText(/Warehouse District, Heritage Commercial/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'About Primarily Residential'}));
+    expect(screen.getByRole('region',{name:'Primarily Residential'})).toHaveTextContent('density, heritage, character-area');
+    fireEvent.click(screen.getByLabelText('Only show inside my site'));
+    await waitFor(()=>expect(screen.getByTestId('geometry')).toHaveTextContent('-site-'));
+    fireEvent.change(screen.getByRole('combobox'),{target:{value:'beltline-part-2'}});
+    expect(screen.queryByRole('region',{name:'Primarily Residential'})).not.toBeInTheDocument();
+    await screen.findByText('This plan has no coverage inside your site. Turn off site clipping to explore the full map.');
+    fireEvent.click(screen.getByLabelText('Only show inside my site'));
+    await screen.findByRole('button',{name:'About Potential Open Space'});
+    fireEvent.click(screen.getByRole('button',{name:'About Potential Open Space'}));
+    const plan=localAreaPlan('beltline-part-2')!;
+    expect(screen.getByRole('region',{name:'Potential Open Space'})).toHaveTextContent('must not be read as confirmation');
+    expect(screen.getByRole('link',{name:/Read Map 4 legend.*page 18/})).toHaveAttribute('href',`${plan.source}#page=20`);
+    expect(screen.getByText(/Proposed 2026 amendments are not included/)).toBeInTheDocument();
+    expect(screen.getByRole('link',{name:/Approved Beltline Part 2 plan.*Map 4/})).toHaveAttribute('href',`${plan.source}#page=20`);
+  });
   it('automatically matches the map area before any boundary exists', async () => {
     const view = setup(); const { rerender } = render(view({ zones: [], area: riley.coordinates }));
     expect(screen.getByRole('switch')).toHaveAccessibleName('Show Riley policy map');
@@ -66,7 +89,7 @@ describe('local area plan workflow', () => {
     expect(loadLocalAreaPlan).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('switch'));
     await screen.findByText('Urban form legend');
-    for (const plan of LOCAL_AREA_PLANS) {
+    for (const plan of LOCAL_AREA_PLANS.filter(plan=>!plan.mapLabel)) {
       fireEvent.change(screen.getByRole('combobox'), { target:{ value:plan.id } });
       await waitFor(() => expect(screen.getByTestId('geometry')).toHaveTextContent(`${plan.id}-urban-form`));
       fireEvent.click(screen.getByRole('button', { name:'About Neighbourhood Flex' }));

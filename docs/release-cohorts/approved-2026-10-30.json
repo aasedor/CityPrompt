@@ -1,0 +1,252 @@
+{
+  "schema": "cityprompt.approved-release-cohort@1",
+  "source_snapshot": "9431f84a4fb2d43231de9c96d173f0898d6fc840",
+  "authorization": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "scope": "Exact recently accepted cohort; publication follows actual review/runtime/build gates"
+  },
+  "existing_live_choices": 191,
+  "development_choices": 214,
+  "net_additional_choices": 23,
+  "new_placement_variants": 26,
+  "runtime_activation_performed": false,
+  "live_deployment_performed": false,
+  "entries": [
+    {
+      "asset_id": "native-park:court_only_basketball_v1--native-v1",
+      "domain": "park_plaza",
+      "archetype_id": "basketball_court",
+      "label": "Basketball court",
+      "variant_id": "court_only_basketball_v1",
+      "revision": "6392a787429c551108dd2d99912b690816d838035400d322883c7952f3423117",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "native-park:court_only_pickleball_v1--native-v1",
+      "domain": "park_plaza",
+      "archetype_id": "pickleball_courts",
+      "label": "Pickleball court",
+      "variant_id": "court_only_pickleball_v1",
+      "revision": "9d6876edb170afc909a8cad57260c599cf6b09fd16bc97023c3e1d9c35fdd351",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "native-park:court_only_tennis_v1--native-v1",
+      "domain": "park_plaza",
+      "archetype_id": "tennis_court_cluster",
+      "label": "Tennis court",
+      "variant_id": "court_only_tennis_v1",
+      "revision": "eed1f8f2dd6a444847b93f1a5e98dd297cba50409dd456b2b19e2119d84ab8b5",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "native-park:court_only_beach_volleyball_v1--native-v1",
+      "domain": "park_plaza",
+      "archetype_id": "beach_volleyball_courts",
+      "label": "Beach volleyball court",
+      "variant_id": "court_only_beach_volleyball_v1",
+      "revision": "1ce0ad75c0496a1eda8855d6ba8db37c439e1e77260cb038a0e77b4cb1b27aa8",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_trial_stepped_terraced_plaza_park_only",
+      "domain": "park_plaza",
+      "archetype_id": "stepped_terraced_plaza",
+      "label": "Stepped Terraced Plaza â€” park only",
+      "variant_id": "stepped_terraced_plaza_v0",
+      "revision": "c564869a31bef9348b9802574f837fec536846223ca1a9dcd5a08a3f594e3eb2",
+      "technical_status": "held_known_p1"
+    },
+    {
+      "asset_id": "claude_public_realm:barcelona-passatge:002027c80403",
+      "domain": "street_pathway",
+      "archetype_id": "barcelona_passatge",
+      "label": "Barcelona Passatge - fixed native",
+      "variant_id": "barcelona_passatge_v0",
+      "revision": "002027c804034d4b5575bf0cbe08a2f5349af06d8d03018a9ef0df2d48c0a317",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_public_realm:brick-arch-viaduct:3d5a0e6fb50d",
+      "domain": "street_pathway",
+      "archetype_id": "rail_transit_viaduct",
+      "label": "Brick Arch Viaduct - fixed native",
+      "variant_id": "rail_transit_viaduct_v0",
+      "revision": "3d5a0e6fb50d12d19de78c5ea0f992ff5a371d2269fb115e1b2e064f64c84033",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_public_realm:stone-arch-road-bridge-compact-r002:5300077e633c",
+      "domain": "street_pathway",
+      "archetype_id": "urban_vehicular_bridge",
+      "label": "Stone Arch Road Bridge - fixed native",
+      "variant_id": "urban_vehicular_bridge_v0",
+      "revision": "5300077e633cecc901ef86bb0a78e0b7bd0dce0588c613becbb2195b92337d6d",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_public_realm:timber-covered-footbridge:0dbeb2731dbe",
+      "domain": "street_pathway",
+      "archetype_id": "urban_pedestrian_footbridge",
+      "label": "Timber Covered Footbridge",
+      "variant_id": "urban_pedestrian_footbridge_v2",
+      "revision": "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_public_realm:tied-arch-shared-bridge:7900ce3b41b0",
+      "domain": "street_pathway",
+      "archetype_id": "shared_cycle_pedestrian_bridge",
+      "label": "Tied-Arch Shared Bridge",
+      "variant_id": "shared_cycle_pedestrian_bridge_v1",
+      "revision": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_public_realm:planted-green-bridge:d7dddc9371b5",
+      "domain": "street_pathway",
+      "archetype_id": "landscape_park_pedestrian_bridge",
+      "label": "Planted Green Bridge",
+      "variant_id": "landscape_park_pedestrian_bridge_v2",
+      "revision": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "local_teaching_prairie_school_house",
+      "domain": "building",
+      "archetype_id": "prairie_school_house",
+      "label": "Prairie School house",
+      "variant_id": "roman_brick_hip_roof",
+      "revision": "prairie-school-house-clay-v004",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "local_teaching_postmodern_neighbourhood_library",
+      "domain": "building",
+      "archetype_id": "postmodern_neighbourhood_library",
+      "label": "Postmodern neighbourhood library",
+      "variant_id": "broken_pediment_reading_room",
+      "revision": "postmodern-neighbourhood-library-clay-v002",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "local_teaching_bauhaus_design_workshop",
+      "domain": "building",
+      "archetype_id": "bauhaus_design_workshop",
+      "label": "Bauhaus-inspired design workshop",
+      "variant_id": "glazed_studio_low_wing",
+      "revision": "bauhaus-design-workshop-clay-v003",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "local_teaching_destijl_artist_studio",
+      "domain": "building",
+      "archetype_id": "destijl_artist_studio",
+      "label": "De Stijl artist studio",
+      "variant_id": "primary_planes_glazed_studio",
+      "revision": "destijl-artist-studio-clay-v004",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "local_teaching_mughal_reading_pavilion",
+      "domain": "building",
+      "archetype_id": "mughal_reading_pavilion",
+      "label": "Mughal-inspired reading pavilion",
+      "variant_id": "cusped_arcade_central_dome",
+      "revision": "mughal-reading-pavilion-clay-v002",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "local_teaching_wartime_victory_house",
+      "domain": "building",
+      "archetype_id": "wartime_victory_house",
+      "label": "Wartime / Victory house",
+      "variant_id": "cream_clapboard_steep_side_gable",
+      "revision": "wartime-victory-house-clay-v004",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "local_teaching_postwar_side_split_house",
+      "domain": "building",
+      "archetype_id": "postwar_side_split_house",
+      "label": "Postwar side-split house",
+      "variant_id": "cream_siding_brick_raised_sleeping_wing",
+      "revision": "postwar-side-split-house-clay-v003",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_climbing_crucible_v004",
+      "domain": "building",
+      "archetype_id": "climbing_wall_building",
+      "label": "The Crucible climbing centre",
+      "variant_id": "climbing_crucible",
+      "revision": "clay-climbing-crucible-clay-v004",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_climbing_overhang_v007",
+      "domain": "building",
+      "archetype_id": "climbing_wall_building",
+      "label": "The Overhang climbing centre",
+      "variant_id": "climbing_overhang",
+      "revision": "clay-climbing-overhang-clay-v007",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_climbing_reef_v009",
+      "domain": "building",
+      "archetype_id": "climbing_wall_building",
+      "label": "The Reef climbing centre",
+      "variant_id": "climbing_reef",
+      "revision": "clay-climbing-reef-clay-v009",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_sandstone_clock_tower_v006",
+      "domain": "building",
+      "archetype_id": "calgary_sandstone_heritage",
+      "label": "Sandstone clock-tower block",
+      "variant_id": "sandstone_claude_clock_tower_v006",
+      "revision": "clay-calgary-sandstone-heritage-clay-v006",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_fire_station_v010",
+      "domain": "building",
+      "archetype_id": "modern_fire_station",
+      "label": "Modern fire station",
+      "variant_id": "fire_cantilevered_modern",
+      "revision": "clay-cantilever-fire-station-clay-v010",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_hospital_v006",
+      "domain": "building",
+      "archetype_id": "regional_hospital_medical_center",
+      "label": "Regional teaching hospital",
+      "variant_id": "regional_hospital_contemporary_teaching",
+      "revision": "clay-braced-frame-hospital-clay-v006",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "claude_student_residence_v004",
+      "domain": "building",
+      "archetype_id": "student_residence_tower",
+      "label": "Student residence tower",
+      "variant_id": "contemporary_curtainwall_biophilic",
+      "revision": "clay-student-residence-tower-clay-v004",
+      "technical_status": "pending_release_verification"
+    },
+    {
+      "asset_id": "clay_twisting_glass_sky_garden_tower",
+      "domain": "building",
+      "archetype_id": "glass_tower_podium_modern",
+      "label": "Twisting glass tower with sky garden",
+      "variant_id": "glass_tower_twisted",
+      "revision": "glass-tower-twisted-clay-v005",
+      "technical_status": "published_native40_discovery_correction_only"
+    }
+  ]
+}

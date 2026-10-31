@@ -4,8 +4,9 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngi
 import { isFixedSectionStreet, streetSectionWidth } from './streetPlacement';
 import { CANAL_VARIANT, BRIDGE_VARIANT } from '@/components/viewer/globe/specialistStreetProgram';
 import { isElevatedRail } from '@/components/viewer/globe/elevatedRailProgram';
+import { MIN_STREET_JUNCTION_ANGLE, MIN_STREET_JUNCTION_SINE } from '@/components/viewer/globe/streetJunctionPolicy';
 
-/** Snap an endpoint to a through street at a supported 45–135 degree angle.
+/** Snap an endpoint to a through street at a supported 30–150 degree angle.
  * Keep the adjacent point fixed and reserve enough straight approach for both
  * complete street sections; a near-end connection slides gently inward.
  * Only catalogue streets participate; reference layers never become proposals. */
@@ -52,7 +53,7 @@ export function snapStreetEndpoint(line: number[][], index: number, zones: SiteZ
       const [ax, ay] = local(target[i]), [bx, by] = local(target[i + 1]);
       const dx = bx - ax, dy = by - ay, length = Math.hypot(dx, dy);
       const cosine = Math.abs((px * dx + py * dy) / approachLength / length);
-      if (length < 1 || cosine > Math.SQRT1_2) continue;
+      if (length < 1 || cosine > Math.cos(MIN_STREET_JUNCTION_ANGLE) + 1e-6) continue;
       const hostWidth = streetSectionWidth(street);
       const rawT = ((px - ax) * dx + (py - ay) * dy) / (length * length);
       if (rawT < 0 || rawT > 1 || Math.hypot(ax + rawT * dx - px, ay + rawT * dy - py) > hostWidth / 2 + 1) continue;
@@ -65,8 +66,8 @@ export function snapStreetEndpoint(line: number[][], index: number, zones: SiteZ
         x = ax + station * dx / length; y = ay + station * dy / length;
         const cos = Math.abs((x * dx + y * dy) / Math.hypot(x, y) / length);
         const sin = Math.sqrt(1 - Math.min(1, cos * cos));
-        if (sin < Math.SQRT1_2) { eligible = false; break; }
-        const clearance = (incomingWidth / 2 + 4 + hostWidth / 2 * cos) / sin + .1;
+        if (sin < MIN_STREET_JUNCTION_SINE - 1e-6) { eligible = false; break; }
+        const clearance = (incomingWidth / 2 + hostWidth / 2 * cos) / sin + 4 + .1;
         if (length < clearance * 2) { eligible = false; break; }
         const next = Math.max(clearance, Math.min(length - clearance, station));
         if (Math.abs(next - station) < .01) break;

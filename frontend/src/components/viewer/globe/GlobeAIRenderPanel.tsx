@@ -1,10 +1,14 @@
+import {AnimateRenderButton} from '../AnimateRenderButton';
 import { STYLES } from './imageStyles';
 import { savedRenderNotice, savedRenderIsSource, savedRenderNeedsReview } from '@/utils/renderPresentation';
 import { isCatalogueOnlyScene, CATALOGUE_UPDATE_GUIDANCE } from '@/features/pickPlace/catalogue';
+import { groundSurfaceFor } from '@/features/groundSurfaces/groundSurfaces';
+import { authoredSurfaceRevision, getAuthoredSurfaceCaptureClaims } from '@/features/groundSurfaces/groundSurfaceCapture';
 import { useRenderDraft } from './useRenderDraft';
 import { ImagePresentationControls } from './ImagePresentationControls';
 import { RecoverImageAttempts } from './RecoverImageAttempts';
 import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
+import { useAuthStore } from '@/store';
 import { ImageModelSelect } from '../ImageModelSelect';
 import { useImageModelChoice } from '../useImageModelChoice';
 import { runImageModelBatch } from '../runImageModelBatch';
@@ -252,6 +256,8 @@ export function GlobeAIRenderPanel({
   const { renderPreviews } = useGlobeAIRender();
   const { renderDirect3D } = useDirect3DRender();
   const queryClient = useQueryClient();
+  const authUser = useAuthStore(state => state.user);
+  const authLoading = useAuthStore(state => state.isLoading);
   const [isRendering, setIsRendering] = useState(false);
   const [isPreparingCapture, setIsPreparingCapture] = useState(false);
   const [result, setResult] = useState<GlobeRenderResult | null>(null);
@@ -268,9 +274,29 @@ export function GlobeAIRenderPanel({
   const [directCapturePreview, setDirectCapturePreview] = useState<Direct3DCaptureQAPreview | null>(null);
   const [directDiagnostics, setDirectDiagnostics] = useState<Direct3DRenderDiagnostics | null>(null);
   const [directFidelityPolicy, setDirectFidelityPolicy] = useState<Direct3DFidelityPolicy>(() => resolveDirect3DFidelityPolicy(selectedStyle));
-  const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false, projectId });
+  const { imageModel: directImageModel, setImageModel: setDirectImageModel, availability: imageModelAvailability } = useImageModelChoice({
+    compareByDefault: false, projectId,
+    accountRevision: authUser ? `${authUser.id}:${authUser.render_credits}:${authUser.role}` : 'signed-out',
+  });
   const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelUnavailable(imageModelAvailability, model)
     || (imageModelAvailability !== null && !imageModelAvailability.models.some(entry => entry.id === model && entry.available !== false)));
+  const paidImageModels = imageModelsForChoice(directImageModel);
+  const minimumImageCosts = paidImageModels.map(model => imageModelAvailability?.models.find(entry => entry.id === model)?.minimum_credit_cost);
+  const minimumImageCredits = minimumImageCosts.every(cost => typeof cost === 'number' && Number.isFinite(cost) && cost >= 0)
+    ? minimumImageCosts.reduce<number>((total, cost) => total + cost!, 0) : null;
+  const imageCreditBalance = imageModelAvailability?.credit_balance;
+  // Only block proven insufficiency: the server computes the final cost from
+  // the normalized capture and checks it again before queue admission.
+  const imageCreditBlockedReason = paidImageModels.length === 0 ? null
+    : authLoading || imageModelAvailability === null ? 'Checking image credits…'
+    : !authUser ? 'Sign in before generating an image. Exporting the current 3D view is free.'
+    : imageModelAvailability.credit_exempt === true ? null
+    : imageModelAvailability.credit_exempt !== false || minimumImageCredits === null
+      || typeof imageCreditBalance !== 'number' || !Number.isFinite(imageCreditBalance) || imageCreditBalance < 0
+      ? 'Image credits could not be checked. Reopen this panel to try again, or export your current 3D view for free.'
+    : imageCreditBalance < minimumImageCredits
+      ? `Not enough image tokens: at least ${minimumImageCredits} needed, ${imageCreditBalance} available. Tokens reset weekly. Export your current 3D view for free.`
+      : null;
   const [directReview, setDirectReview] = useState<Direct3DReview | null>(null);
   const directPreviewMetadata = useRef(new Map<string, { diagnostics: Direct3DRenderDiagnostics | null; review: Direct3DReview | null }>());
   // Development mode gate: at least one zone in the scene is backed by real
@@ -297,6 +323,8 @@ export function GlobeAIRenderPanel({
   const savedImageKeysRef = useRef<Set<string>>(new Set());
   const pipelineChoiceTouchedRef = useRef(false);
   const authoritativeZones = communitySourceZones ?? siteZones;
+  const currentSurfaceZones = useRef(authoritativeZones);
+  currentSurfaceZones.current = authoritativeZones;
 
   // ── 3D building models ──
   // When ON (default) placed models stay in the capture and their zones get
@@ -363,6 +391,7 @@ export function GlobeAIRenderPanel({
       return zone.zone_type !== 'site_boundary'
         && role !== 'framework_height'
         && zone.coordinates.length >= 3
+        && !groundSurfaceFor(zone)
         && resolveCommunity3DKind(zone) === null;
     }),
     [authoritativeZones],
@@ -855,6 +884,7 @@ export function GlobeAIRenderPanel({
   const handleDirectRender = useCallback(async () => {
     if (isCheckingDirectCapture) return;
     if (!captureDirect3D || !direct3DAvailable || isRendering || imageGenerationUnavailable) return;
+    if (imageCreditBlockedReason) { setError(imageCreditBlockedReason); return; }
     if (planGeometryStale) {
       setError(stalePlanMessage ?? 'Redraw the master plan for the current site boundary before rendering.');
       return;
@@ -877,7 +907,14 @@ export function GlobeAIRenderPanel({
       // reused because the user may have moved the camera in the meantime.
       await onBeforeRender?.();
       setDirectCapturePreview(null);
-      const capture = await captureDirect3D({ includeGeometryPasses: true });
+      const surfaceRevision = authoredSurfaceRevision(currentSurfaceZones.current);
+      const surfaceClaims = getAuthoredSurfaceCaptureClaims(currentSurfaceZones.current);
+      const [capture, authoredSurfaceClaims] = await Promise.all([
+        captureDirect3D({ includeGeometryPasses: true }), surfaceClaims,
+      ]);
+      if (surfaceRevision !== authoredSurfaceRevision(currentSurfaceZones.current)) {
+        throw new Error('Ground surfaces changed during capture. Capture the current scene again.');
+      }
       setIsPreparingCapture(false);
       // Same-camera finishes use the placed design in every artistic medium.
       // Avoid downloading catalogue views that the render will not use.
@@ -894,6 +931,7 @@ export function GlobeAIRenderPanel({
         customPrompt: customPrompt.trim() || undefined,
         projectId: projectId!,
         community3DClaims: community3DCaptureClaims!,
+        authoredSurfaceClaims,
         detailsRevision,
         residualLandscapeClaim,
         archetypeReferences,
@@ -939,6 +977,7 @@ export function GlobeAIRenderPanel({
     addPeople,
     addVehicles,
     imageGenerationUnavailable,
+    imageCreditBlockedReason,
     autoSaveGlobeRenders,
     detailsRevision,
     captureDirect3D,
@@ -1522,6 +1561,7 @@ export function GlobeAIRenderPanel({
               )}
             </div>
           </div>
+          {projectId && result.savedRender && !result.error && <div className="mt-2"><AnimateRenderButton projectId={projectId} render={result.savedRender}/></div>}
           {directReview?.outcome === 'review_required' && (
             <details className="mt-2 rounded-lg border border-white/15 bg-slate-900 px-3 py-2 text-white">
               <summary className="min-h-11 cursor-pointer py-3 text-xs font-semibold">Compare with the original 3D view</summary>
@@ -1880,6 +1920,13 @@ export function GlobeAIRenderPanel({
 
       {/* Render button */}
       <div className="shrink-0 border-t-2 border-[#151515] bg-[#fff9ec] px-4 py-3">
+        {!result && renderPipeline === 'direct3d' && imageCreditBlockedReason && (
+          <p id="globe-image-credits" role="status" className="mb-2 text-xs font-semibold text-slate-800">{imageCreditBlockedReason}</p>
+        )}
+        {!result && renderPipeline === 'direct3d' && !imageCreditBlockedReason && paidImageModels.length > 0
+          && !imageModelAvailability?.credit_exempt && minimumImageCredits !== null && (
+          <p className="mb-2 text-xs text-slate-700">At least {minimumImageCredits} tokens · {imageCreditBalance} available. Final cost is checked before generation.</p>
+        )}
         {stalePlanMessage && (
           <p className="mb-2 rounded border border-red-500/40 bg-red-50 px-2.5 py-2 text-[11px] font-bold text-red-800">
             Redraw the master plan for the current boundary before rendering.
@@ -1900,6 +1947,7 @@ export function GlobeAIRenderPanel({
             }}>Export current 3D view · free</button>
         )}
         <button
+          aria-describedby={!result && renderPipeline === 'direct3d' && imageCreditBlockedReason ? 'globe-image-credits' : undefined}
           onClick={result ? () => {
             setResult(null); setPreviews([]); setSelectedPreviewIndex(null);
             setDirectCapturePreview(null); setDirectDiagnostics(null); setDirectReview(null);
@@ -1908,6 +1956,7 @@ export function GlobeAIRenderPanel({
             planGeometryStale
             || isRendering
             || (renderPipeline === 'direct3d' && imageGenerationUnavailable)
+            || (renderPipeline === 'direct3d' && Boolean(imageCreditBlockedReason))
             || !canvas
             || !camera
             || (renderPipeline === 'direct3d' && !direct3DAvailable)

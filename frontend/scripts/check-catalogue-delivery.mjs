@@ -62,18 +62,22 @@ const libraryRows=libraryPaths.flatMap(path=>read(resolve(repo,path)).entries.ma
   if(sourcePath.startsWith('../')) throw new Error('Seed model escapes repository');
   return {...row,sourcePath};
 }));
-const data = {entries,fixedPublicRealm:source('publicRealmRelease20261023.json').models,parks:source('nativeParks.json').layouts,streets:source('nativeStreetPilots.json'),
+const bridgePilots=source('nativeBridgePilots.json');
+const data = {entries,fixedPublicRealm:source('publicRealmRelease20261023.json').models,parks:source('nativeParks.json').layouts,streets:[...source('nativeStreetPilots.json'),...bridgePilots],
   library:libraryRows,
   kits:[...sharedKits,...starter.dependencies.filter(row=>row.location==='public'&&row.path.endsWith('.glb')&&/park-kits|landscape-pilots/.test(row.path)).map(row=>({url:'/'+row.path,kind:'glb',sha256:row.sha256}))]};
 const rows = catalogueRequirements(choices,heroImage,data);
 const savedLayoutChecks = Object.values(Object.fromEntries(data.parks.flatMap(park=>Object.values(park.assets).map(asset=>[asset.url,{url:asset.url,kind:'glb',sha256:asset.sha256}]))));
 const rusticKitChecks=Object.values(source('neighborhoodParkV0StickerKit.json').assets).map(asset=>({url:asset.url,kind:'glb',sha256:asset.sha256}));
 const savedRevisionChecks=source('savedModelRevisions.json').revisions.map(row=>({url:row.url,kind:'glb',sha256:row.revision}));
+// A local pilot must not appear as a drawable card with absent module files.
+// Validate delivery even while production discovery intentionally hides it.
+const bridgeModuleChecks=bridgePilots.flatMap(row=>Object.values(row.modules).map(module=>({url:module.url,kind:'glb',sha256:module.sha256})));
 const receipt = libraryReport ? read(libraryReport) : null;
 if(base && (!receipt?.checked_utc || Date.now()-Date.parse(receipt.checked_utc)>10*60*1000)) throw new Error('A fresh Model Library storage receipt is required (within ten minutes)');
 const results = new Map();
 const payloads = new Map();
-for (const row of [...rows,{checks:[...savedLayoutChecks,...rusticKitChecks,...savedRevisionChecks]}]) for (const check of row.checks) {
+for (const row of [...rows,{checks:[...savedLayoutChecks,...rusticKitChecks,...savedRevisionChecks,...bridgeModuleChecks]}]) for (const check of row.checks) {
   const key = check.url || check.sourcePath;
   if (results.has(key)) continue;
   try {
@@ -112,12 +116,13 @@ const report = {schema:'cityprompt.catalogue-delivery-audit@1',checked_utc:new D
   saved_layout_dependencies:savedLayoutChecks.map(check=>({...check,...results.get(check.url)})),
   saved_model_revisions:savedRevisionChecks.map(check=>({...check,...results.get(check.url)})),
   rustic_park_dependencies:rusticKitChecks.map(check=>({...check,...results.get(check.url)})),
+  bridge_module_dependencies:bridgeModuleChecks.map(check=>({...check,...results.get(check.url)})),
   choices:rows.map(row=>({...row,status:row.checks.every(check=>results.get(check.url||check.sourcePath).status!=='FAIL')?(metadataOnly?'METADATA_ONLY':'PASS'):'FAIL',checks:row.checks.map(check=>({...check,...results.get(check.url||check.sourcePath)}))}))};
 if (output) writeFileSync(output,JSON.stringify(report,null,2)+'\n');
 if (packetDirectory && report.failures.length===0 && !metadataOnly) {
   const directory=resolve(packetDirectory);
   if(directory.startsWith(repo)) throw new Error('Keep generated packets outside the source tree');
-  const sources=['src/data/claudeFiveTrial.json','src/data/publicRealmRelease20261023.json','src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/catalogueOctober2026.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','src/data/neighborhoodParkV0StickerKit.json','src/data/savedModelRevisions.json','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/publishedBuildingAssets.ts','src/features/pickPlace/canonicalCatalogue.ts','src/features/pickPlace/catalogueClassification.ts'];
+  const sources=['src/data/claudeFiveTrial.json','src/data/publicRealmRelease20261023.json','src/data/validationCatalogue.json','src/data/classroomExpansion.json','src/data/catalogueOctober2026.json','src/data/nativeParks.json','src/data/nativeStreetPilots.json','src/data/nativeBridgePilots.json','src/data/streetManual.json','src/data/flexibleParks.json','src/data/sharedParkEquipment.ts','src/data/neighborhoodParkV0StickerKit.json','src/data/savedModelRevisions.json','public/park-kits/shared-park-equipment-v1/kit_manifest.json','src/features/pickPlace/pickerHeroImages.ts','src/features/pickPlace/assetRegistry.ts','src/features/pickPlace/publishedBuildingAssets.ts','src/features/pickPlace/canonicalCatalogue.ts','src/features/pickPlace/catalogueClassification.ts'];
   const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
   const normalize=file=>readFileSync(file,'utf8').replace(/\r\n?/g,'\n');
   const receipt={schema:'cityprompt.catalogue-packet@1',catalogue_activation:false,sourceInputs:[

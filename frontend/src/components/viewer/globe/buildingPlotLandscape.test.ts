@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { SiteZone } from '@/types';
+import type { Building, SiteZone } from '@/types';
 import { CATALOGUE_ASSETS, type PlaceAsset } from '@/features/pickPlace/assetRegistry';
 import { placementProperties } from '@/features/pickPlace/catalogue';
 import { rectangleAt } from '@/features/pickPlace/geometry';
@@ -61,6 +61,35 @@ describe('shared building plot landscaping', () => {
       expect(Math.abs(x) + .42).toBeLessThan(18);
       expect(Math.abs(y) + .42).toBeLessThan(contract.depth / 2);
     }
+  });
+  it('uses measured city hall pad margins for low planting while keeping the broad stair approach clear', () => {
+    const hall = buildings.find(asset => asset.id === 'claude_montreal_second_empire_civic')!;
+    const placed = zone('hall', hall.width, hall.depth, placementProperties(hall));
+    const plan = buildingPlotLandscapes([boundary, placed], 0)[0];
+    expect(plan.shrubs.length).toBeGreaterThan(8);
+    expect(pointInResidualGeometry([-12, -26], { type: 'MultiPolygon', coordinates: plan.beds })).toBe(true);
+    expect(pointInResidualGeometry([16, -26], { type: 'MultiPolygon', coordinates: plan.beds })).toBe(true);
+    expect(pointInResidualGeometry([2.5, -28], { type: 'MultiPolygon', coordinates: plan.beds })).toBe(false);
+    expect(plan.shrubs.every(([x, y]) => (x < -3.9 || x > 8.9) && y < -25 && y > -27.1)).toBe(true);
+  });
+  it('follows a compiled quarter-turn on a deeper city hall plot without planting across its rotated approach', () => {
+    const hall = buildings.find(asset => asset.id === 'claude_montreal_second_empire_civic')!;
+    const placed = { ...zone('hall', 66, 100, placementProperties(hall)), building_id: 'hall-building' };
+    const building: Building = { id: 'hall-building', project_id: 'test', created_at: '', rotation_degrees: 0,
+      specifications: { legoAssembly: { schema_version: 1, module_family: 'city-hall', reuse_keys: [],
+        target: { width_m: 66, depth_m: 100, floors: 4 },
+        fit: { native_scale_locked: true, delivery_format: 'architectural_clay' },
+        instances: [{ model_url: '/city-hall.glb', position: [0, 0, 0], scale: [1, 1, 1], rotation_degrees: 90 }],
+      } } };
+    const plan = buildingPlotLandscapes([boundary, placed], 0, [building])[0];
+    expect(plan.shrubs.length).toBeGreaterThan(8);
+    expect(pointInResidualGeometry([-26, 12], { type: 'MultiPolygon', coordinates: plan.beds })).toBe(true);
+    expect(pointInResidualGeometry([-26, -16], { type: 'MultiPolygon', coordinates: plan.beds })).toBe(true);
+    expect(pointInResidualGeometry([-28, -2.5], { type: 'MultiPolygon', coordinates: plan.beds })).toBe(false);
+    expect(pointInResidualGeometry([-12, -26], { type: 'MultiPolygon', coordinates: plan.beds })).toBe(false);
+    expect(plan.shrubs.every(([x]) => x < -25 && x > -27.1)).toBe(true);
+    const restored = buildingPlotLandscapes([boundary, placed], 0, [{ ...building, rotation_degrees: 90 }])[0];
+    expect(pointInResidualGeometry([-12, -26], { type: 'MultiPolygon', coordinates: restored.beds })).toBe(true);
   });
   it('clips neighbouring roads and plots out of both ground cover and planting', () => {
     const road = { ...zone('road', 4, 100), zone_type: 'road' as const,

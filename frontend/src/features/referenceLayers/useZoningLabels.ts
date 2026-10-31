@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { SiteZone } from '@/types';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { readBrowserPreference, writeBrowserPreference } from '@/utils/browserPreferences';
-import { fetchZoningLabels, zoningBounds, zoningCoverageProblem } from './zoningLabels';
+import { fetchZoningLabels, zoningBounds, zoningCoverageProblem, zoningContextCoordinates, clipZoningOverlay } from './zoningLabels';
 import { readZoningPreferences, type ZoningPreferences } from './zoningAppearance';
 
 export function useZoningLabels(projectId: string | undefined, zones: SiteZone[], exploration: number[][] = []) {
@@ -13,15 +13,20 @@ export function useZoningLabels(projectId: string | undefined, zones: SiteZone[]
   const saved = useMemo(() => readZoningPreferences(readBrowserPreference(key)), [key]);
   const visibility = choices[key] ?? saved;
   const boundary = getActiveSiteBoundary(zones);
-  const coordinates = boundary?.coordinates ?? exploration;
+  const coordinates = useMemo(() => boundary ? zoningContextCoordinates(boundary.coordinates) : exploration, [boundary, exploration]);
   const bounds = zoningBounds(coordinates);
   const problem = zoningCoverageProblem(bounds);
   const query = useQuery({
-    queryKey: ['zoning-district-map-v3', projectId, coordinates],
+    queryKey: ['zoning-district-map-v4', projectId, coordinates],
     queryFn: ({ signal }) => fetchZoningLabels(coordinates, AbortSignal.any([signal, AbortSignal.timeout(30_000)])),
     enabled: Boolean(projectId && bounds && !problem && visibility.enabled && (visibility.labels || visibility.lines || visibility.fill)),
     staleTime: 15 * 60_000, gcTime: 30 * 60_000, retry: false,
   });
+  const display = useMemo(() => {
+    if (!query.data || problem) return { data: undefined, error: null };
+    try { return { data: boundary && visibility.clipToSite ? clipZoningOverlay(query.data, boundary.coordinates) : query.data, error: null }; }
+    catch { return { data: undefined, error: new Error('Zoning could not be clipped to this site. Check the boundary or turn off site filtering.') }; }
+  }, [query.data, problem, boundary, visibility.clipToSite]);
   const update = (patch: Partial<ZoningPreferences>) => {
     const next = { ...visibility, ...patch };
     writeBrowserPreference(key, JSON.stringify({ ...next, districtLines: next.lines, lines: undefined }));
@@ -29,8 +34,9 @@ export function useZoningLabels(projectId: string | undefined, zones: SiteZone[]
   };
   return { ...visibility, setEnabled: (enabled: boolean) => update({ enabled }),
     toggle: () => update({ labels: !visibility.labels }), toggleLines: () => update({ lines: !visibility.lines }),
+    setClipToSite: (clipToSite: boolean) => update({ clipToSite }),
     toggleFill: () => update({ fill: !visibility.fill }),
     setFillOpacity: (fillOpacity: number) => { if (Number.isFinite(fillOpacity)) update({ fillOpacity: Math.min(1, Math.max(0, fillOpacity)) }); },
-    hasBoundary: Boolean(boundary), problem, data: problem ? undefined : query.data, loading: query.isFetching, error: query.error, retry: () => { void query.refetch(); } };
+    hasBoundary: Boolean(boundary), problem, data: display.data, loading: query.isFetching, error: display.error ?? query.error, retry: () => { void query.refetch(); } };
 }
 export type ZoningLabelsState = ReturnType<typeof useZoningLabels>;

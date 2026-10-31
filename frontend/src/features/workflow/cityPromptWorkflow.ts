@@ -86,10 +86,14 @@ export function deriveCityPromptWorkflow(
       ? `${label}: the selected ${kind} layout could not be prepared. Check its ${kind === 'street' ? 'route length, width and selected variant' : 'outline size and selected variant'}, then retry the 3D update.`
       : `${label}: its 3D representation updates automatically. Wait for the update to finish, or use Retry 3D update.`;
   }).join(' ');
+  const landscapeReason = activeBoundary?.properties?.community_3d_landscape_mode === 'generated'
+    ? 'Your applied landscape needs refreshing. In Site, choose Generate 3D Site Landscape, then Apply landscape.'
+      + (activeBoundary.properties?.community_3d_landscape ? ' You can also choose Remove landscape.' : '')
+    : 'The residual landscaping updates automatically. Wait for 3D saved, or use Retry 3D update if it fails.';
   const renderReason = !hasSceneContent
     ? 'Add a building, park, street, or detail first. A site boundary is optional.'
     : !allPhysicalZonesCompiled ? pendingReason
-    : activeBoundary && !residualLandscapeReady ? 'The residual landscaping updates automatically. Wait for 3D saved, or use Retry 3D update if it fails.'
+    : activeBoundary && !residualLandscapeReady ? landscapeReason
     : 'Your scene is ready for rendering.';
 
   return {

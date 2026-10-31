@@ -6,22 +6,23 @@ import { Toaster } from 'react-hot-toast';
 import * as Sentry from '@sentry/react';
 import App from './App';
 import './index.css';
+import { afterOAuthScrub } from '@/features/auth/oauthFlow';
 
 // Initialize Sentry if DSN is configured
 const sentryDsn = import.meta.env.VITE_SENTRY_DSN;
 if (sentryDsn) {
-  Sentry.init({
+  afterOAuthScrub(() => Sentry.init({
     dsn: sentryDsn,
     environment: import.meta.env.MODE,
     release: `siteforge-frontend@0.1.0`,
     integrations: [
       Sentry.browserTracingIntegration(),
-      Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
+      Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false, networkDetailDenyUrls: [/\/api\/v1\/auth\//] }),
     ],
     tracesSampleRate: 0.1,
     replaysSessionSampleRate: 0.0,
     replaysOnErrorSampleRate: 1.0,
-  });
+  }));
 }
 
 const queryClient = new QueryClient({

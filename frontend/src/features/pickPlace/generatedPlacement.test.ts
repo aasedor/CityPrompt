@@ -25,3 +25,9 @@ it('keeps catalogue placement properties unchanged', () => {
   const draft = { assetId: asset.id, width: asset.width, depth: asset.depth, degrees: 0 };
   expect(placementDraftProperties(draft, 1042)).toEqual(placementProperties(asset, 1042));
 });
+
+it('does not invent a storey count for an imported GLB', () => {
+  const props = placementDraftProperties(generatedPlacementDraft({...model, floor_count:null, source_kind:'imported_glb'}));
+  expect(props).not.toHaveProperty('floor_count');
+  expect(props).not.toHaveProperty('floors');
+});

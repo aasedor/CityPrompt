@@ -1,0 +1,91 @@
+{
+  "sport": "pickleball",
+  "playing_m": [
+    6.096,
+    13.4112
+  ],
+  "module_m": [
+    10.4,
+    19.6
+  ],
+  "court_colour": [
+    0.11,
+    0.25,
+    0.29
+  ],
+  "kitchen_m": 2.1336,
+  "net_center_m": 0.8636,
+  "net_end_m": 0.9144,
+  "source": "https://usapickleball.org/what-is-pickleball/courts-and-construction/outdoor-court-construction/",
+  "id": "court_only_pickleball_v1",
+  "title": "Pickleball court only",
+  "dimensions_m": [
+    10.4,
+    19.6
+  ],
+  "include_enclosure": false,
+  "source_checked": "2026-10-24",
+  "programme": "Playing surface, markings, required equipment and clear playing reserve only",
+  "limitations": [
+    "Planning model at native size; not a certified competition facility.",
+    "Repeat and rotate courts; never stretch their playing dimensions."
+  ],
+  "reserve_basis": "Preferred 34 x 64 ft overall playing area, rounded up to 10.4 x 19.6 m.",
+  "clear_routes": [
+    {
+      "a": [
+        -5.2,
+        -4.9
+      ],
+      "b": [
+        -3.348,
+        -4.9
+      ],
+      "width": 1.8
+    }
+  ],
+  "equipment": [
+    {
+      "kind": "net",
+      "center_m": 0.8636,
+      "end_m": 0.9144
+    }
+  ],
+  "source_components": {
+    "sport base": 1,
+    "playing surface": 1,
+    "non volley zone": 1,
+    "marking": 8,
+    "net upright": 2,
+    "net mesh": 475,
+    "net tape": 48
+  },
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 324004,
+    "sha256": "75fa2fcf105f678bdafbe3d72c348f73e3ca0a892ee563fb871439a51a1b00f5"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -5.199999809265137,
+      -9.800000190734863,
+      -0.11999999731779099
+    ],
+    [
+      5.199999809265137,
+      9.800000190734863,
+      0.9652000069618225
+    ]
+  ],
+  "triangles": 5920,
+  "mesh_instances": 6,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

@@ -1,0 +1,86 @@
+{
+  "entry": {
+    "candidate": "clay-climbing-reef-clay-v009",
+    "family": "rlasm-clay-climbing-reef-claude-v009",
+    "archetype_id": "climbing_wall_building",
+    "archetype_label": "Climbing centre",
+    "variant_id": "climbing_reef",
+    "variant_label": "The Reef climbing centre",
+    "native_floors": 1,
+    "design_dimensions_m": {
+      "width": 34,
+      "depth": 30,
+      "height": 7.9
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3.png",
+        "bytes": 1359680,
+        "sha256": "c510322572ffa49702465f621dd95575a967787b28a37e96755cec68263fc595"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_60.jpg",
+        "bytes": 817640,
+        "sha256": "122c06c58a3287c7eb1a503e9d94ce4a6b712275f42e5c65e1bbfdc592027ac9"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_90.jpg",
+        "bytes": 811835,
+        "sha256": "cf5e6092abfb9702cc5fa59e2ba60b579be0c420489a4e31528466d43ec8fe34"
+      }
+    ],
+    "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+    "limitations": [
+      "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+      "Fixed native geometry; snug bounds derive from complete retained architecture.",
+      "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+    ],
+    "picker": {
+      "id": "claude_climbing_reef_v009",
+      "group_id": "civic",
+      "reshape_mode": "fixed_native",
+      "width": 304,
+      "depth": 304,
+      "max_size": 600,
+      "description": "Contour-banded teal climbing shell with twelve skylights and its compact safety apron.",
+      "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+    }
+  },
+  "model_file": "../candidates/clay-climbing-reef-clay-v009.glb",
+  "review_file": "source-review-adapter.json",
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab"
+  },
+  "trial": {
+    "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
+    "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+    "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+    "tested_at": "2026-10-31T00:09:45.963445+00:00",
+    "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+    "evidence": [
+      "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+      "reef-close-EXACT_3D_SOURCE.png",
+      "reef-low-EXACT_3D_SOURCE.png",
+      "reef-ground-BROWSER_SCREENSHOT.png",
+      "fixed-model-plot-probes.json",
+      "REVIEW.txt"
+    ],
+    "checks": {
+      "catalogue_card": true,
+      "exact_variant": true,
+      "ground_contact": true,
+      "small_and_large_plot": true,
+      "rotation": true,
+      "save_reload": true,
+      "close_and_occluded_capture": true,
+      "no_console_errors": true
+    },
+    "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+  }
+}

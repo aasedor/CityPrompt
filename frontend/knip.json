@@ -4,6 +4,9 @@
     "public/sw.js",
     "src/dev/NeighborhoodParkPilotReview.tsx",
     "src/dev/ParkTrioReview.tsx",
+    "src/dev/NativeParkReview.tsx",
+    "src/review/*.tsx",
+    "test-fixtures/**/main.{ts,tsx}",
     "e2e/**/*.ts"
   ]
 }

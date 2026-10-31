@@ -6,6 +6,10 @@
 !seed/model-library/
 !seed/model-library/rlasm-architectural-clay/
 !seed/model-library/rlasm-architectural-clay/house-flex-pilot-v001.json
+!frontend/
+!frontend/src/
+!frontend/src/data/
+!frontend/src/data/localTowerStoreyPrograms.json
 backend/.env
 backend/.env.*
 backend/**/.env
@@ -25,3 +29,5 @@ backend/**/credentials*.json
 backend/**/service-account*.json
 backend/**/service_account*.json
 backend/**/client_secret*.json
+# The documented local Google credential must never enter image layers.
+backend/**/vertex-key.json

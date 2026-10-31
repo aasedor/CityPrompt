@@ -1,0 +1,93 @@
+{
+  "id": "court_only_beach_volleyball_v1",
+  "title": "Beach volleyball court only",
+  "sport": "beach_volleyball",
+  "playing_m": [
+    8,
+    16
+  ],
+  "module_m": [
+    14,
+    22
+  ],
+  "dimensions_m": [
+    14,
+    22
+  ],
+  "court_colour": [
+    0.62,
+    0.51,
+    0.32
+  ],
+  "source": "https://www.fivb.com/wp-content/uploads/2025/02/FIVB-BeachVolleyball_Rules2025_2028-EN-v01.pdf",
+  "source_checked": "2026-10-24",
+  "programme": "Playing surface, markings, required equipment and clear playing reserve only",
+  "net_center_m": 2.43,
+  "net_end_m": 2.43,
+  "include_enclosure": false,
+  "limitations": [
+    "Planning model at native size; not a certified competition facility.",
+    "Repeat and rotate courts; never stretch their playing dimensions.",
+    "3 m ordinary free zone; net shown at 2.43 m adult men height."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        -7.0,
+        -5.5
+      ],
+      "b": [
+        -4.3,
+        -5.5
+      ],
+      "width": 1.8
+    }
+  ],
+  "equipment": [
+    {
+      "kind": "court_net",
+      "height_center": 2.43,
+      "height_end": 2.43
+    }
+  ],
+  "source_components": {
+    "sport base": 1,
+    "granular surface": 1,
+    "fine aggregate": 1,
+    "marking": 4,
+    "net upright": 2,
+    "net upright padding": 2,
+    "net tension cord": 4,
+    "net mesh": 470,
+    "net tape": 48,
+    "antenna": 16
+  },
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 486708,
+    "sha256": "2333fa81b824f1851a8730f0b96bc3ec2334717b56aa4869e753936450fc5504"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -7.0,
+      -11.0,
+      -0.11999999731779099
+    ],
+    [
+      7.0,
+      11.0,
+      3.2300000190734863
+    ]
+  ],
+  "triangles": 8128,
+  "mesh_instances": 8,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

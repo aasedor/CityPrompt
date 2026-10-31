@@ -29,9 +29,19 @@ async def ensure_admins():
         user = await db.scalar(select(User).where(User.email == email))
         if user is not None:
             if user.role not in {"admin", "cofounder"}:
-                raise RuntimeError("Bootstrap email belongs to an existing non-administrator; review account ownership manually")
+                raise RuntimeError(
+                    "Bootstrap email belongs to an existing non-administrator; review account ownership manually"
+                )
             return  # Never reset an existing administrator's password or role.
-        db.add(User(email=email, hashed_password=hash_password(password), full_name="Classroom administrator", role="admin", is_active=True))
+        db.add(
+            User(
+                email=email,
+                hashed_password=hash_password(password),
+                full_name="Classroom administrator",
+                role="admin",
+                is_active=True,
+            )
+        )
         await db.commit()
 
 

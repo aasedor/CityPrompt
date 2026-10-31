@@ -5,9 +5,14 @@ import expansion from '@/data/classroomExpansion.json';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
-import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS, LOCAL_TOWER_ASSETS, isPlaceable } from './assetRegistry';
 
 describe('canonical discovery and identity', () => {
+  it('exposes the exact twisting tower as its own editable local choice',()=>{
+    const choice=CANONICAL_CHOICES.find(c=>c.placements.some(a=>a.id==='clay_twisting_glass_sky_garden_tower'));
+    expect(choice?.option.variants?.map(v=>v.id)).toEqual(['glass_tower_twisted']);
+    expect(choice?.placements[0].kind==='object' && choice.placements[0].storeyProgram?.supportedStoreys).toEqual([20,30,40]);
+  });
   it('finds a duplex inside an infill parent and opens the matching detailed variant', () => {
     const choice = CANONICAL_CHOICES.find(c => c.option.id === 'calgary_modern_infill_house' && c.placements.some(a => a.model.variantId === 'infill_duplex'))!;
     expect(filterCanonicalChoices('building', '', 'two_home')).toContain(choice);
@@ -18,15 +23,19 @@ describe('canonical discovery and identity', () => {
   });
   it('discovers exactly the current eligible parents in each domain', () => {
     expect(UNAVAILABLE_CATALOGUE_ENTRIES).toEqual([]);
-    const roster = [...validation.entries, ...expansion.entries];
+    const roster = [...validation.entries, ...expansion.entries,
+      ...COURT_ONLY_SPORT_ASSETS.filter(isPlaceable).map(asset=>({archetype_id:String(asset.properties.green_space_archetype_id),variant_id:asset.model.variantId}))];
     const remainingLocal = LOCAL_CLAUDE_ASSETS.filter(asset =>
       !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
       && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId));
-    expect(CANONICAL_CHOICES).toHaveLength(roster.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + MANUAL_STREET_ASSETS.length + FLEXIBLE_PARK_ASSETS.length + PATHWAY_ASSETS.length + remainingLocal.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + PUBLIC_REALM_RELEASE_ASSETS.length);
+    // Three court-only cards join existing sport choices; volleyball has no other native layout.
+    expect(CANONICAL_CHOICES).toHaveLength(roster.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + PARKADE_TRIAL_ASSETS.length + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + MANUAL_STREET_ASSETS.length + FLEXIBLE_PARK_ASSETS.length + PATHWAY_ASSETS.length + remainingLocal.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + PUBLIC_REALM_RELEASE_ASSETS.length + LOCAL_TOWER_ASSETS.length - 3);
     for (const entry of roster) {
-      const choice = CANONICAL_CHOICES.find(c => c.option.id === entry.archetype_id && c.placements[0]?.model.variantId === entry.variant_id);
+      const choice = CANONICAL_CHOICES.find(c => c.placements.some(asset => asset.properties.green_space_archetype_id === entry.archetype_id && asset.model.variantId === entry.variant_id)
+        || c.option.id === entry.archetype_id && c.placements[0]?.model.variantId === entry.variant_id);
       expect(choice, entry.variant_id).toBeDefined();
-      expect(choice!.option.variants?.map(v => v.id)).toEqual([entry.variant_id]);
+      expect(choice!.option.variants?.map(v => v.id)).toContain(entry.variant_id);
+      if (!choice!.groupedVariants) expect(choice!.option.variants).toHaveLength(1);
     }
     for (const choice of CANONICAL_CHOICES) for (const asset of choice.placements) {
       expect(CATALOGUE_ASSETS).toContain(asset);

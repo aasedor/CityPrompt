@@ -39,6 +39,15 @@ export function placeAsset(id: PlaceAssetId): PlaceAsset {
 }
 export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | undefined {
   const properties = zone.properties ?? {};
+  // Older shape-first drawings retained the programme but omitted picker ID.
+  // Resolve that exact programme before the generic parent park fallback.
+  if (properties.pick_place_flexible_park && !properties.green_space_native_layout) {
+    const flexible = OBJECT_ASSETS.find(asset =>
+      asset.properties.pick_place_flexible_park === properties.pick_place_flexible_park
+      && asset.properties.green_space_archetype_id === properties.green_space_archetype_id
+      && asset.model.variantId === properties.green_space_selected_variant_id);
+    if (flexible) return flexible;
+  }
   let native = OBJECT_ASSETS.find(asset => asset.id === properties.pick_place_asset) ?? LEGACY_VALIDATION_ASSETS.find((asset): asset is PlaceAsset => asset.kind === 'object' && asset.id === properties.pick_place_asset)
     ?? LEGACY_OBJECT_LOOKUP.find(asset => asset.id === properties.pick_place_asset);
   if (native?.zoneType === 'building' && native.reshapeMode === 'fixed_native') {

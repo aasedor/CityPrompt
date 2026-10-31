@@ -20,9 +20,12 @@ async def _with_session(callback, *args):
         await engine.dispose()
 
 
-@celery_app.task(name="cityprompt.direct3d.render", acks_late=True, reject_on_worker_lost=False, max_retries=0, ignore_result=True)
+@celery_app.task(
+    name="cityprompt.direct3d.render", acks_late=True, reject_on_worker_lost=False, max_retries=0, ignore_result=True
+)
 def render_direct_3d_attempt(attempt_id: str):
     from app.services.render_attempts import execute_attempt
+
     asyncio.run(_with_session(execute_attempt, uuid.UUID(attempt_id)))
 
 
@@ -31,6 +34,7 @@ def maintain_direct_3d_attempts():
     from app.services.render_attempts import maintain_attempts
     from app.services.readiness import maintenance_key
     import redis
+
     asyncio.run(_with_session(maintain_attempts))
     # Readiness confirms the scheduler AND maintenance worker have made progress.
     with redis.from_url(get_settings().redis_url, socket_connect_timeout=2, socket_timeout=2) as client:

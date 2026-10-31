@@ -11,7 +11,8 @@ import { compileMixedCommunity3D } from '@/features/legoAssembly/communityCompil
 import { deriveCityPromptWorkflow } from '@/features/workflow/cityPromptWorkflow';
 import { advanceDerivedZoneRevision } from '@/store/undoActions';
 import { representationNotice } from './representationNotice';
-import { nativeBuildingUrl } from './nativeBuildingContract';
+import { nativeBuildingContract, nativeBuildingUrl } from './nativeBuildingContract';
+import { buildingAssetRevision, retryBuildingAssets } from './buildingAssetRecovery';
 import { automaticSiteTreesEnabled } from '@/features/siteLandscape/automaticSiteTrees';
 
 const physicalZone = (zone: SiteZone) => resolveCommunity3DKind(zone) !== null && !zone.id.startsWith('temp-');
@@ -45,7 +46,7 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   const [status, setStatus] = useState<'idle'|'updating'|'ready'|'error'>('idle');
   const [message, setMessage] = useState('');
   const [attempt, setAttempt] = useState(0);
-  const [assetError, setAssetError] = useState<{projectId:string|undefined;zoneId:string;revision:string;message:string;kind:'park'|'street'}|null>(null);
+  const [assetError, setAssetError] = useState<{projectId:string|undefined;zoneId:string;revision:string;message:string;kind:'park'|'street'|'building'}|null>(null);
   const state = useRef({ projectId, busy: false, completed: '', failed: '', force: false });
   const latest = useRef(zones);
   // Local drafts may be invalid or rejected. They remain in the editor, but
@@ -55,13 +56,14 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   useEffect(()=>{
     const onAssetError=(event:Event)=>{
       const detail=(event as CustomEvent<{zoneId:string;revision:string;message:string}>).detail;
-      const kind=event.type==='cityprompt:native-street-error'?'street':'park';
-      if(!detail || !latest.current.some(zone=>zone.id===detail.zoneId && (kind==='street'?nativeStreetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===detail.revision))return;
+      const kind=event.type==='cityprompt:native-street-error'?'street':event.type==='cityprompt:native-building-error'?'building':'park';
+      if(!detail || !latest.current.some(zone=>zone.id===detail.zoneId && (kind==='street'?nativeStreetRevision(zone):kind==='building'?buildingAssetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===detail.revision))return;
       setAssetError({projectId,...detail,kind});
     };
     window.addEventListener('cityprompt:native-park-error',onAssetError);
     window.addEventListener('cityprompt:native-street-error',onAssetError);
-    return()=>{window.removeEventListener('cityprompt:native-park-error',onAssetError);window.removeEventListener('cityprompt:native-street-error',onAssetError);};
+    window.addEventListener('cityprompt:native-building-error',onAssetError);
+    return()=>{window.removeEventListener('cityprompt:native-park-error',onAssetError);window.removeEventListener('cityprompt:native-street-error',onAssetError);window.removeEventListener('cityprompt:native-building-error',onAssetError);};
   },[projectId]);
   const candidates = persistedZones.filter(physicalZone);
   const scopeZones = persistedZones.filter(physicalScopeZone);
@@ -79,8 +81,12 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   const compiled = deriveCityPromptWorkflow(persistedZones).sceneReady;
   const canRefreshDetail = candidates.some(zone => getCommunity3DMeta(zone)?.generator === 'planned_massing'
     && !(zone.zone_type === 'building' && nativeBuildingUrl(zone)));
+  const hasInstalledMassingUpgrade = candidates.some(zone => zone.zone_type === 'building'
+    && getCommunity3DMeta(zone)?.generator === 'planned_massing' && nativeBuildingContract(zone)
+    && !nativeBuildingUrl(zone));
 
   useEffect(() => {
+    const hiddenLayers = new Set<string>(JSON.parse(visibilityKey));
     if (state.current.projectId !== projectId) {
       state.current = { projectId, busy: false, completed: '', failed: '', force: false };
       setStatus('idle'); setMessage('');
@@ -94,26 +100,26 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
       return;
     }
     if (!projectId || !eligible || saving || run.busy) return;
-    if (!run.force && compiled && (run.completed === key || !run.completed)) {
+    if (!run.force && compiled && (run.completed === key || (!run.completed && !hasInstalledMassingUpgrade))) {
       run.completed = key; run.failed = ''; setStatus('ready'); setMessage(''); return;
     }
     if (run.failed === key) return;
     const timer = window.setTimeout(async () => {
       run.busy = true; run.force = false; setStatus('updating'); setMessage('');
       try {
-        const result = await runProjectWrite(client, projectId, async () => {
+        const { result, readiness } = await runProjectWrite(client, projectId, async () => {
           // Refresh objects from the full cache, but keep the selected scenario.
           // Hidden alternatives must never occupy or invalidate its landscape.
           const currentZones = (client.getQueryData<SiteZone[]>(['site-zones', projectId]) ?? latest.current)
             .filter(zone => !zone.id.startsWith('temp-'))
-            .filter(zone => !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
+            .filter(zone => !hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
           const sources = currentZones.filter(physicalZone);
           const scope = currentZones.filter(physicalScopeZone);
           const currentBoundary = deriveCityPromptWorkflow(currentZones).activeBoundary;
-          if (!sources.length) return { plannedMasses: 0 };
+          if (!sources.length) return { result: { plannedMasses: 0 }, readiness: null };
           const result = await compileMixedCommunity3D(sources, undefined, {
             includeResidualLandscape: automaticSiteTreesEnabled(currentBoundary),
-            scopeMode: visibility?.hiddenLayers.size ? 'selection' : 'project',
+            scopeMode: hiddenLayers.size ? 'selection' : 'project',
             scopeZoneIds: scope.map(zone => zone.id),
           });
           const saved = await siteZonesApi.list(projectId);
@@ -126,18 +132,21 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
           }
           client.setQueryData(['site-zones', projectId], saved);
           const savedVisible = saved.filter(zone => !zone.id.startsWith('temp-')
-            && !visibility?.hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
-          const readiness = deriveCityPromptWorkflow(savedVisible);
-          if (!readiness.sceneReady) {
-            throw new Error(readiness.renderReason);
-          }
-          return result;
+            && !hiddenLayers.has(String(zone.properties?._imported_from ?? '')));
+          return { result, readiness: deriveCityPromptWorkflow(savedVisible) };
         });
+        // Object compilation can commit new Building representations while an
+        // applied landscape still needs manual regeneration. Refresh both caches
+        // before reporting that remaining issue so capture sees matching records.
         await Promise.all([
           client.invalidateQueries({ queryKey: ['site-zones', projectId] }),
           client.invalidateQueries({ queryKey: ['project', projectId] }),
         ]);
+        // Applying the landscape later can finish this same authored revision.
         run.completed = key;
+        if (readiness && !readiness.sceneReady) {
+          throw new Error(readiness.renderReason);
+        }
         if (state.current === run) {
           setStatus('ready');
           setMessage(result.plannedMasses ? 'Some detailed models are unavailable. Simple building volumes are shown.' : 'Your 3D scene updates automatically.');
@@ -165,10 +174,10 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
       }
     }, 700);
     return () => window.clearTimeout(timer);
-  }, [projectId, key, compiled, eligible, saving, client, attempt, candidates.length]);
+  }, [projectId, key, visibilityKey, compiled, eligible, saving, client, attempt, candidates.length, hasInstalledMassingUpgrade]);
 
-  const currentAssetError = assetError?.projectId === projectId && zones.some(zone=>zone.id===assetError?.zoneId && (assetError.kind==='street'?nativeStreetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===assetError.revision) ? assetError : null;
+  const currentAssetError = assetError?.projectId === projectId && zones.some(zone=>zone.id===assetError?.zoneId && (assetError.kind==='street'?nativeStreetRevision(zone):assetError.kind==='building'?buildingAssetRevision(zone):JSON.stringify(zone.properties?.green_space_native_layout ?? null))===assetError.revision) ? assetError : null;
   const visibleStatus = currentAssetError ? 'error' : eligible && !compiled && candidates.length > 0 && status !== 'error' ? 'updating' : status;
   return { status: visibility?.comparingPlans ? 'error' : visibleStatus, message: visibility?.comparingPlans ? 'Choose one scenario in Layers to update its 3D scene.' : currentAssetError?.message ?? (visibleStatus === 'updating' ? 'Your placed objects are being updated.' : visibleStatus === 'ready' ? representationNotice(candidates) : message), busy: !visibility?.comparingPlans && visibleStatus === 'updating', canRefreshDetail,
-    retry: () => { setAssetError(null); clearFailedNativeParkLoads(); clearFailedNativeStreetLoads(); state.current.failed = ''; state.current.completed = ''; state.current.force = true; setAttempt(value => value + 1); } };
+    retry: () => { setAssetError(null); clearFailedNativeParkLoads(); clearFailedNativeStreetLoads(); retryBuildingAssets(); state.current.failed = ''; state.current.completed = ''; state.current.force = true; setAttempt(value => value + 1); } };
 }

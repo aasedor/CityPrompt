@@ -43,6 +43,12 @@ installation.
 
 ## Quick start
 
+For the current company review, start with the
+[October 29 handoff runbook](docs/COMPANY_HANDOFF_2026-10-29.md). It explains
+the exact checkout, portable asset packet, private configuration and database
+requirements. The commands below describe the generic development stack;
+they are not a verified fresh-machine installation of the current catalogue.
+
 ~~~bash
 git lfs install
 git clone https://github.com/aasedor/CityPrompt.git
@@ -57,7 +63,9 @@ On PowerShell, create the environment file with:
 Copy-Item .env.example .env
 ~~~
 
-At minimum, set `MAPBOX_ACCESS_TOKEN` in `.env` for map tiles. AI features are
+Set `VITE_GOOGLE_MAPS_API_KEY` in `.env`; the current frontend refuses to start
+without it. Configure `GOOGLE_MAPS_API_KEY` separately for backend address and
+elevation services. Set `MAPBOX_ACCESS_TOKEN` for the fallback map tiles. AI features are
 enabled only when their corresponding keys are present. Never commit `.env` or
 paste credentials into documentation.
 
@@ -79,10 +87,15 @@ For day-to-day Windows development, including linked Git worktrees:
 .\scripts\start-local-city-prompt.ps1
 ~~~
 
-The launcher preserves the shared local database and storage containers,
-starts the API from the current worktree, starts the frontend when necessary,
-and waits for health checks. Pass `-KeepBackend` only when intentionally
-retaining an already-running API.
+The launcher preserves the shared local database and storage containers, applies
+the current additive database migrations, starts the API from the current
+worktree, and starts the frontend when necessary. Its worker consumes the
+default, image, maintenance and classroom-document queues; a managed Celery beat
+process schedules durable image recovery. It waits for `/ready`, including the
+recovery heartbeat when image jobs are enabled. Logs, PID files and the beat
+schedule stay under ignored `artifacts/local-dev/`. Pass `-KeepBackend` only
+when intentionally retaining an already-running API; workers are reused only
+when their owned process and all required queue subscriptions are verified.
 
 ## Run services without Docker
 

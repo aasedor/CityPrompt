@@ -5,6 +5,8 @@ import { CANONICAL_CHOICES, canonicalDrawing, type CanonicalSelection } from './
 import type { StreetAsset } from './assetRegistry';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
 import { isFixedNativeScene } from './fixedNativeScene';
+import { isSurfacePath } from './surfacePath';
+import { bufferPathwayToPolygon } from '@/utils/pathwayFootprint';
 
 const cache = new Map<string, StreetAsset>();
 
@@ -55,7 +57,8 @@ export function streetDesignUpdate(zone: SiteZone, asset: StreetAsset): { coordi
   const line = savedControls && savedControls.length >= 3
     ? roundAuthoredStreetRoute(controls, asset.sectionWidth, asset.properties)
     : controls;
-  return { coordinates: bufferLineToPolygon(line, asset.sectionWidth),
+  return { coordinates: isSurfacePath({zone_type:'road',properties:asset.properties})
+    ? bufferPathwayToPolygon(line,asset.sectionWidth) : bufferLineToPolygon(line, asset.sectionWidth),
     properties: { ...zone.properties, ...asset.properties, procedural_road: 0, public_realm_lego: undefined,
       plan_centerline: line, plan_route_controls: savedControls ?? undefined } };
 }

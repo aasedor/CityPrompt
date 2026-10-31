@@ -18,3 +18,5 @@ credentials*.json
 service-account*.json
 service_account*.json
 client_secret*.json
+# The documented local Google credential must never enter image layers.
+**/vertex-key.json

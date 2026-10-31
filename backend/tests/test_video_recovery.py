@@ -1,4 +1,5 @@
 """Paid video admission/recovery with real isolated PostgreSQL and mocked providers."""
+
 import asyncio
 import base64
 from datetime import timedelta
@@ -8,6 +9,8 @@ import uuid
 
 from fastapi import HTTPException
 import pytest
+from tests.test_render_attempts import isolated as render_attempt_fixture
+
 from sqlalchemy import select
 
 from app.api.v1 import video, documents, files
@@ -16,7 +19,8 @@ from app.core.security import create_project_asset_ticket, create_file_asset_tic
 from app.services.render_trial import TRIAL_KEY, check_trial_available
 from app.services.render_attempts import now
 from tests.test_omni_video import _jpeg_data_url
-from tests.test_render_attempts import isolated
+
+isolated = render_attempt_fixture  # Pytest discovers the shared fixture by this name.
 
 
 @pytest.fixture
@@ -26,24 +30,55 @@ async def pilot(isolated, monkeypatch):
     monkeypatch.setattr(video, "get_settings", lambda: settings)
     monkeypatch.setattr(video, "_validate_video_scene_revision", AsyncMock(return_value="a" * 64))
     monkeypatch.setattr(video, "seedance_runtime_error", lambda _: None)
-    provider = AsyncMock(return_value=SimpleNamespace(video_bytes=b"mock-mp4", mime_type="video/mp4", interaction_id="remote-id", request_id="remote-id", seed=7))
+    provider = AsyncMock(
+        return_value=SimpleNamespace(
+            video_bytes=b"mock-mp4", mime_type="video/mp4", interaction_id="remote-id", request_id="remote-id", seed=7
+        )
+    )
     monkeypatch.setattr(video, "request_omni_video_once", provider)
     monkeypatch.setattr(video, "request_seedance_video_once", provider)
-    monkeypatch.setattr(video, "score_video_fidelity", lambda **_: SimpleNamespace(metadata=lambda: {"fidelity_status": "drift", "fidelity_score": 0.1}))
-    monkeypatch.setattr(video, "inspect_video_media", lambda *_: {
-        "width": 1280, "height": 720, "fps": 24.0, "frame_count": 192,
-        "duration_seconds": 8.0, "duration_basis": "decoded_frames/fps"})
+    monkeypatch.setattr(
+        video,
+        "score_video_fidelity",
+        lambda **_: SimpleNamespace(metadata=lambda: {"fidelity_status": "drift", "fidelity_score": 0.1}),
+    )
+    monkeypatch.setattr(
+        video,
+        "inspect_video_media",
+        lambda *_: {
+            "width": 1280,
+            "height": 720,
+            "fps": 24.0,
+            "frame_count": 192,
+            "duration_seconds": 8.0,
+            "duration_basis": "decoded_frames/fps",
+        },
+    )
     saved = {}
+
     async def upload(key, value, _mime):
         saved[key] = value
+
     monkeypatch.setattr(documents, "_upload_to_storage", upload)
     async with f.sessions() as db:
         project = await db.get(Project, f.project.id)
-        project.metadata_ = {TRIAL_KEY: {"user_id": str(f.user.id), "image_limit": 10,
-            "video_limit": 3, "image_requests": {}, "video_requests": {}}}
+        project.metadata_ = {
+            TRIAL_KEY: {
+                "user_id": str(f.user.id),
+                "image_limit": 10,
+                "video_limit": 3,
+                "image_requests": {},
+                "video_requests": {},
+            }
+        }
         await db.commit()
-    request = video.VideoGenerateRequest(project_id=f.project.id, request_id=uuid.uuid4(), confirm_paid_submission=True,
-        guide_frame_base64=_jpeg_data_url(), route_points=[{"x": .2, "y": .8}, {"x": .8, "y": .2}])
+    request = video.VideoGenerateRequest(
+        project_id=f.project.id,
+        request_id=uuid.uuid4(),
+        confirm_paid_submission=True,
+        guide_frame_base64=_jpeg_data_url(),
+        route_points=[{"x": 0.2, "y": 0.8}, {"x": 0.8, "y": 0.2}],
+    )
     return SimpleNamespace(**vars(f), request=request, video_provider=provider, saved=saved)
 
 
@@ -56,17 +91,20 @@ async def generate(f, request=None):
 @pytest.mark.asyncio
 async def test_scene_edit_during_control_upload_stops_before_video_spend(pilot, monkeypatch):
     f = pilot
-    monkeypatch.setattr(video, '_validate_video_scene_revision', AsyncMock(side_effect=[
-        'a' * 64, HTTPException(409, 'The scene changed while the source was being saved.')]))
+    monkeypatch.setattr(
+        video,
+        "_validate_video_scene_revision",
+        AsyncMock(side_effect=["a" * 64, HTTPException(409, "The scene changed while the source was being saved.")]),
+    )
     with pytest.raises(HTTPException) as exc:
         await generate(f)
     assert exc.value.status_code == 409
     f.video_provider.assert_not_awaited()
     async with f.sessions() as db:
         assert (await db.get(User, f.user.id)).render_credits == 1000
-        entry = (await db.get(Project, f.project.id)).metadata_['video_pilot_attempts'][0]
-        assert entry['status'] == 'preflight_failed'
-        assert not entry.get('provider_call_started_at')
+        entry = (await db.get(Project, f.project.id)).metadata_["video_pilot_attempts"][0]
+        assert entry["status"] == "preflight_failed"
+        assert not entry.get("provider_call_started_at")
 
 
 @pytest.mark.asyncio
@@ -74,12 +112,15 @@ async def test_scene_edit_during_control_upload_stops_before_video_spend(pilot, 
 async def test_scene_edit_persists_reference_bytes_and_replay_cannot_swap_them(pilot, reference_mode):
     f = pilot
     frames = [_jpeg_data_url(), _jpeg_data_url(width=1920, height=1080)]
-    request = f.request.model_copy(update={
-        "control_mode": "preview_video", "omni_reference_mode": reference_mode,
-        "route_keyframes_base64": frames,
-        "preview_video_base64": base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode(),
-        "preview_video_mime_type": "video/webm",
-    })
+    request = f.request.model_copy(
+        update={
+            "control_mode": "preview_video",
+            "omni_reference_mode": reference_mode,
+            "route_keyframes_base64": frames,
+            "preview_video_base64": base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode(),
+            "preview_video_mime_type": "video/webm",
+        }
+    )
     result = await generate(f, request)
     assert result.attempt.status == "complete"
     payload = f.video_provider.await_args.kwargs["payload"]
@@ -111,7 +152,8 @@ async def test_pre_reference_mode_receipt_remains_replayable_without_a_new_paid_
         entry = dict(meta["video_pilot_attempts"][0])
         entry.pop("omni_reference_mode")
         entry["request_sha256"] = video.revision_sha256(
-            f.request.model_dump(mode="json", exclude={"omni_reference_mode"}))
+            f.request.model_dump(mode="json", exclude={"omni_reference_mode"})
+        )
         meta["video_pilot_attempts"] = [entry]
         project.metadata_ = meta
         await db.commit()
@@ -134,7 +176,9 @@ async def test_concurrent_duplicate_video_submits_pay_once_and_recover_after_new
         p = await db.get(Project, f.project.id)
         assert len(p.metadata_[TRIAL_KEY]["video_requests"]) == 1
     with pytest.raises(HTTPException) as error:
-        await generate(f, f.request.model_copy(update={"scene_brief": "A different camera design request, using the same key."}))
+        await generate(
+            f, f.request.model_copy(update={"scene_brief": "A different camera design request, using the same key."})
+        )
     assert error.value.status_code == 409
     f.video_provider.assert_awaited_once()
 
@@ -175,8 +219,11 @@ async def test_legacy_request_without_character_defaults_replays_exactly_once(pi
         for key in list(entry):
             if key.startswith("character_reference_") or key in old_prompt_fields:
                 entry.pop(key)
-        entry["request_sha256"] = video.revision_sha256(f.request.model_dump(mode="json",
-            exclude={"character_reference_base64", "character_reference_mime_type"} | old_prompt_fields))
+        entry["request_sha256"] = video.revision_sha256(
+            f.request.model_dump(
+                mode="json", exclude={"character_reference_base64", "character_reference_mime_type"} | old_prompt_fields
+            )
+        )
         meta["video_pilot_attempts"] = [entry]
         project.metadata_ = meta
         await db.commit()
@@ -191,15 +238,32 @@ async def test_legacy_request_without_character_defaults_replays_exactly_once(pi
 async def test_four_second_character_edit_saves_exact_private_reference_and_replays(pilot, monkeypatch):
     from tests.test_people_video import _reference
     import hashlib
+
     f = pilot
-    monkeypatch.setattr(video, "inspect_video_media", lambda *_: {
-        "width": 1280, "height": 720, "fps": 24.0, "frame_count": 96,
-        "duration_seconds": 4.0, "duration_basis": "decoded_frames/fps"})
+    monkeypatch.setattr(
+        video,
+        "inspect_video_media",
+        lambda *_: {
+            "width": 1280,
+            "height": 720,
+            "fps": 24.0,
+            "frame_count": 96,
+            "duration_seconds": 4.0,
+            "duration_basis": "decoded_frames/fps",
+        },
+    )
     preview = base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
-    request = video.VideoGenerateRequest.model_validate({**f.request.model_dump(),
-        "control_mode": "preview_video", "duration_seconds": 4,
-        "preview_video_base64": preview, "preview_video_mime_type": "video/webm",
-        "character_reference_base64": _reference(), "character_reference_mime_type": "image/png"})
+    request = video.VideoGenerateRequest.model_validate(
+        {
+            **f.request.model_dump(),
+            "control_mode": "preview_video",
+            "duration_seconds": 4,
+            "preview_video_base64": preview,
+            "preview_video_mime_type": "video/webm",
+            "character_reference_base64": _reference(),
+            "character_reference_mime_type": "image/png",
+        }
+    )
     async with f.sessions() as db:
         user = await db.get(User, f.user.id)
         preflight = await video.preflight_video(request, user, db)
@@ -219,7 +283,9 @@ async def test_four_second_character_edit_saves_exact_private_reference_and_repl
         assert entry["character_reference_height"] == 128
         assert entry["character_reference_role"] == "identity_appearance"
         assert entry["reference_image_count"] == 1
-        assert f.saved[entry["character_reference_url"].removeprefix("/api/v1/files/")] == base64.b64decode(_reference())
+        assert f.saved[entry["character_reference_url"].removeprefix("/api/v1/files/")] == base64.b64decode(
+            _reference()
+        )
         assert "character_reference_base64" not in entry
         assert entry["request_sha256"] == video.revision_sha256(request.model_dump(mode="json"))
         control = hashlib.sha256()
@@ -246,9 +312,14 @@ async def test_four_second_character_edit_saves_exact_private_reference_and_repl
 async def test_invalid_character_reference_never_reserves_or_contacts_provider(pilot):
     f = pilot
     preview = base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
-    request = f.request.model_copy(update={"control_mode": "preview_video",
-        "preview_video_base64": preview, "preview_video_mime_type": "video/webm",
-        "character_reference_base64": "not an image"})
+    request = f.request.model_copy(
+        update={
+            "control_mode": "preview_video",
+            "preview_video_base64": preview,
+            "preview_video_mime_type": "video/webm",
+            "character_reference_base64": "not an image",
+        }
+    )
     with pytest.raises(HTTPException, match="base64"):
         await generate(f, request)
     f.video_provider.assert_not_awaited()
@@ -268,12 +339,32 @@ async def test_video_allowance_spans_providers_and_counts_failure(pilot):
     assert (await generate(f)).attempt.status == "failed"
     f.video_provider.side_effect = None
     preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
-    await generate(f, f.request.model_copy(update={"request_id": uuid.uuid4(), "provider": "seedance_mini",
-        "control_mode": "preview_video", "preview_video_base64": preview, "preview_video_mime_type": "video/webm"}))
+    await generate(
+        f,
+        f.request.model_copy(
+            update={
+                "request_id": uuid.uuid4(),
+                "provider": "seedance_mini",
+                "control_mode": "preview_video",
+                "preview_video_base64": preview,
+                "preview_video_mime_type": "video/webm",
+            }
+        ),
+    )
     await generate(f, f.request.model_copy(update={"request_id": uuid.uuid4()}))
     with pytest.raises(HTTPException) as error:
-        await generate(f, f.request.model_copy(update={"request_id": uuid.uuid4(), "provider": "seedance_mini",
-            "control_mode": "preview_video", "preview_video_base64": preview, "preview_video_mime_type": "video/webm"}))
+        await generate(
+            f,
+            f.request.model_copy(
+                update={
+                    "request_id": uuid.uuid4(),
+                    "provider": "seedance_mini",
+                    "control_mode": "preview_video",
+                    "preview_video_base64": preview,
+                    "preview_video_mime_type": "video/webm",
+                }
+            ),
+        )
     assert error.value.status_code == 409
     assert f.video_provider.await_count == 3
     async with f.sessions() as db:
@@ -287,10 +378,12 @@ async def test_video_allowance_spans_providers_and_counts_failure(pilot):
 async def test_paid_pixels_survive_late_completion_failure(pilot, monkeypatch):
     f = pilot
     real_update = video._update_attempt
+
     async def fail_complete(db, project_id, attempt_id, **changes):
         if changes.get("status") == "complete":
             raise RuntimeError("simulated interruption after retained pixels")
         return await real_update(db, project_id, attempt_id, **changes)
+
     monkeypatch.setattr(video, "_update_attempt", fail_complete)
     with pytest.raises(HTTPException):
         await generate(f)
@@ -304,9 +397,11 @@ async def test_paid_pixels_survive_late_completion_failure(pilot, monkeypatch):
 @pytest.mark.asyncio
 async def test_paid_interaction_receipt_survives_download_failure(pilot):
     f = pilot
+
     async def created_but_download_failed(**kwargs):
         await kwargs["on_interaction"]("saved-google-interaction")
         raise RuntimeError("simulated media download failure")
+
     f.video_provider.side_effect = created_but_download_failed
     with pytest.raises(HTTPException):
         await generate(f)
@@ -327,8 +422,9 @@ async def test_interrupted_submission_is_visible_and_never_replayed(pilot):
         p = await db.get(Project, f.project.id)
         meta = dict(p.metadata_)
         entry = dict(meta["video_pilot_attempts"][0])
-        entry.update(status="generating", video_url=None,
-                     provider_call_started_at=(now() - timedelta(days=1)).isoformat())
+        entry.update(
+            status="generating", video_url=None, provider_call_started_at=(now() - timedelta(days=1)).isoformat()
+        )
         meta["video_pilot_attempts"] = [entry]
         p.metadata_ = meta
         await db.commit()
@@ -385,9 +481,15 @@ async def test_custom_video_detail_reaches_preflight_provider_and_saved_history_
     f = pilot
     direction = "A woman walks her dog on the existing sidewalk."
     preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
-    request = f.request.model_copy(update={"control_mode": "preview_video",
-        "preview_video_base64": preview, "preview_video_mime_type": "video/webm", "custom_prompt": direction,
-        "use_custom_prompt_only": True})
+    request = f.request.model_copy(
+        update={
+            "control_mode": "preview_video",
+            "preview_video_base64": preview,
+            "preview_video_mime_type": "video/webm",
+            "custom_prompt": direction,
+            "use_custom_prompt_only": True,
+        }
+    )
     async with f.sessions() as db:
         user = await db.get(User, f.user.id)
         check = await video.preflight_video(request, user, db)
@@ -414,28 +516,44 @@ async def test_saved_people_actions_reach_custom_only_preflight_provider_and_ide
     f = pilot
     async with f.sessions() as db:
         project = await db.get(Project, f.project.id)
-        project.metadata_ = {**project.metadata_, 'scene_details': {
-            'revision': 3, 'props': [{'id': 'person', 'variant': 'people-pilot-commuter',
-                                     'people_action': 'reading'}]}}
+        project.metadata_ = {
+            **project.metadata_,
+            "scene_details": {
+                "revision": 3,
+                "props": [{"id": "person", "variant": "people-pilot-commuter", "people_action": "reading"}],
+            },
+        }
         await db.commit()
-    preview = 'data:video/webm;base64,' + base64.b64encode(b'\x1aE\xdf\xa3' + b'0' * 1024).decode()
-    request = f.request.model_copy(update={'control_mode': 'preview_video', 'details_revision': 3,
-        'preview_video_base64': preview, 'preview_video_mime_type': 'video/webm',
-        'custom_prompt': 'Warm sunset.', 'use_custom_prompt_only': True})
+    preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
+    request = f.request.model_copy(
+        update={
+            "control_mode": "preview_video",
+            "details_revision": 3,
+            "preview_video_base64": preview,
+            "preview_video_mime_type": "video/webm",
+            "custom_prompt": "Warm sunset.",
+            "use_custom_prompt_only": True,
+        }
+    )
     async with f.sessions() as db:
         user = await db.get(User, f.user.id)
         preflight = await video.preflight_video(request, user, db)
     f.video_provider.assert_not_awaited()
-    assert 'reading' in preflight.prompt_preview and 'SAVED PEOPLE ACTIONS:' in preflight.prompt_preview
-    assert 'offscreen' in preflight.prompt_preview
+    assert "reading" in preflight.prompt_preview and "SAVED PEOPLE ACTIONS:" in preflight.prompt_preview
+    assert "offscreen" in preflight.prompt_preview
     result = await generate(f, request)
     assert result.attempt.prompt == preflight.prompt_preview
-    sent = f.video_provider.call_args.kwargs['payload']['input'][-1]['text']
+    sent = f.video_provider.call_args.kwargs["payload"]["input"][-1]["text"]
     assert sent == preflight.prompt_preview
     async with f.sessions() as db:
         project = await db.get(Project, f.project.id)
-        project.metadata_ = {**project.metadata_, 'scene_details': {
-            'revision': 4, 'props': [{'variant': 'people-pilot-commuter', 'people_action': 'walking'}]}}
+        project.metadata_ = {
+            **project.metadata_,
+            "scene_details": {
+                "revision": 4,
+                "props": [{"variant": "people-pilot-commuter", "people_action": "walking"}],
+            },
+        }
         await db.commit()
     replay = await generate(f, request)
     assert replay.attempt.id == result.attempt.id
@@ -449,9 +567,14 @@ async def test_no_details_capture_cannot_buy_after_person_added_but_existing_rec
     original = await generate(f)
     async with f.sessions() as db:
         project = await db.get(Project, f.project.id)
-        project.metadata_ = {**project.metadata_, 'scene_details': {
-            'version': 1, 'revision': 1, 'props': [{'id': 'person',
-                'variant': 'people-pilot-commuter', 'people_action': 'reading'}]}}
+        project.metadata_ = {
+            **project.metadata_,
+            "scene_details": {
+                "version": 1,
+                "revision": 1,
+                "props": [{"id": "person", "variant": "people-pilot-commuter", "people_action": "reading"}],
+            },
+        }
         credits = (await db.get(User, f.user.id)).render_credits
         await db.commit()
     async with f.sessions() as db:
@@ -460,7 +583,7 @@ async def test_no_details_capture_cannot_buy_after_person_added_but_existing_rec
             await video.preflight_video(f.request, user, db)
         assert preflight_error.value.status_code == 409
     with pytest.raises(HTTPException) as generate_error:
-        await generate(f, f.request.model_copy(update={'request_id': uuid.uuid4()}))
+        await generate(f, f.request.model_copy(update={"request_id": uuid.uuid4()}))
     assert generate_error.value.status_code == 409
     replay = await generate(f)
     assert replay.attempt.id == original.attempt.id
@@ -469,18 +592,26 @@ async def test_no_details_capture_cannot_buy_after_person_added_but_existing_rec
     async with f.sessions() as db:
         assert (await db.get(User, f.user.id)).render_credits == credits
         project = await db.get(Project, f.project.id)
-        assert len(project.metadata_['video_pilot_attempts']) == 1
-        assert len(project.metadata_[TRIAL_KEY]['video_requests']) == 1
+        assert len(project.metadata_["video_pilot_attempts"]) == 1
+        assert len(project.metadata_[TRIAL_KEY]["video_requests"]) == 1
 
 
 @pytest.mark.asyncio
 async def test_invalid_omni_recording_is_refused_without_admission_or_paid_call(pilot, monkeypatch):
     f = pilot
-    monkeypatch.setattr(video, "inspect_video_media", lambda *_: {"width": 1280,
-        "height": 720, "fps": 24.0, "frame_count": 48, "duration_seconds": 2.0})
+    monkeypatch.setattr(
+        video,
+        "inspect_video_media",
+        lambda *_: {"width": 1280, "height": 720, "fps": 24.0, "frame_count": 48, "duration_seconds": 2.0},
+    )
     preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
-    request = f.request.model_copy(update={"control_mode": "preview_video",
-        "preview_video_base64": preview, "preview_video_mime_type": "video/webm"})
+    request = f.request.model_copy(
+        update={
+            "control_mode": "preview_video",
+            "preview_video_base64": preview,
+            "preview_video_mime_type": "video/webm",
+        }
+    )
     with pytest.raises(HTTPException, match="route recording"):
         await generate(f, request)
     f.video_provider.assert_not_awaited()
@@ -492,7 +623,9 @@ async def test_invalid_omni_recording_is_refused_without_admission_or_paid_call(
 @pytest.mark.asyncio
 async def test_output_check_failure_keeps_paid_pixels_and_never_resubmits(pilot, monkeypatch):
     f = pilot
-    monkeypatch.setattr(video, "inspect_video_media", lambda *_: (_ for _ in ()).throw(ValueError("Cannot decode result")))
+    monkeypatch.setattr(
+        video, "inspect_video_media", lambda *_: (_ for _ in ()).throw(ValueError("Cannot decode result"))
+    )
     result = await generate(f)
     assert result.attempt.status == "complete"
     assert result.attempt.video_url
@@ -505,8 +638,13 @@ async def test_output_check_failure_keeps_paid_pixels_and_never_resubmits(pilot,
 async def test_saved_preview_replay_does_not_depend_on_new_codec_checks(pilot, monkeypatch):
     f = pilot
     preview = "data:video/webm;base64," + base64.b64encode(b"\x1aE\xdf\xa3" + b"0" * 1024).decode()
-    request = f.request.model_copy(update={"control_mode": "preview_video",
-        "preview_video_base64": preview, "preview_video_mime_type": "video/webm"})
+    request = f.request.model_copy(
+        update={
+            "control_mode": "preview_video",
+            "preview_video_base64": preview,
+            "preview_video_mime_type": "video/webm",
+        }
+    )
     original = await generate(f, request)
     monkeypatch.setattr(video, "inspect_video_media", lambda *_: (_ for _ in ()).throw(ValueError("Codec unavailable")))
     assert (await generate(f, request)).attempt.id == original.attempt.id
@@ -555,7 +693,11 @@ async def test_real_membership_saved_video_private_controls_and_revocation(pilot
         await db.delete(editor_share)
         await db.commit()
         for endpoint in [files.get_file, files.head_file]:
-            for auth in [dict(user=requester), dict(user=None, asset_ticket=project_ticket), dict(user=None, file_ticket=file_ticket)]:
+            for auth in [
+                dict(user=requester),
+                dict(user=None, asset_ticket=project_ticket),
+                dict(user=None, file_ticket=file_ticket),
+            ]:
                 with pytest.raises(HTTPException) as exc:
                     await endpoint(output, db=db, **auth)
                 assert exc.value.status_code == 403

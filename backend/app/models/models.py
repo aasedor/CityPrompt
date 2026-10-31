@@ -33,6 +33,9 @@ class User(Base):
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=True)
     full_name: Mapped[str] = mapped_column(String(255), nullable=True)
     oauth_provider: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    oauth_subject: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    session_version: Mapped[int] = mapped_column(Integer, default=0, server_default="0", nullable=False)
+    reset_nonce_hash: Mapped[str | None] = mapped_column(String(64), nullable=True)
     role: Mapped[str] = mapped_column(
         Enum("viewer", "editor", "admin", "cofounder", name="user_role"),
         default="editor",
@@ -45,6 +48,22 @@ class User(Base):
 
     # Relationships
     projects: Mapped[list["Project"]] = relationship(back_populates="owner", cascade="all, delete-orphan")
+
+    __table_args__ = (UniqueConstraint("oauth_provider", "oauth_subject", name="uq_users_oauth_identity"),)
+
+
+class UserRefreshSession(Base):
+    """One independently rotating refresh credential per browser sign-in."""
+
+    __tablename__ = "user_refresh_sessions"
+
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    token_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    session_version: Mapped[int] = mapped_column(Integer, nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
 
 
 class Project(Base):
@@ -175,6 +194,8 @@ class Document(Base):
         Enum("pending", "processing", "completed", "failed", name="processing_status"),
         default="pending",
     )
+    # Added by the preserved 022_document_processing_task migration.
+    processing_task_id: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
     extracted_data: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
     uploaded_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)

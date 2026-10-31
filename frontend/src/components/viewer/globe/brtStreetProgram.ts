@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import type { StreetRouteStation } from './nativeStreetPilot';
+import { MAX_REPEATABLE_STREET_LENGTH_M } from './streetRoutePolicy';
 
 export interface BrtStop { id: string; stationM: number }
 export const BRT_VARIANT = 'brt_bus_rapid_transit_corridor_v0';
@@ -16,7 +17,7 @@ export function brtRouteProblem(route:StreetRouteStation[], stops:unknown):strin
   if(!Array.isArray(stops) || stops.length>8)return 'BRT stops must be a list of at most eight selected positions.';
   if(route.length<2)return 'Draw a BRT route with two endpoints.';
   const a=route[0],b=route[route.length-1],dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy);
-  if(!Number.isFinite(length) || length<100-.01 || length>480+.01)return 'BRT needs a straight route 100–480 m long.';
+  if(!Number.isFinite(length) || length<100-.01 || length>MAX_REPEATABLE_STREET_LENGTH_M+.01)return `BRT needs a straight route 100–${MAX_REPEATABLE_STREET_LENGTH_M} m long.`;
   let previous=-1;
   for(const p of route){
     const along=((p.x-a.x)*dx+(p.y-a.y)*dy)/length;

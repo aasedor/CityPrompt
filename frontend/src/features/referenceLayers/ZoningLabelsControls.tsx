@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { ChevronDown, ExternalLink, Map as MapIcon } from 'lucide-react';
 import { ZONING_SOURCE } from './zoningLabels';
 import { zoningColor } from './zoningAppearance';
+import { CALGARY_COLOUR_SOURCE } from './calgaryBylaw';
 import type { ZoningLabelsState } from './useZoningLabels';
 
 export function ZoningLabelsControls({ state, onInspect }: { state: ZoningLabelsState; onInspect?: (id: string) => void }) {
@@ -34,6 +35,7 @@ export function ZoningLabelsControls({ state, onInspect }: { state: ZoningLabels
         <label className="flex min-h-11 cursor-pointer items-center gap-2 text-xs"><input type="checkbox" className="h-4 w-4 accent-[#37594b]" checked={state.labels} onChange={state.toggle} />District labels</label>
         <label className="col-span-2 flex min-h-11 cursor-pointer items-center gap-2 text-xs"><input type="checkbox" className="h-4 w-4 accent-[#37594b]" checked={state.fill} onChange={state.toggleFill} />Colour fills</label>
       </div>
+      {state.hasBoundary && <label className="flex min-h-11 cursor-pointer items-center gap-2 text-xs"><input type="checkbox" className="h-4 w-4 accent-[#37594b]" checked={state.clipToSite} onChange={event => state.setClipToSite(event.target.checked)} />Only show zones within site boundary</label>}
       {state.fill && <label className="block text-xs">
         <span className="flex justify-between gap-2"><span>Fill opacity</span><span className="tabular-nums text-[#5c554d]">{Math.round(state.fillOpacity * 100)}%</span></span>
         <input aria-label="Fill opacity" type="range" min="0" max="100" step="1" value={Math.round(state.fillOpacity * 100)} onChange={event => state.setFillOpacity(Number(event.target.value) / 100)} className="h-8 w-full cursor-pointer accent-[#37594b]" />
@@ -42,7 +44,7 @@ export function ZoningLabelsControls({ state, onInspect }: { state: ZoningLabels
       {state.loading && <p role="status" className="text-xs">Loading Calgary zoning…</p>}
       {state.error && <div role="alert" className="rounded-xl border border-amber-200 bg-amber-50 p-2 text-xs text-amber-950"><p>{state.error.message}</p><button className="min-h-11 font-semibold underline underline-offset-2" onClick={state.retry}>Retry zoning data</button></div>}
       {!state.hasBoundary && <p className="text-xs">Exploring a 1 km square around the map centre. Pan to explore another area; zoning updates after you stop moving.</p>}
-      {state.data && <p role="status" className="text-xs font-semibold">{state.data.districts.length ? `${state.data.districts.length} zoning areas ${state.hasBoundary ? 'within your site' : 'in this area'}` : state.hasBoundary ? 'No published zoning areas intersect this boundary.' : 'No published zoning areas in this map area.'}</p>}
+      {state.data && <p role="status" className="text-xs font-semibold">{state.data.districts.length ? `${state.data.districts.length} zoning areas ${state.hasBoundary ? state.clipToSite ? 'within your site' : 'in and around your site' : 'in this area'}` : state.hasBoundary && state.clipToSite ? 'No published zoning areas intersect this boundary.' : 'No published zoning areas in this map area.'}</p>}
       {state.data?.districts.length ? <p className="text-xs text-[#37594b]">Click a coloured zoning area to explore permitted and discretionary catalogue buildings and parks. Hide policy maps to inspect zoning beneath them.</p> : null}
       {guide.length > 0 && <details open className="group rounded-xl border border-[#151515]/15 bg-white/80">
         <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-xl px-3 py-2 text-xs font-semibold hover:bg-[#edf2ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#151515] [&::-webkit-details-marker]:hidden"><span>District legend ({guide.length})</span><ChevronDown aria-hidden="true" size={15} className="shrink-0 group-open:rotate-180" /></summary>
@@ -54,7 +56,7 @@ export function ZoningLabelsControls({ state, onInspect }: { state: ZoningLabels
           </div>)}
         </dl>
       </details>}
-      <p className="text-[10px] leading-relaxed text-[#5c554d]">City district codes · CityPrompt presentation colours. Proposed studies have separate layer controls.</p>
+      <p className="text-[10px] leading-relaxed text-[#5c554d]"><a href={CALGARY_COLOUR_SOURCE} target="_blank" rel="noreferrer" className="underline underline-offset-2">City of Calgary land-use class colours</a>. Proposed studies have separate layer controls.</p>
       <a className="flex min-h-11 items-center gap-2 border-t border-[#151515]/10 pt-2 text-[10px] leading-relaxed text-[#5c554d] underline decoration-[#151515]/30 underline-offset-2 hover:text-[#151515]" href={ZONING_SOURCE} target="_blank" rel="noreferrer"><span>Calgary land-use districts{state.data ? ` · loaded ${state.data.loadedAt.slice(0, 10)}` : ''}</span><ExternalLink aria-hidden="true" size={12} className="shrink-0" /></a>
     </>}
   </section>;

@@ -28,7 +28,9 @@ def sign_candidate(candidate: dict, building_id: str) -> dict:
 
 def verified_candidate(candidate: dict, building_id: str) -> bool:
     signature = candidate.get("_signature")
-    return isinstance(signature, str) and hmac.compare_digest(signature, sign_candidate(candidate, building_id)["_signature"])
+    return isinstance(signature, str) and hmac.compare_digest(
+        signature, sign_candidate(candidate, building_id)["_signature"]
+    )
 
 
 def plain(value: str) -> str:
@@ -38,9 +40,14 @@ def plain(value: str) -> str:
 def trusted_image_url(url: str) -> bool:
     try:
         parts = urlsplit(url)
-        return (parts.scheme == "https" and parts.hostname in {"upload.wikimedia.org", "thumb.wikimedia.org"}
-                and parts.port in (None, 443) and not parts.username and not parts.password
-                and parts.path.startswith("/wikipedia/commons/"))
+        return (
+            parts.scheme == "https"
+            and parts.hostname in {"upload.wikimedia.org", "thumb.wikimedia.org"}
+            and parts.port in (None, 443)
+            and not parts.username
+            and not parts.password
+            and parts.path.startswith("/wikipedia/commons/")
+        )
     except ValueError:
         return False
 
@@ -50,7 +57,10 @@ def commons_candidate(page: dict) -> dict | None:
     if info.get("mime") not in {"image/jpeg", "image/png", "image/tiff"}:
         return None
     metadata = info.get("extmetadata") or {}
-    get = lambda key: plain(metadata.get(key, {}).get("value", ""))
+
+    def get(key):
+        return plain(metadata.get(key, {}).get("value", ""))
+
     license_name = get("LicenseShortName")
     # Use known reusable licences; incomplete metadata is not an importable result.
     if not (license_name in {"Public domain", "CC0"} or license_name.startswith(("CC BY ", "CC BY-SA "))):
@@ -67,21 +77,30 @@ def commons_candidate(page: dict) -> dict | None:
     return {
         "id": hashlib.sha256(identity.encode()).hexdigest()[:24],
         "title": plain(page.get("title", "")).removeprefix("File:"),
-        "image_url": image_url, "source_url": source_url,
-        "license": license_name, "license_url": get("LicenseUrl"),
-        "author": get("Artist"), "description": get("ImageDescription"),
-        "source_sha1": info.get("sha1"), "provider": "wikimedia_commons",
+        "image_url": image_url,
+        "source_url": source_url,
+        "license": license_name,
+        "license_url": get("LicenseUrl"),
+        "author": get("Artist"),
+        "description": get("ImageDescription"),
+        "source_sha1": info.get("sha1"),
+        "provider": "wikimedia_commons",
     }
 
 
 async def search_building_views(query: str, view: str) -> list[dict]:
     # Quote the landmark so search operators in student input cannot broaden it.
-    query = " ".join(query.replace('"', ' ').split())
+    query = " ".join(query.replace('"', " ").split())
     params = {
-        "action": "query", "format": "json", "generator": "search",
+        "action": "query",
+        "format": "json",
+        "generator": "search",
         "gsrsearch": f'intitle:"{query}" {VIEW_TERMS[view]} filetype:bitmap',
-        "gsrnamespace": 6, "gsrlimit": 20, "prop": "imageinfo",
-        "iiprop": "url|size|mime|extmetadata|sha1", "iiurlwidth": 1280,
+        "gsrnamespace": 6,
+        "gsrlimit": 20,
+        "prop": "imageinfo",
+        "iiprop": "url|size|mime|extmetadata|sha1",
+        "iiurlwidth": 1280,
         "iiextmetadatafilter": "LicenseShortName|LicenseUrl|Artist|ImageDescription",
     }
     async with httpx.AsyncClient(timeout=25, headers=HEADERS, follow_redirects=False) as client:

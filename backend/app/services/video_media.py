@@ -1,4 +1,5 @@
 """Bounded local decoding; never contacts a video provider."""
+
 from __future__ import annotations
 
 import math
@@ -34,18 +35,28 @@ def inspect_video_media(data: bytes, mime_type: str) -> dict:
                     raise ValueError("The decoded video exceeds the bounded inspection limit.")
             if count < 2 or (math.isfinite(declared_frames) and declared_frames > count + 1):
                 raise ValueError("The video could not be decoded completely.")
-            return {"width": dimensions[0], "height": dimensions[1], "fps": round(fps, 4),
-                    "frame_count": count, "duration_seconds": round(count / fps, 4),
-                    "duration_basis": "decoded_frames/fps"}
+            return {
+                "width": dimensions[0],
+                "height": dimensions[1],
+                "fps": round(fps, 4),
+                "frame_count": count,
+                "duration_seconds": round(count / fps, 4),
+                "duration_basis": "decoded_frames/fps",
+            }
         finally:
             capture.release()
 
 
 def validate_omni_source_media(media: dict, *, expected_seconds: int) -> None:
     """Require the deterministic 24 fps route clip, not just a plausible header."""
-    if (media["width"] < 640 or media["height"] < 360
-            or abs(media["fps"] - 24) > .1
-            or abs(media["duration_seconds"] - expected_seconds) > .1
-            or abs(media["frame_count"] - expected_seconds * 24) > 1):
+    if (
+        media["width"] < 640
+        or media["height"] < 360
+        or abs(media["fps"] - 24) > 0.1
+        or abs(media["duration_seconds"] - expected_seconds) > 0.1
+        or abs(media["frame_count"] - expected_seconds * 24) > 1
+    ):
         duration_label = "four-second" if expected_seconds == 4 else "eight-second"
-        raise ValueError(f"The route recording must be a complete {duration_label}, 24 fps video at least 640×360. Re-capture the free preview.")
+        raise ValueError(
+            f"The route recording must be a complete {duration_label}, 24 fps video at least 640×360. Re-capture the free preview."
+        )

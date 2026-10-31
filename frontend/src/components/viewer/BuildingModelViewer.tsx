@@ -13,6 +13,8 @@ import { Bounds, Center, Environment, Html, OrbitControls, useGLTF, useProgress 
 import { Loader2, X } from 'lucide-react';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
+import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
+import { retainResourceForDeferredDisposal } from './globe/strictModeResourceDisposal';
 import {
   disposeArchitecturalCloneMaterials,
   prepareArchitecturalClone,
@@ -23,14 +25,17 @@ function Model({ url }: { url: string }) {
   const { gl } = useThree();
   const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
   const { scene } = useGLTF(url, true, true, extendLoader);
+  const buildingOnly=useMemo(()=>prepareBuildingOnlyScene(scene,url),[scene,url]);
+  useEffect(()=>retainResourceForDeferredDisposal(buildingOnly,
+    value=>value.ownedGeometries.forEach(geometry=>geometry.dispose())),[buildingOnly]);
   const model = useMemo(() => {
-    const cloned = prepareArchitecturalClone(scene, {
+    const cloned = prepareArchitecturalClone(buildingOnly.clone, {
       renderOrder: 0,
       maxAnisotropy: gl.capabilities.getMaxAnisotropy(),
     });
     setArchitecturalGlazingLod(cloned, 'near');
     return cloned;
-  }, [gl, scene]);
+  }, [gl, buildingOnly]);
   useEffect(() => () => disposeArchitecturalCloneMaterials(model), [model]);
   return <primitive object={model} />;
 }

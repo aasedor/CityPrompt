@@ -311,8 +311,13 @@ def _cached_component(roads: tuple[Road, ...], snap_tolerance: float = 1.5):
 def network_snapshot(source_json: str):
     """WGS84 zone adapter. Explicit opt-in avoids rewriting clipped plan roads."""
     sources = json.loads(source_json)
-    eligible = [s for s in sources if s.get("properties", {}).get("procedural_road") == 1
-                and s['properties'].get('road_selected_variant_id') not in {'student_elevated_garden_rail_v1','skytrain_elevated_corridor_v0','elevated_rail_transit_corridor_v0'}]
+    eligible = [
+        s
+        for s in sources
+        if s.get("properties", {}).get("procedural_road") == 1
+        and s["properties"].get("road_selected_variant_id")
+        not in {"student_elevated_garden_rail_v1", "skytrain_elevated_corridor_v0", "elevated_rail_transit_corridor_v0"}
+    ]
     if not eligible:
         return dict(
             version=1,

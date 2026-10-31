@@ -28,11 +28,18 @@ describe('student entrance review',()=>{
     render(<BuildingEntranceReviewPanel {...props} issues={[{buildingId:'model',reason:'entrance_clear_width_too_small'}]}/>);
     expect(screen.getByText(/side rails leave too little walking space/)).toBeTruthy();
     expect(screen.queryByText('1.64 m')).toBeNull();
+    expect(screen.getByText(/Rendering is available/)).toBeTruthy();
   });
   it('does not classify a nearly level approach as step-free access to the door',()=>{
     render(<BuildingEntranceReviewPanel {...props} reviews={[{...review,generatedSteps:0,riseM:-.03}]}/>);
     expect(screen.getByText(/Nearly level approach.*0.03 m down/)).toBeTruthy();
     expect(screen.getByText(/nearly level approach can still lead to steps/)).toBeTruthy();
+  });
+  it('prioritizes a real ground failure when another renderer also reports an entrance advisory',()=>{
+    render(<BuildingEntranceReviewPanel {...props} issues={[{buildingId:'model',reason:'entrance_anchor_not_at_edge'},
+      {buildingId:'model',reason:'incomplete_footprint_ground'}]}/>);
+    expect(screen.getByText(/ground beneath this building could not be confirmed/)).toBeTruthy();
+    expect(screen.queryByText(/Rendering is available/)).toBeNull();
   });
   it('offers connection authoring for a house without an entrance and clears removed rows',()=>{
     const {rerender}=render(<BuildingEntranceReviewPanel {...props} reviews={[]}/>);

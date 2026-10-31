@@ -4,7 +4,11 @@ import uuid
 from typing import Any
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
-from app.schemas.direct_3d_render import Direct3DCommunityZoneClaim, Direct3DResidualLandscapeClaim
+from app.schemas.direct_3d_render import (
+    Direct3DCommunityZoneClaim,
+    Direct3DResidualLandscapeClaim,
+    Direct3DAuthoredSurfaceClaim,
+)
 
 
 class VideoAppearanceRequest(BaseModel):
@@ -20,4 +24,5 @@ class VideoAppearanceRequest(BaseModel):
     fidelity_policy: Literal["expressive"] = "expressive"
     details_revision: int | None = Field(default=None, ge=0, strict=True)
     community_3d_claims: list[Direct3DCommunityZoneClaim] = Field(default_factory=list, max_length=2000)
+    authored_surface_claims: list[Direct3DAuthoredSurfaceClaim] = Field(default_factory=list, max_length=2000)
     residual_landscape_claim: Direct3DResidualLandscapeClaim | None = None

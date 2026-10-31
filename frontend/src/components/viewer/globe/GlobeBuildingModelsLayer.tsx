@@ -36,6 +36,8 @@ import { EastNorthUpFrame, TilesRendererContext } from '3d-tiles-renderer/r3f';
 import type { Building, SiteZone } from '@/types';
 import { resolveApiFileUrl } from '@/services/api';
 import { createKtx2LoaderExtension } from '@/lib/ktx2GltfLoader';
+import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
+import { retainResourceForDeferredDisposal } from './strictModeResourceDisposal';
 import { computeFootprintFrame, computeModelPlacement, type FootprintFrame } from './buildingPlacement';
 import { raycastTerrainHeightAtLatLng } from './GlobeZoneLayer';
 import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
@@ -202,15 +204,18 @@ function BuildingModelInstance({
   const { scene } = useGLTF(url, true, true, extendLoader);
   const tiles = useContext(TilesRendererContext);
   const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
+  const buildingOnly = useMemo(() => prepareBuildingOnlyScene(scene, modelUrl), [scene, modelUrl]);
+  useEffect(() => retainResourceForDeferredDisposal(buildingOnly,
+    value => value.ownedGeometries.forEach(geometry => geometry.dispose())), [buildingOnly]);
 
   // Bbox once per cached scene (drei caches per URL; clones share buffers).
-  const bbox = useMemo(() => new THREE.Box3().setFromObject(scene), [scene]);
+  const bbox = useMemo(() => new THREE.Box3().setFromObject(buildingOnly.clone), [buildingOnly]);
   const size = useMemo(() => bbox.getSize(new THREE.Vector3()), [bbox]);
   const center = useMemo(() => bbox.getCenter(new THREE.Vector3()), [bbox]);
-  const preserveSourceMaterials = building.generation_engine?.toLowerCase() === 'rlasm';
+  const preserveSourceMaterials = ['rlasm', 'imported_glb'].includes(building.generation_engine?.toLowerCase() ?? '');
 
   const cloned = useMemo(() => {
-    const prepared = prepareArchitecturalClone(scene, {
+    const prepared = prepareArchitecturalClone(buildingOnly.clone, {
       renderOrder: MODEL_RENDER_ORDER,
       maxAnisotropy,
       // RLASM keepers carry source-locked material roles even when a finish is
@@ -232,7 +237,7 @@ function BuildingModelInstance({
       });
     }
     return prepared;
-  }, [building.id, maxAnisotropy, preserveSourceMaterials, scene]);
+  }, [building.id, maxAnisotropy, preserveSourceMaterials, buildingOnly]);
   useEffect(() => () => disposeArchitecturalCloneMaterials(cloned), [cloned]);
 
   const placement = useMemo(

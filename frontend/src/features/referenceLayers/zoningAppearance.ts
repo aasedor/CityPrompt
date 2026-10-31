@@ -1,23 +1,16 @@
 import type { ZoningLabel } from './zoningLabels';
+import { calgaryDistrictColour } from './calgaryBylaw';
 
-/** CityPrompt presentation colours, never a replacement for the published designation.
- * DC has one neutral family colour: its underlying use cannot be inferred from DC.
+/** Published Calgary Land Use Class colours, shared with the bylaw editor.
+ * DC keeps its own class colour; its underlying use cannot be inferred from DC.
  */
 export function zoningColor(district: Pick<ZoningLabel, 'code' | 'label'>): string {
-  const code = (district.code || district.label.split(/\s/)[0]).toUpperCase();
-  if (/^DC/.test(code)) return '#aa8bbb';
-  if (code === 'S-SPR') return '#9dc35f';
-  if (code === 'S-UN') return '#64a57b';
-  if (/^MU-/.test(code)) return '#e47760';
-  if (/^M-/.test(code)) return '#e6ae56';
-  if (/^R-|^H-GO$/.test(code)) return '#f1d36f';
-  if (/^C-/.test(code)) return '#88b4cd';
-  if (/^I-/.test(code)) return '#a69ebd';
-  return '#aab9b6';
+  return calgaryDistrictColour(district.code?.trim() || district.label);
 }
 
 export interface ZoningPreferences {
   enabled: boolean;
+  clipToSite: boolean;
   labels: boolean;
   lines: boolean;
   fill: boolean;
@@ -25,7 +18,7 @@ export interface ZoningPreferences {
 }
 
 export const DEFAULT_ZONING_PREFERENCES: ZoningPreferences = {
-  enabled: false, labels: true, lines: true, fill: true, fillOpacity: 0.4,
+  enabled: false, clipToSite: false, labels: true, lines: true, fill: true, fillOpacity: 0.4,
 };
 
 export function readZoningPreferences(saved: string | null): ZoningPreferences {
@@ -37,6 +30,7 @@ export function readZoningPreferences(saved: string | null): ZoningPreferences {
     if (legacy && !legacyActive) return { ...DEFAULT_ZONING_PREFERENCES };
     return {
       enabled: typeof value.enabled === 'boolean' ? value.enabled : legacyActive,
+      clipToSite: value.clipToSite === true,
       labels: typeof value.labels === 'boolean' ? value.labels : true,
       // The retired cadastral "lines" key must never become district outlines.
       lines: typeof value.districtLines === 'boolean' ? value.districtLines : !legacy,

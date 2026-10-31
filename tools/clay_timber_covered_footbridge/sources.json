@@ -1,0 +1,68 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "urban_pedestrian_footbridge",
+  "variant_id": "variant_2",
+  "catalogue_variant_id": "urban_pedestrian_footbridge_v2",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_0.png",
+    "variant_0.webp",
+    "variant_0_angle_60.jpg",
+    "variant_0_angle_90.jpg",
+    "variant_1.png",
+    "variant_1.webp",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_3.png",
+    "variant_3.webp",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "urban_pedestrian_footbridge",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "urban_pedestrian_footbridge_v2",
+      "role": "front",
+      "path": "frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_2.png",
+      "file": "variant_2.png",
+      "bytes": 1357841,
+      "sha256": "2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "urban_pedestrian_footbridge",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "urban_pedestrian_footbridge_v2",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_2_angle_60.jpg",
+      "file": "variant_2_angle_60.jpg",
+      "bytes": 1022875,
+      "sha256": "ed7edd0326c69bc43c9086a61d750a56e25b2ff28afb6426324fdaf3f9e4139d",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "urban_pedestrian_footbridge",
+      "variant_id": "variant_2",
+      "catalogue_variant_id": "urban_pedestrian_footbridge_v2",
+      "role": "top",
+      "path": "frontend/public/archetypes/streets/urban-pedestrian-footbridge/variant_2_angle_90.jpg",
+      "file": "variant_2_angle_90.jpg",
+      "bytes": 974510,
+      "sha256": "bd1125b71008d2e5e0a27a7c36b06f4def0c1957b1e81d8f6e624a346912cdc3",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

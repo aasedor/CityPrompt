@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { fetchStreetNames, streetNameBounds, streetNameLabels } from './streetNames';
+import { fetchStreetNames, streetNameBounds, streetNameLabels, parallelLabelRotation } from './streetNames';
 
 const bounds: [number, number, number, number] = [-114.08, 51.04, -114.06, 51.05];
 const road = (name: string, coordinates: number[][], state = 'Built') => ({
@@ -25,6 +25,19 @@ describe('street names', () => {
     expect(labels[0].label).toBe('10 ST NW');
     expect(labels[0].anchor[0]).toBeCloseTo(-114.07);
     expect(labels[0].anchor[1]).toBeCloseTo(51.045);
+  });
+  it('retains the actual clipped segment used to orient each road label', () => {
+    const [label]=streetNameLabels([road('Road',[[-114.09,51.045],[-114.05,51.045]])],bounds);
+    expect(label.segment).toEqual([[-114.08,51.045],[-114.06,51.045]]);
+  });
+  it('runs parallel to the projected road and stays readable when the bearing reverses', () => {
+    expect(parallelLabelRotation(10,0)).toBeCloseTo(0);
+    expect(Math.abs(parallelLabelRotation(0,10)!)).toBeCloseTo(Math.PI/2);
+    const angle=parallelLabelRotation(4,3)!;
+    expect(Math.cos(angle)*3 - Math.sin(angle)*4).toBeCloseTo(0);
+    expect(parallelLabelRotation(-4,-3)).toBeCloseTo(angle);
+    expect(parallelLabelRotation(0,0)).toBeNull();
+    expect(parallelLabelRotation(NaN,2)).toBeNull();
   });
   it('bounds network requests and surfaces service errors', async () => {
     const fetcher = vi.fn().mockResolvedValue({ ok:true, json:async()=>({error:{message:'unavailable'}}) });

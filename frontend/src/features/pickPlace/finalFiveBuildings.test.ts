@@ -26,7 +26,14 @@ describe('final five neighbourhood building trial', () => {
       });
       const choice = CANONICAL_CHOICES.find(c => c.placements.some(a => a.id === asset.id))!;
       expect(choice).toBeDefined();
-      expect(catalogueStyleIds(choice)).toContain('contemporary_urban');
+      const styles: Record<string, string[]> = {
+        'final-courtyard-block-v1': ['contemporary'],
+        'final-seniors-apartments-v1': ['contemporary'],
+        'final-transit-pavilion-v1': ['timber_contemporary', 'structural'],
+        'final-health-centre-v1': ['contemporary', 'timber_contemporary'],
+        'final-urban-grocery-v1': ['contemporary', 'historic_industrial'],
+      };
+      expect(catalogueStyleIds(choice)).toEqual(styles[row.variant_id]);
       expect(choice.option.photoUrl).toBe(`/archetypes/buildings/${row.archetype_id}/front.png`);
       expect(filterCanonicalChoices('building', asset.label)).toContain(choice);
       expect(BUILDING_PROGRAMS[row.variant_id].revision).toBe(row.candidate);

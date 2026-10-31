@@ -13,6 +13,7 @@ import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sit
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 import { useSetStreetPreviewGround } from './StreetPreviewGround';
+import { modularBridgeProgramFor } from '@/components/viewer/globe/modularBridgeProgram';
 
 type Surface = { lngLat: [number, number]; height: number };
 /** Cursor updates stay inside this small subtree instead of rerendering the globe. */
@@ -53,7 +54,8 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
   });
   const height = getRepresentativeTerrainHeight(pointHeights, terrainHeight);
   const zone = useMemo(() => {
-    const route = streetPreviewPoints(points, surface?.lngLat ?? null);
+    const route = streetPreviewPoints(points, surface?.lngLat ?? null,
+      modularBridgeProgramFor(properties?.road_selected_variant_id) ? 2 : Infinity);
     if (route.length < 2) return null;
     const geometry = streetDrawingGeometry(route, { ...ZONE_TYPE_CONFIG.road.defaultProperties,
       ...properties, terrain_elevation_m: height }, zones, { publicRoads, skipSnapping });

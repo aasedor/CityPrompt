@@ -4,6 +4,13 @@ This guide installs City Prompt for local student use. It intentionally
 contains no real credentials. Never paste API keys, access keys, passwords, or
 tokens into source files or documentation.
 
+For the current company review, follow the
+[October 29 handoff runbook](COMPANY_HANDOFF_2026-10-29.md) first. A source clone
+and `docker compose up` alone do not reproduce the prepared desktop catalogue.
+The current release needs a matching portable asset packet, migrated database,
+exact Model Library bindings, routed workers and a scheduler. The generic
+Compose path below has not passed a fresh-machine rehearsal for this release.
+
 ## What runs locally
 
 Docker Compose starts:
@@ -64,9 +71,13 @@ PowerShell:
 Copy-Item .env.example .env
 ~~~
 
-Edit `.env` locally. For the map-based workflow, configure:
+Edit `.env` locally. The current frontend requires the browser Maps key;
+the backend uses its own key for address and elevation services. The Mapbox
+token supports fallback map tiles:
 
 ~~~dotenv
+VITE_GOOGLE_MAPS_API_KEY=your-restricted-browser-maps-key
+GOOGLE_MAPS_API_KEY=your-server-maps-key
 MAPBOX_ACCESS_TOKEN=pk.your-public-token
 ~~~
 
@@ -115,8 +126,18 @@ Windows contributors can use:
 .\scripts\start-local-city-prompt.ps1
 ~~~
 
-It reuses the local data services, starts the API from the current worktree,
-starts the frontend when necessary, and waits for health checks.
+It reuses the local data services, prepares the current database migrations,
+starts the API from the current worktree, and starts the frontend when necessary.
+The managed worker consumes `celery`, `direct3d`, `direct3d-maintenance` and
+`classroom-documents`; a separate Celery beat process schedules recovery.
+Startup waits for operational `/ready` checks, including the maintenance
+heartbeat when image jobs are enabled. No readiness check calls a paid provider.
+
+Worker and scheduler logs, PID files and the persistent beat schedule are in
+ignored `artifacts/local-dev/`. `-KeepBackend` reuses an owned worker only after
+matching its process ID to Celery statistics and checking that node's actual
+queues. Unowned native workers or schedulers cause an actionable failure; they are not
+silently stopped. Stop those processes explicitly before switching checkouts.
 
 ## 5. Student smoke test
 
@@ -194,7 +215,9 @@ docker compose logs frontend
 
 ### The map is blank
 
-Confirm `MAPBOX_ACCESS_TOKEN` is set in `.env`, then restart the frontend.
+Confirm `VITE_GOOGLE_MAPS_API_KEY` is set in the frontend's selected environment
+directory and permits the local browser origin. Missing this key blocks Vite
+startup. Confirm `MAPBOX_ACCESS_TOKEN` for fallback map tiles, and restart the frontend.
 Inspect the browser console for a token or network error.
 
 ### An asset is a tiny text file

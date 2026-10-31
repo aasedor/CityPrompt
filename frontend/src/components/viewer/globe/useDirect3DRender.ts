@@ -4,6 +4,7 @@ import { authApi, rendersApi, resolveApiFileUrl } from '@/services/api';
 import { useAuthStore } from '@/store';
 import type { SavedRender } from '@/types';
 import type { Community3DCaptureClaim } from '@/features/community3d/community3d';
+import type { AuthoredSurfaceClaim } from '@/features/groundSurfaces/groundSurfaceCapture';
 import {
   GLOBE_STYLE_PROMPTS,
   REPROJECTING_STYLES,
@@ -12,8 +13,7 @@ import {
 import type { Direct3DCaptureBundle, Direct3DProposalRole } from './direct3dCapture';
 import type { ResidualLandscapeClaim } from './residualLandscape';
 
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, isLocalImageModel, type ImageEngine } from '@/config/imageModels';
-import { renderLocalImage } from '@/services/localImageRender';
+import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, type ImageEngine } from '@/config/imageModels';
 
 export type Direct3DPresentationMode = 'source_anchored' | 'scene' | 'reproject';
 export type Direct3DActivePresentationMode = Exclude<Direct3DPresentationMode, 'source_anchored'>;
@@ -349,6 +349,7 @@ export function useDirect3DRender() {
       addVehicles?: boolean;
       projectId: string;
       community3DClaims: Community3DCaptureClaim[];
+      authoredSurfaceClaims?: AuthoredSurfaceClaim[];
       detailsRevision?: number;
       residualLandscapeClaim?: ResidualLandscapeClaim | null;
       /** 'street' marks an eye-level capture: scene presentation is forced and
@@ -372,24 +373,6 @@ export function useDirect3DRender() {
     }
     const fidelityPolicy = options.fidelityPolicy
       ?? resolveDirect3DFidelityPolicy(options.style);
-    if (options.model && isLocalImageModel(options.model)) {
-      // Local finishes bypass the paid geometry-repair/fallback pipeline and
-      // use a short aesthetic prompt instead of its lengthy constraint text.
-      const localPrompt = [DIRECT_3D_DEFAULT_ART_DIRECTIONS[options.style], options.customPrompt?.trim(),
-        options.addPeople ? 'Include a few naturally posed pedestrians.' : '',
-        options.addVehicles ? 'Include a few vehicles on the streets.' : '',
-      ].filter(Boolean).join(' ').slice(0, 1500);
-      const savedRender = await renderLocalImage({ projectId: options.projectId, model: options.model,
-        imageBase64: capture.beautyImageBase64, prompt: localPrompt });
-      return {
-        render: { imageUrl: resolveApiFileUrl(savedRender.image_url), prompt: localPrompt,
-          model: options.model, savedRender, providerLabel: `${imageModelLabel(options.model)} · Local` },
-        diagnostics: null, captureFingerprint: capture.fingerprint, outputFingerprint: savedRender.id,
-        outcome: 'review_required', warnings: ['Local model output is shown directly. Compare its geometry with the captured 3D view.'],
-        sourceImageUrl: capture.beautyImageBase64.startsWith('data:') ? capture.beautyImageBase64 : `data:image/png;base64,${capture.beautyImageBase64}`,
-        fidelityPolicy,
-      };
-    }
     const prompt = buildDirect3DVisualPrompt(
       options.style,
       options.customPrompt,
@@ -444,6 +427,7 @@ export function useDirect3DRender() {
       presentation_mode: presentationMode,
       project_id: options.projectId,
       community_3d_claims: options.community3DClaims,
+      authored_surface_claims: options.authoredSurfaceClaims ?? [],
       details_revision: options.detailsRevision,
         park_access_snapshot: capture.parkAccessSnapshot,
         shared_ground_snapshot: capture.sharedGroundSnapshot,

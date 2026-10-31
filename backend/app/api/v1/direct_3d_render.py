@@ -73,6 +73,8 @@ from app.services.residual_landscape import (
     community_3d_kind_for_source,
     community_3d_representation_hash,
     community_3d_source_hash,
+    ground_surface_material_for_source,
+    authored_surface_source_hash,
     lock_residual_landscape_project,
     residual_landscape_source_hash,
     site_has_no_residual_landscape,
@@ -123,7 +125,11 @@ def _has_building_plot_landscape(zone: SiteZone, all_zones: list[SiteZone]) -> b
         return False
     boundaries = [item for item in all_zones if item.zone_type == "site_boundary"]
     boundary = next((item for item in boundaries if getattr(item, "is_active_boundary", None) is True), None)
-    if boundary is None and boundaries and all(getattr(item, "is_active_boundary", None) is None for item in boundaries):
+    if (
+        boundary is None
+        and boundaries
+        and all(getattr(item, "is_active_boundary", None) is None for item in boundaries)
+    ):
         boundary = boundaries[0]
     if boundary is None:
         return False
@@ -142,9 +148,9 @@ def _has_building_plot_landscape(zone: SiteZone, all_zones: list[SiteZone]) -> b
 
 async def _current_render_details(req, db):
     """An omitted capture revision claims empty details; always check current state."""
-    project = (await db.execute(
-        select(Project).where(Project.id == req.project_id).execution_options(populate_existing=True)
-    )).scalar_one_or_none()
+    project = (
+        await db.execute(select(Project).where(Project.id == req.project_id).execution_options(populate_existing=True))
+    ).scalar_one_or_none()
     return (project.metadata_ or {}).get("scene_details") if project else None
 
 
@@ -169,13 +175,18 @@ def _validate_direct_3d_project_zones(
     ]
     all_physical_zones = physical_community_3d_zones(zones)
     details_revision = getattr(req, "details_revision", None)
-    if details_revision is None and project_details and any(
-        project_details.get(key) for key in ("benches", "trees", "props", "surfaces")
+    if (
+        details_revision is None
+        and project_details
+        and any(project_details.get(key) for key in ("benches", "trees", "props", "surfaces"))
     ):
         raise _direct_state_conflict("Saved details changed. Reload the scene before rendering.")
     if details_revision is not None:
-        if (not project_details or project_details.get("revision") != details_revision
-            or not any(project_details.get(key) for key in ("benches", "trees", "props", "surfaces"))):
+        if (
+            not project_details
+            or project_details.get("revision") != details_revision
+            or not any(project_details.get(key) for key in ("benches", "trees", "props", "surfaces"))
+        ):
             raise _direct_state_conflict("Saved details changed or are empty. Reload the scene before rendering.")
     if not all_physical_zones and details_revision is None:
         raise _direct_state_conflict("This project has no compiled layers or saved details to render.")
@@ -184,18 +195,47 @@ def _validate_direct_3d_project_zones(
             raise _direct_state_conflict("The capture contains no saved details. Frame your details and try again.")
 
     claims_by_zone = {str(claim.zone_id): claim for claim in req.community_3d_claims}
+    raw_surface_claims = getattr(req, "authored_surface_claims", [])
+    surface_claims = {str(claim.zone_id): claim for claim in raw_surface_claims}
+    if len(surface_claims) != len(raw_surface_claims) or set(surface_claims) & set(claims_by_zone):
+        raise _direct_state_conflict("Authored ground surface claims contain duplicate or conflicting identities.")
+    selected_ids = set(claims_by_zone) | set(surface_claims)
     try:
-        physical_zones = resolve_community_3d_scope(
-            all_physical_zones,
-            claims_by_zone,
-        ) if all_physical_zones or claims_by_zone else []
+        # Flat finishes mount directly from authored polygons, without a
+        # compiled archetype claim. Include only finishes in the same visible
+        # scope, then retain exact whole-layer validation for every other zone.
+        expanded_scope = (
+            resolve_community_3d_scope(
+                all_physical_zones,
+                selected_ids,
+                expand_groups=True,
+            )
+            if all_physical_zones or selected_ids
+            else []
+        )
+        surface_ids = {
+            str(zone.id) for zone in expanded_scope if ground_surface_material_for_source(zone.properties) is not None
+        }
+        physical_zones = (
+            resolve_community_3d_scope(
+                all_physical_zones,
+                selected_ids | surface_ids,
+            )
+            if all_physical_zones or selected_ids
+            else []
+        )
     except Community3DScopeError:
         raise _direct_state_conflict(
             "The captured 3D layer set no longer matches this project. " "Run Generate to 3D again before rendering."
         )
+    if set(surface_claims) != surface_ids:
+        raise _direct_state_conflict("Authored ground surfaces changed since capture. Capture the current scene again.")
 
     unsupported = [
-        zone for zone in physical_zones if community_3d_kind_for_source(zone.zone_type, zone.properties) is None
+        zone
+        for zone in physical_zones
+        if community_3d_kind_for_source(zone.zone_type, zone.properties) is None
+        and ground_surface_material_for_source(zone.properties) is None
     ]
     if unsupported:
         raise _direct_state_conflict(
@@ -204,9 +244,42 @@ def _validate_direct_3d_project_zones(
             "park/plaza, street/path type before rendering."
         )
 
+    from app.services.native_modular_bridge import is_modular_bridge
+
+    bridge_zones = [zone for zone in physical_zones if is_modular_bridge(zone.properties)]
+    if bridge_zones:
+        from app.services.native_bridge_clearance import validate_modular_bridge_overlap
+
+        try:
+            streets = [
+                (zone, list(_direct_source_geometry(zone).exterior.coords))
+                for zone in physical_zones
+                if community_3d_kind_for_source(zone.zone_type, zone.properties) == "street"
+            ]
+            for bridge in bridge_zones:
+                validate_modular_bridge_overlap(
+                    list(_direct_source_geometry(bridge).exterior.coords),
+                    bridge.properties,
+                    [(coordinates, other.properties or {}) for other, coordinates in streets if other.id != bridge.id],
+                )
+        except (AssertionError, TypeError, ValueError, AttributeError) as exc:
+            raise _direct_state_conflict(f"Bridge clearance changed: {exc}") from exc
+
     stale_or_uncompiled: list[SiteZone] = []
     missing_buildings: list[SiteZone] = []
     for zone in physical_zones:
+        if ground_surface_material_for_source(zone.properties) is not None:
+            try:
+                current_hash = authored_surface_source_hash(_direct_source_geometry(zone), zone.properties)
+            except (AssertionError, TypeError, ValueError, AttributeError):
+                raise _direct_state_conflict(
+                    "Authored ground surface geometry changed. Capture the current scene again."
+                )
+            if surface_claims[str(zone.id)].source_hash.lower() != current_hash:
+                raise _direct_state_conflict(
+                    "Authored ground surfaces changed since capture. Capture the current scene again."
+                )
+            continue
         kind = community_3d_kind_for_source(zone.zone_type, zone.properties)
         claim = claims_by_zone[str(zone.id)]
         stored_meta = (zone.properties or {}).get("community_3d")
@@ -225,6 +298,14 @@ def _validate_direct_3d_project_zones(
                 # approval, environment and native footprint may have changed
                 # since this exact browser-owned scene was compiled.
                 validate_fixed_public_realm(zone.zone_type, source_geometry, zone.properties or {})
+            from app.services.native_modular_bridge import is_modular_bridge
+
+            if kind == "street" and is_modular_bridge(zone.properties):
+                from app.services.native_specialist_streets import validate_specialist_ground
+
+                validate_specialist_ground(zone.properties, boundaries[0].properties if len(boundaries) == 1 else None)
+                if not isinstance((zone.properties or {}).get(PUBLIC_REALM_RECIPE_PROPERTY), dict):
+                    raise ValueError("Modular bridge capture needs its current exact native source recipe.")
             current_source_hash = community_3d_source_hash(
                 zone.zone_type,
                 source_geometry,
@@ -347,8 +428,13 @@ def _validate_direct_3d_project_zones(
 
     server_inventory = (
         _bind_instance_manifest_to_server_zones(
-            req, physical_zones, zones, junction_checks_advisory=True,
-        ) if bind_capture_instances else []
+            req,
+            physical_zones,
+            zones,
+            junction_checks_advisory=True,
+        )
+        if bind_capture_instances
+        else []
     )
     server_inventory = _annotate_source_locked_rlasm_inventory(
         server_inventory,
@@ -358,8 +444,8 @@ def _validate_direct_3d_project_zones(
 
     if project_details:
         for item in server_inventory:
-            if item.get('instance_id') == 'project-details':
-                item['people_action_direction'] = people_action_direction(project_details)
+            if item.get("instance_id") == "project-details":
+                item["people_action_direction"] = people_action_direction(project_details)
     if len(boundaries) > 1:
         raise _direct_state_conflict(
             "Direct 3D requires one authoritative site boundary. Resolve duplicate "
@@ -383,10 +469,7 @@ def _validate_direct_3d_project_zones(
     boundary = boundaries[0]
     stored = (boundary.properties or {}).get("community_3d_landscape")
     claim = req.residual_landscape_claim
-    if (
-        site_has_no_residual_landscape(boundary.properties)
-        and claim is None
-    ):
+    if site_has_no_residual_landscape(boundary.properties) and claim is None:
         # Physical source hashes, representation hashes and instance ownership
         # have already been checked above. This mode intentionally has no fill.
         return server_inventory
@@ -400,7 +483,7 @@ def _validate_direct_3d_project_zones(
             [
                 ResidualSourceZone(
                     zone_id=str(zone.id),
-                    native_selection=(zone.properties or {}).get('green_space_native_layout'),
+                    native_selection=(zone.properties or {}).get("green_space_native_layout"),
                     kind=(community_3d_kind_for_source(zone.zone_type, zone.properties) or str(zone.zone_type)),
                     role=(
                         str((zone.properties or {}).get("_plan_role"))
@@ -664,6 +747,10 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     """Mirror the browser's executable street-axis eligibility, fail closed."""
 
     properties = zone.properties or {}
+    from app.services.native_modular_bridge import is_modular_bridge
+
+    if is_modular_bridge(properties):
+        return False  # Stairs and the raised deck never supply an at-grade junction.
     # Junction anchoring requires a centerline BOTH sides derive identically.
     # Without a valid persisted plan_centerline, the browser walks polygon
     # vertices while this proof takes the minimum-rotated-rectangle axis —
@@ -687,8 +774,11 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
     # roads. The capture inventory separately verifies its compiled source hash.
     fallback = properties.get("public_realm_fallback")
     from app.services.native_street_candidate_contract import native_street_runtime_capabilities
+
     junction_families = {
-        "street_local_public_realm", "street_complete_main_18m", "street_complete_main_22m",
+        "street_local_public_realm",
+        "street_complete_main_18m",
+        "street_complete_main_22m",
         *(capability.family_id for capability in native_street_runtime_capabilities()),
         *(capability.family_id for capability in manual_street_capabilities()),
     }
@@ -717,8 +807,7 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         or recipe.get("kind") != "street"
         or recipe.get("generator") != "street_section"
         or target.get("target_type") != "street_segment"
-        or recipe.get("family_id")
-        not in junction_families
+        or recipe.get("family_id") not in junction_families
     ):
         return False
     recipe_archetype_id = str(recipe.get("archetype_id") or "").strip()
@@ -729,15 +818,13 @@ def _street_supports_v1_four_way_junction(zone: SiteZone) -> bool:
         return False
     if persisted_variant_id and persisted_variant_id != recipe_variant_id:
         return False
-    # Exact registered surface pathways participate in pedestrian T/X joins
-    # in streetGraphIntersections.ts. The old vehicle-width/name filter rejected
-    # all five of them, even with a current, hash-locked compiled recipe.
+    # Exact native identities participate independently of a legacy semantic
+    # name such as multi_use_trail. Recipe locks above remain authoritative.
     if any(
         capability.family_id == recipe.get("family_id")
         and selection.variant_id == recipe_variant_id
         and selection.archetype_id == recipe_archetype_id
         and selection.compatibility.nominal_row_width_m is not None
-        and selection.compatibility.nominal_row_width_m < 5
         and abs(_effective_street_width(zone) - selection.compatibility.nominal_row_width_m) < 1e-6
         for capability in native_street_runtime_capabilities()
         for selection in capability.selections
@@ -837,6 +924,11 @@ def _street_sources_form_junction(
     """Independently reconstruct arm count and the exact captured node anchor."""
     if len(street_zones) < 2:
         return False
+    from app.services.native_street_candidate_contract import flush_native_street_junction_levels
+
+    flush_levels = flush_native_street_junction_levels()
+    levels = [flush_levels.get((zone.properties or {}).get("road_selected_variant_id")) for zone in street_zones]
+    flush_pedestrian = all(level is not None for level in levels) and max(levels) - min(levels) <= 0.005
     geographic_axes: list[dict[str, object]] = []
     for zone in sorted(street_zones, key=lambda item: str(item.id)):
         centerline = _street_zone_centerline(zone)
@@ -899,7 +991,7 @@ def _street_sources_form_junction(
                         first_bearing,
                         second_bearing,
                     )
-                    if crossing_angle < math.pi / 6 or crossing_angle > math.pi * 5 / 6:
+                    if crossing_angle < math.pi / 6 - 1e-4:
                         continue
                     intersection = _segment_intersection(
                         first_start,
@@ -912,6 +1004,7 @@ def _street_sources_form_junction(
                             {
                                 "x": intersection[0],
                                 "y": intersection[1],
+                                "crossing": True,
                                 "zone_ids": {
                                     str(first["zone_id"]),
                                     str(second["zone_id"]),
@@ -956,6 +1049,16 @@ def _street_sources_form_junction(
 
     clusters: list[dict[str, object]] = []
     for candidate in candidates:
+        # Match the browser: nearby bend projections cannot pull a real axis
+        # intersection away from either route or manufacture a second node.
+        if not candidate.get("crossing") and any(
+            other.get("crossing")
+            and other["zone_ids"] == candidate["zone_ids"]
+            and math.hypot(float(other["x"]) - float(candidate["x"]), float(other["y"]) - float(candidate["y"]))
+            <= max(float(axis["width"]) for axis in axes if str(axis["zone_id"]) in candidate["zone_ids"])
+            for other in candidates
+        ):
+            continue
         cluster = next(
             (
                 item
@@ -1004,7 +1107,7 @@ def _street_sources_form_junction(
         for axis in axes:
             points = axis["points"]
             for index in range(1, len(points) - 1):  # type: ignore[arg-type]
-                previous, current, following = points[index - 1:index + 2]  # type: ignore[index]
+                previous, current, following = points[index - 1 : index + 2]  # type: ignore[index]
                 distance_to_node = math.hypot(
                     current[0] - float(cluster["x"]),
                     current[1] - float(cluster["y"]),
@@ -1018,7 +1121,7 @@ def _street_sources_form_junction(
                     break
             if bend_inside_node:
                 break
-        if bend_inside_node:
+        if bend_inside_node and not flush_pedestrian:
             continue
         arms: list[dict[str, object]] = []
         contributing_zone_ids: set[str] = set()
@@ -1109,19 +1212,20 @@ def _street_sources_form_junction(
         separation = _undirected_angle_distance(orientations[0], orientations[1])
         if topology is not None:
             sine = math.sin(separation)
-            if sine < math.sqrt(0.5) - 0.001:
+            if sine < 0.5 - 1e-4:
                 continue
-            if any(
+            if not (bend_inside_node and flush_pedestrian) and any(
                 arm["reach"] + 0.01
                 < max(
                     other["width"] / 2 + 4
                     for other in grouped_arms
                     if _undirected_angle_distance(arm["bearing"], other["bearing"]) >= math.pi / 6
-                ) / sine
+                )
+                / sine
                 for arm in grouped_arms
             ):
                 continue
-            # The compiled renderer owns 45–135 degree section joins as well
+            # The compiled renderer owns 30–150 degree section joins as well
             # as square T/X nodes. The server must independently accept that
             # same bounded geometry or a valid skew capture always 409s.
             # Require every authored arm to stay straight at the anchor; a
@@ -1180,9 +1284,13 @@ def _validate_junction_topology(
             recipe.get("family_id") in {capability.family_id for capability in manual_street_capabilities()}
             and recipe.get("archetype_id") == "calgary_alley"
         )
-        if (_effective_street_width(zone) < (5 if alley else 6) or any(
-            token in semantic for token in ("trail", "path", "roundabout", *(("laneway", "alley") if not alley else ()))
-        )) and not _street_supports_v1_four_way_junction(zone):
+        if (
+            _effective_street_width(zone) < (5 if alley else 6)
+            or any(
+                token in semantic
+                for token in ("trail", "path", "roundabout", *(("laneway", "alley") if not alley else ()))
+            )
+        ) and not _street_supports_v1_four_way_junction(zone):
             continue
         line = _street_zone_centerline(zone)
         if line is None:
@@ -1223,11 +1331,17 @@ def _bind_instance_manifest_to_server_zones(
             ),
         }
     authorized_zone_ids = set(expected)
+    authorized_zone_ids.update(
+        str(zone.id) for zone in physical_zones if ground_surface_material_for_source(zone.properties) is not None
+    )
     authorized_zone_ids.update(str(zone.id) for zone in all_zones if zone.zone_type == "site_boundary")
     all_zones_by_id = {str(zone.id): zone for zone in all_zones if str(zone.id) in authorized_zone_ids}
     all_zone_ids = set(all_zones_by_id)
     allowed_supplemental_surfaces: set[tuple[str, str]] = set()
     for zone_id, zone in all_zones_by_id.items():
+        if ground_surface_material_for_source(zone.properties) is not None:
+            allowed_supplemental_surfaces.add((zone_id, "landscape"))
+            continue
         source_kind = community_3d_kind_for_source(
             zone.zone_type,
             zone.properties,
@@ -1308,13 +1422,25 @@ def _bind_instance_manifest_to_server_zones(
                 )
 
         if descriptor.instance_id == "project-details":
-            if (getattr(req, "details_revision", None) is None or zone_id is not None
-                or source_zone_ids or descriptor.building_id or descriptor.junction_topology
-                or descriptor.semantic_class != "landscape"):
+            if (
+                getattr(req, "details_revision", None) is None
+                or zone_id is not None
+                or source_zone_ids
+                or descriptor.building_id
+                or descriptor.junction_topology
+                or descriptor.semantic_class != "landscape"
+            ):
                 raise _direct_state_conflict("Saved-detail capture identity is invalid. Reload the scene.")
-            server_inventory.append({"instance_id": "project-details", "semantic_class": "landscape",
-                "zone_id": None, "building_id": None, "source_zone_ids": [],
-                "design_identity": "Saved user-placed details; preserve exact shapes, materials and positions."})
+            server_inventory.append(
+                {
+                    "instance_id": "project-details",
+                    "semantic_class": "landscape",
+                    "zone_id": None,
+                    "building_id": None,
+                    "source_zone_ids": [],
+                    "design_identity": "Saved user-placed details; preserve exact shapes, materials and positions.",
+                }
+            )
             continue
         if zone_id is None:
             is_topology_street = descriptor.semantic_class == "street" and 2 <= len(source_zone_ids) <= 4
@@ -1344,7 +1470,9 @@ def _bind_instance_manifest_to_server_zones(
                         if community_3d_kind_for_source(zone.zone_type, zone.properties) == "street"
                     ]
                     junction_geometry_verified = _validate_junction_topology(
-                        source_streets, scene_streets, descriptor.junction_topology,
+                        source_streets,
+                        scene_streets,
+                        descriptor.junction_topology,
                     )
                     if not junction_geometry_verified and not junction_checks_advisory:
                         raise _direct_state_conflict(
@@ -1429,8 +1557,11 @@ def _bind_instance_manifest_to_server_zones(
                     if descriptor.junction_topology is not None and junction_geometry_verified is True
                     else {}
                 ),
-                **({"junction_geometry_verified": junction_geometry_verified}
-                   if junction_checks_advisory and junction_geometry_verified is not None else {}),
+                **(
+                    {"junction_geometry_verified": junction_geometry_verified}
+                    if junction_checks_advisory and junction_geometry_verified is not None
+                    else {}
+                ),
                 "design_identity": (
                     expected_item["design_identity"]
                     if expected_item is not None and not is_supplemental_surface
@@ -1651,6 +1782,7 @@ async def run_direct_3d_render(
         req.community_3d_claims,
         req.residual_landscape_claim,
         req.details_revision,
+        req.authored_surface_claims,
     )
     source_snapshot = build_render_source_snapshot(
         req,
@@ -1684,10 +1816,15 @@ async def run_direct_3d_render(
 
     if attempt is not None:
         # Storage must succeed BEFORE any credit reservation or provider call.
-        await write_evidence(attempt, "source", {
-            "snapshot": source_snapshot, "scene_revision_sha256": scene_revision_sha256,
-            "server_inventory": server_inventory,
-        })
+        await write_evidence(
+            attempt,
+            "source",
+            {
+                "snapshot": source_snapshot,
+                "scene_revision_sha256": scene_revision_sha256,
+                "server_inventory": server_inventory,
+            },
+        )
 
     reservation = await _reserve_direct_render(
         db,
@@ -1700,8 +1837,11 @@ async def run_direct_3d_render(
         **({"attempt": attempt} if attempt is not None else {}),
     )
     try:
-        service = (Direct3DRenderService(settings.openai_api_key, gemini_api_key=settings.gemini_api_key)
-            if req.model == NANO_BANANA_MODEL else Direct3DRenderService(settings.openai_api_key))
+        service = (
+            Direct3DRenderService(settings.openai_api_key, gemini_api_key=settings.gemini_api_key)
+            if req.model == NANO_BANANA_MODEL
+            else Direct3DRenderService(settings.openai_api_key)
+        )
         result = await service.generate(
             req,
             capture,
@@ -1711,12 +1851,17 @@ async def run_direct_3d_render(
         logger.warning("Direct 3D provider failure: %s", exc)
         if attempt is not None:
             try:
-                await write_evidence(attempt, "provider-error", {
-                    "billing_status": exc.billing_status, "message": str(exc),
-                    "provider_request_id": exc.provider_request_id,
-                    "provider_status_code": exc.provider_status_code,
-                    "provider_image_base64": exc.provider_image_base64,
-                })
+                await write_evidence(
+                    attempt,
+                    "provider-error",
+                    {
+                        "billing_status": exc.billing_status,
+                        "message": str(exc),
+                        "provider_request_id": exc.provider_request_id,
+                        "provider_status_code": exc.provider_status_code,
+                        "provider_image_base64": exc.provider_image_base64,
+                    },
+                )
             except Exception:
                 logger.exception("Could not retain failed provider evidence for %s", attempt.id)
         if not exc.refund_eligible:
@@ -1758,8 +1903,8 @@ async def run_direct_3d_render(
                     "message": (
                         "The connection to the image provider ended before a result arrived. "
                         "Your City Prompt credits have been restored. You can try again."
-                        if exc.transport_interrupted else
-                        "The image provider did not complete a usable response. Your City Prompt "
+                        if exc.transport_interrupted
+                        else "The image provider did not complete a usable response. Your City Prompt "
                         "credits have been restored. Please try again later."
                     ),
                 }
@@ -1779,7 +1924,10 @@ async def run_direct_3d_render(
         raise HTTPException(status_code=502, detail=error_detail) from exc
     except Exception as exc:
         await _refund_unknown_direct_render(
-            db, user, reservation, token_cost=token_cost,
+            db,
+            user,
+            reservation,
+            token_cost=token_cost,
             detail=f"Unexpected provider failure: {exc}",
         )
         logger.exception("Unexpected Direct 3D failure; provider billing is unknown")
@@ -1796,9 +1944,14 @@ async def run_direct_3d_render(
     if attempt is not None:
         # The paid result is durable before optional gallery/audit work. Recovery
         # returns these exact pixels; it NEVER invokes the provider a second time.
-        await write_evidence(attempt, "provider-result", {
-            "result": asdict(result), "model": req.model,
-        })
+        await write_evidence(
+            attempt,
+            "provider-result",
+            {
+                "result": asdict(result),
+                "model": req.model,
+            },
+        )
 
     try:
         processing_mode = str(result.diagnostics.get("processing_mode", "source_anchored"))

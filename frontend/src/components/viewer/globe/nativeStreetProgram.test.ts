@@ -18,14 +18,14 @@ describe('finite native street placement limits',()=>{
     expect(nativeStreetPreparationProblem({properties:{road_selected_variant_id:'calgary_local_v0'}},null)).toBeNull();
   });
   it.each([
-    ['student_quiet_residential_street_v1',48,480],
-    ['student_planted_shared_lane_v1',40,480],
-    ['brt_bus_rapid_transit_corridor_v0',100,480],
+    ['student_quiet_residential_street_v1',48,2000],
+    ['student_planted_shared_lane_v1',40,2000],
+    ['brt_bus_rapid_transit_corridor_v0',100,2000],
     ['amsterdam_gracht_v1',36,2000],
     ['landmark_signature_bridge_v2',260,480],
-    ['student_cycle_avenue_v1',48,480],
-    ['student_green_alley_v1',40,480],
-    ['student_school_street_v1',48,480],
+    ['student_cycle_avenue_v1',48,2000],
+    ['student_green_alley_v1',40,2000],
+    ['student_school_street_v1',48,2000],
   ] as const)('%s accepts both limits and rejects undersize, oversize or missing prepared ground',(variant,min,max)=>{
     const pilot=nativeStreetPilot(variant)!;
     const boundary:SiteZone={id:'site',project_id:'test',zone_type:'site_boundary',coordinates:[],color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',properties:{terrain_strategy:'level',community_3d_mask_existing_tiles:true}};
@@ -107,8 +107,8 @@ describe('original Residential executable program',()=>{
     const boundary:SiteZone={id:'boundary',project_id:'test',zone_type:'site_boundary',coordinates:[],color:'#aaa',sort_order:0,created_at:'1',updated_at:'1',properties:{terrain_strategy:'level',community_3d_mask_existing_tiles:true}};
     const create=(length:number)=>{const line=[[-114,51],[-114,51+length/111320]];return {coordinates:bufferLineToPolygon(line,18),properties:{plan_centerline:line,road_selected_variant_id:residential.id}};};
     expect(nativeStreetRouteProblem(create(48),boundary)).toBeNull();
-    expect(nativeStreetRouteProblem(create(47),boundary)).toContain('48–480');
-    expect(nativeStreetRouteProblem(create(481),boundary)).toContain('48–480');
+    expect(nativeStreetRouteProblem(create(47),boundary)).toContain('48–2000');
+    expect(nativeStreetRouteProblem(create(2001),boundary)).toContain('2000');
     expect(nativeStreetRouteProblem(create(60),{...boundary,properties:{terrain_strategy:'landscape'}})).toContain('level');
     const legacy:SiteZone={...boundary,...create(10),zone_type:'road',properties:{road_selected_variant_id:residential.id,validation_fixed_fixture:true}};
     expect(nativeStreetRouteProblem(legacy)).toBeNull();expect(expectsNativeStreet(legacy)).toBe(false);

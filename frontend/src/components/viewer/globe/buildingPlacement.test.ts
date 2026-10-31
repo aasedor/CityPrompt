@@ -56,6 +56,23 @@ describe('computeFootprintFrame', () => {
 describe('computeModelPlacement', () => {
   const frame = computeFootprintFrame(rectRing(CALGARY.lng, CALGARY.lat, 40, 20, 0))!;
 
+  it('preserves physical height and containment for a building exported in millimetres', () => {
+    const placement = computeModelPlacement(frame, { x: 12000, y: 9000, z: 20000 }, 9, 0)!;
+    expect(placement.scale).toBeCloseTo(.001, 8);
+    expect(placement.scale * 9000).toBeCloseTo(9, 5);
+    expect(placement.scale * 20000).toBeLessThanOrEqual(frame.longDim);
+    expect(placement.scale * 12000).toBeLessThanOrEqual(frame.shortDim);
+    expect(placement.heightWarning).toBe(false);
+  });
+
+  it('preserves the requested height for very small arbitrary-scale exports', () => {
+    const placement = computeModelPlacement(frame, { x: .00012, y: .00009, z: .0002 }, 9, 0)!;
+    expect(placement).not.toBeNull();
+    expect(placement.scale * .00009).toBeCloseTo(9, 5);
+    expect(placement.scale * .0002).toBeLessThanOrEqual(frame.longDim);
+    expect(placement.heightWarning).toBe(false);
+  });
+
   it('contain-fits: scaled model never exceeds either footprint dimension', () => {
     // Model 8 long (x) × 2 wide (z): long-axis ratio 5, short-axis ratio 10 → 5 wins.
     const placement = computeModelPlacement(frame, { x: 8, y: 3, z: 2 }, undefined, 0)!;

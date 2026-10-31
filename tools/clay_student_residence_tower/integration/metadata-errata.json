@@ -1,0 +1,23 @@
+{
+  "candidate": "clay-student-residence-tower-clay-v004",
+  "scope": "Clarifies inherited source-recipe prose; actual geometry and immutable hashed build evidence unchanged",
+  "authoritative_geometry_script": "C:\\dev-artifacts\\CityPrompt\\claude-crossings-practical-20261029\\source\\tools\\clay_student_residence_tower\\family_student_v004.py",
+  "details": {
+    "site": "2.2m compact entrance approach only; no streets or surrounding lots",
+    "dome_m": [
+      18.8,
+      12,
+      5.7
+    ],
+    "dome_glazed_drum_m": 2.3,
+    "penthouse_height_m": 5.7,
+    "screen_height_m": 4,
+    "plan_m": [
+      30,
+      24
+    ],
+    "west_terrace_count": 3,
+    "terraces": "Physical front-pane omissions, set-back glazing and white returns; walkable deck behind narrow front planter",
+    "representation": "Architectural clay; pronounced white slabs and dense dome net remain P2 simplifications"
+  }
+}

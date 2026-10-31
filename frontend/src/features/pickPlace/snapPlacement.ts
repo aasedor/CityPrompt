@@ -4,13 +4,26 @@ import { envelopeFits, envelopesOverlap } from '@/components/viewer/globe/neighb
 import { placementProblem, rectangleAt, rectangleDimensions } from './geometry';
 import { streetFacingDegrees } from './streetFacing';
 import { bufferLineToPolygon, effectiveRoadWidth, extractRenderableStreetCenterline } from '@/utils/roadGeometry';
-import { readBuildingEntrance, resolvePedestrianConnections } from './pedestrianConnections';
+import { resolvePedestrianConnections } from './pedestrianConnections';
 import { nativeParkApproaches } from '@/features/parks/nativeParkReservations';
-import { buildingEdgeContract, placementEdgeSnapCandidates, buildingPlacementEnvelope } from './buildingPlacementEdges';
+import { placementEdgeSnapCandidates, buildingPlacementEnvelope } from './buildingPlacementEdges';
 import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
 import { siteBoundarySnapCandidates } from './siteBoundarySnapping';
+import { isSurfacePath } from './streetConnectionProblem';
+import { ShapeUtils, Vector2 } from 'three';
 
 type Point = { x: number; y: number };
+/** Separating-axis offsets require convex obstacles. A bent street's full
+ * projection would fill its clear inside corner and miss nearby valid fits. */
+function convexObstacles(ring: Point[]): Point[][] {
+  const turns=ring.map((a,i)=>{
+    const b=ring[(i+1)%ring.length],c=ring[(i+2)%ring.length];
+    return (b.x-a.x)*(c.y-b.y)-(b.y-a.y)*(c.x-b.x);
+  });
+  if(!turns.some(turn=>turn>1e-8) || !turns.some(turn=>turn< -1e-8))return [ring];
+  const triangles=ShapeUtils.triangulateShape(ring.map(p=>new Vector2(p.x,p.y)),[]);
+  return triangles.length ? triangles.map(indices=>indices.map(i=>ring[i])) : [ring];
+}
 export function snapBuildingMove(zone: SiteZone, coordinates: number[][], zones: SiteZone[], boundary?: SiteZone | null) {
   const entrance = zone.properties?.pedestrian_building_entrance as { automatic?: boolean } | undefined;
   if (entrance?.automatic && coordinates.length === 4) {
@@ -26,21 +39,11 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   properties ??= zones.find(z=>z.id===ignoreId)?.properties;
   zoneType ??= zones.find(z=>z.id===ignoreId)?.zone_type;
   const context=zones.filter(z=>z.id!==ignoreId);
-  const contract=buildingEdgeContract({coordinates,properties});
   const occupied=(coords:number[][])=>buildingPlacementEnvelope({coordinates:coords,properties});
   const check=(coords:number[][])=>placementProblem(coords,zones,boundary,ignoreId,{properties});
-  const connectionFits = (coords:number[][]) => {
-    if (!(properties?.pedestrian_building_entrance as {automatic?:boolean}|undefined)?.automatic) return true;
-    const owner={id:ignoreId??'placement-preview',zone_type:'building',coordinates:coords,properties} as SiteZone;
-    if (!readBuildingEntrance(owner,context)) return true; // Wait for a nearby street.
-    const plan=resolvePedestrianConnections([...context,owner]).find(p=>p.ownerId===owner.id);
-    return plan?.status==='connected' && plan.strips.every(strip=>Math.hypot(
-      (strip.end[0]-strip.start[0])*metersPerDegLon(strip.start[1]),
-      (strip.end[1]-strip.start[1])*METERS_PER_DEG_LAT) >= (contract ? .05 : 2.5));
-  };
   // Protect the street and already-working approaches as part of the usable
   // neighbourhood, rather than solving one plot overlap by blocking a route.
-  const reserves: SiteZone[] = zones.filter(z=>z.zone_type==='road').flatMap(road=>{
+  const reserves: SiteZone[] = zones.filter(z=>z.zone_type==='road' && !isSurfacePath(z)).flatMap(road=>{
     // The constructed street includes its sidewalks. Do not impose an extra
     // blanket three-metre setback on every park or unreviewed building plot.
     if (road.coordinates.length>=3) return [{...streetSurfaceMaskZone(road),id:`snap-road:${road.id}`,zone_type:'parking' as const}];
@@ -59,7 +62,7 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   zones=[...zones,...reserves];
   // Magnetism applies even when the original position is valid, so a small
   // visible gap can close. A candidate must preserve all approach reservations.
-  const neighbours=context.map(z=>{
+  const neighbours=context.filter(z=>!isSurfacePath(z)).map(z=>{
     if(z.zone_type!=='road')return z;
     const reservedStreet=reserves.find(reserve=>reserve.id===`snap-road:${z.id}`);
     return reservedStreet ? {...reservedStreet,id:z.id,zone_type:z.zone_type} : z;
@@ -70,65 +73,104 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
   for(let pass=0;pass<2;pass++) {
     const candidate=[...placementEdgeSnapCandidates({coordinates:magnetCoordinates,properties,zone_type:zoneType},neighbours),
       ...siteBoundarySnapCandidates(magnetCoordinates,boundary)].sort((a,b)=>a.distance-b.distance)
-      .find(item=>!check(item.coordinates) && connectionFits(item.coordinates));
+      .find(item=>!check(item.coordinates));
     if(!candidate)break;
     magnetCoordinates=candidate.coordinates;
   }
   if(magnetCoordinates!==coordinates)return {coordinates:magnetCoordinates,snapped:true,problem:null};
-  const problem = check(coordinates) ?? (connectionFits(coordinates) ? null : 'Leave room for the entrance path.');
+  const problem = check(coordinates);
   if (!problem) return { coordinates, snapped: false, problem: null };
   if (coordinates.length < 3 || coordinates.some(p => !Number.isFinite(p[0] + p[1])))
     return { coordinates, snapped: false, problem };
   const origin = coordinates[0], east = metersPerDegLon(origin[1]);
   const local = (ring: number[][]): Point[] => ring.map(p => ({ x: (p[0] - origin[0]) * east, y: (p[1] - origin[1]) * METERS_PER_DEG_LAT }));
   const footprint = local(occupied(coordinates)), plot=local(coordinates), border = boundary && local(boundary.coordinates);
-  const obstacles = zones.filter(z => z.id !== ignoreId && ['building', 'residential', 'green_space', 'parking'].includes(z.zone_type)).map(z => local(buildingPlacementEnvelope(z)));
+  const obstacles = zones.filter(z => z.id !== ignoreId && ['building', 'residential', 'green_space', 'parking'].includes(z.zone_type))
+    .flatMap(z => convexObstacles(local(buildingPlacementEnvelope(z))));
   const axes = (ring: Point[]) => ring.map((p, i) => {
     const q = ring[(i + 1) % ring.length], size = Math.hypot(q.x - p.x, q.y - p.y);
     return size > .001 ? { x: -(q.y - p.y) / size, y: (q.x - p.x) / size } : null;
   }).filter((p): p is Point => p !== null);
   const project = (ring: Point[], axis: Point) => ring.map(p => p.x * axis.x + p.y * axis.y);
   const pending: Point[] = [{ x: 0, y: 0 }], seen = new Set<string>();
+  type Candidate = { coordinates: number[][]; distance: number };
+  let best: Candidate | null = null;
+  const consider = (offset: Point, previous: Candidate | null): Candidate | null => {
+    const distance = Math.hypot(offset.x, offset.y);
+    if (previous && distance >= previous.distance) return previous;
+    const result = coordinates.map(p => [p[0] + offset.x / east, p[1] + offset.y / METERS_PER_DEG_LAT]);
+    return !check(result) ? { coordinates: result, distance } : previous;
+  };
   // Reviewed envelopes include only the side/access space they need. A 2 cm
   // numerical margin prevents touching faces oscillating valid/overlapping.
   const gap = .02, maxDistance = 30;
   for (let attempt = 0; pending.length && attempt < 64; attempt++) {
     pending.sort((a, b) => Math.hypot(a.x, a.y) - Math.hypot(b.x, b.y) || a.x - b.x || a.y - b.y);
     const offset = pending.shift()!;
+    if (best && Math.hypot(offset.x, offset.y) >= best.distance) break;
     const ring = footprint.map(p => ({ x: p.x + offset.x, y: p.y + offset.y }));
     const hits = obstacles.filter(other => envelopesOverlap(ring, other));
     const plotRing=plot.map(p=>({x:p.x+offset.x,y:p.y+offset.y}));
     const outside = border && !envelopeFits(plotRing, border);
     if (!hits.length && !outside) {
-      const result = coordinates.map(p => [p[0] + offset.x / east, p[1] + offset.y / METERS_PER_DEG_LAT]);
-      if (!check(result) && connectionFits(result)) return { coordinates: result, snapped: true, problem: null };
+      best = consider(offset, best);
+      continue;
     }
-    const add = (axis: Point, distance: number) => {
-      const next = { x: offset.x + axis.x * distance, y: offset.y + axis.y * distance };
+    const queue = (next: Point) => {
       const key = `${next.x.toFixed(3)},${next.y.toFixed(3)}`;
       if (Math.hypot(next.x, next.y) <= maxDistance && !seen.has(key)) { seen.add(key); pending.push(next); }
     };
+    const planes = new Map<string, { axis: Point; distance: number; tightDistance: number }>();
+    const add = (axis: Point, distance: number, padding: number) => {
+      queue({ x: offset.x + axis.x * distance, y: offset.y + axis.y * distance });
+      const absolute = distance + offset.x * axis.x + offset.y * axis.y;
+      const tight = absolute-padding+Math.sign(padding)*.001;
+      if (Math.min(Math.abs(absolute),Math.abs(tight)) > maxDistance) return;
+      const sign = axis.x < 0 || (axis.x === 0 && axis.y < 0) ? -1 : 1;
+      const normal = { x: axis.x * sign, y: axis.y * sign }, target = absolute * sign;
+      planes.set(`${normal.x.toFixed(6)},${normal.y.toFixed(6)},${target.toFixed(3)}`,
+        {axis:normal,distance:target,tightDistance:tight*sign});
+    };
     for (const obstacle of hits) for (const axis of [...axes(ring), ...axes(obstacle)]) {
       const a = project(ring, axis), b = project(obstacle, axis);
-      add(axis, Math.max(...b) - Math.min(...a) + gap);
-      add(axis, Math.min(...b) - Math.max(...a) - gap);
+      add(axis, Math.max(...b) - Math.min(...a) + gap, gap);
+      add(axis, Math.min(...b) - Math.max(...a) - gap, -gap);
     }
     if (outside && border) for (const [i, axis] of axes(border).entries()) {
       const edge = border[i], plane = edge.x * axis.x + edge.y * axis.y, a = project(plotRing, axis);
-      add(axis, plane - Math.min(...a) + gap);
-      add(axis, plane - Math.max(...a) - gap);
+      add(axis, plane - Math.min(...a) + gap, gap);
+      add(axis, plane - Math.max(...a) - gap, -gap);
+    }
+    // A narrow corner may require two contacts at once. Alternating normal
+    // pushes can keep revisiting shorter blocked offsets and never reach that
+    // diagonal within the live-search budget. Intersect nearby contact planes
+    // directly; all corner candidates still obey the same distance/save checks.
+    // At most 496 pairs per expansion, independent of neighbourhood size.
+    const contacts = [...planes.values()].sort((a,b)=>Math.abs(a.distance)-Math.abs(b.distance)).slice(0,32);
+    for(let i=0;i<contacts.length;i++)for(let j=i+1;j<contacts.length;j++) {
+      const a=contacts[i],b=contacts[j],det=a.axis.x*b.axis.y-a.axis.y*b.axis.x;
+      if(Math.abs(det)<1e-6)continue;
+      const intersection=(da:number,db:number)=>({x:(da*b.axis.y-a.axis.y*db)/det,
+        y:(a.axis.x*db-da*b.axis.x)/det});
+      const corner=intersection(a.distance,b.distance);
+      queue(corner);
+      // At a shallow corner the 2 cm numerical padding can add centimetres
+      // along the route and put an otherwise nearby fit just beyond the cap.
+      // Keep a 1 mm numerical margin rather than increasing the move limit.
+      if(Math.hypot(corner.x,corner.y)>maxDistance)queue(intersection(a.tightDistance,b.tightDistance));
     }
     // Check the whole frontier before expanding more intersections. Otherwise
     // two close rotated neighbours can keep producing shorter, still-blocked
     // candidates and starve an already available clear edge position.
     const clear = pending.filter(candidate => {
       const candidateRing = footprint.map(p => ({ x:p.x+candidate.x, y:p.y+candidate.y }));
-      return (!border || envelopeFits(plot.map(p=>({x:p.x+candidate.x,y:p.y+candidate.y})),border)) && !obstacles.some(other=>envelopesOverlap(candidateRing,other))
-        && connectionFits(coordinates.map(p=>[p[0]+candidate.x/east,p[1]+candidate.y/METERS_PER_DEG_LAT]));
+      return (!border || envelopeFits(plot.map(p=>({x:p.x+candidate.x,y:p.y+candidate.y})),border)) && !obstacles.some(other=>envelopesOverlap(candidateRing,other));
     }).sort((a,b)=>Math.hypot(a.x,a.y)-Math.hypot(b.x,b.y))[0];
     if (clear) {
-      const result=coordinates.map(p=>[p[0]+clear.x/east,p[1]+clear.y/METERS_PER_DEG_LAT]);
-      if (!check(result)) return {coordinates:result,snapped:true,problem:null};
+      // Keep this usable fallback while exploring closer blocked candidates.
+      // A boundary correction plus a neighbour correction can fit with a
+      // shorter diagonal move than the first clear single-edge translation.
+      best = consider(clear, best);
     }
     // Retain nearest candidates only; crowded scenes cannot grow an open loop.
     if (pending.length > 256) {
@@ -136,8 +178,9 @@ export function snapPlacement(coordinates: number[][], zones: SiteZone[], bounda
       pending.length = 256;
     }
   }
+  if (best) return { coordinates: best.coordinates, snapped: true, problem: null };
   // The nearby search can fail even when the asset itself is an appropriate size.
-  // Preserve the actual boundary, neighbour, or entrance conflict so the student
+  // Preserve the actual boundary, neighbour, or reserved-route conflict so the student
   // knows what to move instead of being told the object is too large.
   return { coordinates, snapped: false, problem };
 }

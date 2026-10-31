@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 export function duplicateJsonKeys(text) {
   JSON.parse(text);
   const stack=[], duplicates=[];
-  const tokens=/"(?:\\[\s\S]|[^"\\])*"|[{}\[\]:,]|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|true|false|null/g;
+  const tokens=/"(?:\\[\s\S]|[^"\\])*"|[{}[\]:,]|-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|true|false|null/g;
   for(const token of text.matchAll(tokens)) {
     const value=token[0];
     if(value==='{')stack.push(new Set());

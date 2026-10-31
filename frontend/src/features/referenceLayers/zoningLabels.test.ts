@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import { districtLabels, fetchZoningLabels, zoningAnchor, zoningCoverageProblem, ZONING_LIMIT } from './zoningLabels';
+import { districtLabels, fetchZoningLabels, zoningAnchor, zoningCoverageProblem, zoningContextCoordinates, clipZoningOverlay, ZONING_LIMIT } from './zoningLabels';
 
 const site: [number, number][] = [[-114.12, 51.01], [-114.119, 51.01], [-114.119, 51.011], [-114.12, 51.011]];
 const geometry = { type: 'MultiPolygon', coordinates: [[ [...site, site[0]] ]] };
@@ -14,6 +14,26 @@ describe('district zoning labels without parcel data', () => {
     expect(result[0].polygon).toEqual([[...site, site[0]]]);
     expect(booleanPointInPolygon(result[0].anchor, { type: 'Polygon', coordinates: [[...site, site[0]]] })).toBe(true);
     expect(site).toHaveLength(4);
+  });
+  it('keeps a saved site and its surroundings in the default zoning query', () => {
+    const context = zoningContextCoordinates(site);
+    expect(context[0][0]).toBeLessThan(site[0][0]);
+    expect(context[0][1]).toBeLessThan(site[0][1]);
+    expect(context[2][0]).toBeGreaterThan(site[2][0]);
+    expect(context[2][1]).toBeGreaterThan(site[2][1]);
+    expect(zoningCoverageProblem([context[0][0],context[0][1],context[2][0],context[2][1]])).toBeNull();
+    expect(zoningContextCoordinates([])).toEqual([]);
+  });
+  it('clips saved-site display to its actual concave boundary without losing district identity', () => {
+    const polygon = [[0,0],[3,0],[3,3],[0,3],[0,0]] as [number,number][];
+    const data = {districts:[{id:'source',label:'R-CG',code:'R-CG',description:'Published',anchor:[1,1] as [number,number],polygon:[polygon]}],bounds:[0,0,3,3] as [number,number,number,number],loadedAt:'today'};
+    const triangle = [[0,0],[3,0],[0,3]];
+    const clipped = clipZoningOverlay(data,triangle);
+    expect(clipped.districts).toHaveLength(1);
+    expect(clipped.districts[0]).toMatchObject({id:'source-site-0',label:'R-CG',code:'R-CG',description:'Published'});
+    expect(clipped.districts[0].polygon[0]).toEqual([[0,0],[3,0],[0,3],[0,0]]);
+    expect(booleanPointInPolygon(clipped.districts[0].anchor,{type:'Polygon',coordinates:[[...triangle,triangle[0]]]})).toBe(true);
+    expect(data.districts[0].polygon[0]).toEqual(polygon);
   });
   it('keeps labels inside concave areas and outside holes', () => {
     const polygon: [number, number][][] = [[[0, 0], [8, 0], [8, 8], [5, 8], [5, 3], [0, 3], [0, 0]], [[1, 1], [2, 1], [2, 2], [1, 2], [1, 1]]];

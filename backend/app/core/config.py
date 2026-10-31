@@ -132,6 +132,21 @@ class Settings(BaseSettings):
 
     # --- Redis ---
     redis_url: str = "redis://localhost:6379/0"
+    celery_default_queue: str = Field(default="celery", min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_.-]+$")
+    # Only explicitly configured reverse proxies can supply client addresses.
+    trusted_proxy_cidrs: str = ""
+    maps_requests_per_hour: int = Field(default=3000, ge=1, le=1000000)
+
+    @model_validator(mode="after")
+    def _validate_trusted_proxy_cidrs(self) -> "Settings":
+        import ipaddress
+
+        for value in self.trusted_proxy_cidrs.split(","):
+            if value.strip():
+                network = ipaddress.ip_network(value.strip())
+                if network.prefixlen == 0:
+                    raise ValueError("Trusted proxy networks cannot include all addresses")
+        return self
 
     # --- Security ---
     jwt_secret_key: str = "change-this-in-production"
@@ -208,8 +223,6 @@ class Settings(BaseSettings):
     omni_video_model: str = "gemini-omni-1.1-flash"
     omni_video_timeout_seconds: int = 600
     seedance_video_timeout_seconds: int = 900
-    comfy_trials_enabled: bool = False
-    comfy_trials_base_url: str = "http://127.0.0.1:8188"
 
     kling_animation_enabled: bool = False
     kling_animation_endpoint: str = "fal-ai/kling-video/v3/pro/image-to-video"
@@ -282,6 +295,7 @@ class Settings(BaseSettings):
     # Roll out only with migration 030 and a direct3d worker + Celery beat.
     direct_3d_jobs_enabled: bool = False
     direct_3d_images_enabled: bool = True
+    direct_3d_queue_name: str = Field(default="direct3d", min_length=1, max_length=64, pattern=r"^[A-Za-z0-9_.-]+$")
     direct_3d_queue_limit: int = 16
     direct_3d_project_queue_limit: int = 2
     direct_3d_queue_timeout_seconds: int = 900
@@ -293,8 +307,15 @@ class Settings(BaseSettings):
         if self.classroom_release:
             if not self.direct_3d_jobs_enabled:
                 raise ValueError("CLASSROOM_RELEASE requires DIRECT_3D_JOBS_ENABLED")
-            deferred_keys = (self.anthropic_api_key, self.gemini_api_key, self.meshy_api_key,
-                             self.tripo_api_key, self.stability_api_key, self.fal_key, self.vertex_ai_project)
+            deferred_keys = (
+                self.anthropic_api_key,
+                self.gemini_api_key,
+                self.meshy_api_key,
+                self.tripo_api_key,
+                self.stability_api_key,
+                self.fal_key,
+                self.vertex_ai_project,
+            )
             if any(deferred_keys):
                 raise ValueError("Classroom services must not receive keys for deferred AI, mesh or video providers")
             # Legacy saved layouts still have their deterministic fallback.
@@ -305,7 +326,12 @@ class Settings(BaseSettings):
             raise ValueError("DIRECT_3D_PROJECT_QUEUE_LIMIT exceeds the global queue")
         if self.direct_3d_recovery_seconds < 660 or self.direct_3d_queue_timeout_seconds < 60:
             raise ValueError("Image recovery must outlive the worker hard limit; queue expiry must be at least 60s")
-        if self.is_production and self.direct_3d_jobs_enabled and self.direct_3d_images_enabled and self.render_global_daily_token_cap <= 0:
+        if (
+            self.is_production
+            and self.direct_3d_jobs_enabled
+            and self.direct_3d_images_enabled
+            and self.render_global_daily_token_cap <= 0
+        ):
             raise ValueError("Durable production images require a positive RENDER_GLOBAL_DAILY_TOKEN_CAP")
         return self
 
@@ -350,8 +376,14 @@ class Settings(BaseSettings):
         if self.app_debug:
             raise ValueError("APP_DEBUG must be false in production")
 
-        if self.jwt_secret_key.strip() in _UNSAFE_JWT_SECRET_VALUES:
-            raise ValueError("JWT_SECRET_KEY must be set to a strong secret in production")
+        secret = self.jwt_secret_key.strip().lower()
+        placeholder = re.search(r"change[-_ ]?(?:this|me)|replace|placeholder|(?:^|[-_ ])your(?:[-_ ]|$)", secret)
+        repeated = re.fullmatch(r"(.{1,16})\1+", secret)
+        if len(secret.encode("utf-8")) < 32 or secret in _UNSAFE_JWT_SECRET_VALUES or placeholder or repeated:
+            raise ValueError(
+                "JWT_SECRET_KEY must be a unique random secret of at least 32 bytes in production; "
+                "defaults, placeholders and repeated values are not allowed"
+            )
 
         origins = self.cors_origins
         if not origins:

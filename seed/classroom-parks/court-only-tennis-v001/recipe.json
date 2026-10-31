@@ -1,0 +1,90 @@
+{
+  "id": "court_only_tennis_v1",
+  "title": "Tennis court only",
+  "sport": "tennis",
+  "playing_m": [
+    10.97,
+    23.77
+  ],
+  "module_m": [
+    18.3,
+    36.6
+  ],
+  "dimensions_m": [
+    18.3,
+    36.6
+  ],
+  "court_colour": [
+    0.13,
+    0.23,
+    0.27
+  ],
+  "source": "https://www.itftennis.com/media/7221/2026-rules-of-tennis-english.pdf",
+  "source_checked": "2026-10-24",
+  "programme": "Playing surface, markings, required equipment and clear playing reserve only",
+  "singles_width_m": 8.23,
+  "net_center_m": 0.914,
+  "net_end_m": 1.07,
+  "service_distance_m": 6.4,
+  "include_enclosure": false,
+  "limitations": [
+    "Planning model at native size; not a certified competition facility.",
+    "Repeat and rotate courts; never stretch their playing dimensions."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        -9.15,
+        -9.15
+      ],
+      "b": [
+        -5.785,
+        -9.15
+      ],
+      "width": 1.8
+    }
+  ],
+  "equipment": [
+    {
+      "kind": "court_net",
+      "height_center": 0.914,
+      "height_end": 1.07
+    }
+  ],
+  "source_components": {
+    "sport base": 1,
+    "playing surface": 1,
+    "marking": 12,
+    "net upright": 2,
+    "net mesh": 865,
+    "net tape": 48
+  },
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Last containing region owns ground cell; grass default; null means rigid module owns surface.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 575888,
+    "sha256": "6b35d22789a3a7e8c045ec4c3e8e9d69a930727d17ac9c2d641fd9870ef8dd52"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -9.149999618530273,
+      -18.299999237060547,
+      -0.11999999731779099
+    ],
+    [
+      9.149999618530273,
+      18.299999237060547,
+      1.072996735572815
+    ]
+  ],
+  "triangles": 10596,
+  "mesh_instances": 5,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Preview assembly is a level inspection fixture. Reconstruct surfaces with shared ground; place rigid modules at native size. Never stretch assembly to fit."
+}

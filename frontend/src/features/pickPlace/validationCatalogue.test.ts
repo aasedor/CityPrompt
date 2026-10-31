@@ -16,13 +16,15 @@ describe('exact local validation catalogue', () => {
     expect(validateRegistry(CATALOGUE_ASSETS)).toEqual([]);
     expect(CLASSROOM_CHOICES).toEqual(CANONICAL_CHOICES);
     for (const c of CANONICAL_CHOICES) {
-      expect(c.placements).toHaveLength(1);
-      expect(c.option.variants?.map(v=>v.id)).toEqual([c.placements[0].model.variantId]);
+      expect(c.placements.length).toBeGreaterThan(0);
+      expect(c.option.variants?.map(v=>v.id).sort()).toEqual(c.placements.map(a=>a.model.variantId).sort());
+      if (!c.groupedVariants) expect(c.placements).toHaveLength(1);
     }
     const entries = [...roster.entries, ...expansion.entries];
     for (const entry of entries) {
-      expect(CANONICAL_CHOICES.filter(c => c.option.id === entry.archetype_id
-        && c.placements.some(a => a.model.variantId === entry.variant_id && a.model.method !== 'public_realm_park_kit')), entry.placement_id).toHaveLength(1);
+      expect(CANONICAL_CHOICES.filter(c => c.placements.some(a => (c.option.id === entry.archetype_id
+        || a.properties.green_space_archetype_id === entry.archetype_id)
+        && a.model.variantId === entry.variant_id && a.model.method !== 'public_realm_park_kit')), entry.placement_id).toHaveLength(1);
     }
     const fourplex = CATALOGUE_ASSETS.find(a => a.id === 'validation_reference_charcoal_gable_fourplex_v1');
     expect(fourplex?.model.revision).toBe(roster.entries.find(e => e.placement_id === fourplex?.id)?.sha256);
@@ -65,7 +67,7 @@ describe('exact local validation catalogue', () => {
         expect(park.properties.green_space_native_layout_id).toBeUndefined();
       }
       if (park.model.method === 'native_park_v2') {
-        expect(park.reshapeMode).toBe('authored_footprint');
+        expect(park.reshapeMode).toBe(park.properties.court_only_native ? 'fixed_native' : 'authored_footprint');
         expect(park.properties.green_space_native_layout_id).toBeTruthy();
       }
       if (park.model.method === 'public_realm_park_kit') {

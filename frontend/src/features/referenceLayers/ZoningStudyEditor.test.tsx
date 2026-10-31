@@ -3,7 +3,7 @@ import { act, fireEvent, render, screen, waitFor, within } from '@testing-librar
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ReferenceLayer } from './api';
-import type { Position } from './zoningLabels';
+import type { Position, ZoningOverlay } from './zoningLabels';
 import { api } from '@/services/api';
 import { referenceLayersApi } from './api';
 import ZoningStudyEditor from './ZoningStudyEditor';
@@ -17,9 +17,9 @@ vi.mock('./calgaryDistricts',async(importOriginal)=>({
 }));
 const boundary:Position[]=[[-114.12,51.01],[-114.119,51.01],[-114.119,51.011],[-114.12,51.011]];
 const layer={id:'saved',name:'Existing zoning study',content_hash:'a'.repeat(64),feature_collection:{type:'FeatureCollection',
-  _citypromptStudy:{schema:1,condition:'existing',boundaryCoordinates:boundary},features:[{type:'Feature',id:'one',geometry:{type:'Polygon',coordinates:[[...boundary,boundary[0]]]},properties:{label:'Housing',color:'#dfb88b',origin:'student'}}]}} as unknown as ReferenceLayer;
-const props={projectId:'project',accountId:'student',boundaryId:'site',boundary,projectName:'Trial',layers:[layer],canEdit:true,onClose:vi.fn()};
-const setup=(changes:Partial<typeof props>&{mapDrawing?:StudyMapDrawing}={},client=new QueryClient({defaultOptions:{queries:{retry:false}}}))=>render(<QueryClientProvider client={client}><ZoningStudyEditor {...props} {...changes}/></QueryClientProvider>);
+  _citypromptStudy:{schema:1,condition:'proposed',boundaryCoordinates:boundary},features:[{type:'Feature',id:'one',geometry:{type:'Polygon',coordinates:[[...boundary,boundary[0]]]},properties:{label:'Housing',color:'#dfb88b',origin:'student'}}]}} as unknown as ReferenceLayer;
+const props={projectId:'project',accountId:'student',boundaryId:'site',boundary,projectName:'Trial',layers:[layer,{...layer,id:'legacy',feature_collection:{...layer.feature_collection,_citypromptStudy:{schema:1,condition:'existing',boundaryCoordinates:boundary}}}],canEdit:true,onClose:vi.fn()};
+const setup=(changes:Partial<typeof props>&{mapDrawing?:StudyMapDrawing;zoningData?:ZoningOverlay}={},client=new QueryClient({defaultOptions:{queries:{retry:false}}}))=>render(<QueryClientProvider client={client}><ZoningStudyEditor {...props} {...changes}/></QueryClientProvider>);
 beforeEach(()=>{vi.clearAllMocks();localStorage.clear();});
 describe('zoning study editing and recovery',()=>{
   it('selects a drawn zone from the globe and edits its caption',async()=>{
@@ -38,7 +38,7 @@ describe('zoning study editing and recovery',()=>{
   it('draws a custom area on the globe and saves its identity and opacity',async()=>{
     const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn()};
     vi.mocked(api.put).mockResolvedValue({data:layer});
-    const view=setup({mapDrawing});
+    const view=setup({mapDrawing,layers:[]});
     fireEvent.click(screen.getByRole('tab',{name:'Proposed land use'}));
     fireEvent.change(screen.getByLabelText('New zone type'),{target:{value:'__custom__'}});
     expect(screen.getByRole('button',{name:'Draw zone'})).toBeDisabled();
@@ -100,12 +100,13 @@ describe('zoning study editing and recovery',()=>{
     fireEvent.click(screen.getByRole('button',{name:'Housing'}));
     expect(screen.getByLabelText('Calgary district')).toHaveValue('');
   });
-  it('edits only the selected condition and preserves undo across condition switches',()=>{
+  it('keeps proposal edits when switching to read-only official conditions and back',()=>{
     setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
     fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Homes'}});
+    fireEvent.click(screen.getByRole('tab',{name:'Existing land use'}));
+    expect(screen.queryByLabelText('Map caption')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button',{name:'Draw zone'})).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('tab',{name:'Proposed land use'}));
-    expect(screen.queryByRole('button',{name:'Homes'})).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('tab',{name:'Existing conditions'}));
     expect(screen.getByRole('button',{name:'Homes'})).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button',{name:'Undo'}));
     expect(screen.getByRole('button',{name:'Housing'})).toBeInTheDocument();
@@ -118,7 +119,7 @@ describe('zoning study editing and recovery',()=>{
     await waitFor(()=>expect(api.put).toHaveBeenCalledOnce());
     const [url,body]=vi.mocked(api.put).mock.calls[0];
     expect(url).toContain('/proposed');
-    expect(body).toMatchObject({boundary_id:'site',boundary_coordinates:boundary,expected_hash:null});
+    expect(body).toMatchObject({boundary_id:'site',boundary_coordinates:boundary,expected_hash:'a'.repeat(64)});
     expect(await screen.findByText('Proposed land-use study saved as its own map layer.')).toBeInTheDocument();
     expect(layer.feature_collection.features[0].properties.label).toBe('Housing');
   });
@@ -140,7 +141,7 @@ describe('zoning study editing and recovery',()=>{
     fireEvent.change(screen.getByLabelText('Study fill opacity'),{target:{value:'70'}});
     fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
     view.unmount();
-    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
+    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:proposed`;
     expect(localStorage.getItem(key)).not.toBeNull();
     const canonical={...layer,opacity:0.7,content_hash:'b'.repeat(64),feature_collection:{...layer.feature_collection,
       features:layer.feature_collection.features.map(feature=>({...feature,properties:{...feature.properties,label:'Saved homes'}}))}};
@@ -168,7 +169,7 @@ describe('zoning study editing and recovery',()=>{
     expect(client.getQueryData(['reference-layers','project'])).toEqual({layers:[unrelated,canonical],can_edit:true});
     fireEvent(window,new Event('pagehide'));
     view.unmount();
-    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
+    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:proposed`;
     expect(localStorage.getItem(key)).toBeNull();
     await act(async()=>{finishRefetch();});
   });
@@ -182,7 +183,7 @@ describe('zoning study editing and recovery',()=>{
     const reopened=setup();fireEvent.click(screen.getByRole('button',{name:'Submitted homes'}));
     fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Newer homes'}});
     reopened.unmount();
-    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
+    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:proposed`;
     const newerDraft=localStorage.getItem(key);
     await act(async()=>{complete({data:{...layer,content_hash:'b'.repeat(64)}});});
     expect(localStorage.getItem(key)).toBe(newerDraft);
@@ -203,7 +204,7 @@ describe('zoning study editing and recovery',()=>{
     const view=setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
     fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Immediate draft'}});
     fireEvent(window,new Event('beforeunload'));
-    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
+    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:proposed`;
     expect(JSON.parse(localStorage.getItem(key)!)).toMatchObject({zones:[{label:'Immediate draft'}]});
     fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'Suspended draft'}});
     fireEvent(window,new Event('pagehide'));
@@ -211,7 +212,7 @@ describe('zoning study editing and recovery',()=>{
     view.unmount();
   });
   it('ignores damaged device drafts and retains the shared layer',()=>{
-    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:existing`;
+    const key=`cityprompt:zoning-study-v1:student:project:${JSON.stringify(['site',boundary])}:proposed`;
     localStorage.setItem(key,JSON.stringify({schema:1,baseHash:'a'.repeat(64),zones:[{
       id:'broken',label:'Bad coordinates',color:'#ffffff',origin:'student',rings:[[[1],[2],[3],[1]]],
     }]}));
@@ -225,7 +226,7 @@ describe('zoning study editing and recovery',()=>{
     setup();fireEvent.click(screen.getByRole('button',{name:'Housing'}));
     fireEvent.change(screen.getByLabelText('Map caption'),{target:{value:'  Canonical label  '}});
     fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
-    expect(await screen.findByText('Existing zoning study saved as its own map layer.')).toBeInTheDocument();
+    expect(await screen.findByText('Proposed land-use study saved as its own map layer.')).toBeInTheDocument();
     expect(screen.getByRole('button',{name:'Canonical label'})).toBeInTheDocument();
     expect(screen.getByRole('button',{name:'Save map layer'})).toBeDisabled();
   });
@@ -249,22 +250,24 @@ describe('zoning study editing and recovery',()=>{
   });
 });
 
-it('draws the draft scheme separately and never copies City districts into it',async()=>{
-  const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn()};
-  vi.mocked(api.put).mockResolvedValue({data:layer});
+it('removes future-bylaw authoring and applies the main selector to the selected map zone',async()=>{
+  const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn(),onSelect:vi.fn()};
   setup({mapDrawing});
-  fireEvent.click(screen.getByRole('tab',{name:'Draft bylaw · May 2025'}));
-  expect(screen.queryByRole('button',{name:'Copy Calgary outlines'})).not.toBeInTheDocument();
-  expect(screen.getByLabelText('New zone type')).toHaveValue('H-1I');
-  fireEvent.change(screen.getByLabelText('New zone type'),{target:{value:'MU-1'}});
-  expect(within(screen.getByLabelText('New zone type')).getByRole('option',{name:/MU-1 — Mixed Use – Low-Rise/})).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button',{name:'Draw zone'}));
-  await act(async()=>{mapDrawing.begin.mock.calls[0][0](boundary);});
-  fireEvent.click(screen.getByRole('button',{name:'Save map layer'}));
-  await waitFor(()=>expect(api.put).toHaveBeenCalledOnce());
-  expect(vi.mocked(api.put).mock.calls[0][0]).toContain('/draft-2025');
-  expect(vi.mocked(api.put).mock.calls[0][1]).toMatchObject({zones:[{district:{designation:'MU-1',bylaw:'draft-2025'}}]});
-  fireEvent.click(screen.getByRole('tab',{name:'Existing conditions'}));
-  expect(screen.getByRole('button',{name:'Housing'})).toBeInTheDocument();
-  expect(screen.getByLabelText('New zone type')).toHaveValue('R-CG');
+  expect(screen.queryByRole('tab',{name:/Draft bylaw/})).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button',{name:'Housing'}));
+  fireEvent.change(screen.getByLabelText('New zone type'),{target:{value:'C-COR1'}});
+  expect(screen.getByLabelText('Calgary district')).toHaveValue('C-COR1');
+  await waitFor(()=>expect(mapDrawing.preview).toHaveBeenLastCalledWith(expect.objectContaining({feature_collection:expect.objectContaining({features:[expect.objectContaining({properties:expect.objectContaining({label:'C-COR1',district:expect.objectContaining({designation:'C-COR1'})})})]})})));
+});
+
+it('keeps official outlines on repeated cached Existing visits instead of a legacy study preview',async()=>{
+  const mapDrawing={begin:vi.fn(),cancel:vi.fn(),preview:vi.fn(),onSelect:vi.fn()};
+  const zoningData:ZoningOverlay={loadedAt:'snapshot',bounds:[-114.12,51.01,-114.119,51.011],districts:[{id:'official',label:'C-COR1',anchor:boundary[0],polygon:[[...boundary,boundary[0]]]}]};
+  setup({mapDrawing,zoningData});
+  for(let visit=0;visit<2;visit++){
+    fireEvent.click(screen.getByRole('tab',{name:'Existing land use'}));
+    await screen.findByText('C-COR1');
+    await waitFor(()=>expect(mapDrawing.preview.mock.calls.slice(-1)[0]?.[0]?.feature_collection.features[0].properties.label).toBe('C-COR1'));
+    fireEvent.click(screen.getByRole('tab',{name:'Proposed land use'}));
+  }
 });

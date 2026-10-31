@@ -273,6 +273,14 @@ import type { SiteZone } from '@/types';
 import { modelLibraryApi, siteZonesApi, urbanDnaApi } from '@/services/api';
 import { useViewerStore } from '@/store';
 
+vi.mock('./BuildingModelViewer', () => ({
+  BuildingModelViewer: ({ modelUrl, name, onClose }: { modelUrl: string; name: string; onClose: () => void }) => (
+    <div role="dialog" aria-label={name} data-model-url={modelUrl}>
+      <button onClick={onClose}>Close model preview</button>
+    </div>
+  ),
+}));
+
 function renderPanel(ui: ReactElement) {
   return render(
     <QueryClientProvider client={new QueryClient({
@@ -321,6 +329,59 @@ function industrialZone(): SiteZone {
     updated_at: '2026-07-20T00:00:00Z',
   };
 }
+
+describe('imported GLB properties', () => {
+  beforeEach(() => Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() }));
+  afterEach(cleanup);
+
+  function setup() {
+    const zone = { ...industrialZone(), building_id: 'imported', properties: {
+      user_generated_source_id: 'source', rotation: 38, model_scale: 1.3,
+      building_entrances: [{ id: 'legacy-entrance' }],
+    } };
+    const building = { id: 'imported', project_id: zone.project_id, created_at: 'now',
+      generation_status: 'completed', generation_engine: 'imported_glb',
+      model_url: '/api/v1/files/projects/p/models/original.glb', specifications: {
+        imported_glb: { source_sha256: 'original-hash', triangles: 1_269_266 },
+      } };
+    const callbacks = { onUpdate: vi.fn(), onDelete: vi.fn(), onClose: vi.fn() };
+    const mapClick = vi.fn();
+    const mapPointerDown = vi.fn();
+    renderPanel(<div onClick={mapClick} onPointerDown={mapPointerDown}>
+      <ZonePropertiesPanel zone={zone} buildings={[building]} {...callbacks}
+        onConnections={vi.fn()} onAIGenerate={vi.fn()} onOpenBlockEditor={vi.fn()} />
+    </div>);
+    return { zone, building, ...callbacks, mapClick, mapPointerDown };
+  }
+
+  it('renames without replacing model metadata and exposes only model viewing and deletion', () => {
+    const view = setup();
+    const name = screen.getByRole('textbox', { name: 'Name' });
+    fireEvent.change(name, { target: { value: 'My imported tree' } });
+    fireEvent.blur(name);
+    expect(view.onUpdate).toHaveBeenCalledExactlyOnceWith(view.zone.id, { name: 'My imported tree' });
+    expect(screen.getAllByRole('button').map(button => button.textContent?.trim()).filter(Boolean)).toEqual(['View Model', 'Delete zone']);
+    expect(screen.getAllByRole('textbox')).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'View Model' }));
+    expect(screen.getByRole('dialog', { name: 'My imported tree' })).toHaveAttribute('data-model-url', view.building.model_url);
+    expect(screen.getByRole('dialog', { name: 'My imported tree' }).parentElement).toBe(document.body);
+    fireEvent.click(screen.getByRole('button', { name: 'Close model preview' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Delete zone' }));
+    expect(view.onDelete).toHaveBeenCalledExactlyOnceWith(view.zone.id);
+  });
+
+  it('closes once without forwarding the click or pointer selection to the map', () => {
+    const view = setup();
+    const close = screen.getByRole('button', { name: 'Close object properties' });
+    fireEvent.pointerDown(close);
+    fireEvent.click(close);
+    expect(view.onClose).toHaveBeenCalledTimes(1);
+    expect(view.mapClick).not.toHaveBeenCalled();
+    expect(view.mapPointerDown).not.toHaveBeenCalled();
+    expect(view.onUpdate).not.toHaveBeenCalled();
+  });
+});
 
 function japaneseMachiyaZone(): SiteZone {
   const zone = industrialZone();
@@ -413,6 +474,28 @@ function ReloadPanel({ zone, reload, onUpdate, onClose }: {
       onUpdate={onUpdate} onDelete={vi.fn()} onClose={onClose} />
   </>;
 }
+
+describe('ZonePropertiesPanel saved custom massing recovery', () => {
+  afterEach(cleanup);
+  it('opens detailed selection directly from the legacy inspector without saving or losing the custom design', () => {
+    Object.defineProperty(HTMLElement.prototype, 'scrollTo', {configurable:true,value:vi.fn()});
+    const zone: SiteZone={...industrialZone(),building_id:'custom-building',properties:{
+      custom_style_enabled:true,custom_style_prompt:'A new york style brownhouse',floors:3,height:9,
+      development_type:'residential_multifamily',development_subcategory:'halifax_painted_clapboard_row',
+      community_3d:{schema_version:1,state:'compiled',kind:'building',generator:'planned_massing',compiled_at:'now',
+        source_hash:'a'.repeat(64),representation_hash:'b'.repeat(64)},
+    }};
+    const onUpdate=vi.fn();
+    renderPanel(<ZonePropertiesPanel zone={zone} buildings={[{id:'custom-building',project_id:zone.project_id,created_at:'now'}]}
+      onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()}/>);
+    fireEvent.click(screen.getByRole('button',{name:'Choose a detailed building'}));
+    expect(screen.getByLabelText('Building type')).toBeInTheDocument();
+    expect(onUpdate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button',{name:'Keep custom design'}));
+    expect(screen.getByRole('button',{name:'Choose a detailed building'})).toBeInTheDocument();
+    expect(onUpdate).not.toHaveBeenCalled();
+  });
+});
 
 describe('ZonePropertiesPanel explicit saved-version reload', () => {
   beforeEach(() => {

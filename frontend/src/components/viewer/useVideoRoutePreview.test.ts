@@ -6,6 +6,24 @@ import type { VideoRouteCaptureResult } from './videoRouteControls';
 const guide: VideoRouteCaptureResult = { keyframesBase64: ['start', 'end'], previewVideoBase64: 'local-guide', previewVideoMimeType: 'video/mp4' };
 
 describe('local video guide ownership', () => {
+  it('cancels capture and rejects a late result before allowing a fresh preview', async () => {
+    let finish!: (value:VideoRouteCaptureResult)=>void;
+    let signal!: AbortSignal;
+    const capture=(active:AbortSignal)=>{signal=active;return new Promise<VideoRouteCaptureResult>(resolve=>{finish=resolve;});};
+    const {result}=renderHook(()=>useVideoRoutePreview('scene'));
+    let pending!:Promise<VideoRouteCaptureResult>;
+    await act(async()=>{pending=result.current.prepare(capture);});
+    const rejected=expect(pending).rejects.toMatchObject({name:'AbortError'});
+    let cancellation!:Promise<void>;
+    act(()=>{cancellation=result.current.cancel();});
+    expect(signal.aborted).toBe(true);
+    expect(result.current.isPreparingControls).toBe(true); // renderer must restore before retry
+    await act(async()=>{finish(guide);await rejected;await cancellation;});
+    expect(result.current.routeControls).toBeNull();
+    expect(result.current.isPreparingControls).toBe(false);
+    await act(async()=>{await result.current.prepare(async()=>guide);});
+    expect(result.current.routeControls?.previewVideoBase64).toBe('local-guide');
+  });
   it('recaptures a restored single-frame cache when a mode needs several views', async () => {
     const capture = vi.fn().mockResolvedValue({ ...guide, keyframesBase64: ['one', 'two', 'three'] });
     const { result } = renderHook(() => useVideoRoutePreview('same-eight-second-route'));

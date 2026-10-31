@@ -53,9 +53,7 @@ async def test_google_original_survives_same_camera_validation(monkeypatch, view
         return capture.normalized_beauty.copy()
 
     monkeypatch.setattr(Direct3DRenderService, "_call_openai", fake)
-    result = await Direct3DRenderService("", gemini_api_key="test-key").generate(
-        request
-    )
+    result = await Direct3DRenderService("", gemini_api_key="test-key").generate(request)
     assert result.provider_image_base64 == original
     assert _decoded(result.image_base64).size == capture.normalized_beauty.size
 
@@ -331,9 +329,7 @@ async def test_sparse_scene_reaches_provider_and_returns_image(monkeypatch, view
     beauty, _ = _registration_context_scene()
     mask = Image.new("L", beauty.size, 0)
     mask.paste(255, (250, 250, 267, 267))
-    request = _request(beauty=beauty, mask=mask, presentation_mode="scene").model_copy(
-        update={"view_mode": view_mode}
-    )
+    request = _request(beauty=beauty, mask=mask, presentation_mode="scene").model_copy(update={"view_mode": view_mode})
     calls = []
 
     async def fake(self, req, prepared, *, server_inventory=None):

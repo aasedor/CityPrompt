@@ -1,19 +1,26 @@
 import { nativeParkLayouts } from '@/features/parks/nativeParkRegistry';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
+import courtOnlySports from '@/data/courtOnlySports.json';
 import communityBatch from '@/data/communityBuildingBatch.json';
 import finalFiveBatch from '@/data/finalFiveBuildingBatch.json';
 import claudeFiveTrial from '@/data/claudeFiveTrial.json';
 import parkadeFamilyTrial from '@/data/parkadeFamilyTrial.json';
 import october from '@/data/catalogueOctober2026.json';
 import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
+import buildingOnlyContracts from '@/features/legoAssembly/buildingOnlyContracts.json';
+import { withBuildingOnlyFootprint } from './buildingOnlyFootprint';
 import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
-import nativeStreets from '@/data/nativeStreetPilots.json';
+import { nativeStreetSources as nativeStreets } from '@/components/viewer/globe/nativeStreetSources';
+import { nativeStreetMaxLength } from '@/components/viewer/globe/streetRoutePolicy';
+import { sourceBridgeLaneCount } from '@/components/viewer/globe/sourceSpanBridgeProgram';
 import manualStreets from '@/data/streetManual.json';
 import { reviewedAssetClassification } from './catalogueClassification';
+import { localTowerStoreyMetadata } from './localTowerStoreyPrograms';
 import { LOCAL_CLAUDE_SAVED_ASSETS } from './claudeAssetLocalTrial';
+import { LOCAL_TEACHING_BUILDINGS } from './localTeachingBuildings';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_SAVED_ASSETS } from './publicRealmRelease';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
@@ -59,6 +66,8 @@ export interface PlaceAsset extends AssetRecord {
     podiumHeightM: number;
     repeatedStoreyHeightM: number;
     roofHeightM: number;
+    /** Complete authored options may deliberately omit intermediate counts. */
+    supportedStoreys?: number[];
   };
   /** A reviewed, uniform horizontal scale band for the complete authored
    * assembly.  The parcel remains unchanged and Z is never scaled. */
@@ -190,20 +199,30 @@ export function additionalStreet(archetypeId: string, label: string, description
 
 const NATIVE_STREET_ASSETS: StreetAsset[] = nativeStreets.map(street => ({
   id: street.id, kind: 'street', definitionVersion: 1, readiness: 'pilot', reshapeMode: 'fixed_section_route',
-    label: street.title, description: street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${street.program.maxLengthM} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
+    label: street.title, description: street.program?.adapter === 'modular-bridge-v1' ? 'Draw two endpoints. The bridge repeats its structural bays to fit your span, with compact stairs at each end. Prepared level site; no surrounding river or landscape.' : import.meta.env.DEV && street.program?.adapter === 'source-span-bridge-v1' ? `Draw two endpoints, ${Math.ceil(street.program.minLengthM)}–${Math.floor(street.program.maxLengthM)} m apart. The bridge adapts its source-derived span; prepared level site. ${street.program.bridge?.trafficKind==='rail'||street.program.bridge?.trafficKind==='road'?'Elevated endpoints; automatic road junctions are unsupported.':'Compact source-derived approaches; no surrounding scenery.'}` : street.id === 'amsterdam_gracht_v1' ? 'Draw a canal route with bends and a length that fits your site. Native-size banks, trees and arch crossing on prepared level ground.' : street.program ? `${street.widthM} m wide · ${street.program.minLengthM}–${nativeStreetMaxLength(street.id)} m routes · prepared level site` : `${street.widthM} m wide · curved routes with native-size furniture`,
   thumbnail: street.thumbnailUrl, sectionWidth: street.widthM,
-  calgaryGuide: classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
+  calgaryGuide: import.meta.env.DEV && ['modular-bridge-v1','source-span-bridge-v1'].includes(street.program?.adapter??'')
+    ? {groupId:'bridges',basis:'form_reference'} : classifyCalgaryAsset('street_pathway', { id: street.sourceArchetypeId }),
   model: { variantId: street.id, revision: street.sourceRecipeSha256, method: 'native_street_modules_v1' },
   properties: { road_archetype_id: street.sourceArchetypeId, road_selected_variant_id: street.id,
     width: street.widthM, pick_place_street_section: street.id, pick_place_automatic_3d: true,
     pick_place_definition_version: 1, community_3d_mask_existing_tiles: true,
-    road_standard_citation: 'City Prompt native-module teaching section' },
+    road_standard_citation: 'City Prompt native-module teaching section',
+    ...(import.meta.env.DEV && ['modular-bridge-v1','source-span-bridge-v1'].includes(street.program?.adapter??'') ? { lane_count: sourceBridgeLaneCount(street.id) } : {}) },
 }));
+
+export const MODULAR_BRIDGE_ASSETS = import.meta.env.DEV && import.meta.env.MODE === 'development'
+  ? NATIVE_STREET_ASSETS.filter(asset => ['modular-bridge-v1','source-span-bridge-v1'].includes(nativeStreets.find(row => row.id === asset.id)?.program?.adapter??'')) : [];
+
+/** Discovery replacement only; the historical fixed asset remains readable in saved projects. */
+export function hasDrawnBridgeReplacement(asset:PlaceAsset):boolean {
+  return MODULAR_BRIDGE_ASSETS.some(bridge=>nativeStreets.find(row=>row.id===bridge.id)?.sourceAssemblySha256===asset.model.revision);
+}
 
 /** Surface-only paths keep a complete clear walking width, with no road kit. */
 export const PATHWAY_ASSETS: StreetAsset[] = NATIVE_STREET_ASSETS
   .filter(asset => nativeStreets.find(row => row.id === asset.model.variantId)?.program?.adapter === 'narrow-pathway-v1')
-  .map(asset => ({ ...asset, description: `${asset.sectionWidth} m clear width · draw a winding path · ${Math.max(2, asset.sectionWidth)}–300 m long · prepared level site`,
+  .map(asset => ({ ...asset, description: `${asset.sectionWidth} m clear width · draw a winding path · ${Math.max(2, asset.sectionWidth)}–${nativeStreetMaxLength(asset.model.variantId)} m long · prepared level site`,
     calgaryGuide: { groupId: 'active', basis: 'design_reference' },
     properties: { ...asset.properties, lane_count: 0, road_standard_citation: 'City Prompt conceptual pathway; not a Calgary standard section' } }));
 
@@ -243,7 +262,20 @@ export function individualStarterHome(asset: CatalogueAsset): CatalogueAsset {
 }
 
 export const LEGACY_VALIDATION_ASSETS = validation.assets as CatalogueAsset[];
-export function withStoreyMetadata(asset: CatalogueAsset): CatalogueAsset {
+export function withStoreyMetadata(asset: CatalogueAsset, localTowerPilot = import.meta.env.DEV): CatalogueAsset {
+  const localTower = localTowerPilot ? localTowerStoreyMetadata(asset) : undefined;
+  if (localTower) return localTower;
+  if (localTowerPilot && asset.kind === 'object' && asset.id === 'claude_trial_brick_podium_condo_tower'
+    && asset.model.variantId === 'brick_podium_glass_tower' && asset.model.revision === 'clay-brick-podium-condo-tower-clay-v006') {
+    return { ...asset, footprintProgram: {
+      id: 'brick-podium-condo-native-footprint-v001', mode: 'uniform_horizontal_scale',
+      nativeWidthM: 54, nativeDepthM: 44, minScale: 1, maxScale: 1, defaultScale: 1, step: 1, editable: false,
+    }, storeyProgram: {
+      id: 'brick-podium-condo-storey-program-v001', mode: 'repeat_authored_floor',
+      nativeStoreys: 13, minStoreys: 13, maxStoreys: 40, recommendedMinStoreys: 15, recommendedMaxStoreys: 40,
+      podiumStoreys: 3, podiumHeightM: 12.3, repeatedStoreyHeightM: 3, roofHeightM: 7.8,
+    } };
+  }
   if (asset.kind !== 'object' || asset.zoneType !== 'building' || asset.storeyProgram) return asset;
   const nativeStoreys = Number(asset.properties.floor_count ?? asset.properties.floors);
   const nativeHeightM = Number(asset.nativeDimensions?.[2]);
@@ -304,7 +336,23 @@ export const PARKADE_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset =>
 export const PARKADE_TRIAL_ASSETS: PlaceAsset[] = import.meta.env.DEV
   ? (parkadeFamilyTrial.assets as unknown as PlaceAsset[]).filter(asset =>
     !PARKADE_BUILDING_ASSETS.some(published => published.id === asset.id)) : [];
-export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+/** Local pilot discovery; saved identities remain resolvable in every build. */
+export function courtOnlySportsAssets(localPilots: boolean): PlaceAsset[] {
+  return (courtOnlySports.assets as PlaceAsset[]).map(asset => ({
+    ...asset, readiness: localPilots ? asset.readiness : 'candidate',
+  }));
+}
+export const COURT_ONLY_SPORT_ASSETS = courtOnlySportsAssets(import.meta.env.DEV);
+/** Published native40 is discoverable; alternate height programmes stay local. */
+export const LOCAL_TOWER_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset =>
+  asset.readiness === 'ready' && asset.id === 'clay_twisting_glass_sky_garden_tower'
+  && asset.model.variantId === 'glass_tower_twisted' && asset.model.revision === 'glass-tower-twisted-clay-v005');
+export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, ...expansion.assets as CatalogueAsset[], ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...LOCAL_TOWER_ASSETS, ...MANUAL_STREET_ASSETS, ...PATHWAY_ASSETS].map((asset): CatalogueAsset => {
+  if(asset.kind==='object' && asset.zoneType==='building' && asset.model.revision
+    && Object.prototype.hasOwnProperty.call(buildingOnlyContracts,asset.model.revision)) {
+    asset=withBuildingOnlyFootprint({...asset,description:'Building only, at its authored size. Add streets and site landscape separately. Prepared level site required.',
+      reshapeDescription:'Move and rotate the building. Its architectural geometry keeps its authored dimensions.'});
+  }
   // Exact local validation buildings already declare their delivered GLB.
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.
@@ -330,7 +378,7 @@ export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, 
     model:{...asset.model,revision:layout.contentRevision,method:'native_park_v2'},
     width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
     properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
-}).concat(FLEXIBLE_PARK_ASSETS, PUBLIC_REALM_RELEASE_SAVED_ASSETS, LOCAL_CLAUDE_SAVED_ASSETS.filter(asset =>
+}).concat(MODULAR_BRIDGE_ASSETS, LOCAL_TEACHING_BUILDINGS, COURT_ONLY_SPORT_ASSETS, FLEXIBLE_PARK_ASSETS, PUBLIC_REALM_RELEASE_SAVED_ASSETS, LOCAL_CLAUDE_SAVED_ASSETS.filter(asset =>
   !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id))).map(reviewedAssetClassification);
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
@@ -382,6 +430,11 @@ export function validateRegistry(assets: CatalogueAsset[]): string[] {
             || program.minStoreys < 1
             || program.minStoreys > program.nativeStoreys
             || program.nativeStoreys > program.maxStoreys
+            || (program.supportedStoreys && (!program.supportedStoreys.length
+              || !program.supportedStoreys.includes(program.nativeStoreys)
+              || new Set(program.supportedStoreys).size !== program.supportedStoreys.length
+              || program.supportedStoreys.some(count => !Number.isInteger(count)
+                || count < program.minStoreys || count > program.maxStoreys)))
             || !Number.isFinite(programmeHeight)
             || !Number.isFinite(nativeHeight)
             || Math.abs(programmeHeight - nativeHeight) > 0.05

@@ -67,10 +67,7 @@ def _read_image(encoded: str) -> Image.Image:
     if len(raw) > 40_000_000:
         raise ValueError("Image exceeds the payload limit")
     image = Image.open(io.BytesIO(raw))
-    if (
-        image.format not in {"PNG", "JPEG", "WEBP"}
-        or getattr(image, "n_frames", 1) != 1
-    ):
+    if image.format not in {"PNG", "JPEG", "WEBP"} or getattr(image, "n_frames", 1) != 1:
         raise ValueError("A single PNG, JPEG or WebP image is required")
     if max(image.size) > 16384 or image.width * image.height > 32_000_000:
         raise ValueError("Image exceeds the decoded pixel limit")
@@ -93,29 +90,15 @@ async def generate_nano_banana_image(
     resolution: str = "2K",
 ) -> NanoBananaImage:
     if not api_key:
-        raise NanoBananaProviderError(
-            "Google image generation is not configured", billing_status="unproduced"
-        )
+        raise NanoBananaProviderError("Google image generation is not configured", billing_status="unproduced")
     width, height = target_size
-    if (
-        min(width, height) <= 0
-        or max(width, height) > 16384
-        or width * height > 32_000_000
-    ):
-        raise NanoBananaProviderError(
-            "Invalid source viewport size", billing_status="unproduced"
-        )
+    if min(width, height) <= 0 or max(width, height) > 16384 or width * height > 32_000_000:
+        raise NanoBananaProviderError("Invalid source viewport size", billing_status="unproduced")
     if resolution not in {"1K", "2K", "4K"}:
-        raise NanoBananaProviderError(
-            "Nano Banana supports 1K, 2K or 4K output", billing_status="unproduced"
-        )
+        raise NanoBananaProviderError("Nano Banana supports 1K, 2K or 4K output", billing_status="unproduced")
     ratio = min(
         RATIOS,
-        key=lambda value: abs(
-            math.log(
-                (int(value.split(":")[0]) / int(value.split(":")[1])) / (width / height)
-            )
-        ),
+        key=lambda value: abs(math.log((int(value.split(":")[0]) / int(value.split(":")[1])) / (width / height))),
     )
     horizontal, vertical = map(int, ratio.split(":"))
     unit = math.ceil(max(width / horizontal, height / vertical))
@@ -141,20 +124,14 @@ async def generate_nano_banana_image(
                 image = _read_image(encoded)
                 if encoded in same_camera_images:
                     if image.size != target_size:
-                        raise ValueError(
-                            "Same-camera controls must match the source viewport"
-                        )
+                        raise ValueError("Same-camera controls must match the source viewport")
                     padded = Image.new("RGB", canvas_size, "black")
                     padded.paste(image, offset)
                     image = padded
-                contents.append(
-                    {"type": "image", "mime_type": "image/png", "data": _png(image)}
-                )
+                contents.append({"type": "image", "mime_type": "image/png", "data": _png(image)})
                 count += 1
         if count > 14:
-            raise ValueError(
-                "Nano Banana accepts at most 14 image attachments; reduce the references"
-            )
+            raise ValueError("Nano Banana accepts at most 14 image attachments; reduce the references")
     except Exception as exc:
         raise NanoBananaProviderError(
             f"Cannot prepare Google image inputs: {exc}", billing_status="unproduced"
@@ -195,16 +172,14 @@ async def generate_nano_banana_image(
         try:
             message = response.json().get("error", {}).get("message", "")
             if isinstance(message, str):
-                detail = re.sub(r"(?:AIza|AQ\.)[A-Za-z0-9_.-]+", "[redacted]", message.replace(api_key, "[redacted]"))[:500]
+                detail = re.sub(r"(?:AIza|AQ\.)[A-Za-z0-9_.-]+", "[redacted]", message.replace(api_key, "[redacted]"))[
+                    :500
+                ]
         except (ValueError, TypeError, AttributeError):
             pass
         raise NanoBananaProviderError(
             f"Google image generation failed (HTTP {response.status_code})" + (f": {detail}" if detail else ""),
-            billing_status=(
-                "unproduced"
-                if response.status_code in {400, 401, 403, 404, 413, 422, 429}
-                else "unknown"
-            ),
+            billing_status=("unproduced" if response.status_code in {400, 401, 403, 404, 413, 422, 429} else "unknown"),
             provider_status_code=response.status_code,
         )
     try:
@@ -225,18 +200,13 @@ async def generate_nano_banana_image(
     except (ValueError, AttributeError, TypeError) as exc:
         raise NanoBananaProviderError(
             "Google did not return one completed image",
-            provider_request_id=(
-                body.get("id") if isinstance(locals().get("body"), dict) else None
-            ),
+            provider_request_id=(body.get("id") if isinstance(locals().get("body"), dict) else None),
         ) from exc
     original = None
     try:
         generated = _read_image(image_parts[0]["data"])
         original = _png(generated)
-        if (
-            abs((generated.width / generated.height) / (horizontal / vertical) - 1)
-            > 0.02
-        ):
+        if abs((generated.width / generated.height) / (horizontal / vertical) - 1) > 0.02:
             raise ValueError("Google output does not match the requested aspect ratio")
         # Undo only the framing padding, then resample to the pipeline's exact
         # viewport size. No image stretch, new crop composition, or paid retry.

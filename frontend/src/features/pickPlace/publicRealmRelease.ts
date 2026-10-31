@@ -1,10 +1,12 @@
 import manifest from '@/data/publicRealmRelease20261023.json';
 import type { PlaceAsset } from './assetRegistry';
+import { publicRealmOwnershipIdentityValid } from './publicRealmOwnershipContract';
 
 export interface PublicRealmReleaseFixture {
   id: string; title: string; kind: string; dimensions: number[]; sha256: string; url: string;
   surfaceRegions: { x: number; y: number; width: number; depth: number; material: string | null }[];
   preserveNativeGround: boolean; centerNativeClay: boolean;
+  ownershipSha256?: string;
 }
 export interface PublicRealmReleaseRow {
   candidate: string; category: string; source_sha256: string; review_sha256: string;
@@ -38,7 +40,9 @@ export function releaseGateErrors(row: PublicRealmReleaseRow): string[] {
     || asset.minWidth !== asset.width || asset.minDepth !== asset.depth || asset.maxWidth !== asset.width || asset.maxDepth !== asset.depth
     || ![asset.width, asset.depth, ...(asset.nativeDimensions ?? [])].every(value => Number.isFinite(value) && value > 0)
     || asset.nativeDimensions?.length !== 3 || asset.nativeDimensions[0] > asset.width || asset.nativeDimensions[1] > asset.depth
-    || !fixture.preserveNativeGround || !fixture.centerNativeClay) errors.push('identity_mismatch');
+    || !fixture.preserveNativeGround || !fixture.centerNativeClay
+    || !publicRealmOwnershipIdentityValid(fixture)
+    || asset.properties.public_realm_ownership_sha256 !== fixture.ownershipSha256) errors.push('identity_mismatch');
   const visual = row.visual_review;
   if (visual.status !== 'passed' || visual.scope !== 'complete_runtime_derivative'
     || visual.runtime_sha256 !== row.runtime_sha256 || !sha(visual.evidence_sha256)

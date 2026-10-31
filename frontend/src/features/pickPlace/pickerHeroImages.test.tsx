@@ -5,7 +5,10 @@ import { CANONICAL_CHOICES } from './canonicalCatalogue';
 import { CanonicalCatalogueCard } from './CanonicalCatalogueCard';
 import { PICKER_HERO_IMAGES, pickerHeroImage } from './pickerHeroImages';
 import curatedHeroes from '@/data/catalogueHeroImages.json';
-import { CATALOGUE_ASSETS } from './assetRegistry';
+import { CATALOGUE_ASSETS, COURT_ONLY_SPORT_ASSETS } from './assetRegistry';
+import buildingRelease from '@/data/claudeBuildingRelease.json';
+import publicRealmRelease from '@/data/publicRealmRelease20261023.json';
+import localClaudeTrial from '@/data/claudeAssetLocalTrial.json';
 
 describe('classroom picker hero views', () => {
   it('recovers from a missing hero and keeps placement usable when all exact images fail', () => {
@@ -26,8 +29,24 @@ describe('classroom picker hero views', () => {
   it('covers every active placement with an exact curated image and keeps future fallbacks usable', () => {
     const classroomHeroes = Object.entries(PICKER_HERO_IMAGES).filter(([, url]) => url.includes('/classroom-heroes/'));
     const placements = new Set(CANONICAL_CHOICES.flatMap(choice => choice.placements.map(asset => asset.id)));
-    expect(Object.keys(curatedHeroes).sort()).toEqual([...placements].sort());
-    expect(classroomHeroes.filter(([id]) => !placements.has(id))).toEqual([]);
+    const nativePreviewIds = new Set(COURT_ONLY_SPORT_ASSETS.map(asset => asset.id));
+    const withLocalTrials = new Set([...placements, 'clay_twisting_glass_sky_garden_tower',
+      ...buildingRelease.entries.map(row => row.asset_id),
+      ...publicRealmRelease.models.filter(row => row.status === 'runtime_trial').map(row => row.asset.id),
+      ...localClaudeTrial.models.filter(row => !row.retired
+        && !publicRealmRelease.models.some(release => ['ready', 'runtime_trial'].includes(release.status)
+          && release.asset.zoneType === row.asset.zoneType
+          && release.asset.model.variantId === row.asset.model.variantId)).map(row => row.asset.id),
+    ]);
+    // A production test run hides local trials; their explicit hero metadata
+    // must remain available on the development server without activating them.
+    expect(Object.keys(curatedHeroes).sort()).toEqual([...withLocalTrials].filter(id => !nativePreviewIds.has(id)).sort());
+    expect(classroomHeroes.filter(([id]) => !withLocalTrials.has(id))).toEqual([]);
+    for (const asset of COURT_ONLY_SPORT_ASSETS) {
+      expect(placements.has(asset.id)).toBe(true);
+      expect(asset.thumbnail).toMatch(/^\/archetypes\/openspaces\/court-only-[^/]+\/preview\.png$/);
+      expect(pickerHeroImage(asset.id, asset.thumbnail)).toBe(asset.thumbnail);
+    }
     for (const [id, url] of classroomHeroes) {
       expect(url).toMatch(/^\/archetypes\/(buildings|openspaces|streets)\/classroom-heroes\/[^/]+\.webp$/);
       expect(pickerHeroImage(id, 'fallback')).toBe(url);

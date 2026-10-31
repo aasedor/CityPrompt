@@ -53,6 +53,7 @@ def build_render_source_snapshot(req: Any, zones: Iterable[Any], buildings: Iter
     shared_ground = getattr(req, "shared_ground_snapshot", None)
     bound_shared_ground = bind_shared_ground_snapshot(shared_ground, zones) if shared_ground is not None else None
     zone_ids = {str(claim.zone_id) for claim in req.community_3d_claims}
+    zone_ids.update(str(claim.zone_id) for claim in getattr(req, "authored_surface_claims", []))
     if req.residual_landscape_claim:
         zone_ids.add(str(req.residual_landscape_claim.boundary_id))
     for descriptor in (req.instance_id_manifest or {}).values():

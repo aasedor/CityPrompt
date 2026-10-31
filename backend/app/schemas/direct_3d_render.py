@@ -79,6 +79,13 @@ class Direct3DResidualLandscapeClaim(BaseModel):
     source_hash: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
 
 
+class Direct3DAuthoredSurfaceClaim(BaseModel):
+    """Geometry/material source of a directly mounted, uncompiled flat finish."""
+
+    zone_id: uuid.UUID
+    source_hash: str = Field(..., pattern=r"^[a-fA-F0-9]{64}$")
+
+
 class Direct3DCommunityZoneClaim(BaseModel):
     """Exact compiled zone/model identity observed by the captured browser scene."""
 
@@ -301,6 +308,7 @@ class Direct3DRenderRequest(BaseModel):
         min_length=0,
         max_length=2000,
     )
+    authored_surface_claims: list[Direct3DAuthoredSurfaceClaim] = Field(default_factory=list, max_length=2000)
     residual_landscape_claim: Direct3DResidualLandscapeClaim | None = None
 
     @field_validator("object_id_manifest")
@@ -409,6 +417,9 @@ class Direct3DRenderRequest(BaseModel):
         zone_ids = [claim.zone_id for claim in self.community_3d_claims]
         if len(zone_ids) != len(set(zone_ids)):
             raise ValueError("community_3d_claims may contain each zone only once")
+        surface_ids = [claim.zone_id for claim in self.authored_surface_claims]
+        if len(surface_ids) != len(set(surface_ids)) or set(surface_ids) & set(zone_ids):
+            raise ValueError("authored_surface_claims must identify distinct non-archetype zones")
         is_reproject_style = self.style in DIRECT_3D_REPROJECT_STYLES
         if self.presentation_mode == "scene" and is_reproject_style:
             raise ValueError(f"style {self.style!r} requires presentation_mode='reproject'")
@@ -419,7 +430,9 @@ class Direct3DRenderRequest(BaseModel):
             controls += 3 if self.control_bundle_version == 2 else 0
             controls += int(self.presentation_mode == "source_anchored")
             if controls + len(self.archetype_references) > 14:
-                raise ValueError(f"Nano Banana allows 14 images total; keep at most {14 - controls} archetype references with these geometry controls")
+                raise ValueError(
+                    f"Nano Banana allows 14 images total; keep at most {14 - controls} archetype references with these geometry controls"
+                )
         return self
 
 

@@ -179,6 +179,7 @@ test.describe('Project management', () => {
 
     await page.route('**/api/v1/projects/**', async (route) => {
       const url = route.request().url();
+      if (url.endsWith('/details')) { await route.fallback(); return; }
       if (route.request().method() === 'GET' && url.includes('/projects/proj-1')) {
         await route.fulfill({
           status: 200,
@@ -220,11 +221,11 @@ test.describe('Project management', () => {
 
     await expect(page).toHaveURL(/\/projects\/proj-1$/);
     await expect(page.getByText('Riverside Development', { exact: true })).toBeVisible();
-    await expect(page.getByText('Master Plan', { exact: true }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Generate to 3D' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Buildings', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Import GLB', exact: true })).toBeVisible();
   });
 
-  test('shows integrated 3D generation controls in the project workspace', async ({ page }) => {
+  test('keeps the streamlined design tools and automatic 3D status', async ({ page }) => {
     await authenticateUser(page);
 
     await page.route('**/api/v1/projects/proj-1', async (route) => {
@@ -255,8 +256,10 @@ test.describe('Project management', () => {
     await revealPlanningTools(page);
 
     await expect(page).toHaveURL(/\/projects\/proj-1$/);
-    const generate3D = page.getByRole('button', { name: 'Generate to 3D' });
-    await expect(generate3D).toBeVisible();
-    await expect(generate3D).toBeDisabled();
+    await expect(page.getByText('3D appears automatically', { exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'More Tools', exact: true })).toHaveAttribute('aria-expanded', 'true');
+    for (const name of ['Master Plan', 'Review entrances', 'Generate to 3D']) {
+      await expect(page.getByRole('button', { name, exact: true })).toHaveCount(0);
+    }
   });
 });

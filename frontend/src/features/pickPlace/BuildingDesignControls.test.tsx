@@ -14,11 +14,51 @@ beforeEach(()=>{vi.mocked(legoAssemblyApi.plan).mockReset().mockResolvedValue({}
 const zone = { id: 'home', zone_type: 'building', coordinates: [[0, 0], [1, 0], [1, 1], [0, 1]],
   properties: placementProperties(placeAsset('infill_home')) } as SiteZone;
 
+it('offers only complete landmark tower choices and checks the chosen model before saving',async()=>{
+  const tower=placeAsset('showcase_tower'), onSave=vi.fn();
+  render(<BuildingDesignControls zone={{...zone,properties:placementProperties(tower)}} disabled={false} onSave={onSave}/>);
+  const storeys=screen.getByLabelText('Storeys') as HTMLSelectElement;
+  expect(storeys.tagName).toBe('SELECT');
+  expect(Array.from(storeys.options).map(option=>option.value)).toEqual(['17','25','35']);
+  fireEvent.change(storeys,{target:{value:'25'}});
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('95.8');
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  await waitFor(()=>expect(onSave).toHaveBeenCalledWith(expect.objectContaining({floor_count:25,height_m:95.8})));
+  expect(legoAssemblyApi.plan).toHaveBeenCalledWith(expect.objectContaining({target_floors:25,
+    target_width_m:32.779998779296875,target_depth_m:29.31721782684326,model_revision:tower.model.revision}));
+});
+
+it('does not apply a saved lighting-card ID as an exact architectural variant',()=>{
+  const onSave=vi.fn();
+  render(<BuildingDesignControls zone={{...zone,properties:{development_subcategory:'halifax_painted_clapboard_row',
+    development_archetype_id:'halifax_painted_clapboard_row_variant_0',
+    development_selected_variant_id:'halifax_painted_clapboard_row_variant_0',floors:3,height:9}}}
+    disabled={false} onSave={onSave}/>);
+  fireEvent.change(screen.getByLabelText('Storeys'),{target:{value:'2'}});
+  expect((screen.getByRole('button',{name:'Apply building'}) as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  expect(onSave).not.toHaveBeenCalled();
+});
+
+it('checks the detailed Brick Podium assembly before saving supported tower storeys', async () => {
+  const tower = placeAsset('claude_trial_brick_podium_condo_tower');
+  const onSave = vi.fn();
+  render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(tower) }} disabled={false} onSave={onSave}/>);
+  expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(false);
+  fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '25' } });
+  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('86.1');
+  fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
+  await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ floor_count: 25, height_m: 86.1,
+    pick_place_asset: tower.id, pick_place_model_revision: tower.model.revision })));
+  expect(legoAssemblyApi.plan).toHaveBeenCalledWith(expect.objectContaining({ archetype_id: tower.model.variantId, target_floors: 25,
+    target_width_m: 54, target_depth_m: 44, target_height_m: 86.1, model_revision: tower.model.revision }));
+});
+
 it('does not allow arbitrary storeys or heights for a fixed authored building', () => {
   const onSave = vi.fn(); render(<BuildingDesignControls zone={zone} disabled={false} onSave={onSave} />);
-  expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(true);
-  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).readOnly).toBe(true);
-  expect((screen.getByLabelText('Storeys') as HTMLInputElement).value).toBe('2');
+    expect(screen.queryByLabelText('Storeys')).toBeNull();
+    expect(screen.queryByLabelText('Height (m)')).toBeNull();
+    expect(screen.getByText(/2 storeys · .* m high/)).toBeTruthy();
 });
 
 it('changes exact catalogue identity while retaining independent object data', () => {
@@ -73,6 +113,30 @@ it('preserves the saved detailed tower when the current runtime cannot build its
   fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
   await waitFor(()=>expect(screen.getByRole('alert').textContent).toContain('Required floor module is unavailable'));
   expect(onSave).not.toHaveBeenCalled();
+});
+
+it.each(['storeys','footprint'] as const)('preserves a detailed house when its requested %s assembly is unavailable',async change=>{
+  vi.mocked(legoAssemblyApi.plan).mockRejectedValue(new Error('Requested house assembly is unavailable'));
+  const onSave=vi.fn();
+  render(<BuildingDesignControls zone={{...zone,properties:placementProperties(placeAsset('trial_postwar_bungalow'))}} disabled={false} onSave={onSave}/>);
+  fireEvent.change(screen.getByLabelText(change==='storeys'?'Storeys':'Building footprint (%)'),{target:{value:change==='storeys'?'2':'85'}});
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  await waitFor(()=>expect(legoAssemblyApi.plan).toHaveBeenCalledOnce());
+  expect(onSave).not.toHaveBeenCalled();
+  expect(screen.getByRole('alert').textContent).toContain('The building was not changed.');
+});
+
+it.each(['storeys','footprint'] as const)('checks returning an edited house to its native %s before replacing the detailed model',async change=>{
+  vi.mocked(legoAssemblyApi.plan).mockRejectedValue(new Error('Native assembly is unavailable'));
+  const onSave=vi.fn();
+  const properties={...placementProperties(placeAsset('trial_postwar_bungalow')),
+    ...(change==='storeys'?{floors:2,floor_count:2,height:9.29,height_m:9.29,development_height_override_m:9.29}:{building_footprint_scale:0.85})};
+  render(<BuildingDesignControls zone={{...zone,properties}} disabled={false} onSave={onSave}/>);
+  fireEvent.change(screen.getByLabelText(change==='storeys'?'Storeys':'Building footprint (%)'),{target:{value:change==='storeys'?'1':'100'}});
+  fireEvent.click(screen.getByRole('button',{name:'Apply building'}));
+  await waitFor(()=>expect(legoAssemblyApi.plan).toHaveBeenCalledOnce());
+  expect(onSave).not.toHaveBeenCalled();
+  expect(screen.getByRole('alert').textContent).toContain('The building was not changed.');
 });
 
 it('preflights the saved revision and footprint so stale modules cannot authorize a height edit',async()=>{
@@ -157,30 +221,30 @@ it('does not save a Vancouver height beyond the reviewed storey programme', () =
   expect(onSave).not.toHaveBeenCalled();
 });
 
-it('changes a bungalow footprint without changing its selected two-storey height', () => {
+it('changes a bungalow footprint without changing its selected two-storey height', async () => {
   const bungalow = placeAsset('trial_postwar_bungalow');
   const onSave = vi.fn();
   render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(bungalow) }} disabled={false} onSave={onSave} />);
-  screen.getByText(/Each choice uses a complete authored house/);
+  screen.getByText(/Each choice uses a complete authored building/);
   fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '2' } });
   fireEvent.change(screen.getByLabelText('Building footprint (%)'), { target: { value: '115' } });
   expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('9.29');
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
-  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+  await waitFor(()=>expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
     floors: 2,
     floor_count: 2,
     height: 9.29,
     height_m: 9.29,
     building_footprint_scale: 1.15,
     building_footprint_program_id: 'house-flex-pilot-v001',
-  }));
+  })));
 });
 
 it.each([
   ['trial_postwar_bungalow', 1, 6.36],
   ['trial_edwardian_foursquare', 2, 10.81],
   ['validation_clapboard_north_end', 2, 10.48],
-])('exposes the reviewed footprint band for %s and preserves the native height', (assetId, storeys, expectedHeight) => {
+])('exposes the reviewed footprint band for %s and preserves the native height', async (assetId, storeys, expectedHeight) => {
   const asset = placeAsset(assetId);
   const onSave = vi.fn();
   render(<BuildingDesignControls zone={{ ...zone, properties: placementProperties(asset) }} disabled={false} onSave={onSave} />);
@@ -190,16 +254,16 @@ it.each([
   expect((screen.getByLabelText('Storeys') as HTMLInputElement).value).toBe(String(storeys));
   expect(Number((screen.getByLabelText('Height (m)') as HTMLInputElement).value)).toBeCloseTo(expectedHeight, 2);
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
-  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+  await waitFor(()=>expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
     floors: storeys,
     floor_count: storeys,
     height: expectedHeight,
     height_m: expectedHeight,
     building_footprint_scale: 0.85,
-  }));
+  })));
 });
 
-it('preserves an existing house scale while changing only its storeys', () => {
+it('preserves an existing house scale while changing only its storeys', async () => {
   const bungalow = placeAsset('trial_postwar_bungalow');
   const onSave = vi.fn();
   const properties = {
@@ -210,10 +274,10 @@ it('preserves an existing house scale while changing only its storeys', () => {
   expect((screen.getByLabelText('Building footprint (%)') as HTMLInputElement).value).toBe('115');
   fireEvent.change(screen.getByLabelText('Storeys'), { target: { value: '2' } });
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
-  expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
+  await waitFor(()=>expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
     floors: 2,
     building_footprint_scale: 1.15,
-  }));
+  })));
 });
 
 it('locks buildings without alternate assemblies to their metadata storey count', () => {
@@ -223,8 +287,9 @@ it('locks buildings without alternate assemblies to their metadata storey count'
     ...placementProperties(building), floors: 4, floor_count: 4,
     height: 16, height_m: 16, development_height_override_m: 16,
   } }} disabled={false} onSave={onSave} />);
-  expect((screen.getByLabelText('Storeys') as HTMLInputElement).readOnly).toBe(true);
-  expect((screen.getByLabelText('Storeys') as HTMLInputElement).value).toBe('1');
+  expect(screen.queryByLabelText('Storeys')).toBeNull();
+  expect(screen.queryByLabelText('Height (m)')).toBeNull();
+  expect(screen.getByText(/1 storey · .* m high/)).toBeTruthy();
   screen.getByText('This exact model is currently available at 1 storey.');
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
   expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
@@ -257,8 +322,9 @@ it('retains the saved older model when applying its authored dimensions', () => 
   const revision = '3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6';
   const onSave = vi.fn();
   render(<BuildingDesignControls zone={{ ...zone, properties: { ...placementProperties(asset), pick_place_model_revision: revision, height: 30 } }} disabled={false} onSave={onSave} />);
-  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).value).toBe('10.48');
-  expect((screen.getByLabelText('Height (m)') as HTMLInputElement).readOnly).toBe(true);
+  expect(screen.queryByLabelText('Storeys')).toBeNull();
+  expect(screen.queryByLabelText('Height (m)')).toBeNull();
+  expect(screen.getByText(/storeys? · 10\.48 m high/)).toBeTruthy();
   fireEvent.click(screen.getByRole('button', { name: 'Apply building' }));
   expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ pick_place_model_revision: revision, height_m: 10.48 }));
 });

@@ -50,17 +50,9 @@ def validate_source_image(data: bytes) -> SourceImage:
         raise ValueError("The finished render must be an image under 25 MB.")
     try:
         with Image.open(io.BytesIO(data)) as image:
-            mime = {"PNG": "image/png", "JPEG": "image/jpeg", "WEBP": "image/webp"}.get(
-                image.format
-            )
-            if (
-                not mime
-                or min(image.size) < 128
-                or image.width * image.height > 40_000_000
-            ):
-                raise ValueError(
-                    "Use a finished PNG, JPEG or WebP render, at least 128 pixels on each side."
-                )
+            mime = {"PNG": "image/png", "JPEG": "image/jpeg", "WEBP": "image/webp"}.get(image.format)
+            if not mime or min(image.size) < 128 or image.width * image.height > 40_000_000:
+                raise ValueError("Use a finished PNG, JPEG or WebP render, at least 128 pixels on each side.")
             width, height = image.size
             image.verify()
     except (OSError, Image.DecompressionBombError) as exc:
@@ -89,22 +81,17 @@ def prepare_kling_source(source: SourceImage) -> SourceImage:
         canvas = Image.new("RGB", (width, height), "black")
         canvas.paste(rgba, ((width - source.width) // 2, (height - source.height) // 2), rgba)
         output = io.BytesIO()
-        canvas.save(output, "PNG", **({"icc_profile": image.info["icc_profile"]} if image.info.get("icc_profile") else {}))
+        canvas.save(
+            output, "PNG", **({"icc_profile": image.info["icc_profile"]} if image.info.get("icc_profile") else {})
+        )
     if output.tell() > MAX_SOURCE_BYTES:
         raise ValueError("The prepared animation image exceeds 25 MB.")
     return SourceImage(output.getvalue(), "image/png", width, height)
 
 
 def validate_endpoint(endpoint: str) -> str:
-    if (
-        not re.fullmatch(
-            r"fal-ai/kling-video/[A-Za-z0-9./_-]+/image-to-video", endpoint
-        )
-        or ".." in endpoint
-    ):
-        raise ValueError(
-            "KLING_ANIMATION_ENDPOINT must be a fal Kling image-to-video model ID."
-        )
+    if not re.fullmatch(r"fal-ai/kling-video/[A-Za-z0-9./_-]+/image-to-video", endpoint) or ".." in endpoint:
+        raise ValueError("KLING_ANIMATION_ENDPOINT must be a fal Kling image-to-video model ID.")
     return endpoint
 
 
@@ -123,9 +110,7 @@ def build_kling_arguments(start_image_url: str, scene_direction: str = "") -> di
 
 
 def estimate_kling_cost(cost_per_second: float) -> float:
-    return float(
-        (Decimal(str(cost_per_second)) * ANIMATION_SECONDS).quantize(Decimal("0.01"))
-    )
+    return float((Decimal(str(cost_per_second)) * ANIMATION_SECONDS).quantize(Decimal("0.01")))
 
 
 @lru_cache(maxsize=1)
@@ -143,9 +128,7 @@ async def upload_kling_source(api_key: str, source: SourceImage) -> str:
 
 async def submit_kling_once(api_key: str, endpoint: str, arguments: dict) -> str:
     validate_endpoint(endpoint)
-    async with httpx.AsyncClient(
-        transport=httpx.AsyncHTTPTransport(retries=0), timeout=60
-    ) as client:
+    async with httpx.AsyncClient(transport=httpx.AsyncHTTPTransport(retries=0), timeout=60) as client:
         response = await client.post(
             f"https://queue.fal.run/{endpoint}",
             headers={"Authorization": f"Key {api_key}"},
@@ -154,15 +137,11 @@ async def submit_kling_once(api_key: str, endpoint: str, arguments: dict) -> str
         response.raise_for_status()
         request_id = response.json().get("request_id")
         if not isinstance(request_id, str) or not request_id.strip():
-            raise ValueError(
-                "fal did not return a request ID. Review the provider queue before starting another clip."
-            )
+            raise ValueError("fal did not return a request ID. Review the provider queue before starting another clip.")
         return request_id
 
 
-async def poll_kling_request(
-    api_key: str, endpoint: str, request_id: str
-) -> tuple[str, str | None]:
+async def poll_kling_request(api_key: str, endpoint: str, request_id: str) -> tuple[str, str | None]:
     from fal_client import Completed, Queued
     from fal_client.client import FalClientError
 
@@ -188,9 +167,7 @@ async def poll_kling_request(
         raise
     url = (result.get("video") or {}).get("url")
     if not isinstance(url, str) or not url.startswith("https://"):
-        raise ValueError(
-            "fal completed the request without a downloadable HTTPS video."
-        )
+        raise ValueError("fal completed the request without a downloadable HTTPS video.")
     return "saving", url
 
 
@@ -208,9 +185,7 @@ async def download_kling_video(url: str) -> bytes:
             async for chunk in response.aiter_bytes():
                 total += len(chunk)
                 if total > MAX_VIDEO_BYTES:
-                    raise ValueError(
-                        "The provider video exceeds the storage size limit."
-                    )
+                    raise ValueError("The provider video exceeds the storage size limit.")
                 chunks.append(chunk)
     if not total:
         raise ValueError("The provider returned an empty video.")

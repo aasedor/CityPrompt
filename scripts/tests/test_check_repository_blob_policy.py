@@ -109,6 +109,22 @@ class BlobPolicyTests(unittest.TestCase):
             ["raw.bin: filter=lfs but committed blob is not a valid LFS pointer"],
         )
 
+    def test_exact_runtime_registry_budgets_keep_schema_and_size_bounds(self) -> None:
+        for named, collection, cap in (
+            ('frontend/src/data/nativeParks.json', 'layouts', 1280 * 1024),
+            ('backend/app/data/nativeParks.json', 'layouts', 1280 * 1024),
+            ('frontend/src/data/runtimeAssetManifest.json', 'explicitReferences', 1536 * 1024),
+        ):
+            with self.subTest(path=named):
+                source = json.dumps({collection: [], 'notes': 'x' * (1024 * 1024)}).encode()
+                commit_file(self.repo, named, source)
+                self.assertEqual(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES), [])
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], max_bytes=64))
+                commit_file(self.repo, named, json.dumps({'wrong': [], 'notes': 'x' * (1024 * 1024)}).encode())
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+                commit_file(self.repo, named, json.dumps({collection: [], 'notes': 'x' * cap}).encode())
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+
     def test_geographic_source_budget_requires_the_expected_collection(self) -> None:
         named = "frontend/src/features/policyPlans/data/heritageUrbanForm.json"
         source = json.dumps({"type": "FeatureCollection", "features": [], "notes": "x" * (1024 * 1024)}).encode()

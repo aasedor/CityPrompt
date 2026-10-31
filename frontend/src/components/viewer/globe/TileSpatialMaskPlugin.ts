@@ -248,6 +248,12 @@ export function inheritTileSpatialMask(source: THREE.Material, target: THREE.Mat
   if (state) patchMaterialForSpatialMask(target, state.config);
 }
 
+/** CPU visibility checks must discard the same source fragments as beauty. */
+export function isWorldPointSpatiallyMasked(material: THREE.Material, worldPoint: THREE.Vector3): boolean {
+  const state = material.userData[SPATIAL_PATCH_STATE_KEY] as SpatialPatchState | undefined;
+  return !!state && isPointInsideSpatialMask(worldPoint.clone().applyMatrix4(state.config.worldToLocal), state.config);
+}
+
 export function unpatchMaterialSpatialMask(material: THREE.Material): void {
   const state = material.userData[SPATIAL_PATCH_STATE_KEY] as SpatialPatchState | undefined;
   if (!state) return;

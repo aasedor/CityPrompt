@@ -7,96 +7,167 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 from app.api.v1 import project_details as endpoint
 
-PAVING = {'id':'paving-1', 'material':'concrete', 'coordinates':[
-    [-114.1,51.05],[-114.0998,51.05],[-114.0998,51.0502],[-114.1,51.0502]]}
+PAVING = {
+    "id": "paving-1",
+    "material": "concrete",
+    "coordinates": [[-114.1, 51.05], [-114.0998, 51.05], [-114.0998, 51.0502], [-114.1, 51.0502]],
+}
+
 
 @pytest.mark.asyncio
 async def test_parking_recipe_round_trips_without_changing_legacy_surfaces(monkeypatch):
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
-    db, row = session({'keep':True})
-    lot = {**PAVING, 'id':'parking-1', 'material':'asphalt', 'parking':{'version':1,'rowAngle':90}}
-    saved = await endpoint.save_details(uuid.uuid4(),endpoint.DetailUpdate(expected_revision=0,benches=[],surfaces=[PAVING,lot]),SimpleNamespace(),db)
-    assert saved['surfaces'] == [PAVING,lot]
-    loaded = endpoint.DetailResponse(**await endpoint.get_details(uuid.uuid4(),SimpleNamespace(),db))
-    assert loaded.model_dump(mode='json',exclude_none=True)['surfaces'] == [PAVING,lot]
-    assert row.metadata_['keep'] is True
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
+    db, row = session({"keep": True})
+    lot = {**PAVING, "id": "parking-1", "material": "asphalt", "parking": {"version": 1, "rowAngle": 90}}
+    saved = await endpoint.save_details(
+        uuid.uuid4(),
+        endpoint.DetailUpdate(expected_revision=0, benches=[], surfaces=[PAVING, lot]),
+        SimpleNamespace(),
+        db,
+    )
+    assert saved["surfaces"] == [PAVING, lot]
+    loaded = endpoint.DetailResponse(**await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db))
+    assert loaded.model_dump(mode="json", exclude_none=True)["surfaces"] == [PAVING, lot]
+    assert row.metadata_["keep"] is True
 
 
 @pytest.mark.asyncio
 async def test_parking_driveway_round_trip_and_bad_target_rejection(monkeypatch):
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
     db, _ = session()
-    driveway = {'version':1,'source':'manual','roadPoint':[-114.1001,51.0501]}
-    lot = {**PAVING,'parking':{'version':1,'rowAngle':0,'driveway':driveway}}
-    saved = await endpoint.save_details(uuid.uuid4(),endpoint.DetailUpdate(expected_revision=0,benches=[],surfaces=[lot]),SimpleNamespace(),db)
-    assert saved['surfaces'][0]['parking']['driveway'] == driveway
-    for bad in [{**driveway,'roadPoint':[999,51]}, {**driveway,'source':'authored'},
-                {**driveway,'roadPoint':[-115,51]}, {**driveway,'width':50}]:
+    driveway = {"version": 1, "source": "manual", "roadPoint": [-114.1001, 51.0501]}
+    lot = {**PAVING, "parking": {"version": 1, "rowAngle": 0, "driveway": driveway}}
+    saved = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], surfaces=[lot]), SimpleNamespace(), db
+    )
+    assert saved["surfaces"][0]["parking"]["driveway"] == driveway
+    for bad in [
+        {**driveway, "roadPoint": [999, 51]},
+        {**driveway, "source": "authored"},
+        {**driveway, "roadPoint": [-115, 51]},
+        {**driveway, "width": 50},
+    ]:
         with pytest.raises(ValidationError):
-            endpoint.PavingSurface(**{**PAVING,'parking':{'version':1,'rowAngle':0,'driveway':bad}})
+            endpoint.PavingSurface(**{**PAVING, "parking": {"version": 1, "rowAngle": 0, "driveway": bad}})
 
-@pytest.mark.parametrize('parking',[
-    {'version':2,'rowAngle':0}, {'version':1,'rowAngle':float('nan')},
-    {'version':1,'rowAngle':15}, {'version':1,'rowAngle':361}, {'version':1,'rowAngle':0,'stallWidth':.1},
-])
+
+@pytest.mark.parametrize(
+    "parking",
+    [
+        {"version": 2, "rowAngle": 0},
+        {"version": 1, "rowAngle": float("nan")},
+        {"version": 1, "rowAngle": 15},
+        {"version": 1, "rowAngle": 361},
+        {"version": 1, "rowAngle": 0, "stallWidth": 0.1},
+    ],
+)
 def test_rejects_unsupported_parking_recipes(parking):
     with pytest.raises(ValidationError):
-        endpoint.PavingSurface(**{**PAVING,'parking':parking})
+        endpoint.PavingSurface(**{**PAVING, "parking": parking})
+
 
 def test_rejects_parking_larger_than_bounded_procedural_recipe():
     with pytest.raises(ValidationError):
-        endpoint.PavingSurface(**{**PAVING,'coordinates':[
-            [-114.1,51.05],[-114.097,51.05],[-114.097,51.052],[-114.1,51.052]],
-            'parking':{'version':1,'rowAngle':0}})
+        endpoint.PavingSurface(
+            **{
+                **PAVING,
+                "coordinates": [[-114.1, 51.05], [-114.097, 51.05], [-114.097, 51.052], [-114.1, 51.052]],
+                "parking": {"version": 1, "rowAngle": 0},
+            }
+        )
 
-SITE_DETAIL_IDS = tuple(f'detail-site-{slug}' for slug in (
-    'outdoor-stairs', 'accessible-ramp', 'modular-handrail', 'retaining-wall',
-    'refuge-island', 'planted-curb-extension', 'tactile-curb-ramp',
-    'covered-bike-parking', 'bicycle-locker', 'ev-charger', 'accessible-parking',
-    'loading-zone', 'waste-enclosure', 'privacy-screen', 'public-art',
-    'food-truck', 'cafe-barrier', 'community-noticeboard', 'rainwater-cistern',
-    'public-washroom',
-))
+
+SITE_DETAIL_IDS = tuple(
+    f"detail-site-{slug}"
+    for slug in (
+        "outdoor-stairs",
+        "accessible-ramp",
+        "modular-handrail",
+        "retaining-wall",
+        "refuge-island",
+        "planted-curb-extension",
+        "tactile-curb-ramp",
+        "covered-bike-parking",
+        "bicycle-locker",
+        "ev-charger",
+        "accessible-parking",
+        "loading-zone",
+        "waste-enclosure",
+        "privacy-screen",
+        "public-art",
+        "food-truck",
+        "cafe-barrier",
+        "community-noticeboard",
+        "rainwater-cistern",
+        "public-washroom",
+    )
+)
+
 
 @pytest.mark.asyncio
 async def test_safety_support_reference_survives_save_reload_and_legacy_update(monkeypatch):
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
     db, row = session()
-    prop = {'id':'safety-1','lng':-114.1,'lat':51.05,'angle':15,
-            'variant':'calgary_delineator_illustrative_r1','support_zone_id':str(uuid.uuid4())}
-    saved = await endpoint.save_details(uuid.uuid4(),endpoint.DetailUpdate(expected_revision=0,benches=[],props=[prop]),SimpleNamespace(),db)
-    assert saved['props'] == [prop]
-    loaded = await endpoint.get_details(uuid.uuid4(),SimpleNamespace(),db)
-    assert loaded['props'] == [prop]
-    legacy = await endpoint.save_details(uuid.uuid4(),endpoint.DetailUpdate(expected_revision=1,benches=[]),SimpleNamespace(),db)
-    assert legacy['props'] == [prop]
+    prop = {
+        "id": "safety-1",
+        "lng": -114.1,
+        "lat": 51.05,
+        "angle": 15,
+        "variant": "calgary_delineator_illustrative_r1",
+        "support_zone_id": str(uuid.uuid4()),
+    }
+    saved = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db
+    )
+    assert saved["props"] == [prop]
+    loaded = await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db)
+    assert loaded["props"] == [prop]
+    legacy = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db
+    )
+    assert legacy["props"] == [prop]
+
 
 def test_rejects_malformed_support_reference():
     with pytest.raises(ValidationError):
-        endpoint.Prop(id='item',lng=-114,lat=51,angle=0,variant='calgary_delineator_illustrative_r1',support_zone_id='../bad')
+        endpoint.Prop(
+            id="item", lng=-114, lat=51, angle=0, variant="calgary_delineator_illustrative_r1", support_zone_id="../bad"
+        )
+
 
 @pytest.mark.asyncio
 async def test_paving_round_trip_and_old_clients_preserve_surfaces(monkeypatch):
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
-    db, row = session({'keep':'unchanged'})
-    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], surfaces=[PAVING]), SimpleNamespace(), db)
-    assert saved['surfaces'] == [PAVING]
-    assert row.metadata_['keep'] == 'unchanged'
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
+    db, row = session({"keep": "unchanged"})
+    saved = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], surfaces=[PAVING]), SimpleNamespace(), db
+    )
+    assert saved["surfaces"] == [PAVING]
+    assert row.metadata_["keep"] == "unchanged"
     loaded = await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db)
-    assert loaded['surfaces'] == [PAVING]
-    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db)
-    assert legacy['surfaces'] == [PAVING]
-    cleared = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], surfaces=[]), SimpleNamespace(), db)
-    assert cleared['surfaces'] == []
+    assert loaded["surfaces"] == [PAVING]
+    legacy = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db
+    )
+    assert legacy["surfaces"] == [PAVING]
+    cleared = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], surfaces=[]), SimpleNamespace(), db
+    )
+    assert cleared["surfaces"] == []
 
-@pytest.mark.parametrize('patch', [
-    {'material':'unknown'}, {'coordinates':[[0,0],[1,0]]},
-    {'coordinates':[[0,0],[1,1],[0,1],[1,0]]},
-    {'coordinates':[[0,0],[1,0],[2,0]]},
-    {'coordinates':[[0,0],[181,0],[1,1]]},
-    {'coordinates':[[0,0],[float('nan'),0],[1,1]]},
-    {'coordinates':[[0,0],[1,0],[1,1],[0,1]]},
-])
+
+@pytest.mark.parametrize(
+    "patch",
+    [
+        {"material": "unknown"},
+        {"coordinates": [[0, 0], [1, 0]]},
+        {"coordinates": [[0, 0], [1, 1], [0, 1], [1, 0]]},
+        {"coordinates": [[0, 0], [1, 0], [2, 0]]},
+        {"coordinates": [[0, 0], [181, 0], [1, 1]]},
+        {"coordinates": [[0, 0], [float("nan"), 0], [1, 1]]},
+        {"coordinates": [[0, 0], [1, 0], [1, 1], [0, 1]]},
+    ],
+)
 def test_rejects_invalid_paving(patch):
     with pytest.raises(ValidationError):
         endpoint.DetailUpdate(expected_revision=0, benches=[], surfaces=[{**PAVING, **patch}])
@@ -112,280 +183,394 @@ def session(metadata=None):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('action', ['standing', 'walking', 'running', 'sitting', 'talking',
-    'lying_down', 'waving', 'using_phone', 'reading', 'waiting', 'looking_around',
-    'pointing', 'stretching', 'dancing', 'cheering'])
+@pytest.mark.parametrize(
+    "action",
+    [
+        "standing",
+        "walking",
+        "running",
+        "sitting",
+        "talking",
+        "lying_down",
+        "waving",
+        "using_phone",
+        "reading",
+        "waiting",
+        "looking_around",
+        "pointing",
+        "stretching",
+        "dancing",
+        "cheering",
+    ],
+)
 async def test_people_actions_save_reload_and_legacy_updates_preserve(monkeypatch, action):
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
-    db, row = session({'keep': True})
-    prop = {'id': 'person-1', 'lng': -114.1, 'lat': 51.05, 'angle': 90,
-            'variant': 'people-pilot-commuter', 'people_action': action}
-    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(
-        expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db)
-    assert saved['props'] == [prop]
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
+    db, row = session({"keep": True})
+    prop = {
+        "id": "person-1",
+        "lng": -114.1,
+        "lat": 51.05,
+        "angle": 90,
+        "variant": "people-pilot-commuter",
+        "people_action": action,
+    }
+    saved = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db
+    )
+    assert saved["props"] == [prop]
     loaded = endpoint.DetailResponse(**await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db))
-    assert loaded.model_dump(exclude_none=True)['props'] == [prop]
-    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(
-        expected_revision=1, benches=[]), SimpleNamespace(), db)
-    assert legacy['props'] == [prop]
-    assert row.metadata_['keep'] is True
+    assert loaded.model_dump(exclude_none=True)["props"] == [prop]
+    legacy = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db
+    )
+    assert legacy["props"] == [prop]
+    assert row.metadata_["keep"] is True
 
 
-@pytest.mark.parametrize('patch', [
-    {'people_action': 'flying'}, {'people_action': ''}, {'people_action': 3},
-    {'variant': 'dual-stream-bin', 'people_action': 'walking'},
-])
+@pytest.mark.parametrize(
+    "patch",
+    [
+        {"people_action": "flying"},
+        {"people_action": ""},
+        {"people_action": 3},
+        {"variant": "dual-stream-bin", "people_action": "walking"},
+    ],
+)
 def test_people_action_rejects_unknown_values_and_actions_on_furniture(patch):
     with pytest.raises(ValidationError):
-        endpoint.Prop(**{'id': 'person', 'lng': -114.1, 'lat': 51.05, 'angle': 0,
-                         'variant': 'people-pilot-commuter', **patch})
+        endpoint.Prop(
+            **{"id": "person", "lng": -114.1, "lat": 51.05, "angle": 0, "variant": "people-pilot-commuter", **patch}
+        )
 
 
 def test_legacy_people_have_no_synthetic_saved_action():
-    prop = endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
-                         variant='people-pilot-commuter')
-    assert 'people_action' not in prop.model_dump(exclude_none=True)
+    prop = endpoint.Prop(id="person", lng=-114.1, lat=51.05, angle=0, variant="people-pilot-commuter")
+    assert "people_action" not in prop.model_dump(exclude_none=True)
 
 
 def test_all_legacy_people_support_every_action_and_unknown_characters_are_rejected():
     from app.services.people_actions import PEOPLE_ACTIONS
-    people_ids = [model for model in endpoint._DETAIL_MODELS['props']
-                  if model.startswith(('people-pilot-', 'people-community-'))]
+
+    people_ids = [
+        model for model in endpoint._DETAIL_MODELS["props"] if model.startswith(("people-pilot-", "people-community-"))
+    ]
     assert len(people_ids) == 23
     for model in people_ids:
         for action in PEOPLE_ACTIONS:
-            prop = endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
-                                 variant=model, people_action=action)
+            prop = endpoint.Prop(id="person", lng=-114.1, lat=51.05, angle=0, variant=model, people_action=action)
             assert prop.people_action == action
-    with pytest.raises(ValidationError, match='Unknown detail model'):
-        endpoint.Prop(id='person', lng=-114.1, lat=51.05, angle=0,
-                      variant='people-community-forged', people_action='reading')
+    with pytest.raises(ValidationError, match="Unknown detail model"):
+        endpoint.Prop(
+            id="person", lng=-114.1, lat=51.05, angle=0, variant="people-community-forged", people_action="reading"
+        )
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('slug,action', [
-    ('white-cane', 'standing'), ('guide-dog', 'standing'),
-    ('manual-wheelchair', 'sitting'), ('power-wheelchair', 'sitting'),
-    ('older-woman', 'standing'), ('older-man-rollator', 'standing'),
-    ('family-parent-child', 'standing'), ('family-stroller', 'standing'),
-])
+@pytest.mark.parametrize(
+    "slug,action",
+    [
+        ("white-cane", "standing"),
+        ("guide-dog", "standing"),
+        ("manual-wheelchair", "sitting"),
+        ("power-wheelchair", "sitting"),
+        ("older-woman", "standing"),
+        ("older-man-rollator", "standing"),
+        ("family-parent-child", "standing"),
+        ("family-stroller", "standing"),
+    ],
+)
 async def test_inclusive_people_default_round_trip_and_reject_unsupported_actions(monkeypatch, slug, action):
     from app.services import people_actions
-    variant = f'people-inclusive-{slug}'
+
+    variant = f"people-inclusive-{slug}"
     # No registry promotion: the owner registers measured assets separately.
-    monkeypatch.setitem(endpoint._DETAIL_MODELS, 'props', [*endpoint._DETAIL_MODELS['props'], variant])
-    monkeypatch.setattr(people_actions, '_PEOPLE_MODELS', people_actions._PEOPLE_MODELS | {variant})
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
-    db, row = session({'keep': True})
-    prop = {'id': 'person', 'lng': -114.1, 'lat': 51.05, 'angle': 0, 'variant': variant}
-    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(
-        expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db)
-    expected = {**prop, 'people_action': action}
-    assert saved['props'] == [expected]
+    monkeypatch.setitem(endpoint._DETAIL_MODELS, "props", [*endpoint._DETAIL_MODELS["props"], variant])
+    monkeypatch.setattr(people_actions, "_PEOPLE_MODELS", people_actions._PEOPLE_MODELS | {variant})
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
+    db, row = session({"keep": True})
+    prop = {"id": "person", "lng": -114.1, "lat": 51.05, "angle": 0, "variant": variant}
+    saved = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db
+    )
+    expected = {**prop, "people_action": action}
+    assert saved["props"] == [expected]
     loaded = endpoint.DetailResponse(**await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db))
-    assert loaded.model_dump(exclude_none=True)['props'] == [expected]
-    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(
-        expected_revision=1, benches=[]), SimpleNamespace(), db)
-    assert legacy['props'] == [expected] and row.metadata_['keep'] is True
-    assert endpoint.Prop(**{**prop, 'people_action': None}).people_action == action
+    assert loaded.model_dump(exclude_none=True)["props"] == [expected]
+    legacy = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db
+    )
+    assert legacy["props"] == [expected] and row.metadata_["keep"] is True
+    assert endpoint.Prop(**{**prop, "people_action": None}).people_action == action
     for unsupported in people_actions.PEOPLE_ACTIONS:
         if unsupported != action:
-            with pytest.raises(ValidationError, match='Unsupported people action'):
-                endpoint.DetailUpdate(expected_revision=2, benches=[], props=[{
-                    **prop, 'people_action': unsupported,
-                }])
+            with pytest.raises(ValidationError, match="Unsupported people action"):
+                endpoint.DetailUpdate(
+                    expected_revision=2,
+                    benches=[],
+                    props=[
+                        {
+                            **prop,
+                            "people_action": unsupported,
+                        }
+                    ],
+                )
 
 
 @pytest.mark.asyncio
 async def test_independent_benches_save_without_any_zone_and_preserve_metadata(monkeypatch):
-    permission = AsyncMock(return_value='editor')
-    monkeypatch.setattr(endpoint, 'check_project_permission', permission)
-    db, row = session({'address': 'Riley', 'other': {'keep': True}})
-    request = endpoint.DetailUpdate(expected_revision=0, benches=[{'id':'bench-1','lng':-114.1,'lat':51.05,'angle':30}])
+    permission = AsyncMock(return_value="editor")
+    monkeypatch.setattr(endpoint, "check_project_permission", permission)
+    db, row = session({"address": "Riley", "other": {"keep": True}})
+    request = endpoint.DetailUpdate(
+        expected_revision=0, benches=[{"id": "bench-1", "lng": -114.1, "lat": 51.05, "angle": 30}]
+    )
     saved = await endpoint.save_details(uuid.uuid4(), request, SimpleNamespace(), db)
-    assert saved['revision'] == 1 and len(saved['benches']) == 1
-    assert row.metadata_['address'] == 'Riley' and row.metadata_['other'] == {'keep': True}
-    assert permission.await_args.kwargs['required'] == 'editor'
+    assert saved["revision"] == 1 and len(saved["benches"]) == 1
+    assert row.metadata_["address"] == "Riley" and row.metadata_["other"] == {"keep": True}
+    assert permission.await_args.kwargs["required"] == "editor"
     loaded = await endpoint.get_details(uuid.uuid4(), SimpleNamespace(), db)
-    assert loaded['benches'] == saved['benches']
-    assert permission.await_args.kwargs['required'] == 'viewer'
-    cleared = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1,benches=[]),SimpleNamespace(),db)
-    assert cleared['benches'] == [] and cleared['revision'] == 2
+    assert loaded["benches"] == saved["benches"]
+    assert permission.await_args.kwargs["required"] == "viewer"
+    cleared = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db
+    )
+    assert cleared["benches"] == [] and cleared["revision"] == 2
 
 
 @pytest.mark.asyncio
 async def test_stale_save_does_not_overwrite_and_forbidden_user_cannot_write(monkeypatch):
-    permission = AsyncMock(return_value='editor')
-    monkeypatch.setattr(endpoint, 'check_project_permission', permission)
-    db, row = session({'scene_details':{'version':1,'revision':3,'benches':[]}})
+    permission = AsyncMock(return_value="editor")
+    monkeypatch.setattr(endpoint, "check_project_permission", permission)
+    db, row = session({"scene_details": {"version": 1, "revision": 3, "benches": []}})
     with pytest.raises(HTTPException) as error:
-        await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1,benches=[]),SimpleNamespace(),db)
-    assert error.value.status_code == 409 and row.metadata_['scene_details']['revision'] == 3
+        await endpoint.save_details(
+            uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db
+        )
+    assert error.value.status_code == 409 and row.metadata_["scene_details"]["revision"] == 3
     db.flush.assert_not_awaited()
-    permission.side_effect = HTTPException(403,'Forbidden')
+    permission.side_effect = HTTPException(403, "Forbidden")
     with pytest.raises(HTTPException) as error:
-        await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=3,benches=[]),SimpleNamespace(),db)
+        await endpoint.save_details(
+            uuid.uuid4(), endpoint.DetailUpdate(expected_revision=3, benches=[]), SimpleNamespace(), db
+        )
     assert error.value.status_code == 403
 
 
 def test_invalid_coordinates_duplicate_ids_and_excessive_items_rejected():
-    for benches in ([{'id':'a','lng':181,'lat':51,'angle':0}],
-                    [{'id':'a','lng':0,'lat':float('nan'),'angle':0}],
-                    [{'id':'a','lng':0,'lat':51,'angle':0}]*2,
-                    [{'id':str(i),'lng':0,'lat':51,'angle':0} for i in range(257)]):
+    for benches in (
+        [{"id": "a", "lng": 181, "lat": 51, "angle": 0}],
+        [{"id": "a", "lng": 0, "lat": float("nan"), "angle": 0}],
+        [{"id": "a", "lng": 0, "lat": 51, "angle": 0}] * 2,
+        [{"id": str(i), "lng": 0, "lat": 51, "angle": 0} for i in range(257)],
+    ):
         with pytest.raises(ValidationError):
-            endpoint.DetailUpdate(expected_revision=0,benches=benches)
+            endpoint.DetailUpdate(expected_revision=0, benches=benches)
+
 
 @pytest.mark.asyncio
 async def test_trees_round_trip_legacy_writes_preserve_and_explicit_empty_removes(monkeypatch):
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
     db, row = session()
-    tree = {'id':'tree-1','lng':-114.1,'lat':51.05,'angle':15,'variant':'oak-1'}
-    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[tree]), SimpleNamespace(), db)
-    assert saved['trees'] == [tree]
-    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db)
-    assert legacy['trees'] == [tree]
-    cleared = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], trees=[]), SimpleNamespace(), db)
-    assert cleared['trees'] == []
+    tree = {"id": "tree-1", "lng": -114.1, "lat": 51.05, "angle": 15, "variant": "oak-1"}
+    saved = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[tree]), SimpleNamespace(), db
+    )
+    assert saved["trees"] == [tree]
+    legacy = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[]), SimpleNamespace(), db
+    )
+    assert legacy["trees"] == [tree]
+    cleared = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], trees=[]), SimpleNamespace(), db
+    )
+    assert cleared["trees"] == []
+
 
 def test_tree_validation_rejects_unknown_assets_and_shared_ids():
-    tree = {'id':'same','lng':-114.1,'lat':51.05,'angle':0,'variant':'oak-0'}
+    tree = {"id": "same", "lng": -114.1, "lat": 51.05, "angle": 0, "variant": "oak-0"}
     with pytest.raises(ValidationError):
-        endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[{**tree,'variant':'arbitrary-url'}])
+        endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[{**tree, "variant": "arbitrary-url"}])
     with pytest.raises(ValidationError):
-        endpoint.DetailUpdate(expected_revision=0, benches=[{k:v for k,v in tree.items() if k!='variant'}], trees=[tree])
+        endpoint.DetailUpdate(
+            expected_revision=0, benches=[{k: v for k, v in tree.items() if k != "variant"}], trees=[tree]
+        )
+
 
 @pytest.mark.asyncio
 async def test_catalogue_objects_preserve_legacy_details_and_support_explicit_removal(monkeypatch):
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
     db, row = session()
-    prop = {'id':'prop-1','lng':-114.1,'lat':51.05,'angle':15,'variant':'picnic-table-accessible'}
-    saved = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db)
-    assert saved['props'] == [prop]
-    legacy = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[], trees=[]), SimpleNamespace(), db)
-    assert legacy['props'] == [prop]
-    cleared = await endpoint.save_details(uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], props=[]), SimpleNamespace(), db)
-    assert cleared['props'] == []
+    prop = {"id": "prop-1", "lng": -114.1, "lat": 51.05, "angle": 15, "variant": "picnic-table-accessible"}
+    saved = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db
+    )
+    assert saved["props"] == [prop]
+    legacy = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=1, benches=[], trees=[]), SimpleNamespace(), db
+    )
+    assert legacy["props"] == [prop]
+    cleared = await endpoint.save_details(
+        uuid.uuid4(), endpoint.DetailUpdate(expected_revision=2, benches=[], props=[]), SimpleNamespace(), db
+    )
+    assert cleared["props"] == []
+
 
 def test_catalogue_rejects_unknown_models_bad_coordinates_and_colliding_ids():
-    prop={'id':'prop','lng':-114.1,'lat':51.05,'angle':0,'variant':'dual-stream-bin'}
-    for bad in ({**prop,'variant':'https://untrusted/model.glb'}, {**prop,'lat':float('nan')}):
+    prop = {"id": "prop", "lng": -114.1, "lat": 51.05, "angle": 0, "variant": "dual-stream-bin"}
+    for bad in ({**prop, "variant": "https://untrusted/model.glb"}, {**prop, "lat": float("nan")}):
         with pytest.raises(ValidationError):
-            endpoint.DetailUpdate(expected_revision=0,benches=[],props=[bad])
+            endpoint.DetailUpdate(expected_revision=0, benches=[], props=[bad])
     with pytest.raises(ValidationError):
-        endpoint.DetailUpdate(expected_revision=0,benches=[{k:v for k,v in prop.items() if k!='variant'}],props=[prop])
+        endpoint.DetailUpdate(
+            expected_revision=0, benches=[{k: v for k, v in prop.items() if k != "variant"}], props=[prop]
+        )
 
 
 def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
     import json
     from pathlib import Path
+
     root = Path(__file__).resolve().parents[2]
-    choices = json.loads((root / 'frontend/src/features/parks/detailCatalogueExtras.json').read_text())
+    choices = json.loads((root / "frontend/src/features/parks/detailCatalogueExtras.json").read_text())
     assert len(choices) == 155
-    choices += json.loads((root / 'frontend/src/features/parks/recoveredDetails.json').read_text())
-    choices += json.loads((root / 'frontend/src/features/parks/trafficSafetyCatalogue.json').read_text())
+    choices += json.loads((root / "frontend/src/features/parks/recoveredDetails.json").read_text())
+    choices += json.loads((root / "frontend/src/features/parks/trafficSafetyCatalogue.json").read_text())
     # Local preview IDs must round-trip before their public picker gate is lifted.
-    choices += json.loads((root / 'frontend/src/features/parks/calgarySafetyCatalogue.json').read_text())
-    choices += json.loads((root / 'frontend/src/features/people/peopleCatalogue.json').read_text())
-    inclusive = json.loads((root / 'frontend/src/features/people/inclusivePeopleCatalogue.json').read_text())
+    choices += json.loads((root / "frontend/src/features/parks/calgarySafetyCatalogue.json").read_text())
+    choices += json.loads((root / "frontend/src/features/people/peopleCatalogue.json").read_text())
+    inclusive = json.loads((root / "frontend/src/features/people/inclusivePeopleCatalogue.json").read_text())
     choices += inclusive
-    representations = json.loads((root / 'backend/app/data/inclusive_people.json').read_text())
+    representations = json.loads((root / "backend/app/data/inclusive_people.json").read_text())
     for choice in inclusive:
-        assert choice['peopleRepresentation'] == representations[choice['id']]
-    assert set(endpoint._DETAIL_MODELS['trees']) == {'oak-0','oak-1','oak-2'} | {c['id'] for c in choices if c['kind'] == 'tree'}
-    assert set(endpoint._DETAIL_MODELS['props']) == {'picnic-table-accessible','dual-stream-bin','bike-rack-three-stall','drinking-fountain-accessible','boulders','split-rail'} | {c['id'] for c in choices if c['kind'] == 'object'}
+        assert choice["peopleRepresentation"] == representations[choice["id"]]
+    assert set(endpoint._DETAIL_MODELS["trees"]) == {"oak-0", "oak-1", "oak-2"} | {
+        c["id"] for c in choices if c["kind"] == "tree"
+    }
+    assert set(endpoint._DETAIL_MODELS["props"]) == {
+        "picnic-table-accessible",
+        "dual-stream-bin",
+        "bike-rack-three-stall",
+        "drinking-fountain-accessible",
+        "boulders",
+        "split-rail",
+    } | {c["id"] for c in choices if c["kind"] == "object"}
     for choice in choices:
-        field = 'trees' if choice['kind'] == 'tree' else 'props'
-        request = endpoint.DetailUpdate(expected_revision=0, benches=[], **{field: [{
-            'id': 'trial', 'lng': -114.1, 'lat': 51.05, 'angle': 15, 'variant': choice['id']
-        }]})
-        assert getattr(request, field)[0].variant == choice['id']
+        field = "trees" if choice["kind"] == "tree" else "props"
+        request = endpoint.DetailUpdate(
+            expected_revision=0,
+            benches=[],
+            **{field: [{"id": "trial", "lng": -114.1, "lat": 51.05, "angle": 15, "variant": choice["id"]}]},
+        )
+        assert getattr(request, field)[0].variant == choice["id"]
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('manifest,count', [('trafficSafetyCatalogue.json',56), ('calgarySafetyCatalogue.json',10)])
+@pytest.mark.parametrize("manifest,count", [("trafficSafetyCatalogue.json", 56), ("calgarySafetyCatalogue.json", 10)])
 async def test_all_safety_variants_round_trip_with_legacy_details(monkeypatch, manifest, count):
     import json
     from pathlib import Path
+
     root = Path(__file__).resolve().parents[2]
-    choices = json.loads((root / 'frontend/src/features/parks' / manifest).read_text())
+    choices = json.loads((root / "frontend/src/features/parks" / manifest).read_text())
     assert len(choices) == count
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
-    legacy = {'id':'old-bench', 'lng':-114.1, 'lat':51.05, 'angle':30}
-    db, row = session({'keep': {'unchanged': True}})
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
+    legacy = {"id": "old-bench", "lng": -114.1, "lat": 51.05, "angle": 30}
+    db, row = session({"keep": {"unchanged": True}})
     project_id = uuid.uuid4()
-    props = [{'id':f'safety-{i}', 'lng':-114.1, 'lat':51.05, 'angle':90,
-              'variant':choice['id']} for i, choice in enumerate(choices)]
-    await endpoint.save_details(project_id, endpoint.DetailUpdate(
-        expected_revision=0, benches=[legacy], props=props), SimpleNamespace(), db)
+    props = [
+        {"id": f"safety-{i}", "lng": -114.1, "lat": 51.05, "angle": 90, "variant": choice["id"]}
+        for i, choice in enumerate(choices)
+    ]
+    await endpoint.save_details(
+        project_id, endpoint.DetailUpdate(expected_revision=0, benches=[legacy], props=props), SimpleNamespace(), db
+    )
     loaded = await endpoint.get_details(project_id, SimpleNamespace(), db)
-    assert loaded['props'] == props
-    assert loaded['benches'] == [legacy]
-    assert row.metadata_['keep'] == {'unchanged': True}
+    assert loaded["props"] == props
+    assert loaded["benches"] == [legacy]
+    assert row.metadata_["keep"] == {"unchanged": True}
     # Older clients omitting props cannot accidentally erase the new items.
-    saved = await endpoint.save_details(project_id, endpoint.DetailUpdate(
-        expected_revision=1, benches=[legacy]), SimpleNamespace(), db)
-    assert saved['props'] == props
-    for field in ('scale', 'width', 'height'):
+    saved = await endpoint.save_details(
+        project_id, endpoint.DetailUpdate(expected_revision=1, benches=[legacy]), SimpleNamespace(), db
+    )
+    assert saved["props"] == props
+    for field in ("scale", "width", "height"):
         with pytest.raises(ValidationError):
             endpoint.Prop(**{**props[0], field: 2})
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize('variant', SITE_DETAIL_IDS)
+@pytest.mark.parametrize("variant", SITE_DETAIL_IDS)
 async def test_site_details_save_reload_rotate_and_preserve_project_metadata(monkeypatch, variant):
-    monkeypatch.setattr(endpoint, 'check_project_permission', AsyncMock(return_value='editor'))
-    metadata = {'address': 'Riley', 'other': {'keep': True}}
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
+    metadata = {"address": "Riley", "other": {"keep": True}}
     db, row = session(metadata.copy())
     project_id = uuid.uuid4()
-    prop = {'id': 'site-prop', 'lng': -114.1, 'lat': 51.05, 'angle': 45, 'variant': variant}
-    saved = await endpoint.save_details(project_id, endpoint.DetailUpdate(
-        expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db)
-    assert saved['props'] == [prop]
-    assert saved['revision'] == 1
-    rotated = {**prop, 'angle': -90}
-    await endpoint.save_details(project_id, endpoint.DetailUpdate(
-        expected_revision=1, benches=[], props=[rotated]), SimpleNamespace(), db)
+    prop = {"id": "site-prop", "lng": -114.1, "lat": 51.05, "angle": 45, "variant": variant}
+    saved = await endpoint.save_details(
+        project_id, endpoint.DetailUpdate(expected_revision=0, benches=[], props=[prop]), SimpleNamespace(), db
+    )
+    assert saved["props"] == [prop]
+    assert saved["revision"] == 1
+    rotated = {**prop, "angle": -90}
+    await endpoint.save_details(
+        project_id, endpoint.DetailUpdate(expected_revision=1, benches=[], props=[rotated]), SimpleNamespace(), db
+    )
     loaded = await endpoint.get_details(project_id, SimpleNamespace(), db)
-    assert loaded['props'] == [rotated]
-    assert loaded['revision'] == 2
+    assert loaded["props"] == [rotated]
+    assert loaded["revision"] == 2
     assert {key: row.metadata_[key] for key in metadata} == metadata
-    legacy = await endpoint.save_details(project_id, endpoint.DetailUpdate(
-        expected_revision=2, benches=[]), SimpleNamespace(), db)
-    assert legacy['props'] == [rotated]
+    legacy = await endpoint.save_details(
+        project_id, endpoint.DetailUpdate(expected_revision=2, benches=[]), SimpleNamespace(), db
+    )
+    assert legacy["props"] == [rotated]
 
 
-@pytest.mark.parametrize('patch', [
-    {'variant': 'detail-site-unknown'}, {'variant': '/untrusted/model.glb'},
-    {'angle': 361}, {'angle': -361}, {'angle': float('nan')},
-])
+@pytest.mark.parametrize(
+    "patch",
+    [
+        {"variant": "detail-site-unknown"},
+        {"variant": "/untrusted/model.glb"},
+        {"angle": 361},
+        {"angle": -361},
+        {"angle": float("nan")},
+    ],
+)
 def test_site_details_reject_unknown_models_and_invalid_rotation(patch):
-    prop = {'id': 'site-prop', 'lng': -114.1, 'lat': 51.05, 'angle': 0,
-            'variant': 'detail-site-outdoor-stairs'}
+    prop = {"id": "site-prop", "lng": -114.1, "lat": 51.05, "angle": 0, "variant": "detail-site-outdoor-stairs"}
     with pytest.raises(ValidationError):
         endpoint.DetailUpdate(expected_revision=0, benches=[], props=[{**prop, **patch}])
 
 
 def test_site_objects_cannot_be_saved_as_trees():
-    with pytest.raises(ValidationError, match='Unknown tree model'):
-        endpoint.DetailUpdate(expected_revision=0, benches=[], trees=[{
-            'id': 'site-prop', 'lng': -114.1, 'lat': 51.05, 'angle': 0,
-            'variant': 'detail-site-outdoor-stairs',
-        }])
+    with pytest.raises(ValidationError, match="Unknown tree model"):
+        endpoint.DetailUpdate(
+            expected_revision=0,
+            benches=[],
+            trees=[
+                {
+                    "id": "site-prop",
+                    "lng": -114.1,
+                    "lat": 51.05,
+                    "angle": 0,
+                    "variant": "detail-site-outdoor-stairs",
+                }
+            ],
+        )
 
 
 def test_traffic_details_ship_real_hash_locked_models():
     import hashlib
     import json
     from pathlib import Path
+
     root = Path(__file__).resolve().parents[2]
-    choices = json.loads((root / 'frontend/src/features/parks/detailCatalogueExtras.json').read_text())
-    traffic = [c for c in choices if c['sourceKit'] == 'traffic-safety-v1']
+    choices = json.loads((root / "frontend/src/features/parks/detailCatalogueExtras.json").read_text())
+    traffic = [c for c in choices if c["sourceKit"] == "traffic-safety-v1"]
     assert len(traffic) == 10
-    assert sum(c['bytes'] for c in traffic) < 300_000
+    assert sum(c["bytes"] for c in traffic) < 300_000
     for model in traffic:
-        data = (root / 'frontend/public' / model['url'].lstrip('/')).read_bytes()
-        assert data[:4] == b'glTF', model['id']
-        assert hashlib.sha256(data).hexdigest() == model['sha256']
-        assert len(data) == model['bytes']
-        assert model['triangles'] < 10_000 and model['meshes'] <= 6
+        data = (root / "frontend/public" / model["url"].lstrip("/")).read_bytes()
+        assert data[:4] == b"glTF", model["id"]
+        assert hashlib.sha256(data).hexdigest() == model["sha256"]
+        assert len(data) == model["bytes"]
+        assert model["triangles"] < 10_000 and model["meshes"] <= 6

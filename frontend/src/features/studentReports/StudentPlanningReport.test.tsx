@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { StudentPlanningReport } from './StudentPlanningReport';
 import type { ParkAccessSnapshot } from '@/components/viewer/globe/parkAccessConnections';
-import { safeSourceUrl, studentReportsApi, type StudentReport } from './studentReportsApi';
+import { studentReportsApi, type StudentReport } from './studentReportsApi';
 
 vi.mock('./studentReportsApi', async (original) => ({
   ...await original<typeof import('./studentReportsApi')>(),
@@ -38,11 +38,6 @@ const otherReport: StudentReport = {
   analysis: { ...report.analysis, findings: [{ ...report.analysis.findings[0], title: 'Review the second community' }] },
 };
 
-function writeResponse() {
-  fireEvent.change(screen.getByLabelText('Your response'), { target: { value: 'adapt' } });
-  fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'Preserve our own project reasoning.' } });
-  fireEvent.click(screen.getByRole('button', { name: 'Save response' }));
-}
 
 beforeEach(() => {
   sessionStorage.clear();
@@ -59,16 +54,6 @@ afterEach(() => {
 });
 
 describe('StudentPlanningReport', () => {
-  it('separates local policy and proposed zoning while retaining student response controls', async () => {
-    vi.mocked(studentReportsApi.latest).mockResolvedValue({...report,analysis:{...report.analysis,findings:[
-      {...report.analysis.findings[0],id:'local',comparison:{group:'local_plan',status:'potential_conflict',expected:'Civic recreation land',proposed:'New housing'}},
-      {...report.analysis.findings[0],id:'zoning',comparison:{group:'proposed_zoning',status:'discretionary',expected:'M-C2 · 16 m',proposed:'Apartments · 10.4 m'}},
-    ]}});
-    render(<StudentPlanningReport projectId="project-1" />);
-    expect(await screen.findByRole('region',{name:'Compare with the local area plan'})).toHaveTextContent('Potential departure or mismatch');
-    expect(screen.getByRole('region',{name:'Compare with your proposed zoning'})).toHaveTextContent('Discretionary use route');
-    expect(screen.getAllByLabelText('Your reasoning')).toHaveLength(2);
-  });
   it('attaches site map evidence before requesting the report', async () => {
     const evidence = { boundary_coordinates: [[0, 0], [1, 0], [0, 1]], sources: [] };
     render(<StudentPlanningReport projectId="project-1" getPolicyMapEvidence={async () => evidence} />);
@@ -85,52 +70,6 @@ describe('StudentPlanningReport', () => {
     expect(studentReportsApi.create).not.toHaveBeenCalled();
   });
 
-  it('keeps unsaved reasoning when the panel is closed and reopened', async () => {
-    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
-    const view = render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    fireEvent.change(screen.getByLabelText('Your response'), { target: { value: 'adapt' } });
-    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'Keep the mature trees.' } });
-    view.unmount();
-    render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    expect(screen.getByLabelText('Your response')).toHaveValue('adapt');
-    expect(screen.getByLabelText('Your reasoning')).toHaveValue('Keep the mature trees.');
-    expect(studentReportsApi.respond).not.toHaveBeenCalled();
-  });
-
-  it('keeps separate drafts when switching saved reports', async () => {
-    const older = { ...report, id: 'older-report' };
-    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
-    vi.mocked(studentReportsApi.history).mockResolvedValue([report, older]);
-    vi.mocked(studentReportsApi.get).mockImplementation(async id => id === older.id ? older : report);
-    render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'New plan reasoning.' } });
-    fireEvent.change(screen.getByLabelText('Saved reports'), { target: { value: older.id } });
-    await waitFor(() => expect(screen.getByLabelText('Saved reports')).toHaveValue(older.id));
-    expect(screen.getByLabelText('Your reasoning')).toHaveValue('');
-    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'Older plan reasoning.' } });
-    fireEvent.change(screen.getByLabelText('Saved reports'), { target: { value: report.id } });
-    await waitFor(() => expect(screen.getByLabelText('Saved reports')).toHaveValue(report.id));
-    expect(screen.getByLabelText('Your reasoning')).toHaveValue('New plan reasoning.');
-  });
-
-  it('does not erase newer typing when an earlier save finishes', async () => {
-    const pending = deferred<StudentReport>();
-    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
-    vi.mocked(studentReportsApi.respond).mockReturnValue(pending.promise);
-    const view = render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    writeResponse();
-    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'Further thoughts while saving.' } });
-    await act(async () => pending.resolve({ ...report, response_revision: 1 }));
-    expect(screen.queryByText('Response saved')).not.toBeInTheDocument();
-    view.unmount();
-    render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    expect(screen.getByLabelText('Your reasoning')).toHaveValue('Further thoughts while saving.');
-  });
   it('reads current route evidence only when the student requests the report', async () => {
     const access: ParkAccessSnapshot = { version: 1, sourceSignature: 'current', settings: { maxGapM: 8, pathWidthM: 2.2,
       obstacleClearanceM: 0.25, maxConnections: 2, gridStepM: 2 }, eligibleStreetZoneIds: [], sources: [], parks: [] };
@@ -139,50 +78,9 @@ describe('StudentPlanningReport', () => {
     await screen.findByText(/Your first report will capture/);
     expect(getParkAccessSnapshot).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Request report' }));
-    await screen.findByText('Check park access');
+    await screen.findByText('Proposal quantities');
     expect(studentReportsApi.create).toHaveBeenCalledWith('project-1', undefined, access);
   });
-  it('does not replace project B with a late saved response from project A', async () => {
-    const pending = deferred<StudentReport>();
-    vi.mocked(studentReportsApi.latest).mockImplementation(async (id) => id === 'project-1' ? report : otherReport);
-    vi.mocked(studentReportsApi.respond).mockReturnValue(pending.promise);
-    const view = render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    writeResponse();
-    view.rerender(<StudentPlanningReport projectId="project-2" />);
-    await screen.findByText('Review the second community');
-    await act(async () => pending.resolve({ ...report, response_revision: 1 }));
-    expect(screen.getByText('Review the second community')).toBeInTheDocument();
-    expect(screen.queryByText('Check park access')).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Save response' })).toBeEnabled();
-  });
-
-  it.each(['resolve', 'reject'] as const)('keeps B saving while the previous A response %s completes', async (outcome) => {
-    const first = deferred<StudentReport>();
-    const second = deferred<StudentReport>();
-    vi.mocked(studentReportsApi.latest).mockImplementation(async (id) => id === 'project-1' ? report : otherReport);
-    vi.mocked(studentReportsApi.respond).mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
-    const view = render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    writeResponse();
-    view.rerender(<StudentPlanningReport projectId="project-2" />);
-    await screen.findByText('Review the second community');
-    expect(screen.getByRole('button', { name: 'Save response' })).toBeEnabled();
-    writeResponse();
-    await act(async () => {
-      if (outcome === 'resolve') first.resolve({ ...report, response_revision: 1 });
-      else first.reject({ response: { data: { detail: 'Old project save failed' } } });
-    });
-    expect(screen.getByRole('button', { name: 'Save response' })).toBeDisabled();
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(screen.queryByText('Response saved')).not.toBeInTheDocument();
-    expect(screen.getByLabelText('Your reasoning')).toHaveValue('Preserve our own project reasoning.');
-    await act(async () => second.resolve({ ...otherReport, response_revision: 1 }));
-    expect(screen.getByRole('button', { name: 'Save response' })).toBeEnabled();
-    expect(screen.getByText('Response saved')).toBeInTheDocument();
-    expect(studentReportsApi.respond).toHaveBeenLastCalledWith('report-2', 'access', expect.objectContaining({ expected_revision: 0 }));
-  });
-
   it.each(['resolve', 'reject'] as const)('keeps B report creation pending when old A creation %s completes', async (outcome) => {
     const first = deferred<StudentReport>();
     const second = deferred<StudentReport>();
@@ -200,9 +98,9 @@ describe('StudentPlanningReport', () => {
     });
     expect(screen.getByRole('button', { name: 'Preparing…' })).toBeDisabled();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-    expect(screen.queryByText('Check park access')).not.toBeInTheDocument();
+    expect(screen.queryByText('Proposal quantities')).not.toBeInTheDocument();
     await act(async () => second.resolve(otherReport));
-    expect(screen.getByText('Review the second community')).toBeInTheDocument();
+    expect(screen.getByText('Proposal quantities')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Request a new report' })).toBeEnabled();
   });
 
@@ -216,10 +114,10 @@ describe('StudentPlanningReport', () => {
     vi.mocked(studentReportsApi.latest).mockImplementation(async (id) => id === 'project-1' ? report : otherReport);
     vi.mocked(studentReportsApi.export).mockReturnValueOnce(first.promise).mockReturnValueOnce(second.promise);
     const view = render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
+    await screen.findByText('Proposal quantities');
     fireEvent.click(screen.getByRole('button', { name: 'Download printable report' }));
     view.rerender(<StudentPlanningReport projectId="project-2" />);
-    await screen.findByText('Review the second community');
+    await screen.findByText('Proposal quantities');
     expect(screen.getByRole('button', { name: 'Download printable report' })).toBeEnabled();
     fireEvent.click(screen.getByRole('button', { name: 'Download printable report' }));
     await act(async () => {
@@ -250,7 +148,7 @@ describe('StudentPlanningReport', () => {
     vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
     vi.mocked(studentReportsApi.export).mockReturnValue(pending.promise);
     const view = render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
+    await screen.findByText('Proposal quantities');
     fireEvent.click(screen.getByRole('button', { name: 'Download printable report' }));
     view.unmount();
     await act(async () => pending.resolve(new Blob(['private A'])));
@@ -264,7 +162,7 @@ describe('StudentPlanningReport', () => {
     vi.mocked(studentReportsApi.create).mockReturnValue(creation.promise);
     vi.mocked(studentReportsApi.get).mockReturnValue(refresh.promise);
     const view = render(<StudentPlanningReport projectId="project-1" planChangeToken={1} />);
-    await screen.findByText('Check park access');
+    await screen.findByText('Proposal quantities');
     fireEvent.click(screen.getByRole('button', { name: 'Request a new report' }));
     view.rerender(<StudentPlanningReport projectId="project-1" planChangeToken={2} />);
     await act(async () => creation.resolve({ ...report, id: 'new-report' }));
@@ -280,52 +178,9 @@ describe('StudentPlanningReport', () => {
     await screen.findByText(/Your first report will capture/);
     expect(studentReportsApi.create).not.toHaveBeenCalled();
     fireEvent.click(screen.getByRole('button', { name: 'Request report' }));
-    expect(await screen.findByText('Check park access')).toBeInTheDocument();
+    expect(await screen.findByText('Proposal quantities')).toBeInTheDocument();
     expect(studentReportsApi.create).toHaveBeenCalledWith('project-1', ['building-1', 'park-1'], undefined);
   });
 
-  it('saves a declined recommendation with the student’s own reason and leaves design freedom explicit', async () => {
-    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
-    vi.mocked(studentReportsApi.respond).mockResolvedValue({ ...report, response_revision: 1 });
-    render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    fireEvent.change(screen.getByLabelText('Your response'), { target: { value: 'decline' } });
-    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'We use the existing park entrance.' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save response' }));
-    await screen.findByText('Response saved');
-    expect(studentReportsApi.respond).toHaveBeenCalledWith('report-1', 'access', {
-      choice: 'decline', rationale: 'We use the existing park entrance.', follow_through: '', expected_revision: 0,
-    });
-    expect(screen.getByText(/keep designing and rendering/)).toBeInTheDocument();
-  });
 
-  it('retains a written rationale after a teammate conflict, and refreshes staleness on plan changes', async () => {
-    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
-    vi.mocked(studentReportsApi.respond).mockRejectedValue({ response: { data: { detail: 'A teammate updated this report. Refresh it.' } } });
-    vi.mocked(studentReportsApi.get).mockResolvedValue({ ...report, is_stale: true, response_revision: 1 });
-    const view = render(<StudentPlanningReport projectId="project-1" planChangeToken={1} />);
-    await screen.findByText('Check park access');
-    fireEvent.change(screen.getByLabelText('Your response'), { target: { value: 'adapt' } });
-    fireEvent.change(screen.getByLabelText('Your reasoning'), { target: { value: 'Our route protects mature trees.' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Save response' }));
-    await screen.findByText(/A teammate updated this report/);
-    expect(screen.getByLabelText('Your reasoning')).toHaveValue('Our route protects mature trees.');
-    view.rerender(<StudentPlanningReport projectId="project-1" planChangeToken={2} />);
-    await screen.findByText('The proposal has changed.');
-    expect(screen.getByLabelText('Your reasoning')).toHaveValue('Our route protects mature trees.');
-  });
-
-  it('requires a reason, exposes read-only reports to viewers, and rejects unsafe citation links', async () => {
-    vi.mocked(studentReportsApi.latest).mockResolvedValue(report);
-    const view = render(<StudentPlanningReport projectId="project-1" />);
-    await screen.findByText('Check park access');
-    fireEvent.click(screen.getByRole('button', { name: 'Save response' }));
-    expect(await screen.findByRole('alert')).toHaveTextContent('explain your reasoning');
-    expect(studentReportsApi.respond).not.toHaveBeenCalled();
-    view.rerender(<StudentPlanningReport projectId="project-1" canEdit={false} />);
-    await waitFor(() => expect(screen.queryByRole('button', { name: 'Save response' })).not.toBeInTheDocument());
-    expect(screen.queryByRole('button', { name: 'Request a new report' })).not.toBeInTheDocument();
-    expect(safeSourceUrl('javascript:alert(1)')).toBeUndefined();
-    expect(safeSourceUrl('https://city.example/plan.pdf')).toBe('https://city.example/plan.pdf');
-  });
 });

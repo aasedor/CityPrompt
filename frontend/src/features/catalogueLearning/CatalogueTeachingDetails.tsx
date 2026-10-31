@@ -1,0 +1,41 @@
+import type { CanonicalChoice } from '@/features/pickPlace/canonicalCatalogue';
+import { lessonForChoice, planningDefinition, styleDefinition } from './teaching';
+import { TeachingDefinition, TeachingSources } from './TeachingDefinition';
+import { formLabel, historyForChoice } from './planningHistory';
+
+export function CatalogueTeachingDetails({ choice, variantId }: {choice:CanonicalChoice;variantId:string}) {
+  const match=lessonForChoice(choice,variantId);
+  if (!match) return null;
+  const {lesson,status}=match;
+  const label=choice.domain==='building' ? 'Architecture and planning' : 'Design and planning';
+  if (status!=='classified') return <section aria-label={label} className="rounded-lg border border-slate-300 bg-white p-3 text-xs text-slate-700">
+    <p className="font-bold">Style to be confirmed</p>
+    <p className="mt-1">{status==='stale' ? 'This version needs a fresh review before its style is taught.'
+      : 'The current reference and description need checking before a specific style is taught.'}</p>
+  </section>;
+  const definitions=lesson.styleIds.map(id=>styleDefinition(id)).filter(definition=>definition!==undefined);
+  const planning=lesson.planningIds.map(id=>planningDefinition(id)).filter(definition=>definition!==undefined);
+  const historyMatch=historyForChoice(choice,variantId);
+  const history=historyMatch?.status==='classified' ? historyMatch.lesson : undefined;
+  const useFormLabel=history ? formLabel(history.formId) ?? lesson.typeLabel : lesson.typeLabel;
+  return <section aria-label={label} className="space-y-2">
+    <p className="text-xs text-slate-700"><strong>Use / form:</strong> {useFormLabel}</p>
+    {history && <div className="text-xs text-slate-700">
+      <p><strong>Design era:</strong> {history.designPeriod}</p>
+      <p className="mt-1 text-[11px] text-slate-600">Approximate design association, not a construction date.</p>
+    </div>}
+    {lesson.styleIds[0] && <TeachingDefinition kind="style" id={lesson.styleIds[0]} showSources={false} />}
+    {definitions.length>1 && <p className="text-[11px] text-slate-600">Other influences: {definitions.slice(1).map(definition=>definition.label).join(' · ')}</p>}
+    {planning.length>0 && <p className="text-[11px] text-slate-600"><strong>Planning connections:</strong> {planning.map(definition=>definition.label).join(' · ')}. Components only; the neighbourhood layout matters.</p>}
+    {!lesson.referenceReviewed && <p className="text-[11px] text-slate-600">Suggested from this design's catalogue description.</p>}
+    {history && <details className="text-[11px] leading-relaxed text-slate-700">
+      <summary className="min-h-8 cursor-pointer py-1 font-semibold">Historical and planning context</summary>
+      <div className="space-y-1 pb-2">
+        <p>{history.eraRationale}</p>
+        <p><strong>Canadian connection:</strong> {history.canadianContext}</p>
+        <p><strong>International connection:</strong> {history.internationalContext}</p>
+      </div>
+    </details>}
+    <TeachingSources sourceIds={[...definitions,...planning].flatMap(definition=>definition.sourceIds).concat(history?.sourceIds ?? [])} />
+  </section>;
+}

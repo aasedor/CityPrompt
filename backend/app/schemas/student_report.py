@@ -9,8 +9,8 @@ from app.schemas.park_access import Point
 
 
 class ComparisonDetail(BaseModel):
-    group: Literal['local_plan', 'proposed_zoning']
-    status: Literal['permitted', 'discretionary', 'review', 'potential_conflict']
+    group: Literal["local_plan", "proposed_zoning"]
+    status: Literal["permitted", "discretionary", "review", "potential_conflict"]
     expected: str = Field(max_length=6000)
     proposed: str = Field(max_length=6000)
 
@@ -39,9 +39,9 @@ class PolicyMapSource(BaseModel):
 
 
 class PlanComparison(BaseModel):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra="forbid")
     id: str = Field(max_length=300)
-    kind: Literal['source_context', 'unresolved_question']
+    kind: Literal["source_context", "unresolved_question"]
     title: str = Field(max_length=500)
     observation: str = Field(max_length=10000)
     recommendation: str = Field(max_length=6000)

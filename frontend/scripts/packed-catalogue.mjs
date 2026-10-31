@@ -5,6 +5,12 @@ const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|people\/(?:peopleCatalogue|inclusivePeopleCatalogue|peopleAppearancePreviews)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
+// Exact additional registries used by the combined student/catalogue handoff.
+// Keep this allowlist explicit so unrelated JSON retains Vite's normal exports.
+const HANDOFF_CATALOGUES = /\/src\/(?:data\/(?:cataloguePlanningHistory|catalogueTeaching|localTeachingBuildings|classroomStarter|buildingPlacementEdges|catalogueHeroImages|claudeAssetLocalTrial)|features\/(?:legoAssembly\/buildingOnlyContracts|parks\/(?:curbBulbContracts|calgarySafetyCatalogue)|zoningCatalogue\/parkUseRules|pickPlace\/publicRealmOwnershipContracts)|components\/viewer\/globe\/publicRealmTrialAssets)\.json$/;
+
+const STATIC_METADATA = /\/src\/(?:data\/(?:archetypeVisualSystem|catalogueOctober2026|claudeBuildingRelease|claudeFiveTrial|courtOnlySports|finalFiveBuildingBatch|flexibleParks|localTowerStoreyPrograms|neighborhoodParkV0StickerKit|parkadeFamilyTrial|stickerMethodPilots|transportStandardEntries|aiRenderStylePresets|streetViewStylePresets)|features\/(?:policyPlans\/data\/(?:beltlinePlanIndex|localPlanIndex)|referenceLayers\/calgaryBylawCatalogue))\.json$/;
+
 /** Retain all legacy IDs, reference paths and prompts without compiling several
  * megabytes of JSON into JavaScript object literals. Three already ships this
  * small inflater; no additional browser dependency or network request is needed. */
@@ -14,14 +20,26 @@ export function packCatalogue(source) {
   // signed zero, which occurs in authored model offsets and must round-trip.
   const canonical = source.replace(/("(?:\\.|[^"\\])*")|\s+/g, (_match, quoted) => quoted ?? '');
   const bytes = Buffer.from(canonical, 'utf8');
-  // Two deterministic build-time profiles: smaller hash tables compress the
-  // repeated geometry recipes better, while prose catalogues favour the default.
-  // Keep the smaller stream; browser decoding and every authored value are unchanged.
-  const packed = [8, 6].map(memLevel => deflateSync(bytes, { level: 9, memLevel }))
+  // A fixed set of build-time profiles handles both geometry recipes and prose.
+  // Only the smallest stream ships; browser decoding and authored bytes stay exact.
+  const packed = [8, 6, 9, 7, 5, 4, 3, 2, 1]
+    .flatMap(memLevel => [0, 1].map(strategy => deflateSync(bytes, { level: 9, memLevel, strategy })))
     .reduce((a, b) => b.length < a.length ? b : a).toString('base64');
   return `import { unzlibSync, strFromU8 } from 'three/examples/jsm/libs/fflate.module.js';
 const bytes = Uint8Array.from(atob(${JSON.stringify(packed)}), character => character.charCodeAt(0));
 export default JSON.parse(strFromU8(unzlibSync(bytes)));`;
+}
+
+/** Local runtime trials are DEV-only. Do not ship their discovery receipts or
+ * exclusive asset dependencies in a production roster that cannot use them. */
+export function productionStarter(source) {
+  const roster = JSON.parse(source);
+  const trials = roster.entries.filter(entry => entry.status === 'local-pilot-runtime-pending');
+  const entries = roster.entries.filter(entry => entry.status !== 'local-pilot-runtime-pending');
+  const removed = new Set(trials.flatMap(entry => entry.dependencies ?? []));
+  const retained = new Set(entries.flatMap(entry => entry.dependencies ?? []));
+  return JSON.stringify({ ...roster, entries, dependencies: roster.dependencies.filter(dep =>
+    !removed.has(dep.id) || retained.has(dep.id)) });
 }
 
 /** The canonical generator emits JSON plus one fixed discovery filter. Only
@@ -50,8 +68,10 @@ export function packedCatalogue() {
       if (filename.endsWith('/src/features/pickPlace/publishedBuildingAssets.ts')) {
         return { code: packPublishedBuildingCatalogue(readFileSync(id, 'utf8')), map: null };
       }
-      if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename)) return null;
-      return { code: packCatalogue(readFileSync(id, 'utf8')), map: null };
+      if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename) && !STATIC_METADATA.test(filename)) return null;
+      const source = readFileSync(id, 'utf8');
+      return { code: packCatalogue(filename.endsWith('/src/data/classroomStarter.json')
+        ? productionStarter(source) : source), map: null };
     },
   };
 }

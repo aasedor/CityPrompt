@@ -1,5 +1,6 @@
 import type { StreetRouteStation } from './nativeStreetPilot';
 import type { BrtStop } from './brtStreetProgram';
+import { MAX_REPEATABLE_STREET_LENGTH_M } from './streetRoutePolicy';
 
 export const TRAM_VARIANT='student_grass_tram_avenue_v1';
 export const TRAM_STOP_MODULE='showcase_tram_stop';
@@ -8,7 +9,7 @@ export const TRAM_STOP_MODULE='showcase_tram_stop';
 export function tramRouteProblem(route:StreetRouteStation[],stops:BrtStop[]=[]):string|null {
   if(route.length<2 || route.some(p=>!Number.isFinite(p.x)||!Number.isFinite(p.y)))return 'Draw the tram route with two endpoints.';
   const a=route[0],b=route[route.length-1],dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy);
-  if(length<47.99 || length>480.01)return 'Garden Tram Avenue needs a straight route 48–480 m long.';
+  if(length<47.99 || length>MAX_REPEATABLE_STREET_LENGTH_M+.01)return `Garden Tram Avenue needs a straight route 48–${MAX_REPEATABLE_STREET_LENGTH_M} m long.`;
   let previous=-1;
   for(const p of route){
     const along=((p.x-a.x)*dx+(p.y-a.y)*dy)/length;

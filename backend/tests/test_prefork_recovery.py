@@ -3,6 +3,7 @@
 Run using deployment/classroom/prefork-probe.compose.yaml. Providers are mocked
 inside each child, while PostgreSQL, Redis and immutable S3 evidence are real.
 """
+
 import asyncio
 from datetime import timedelta
 import json
@@ -43,12 +44,27 @@ async def test_real_prefork_timeout_crash_and_checkpoint_recovery(tmp_path):
     def start(name, queue, slots):
         log = open(tmp_path / (name + ".log"), "w")
         logs.append(log)
-        process = subprocess.Popen([
-            sys.executable, "-m", "celery", "-A", "app.tasks.worker:celery_app",
-            "worker", "-I", "tests.prefork_probe_worker", "--pool=prefork",
-            f"--concurrency={slots}", f"--queues={queue}", f"--hostname={name}@probe",
-            "--time-limit=10", "--soft-time-limit=8", "--loglevel=warning",
-        ], stdout=log, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(
+            [
+                sys.executable,
+                "-m",
+                "celery",
+                "-A",
+                "app.tasks.worker:celery_app",
+                "worker",
+                "-I",
+                "tests.prefork_probe_worker",
+                "--pool=prefork",
+                f"--concurrency={slots}",
+                f"--queues={queue}",
+                f"--hostname={name}@probe",
+                "--time-limit=10",
+                "--soft-time-limit=8",
+                "--loglevel=warning",
+            ],
+            stdout=log,
+            stderr=subprocess.STDOUT,
+        )
         processes.append(process)
         return process
 
@@ -57,13 +73,18 @@ async def test_real_prefork_timeout_crash_and_checkpoint_recovery(tmp_path):
         while time.monotonic() < deadline:
             if await predicate():
                 return
-            await asyncio.sleep(.25)
+            await asyncio.sleep(0.25)
         raise AssertionError("Timed out waiting for probe state")
 
     async def submit(mode):
         async with sessions() as db:
-            user = User(id=uuid.uuid4(), email=f"{uuid.uuid4()}@probe.invalid",
-                        role="editor", render_credits=1000, credits_reset_at=jobs.now())
+            user = User(
+                id=uuid.uuid4(),
+                email=f"{uuid.uuid4()}@probe.invalid",
+                role="editor",
+                render_credits=1000,
+                credits_reset_at=jobs.now(),
+            )
             db.add(user)
             await db.flush()
             project = Project(id=uuid.uuid4(), name="Disposable " + mode, owner_id=user.id)
@@ -82,14 +103,18 @@ async def test_real_prefork_timeout_crash_and_checkpoint_recovery(tmp_path):
         # Advance only the disposable attempt's age; retain production's 900s
         # recovery threshold rather than weakening the deployed setting.
         async with sessions() as db:
-            await db.execute(update(RenderAttempt).where(RenderAttempt.id == item[0])
-                             .values(started_at=jobs.now() - timedelta(seconds=1000)))
+            await db.execute(
+                update(RenderAttempt)
+                .where(RenderAttempt.id == item[0])
+                .values(started_at=jobs.now() - timedelta(seconds=1000))
+            )
             await db.commit()
         celery_app.send_task("cityprompt.direct3d.maintain")
 
         async def terminal():
             async with sessions() as db:
                 return (await db.get(RenderAttempt, item[0])).status == expected
+
         await until(terminal)
         # Duplicate delivery and concurrent reconciliation cannot charge again.
         for _ in range(3):
@@ -110,9 +135,15 @@ async def test_real_prefork_timeout_crash_and_checkpoint_recovery(tmp_path):
                 assert audit.student_refunded_at is None
                 result = await jobs.recover_result(row)
                 assert result.outcome == "review_required" and result.image_base64
-            receipts.append({"attempt": str(item[0]), "status": row.status,
-                             "tokens_reserved": audit.tokens_spent,
-                             "student_balance": user.render_credits, "provider_calls": 1})
+            receipts.append(
+                {
+                    "attempt": str(item[0]),
+                    "status": row.status,
+                    "tokens_reserved": audit.tokens_spent,
+                    "student_balance": user.render_credits,
+                    "provider_calls": 1,
+                }
+            )
 
     try:
         images = start("probe-images", "direct3d", 2)
@@ -125,6 +156,7 @@ async def test_real_prefork_timeout_crash_and_checkpoint_recovery(tmp_path):
 
         async def heartbeat():
             return bool(client.get(maintenance_key()))
+
         await until(heartbeat, seconds=5)  # Separate maintenance works while both slots block.
         await asyncio.sleep(11)
         assert images.poll() is None  # Parent survived both child hard timeouts.

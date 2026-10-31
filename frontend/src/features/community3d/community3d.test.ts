@@ -36,6 +36,14 @@ const SHA_A = 'a'.repeat(64);
 const SHA_B = 'b'.repeat(64);
 const SHA_C = 'c'.repeat(64);
 
+it('keeps ground finishes out of building compilation and capture readiness even with legacy building roles', () => {
+  const finish = zone('development_area', { ground_surface_material: 'black_pavers', _plan_role: 'building', development_archetype_id: 'housing' });
+  expect(resolveCommunity3DKind(finish)).toBeNull();
+  expect(selectCommunity3DCompileZones([finish])).toEqual([]);
+  expect(getCommunity3DCaptureClaims([finish], [])).toEqual([]);
+  expect(resolveCommunity3DKind(zone('development_area', { ground_surface_material: 'unknown-material' }))).toBe('building');
+});
+
 it('rejects a registered native street whose compiled marker lost its exact recipe', () => {
   const native = zone('road', {
     road_archetype_id: 'multi_use_trail',

@@ -57,6 +57,9 @@ def generate_render_preview(
     source_type: str = "text",
     source_image_url: str | None = None,
     style_id: str | None = None,
+    *,
+    source_document_id: str | None = None,
+    requested_by: str | None = None,
 ):
     """
     Generate a photorealistic AI render preview for a building.
@@ -68,15 +71,42 @@ def generate_render_preview(
     4. Create RenderPreview record
     5. Update building.preview_url and preview_status
     """
+    if settings.classroom_release:
+        raise ValueError("Render previews are outside the classroom starter release.")
+    if source_image_url or not requested_by:
+        raise ValueError("Requeue this preview using an authorized uploaded project image.")
+    if source_type not in {"text", "sketch", "floor_plan"} or ((source_type == "text") == bool(source_document_id)):
+        raise ValueError("Choose a valid text or uploaded image preview source.")
     logger.info(f"Generating render preview for building: {building_id}")
     session = _get_sync_session()
 
     try:
-        from app.models.models import Building, RenderPreview
+        from app.core.security import is_admin_or_above
+        from app.models.models import Building, Document, Project, ProjectShare, RenderPreview, User
 
         building = session.query(Building).filter_by(id=uuid.UUID(building_id)).first()
         if not building:
             raise ValueError(f"Building not found: {building_id}")
+
+        user = session.query(User).filter_by(id=uuid.UUID(requested_by)).first()
+        project = session.query(Project).filter_by(id=building.project_id).first()
+        if not user or not user.is_active or not project:
+            raise ValueError("Preview requester no longer has access to this project.")
+        if project.owner_id != user.id and not is_admin_or_above(user):
+            share = session.query(ProjectShare).filter_by(project_id=project.id, user_id=user.id).first()
+            if share is None or share.permission != "editor":
+                raise ValueError("Preview requester no longer has editor access to this project.")
+
+        source_bytes = None
+        source_url = None
+        if source_document_id:
+            document = session.query(Document).filter_by(id=uuid.UUID(source_document_id)).first()
+            if not document or document.project_id != project.id:
+                raise ValueError("Source image is no longer available in this project.")
+            from app.services.render_preview_source import read_source_image
+
+            source_bytes = read_source_image(document, project.id)
+            source_url = f"/api/v1/documents/{document.id}/file"
 
         building.preview_status = "generating"
         session.commit()
@@ -104,11 +134,7 @@ def generate_render_preview(
 
         client = StabilityClient()
 
-        if source_type in ("sketch", "floor_plan") and source_image_url:
-            # Download source image first
-            import httpx as httpx_sync
-
-            source_bytes = httpx_sync.get(source_image_url, timeout=30.0).content
+        if source_bytes is not None:
             image_bytes = asyncio.run(
                 client.image_to_image(
                     source_bytes,
@@ -141,7 +167,7 @@ def generate_render_preview(
             prompt=prompt,
             style=style_id,
             source_type=source_type,
-            source_image_url=source_image_url,
+            source_image_url=source_url,
         )
         session.add(preview)
 
@@ -167,6 +193,8 @@ def generate_render_preview(
                 session.commit()
         except Exception:
             session.rollback()
+        if isinstance(exc, ValueError):
+            raise
         raise self.retry(exc=exc, countdown=30)
     finally:
         session.close()

@@ -29,6 +29,24 @@ describe('zoning label controls', () => {
     expect(fetchZoningLabels).toHaveBeenCalledWith(boundary.coordinates, expect.any(AbortSignal));
     expect(screen.getByText(/around the map centre/)).toBeInTheDocument();
   });
+  it('keeps zoning visible after saving a boundary and persists optional clipping', async () => {
+    vi.mocked(fetchZoningLabels).mockResolvedValue({districts:[],bounds:[-114.12,51.01,-114.119,51.011],loadedAt:'context'});
+    const view=setup(); const {rerender,unmount}=render(view({zones:[],area:boundary.coordinates}));
+    fireEvent.click(screen.getByRole('switch'));
+    await waitFor(()=>expect(screen.getByTestId('data')).toHaveTextContent('context'));
+    rerender(view());
+    await waitFor(()=>expect(fetchZoningLabels).toHaveBeenCalledTimes(2));
+    const coordinates=vi.mocked(fetchZoningLabels).mock.calls[1][0];
+    expect(coordinates[0][0]).toBeLessThan(boundary.coordinates[0][0]);
+    expect(screen.getByRole('switch')).toBeChecked();
+    const checkbox=screen.getByLabelText('Only show zones within site boundary');
+    expect(checkbox).not.toBeChecked();
+    fireEvent.click(checkbox);
+    expect(JSON.parse(localStorage.getItem('cityprompt:parcel-zoning:one')!).clipToSite).toBe(true);
+    expect(fetchZoningLabels).toHaveBeenCalledTimes(2);
+    unmount(); render(view());
+    expect(screen.getByLabelText('Only show zones within site boundary')).toBeChecked();
+  });
   it('supports transparent and solid endpoints without hiding boundaries or labels', async () => {
     vi.mocked(fetchZoningLabels).mockResolvedValue({ districts: [], bounds: [-114.12, 51.01, -114.119, 51.011], loadedAt: 'ready' });
     render(setup()());
@@ -52,7 +70,7 @@ describe('zoning label controls', () => {
     expect(toggle).not.toBeChecked();
     expect(screen.queryByLabelText('Colour fills')).not.toBeInTheDocument();
     fireEvent.click(toggle);
-    await screen.findByText('No published zoning areas intersect this boundary.');
+    await screen.findByText('No published zoning areas in this map area.');
     expect(screen.getByLabelText('District labels')).toBeChecked();
     expect(screen.getByLabelText('Boundaries')).toBeChecked();
     expect(screen.getByLabelText('Colour fills')).toBeChecked();
@@ -105,7 +123,7 @@ describe('zoning label controls', () => {
     vi.mocked(fetchZoningLabels).mockReturnValue(new Promise(() => {}));
     render(setup()());
     expect(screen.getByLabelText('Show land-use map')).toBeChecked();
-    expect(screen.getAllByRole('checkbox')).toHaveLength(3);
+    expect(screen.getAllByRole('checkbox')).toHaveLength(4);
     expect(screen.getByLabelText('Boundaries')).not.toBeChecked();
   });
   it('loads outlines independently, reuses code data, and retains the district preference', async () => {
@@ -116,7 +134,7 @@ describe('zoning label controls', () => {
     expect(screen.getByLabelText('District labels')).not.toBeChecked();
     fireEvent.click(screen.getByLabelText('District labels'));
     expect(fetchZoningLabels).toHaveBeenCalledOnce();
-    expect(JSON.parse(localStorage.getItem('cityprompt:parcel-zoning:one')!)).toEqual({ enabled: true, labels: true, districtLines: true, fill: false, fillOpacity: 0.4 });
+    expect(JSON.parse(localStorage.getItem('cityprompt:parcel-zoning:one')!)).toEqual({ enabled: true, clipToSite: false, labels: true, districtLines: true, fill: false, fillOpacity: 0.4 });
     unmount(); render(view());
     expect(screen.getByLabelText('Boundaries')).toBeChecked();
   });

@@ -1,5 +1,7 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
-import sourcePilots from '@/data/nativeStreetPilots.json';
+import { nativeStreetSources as sourcePilots } from './nativeStreetSources';
+import { modularBridgePoses, modularBridgeRouteProblem } from './modularBridgeProgram';
+import type { BridgeDeformation } from './sourceSpanBridgeProgram';
 import { CANAL_ROUTE_POLICY } from './canalRoute';
 import bounds from '@/data/nativeStreetModuleBounds.json';
 import type { NativeStreetProgram } from './nativeStreetProgram';
@@ -7,6 +9,7 @@ import { BRT_VARIANT, brtRouteProblem, brtStreetLayout, type BrtStop } from './b
 import { isSpecialistStreet, specialistFixtures, specialistRouteProblem } from './specialistStreetProgram';
 import { TRAM_VARIANT, tramRouteProblem, tramFixtures } from './tramStreetProgram';
 import { elevatedRailFixtures, elevatedRailStationProblem, hasElevatedStation, isElevatedRail } from './elevatedRailProgram';
+import { nativeStreetMaxLength } from './streetRoutePolicy';
 import type { SiteZone } from '@/types';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { validateStreetRecipeProperties } from './streetLegoContract';
@@ -18,7 +21,9 @@ import {
 
 // Source programme hashes continue to identify the original 80 m study.
 // The independent authoring policy expands its executable route envelope.
-const pilots = sourcePilots.map(p => p.id === 'amsterdam_gracht_v1' ? { ...p, program: { ...p.program!, ...CANAL_ROUTE_POLICY, straightOnly: false } } : p);
+const pilots = sourcePilots.map(p => p.id === 'amsterdam_gracht_v1'
+  ? { ...p, program: { ...p.program!, ...CANAL_ROUTE_POLICY, straightOnly: false } }
+  : p.program ? { ...p, program: { ...p.program, maxLengthM: nativeStreetMaxLength(p.id) } } : p);
 
 export type NativeStreetPilot = typeof pilots[number] & {program?:NativeStreetProgram;programSha256?:string};
 export interface StreetRouteStation { x: number; y: number; z?: number }
@@ -33,6 +38,9 @@ export interface NativeStreetPose {
   scale: number;
   stationM: number;
   surfaceLiftM: number;
+  /** Only an explicitly authored modular bridge bay may vary along its route. */
+  longitudinalScale?: number;
+  bridgeDeformation?: BridgeDeformation;
   wellWidthM?: number;
   wellDepthM?: number;
 }
@@ -44,10 +52,14 @@ export function nativeStreetPilot(variantId: string): NativeStreetPilot | undefi
 /** Validate the same local route that geometry and rigid modules consume. */
 export function nativeStreetLocalRouteProblem(pilot: NativeStreetPilot, route: StreetRouteStation[], stops: BrtStop[] = []): string | null {
   const program = pilot.program;
+  if (import.meta.env.DEV && program && ['modular-bridge-v1','source-span-bridge-v1'].includes(program.adapter) && program.bridge)
+    return modularBridgeRouteProblem({ ...program, bridge: program.bridge }, route, true);
+  const length = route.slice(1).reduce((sum, p, i) => sum + Math.hypot(p.x - route[i].x, p.y - route[i].y), 0);
+  if (!Number.isFinite(length) || length > nativeStreetMaxLength(pilot.id) + .01)
+    return `${pilot.title} supports routes up to ${nativeStreetMaxLength(pilot.id)} m long.`;
   if (!program) return null;
   if (pilot.id === BRT_VARIANT) return brtRouteProblem(route, stops);
   if (pilot.id === TRAM_VARIANT) return tramRouteProblem(route, stops);
-  const length = route.slice(1).reduce((sum, p, i) => sum + Math.hypot(p.x - route[i].x, p.y - route[i].y), 0);
   if (isSpecialistStreet(pilot.id)) {
     return specialistRouteProblem(pilot.id, route)
       ?? (hasElevatedStation(pilot.id) ? elevatedRailStationProblem(length, stops) : null);
@@ -75,6 +87,8 @@ export function nativeStreetRouteProblem(zone:Pick<SiteZone,'coordinates'|'prope
   const preparation=nativeStreetPreparationProblem(zone,boundary);
   if(preparation)return preparation;
   const points=extractZoneCenterline(zone),scale=111320*Math.cos((points[0]?.[1]??0)*Math.PI/180);
+  if (import.meta.env.DEV && ['modular-bridge-v1','source-span-bridge-v1'].includes(program.adapter) && points.length !== 2)
+    return 'Draw a start and end point for this straight bridge.';
   return nativeStreetLocalRouteProblem(pilot, points.map(p => ({
     x: (p[0] - points[0][0]) * scale, y: (p[1] - points[0][1]) * 111320,
   })), zone.properties?.road_native_stops ?? []);
@@ -114,9 +128,12 @@ interface RouteSegment {
 export function placeNativeStreetModules(
   pilot: NativeStreetPilot,
   route: StreetRouteStation[],
-  junctions: Array<{ x: number; y: number; clearanceM: number }> = [],
+  junctions: Array<{ x: number; y: number; clearanceM: number;
+    overlapsFootprint?: (points: Array<{x:number;y:number}>) => boolean }> = [],
   stops:BrtStop[] = [],
 ): NativeStreetPose[] {
+  if (import.meta.env.DEV && pilot.program && ['modular-bridge-v1','source-span-bridge-v1'].includes(pilot.program.adapter) && pilot.program.bridge)
+    return modularBridgePoses({ ...pilot, program: { ...pilot.program, bridge: pilot.program.bridge } }, route);
   const segments: RouteSegment[] = [];
   for (let index = 1; index < route.length; index++) {
     const from = route[index - 1], to = route[index];
@@ -136,7 +153,7 @@ export function placeNativeStreetModules(
       ? [{ x: segment.from.x, y: segment.from.y, clearanceM: pilot.widthM / 2 + 4 }]
       : [];
   });
-  const clearances = [...junctions, ...bendClearances];
+  const clearances: typeof junctions = [...junctions, ...bendClearances];
   const isBrt = pilot.id===BRT_VARIANT;
   const isTram = pilot.id===TRAM_VARIANT;
   const specialist = isSpecialistStreet(pilot.id);
@@ -184,6 +201,8 @@ export function placeNativeStreetModules(
     const minY=Math.min(...corners.map(p=>p.y)), maxY=Math.max(...corners.map(p=>p.y));
     const rotation=segment.angle-Math.PI/2, c=Math.cos(rotation), s=Math.sin(rotation);
     if (!specialist && item.kind!=='station_program' && item.kind!=='showcase_tram_stop' && clearances.some(node => {
+      if (node.overlapsFootprint) return node.overlapsFootprint(
+        [[minX,minY],[maxX,minY],[maxX,maxY],[minX,maxY]].map(([px,py])=>({x:x+px*c-py*s,y:y+px*s+py*c})));
       const dx=node.x-x,dy=node.y-y,nx=dx*c+dy*s,ny=-dx*s+dy*c;
       const distance=Math.hypot(nx-Math.max(minX,Math.min(maxX,nx)),ny-Math.max(minY,Math.min(maxY,ny)));
       return distance<Math.max(node.clearanceM,pilot.widthM/2+4);

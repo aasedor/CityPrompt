@@ -1,0 +1,87 @@
+{
+  "entry": {
+    "candidate": "clay-student-residence-tower-clay-v004",
+    "family": "rlasm-claude-practical-student-residence-v004",
+    "archetype_id": "student_residence_tower",
+    "archetype_label": "Student residence tower",
+    "variant_id": "contemporary_curtainwall_biophilic",
+    "variant_label": "Student residence tower",
+    "native_floors": 12,
+    "design_dimensions_m": {
+      "width": 32.40792655944824,
+      "depth": 28.899999618530273,
+      "height": 47.8994140625
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0.png",
+        "bytes": 1206622,
+        "sha256": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_60.jpg",
+        "bytes": 930652,
+        "sha256": "d2ecf16c6ffe4b806890db42e133d903535b6747b443362f99a2a185012dc244"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_90.jpg",
+        "bytes": 876613,
+        "sha256": "0ed3c8e1b63539593ab28a714984d718c13d9f885d94a5efcb62a5c947a8be1e"
+      }
+    ],
+    "external_evidence": "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
+    "limitations": [
+      "Source-locked RLASM6.1 architectural-clay model; independently reviewed, no textured keeper claim.",
+      "Compact building and integral entrance/apparatus approach; no surrounding roads.",
+      "Fixed native assembly. Prepared level local trial; slopes, code compliance and paid AI fidelity not verified.",
+      "Full heavy source/GLB review render evidence remains external; build helper hashes are pinned."
+    ],
+    "picker": {
+      "id": "claude_student_residence_v004",
+      "group_id": "towers",
+      "reshape_mode": "fixed_native",
+      "width": 36,
+      "depth": 32,
+      "max_size": 600,
+      "description": "Twelve-storey student residence with recessed planted terraces, an oval glass roof lounge and roof garden.",
+      "reshape_description": "Move and rotate the complete building at its authored size."
+    }
+  },
+  "model_file": "../candidates/clay-student-residence-tower-clay-v004.glb",
+  "review_file": "independent-review.json",
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74"
+  },
+  "trial": {
+    "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
+    "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+    "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+    "tested_at": "2026-10-31T00:09:45.963445+00:00",
+    "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+    "evidence": [
+      "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+      "student-residence-close-EXACT_3D_SOURCE.png",
+      "student-residence-low-EXACT_3D_SOURCE.png",
+      "student-residence-ground-BROWSER_SCREENSHOT.png",
+      "fixed-model-plot-probes.json",
+      "REVIEW.txt"
+    ],
+    "checks": {
+      "catalogue_card": true,
+      "exact_variant": true,
+      "ground_contact": true,
+      "small_and_large_plot": true,
+      "rotation": true,
+      "save_reload": true,
+      "close_and_occluded_capture": true,
+      "no_console_errors": true
+    },
+    "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+  }
+}

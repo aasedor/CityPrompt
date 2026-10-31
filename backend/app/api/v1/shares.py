@@ -15,6 +15,7 @@ from app.core.security import (
     check_project_permission,
     create_project_asset_ticket,
     require_auth,
+    session_version,
 )
 from app.models.models import Project, ProjectShare, User
 from app.schemas.schemas import (
@@ -285,7 +286,7 @@ async def issue_asset_ticket(
 ):
     await check_project_permission(project_id, user, db, required="viewer")
     return {
-        "asset_ticket": create_project_asset_ticket(project_id, user.id),
+        "asset_ticket": create_project_asset_ticket(project_id, user.id, session_version=session_version(user)),
         "expires_in": 900,
     }
 

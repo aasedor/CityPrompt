@@ -43,7 +43,7 @@ export function sampleGeographicSurface(lng: number, lat: number, roots: THREE.O
  * Map ink is composited over the 3D scene, without depth testing: tile relief,
  * trees and later LODs cannot swallow it. This changes visibility only, never
  * the geographic anchor or its height to suit a camera angle. */
-export function buildGroundedTransport(data: TransportSnapshot, mapId: string, order: number) {
+export function buildGroundedTransport(data: TransportSnapshot, mapId: string, order: number, options: { pointRadius?: number } = {}) {
   const origin = WGS84_ELLIPSOID.getCartographicToPosition(51.05 * RAD, -114.07 * RAD, 0, new THREE.Vector3());
   const nodes: GroundNode[] = [], lookup = new Map<string, GroundNode>(), objects: TransportObject[] = [];
   const nodeAt = (lng: number, lat: number) => {
@@ -55,14 +55,15 @@ export function buildGroundedTransport(data: TransportSnapshot, mapId: string, o
     }
     return node;
   };
-  type Batch = { segments: Array<[GroundNode, GroundNode]>; ids: string[]; triangles: Array<[GroundNode, GroundNode, GroundNode]>; pointIds: string[] };
+  type Batch = { segments: Array<[GroundNode, GroundNode]>; ids: string[]; triangles: Array<[GroundNode, GroundNode, GroundNode]>; pointIds: string[]; markers: Array<{ center: GroundNode; id: string }> };
   const batches = new Map<TransportCategory, Batch>();
   for (const feature of data.features) {
     const category = feature.properties.category;
     let batch = batches.get(category);
-    if (!batch) { batch = { segments: [], ids: [], triangles: [], pointIds: [] }; batches.set(category, batch); }
+    if (!batch) { batch = { segments: [], ids: [], triangles: [], pointIds: [], markers: [] }; batches.set(category, batch); }
     if (feature.geometry.type === 'Point') {
       const [lng, lat] = feature.geometry.coordinates, center = nodeAt(lng, lat);
+      if (options.pointRadius !== undefined) { batch.markers.push({ center, id: feature.id }); continue; }
       const radius = category === 'service-stop' ? 6 : category === 'transit-centre' ? 17 : 28;
       const ring = Array.from({ length: 16 }, (_, i) => nodeAt(lng + Math.cos(i * Math.PI / 8) * radius / (111320 * Math.cos(lat * RAD)), lat + Math.sin(i * Math.PI / 8) * radius / 111320));
       ring.forEach((node, i) => { batch!.triangles.push([center, node, ring[(i + 1) % ring.length]]); batch!.pointIds.push(feature.id); });
@@ -132,6 +133,30 @@ export function buildGroundedTransport(data: TransportSnapshot, mapId: string, o
       geometry.setAttribute('instanceDistanceStart', new THREE.InterleavedBufferAttribute(distanceBuffer, 1, 0));
       geometry.setAttribute('instanceDistanceEnd', new THREE.InterleavedBufferAttribute(distanceBuffer, 1, 1));
       prepare(object, batch.ids, 0);
+    }
+    if (batch.markers.length) {
+      // Public-data symbols share one measured height. Draping their rims over
+      // separate roofs can stretch a small point into a tall green triangle.
+      const sides = 16, radius = Math.max(.5, Math.min(6, options.pointRadius ?? 2.5));
+      const geometry = new THREE.BufferGeometry(), positions = new THREE.BufferAttribute(new Float32Array(batch.markers.length * sides * 9), 3);
+      geometry.setAttribute('position', positions);
+      const material = new THREE.MeshBasicMaterial({ color: style.color, transparent: true, depthTest: false, depthWrite: false, toneMapped: false, side: THREE.DoubleSide });
+      batch.markers.forEach(({ center }, i) => {
+        const normal = WGS84_ELLIPSOID.getCartographicToNormal(center.lat * RAD, center.lng * RAD, new THREE.Vector3());
+        const east = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 0, 1), normal).normalize();
+        const north = normal.clone().cross(east).normalize();
+        const offsets = Array.from({ length: sides }, (_, j) => east.clone().multiplyScalar(Math.cos(j * Math.PI / 8) * radius).addScaledVector(north, Math.sin(j * Math.PI / 8) * radius));
+        center.update.push(() => {
+          if (center.height === null) return;
+          offsets.forEach((offset, j) => {
+            const a = offset.clone().add(center.position), b = offsets[(j + 1) % sides].clone().add(center.position), index = (i * sides + j) * 3;
+            positions.setXYZ(index, center.position.x, center.position.y, center.position.z);
+            positions.setXYZ(index + 1, a.x, a.y, a.z); positions.setXYZ(index + 2, b.x, b.y, b.z);
+          });
+          positions.addUpdateRange(i * sides * 9, sides * 9); positions.needsUpdate = true; dirty.add(geometry);
+        });
+      });
+      prepare(new THREE.Mesh(geometry, material), batch.markers.flatMap(marker => Array<string>(sides).fill(marker.id)), .5);
     }
     if (batch.triangles.length) {
       const geometry = new THREE.BufferGeometry(), positions = new THREE.BufferAttribute(new Float32Array(batch.triangles.length * 9), 3);

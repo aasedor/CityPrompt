@@ -1,0 +1,38 @@
+[
+  {
+    "archetype_id": "montreal_shoebox_house",
+    "variant_id": "red_brick_flat_roof_cornice",
+    "role": "front",
+    "path": "sources/front.png",
+    "original_path": "C:\\Users\\andre\\.codex\\worktrees\\architecture-teaching-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\shoebox-teaching\\front.png",
+    "bytes": 629588,
+    "sha256": "b610885e094bc2535a4bd1d502d2b1384f8b7ee135bf615d4a7793903455f46d"
+  },
+  {
+    "archetype_id": "montreal_shoebox_house",
+    "variant_id": "red_brick_flat_roof_cornice",
+    "role": "oblique",
+    "path": "sources/oblique.png",
+    "original_path": "C:\\Users\\andre\\.codex\\worktrees\\architecture-teaching-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\shoebox-teaching\\oblique.png",
+    "bytes": 653396,
+    "sha256": "d1c77130869c5593b3d585f9e9f6adb43bdc9239187c4dfe94facb0e469a9d62"
+  },
+  {
+    "archetype_id": "montreal_shoebox_house",
+    "variant_id": "red_brick_flat_roof_cornice",
+    "role": "top",
+    "path": "sources/top.png",
+    "original_path": "C:\\Users\\andre\\.codex\\worktrees\\architecture-teaching-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\shoebox-teaching\\top.png",
+    "bytes": 758695,
+    "sha256": "265915dffeef2aca11e77958c4b9d54c05aa19f39fde4f06ce5ad73bb1b58cc9"
+  },
+  {
+    "archetype_id": "montreal_shoebox_house",
+    "variant_id": "red_brick_flat_roof_cornice",
+    "role": "rear_oblique",
+    "path": "sources/rear_oblique.png",
+    "original_path": "C:\\Users\\andre\\.codex\\worktrees\\architecture-teaching-gaps\\CityPrompt\\frontend\\public\\archetypes\\buildings\\shoebox-teaching\\rear_oblique.png",
+    "bytes": 799954,
+    "sha256": "95ddffdcbfe2bfabd12c703b39731ce687b7fe135a846b1b9a0cee4c4498ab43"
+  }
+]

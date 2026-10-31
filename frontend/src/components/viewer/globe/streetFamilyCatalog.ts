@@ -1,4 +1,5 @@
 import { CANAL_ROUTE_POLICY } from './canalRoute';
+import { nativeStreetMaxLength } from './streetRoutePolicy';
 /**
  * Executable Public Realm LEGO V1 street capability catalog.
  *
@@ -8,7 +9,7 @@ import { CANAL_ROUTE_POLICY } from './canalRoute';
  * and the manual street picker without implying executable 3D support.
  */
 
-import nativeStreets from '@/data/nativeStreetPilots.json';
+import { nativeStreetSources as nativeStreets } from './nativeStreetSources';
 import manualStreets from '@/data/streetManual.json';
 
 export const PUBLIC_REALM_STREET_FAMILY_VERSION = 1 as const;
@@ -268,6 +269,8 @@ function nativeFamily(id: NativeStreetFamilyId): PublicRealmStreetFamilyDefiniti
     defaultAppearanceKitId: appearance, appearanceKitIds: [appearance], capabilities: street.id==='brt_bus_rapid_transit_corridor_v0'
       ? ['rigid_modules','straight_route','manual_stops','junctions_outside_stops']
       : street.id==='amsterdam_gracht_v1' ? ['rigid_modules','curved_route','outer_bank_connections','native_arch_crossing','open_channel_extension']
+      : street.program?.adapter==='modular-bridge-v1' ? ['native_bridge_modules','straight_route','adjustable_span','compact_stair_approaches','grade_separated_span']
+      : import.meta.env.DEV && street.program?.adapter==='source-span-bridge-v1' ? ['native_bridge_modules','two_endpoint_route','adjustable_span','source_owned_approaches','grade_separated_span']
       : street.id==='landmark_signature_bridge_v2' ? ['rigid_modules','straight_route','fixed_structural_span','graded_approaches','ground_endpoint_connections','grade_separated_underpass']
       : ['rigid_modules', 'curved_route', 'shared_junctions'],
   };
@@ -384,7 +387,7 @@ export const PUBLIC_REALM_STREET_SELECTIONS: readonly PublicRealmStreetSelection
     archetypeId: street.sourceArchetypeId, variantId: street.id,
     appearanceKitId: (street.junctionSurface === 'cobble' ? 'european_cobblestone_v1' : 'heritage_brick_stone') as StreetAppearanceKitId,
     targetType: 'street_segment' as const, rowWidthM: street.widthM,
-      minLengthM: street.id === 'amsterdam_gracht_v1' ? CANAL_ROUTE_POLICY.minLengthM : street.program?.minLengthM ?? 8, maxLengthM: street.id === 'amsterdam_gracht_v1' ? CANAL_ROUTE_POLICY.maxLengthM : street.program?.maxLengthM ?? 2000,
+      minLengthM: street.id === 'amsterdam_gracht_v1' ? CANAL_ROUTE_POLICY.minLengthM : street.program?.minLengthM ?? 8, maxLengthM: nativeStreetMaxLength(street.id),
     profileId: `native-${street.id.replace(/_/g, '-')}-v1`,
     componentSetIds: [
       `source_recipe:${street.sourceRecipeSha256}`, `source_assembly:${street.sourceAssemblySha256}`, `reference:${street.referenceSha256}`,

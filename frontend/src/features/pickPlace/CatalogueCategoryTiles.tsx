@@ -1,6 +1,6 @@
 import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { CALGARY_GROUPS, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
-import { choiceMatchesGroup, type CanonicalChoice } from './canonicalCatalogue';
+import { choiceMatchesGroup, isBridgeChoice, type CanonicalChoice } from './canonicalCatalogue';
 
 import { CatalogueCategoryIllustration } from './CatalogueCategoryIllustration';
 
@@ -8,8 +8,9 @@ export function CatalogueCategoryTiles({ domain, choices, onChoose, onBrowseAll,
   domain: CatalogueDomain; choices: CanonicalChoice[]; onChoose: (id: string) => void;
   onBrowseAll: () => void; onGenerated?: () => void;
 }) {
-  const options = choices.filter(c => c.domain === domain && (domain !== 'street_pathway' || c.placements[0]?.kind === 'street'));
-  const groups = CALGARY_GROUPS.filter(g => g.domain === domain).map(g => ({...g, count:options.filter(c => choiceMatchesGroup(c,g.id)).length})).filter(g => g.count > 0);
+  const options = choices.filter(c => c.domain === domain
+    && (domain !== 'street_pathway' || c.placements[0]?.kind === 'street' || isBridgeChoice(c)));
+  const groups = CALGARY_GROUPS.filter(g => g.domain === domain && g.id !== 'street_other').map(g => ({...g, count:options.filter(c => choiceMatchesGroup(c,g.id)).length})).filter(g => g.count > 0);
   const noun = domain === 'building' ? 'buildings' : domain === 'park_plaza' ? 'parks' : 'streets';
   return <div className="space-y-4 p-1">
     <div className="flex flex-wrap items-center justify-between gap-2">
@@ -23,7 +24,7 @@ export function CatalogueCategoryTiles({ domain, choices, onChoose, onBrowseAll,
         <div className="flex w-full justify-center transition-transform duration-200 motion-safe:group-hover:-translate-y-1"><CatalogueCategoryIllustration id={group.id} /></div>
         <span className="mt-1 text-sm font-extrabold leading-snug">{group.label}</span>
       </button>)}
-      {onGenerated && <button type="button" onClick={onGenerated} className="flex min-h-44 flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-[#232323] bg-white p-4 text-sm font-bold hover:bg-lime-50"><Sparkles size={42} aria-hidden="true"/>Your generated buildings</button>}
+      {onGenerated && <button type="button" onClick={onGenerated} className="flex min-h-44 flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-[#232323] bg-white p-4 text-sm font-bold hover:bg-lime-50"><Sparkles size={42} aria-hidden="true"/>Your models</button>}
     </div>
   </div>;
 }

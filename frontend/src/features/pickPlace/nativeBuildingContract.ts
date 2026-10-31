@@ -16,9 +16,17 @@ export function nativeBuildingContract(zone: Pick<SiteZone, 'properties'>) {
 
 export function nativeBuildingUrl(zone: Pick<SiteZone, 'properties'>): string | undefined {
   const contract = nativeBuildingContract(zone);
+  if (contract && !contract.rigid) {
+    const storeys = Number(zone.properties?.floor_count ?? zone.properties?.floors ?? contract.storeys);
+    const scale = Number(zone.properties?.building_footprint_scale ?? 1);
+    // The direct GLB is the unmodified native assembly. A supported change
+    // belongs to its compiled recipe, including its actual occupied footprint.
+    if (storeys !== contract.storeys || !Number.isFinite(scale) || Math.abs(scale - 1) > 1e-6) return undefined;
+  }
   if (contract?.url) return contract.url;
-  // An unregistered saved revision must not inherit the current catalogue URL.
-  if (zone.properties?.pick_place_model_revision && zone.properties?.pick_place_asset && !assetForZone(zone)) return undefined;
+  // Unknown revisions and unsupported edits resolve without a native contract.
+  // A saved preview URL must not override that selected binding's fallback.
+  if (zone.properties?.pick_place_asset && !contract) return undefined;
   return typeof zone.properties?.validation_native_url === 'string' && zone.properties.validation_native_url
     ? zone.properties.validation_native_url : undefined;
 }

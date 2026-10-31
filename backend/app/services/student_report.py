@@ -20,7 +20,7 @@ from shapely.ops import unary_union
 
 from app.services.plan_metrics import DerivedMetric
 from app.services.saved_site_assessment import matching_assessment
-from app.services.model_contract import uses_placement_plot, catalogue_dwellings
+from app.services.model_contract import uses_placement_plot, catalogue_dwellings, catalogue_housing_programme
 from app.services.lego_assembly import DETACHED_ARCHETYPE_IDS, catalog_parent_archetype_id
 from app.services.residual_landscape import community_3d_source_hash
 from app.services.policy_intelligence.retrieval import (
@@ -143,18 +143,30 @@ def build_snapshot(
             "source_crs": layer.source_crs,
             "feature_count": layer.feature_count,
             "data_version": digest(layer.feature_collection),
-            "content_hash": getattr(layer, 'content_hash', None),
+            "content_hash": getattr(layer, "content_hash", None),
             "site_attribute_examples": reference_attributes(layer, extent),
-            "proposed_geometries": [feature.get("geometry") for feature in (layer.feature_collection or {}).get("features", [])]
+            "proposed_geometries": (
+                [feature.get("geometry") for feature in (layer.feature_collection or {}).get("features", [])]
                 if (layer.feature_collection or {}).get("_citypromptStudy", {}).get("schema") == 1
-                and (layer.feature_collection or {}).get("_citypromptStudy", {}).get("condition") == "proposed" else [],
+                and (layer.feature_collection or {}).get("_citypromptStudy", {}).get("condition") == "proposed"
+                else []
+            ),
         }
         for layer in references
     ]
     return {
         "project_name": project.name,
-        "site_assessment": (matching_assessment(getattr(project, "metadata_", None), boundary["id"], _shape(boundary)) or {}).get("assessment") if boundary else None,
+        "site_assessment": (
+            (matching_assessment(getattr(project, "metadata_", None), boundary["id"], _shape(boundary)) or {}).get(
+                "assessment"
+            )
+            if boundary
+            else None
+        ),
         "description": project.description or "",
+        "scene_details": (getattr(project, "metadata_", None) or {}).get(
+            "scene_details", {"benches": [], "trees": [], "props": [], "surfaces": []}
+        ),
         "project_boundary": project_boundary,
         "scope_zone_ids": sorted(set(zone_ids)) if zone_ids is not None else None,
         "zones": sorted(zone_records, key=lambda item: item["id"]),
@@ -211,9 +223,13 @@ def bind_policy_map_evidence(evidence, snapshot: dict) -> list[dict]:
     supplied = _shape({"geometry": {"type": "Polygon", "coordinates": [evidence.boundary_coordinates]}})
     if saved is None or supplied is None or not saved.equals(supplied):
         return []
-    return [{**source.model_dump(exclude_none=True),
-             "excerpt": "Map-derived student summary (verify against linked plan): " + source.excerpt}
-            for source in evidence.sources]
+    return [
+        {
+            **source.model_dump(exclude_none=True),
+            "excerpt": "Map-derived student summary (verify against linked plan): " + source.excerpt,
+        }
+        for source in evidence.sources
+    ]
 
 
 def _object(value: Any) -> dict:
@@ -225,34 +241,39 @@ def bind_plan_comparisons(evidence, snapshot: dict) -> list[dict]:
     if evidence is None or evidence.design_inputs is None:
         return []
     saved_boundary = boundary_record(snapshot)
-    supplied_boundary = _shape({'geometry': {'type':'Polygon', 'coordinates':[evidence.boundary_coordinates]}})
+    supplied_boundary = _shape({"geometry": {"type": "Polygon", "coordinates": [evidence.boundary_coordinates]}})
     saved_shape = _shape(saved_boundary) if saved_boundary else None
     if saved_shape is None or supplied_boundary is None or not saved_shape.equals(supplied_boundary):
         return []
     inputs = evidence.design_inputs
-    saved = {zone['id']: zone for zone in snapshot['zones']}
+    saved = {zone["id"]: zone for zone in snapshot["zones"]}
     if len(inputs.zones) != len(saved) or {zone.id for zone in inputs.zones} != set(saved):
         return []
     for source in inputs.zones:
         target = saved[source.id]
-        geometry = _shape({'geometry': {'type':'Polygon', 'coordinates':[source.coordinates]}})
+        geometry = _shape({"geometry": {"type": "Polygon", "coordinates": [source.coordinates]}})
         target_geometry = _shape(target)
         properties = dict(source.properties)
-        for key in ('visible', 'is_visible', 'hidden', '_visible', '_hidden'):
+        for key in ("visible", "is_visible", "hidden", "_visible", "_hidden"):
             properties.pop(key, None)
-        if geometry is None or target_geometry is None or not geometry.equals(target_geometry) or properties != target['properties']:
+        if (
+            geometry is None
+            or target_geometry is None
+            or not geometry.equals(target_geometry)
+            or properties != target["properties"]
+        ):
             return []
-    references = {layer['id']:layer for layer in snapshot['references']}
+    references = {layer["id"]: layer for layer in snapshot["references"]}
     if len(inputs.references) != len(references) or {layer.id for layer in inputs.references} != set(references):
         return []
     for layer in inputs.references:
         saved_layer = references[layer.id]
         if layer.content_hash:
-            if layer.content_hash != saved_layer.get('content_hash'):
+            if layer.content_hash != saved_layer.get("content_hash"):
                 return []
-        elif layer.feature_collection is None or digest(layer.feature_collection) != saved_layer['data_version']:
+        elif layer.feature_collection is None or digest(layer.feature_collection) != saved_layer["data_version"]:
             return []
-    allowed = {zone['id'] for zone in scoped_zones(snapshot)}
+    allowed = {zone["id"] for zone in scoped_zones(snapshot)}
     result = []
     seen = set()
     for finding in evidence.comparisons:
@@ -260,8 +281,8 @@ def bind_plan_comparisons(evidence, snapshot: dict) -> list[dict]:
             return []
         seen.add(finding.id)
         item = finding.model_dump(exclude_none=True)
-        item['id'] = 'comparison-' + item['id']
-        item['basis'] = 'Saved-input-checked browser comparison. ' + item['basis']
+        item["id"] = "comparison-" + item["id"]
+        item["basis"] = "Saved-input-checked browser comparison. " + item["basis"]
         result.append(item)
     return result
 
@@ -273,6 +294,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
     detached_building_ids: set[str] = set()
     compiled_detached: dict[str, int] = {}
     compiled_detached_zone_ids: set[str] = set()
+    native_quantity_unknown_zone_ids: set[str] = set()
     for zone in zones:
         props = zone["properties"]
         identity = str(props.get("development_selected_variant_id") or props.get("development_archetype_id") or "")
@@ -308,18 +330,24 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             ):
                 continue
             segments = {item["segment_id"] for item in instances}
-            # A published detached archetype may be delivered as one native,
-            # complete landmark rather than a repeated-lot recipe. Its plot
-            # still includes setbacks and is not a measured floor plate.
+            # Retain legacy single-house recipes, but never infer one dwelling
+            # from one catalogue mesh: a variant can contain a duplex or more.
+            # Exact reviewed catalogue programmes are counted separately below.
             if (
-                catalog_parent_archetype_id(identity) in DETACHED_ARCHETYPE_IDS
-                and fit.get("assembly_mode") == "fixed_landmark"
+                fit.get("assembly_mode") == "fixed_landmark"
                 and fit.get("native_scale_locked") is True
                 and len(instances) == 1
                 and instances[0].get("role") == "assembled"
             ):
-                compiled_detached[building["id"]] = 1
-                compiled_detached_zone_ids.add(zone["id"])
+                if (
+                    identity in DETACHED_ARCHETYPE_IDS
+                    and props.get("pick_place_automatic_3d") is not True
+                    and not props.get("pick_place_asset")
+                ):
+                    compiled_detached[building["id"]] = 1
+                    compiled_detached_zone_ids.add(zone["id"])
+                else:
+                    native_quantity_unknown_zone_ids.add(zone["id"])
                 continue
             if (
                 fit.get("placement_mode") == "detached_lots"
@@ -400,20 +428,44 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         known = assessment.get("property_count", 0) > assessment.get("missing_value_count", 0)
         full = assessment.get("full_property_assessed_total") if known else None
         value = (assessment.get("area_weighted_estimate") if partial else full) if known else None
-        provenance = f"Calgary assessment roll {assessment.get('roll_year')}; retrieved {assessment.get('fetched_at', '')[:10]}."
+        provenance = (
+            f"Calgary assessment roll {assessment.get('roll_year')}; retrieved {assessment.get('fetched_at', '')[:10]}."
+        )
         metric("property_assessment_cad", "Whole-property assessed total", full, "CAD", provenance)
-        metric("site_assessment_cad", "Prorated site estimate" if partial else "Assessed site value", value, "CAD",
-               provenance + (" Prorated by intersecting parcel area." if partial else " Whole intersecting properties."))
-        finding("site-assessment", "Existing property assessment", provenance +
-                f" {assessment.get('property_count', 0)} properties; {assessment.get('assessed_coverage_pct', 0)}% mapped coverage.",
-                "Use this as an approximate existing-site cost context, and explain the assumption in your proposal.",
-                basis="Saved City of Calgary property assessment data",
-                uncertainty="Assessed value is not a purchase price or a valuation of the proposed design. " +
-                ("Partial properties are prorated by area, not officially assessed as separate sites. " if partial else "") +
-                ("Incomplete coverage or missing assessments can understate the total." if not assessment.get('complete') or assessment.get('assessed_coverage_pct', 0) < 100 else ""),
-                kind="source_context",
-                sources=[{"title": "Calgary property assessments", "url": assessment.get("source_url"),
-                          "section": f"Assessment roll {assessment.get('roll_year')}"}])
+        metric(
+            "site_assessment_cad",
+            "Prorated site estimate" if partial else "Assessed site value",
+            value,
+            "CAD",
+            provenance + (" Prorated by intersecting parcel area." if partial else " Whole intersecting properties."),
+        )
+        finding(
+            "site-assessment",
+            "Existing property assessment",
+            provenance
+            + f" {assessment.get('property_count', 0)} properties; {assessment.get('assessed_coverage_pct', 0)}% mapped coverage.",
+            "Use this as an approximate existing-site cost context, and explain the assumption in your proposal.",
+            basis="Saved City of Calgary property assessment data",
+            uncertainty="Assessed value is not a purchase price or a valuation of the proposed design. "
+            + (
+                "Partial properties are prorated by area, not officially assessed as separate sites. "
+                if partial
+                else ""
+            )
+            + (
+                "Incomplete coverage or missing assessments can understate the total."
+                if not assessment.get("complete") or assessment.get("assessed_coverage_pct", 0) < 100
+                else ""
+            ),
+            kind="source_context",
+            sources=[
+                {
+                    "title": "Calgary property assessments",
+                    "url": assessment.get("source_url"),
+                    "section": f"Assessment roll {assessment.get('roll_year')}",
+                }
+            ],
+        )
 
     metric(
         "proposal_zones",
@@ -467,7 +519,31 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
     # A development-area polygon may be a parcel holding many buildings. Never
     # multiply the entire parcel by storeys and present it as built floor area.
     building_zones = [z for z in zones if z["zone_type"] in {"building", "residential"}]
-    development_areas = [z for z in zones if z["zone_type"] == "development_area"]
+    ground_surfaces = [z for z in zones if z["properties"].get("ground_surface_material")]
+    development_areas = [
+        z for z in zones if z["zone_type"] == "development_area" and not z["properties"].get("ground_surface_material")
+    ]
+    metric(
+        "park_count",
+        "Parks and open spaces",
+        len(parks),
+        "objects",
+        "Count of saved green-space objects in the selected report scope.",
+    )
+    metric(
+        "street_count",
+        "Streets and paths",
+        len(roads),
+        "objects",
+        "Count of saved road/path objects; intersections and segments may be separate objects.",
+    )
+    metric(
+        "ground_surface_count",
+        "Ground finishes",
+        len(ground_surfaces),
+        "objects",
+        "Count of separately drawn ground-finish polygons; these are not buildings or housing allocations.",
+    )
     if development_areas:
         limitations.append(
             "Development-area polygons are land allocations. Their area is not counted as building footprint or floor area unless linked building footprints exist."
@@ -495,7 +571,9 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         measured = {z["id"]: project_geometry(geom, transformer) for z, geom in valid if geom is not None}
         boundary_m = project_geometry(boundary_shape, transformer) if boundary_shape is not None else None
 
-        def union_area(records: list[dict]) -> float:
+        def union_area(records: list[dict]) -> float | None:
+            if any(z["id"] not in measured for z in records):
+                return None
             shapes = [measured[z["id"]] for z in records if z["id"] in measured]
             if not shapes:
                 return 0.0
@@ -530,13 +608,27 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "m²",
             "Union of development-area polygons; this is land allocation, not building footprint.",
         )
-        study_shapes = [_shape({"geometry": geometry}) for layer in snapshot.get("references", [])
-                        for geometry in layer.get("proposed_geometries", [])]
+        metric(
+            "ground_surface_area_m2",
+            "Ground-finish area",
+            union_area(ground_surfaces),
+            "m²",
+            "Union of drawn ground finishes, clipped to the site; overlaps counted once. May overlap parks, streets or building plots and must not be added to them as separate site land.",
+        )
+        study_shapes = [
+            _shape({"geometry": geometry})
+            for layer in snapshot.get("references", [])
+            for geometry in layer.get("proposed_geometries", [])
+        ]
         study_shapes = [project_geometry(geom, transformer) for geom in study_shapes if geom is not None]
         study_union = unary_union(study_shapes)
-        metric("proposed_zoning_area_m2", "Proposed zoning study area",
-               study_union.intersection(boundary_m).area if boundary_m is not None else study_union.area,
-               "m²", "Union of proposed student zoning polygons, clipped to the site; overlaps counted once. Separate from development allocation and existing statutory zoning. Whole-site reference study, even in a selected-object report.")
+        metric(
+            "proposed_zoning_area_m2",
+            "Proposed zoning study area",
+            study_union.intersection(boundary_m).area if boundary_m is not None else study_union.area,
+            "m²",
+            "Union of proposed student zoning polygons, clipped to the site; overlaps counted once. Separate from development allocation and existing statutory zoning. Whole-site reference study, even in a selected-object report.",
+        )
         if boundary_m is not None:
             outside = [z for z in zones if z["id"] in measured and measured[z["id"]].difference(boundary_m).area > 1]
             if outside:
@@ -549,8 +641,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                     uncertainty="Boundary precision and ownership have not been independently surveyed.",
                 )
         park_access = {
-            item["parkZoneId"]: item
-            for item in (snapshot.get("park_access_snapshot") or {}).get("parks", [])
+            item["parkZoneId"]: item for item in (snapshot.get("park_access_snapshot") or {}).get("parks", [])
         }
         for park in parks[:20]:
             access = park_access.get(park["id"])
@@ -559,10 +650,16 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 finding(
                     "park-access-" + park["id"],
                     "Review the park's walking connection" if connected else "Resolve the park's walking connection",
-                    ("The current 3D plan includes a walking approach to this park."
-                     if connected else access.get("reason") or "No supported walking approach is resolved for this park."),
-                    ("Check the entrance, path and sidewalk together in a close 3D view."
-                     if connected else "Use Connections to choose an entrance and nearby sidewalk; leave a clear corridor or adjust the layout."),
+                    (
+                        "The current 3D plan includes a walking approach to this park."
+                        if connected
+                        else access.get("reason") or "No supported walking approach is resolved for this park."
+                    ),
+                    (
+                        "Check the entrance, path and sidewalk together in a close 3D view."
+                        if connected
+                        else "Use Connections to choose an entrance and nearby sidewalk; leave a clear corridor or adjust the layout."
+                    ),
                     kind="source_context" if connected else "unresolved_question",
                     records=[park],
                     basis="Client-derived park routes bound to the saved project-zone revisions",
@@ -586,14 +683,19 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             str(bid) for z in zones for bid in ([z["building_id"]] if z["building_id"] else []) + z["building_ids"]
         }
         linked = [b for b in snapshot["buildings"] if b["id"] in linked_ids]
-        plot_zones = [z for z in building_zones + development_areas if uses_placement_plot(z['properties'])]
-        plot_ids = {z['id'] for z in plot_zones}
-        plot_building_ids = {str(bid) for z in plot_zones
-                             for bid in ([z['building_id']] if z['building_id'] else []) + z['building_ids']}
-        plot_shapes = [measured[z['id']] for z in plot_zones if z['id'] in measured]
-        metric('building_placement_plot_m2', 'Building placement plots',
-               unary_union(plot_shapes).area if plot_shapes else 0, 'm²',
-               'Occupied placement/landscape plots for authored models. Includes yards and paving; not building footprint or floor area.')
+        plot_zones = [z for z in building_zones + development_areas if uses_placement_plot(z["properties"])]
+        plot_ids = {z["id"] for z in plot_zones}
+        plot_building_ids = {
+            str(bid) for z in plot_zones for bid in ([z["building_id"]] if z["building_id"] else []) + z["building_ids"]
+        }
+        plot_shapes = [measured[z["id"]] for z in plot_zones if z["id"] in measured]
+        metric(
+            "building_placement_plot_m2",
+            "Building placement plots",
+            unary_union(plot_shapes).area if plot_shapes else 0,
+            "m²",
+            "Occupied placement/landscape plots for authored models. Includes yards and paving; not building footprint or floor area.",
+        )
         # A linked Building replaces its zone's coarse footprint; never count both.
         footprints = [
             {**z, "floors": z["properties"].get("floor_count", z["properties"].get("floors"))}
@@ -605,7 +707,12 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         gfa = 0.0
         measured_floor_plates = 0
         for building in footprints:
-            if building["id"] in detached_zone_ids or building["id"] in detached_building_ids or building['id'] in plot_ids or building['id'] in plot_building_ids:
+            if (
+                building["id"] in detached_zone_ids
+                or building["id"] in detached_building_ids
+                or building["id"] in plot_ids
+                or building["id"] in plot_building_ids
+            ):
                 # A detached recipe is anchored to its whole plot, including
                 # yards. That parent polygon is never a building floor plate.
                 missing_floors.append(building)
@@ -650,6 +757,185 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 uncertainty="No floor count or housing yield has been guessed.",
             )
 
+    # Basic classroom totals, separate from legacy advisory findings. Resolve
+    # each linked building once: a placement zone is not an additional building.
+    quantity_zones = building_zones + development_areas
+    owners: list[tuple[dict, dict, str]] = []
+    counted: set[str] = set()
+    unresolved_allocations = 0
+    for zone in quantity_zones:
+        ids = set(([zone["building_id"]] if zone["building_id"] else []) + zone["building_ids"])
+        if ids:
+            for bid in sorted(ids):
+                if bid in counted:
+                    continue
+                counted.add(bid)
+                owners.append((zone, buildings_by_id.get(bid, {}), bid))
+        elif zone["zone_type"] == "development_area":
+            unresolved_allocations += 1
+            owners.append((zone, {}, zone["id"]))
+        else:
+            owners.append((zone, {}, zone["id"]))
+    objects = sum(
+        compiled_detached.get(identity, 1) for z, b, identity in owners if z["zone_type"] != "development_area" or b
+    )
+    metric(
+        "building_count",
+        "Buildings (known objects)" if unresolved_allocations else "Buildings",
+        objects if objects or not unresolved_allocations else None,
+        "objects",
+        "Distinct linked building records and unlinked building placements; current compiled detached segments replace their parent record. "
+        f"{unresolved_allocations} development allocations have unknown building counts. A multi-building imported model remains one saved object; this is not an inventory of every mesh.",
+    )
+
+    def recorded_count(value):
+        number = 0.0 if value == 0 and not isinstance(value, bool) else positive(value)
+        return int(number) if number is not None and number.is_integer() else None
+
+    programme_zones = {zone["id"]: catalogue_housing_programme(zone["properties"]) for zone in quantity_zones}
+    for zone in quantity_zones:
+        programme = programme_zones[zone["id"]]
+        if programme and programme.get("source_title"):
+            finding(
+                "catalogue-programme-" + zone["id"],
+                programme["source_title"],
+                programme["source_excerpt"],
+                "",
+                kind="source_context",
+                records=[zone],
+                basis="Exact reviewed model revision and native storeys",
+                uncertainty="Concept housing programme, not an approved occupancy or floor-area measurement.",
+                sources=[
+                    {
+                        "title": programme["source_title"],
+                        "section": programme["source"],
+                        "excerpt": programme["source_excerpt"],
+                    }
+                ],
+            )
+
+    for key, label in [("residential_units", "Residential units"), ("retail_units", "Retail units")]:
+        total, known, missing = 0, 0, 0
+        aggregate_zones: set[str] = set()
+        for zone, building, identity in owners:
+            props = zone["properties"]
+            specs = _object(building.get("specifications"))
+            programme = programme_zones[zone["id"]]
+            use = str(
+                props.get("development_type")
+                or (programme or {}).get("development_type")
+                or ("residential" if zone["zone_type"] == "residential" else "")
+            )
+            value = recorded_count(specs.get(key))
+            linked = set(([zone["building_id"]] if zone["building_id"] else []) + zone["building_ids"])
+            # A recorded allocation total belongs to the whole allocation, not
+            # to each linked building. Use it once only when it cannot overlap
+            # any linked specification or certified detached dwelling count.
+            aggregate = recorded_count(
+                props.get("unit_count")
+                if key == "residential_units"
+                else props.get("retail_unit_count", props.get("retail_units"))
+            )
+            housing_use = not use or use == "mixed_use" or use.startswith("residential")
+            owns_all_links = {owned for owner_zone, _, owned in owners if owner_zone["id"] == zone["id"]} == linked
+            if (
+                len(linked) > 1
+                and owns_all_links
+                and aggregate is not None
+                and (key != "residential_units" or housing_use)
+                and all(
+                    recorded_count(_object(buildings_by_id.get(bid, {}).get("specifications")).get(key)) is None
+                    and (key != "residential_units" or bid not in compiled_detached)
+                    for bid in linked
+                )
+            ):
+                if zone["id"] not in aggregate_zones:
+                    total += aggregate
+                    known += 1
+                    aggregate_zones.add(zone["id"])
+                continue
+            if (
+                value is None
+                and len(linked) <= 1
+                and (key != "residential_units" or not use or use == "mixed_use" or use.startswith("residential"))
+            ):
+                value = recorded_count(
+                    props.get("unit_count")
+                    if key == "residential_units"
+                    else props.get("retail_unit_count", props.get("retail_units"))
+                )
+            if value is None and key == "retail_units" and programme and len(linked) <= 1:
+                value = recorded_count(programme.get("retail_units"))
+            if (
+                key == "residential_units"
+                and value is None
+                and (not use or use == "mixed_use" or use.startswith("residential"))
+            ):
+                value = compiled_detached.get(identity)
+                if value is None and len(linked) <= 1:
+                    value = catalogue_dwellings(props)
+            relevant = (
+                not use
+                or use == "mixed_use"
+                or (key == "residential_units" and use.startswith("residential"))
+                or (key == "retail_units" and use in {"commercial", "retail", "commercial_retail"})
+            )
+            if value is not None:
+                total += value
+                known += 1
+            elif relevant:
+                missing += 1
+        metric(
+            key,
+            label + (" (known, incomplete)" if missing and known else ""),
+            total if known or not missing else None,
+            "units",
+            (
+                "Concept estimate from recorded building/zone counts, reviewed catalogue housing programmes and current compiled detached dwellings. "
+                if key == "residential_units"
+                else "Recorded retail-unit counts only; commercial floor area is never converted into a number of shops. "
+            )
+            + f"Linked building specifications take precedence over parent-zone estimates and are counted once; allocation totals are counted once where no linked counts overlap them. {missing} applicable objects/allocations have unknown counts. Recorded zero is retained.",
+            0.8,
+        )
+
+    # Always expose missing primary measurements, including an entirely invalid
+    # geometry scope; absence of a metric must not look like a measured zero.
+    by_key = {row["key"]: row for row in metrics}
+    for key, label in [
+        ("site_area_m2", "Site area"),
+        ("park_area_m2", "Drawn park area"),
+        ("street_area_m2", "Drawn street and path area"),
+        ("ground_surface_area_m2", "Ground-finish area"),
+        ("gfa_m2", "Floor-area estimate"),
+    ]:
+        if key not in by_key:
+            metric(key, label, None, "m²", "Unknown: no usable saved geometry for this measurement.", 0)
+    floor_area = next(row for row in metrics if row["key"] == "gfa_m2")
+    metric(
+        "gfa_ft2",
+        floor_area["label"] + " (square feet)",
+        floor_area["value"] * 10.7639104167 if floor_area["value"] is not None else None,
+        "ft²",
+        "Square-foot conversion of the same floor-area estimate (1 m² = 10.7639104167 ft²); the same unknowns and equal-floor-plate assumption apply.",
+        0.7,
+    )
+    details = snapshot.get("scene_details")
+    for key, label in [
+        ("benches", "Placed benches"),
+        ("trees", "Placed trees"),
+        ("props", "Placed detail objects"),
+        ("surfaces", "Detail surfaces"),
+    ]:
+        items = details.get(key) if isinstance(details, dict) else None
+        metric(
+            "detail_" + key,
+            label,
+            len(items) if isinstance(items, list) else None,
+            "objects",
+            "Whole-project saved scene-detail inventory; not clipped to selected report zones. Detail objects include people/groups and aids as authored objects, not an occupant count. Older snapshots without detail data remain unknown.",
+        )
+
     known_units = 0.0
     units_recorded = False
     catalogue_units = 0
@@ -660,7 +946,9 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         if zone["id"] in compiled_detached_zone_ids:
             continue
         use = props.get("development_type") or ("residential" if zone["zone_type"] == "residential" else None)
-        authored = catalogue_dwellings(props) if zone["zone_type"] in {"building", "residential", "development_area"} else None
+        authored = (
+            catalogue_dwellings(props) if zone["zone_type"] in {"building", "residential", "development_area"} else None
+        )
         if use is None and authored is not None:
             use = "residential"  # Exact housing programme, not a guessed use from plot size.
         if use not in {"residential", "mixed_use"} and not str(use).startswith("residential_"):
@@ -685,9 +973,14 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         0.8,
     )
 
-    metric("catalogue_dwellings", "Catalogue dwelling estimates (known models)",
-           catalogue_units if catalogue_plots else None, "dwellings",
-           f"Exact revision-locked catalogue housing programmes across {catalogue_plots} placements. Excludes student-entered unit counts and compiled detached recipes to avoid double counting. Models without a reviewed programme remain unknown. Concept estimates, not approved yield or measured floor area.", 0.8)
+    metric(
+        "catalogue_dwellings",
+        "Catalogue dwelling estimates (known models)",
+        catalogue_units if catalogue_plots else None,
+        "dwellings",
+        f"Exact revision-locked catalogue housing programmes across {catalogue_plots} placements. Excludes student-entered unit counts and compiled detached recipes to avoid double counting. Models without a reviewed programme remain unknown. Concept estimates, not approved yield or measured floor area.",
+        0.8,
+    )
 
     if detached_zone_ids:
         metric(
@@ -698,19 +991,61 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "Sum of current server-certified detached recipe dwelling counts, deduplicated by linked building. Repeated podium/floor/roof modules represent one dwelling per segment, not additional units.",
             0.95,
         )
-        pending = len(detached_zone_ids - compiled_detached_zone_ids)
+        programme_resolved_zone_ids = {zone_id for zone_id, programme in programme_zones.items() if programme}
+        unresolved_zone_ids = detached_zone_ids - compiled_detached_zone_ids - programme_resolved_zone_ids
+        pending = len(unresolved_zone_ids)
+        pending_zones = [zone for zone in zones if zone["id"] in unresolved_zone_ids]
+        automatic_pending = sum(
+            zone["properties"].get("pick_place_automatic_3d") is True
+            or isinstance(zone["properties"].get("pick_place_asset"), str)
+            and bool(zone["properties"]["pick_place_asset"].strip())
+            for zone in pending_zones
+        )
+        native_pending = sum(zone["id"] in native_quantity_unknown_zone_ids for zone in pending_zones)
+        unknown_quantities = automatic_pending or native_pending
+        legacy_pending = sum(
+            zone["id"] not in native_quantity_unknown_zone_ids
+            and zone["properties"].get("pick_place_automatic_3d") is not True
+            and not zone["properties"].get("pick_place_asset")
+            for zone in pending_zones
+        )
         metric(
             "detached_plots_pending",
-            "Detached plots awaiting current 3D",
+            (
+                "Detached plots with unverified dwelling counts"
+                if unknown_quantities
+                else "Detached plots awaiting current 3D"
+            ),
             pending,
             "plots",
-            "Housing plot count, separate from dwelling count. Compile or rebuild Community 3D to resolve missing or stale dwelling recipes.",
+            (
+                "Housing plot count, separate from certified dwelling counts. 3D visuals do not certify housing quantities; unknown counts remain unknown."
+                if unknown_quantities
+                else "Housing plot count, separate from dwelling count. Compile or rebuild Community 3D to resolve missing or stale dwelling recipes."
+            ),
         )
         finding(
             "detached-housing-quantities",
             "Resolve the detached housing quantities",
-            f"{len(detached_zone_ids)} detached housing plots are present; {pending} await current compiled dwelling quantities. Plot area includes yards and is excluded from known building footprint and floor-area totals.",
-            ("Build or refresh Community 3D for dwelling counts. " if pending else "Dwelling counts are current. ")
+            f"{len(detached_zone_ids)} detached housing plots are present; {pending} have unverified dwelling counts. Plot area includes yards and is excluded from known building footprint and floor-area totals.",
+            (
+                "These catalogue objects update automatically in 3D. A saved visual model does not certify dwelling quantities. Record known dwelling estimates in object settings, or leave unknown counts blank. "
+                if automatic_pending
+                else (
+                    "The saved 3D model does not certify dwelling quantities. Record known dwelling estimates in object settings, or leave unknown counts blank. "
+                    if native_pending
+                    else (
+                        "Build or refresh Community 3D for dwelling counts. "
+                        if pending
+                        else "Dwelling counts are current. "
+                    )
+                )
+            )
+            + (
+                "For the remaining legacy plots, Build or refresh Community 3D to resolve their dwelling counts. "
+                if unknown_quantities and legacy_pending
+                else ""
+            )
             + "Record individual measured house floor plates before using these plots for floor-area or density calculations.",
             kind="unresolved_question",
             records=[zone for zone in zones if zone["id"] in detached_zone_ids],
@@ -772,11 +1107,15 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         basis="Planning implementation reasoning",
         uncertainty="No replacement district is recommended without verified proposal requirements and current municipal rules.",
     )
-    findings.extend(snapshot.get('comparison_findings', []))
-    if snapshot.get('comparison_unavailable'):
-        finding('comparison-unavailable', 'Refresh the policy and zoning comparison',
-                'The comparison inputs did not match the saved design or reference layers.',
-                'Wait for drawings and zoning layers to save, then request a new report.', kind='unresolved_question')
+    findings.extend(snapshot.get("comparison_findings", []))
+    if snapshot.get("comparison_unavailable"):
+        finding(
+            "comparison-unavailable",
+            "Refresh the policy and zoning comparison",
+            "The comparison inputs did not match the saved design or reference layers.",
+            "Wait for drawings and zoning layers to save, then request a new report.",
+            kind="unresolved_question",
+        )
     return {
         "method_version": "student-review-v2-placement-plots",
         "metrics": metrics,
@@ -854,7 +1193,9 @@ def snapshot_drawing(snapshot: dict) -> str:
         for route in park.get("connections", []):
             coords = [transformer.transform(lon, lat) for lon, lat in route["path"]]
             points = " ".join(f"{x - minx + padding:.2f},{maxy - y + padding:.2f}" for x, y in coords)
-            paths.append(f'<polyline points="{points}" fill="none" stroke="#a77b3f" stroke-width="{float(route["widthM"]):.2f}"><title>Client-derived park approach</title></polyline>')
+            paths.append(
+                f'<polyline points="{points}" fill="none" stroke="#a77b3f" stroke-width="{float(route["widthM"]):.2f}"><title>Client-derived park approach</title></polyline>'
+            )
     return f'<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Saved proposal plan" viewBox="0 0 {width:.2f} {height:.2f}" style="width:100%;max-height:460px;background:#f5f6f2">{"".join(paths)}</svg><p class="meta">Saved plan geometry · north up · drawing extent {width:.0f} × {height:.0f} m · purple buildings, green parks, gray roads, sand development allocations; dashed site boundary. Brown lines, when present, are client-derived park approaches.</p>'
 
 
@@ -865,13 +1206,23 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
         return html.escape(str(value if value is not None else ""), quote=True)
 
     analysis = report["analysis"]
+    display_metrics = analysis["metrics"]
+    if any(m["key"] == "building_count" for m in display_metrics):
+        # Legacy API breakdowns remain saved for compatibility; the basic
+        # report uses the combined residential total instead of duplicate rows.
+        display_metrics = [
+            m
+            for m in display_metrics
+            if m["key"] not in {"recorded_units", "catalogue_dwellings", "compiled_detached_dwellings"}
+        ]
     historical_notice = (
         '<p class="notice">Historical measurement method: placement plots may have been counted as building footprint or floor area. Request a new report for corrected quantities; this saved record remains unchanged.</p>'
-        if analysis.get('method_version') != 'student-review-v2-placement-plots' else ''
+        if analysis.get("method_version") != "student-review-v2-placement-plots"
+        else ""
     )
     rows = "".join(
         f"<tr><th>{esc(m['label'])}</th><td>{esc(m['value'] if m['value'] is not None else 'Unknown')} {esc(m['unit'])}</td><td>{esc(m['derivation'])}</td></tr>"
-        for m in analysis["metrics"]
+        for m in display_metrics
     )
     sections = []
     for finding in analysis["findings"]:
@@ -896,14 +1247,21 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
             f"<p><b>Student choice:</b> {esc(response['choice'])} · {esc(response['author_name'])} · {esc(response['updated_at'])}</p>"
             f"<p class='reason'>{esc(response['rationale'])}</p><p><b>Follow-through:</b> {esc(response['follow_through']) or 'Not recorded'}</p>"
             if response
-            else "<p>Student response: not yet recorded.</p>"
+            else ""
         )
+        if not response:
+            if sources:
+                sections.append(f"<section><h2>Sources</h2><ul>{''.join(sources)}</ul></section>")
+            continue
         sections.append(
             f"<section><h2>{esc(finding['title'])}</h2><p class='meta'>{esc(finding['kind'].replace('_', ' '))} · {esc(finding['location']['label'])}</p>"
-            + (f"<p><b>{'Local plan intent' if finding['comparison']['group'] == 'local_plan' else 'Student-proposed zoning'}:</b> {esc(finding['comparison']['expected'])}</p>"
-               f"<p><b>Your design:</b> {esc(finding['comparison']['proposed'])}</p><p><b>Comparison:</b> {esc(finding['comparison']['status'].replace('_', ' '))} · preliminary screening</p>" if finding.get('comparison') else '')
-            +
-            f"<p>{esc(finding['observation'])}</p><p><b>Suggested next step:</b> {esc(finding['recommendation'])}</p>"
+            + (
+                f"<p><b>{'Local plan intent' if finding['comparison']['group'] == 'local_plan' else 'Student-proposed zoning'}:</b> {esc(finding['comparison']['expected'])}</p>"
+                f"<p><b>Your design:</b> {esc(finding['comparison']['proposed'])}</p><p><b>Comparison:</b> {esc(finding['comparison']['status'].replace('_', ' '))} · preliminary screening</p>"
+                if finding.get("comparison")
+                else ""
+            )
+            + f"<p>{esc(finding['observation'])}</p>"
             f"<p><b>Basis:</b> {esc(finding['basis'])}</p><p><b>Uncertainty:</b> {esc(finding['uncertainty']) or 'None additional recorded.'}</p><ul>{''.join(sources)}</ul>{student}</section>"
         )
     # The exact saved geometry is embedded as an inert JSON download for audit.
@@ -924,10 +1282,10 @@ def report_html(report: dict, snapshot: dict, decision_history: list[dict]) -> s
     )
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><title>{esc(report['project_name'])} — planning report</title>
 <style>body{{font:15px/1.6 system-ui,sans-serif;color:#172b2a;max-width:920px;margin:36px auto;padding:0 24px}}h1{{font-size:30px}}h2{{font-size:20px;margin-top:30px}}.meta{{color:#536b68;font-size:12px}}.notice{{padding:16px;background:#edf5f2;border-left:4px solid #327565}}table{{border-collapse:collapse;width:100%;font-size:12px}}td,th{{border-bottom:1px solid #ccd8d4;padding:9px;text-align:left;vertical-align:top}}blockquote{{margin:8px 0;color:#405652;font-size:13px}}.reason{{white-space:pre-wrap}}section{{border-bottom:1px solid #ccd8d4;padding-bottom:16px}}@page{{size:A4;margin:15mm}}@media print{{body{{margin:0;padding:0;max-width:none}}h2{{break-after:avoid}}tr{{break-inside:avoid}}a{{color:inherit}}}}</style></head><body>
-<h1>{esc(report['project_name'])}</h1><p>Planning report and student decision record</p>
+<h1>{esc(report['project_name'])}</h1><p>Quantitative planning report</p>
 <p class="meta">Requested by {esc(report['requested_by_name'])} · {esc(report['created_at'])}<br>Report {esc(report['id'])} · Plan version {esc(report['plan_version'])} · Response revision {esc(report['response_revision'])}</p>
-<p class="notice">{esc(stale)} Recommendations are advisory. Student choices and reasoning are recorded in their own words; selecting “implement” records an intention, not a verified design change.</p>
+<p class="notice">{esc(stale)} Quantities describe the saved scope. Estimates and missing data are identified below; recorded counts are not approved yield.</p>
 <h2>The saved proposal</h2>{snapshot_drawing(snapshot)}<h2>Proposal quantities</h2>{historical_notice}<table>{rows}</table><ul>{''.join('<li>'+esc(x)+'</li>' for x in analysis['limitations'])}</ul>
 {''.join(sections)}<h2>Saved proposal inventory</h2><table><tr><th>Area</th><th>Type</th><th>Stable ID</th></tr>{inventory}</table>
-<h2>Decision history</h2><ul>{history or '<li>No responses recorded.</li>'}</ul>
+{('<h2>Earlier saved responses</h2><ul>' + history + '</ul>') if history else ''}
 <p class="meta">Use your browser’s Print command to save this self-contained report as PDF. The original geometry snapshot is embedded in this HTML for traceability.</p><script type="application/json" id="plan-snapshot">{snapshot_json}</script></body></html>"""

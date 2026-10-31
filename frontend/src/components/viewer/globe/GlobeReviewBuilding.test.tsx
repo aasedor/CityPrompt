@@ -11,10 +11,15 @@ const mocks = vi.hoisted(() => ({ gltf: vi.fn(), display: vi.fn(), verified: vi.
   readWalking: vi.fn(), mountWalking: vi.fn(), mountInspection: vi.fn() }));
 vi.mock('@/features/legoAssembly/buildingInspection', () => ({ mountBuildingInspection: mocks.mountInspection }));
 vi.mock('@react-three/drei', () => ({ useGLTF: mocks.gltf }));
+vi.mock('@react-three/fiber', () => ({useThree: (select: (state: {gl: object})=>unknown)=>select({gl:{}})}));
+vi.mock('@/lib/ktx2GltfLoader', () => ({createKtx2LoaderExtension:()=>()=>{}}));
 vi.mock('3d-tiles-renderer/r3f', () => ({ EastNorthUpFrame: ({ children, height }: { children: React.ReactNode; height: number }) =>
   <div data-testid="frame" data-height={height}>{children}</div> }));
 vi.mock('./SharedSiteGroundProvider', () => ({ useSharedSiteGround: mocks.display, useSharedSiteGroundVerification: mocks.verified }));
-vi.mock('./BuildingFoundationSurface', () => ({ BuildingFoundationSurface: () => <div data-testid="foundation"/> }));
+vi.mock('./BuildingFoundationSurface', async importOriginal => ({
+  ...await importOriginal<typeof import('./BuildingFoundationSurface')>(),
+  BuildingFoundationSurface: () => <div data-testid="foundation"/>,
+}));
 vi.mock('@/features/legoAssembly/buildingWalking', async importOriginal => ({
   ...await importOriginal<typeof import('@/features/legoAssembly/buildingWalking')>(),
   readBuildingWalking: mocks.readWalking, mountBuildingWalking: mocks.mountWalking,
@@ -40,6 +45,18 @@ function setup() {
 afterEach(() => { cleanup(); vi.clearAllMocks(); });
 
 describe('review GLB ground lifecycle', () => {
+  it('keeps unavailable local revisions capture-blocked without loading a substitute GLB', () => {
+    const {props,report} = setup(); mocks.gltf.mockClear();
+    const stale = {...zone, properties:{...zone.properties, validation_fixed_fixture:true,
+      pick_place_asset:'local_teaching_wartime_victory_house', pick_place_model_revision:'unavailable-revision'}};
+    const view = render(<GlobeReviewBuilding {...props} zone={stale} zones={[stale]} onGroundingIssue={report}/>);
+    expect(report).toHaveBeenLastCalledWith('building','review:zone','review_model_revision_unavailable');
+    expect(mocks.gltf).not.toHaveBeenCalled();
+    expect(view.container.querySelector('primitive')).toBeNull();
+    expect(mocks.mountWalking).not.toHaveBeenCalled();
+    view.unmount();
+    expect(report).toHaveBeenLastCalledWith('building','review:zone',null);
+  });
   it('reports real mesh hits in the foundation frame without undoing the building rotation', () => {
     const frame = new THREE.Group();
     frame.position.set(1000,2000,3000);

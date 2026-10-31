@@ -4,6 +4,15 @@ from unittest.mock import MagicMock
 import pytest
 
 from app.api.v1 import geocoding
+from app.core.security import require_auth
+from app.main import app
+
+
+@pytest.fixture(autouse=True)
+def maps_user(test_user):
+    app.dependency_overrides[require_auth] = lambda: test_user
+    yield
+    app.dependency_overrides.pop(require_auth, None)
 
 
 def provider_response(payload: dict, status_code: int = 200) -> MagicMock:

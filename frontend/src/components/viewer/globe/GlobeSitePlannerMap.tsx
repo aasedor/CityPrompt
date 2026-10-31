@@ -1,3 +1,7 @@
+import { rotateCoordsAroundCentroid } from './plotRotation';
+import { modularBridgeProgramFor } from './modularBridgeProgram';
+import {pickReferenceFeature, resolveReferenceSelection, type ReferenceSelection} from '@/features/referenceLayers/referenceInspection';
+import {ReferenceFeatureDetails} from '@/features/referenceLayers/ReferenceFeatureDetails';
 import type { StreetNamesState } from '@/features/referenceLayers/useStreetNames';
 import { NativeParkLayer, assertNativeParksReady, waitForNativeParksReady } from '@/features/parks/NativeParkLayer';
 import {GlobeProjectBenches} from '@/features/parks/GlobeProjectBenches';
@@ -8,7 +12,6 @@ import { GlobeParkParcelGuide } from '@/features/parks/GlobeParkParcelGuide';
 import type { PavingSurface } from '@/features/parks/pavingSurfaces';
 import type {ProjectBench, ProjectTree, ProjectProp} from '@/features/parks/projectBenches';
 import { detailAsset } from '@/features/parks/detailCatalogue';
-import { isPeopleAsset } from '@/features/people/peopleActions';
 import { assertNativeStreetsReady, waitForNativeStreetsReady, expectsNativeStreet } from './nativeStreetReadiness';
 import { hasNativePark } from '@/features/parks/nativeParkRegistry';
 import { frameLandscapeContext } from '@/features/siteLandscape/landscapeContext';
@@ -27,7 +30,13 @@ import { MapCleanupControls } from './MapCleanupControls';
 import { MapCleanupPreview } from './MapCleanupPreview';
 import { readMapCleanupBoxes, type MapCleanupBox } from './mapCleanup';
 import { assetForZone } from '@/features/pickPlace/catalogue';
-import { projectedFrameFraction } from './projectFrameHeight';
+import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import {groundSurfaceFor} from '@/features/groundSurfaces/groundSurfaces';
+import { projectedFrameFraction, projectFrameRoofHeight } from './projectFrameHeight';
+import { findUnobstructedProjectFrame } from './projectFrameObstruction';
+import { PLAN_VIEW_FOV_DEGREES, WORKING_VIEW_FOV_DEGREES, distanceForFieldOfView, setWorkingCameraProjection, syncPlanCameraClipping, syncPlanCameraFog } from './planViewCamera';
+import { initialContextCameraIsPaused, watchInitialProjectContext } from './initialProjectContextWatch';
+import { hasFixedBuildingFootprint } from '@/features/pickPlace/buildingFootprintProgram';
 import { useWorkingViewQuality } from './useWorkingViewQuality';
 import { WorkingViewPerformance, WorkingViewStatsSampler, type WorkingViewStats } from './WorkingViewPerformance';
 /**
@@ -47,7 +56,7 @@ import { StreetPreviewGroundProvider } from '@/features/pickPlace/StreetPreviewG
 import { GlobeBuildingPlotLandscape } from './GlobeBuildingPlotLandscape';
 import { BuildingLandscapeSurfaceProvider } from './BuildingFoundationSurface';
 import { nativeStreetPreparationProblem } from './nativeStreetPilot';
-import { streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
+import { appendStreetDrawingValue, finishDoubleClickValues, streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
 import { usePublicRoadContext } from '@/features/pickPlace/usePublicRoadContext';
 import { supportsPublicRoadSuggestions } from '@/features/pickPlace/publicRoadSuggestions';
 import { Canvas, useThree } from '@react-three/fiber';
@@ -67,7 +76,7 @@ import {
   TilesFadePlugin,
 } from '3d-tiles-renderer/plugins';
 import { GlobeTileDecoder } from './GlobeTileDecoder';
-import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
+import { Ellipsoid, WGS84_ELLIPSOID, type TilesRenderer as CoreTilesRenderer } from '3d-tiles-renderer';
 import { Environment, Html } from '@react-three/drei';
 import type { Building, SiteZone, SiteZoneType, SiteZoneProperties } from '@/types';
 import { ZONE_TYPE_CONFIG } from '@/types';
@@ -86,7 +95,8 @@ import { useRoadNetwork } from '@/hooks/useRoadNetwork';
 import { roadDisplayZones } from '@/utils/proceduralRoadNetwork';
 import { GlobeZoneLayer } from './GlobeZoneLayer';
 import { GlobeReviewBuilding } from './GlobeReviewBuilding';
-import { nativeBuildingUrl } from '@/features/pickPlace/nativeBuildingContract';
+import { nativeBuildingRoutes } from '@/features/pickPlace/nativeBuildingRouting';
+import { NativeBuildingRecoveryNotice } from '@/features/pickPlace/NativeBuildingRecoveryNotice';
 import { updateBuildingGroundingIssues } from './buildingGroundContact';
 import { assertStreetGroundReady, streetGroundCaptureStatus } from './streetGroundCapture';
 import { streetSurfaceMaskZone } from './streetSurfaceMask';
@@ -114,7 +124,7 @@ import { publicRealmTrialAsset, assertPublicRealmTrialsReady } from './publicRea
 import { applyManualParkAccessSnapshot, resolveManualParkAccess } from './parkAccessConnections';
 import { resolvePedestrianConnections } from '@/features/pickPlace/pedestrianConnections';
 import { BuildingEntranceApproaches } from './BuildingEntranceApproaches';
-import { buildingGroundProblemMessage } from './buildingGroundProblemMessage';
+import { buildingCaptureIssues, buildingCaptureProblem } from './buildingCaptureReadiness';
 import { GlobePedestrianConnections } from './GlobePedestrianConnections';
 import { GlobeTerraces } from './GlobeTerraces';
 import { buildTerraceScene } from './terraceScene';
@@ -136,7 +146,7 @@ import { buildingWalkEntrance, setBuildingWalkingDoorsOpen } from '@/features/le
 import { updateWalkBuildingInspection, endBuildingInspection } from '@/features/legoAssembly/buildingInspection';
 import { lookWalkPose, walkEntryHeading, type WalkPose } from './walkNavigation';
 import { useWalkKeyboard } from './useWalkKeyboard';
-import { STREET_RENDER_EYE_HEIGHT_METERS, manualStreetFocusHeight } from './streetRenderProfile';
+import { STREET_RENDER_EYE_HEIGHT_METERS } from './streetRenderProfile';
 import { SceneSettledMonitor } from './useSceneSettled';
 import { isPlausibleTerrainAnchor } from './globeTerrainUtils';
 import {
@@ -243,6 +253,7 @@ import {
   restoreStreetCameraProjection,
 } from './streetRenderProfile';
 import { inspectStreetRenderReadiness } from './streetRenderReadiness';
+import { applyPeopleFollowPose } from './peopleFollowCamera';
 import { getArchitecturalLightingProfile } from './rlasmPresentation';
 
 import { elevationApi } from '@/services/api';
@@ -300,16 +311,6 @@ function isBuildingZoneType(zoneType: SiteZoneType | string | null | undefined):
   return zoneType === 'building' || zoneType === 'residential' || zoneType === 'development_area';
 }
 
-function rotateCoordsAroundCentroid(coords: number[][], centroid: [number, number], deltaRad: number): number[][] {
-  const cos = Math.cos(deltaRad);
-  const sin = Math.sin(deltaRad);
-  const [cx, cy] = centroid;
-  return coords.map((c) => {
-    const rx = c[0] - cx;
-    const ry = c[1] - cy;
-    return [cx + rx * cos - ry * sin, cy + rx * sin + ry * cos];
-  });
-}
 export const DEFAULT_INITIAL_CAMERA_PITCH_DEGREES = 60;
 export const MAX_GLOBE_CAMERA_PITCH_DEGREES = 100;
 const ZONE_FIT_INITIAL_CAMERA_MULTIPLIER = 1.15;
@@ -385,7 +386,7 @@ export function buildZoneCreateProperties(
   terrainElevation: number,
 ): SiteZoneProperties {
   return {
-    ...ZONE_TYPE_CONFIG[tool].defaultProperties,
+    ...(groundSurfaceFor({properties:properties??{}}) ? {} : ZONE_TYPE_CONFIG[tool].defaultProperties),
     ...(properties ?? {}),
     terrain_elevation_m: terrainElevation,
   };
@@ -675,6 +676,7 @@ interface GlobeCameraPose {
   surfacePos: THREE.Vector3;
   normal: THREE.Vector3;
   cameraUp?: THREE.Vector3;
+  planView?: boolean;
 }
 
 function applyCameraPoseToCamera(
@@ -682,6 +684,7 @@ function applyCameraPoseToCamera(
   pose: GlobeCameraPose,
   controls?: { pivotPoint?: THREE.Vector3; update?: () => void } | null,
 ) {
+  setWorkingCameraProjection(camera, pose.planView === true, pose.cameraPos.distanceTo(pose.surfacePos));
   camera.position.copy(pose.cameraPos);
   camera.up.copy(pose.cameraUp ?? pose.normal);
   camera.lookAt(pose.surfacePos);
@@ -1143,19 +1146,21 @@ function FallbackPlaneSync({
     useFallbackPlane?: boolean;
   } | null>;
 }) {
-  const { camera } = useThree();
+  const { camera, scene } = useThree();
 
   useEffect(() => {
     let rafId = 0;
 
     const updateFallbackPlane = () => {
       syncGlobeControlsFallbackPlane(controlsRef.current, camera);
+      if (controlsRef.current?.pivotPoint) syncPlanCameraClipping(camera, camera.position.distanceTo(controlsRef.current.pivotPoint));
+      syncPlanCameraFog(camera, scene.fog);
       rafId = window.requestAnimationFrame(updateFallbackPlane);
     };
 
     updateFallbackPlane();
     return () => window.cancelAnimationFrame(rafId);
-  }, [camera, controlsRef]);
+  }, [camera, controlsRef, scene]);
 
   return null;
 }
@@ -1559,6 +1564,7 @@ interface GlobeSitePlannerMapProps {
    * dead code for any future code that wants to adapt the globe to that API.
    */
   onGlobeReady?: (refs: {
+    clearBuildingSelection?: () => void;
     getMapCentre?: () => { lng: number; lat: number };
     canvas: HTMLCanvasElement;
     camera: THREE.Camera;
@@ -1682,7 +1688,7 @@ export function GlobeSitePlannerMap({
   const [walkLiftLabel, setWalkLiftLabel] = useState<string|null>(null);
   const [walkHasBuildingEntrance, setWalkHasBuildingEntrance] = useState(false);
   const [walkBuildingZoneId, setWalkBuildingZoneId] = useState<string | null>(null);
-  const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null } | null>(null);
+  const walkSavedCameraRef = useRef<{ position: THREE.Vector3; quaternion: THREE.Quaternion; up: THREE.Vector3; pivot: THREE.Vector3 | null; projection: ReturnType<typeof applyStreetCameraProjection> } | null>(null);
   const walkPointerRef = useRef<{ x: number; y: number } | null>(null);
   const [showMapCleanup, setShowMapCleanup] = useState(false);
   const [cleanupPicking, setCleanupPicking] = useState(false);
@@ -1739,6 +1745,8 @@ export function GlobeSitePlannerMap({
   const [sharedGroundState, setSharedGroundState] = useState<SharedSiteGroundState>(INACTIVE_SHARED_SITE_GROUND);
   const [showGroundReview, setShowGroundReview] = useState(false);
   const [showBuildingGroundProblems, setShowBuildingGroundProblems] = useState(false);
+  const [referenceSelection,setReferenceSelection] = useState<ReferenceSelection|null>(null);
+  const selectedReference = resolveReferenceSelection(referenceSelection, referenceLayers);
   const [showEntranceReview,setShowEntranceReview]=useState(false);
   const [entranceReviews,setEntranceReviews]=useState<BuildingEntranceReview[]>([]);
   const [reviewEntranceReviews,setReviewEntranceReviews]=useState<ReadonlyMap<string,BuildingEntranceReview>>(new Map());
@@ -1779,13 +1787,15 @@ export function GlobeSitePlannerMap({
   const [parkAlignment, setParkAlignment] = useState<ParkAlignment>({ pending: false, needsAttention: false, retry: () => {} });
   const parkAlignmentRef = useRef(parkAlignment);
   parkAlignmentRef.current = parkAlignment;
-  const waitForSharedGround = useCallback(async () => {
+  const waitForSharedGround = useCallback(async (signal?:AbortSignal) => {
+    signal?.throwIfAborted();
     if (sharedGroundRef.current.snapshot?.excludedCells?.length) captureSharedGround(sharedGroundRef.current);
     const context = contextPresentationRef.current;
     const contextProblem = contextPilotCaptureProblem(context.provider, context.requested);
     if (contextProblem) throw new Direct3DCaptureError('capture_failed', contextProblem);
     const parkDeadline = performance.now() + 45000;
     while (parkAlignmentRef.current.pending && !parkAlignmentRef.current.needsAttention && performance.now() < parkDeadline) {
+      signal?.throwIfAborted();
       await new Promise(resolve => setTimeout(resolve, 200));
     }
     if (parkAlignmentRef.current.pending) throw new Error('Park alignment is still updating. Your design is safe; keep working and try the render once alignment finishes.');
@@ -1796,20 +1806,16 @@ export function GlobeSitePlannerMap({
     while ((sharedGroundRef.current.status === 'sampling'
       || streetGroundCaptureStatus(sceneRef.current) === 'sampling'
       || (sharedGroundRef.current.status === 'ready' && pendingGroundBuildingsRef.current.length > 0
-        && !buildingGroundingIssuesRef.current.some((issue) => issue.reason !== 'ground_not_ready')))
+        && !buildingCaptureIssues(buildingGroundingIssuesRef.current).some((issue) => issue.reason !== 'ground_not_ready')))
       && performance.now() < deadline) {
+      signal?.throwIfAborted();
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
+    signal?.throwIfAborted();
     assertStreetGroundReady(sceneRef.current);
     const snapshot = captureSharedGround(sharedGroundRef.current);
-    if (pendingGroundBuildingsRef.current.length > 0 || buildingGroundingIssuesRef.current.length > 0) {
-      if (buildingGroundingIssuesRef.current.some((issue) => issue.reason === 'foundation_exceeds_3m')) {
-        throw new Error('The site is too uneven beneath a building for automatic grounding. Choose a flatter placement before rendering.');
-      }
-      const entranceIssue = buildingGroundingIssuesRef.current.find((issue) => issue.reason.startsWith('entrance_'));
-      if (entranceIssue) throw new Error(buildingGroundProblemMessage(entranceIssue.reason));
-      throw new Error(`These buildings are not ready at ground level: ${pendingGroundBuildingsRef.current.join(', ') || 'check the marked building'}. Check their placement before rendering.`);
-    }
+    const buildingProblem = buildingCaptureProblem(pendingGroundBuildingsRef.current, buildingGroundingIssuesRef.current);
+    if (buildingProblem) throw new Error(buildingProblem);
     return snapshot;
   }, []);
   // Internal camera pitch from nadir (0=top-down, 90=horizon).
@@ -1875,6 +1881,10 @@ export function GlobeSitePlannerMap({
     || Boolean(projectBenches?.length || projectTrees?.length || projectProps?.length || projectSurfaces?.length);
   const [buildingLayerRecoveryGeneration, setBuildingLayerRecoveryGeneration] = useState(0);
   const [selectedBuildingId, setSelectedBuildingId] = useState<string | null>(null);
+  const importedModelIds = useMemo(() => new Set((buildings ?? [])
+    .filter(building => building.generation_engine === 'imported_glb' || building.specifications?.imported_glb)
+    .map(building => building.id)), [buildings]);
+  useEffect(() => { if (selectedZoneId === null) setSelectedBuildingId(null); }, [selectedZoneId]);
   const selectedBuildingIdRef = useRef<string | null>(null);
   selectedBuildingIdRef.current = selectedBuildingId;
   // Zone overlays can legitimately win the pointer race against the model
@@ -1896,20 +1906,19 @@ export function GlobeSitePlannerMap({
   // stack — it is excluded from the Meshy model layer (the stack wins).
   // Buildings with a saved recipe or an honest planned-massing fallback mount
   // the LEGO layer, which itself skips + debug-counts footprint-less records.
-  const reviewBuildingZones = useMemo(() => siteZones.filter((zone) =>
-    isBuildingZoneType(zone.zone_type) && Boolean(nativeBuildingUrl(zone))), [siteZones]);
-  const reviewBuildingIds = useMemo(() => new Set(reviewBuildingZones
-    .map((zone) => zone.building_id).filter((id): id is string => Boolean(id))), [reviewBuildingZones]);
+  const nativeRoutes = useMemo(() => nativeBuildingRoutes(siteZones, buildings ?? []), [siteZones, buildings]);
+  const reviewBuildingZones = nativeRoutes.reviewZones;
+  const reviewBuildingIds = nativeRoutes.buildingIds;
   const meshyBuildings = useMemo(
-    () => excludeLegoStackBuildings(buildings ?? []).filter((building) => !reviewBuildingIds.has(building.id)),
-    [buildings, reviewBuildingIds],
+    () => excludeLegoStackBuildings(nativeRoutes.otherBuildings),
+    [nativeRoutes.otherBuildings],
   );
   const legoLayerBuildings = useMemo(
-    () => (buildings ?? []).filter((building) => (
+    () => nativeRoutes.otherBuildings.filter((building) => (
       hasLegoRecipe(building)
       || hasPlannedMassing(building)
-    ) && !reviewBuildingIds.has(building.id)),
-    [buildings, reviewBuildingIds],
+    )),
+    [nativeRoutes.otherBuildings],
   );
   const direct3DProposalBuildingIds = useMemo(
     () => getCurrentCommunity3DBuildingIds(siteZones, buildings ?? []),
@@ -2033,6 +2042,8 @@ export function GlobeSitePlannerMap({
   const cameraInteractionGenerationRef = useRef(0);
   const cameraRevealGenerationRef = useRef(0);
   const initialCameraPoseRef = useRef<GlobeCameraPose | null>(null);
+  const initialFrameContextRef = useRef<{ target: THREE.Vector3; up: THREE.Vector3; samples: THREE.Vector3[] } | null>(null);
+  const stopInitialContextWatchRef = useRef<(() => void) | null>(null);
   const projectFrameReadinessRef = useRef({
     sceneReady: false,
     terrainReady: false,
@@ -2267,12 +2278,7 @@ export function GlobeSitePlannerMap({
     };
   }, [focusLatitude, focusLongitude, getCanvasViewportSize, raycastLngLat]);
 
-  const applyCameraPose = useCallback((pose: {
-    cameraPos: THREE.Vector3;
-    surfacePos: THREE.Vector3;
-    normal: THREE.Vector3;
-    cameraUp?: THREE.Vector3;
-  }) => {
+  const applyCameraPose = useCallback((pose: GlobeCameraPose) => {
     const camera = cameraRef.current;
     if (!camera) return;
 
@@ -2316,19 +2322,27 @@ export function GlobeSitePlannerMap({
     const spanNorthM = (maxLat - minLat) * 111320;
     const spanEastM = (maxLng - minLng) * 111320 * Math.cos(centerLat * DEG_TO_RAD);
     const spanM = Math.max(spanNorthM, spanEastM, 30);
-    const cameraFov = camera instanceof THREE.PerspectiveCamera ? camera.fov : 75;
+    // A whole-site safety floor leaves house-sized imports tiny. An explicit
+    // single-building frame can approach the model while still fitting its roof.
+    const minimumHeightM = renderZones.length === 1 && isBuildingZoneType(renderZones[0].zone_type ?? '')
+      ? 8 : PROJECT_FRAME_MIN_HEIGHT_M;
+    // Focus returns to the regular oblique working lens, including from plan mode.
+    const cameraFov = WORKING_VIEW_FOV_DEGREES;
     let heightM = estimateProjectFrameHeight(
       spanM,
       cameraFov,
       DEFAULT_INITIAL_CAMERA_PITCH_DEGREES,
       PROJECT_FRAME_TARGET_FRACTION,
+      minimumHeightM,
     );
     const samples = renderZones.flatMap(zone => {
       const nativeHeight = assetForZone({ properties: zone.properties ?? {} })?.nativeDimensions?.[2];
-      const floors = Number(zone.properties?.floor_count ?? zone.properties?.floors ?? 0);
-      const explicitHeight = Number(zone.properties?.height_m ?? 0);
-      const roof = nativeHeight ?? (isBuildingZoneType(zone.zone_type ?? '')
-        ? Math.max(0, Number.isFinite(explicitHeight) ? explicitHeight : 0, Number.isFinite(floors) ? floors * 4 : 0) : 0);
+      const roof = projectFrameRoofHeight({
+        nativeHeight,
+        heightM: zone.properties?.height_m ?? zone.properties?.height,
+        floorCount: zone.properties?.floor_count ?? zone.properties?.floors,
+        isBuilding: isBuildingZoneType(zone.zone_type ?? ''),
+      });
       return (zone.coordinates ?? []).filter(c => c.length >= 2 && c.every(Number.isFinite))
         .flatMap(c => [{ coordinate: c, altitude: 0 }, { coordinate: c, altitude: roof }]);
     });
@@ -2345,7 +2359,17 @@ export function GlobeSitePlannerMap({
       const frac = projectedFrameFraction(points, width, viewportH);
       if (!Number.isFinite(frac) || frac <= 0) return false;
       if (Math.abs(frac - TARGET) < 0.03) break;
-      heightM = Math.min(Math.max(heightM * (frac / TARGET), PROJECT_FRAME_MIN_HEIGHT_M), PROJECT_FRAME_MAX_HEIGHT_M);
+      heightM = Math.min(Math.max(heightM * (frac / TARGET), minimumHeightM), PROJECT_FRAME_MAX_HEIGHT_M);
+    }
+    const pose = computeCameraPose(centerLat, centerLng, heightM,
+      terrainElevationRef.current + tallest / 2, DEFAULT_INITIAL_CAMERA_PITCH_DEGREES);
+    if (sceneRef.current) {
+      const worldSamples = [...new Map(samples.map(sample => [`${sample.coordinate.join(',')}:${sample.altitude}`, sample])).values()]
+        .map(sample => WGS84_ELLIPSOID.getCartographicToPosition(sample.coordinate[1] * DEG_TO_RAD,
+          sample.coordinate[0] * DEG_TO_RAD, terrainElevationRef.current + sample.altitude, new THREE.Vector3()));
+      initialFrameContextRef.current = { target: pose.surfacePos, up: pose.normal, samples: worldSamples };
+      const clearPosition = findUnobstructedProjectFrame(camera, sceneRef.current, pose.surfacePos, pose.normal, worldSamples);
+      if (clearPosition) applyCameraPose({ ...pose, cameraPos: clearPosition });
     }
     focusedSiteAnchorRef.current = { lngLat: [centerLng, centerLat], height: terrainElevationRef.current };
     // Two settled frames so tiles/props re-render at the new pose before the
@@ -2390,6 +2414,8 @@ export function GlobeSitePlannerMap({
   }, []);
 
   const markUserInteracted = useCallback(() => {
+    stopInitialContextWatchRef.current?.();
+    stopInitialContextWatchRef.current = null;
     focusedSiteAnchorRef.current = null;
     // A real pointer/wheel/keyboard gesture must immediately cancel every
     // pending initial/auto-frame retry. Waiting until the delayed canvas reveal
@@ -2458,6 +2484,7 @@ export function GlobeSitePlannerMap({
       camera.position.copy(saved.position);
       camera.quaternion.copy(saved.quaternion);
       camera.up.copy(saved.up);
+      restoreStreetCameraProjection(camera, saved.projection);
       camera.updateMatrixWorld();
       if (saved.pivot && controls?.pivotPoint) controls.pivotPoint.copy(saved.pivot);
     }
@@ -2477,7 +2504,9 @@ export function GlobeSitePlannerMap({
     endBuildingInspection();
     setBuildingWalkingDoorsOpen(true);
     walkSavedCameraRef.current = { position: camera.position.clone(), quaternion: camera.quaternion.clone(),
-      up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null };
+      up: camera.up.clone(), pivot: globeControlsRef.current?.pivotPoint?.clone() ?? null,
+      projection: camera instanceof THREE.PerspectiveCamera ? { fov: camera.fov, near: camera.near } : null };
+    setWorkingCameraProjection(camera, false);
     if (globeControlsRef.current?.controls) globeControlsRef.current.controls.enabled = false;
     if (globeControlsRef.current) globeControlsRef.current.enabled = false;
     markUserInteracted();
@@ -2755,14 +2784,14 @@ export function GlobeSitePlannerMap({
   // The basic initial-pose path can run before asynchronously loaded zones
   // exist, leaving a reopened project at city scale. Queue projection-verified
   // framing as soon as both the zones and base globe controls exist. The
-  // bounded runner reapplies after late controls updates without depending on
-  // the tile-settled flag, which legitimately toggles throughout refinement.
+  // bounded runner reapplies after late controls updates. Later Google detail
+  // is handled by the separate obstruction-only visibility watch below.
   useEffect(() => {
     if (!projectZoneFocusKey || siteZones.length === 0) return;
     if (!sceneReady || !isTerrainReady || !globeControlsReady) return;
-    if (hasUserInteractedRef.current) return;
-    if (lastAutoFramedProjectKeyRef.current === projectZoneFocusKey) return;
-    if (queuedAutoFrameProjectKeyRef.current === projectZoneFocusKey) return;
+    const frameKey = projectZoneFocusKey;
+    if (hasUserInteractedRef.current || lastAutoFramedProjectKeyRef.current === frameKey
+      || queuedAutoFrameProjectKeyRef.current === frameKey) return;
 
     const activeBoundary = getActiveSiteBoundary(siteZones);
     const focusZones = activeBoundary
@@ -2771,11 +2800,11 @@ export function GlobeSitePlannerMap({
     const renderZones = focusZones.length > 0
       ? [...focusZones, ...siteZones.map(zone => ({ ...zone, coordinates: zone.coordinates as [number, number][] }))]
       : siteZones.map(zone => ({ ...zone, coordinates: zone.coordinates as [number, number][] }));
-    queuedAutoFrameProjectKeyRef.current = projectZoneFocusKey;
+    queuedAutoFrameProjectKeyRef.current = frameKey;
     void requestProjectFrame(renderZones, 'auto').then((framed) => {
-      if (queuedAutoFrameProjectKeyRef.current !== projectZoneFocusKey) return;
+      if (queuedAutoFrameProjectKeyRef.current !== frameKey) return;
       if (framed && !hasUserInteractedRef.current) {
-        lastAutoFramedProjectKeyRef.current = projectZoneFocusKey;
+        lastAutoFramedProjectKeyRef.current = frameKey;
       }
     });
   }, [
@@ -2791,6 +2820,29 @@ export function GlobeSitePlannerMap({
     projectFrameRequestGenerationRef.current += 1;
     queuedAutoFrameProjectKeyRef.current = null;
   }, []);
+
+  // Display-ready may mean four coarse tiles; a detailed facade can arrive
+  // much later. Observe actual visibility changes for this initial view only.
+  useEffect(() => {
+    if (!projectZoneFocusKey || !sceneReady || !isTerrainReady || !globeControlsReady
+      || hasUserInteractedRef.current || !tilesRendererRef.current) return;
+    const interactionGeneration = cameraInteractionGenerationRef.current;
+    const stop = watchInitialProjectContext({
+      source: tilesRendererRef.current as unknown as CoreTilesRenderer,
+      isCancelled: () => hasUserInteractedRef.current || cameraInteractionGenerationRef.current !== interactionGeneration
+        || initialContextCameraIsPaused(globeControlsRef.current),
+      adjust: () => {
+        const frame = initialFrameContextRef.current, camera = cameraRef.current, scene = sceneRef.current;
+        if (!frame || !camera || !scene) return false;
+        const position = findUnobstructedProjectFrame(camera, scene, frame.target, frame.up, frame.samples);
+        if (!position) return false;
+        applyCameraPose({ cameraPos: position, surfacePos: frame.target, normal: frame.up });
+        return true;
+      },
+    });
+    stopInitialContextWatchRef.current = stop;
+    return () => { stop(); if (stopInitialContextWatchRef.current === stop) stopInitialContextWatchRef.current = null; };
+  }, [projectZoneFocusKey, sceneReady, isTerrainReady, globeControlsReady, applyCameraPose]);
 
   // Drawing state â€” managed at DOM level
   const [drawingPoints, setDrawingPoints] = useState<number[][]>([]);
@@ -2986,11 +3038,12 @@ export function GlobeSitePlannerMap({
   ]);
 
   const waitForCurrentTiles = useCallback(
-    () => waitForCaptureTileReadiness(tilesRendererRef.current),
+    (signal?:AbortSignal) => waitForCaptureTileReadiness(tilesRendererRef.current,{signal}),
     [],
   );
 
   const captureDirect3D = useCallback((options: {
+    signal?:AbortSignal;
     landscapeBoundary?: number[][];
     skipTileWait?: boolean;
     includeGeometryPasses?: boolean;
@@ -3031,14 +3084,14 @@ export function GlobeSitePlannerMap({
       try {
         if (restoreContextCamera) setBuildingModelsVisible(true);
         if (restoreContextCamera) await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-        const tilesSettled = options.skipTileWait || await waitForCurrentTiles();
+        const tilesSettled = options.skipTileWait || await waitForCurrentTiles(options.signal);
         if (!tilesSettled) {
           throw new Direct3DCaptureError(
             'capture_failed',
             'The surrounding 3D tiles did not settle in time. Hold the camera still and try again.',
           );
         }
-        const sharedGroundSnapshot = await waitForSharedGround();
+        const sharedGroundSnapshot = await waitForSharedGround(options.signal);
         if (
           rendererRef.current !== renderer
           || sceneRef.current !== scene
@@ -3165,6 +3218,7 @@ export function GlobeSitePlannerMap({
   const captureVideoRouteControls = useCallback(async (
     request: VideoRouteCaptureRequest,
   ): Promise<VideoRouteCaptureResult> => {
+    request.signal?.throwIfAborted();
     const canvas = canvasRef.current;
     const renderer = rendererRef.current;
     const camera = cameraRef.current;
@@ -3185,55 +3239,67 @@ export function GlobeSitePlannerMap({
     const detailFlythrough = request.cameraMotion === 'detail_flythrough';
     const bicycleRide = request.cameraMotion === 'bicycle_ride';
     const peopleFollow = request.cameraMotion === 'people_follow';
+    const followedPerson = peopleFollow ? projectProps?.find(prop => Boolean(detailAsset(prop.variant).people)) : undefined;
+    const followedFocus = peopleFollow && followedPerson ? beginPeopleCapture(scene, true).focus(followedPerson.id) : null;
+    if (peopleFollow && !followedFocus) throw new Error('Place an animated person from Add details → People before following them.');
+    const followedHeading = followedPerson ? new THREE.Vector3(0, 0, 1).transformDirection(
+      WGS84_ELLIPSOID.getEastNorthUpFrame(followedPerson.lat * DEG_TO_RAD, followedPerson.lng * DEG_TO_RAD, 0, new THREE.Matrix4())
+        .multiply(new THREE.Matrix4().makeRotationZ(followedPerson.angle * DEG_TO_RAD))
+        .multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2))) : null;
     const nearFieldRoute = streetWalkby || detailFlythrough || bicycleRide || peopleFollow;
     let previousStreetProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     let routeSurfacePoints: THREE.Vector3[];
     let nearFieldTerrainHeight: number | null = null;
     try {
-      // The user draws against the captured aerial frame, so resolve every
-      // point against that exact scene projection before switching to the
-      // pedestrian lens. This anchors a street route to real road/sidewalk
-      // elevations instead of an artificial plane beneath the aerial camera.
-      const projectRoute = (points: typeof sampledRoute) => points.map((point) => {
-        const ndc = normalizedVideoPointToNdc(point, sourceAspect);
-        const hit = raycastSurfacePoint(ndc.x, ndc.y);
-        if (!hit) throw new Error('Part of the drawn route does not intersect the visible 3D city. Draw the route over the ground or buildings.');
-        return { ...hit, height: authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], hit.height) };
-      });
-      const insideZone = (zone:SiteZone,lngLat:[number,number]) => {
-        if(zone.coordinates.length<3)return false;
-        const ring=[...zone.coordinates,zone.coordinates[0]];
-        return booleanPointInPolygon(turfPoint(lngLat),turfPolygon([ring]));
-      };
-      let routeHits: ReturnType<typeof projectRoute> | undefined;
-      if(streetWalkby&&request.automaticRoute){
-        const zones=terrainZonesRef.current, boundaries=zones.filter(zone=>zone.zone_type==='site_boundary');
-        for(const candidate of automaticStreetRouteCandidates(resampleVideoRoute(request.routePoints,24))){
-          try{
-            const hits=projectRoute(candidate);
-            if(hits.every(hit=>(!boundaries.length||boundaries.some(zone=>insideZone(zone,hit.lngLat)))
-              &&!zones.some(zone=>resolveCommunity3DKind(zone)==='building'&&insideZone(zone,hit.lngLat)))){routeHits=hits;break;}
-          }catch{/* Try the next nearby corridor without moving the camera. */}
-        }
-        if(!routeHits)throw new Error('No clear automatic walking route was found. Open Advanced and draw a short route on an open street or path. No credits were used.');
-      }else routeHits=projectRoute(sampledRoute);
-      nearFieldTerrainHeight = nearFieldRoute
-        ? stableNearFieldTerrainHeight(routeHits.map((hit) => hit.height))
-        : null;
-      routeSurfacePoints = routeHits.map((hit) => {
-        const world = new THREE.Vector3();
-        WGS84_ELLIPSOID.getCartographicToPosition(
-          hit.lngLat[1] * DEG_TO_RAD,
-          hit.lngLat[0] * DEG_TO_RAD,
-          videoRouteSurfaceHeight(
-            hit.height,
-            nearFieldTerrainHeight ?? hit.height,
-            request.cameraMotion,
-          ),
-          world,
-        );
-        return world;
-      });
+      if (peopleFollow && followedFocus && followedHeading) {
+        // Subject framing is independent of the globe view and drawn route.
+        routeSurfacePoints = [followedFocus.clone(), followedFocus.clone().add(followedHeading)];
+      } else {
+        // The user draws against the captured aerial frame, so resolve every
+        // point against that exact scene projection before switching to the
+        // pedestrian lens. This anchors a street route to real road/sidewalk
+        // elevations instead of an artificial plane beneath the aerial camera.
+        const projectRoute = (points: typeof sampledRoute) => points.map((point) => {
+          const ndc = normalizedVideoPointToNdc(point, sourceAspect);
+          const hit = raycastSurfacePoint(ndc.x, ndc.y);
+          if (!hit) throw new Error('Part of the drawn route does not intersect the visible 3D city. Draw the route over the ground or buildings.');
+          return { ...hit, height: authoredCameraGround(terrainZonesRef.current, hit.lngLat[0], hit.lngLat[1], hit.height) };
+        });
+        const insideZone = (zone:SiteZone,lngLat:[number,number]) => {
+          if(zone.coordinates.length<3)return false;
+          const ring=[...zone.coordinates,zone.coordinates[0]];
+          return booleanPointInPolygon(turfPoint(lngLat),turfPolygon([ring]));
+        };
+        let routeHits: ReturnType<typeof projectRoute> | undefined;
+        if(streetWalkby&&request.automaticRoute){
+          const zones=terrainZonesRef.current, boundaries=zones.filter(zone=>zone.zone_type==='site_boundary');
+          for(const candidate of automaticStreetRouteCandidates(resampleVideoRoute(request.routePoints,24))){
+            try{
+              const hits=projectRoute(candidate);
+              if(hits.every(hit=>(!boundaries.length||boundaries.some(zone=>insideZone(zone,hit.lngLat)))
+                &&!zones.some(zone=>resolveCommunity3DKind(zone)==='building'&&insideZone(zone,hit.lngLat)))){routeHits=hits;break;}
+            }catch{/* Try the next nearby corridor without moving the camera. */}
+          }
+          if(!routeHits)throw new Error('No clear automatic walking route was found. Open Advanced and draw a short route on an open street or path. No credits were used.');
+        }else routeHits=projectRoute(sampledRoute);
+        nearFieldTerrainHeight = nearFieldRoute
+          ? stableNearFieldTerrainHeight(routeHits.map((hit) => hit.height))
+          : null;
+        routeSurfacePoints = routeHits.map((hit) => {
+          const world = new THREE.Vector3();
+          WGS84_ELLIPSOID.getCartographicToPosition(
+            hit.lngLat[1] * DEG_TO_RAD,
+            hit.lngLat[0] * DEG_TO_RAD,
+            videoRouteSurfaceHeight(
+              hit.height,
+              nearFieldTerrainHeight ?? hit.height,
+              request.cameraMotion,
+            ),
+            world,
+          );
+          return world;
+        });
+      }
     } catch (error) {
       restoreStreetCameraProjection(camera, previousStreetProjection);
       throw error;
@@ -3249,7 +3315,9 @@ export function GlobeSitePlannerMap({
     // Validate before changing lens/renderer state so a too-long ride leaves
     // the student's camera intact and starts no expensive frame capture.
     if (bicycleRide) assertBicycleRouteLength(routeDistanceMeters, request.durationSeconds);
-    const centerHit = raycastSurfacePoint(0, 0);
+    const centerHit = peopleFollow && followedPerson
+      ? { lngLat: [followedPerson.lng, followedPerson.lat] as [number, number], height: 0 }
+      : raycastSurfacePoint(0, 0);
     if (!centerHit) {
       restoreStreetCameraProjection(camera, previousStreetProjection);
       throw new Error('The center of the captured view does not intersect the city. Reframe the site and try again.');
@@ -3266,6 +3334,7 @@ export function GlobeSitePlannerMap({
       ),
       centerWorld,
     );
+    if (peopleFollow && followedFocus) centerWorld.copy(followedFocus);
     if (nearFieldRoute) previousStreetProjection = applyStreetCameraProjection(camera);
     const previousFrameProjection = applyVideoFrameProjection(camera, sourceAspect);
 
@@ -3277,13 +3346,6 @@ export function GlobeSitePlannerMap({
     const cameraOffset = nearFieldRoute
       ? new THREE.Vector3()
       : camera.position.clone().sub(centerWorld);
-    const streetFocusWorld = streetWalkby && !request.automaticRoute
-      ? centerWorld.clone().addScaledVector(streetUp, manualStreetFocusHeight({
-          hasPeople: Boolean(projectProps?.some(prop => isPeopleAsset(detailAsset(prop.variant)))),
-          hasBuildings: terrainZonesRef.current.some(zone => resolveCommunity3DKind(zone) === 'building'),
-          savedBuildings: buildings,
-        }))
-      : null;
     const previousReferenceVisibility = referenceOverlayGroup.current?.visible;
     const previousOverlaysVisible = zoneOverlaysVisibleRef.current;
     const previousSelectedBuildingId = selectedBuildingIdRef.current;
@@ -3316,14 +3378,15 @@ export function GlobeSitePlannerMap({
       ? waitForVisibleTileCoverage(tileRenderer, {
           stableMs: 750,
           timeoutMs: 45_000,
+          signal:request.signal,
         })
-      : waitForCurrentTiles();
+      : waitForCurrentTiles(request.signal);
 
     const applyRoutePose = (progress: number) => {
       if (peopleFollow) {
-        const focus = peopleCapture?.focus();
-        if (!focus) throw new Error('Place a person from Add details → People, then enable their animation before following them.');
-        applyStreetRoutePose(camera, pathCurve, progress, streetUp, 1.6, focus.addScaledVector(streetUp, 1.05));
+        const focus = peopleCapture?.focus(followedPerson?.id);
+        if (!focus || !followedHeading) throw new Error('The followed person changed. Prepare the preview again.');
+        applyPeopleFollowPose(camera, focus, streetUp, followedHeading, followedPerson?.people_action);
         return;
       }
       if (bicycleRide) {
@@ -3331,7 +3394,7 @@ export function GlobeSitePlannerMap({
         return;
       }
       if (streetWalkby) {
-        applyStreetRoutePose(camera, pathCurve, progress, streetUp, undefined, streetFocusWorld ?? undefined);
+        applyStreetRoutePose(camera, pathCurve, progress, streetUp);
         return;
       }
       if (detailFlythrough) {
@@ -3345,9 +3408,10 @@ export function GlobeSitePlannerMap({
       camera.updateMatrixWorld(true);
       if (controls?.pivotPoint) controls.pivotPoint.copy(target);
     };
-    const twoFrames = () => new Promise<void>((resolve) => {
-      requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
-    });
+    const twoFrames = async () => {
+      await new Promise<void>(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve())));
+      request.signal?.throwIfAborted();
+    };
 
     try {
       if (previousControlsEnabled !== null) controlsTarget.enabled = false;
@@ -3403,6 +3467,7 @@ export function GlobeSitePlannerMap({
       const warmupFrames = buildVideoWarmupFrames(renderProfile, request.durationSeconds);
       if (request.renderQuality === 'high') {
         for (const warmup of warmupFrames) {
+          request.signal?.throwIfAborted();
           if (warmup.index % 8 === 0) request.onProgress?.('loading', warmup.index, warmupFrames.length);
           peopleCapture.pose(warmup.index / 24);
           applyRoutePose(videoMotionProgress(warmup.progress, request.cameraMotion));
@@ -3422,16 +3487,17 @@ export function GlobeSitePlannerMap({
         // restored in the finally block.
         releaseTileQueueHold = holdTileQueueUpdates(tileRenderer);
         await twoFrames();
-        const frozenContextReady = await waitForVisibleTileCoverage(tileRenderer);
+        const frozenContextReady = await waitForVisibleTileCoverage(tileRenderer,{signal:request.signal});
         if (!frozenContextReady) {
           throw new Error('The preloaded Google context could not be frozen for capture. Try a shorter path.');
         }
       }
 
-      const routeGroundSnapshot = await waitForSharedGround();
+      const routeGroundSnapshot = await waitForSharedGround(request.signal);
       const keyframesBase64: string[] = [];
       const geometryCheckpoints: NonNullable<VideoRouteCaptureResult['geometryCheckpoints']> = [];
       for (let index = 0; index < sampledRoute.length; index += 1) {
+        request.signal?.throwIfAborted();
         request.onProgress?.('checking', index, sampledRoute.length);
         peopleCapture.pose(index / (sampledRoute.length - 1) * (request.durationSeconds - 1 / 24));
         applyRoutePose(videoMotionProgress(index / (sampledRoute.length - 1), request.cameraMotion));
@@ -3440,7 +3506,7 @@ export function GlobeSitePlannerMap({
         if (!settled) {
           throw new Error(`The surrounding Google context did not settle at route view ${index + 1}. Try a shorter path.`);
         }
-        await waitForSharedGround();
+        await waitForSharedGround(request.signal);
         assertSharedGroundUnchanged(routeGroundSnapshot, sharedGroundRef.current);
         assertStreetGroundReady(scene);
         peopleCapture.pose(index / (sampledRoute.length - 1) * (request.durationSeconds - 1 / 24));
@@ -3452,6 +3518,7 @@ export function GlobeSitePlannerMap({
         const capture = nearFieldRoute
           ? null
           : await captureDirect3D({
+              signal:request.signal,
               skipTileWait: true,
               includeGeometryPasses: request.renderQuality === 'high',
             });
@@ -3510,6 +3577,7 @@ export function GlobeSitePlannerMap({
 
       const cpuSubmissionMs: number[] = [];
       const previewCapture = await captureDeterministicVideo({
+        signal:request.signal,
         canvas: previewCanvas,
         durationSeconds: request.durationSeconds,
         bitrate: renderProfile.bitrate,
@@ -3609,7 +3677,7 @@ export function GlobeSitePlannerMap({
       if (fadePlugin && previousFadeDuration !== null) fadePlugin.fadeDuration = previousFadeDuration;
       peopleCapture?.restore();
     }
-  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles, waitForSharedGround, projectProps, buildings]);
+  }, [captureDirect3D, raycastSurfacePoint, waitForCurrentTiles, waitForSharedGround, projectProps]);
 
   // Scene hygiene for street-level captures (same pattern as captureDirect3D:
   // flip clean state, two frames for React to commit, restore in finally).
@@ -3673,6 +3741,7 @@ export function GlobeSitePlannerMap({
     const camera = cameraRef.current;
     if (!canvas || !camera) return;
     onGlobeReady({
+      clearBuildingSelection: () => setSelectedBuildingId(null),
       getMapCentre: globeAIRenderViewport.getCenter,
       canvas,
       camera,
@@ -4113,7 +4182,7 @@ export function GlobeSitePlannerMap({
   const addDrawingPointFromSurface = useCallback((surface: { lngLat: [number, number]; height: number }) => {
     if (!activeSitePlannerTool) return;
 
-    const newPts = [...drawingPointsRef.current, surface.lngLat];
+    const newPts = appendStreetDrawingValue(drawingPointsRef.current, surface.lngLat, activeSitePlannerTool === 'road' ? activeToolProperties : null);
     const shouldFilterHeight = shouldFilterObjectTerrainHeight(activeSitePlannerTool);
     const tilesGroup = tilesRendererRef.current?.group;
     const drawingHeight = shouldFilterHeight && tilesGroup?.children?.length
@@ -4125,14 +4194,14 @@ export function GlobeSitePlannerMap({
         surface.height,
       ) ?? surface.height
       : surface.height;
-    const newHeights = [...drawingPointHeightsRef.current, drawingHeight];
+    const newHeights = appendStreetDrawingValue(drawingPointHeightsRef.current, drawingHeight, activeSitePlannerTool === 'road' ? activeToolProperties : null);
 
     drawingPointsRef.current = newPts;
     drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
     setDrawingPointHeights(newHeights);
     requestAnimationFrame(updateCenterConnectionState);
-  }, [activeSitePlannerTool, updateCenterConnectionState]);
+  }, [activeSitePlannerTool, activeToolProperties, updateCenterConnectionState]);
 
   const placeCenterVertex = useCallback(() => {
     if (!activeSitePlannerTool) return;
@@ -4312,7 +4381,7 @@ export function GlobeSitePlannerMap({
     // Zoning studies reuse the development-area drawing tool, but their
     // polygons must be drawable across existing buildings without selecting
     // those buildings and cancelling the unfinished zoning ring.
-    if (isBuildingZoneType(activeSitePlannerTool) && activeToolProperties?.cartography_study !== true) {
+    if (isBuildingZoneType(activeSitePlannerTool) && activeToolProperties?.cartography_study !== true && !groundSurfaceFor({properties:activeToolProperties??{}})) {
       const clickPt = turfPoint(clickLngLat);
       let hitZoneId: string | null = null;
       let hitZoneArea = Infinity;
@@ -4351,7 +4420,7 @@ export function GlobeSitePlannerMap({
       return;
     }
 
-    const newPts = [...drawingPointsRef.current, clickLngLat];
+    const newPts = appendStreetDrawingValue(drawingPointsRef.current, clickLngLat, activeSitePlannerTool === 'road' ? activeToolProperties : null);
     const shouldFilterHeight = shouldFilterObjectTerrainHeight(activeSitePlannerTool);
     const tilesGroup = tilesRendererRef.current?.group;
     const drawingHeight = shouldFilterHeight && tilesGroup?.children?.length
@@ -4363,7 +4432,7 @@ export function GlobeSitePlannerMap({
         clickHeight,
       ) ?? clickHeight
       : clickHeight;
-    const newHeights = [...drawingPointHeightsRef.current, drawingHeight];
+    const newHeights = appendStreetDrawingValue(drawingPointHeightsRef.current, drawingHeight, activeSitePlannerTool === 'road' ? activeToolProperties : null);
     drawingPointsRef.current = newPts;
     drawingPointHeightsRef.current = newHeights;
     setDrawingPoints(newPts);
@@ -4414,13 +4483,17 @@ export function GlobeSitePlannerMap({
     }
   }, [buildings, selectedBuildingId]);
 
+  useEffect(() => {
+    if (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null || selectedBuildingId) setReferenceSelection(null);
+  }, [interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman, selectedBuildingId]);
+
   // Keep ref updated so onCreated closure always calls latest version
   handleCanvasClickRef.current = handleCanvasClick;
-  // Inspect in the canvas capture phase. Authored objects take priority over
-  // reference maps; authoring, navigation drags and other picking modes win.
+  // Explicit reference pins take priority over design meshes beneath them.
+  // Area/line maps remain behind authored geometry; drawing and drags win.
   handlePolicyClickRef.current = (event: MouseEvent) => {
     if (event.button !== 0 || !policyInspectionAllowed({
-      enabled: Boolean(zoningInspection || (policyMap?.enabled && policyMap.opacity > 0) || cityPolicyMaps?.layers.some(layer=>layer.enabled && layer.opacity>0)), opacity: 1, paused: interactionPaused,
+      enabled: Boolean(referenceLayers.some(layer=>layer.opacity>0) || zoningInspection || (policyMap?.enabled && policyMap.opacity > 0) || cityPolicyMaps?.layers.some(layer=>layer.enabled && layer.opacity>0)), opacity: 1, paused: interactionPaused,
       drawing: hasDrawingTool, placing: Boolean(placementDraft), measuring: measureModeActive,
       streetView: streetViewPegman !== null, dragged: draggedSincePointerDownRef.current,
     })) return false;
@@ -4429,6 +4502,12 @@ export function GlobeSitePlannerMap({
     const rect = canvas.getBoundingClientRect();
     const x=((event.clientX-rect.left)/rect.width)*2-1, y=-((event.clientY-rect.top)/rect.height)*2+1;
     zoningRaycaster.setFromCamera(new THREE.Vector2(x, y), camera);
+    const referencePin = !zoningInspection?.editing && pickReferenceFeature(referenceOverlayGroup.current, zoningRaycaster, referenceLayers, {pointsOnly:true});
+    if (referencePin) {
+      setReferenceSelection(referencePin);
+      ignoreNextCanvasClickRef.current=false; markUserInteracted(); setSelectedBuildingId(null); onZoneSelected(null);
+      zoningInspection?.select(null); policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return true;
+    }
     // Reference-map inspection runs before R3F's click handlers. Resolve the
     // student's actual geometry first, otherwise even an elevated tower click
     // opens the district underneath it and clears the model selection.
@@ -4437,6 +4516,7 @@ export function GlobeSitePlannerMap({
         ? pickProjectDetail(sceneRef.current, zoningRaycaster, {camera,viewportHeight:rect.height}) : null;
       const zoneId = detailId ? null : pickEditableZoneBeforePolicy(sceneRef.current, zoningRaycaster, siteZones);
       if (detailId || zoneId) {
+        setReferenceSelection(null);
         ignoreNextCanvasClickRef.current = false;
         markUserInteracted();
         zoningInspection?.select(null);
@@ -4447,6 +4527,12 @@ export function GlobeSitePlannerMap({
         if (detailId) detailInteraction?.selectItem(detailId);
         return true;
       }
+    }
+    const referenceHit = pickReferenceFeature(referenceOverlayGroup.current, zoningRaycaster, referenceLayers);
+    setReferenceSelection(referenceHit);
+    if (referenceHit) {
+      ignoreNextCanvasClickRef.current = false; markUserInteracted(); setSelectedBuildingId(null); onZoneSelected(null);
+      zoningInspection?.select(null); policyMap?.clearSelection(); cityPolicyMaps?.clearSelection(); return true;
     }
     const id = policyMapRef.current?.pick(x,y,camera);
     const cityMapId = id ? null : cityPolicyMapsRef.current?.pick(x,y,camera);
@@ -4467,10 +4553,10 @@ export function GlobeSitePlannerMap({
   }, [zoningInspection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
   useEffect(() => {
     if (policyMap?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) policyMap.clearSelection();
-  }, [policyMap?.selected, policyMap?.clearSelection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
+  }, [policyMap, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
   useEffect(() => {
     if (cityPolicyMaps?.selected && (interactionPaused || hasDrawingTool || placementDraft || measureModeActive || streetViewPegman !== null)) cityPolicyMaps.clearSelection();
-  }, [cityPolicyMaps?.selected, cityPolicyMaps?.clearSelection, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
+  }, [cityPolicyMaps, interactionPaused, hasDrawingTool, placementDraft, measureModeActive, streetViewPegman]);
 
   // Effects restart on Fast Refresh even when R3F keeps the same canvas.
   useEffect(() => {
@@ -4535,6 +4621,7 @@ export function GlobeSitePlannerMap({
           const cvs = gl.domElement;
           cvs.setAttribute('role', 'application');
           cvs.setAttribute('aria-label', '3D city map');
+          cvs.tabIndex = 0;
 
           // Remove previous listeners first (React StrictMode / hot-reload safety)
           if (cleanupCanvasListenersRef.current) {
@@ -4561,10 +4648,12 @@ export function GlobeSitePlannerMap({
             if (!isDrawingNow) return;
             e.preventDefault();
             e.stopPropagation();
-            // Remove the duplicate point added by the first click of the double-click
+            // Bridge clicks already replace the endpoint; only ordinary drawings append a duplicate.
             if (drawingPointsRef.current.length > 0) {
-              drawingPointsRef.current = drawingPointsRef.current.slice(0, -1);
-              drawingPointHeightsRef.current = drawingPointHeightsRef.current.slice(0, -1);
+              const drawingState = useViewerStore.getState();
+              const properties = drawingState.activeSitePlannerTool === 'road' ? drawingState.activeToolProperties : null;
+              drawingPointsRef.current = finishDoubleClickValues(drawingPointsRef.current, properties);
+              drawingPointHeightsRef.current = finishDoubleClickValues(drawingPointHeightsRef.current, properties);
               setDrawingPoints(drawingPointsRef.current);
               setDrawingPointHeights(drawingPointHeightsRef.current);
             }
@@ -4572,6 +4661,9 @@ export function GlobeSitePlannerMap({
           };
 
           const handlePointerDown = (e: PointerEvent) => {
+            // Drawing shortcuts must return to the map after changing a form
+            // control such as the public-road snapping checkbox.
+            cvs.focus({ preventScroll: true });
             entrancePointerHitRef.current=null;
             markUserInteracted();
             pointerDownRef.current = { x: e.clientX, y: e.clientY };
@@ -4762,7 +4854,7 @@ export function GlobeSitePlannerMap({
               the prepared boundary surface; this layer adds the deterministic
               canopy placements that are safe outside every authored zone. */}
           <group name="siteforge-direct3d-landscape" userData={direct3DProposalUserData('landscape')}>
-            {buildingModelsVisible && <GlobeBuildingPlotLandscape zones={connectedSceneZones} terrainHeight={terrainElevation}/>}
+            {buildingModelsVisible && <GlobeBuildingPlotLandscape zones={connectedSceneZones} buildings={legoLayerBuildings} terrainHeight={terrainElevation}/>}
             {siteZones.flatMap((zone) => {
               const recipe = getResidualLandscapeRecipe(zone);
               if (!recipe?.placements.length) return [];
@@ -4877,6 +4969,7 @@ export function GlobeSitePlannerMap({
               return zone ? (
                 <GlobeEditMode
                   zone={zone}
+                  allowFootprintResize={!importedModelIds.has(zone.building_id ?? '')}
                   zones={siteZones}
                   terrainHeight={terrainElevation}
                   onZoneUpdated={onZoneUpdated}
@@ -4979,7 +5072,7 @@ export function GlobeSitePlannerMap({
       </>}
 
       {!isInitialCameraApplied && (
-        <div className="absolute inset-0 z-40 flex items-center justify-center bg-black text-white">
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black text-white">
           <div className="flex flex-col items-center gap-3 rounded-xl border border-white/10 bg-gray-950/80 px-5 py-4 shadow-2xl backdrop-blur-sm">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-amber-400/25 border-t-amber-300" />
             <div className="text-center">
@@ -4996,12 +5089,17 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
+      {!captureOverlaysHidden && !interactionPaused && selectedReference && <ReferenceFeatureDetails {...selectedReference} onClose={()=>setReferenceSelection(null)}/>}
       {entrancePick && <section aria-label="Choose entrance in 3D" className="absolute inset-x-3 bottom-3 z-50 rounded-xl border border-slate-400 bg-white p-3 text-sm text-slate-900 shadow-lg sm:inset-x-auto sm:bottom-auto sm:right-4 sm:top-28 sm:w-80">
         <p className="font-semibold">Pick the entrance edge</p>
         <p className="mt-1">Click the outer edge of the lowest step, or the end of its paved entrance path where it meets the ground. Drag or zoom to see it clearly.</p>
         {entrancePickError && <p role="alert" className="mt-2 text-amber-900">{entrancePickError}</p>}
         <button type="button" className="mt-2 min-h-11 rounded-lg border border-slate-600 px-3 font-semibold" onClick={()=>entrancePick.finish(null)}>Cancel pick</button>
       </section>}
+      {!captureOverlaysHidden && <NativeBuildingRecoveryNotice zones={nativeRoutes.unavailableZones} onSelect={zone => {
+        onZoneSelected(zone.id);
+        void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
+      }}/>}
       {showEntranceReview&&<BuildingEntranceReviewPanel zones={siteZones} reviews={[...entranceReviews,...reviewEntranceReviews.values()]} issues={buildingGroundingIssues}
         groundRevision={sharedGroundState.status === 'inactive' && preparedReviewGround ? preparedReviewGround.revision : sharedGroundState.revision}
         groundCurrent={(sharedGroundState.status === 'inactive' && Boolean(preparedReviewGround))
@@ -5074,11 +5172,11 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
-      {activeSitePlannerTool === 'road' && !interactionPaused && !captureOverlaysHidden && <aside aria-label="Public road suggestions"
+      {activeSitePlannerTool === 'road' && !(import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(activeToolProperties?.road_selected_variant_id)) && !interactionPaused && !captureOverlaysHidden && <aside aria-label="Public road suggestions"
         className="absolute right-3 top-28 z-40 max-w-64 rounded-lg border border-cyan-500 bg-white p-3 text-xs text-slate-900 shadow-lg">
-        <label className="flex min-h-8 items-center gap-2 font-semibold"><input type="checkbox" checked={publicRoadSnapEnabled}
+        <label className="flex min-h-8 items-center gap-2 font-semibold"><input type="checkbox" checked={publicRoadSnapSupported && publicRoadSnapEnabled} disabled={!publicRoadSnapSupported}
           onChange={event => setPublicRoadSnapEnabled(event.target.checked)} />Snap to nearby public roads</label>
-        {!publicRoadSnapSupported ? <p>This street needs a specialist connection. Automatic public-road snapping is unavailable.</p>
+        {!publicRoadSnapSupported ? <p>This design does not connect automatically to public motor roads. Connections to your own streets and paths still snap.</p>
           : !publicRoadSnapEnabled ? <p>Public-road snapping off. Site-edge snapping remains available.</p>
           : publicRoadContext.isFetching ? <p role="status">Loading nearby roads… You can keep drawing.</p>
           : publicRoadContext.isError ? <><p>Nearby roads could not load. Keep drawing or try again.</p><button className="min-h-9 underline"
@@ -5166,7 +5264,7 @@ export function GlobeSitePlannerMap({
       {hasDrawingTool && (() => {
         const n = drawingPoints.length;
         const tool = activeSitePlannerTool!;
-        const label = activeToolProperties?.cartography_study ? 'Land-use zone' : getToolDisplayLabel(tool);
+        const label = activeToolProperties?.parking_layout_version === 1 ? 'Parking lot' : activeToolProperties?.ground_surface_material ? 'Ground surface' : activeToolProperties?.cartography_study ? 'Land-use zone' : getToolDisplayLabel(tool);
         const min = minPointsForTool(tool);
         const linear = isLinearTool(tool);
 
@@ -5234,6 +5332,12 @@ export function GlobeSitePlannerMap({
       {!walkMode && !entrancePick && !hasDrawingTool && !streetViewPegman && !measureModeActive && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-20 hidden max-w-[min(38rem,calc(100%-36rem))] -translate-x-1/2 rounded-xl border border-slate-300 bg-white/95 px-3 py-2 text-center text-xs font-medium text-slate-700 shadow-lg backdrop-blur-xl select-none lg:block">
           {detailEditing ? (detailInteraction?.moving ? 'Click the map to move this item · Esc to cancel' : detailInteraction?.editing ? 'Use Move, Rotate or Delete in the panel · Click another item to select it' : 'Choose an item to place · Click a placed item to edit · Drag to pan · Scroll to zoom')
+            : selectedInspectionZone && importedModelIds.has(selectedRenderedBuildingId ?? '')
+            ? 'Imported GLB | Drag the Move handle to reposition | Drag the amber handle or Q/E to rotate | Esc to deselect'
+            : siteZones.some(zone => zone.id === selectedZoneId && isFixedNativeScene(zone.properties))
+            ? 'Fixed-size model | Drag to move | Use the reshape panel to rotate | Esc to deselect'
+            : siteZones.some(zone => zone.id === selectedZoneId && hasFixedBuildingFootprint(assetForZone(zone)))
+            ? 'Drag the Move handle to move | Use Rotation to turn the fixed footprint | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.native_home_plot === true)
             ? 'Drag the Move handle to reposition this house | Use the reshape panel to resize or rotate | Esc to deselect'
             : siteZones.some(zone => zone.id === selectedZoneId && zone.properties?.pick_place_asset)
@@ -5267,9 +5371,13 @@ export function GlobeSitePlannerMap({
             const [lng, lat] = hit.lngLat;
             const surface = new THREE.Vector3();
             WGS84_ELLIPSOID.getCartographicToPosition(lat * DEG_TO_RAD, lng * DEG_TO_RAD, hit.height, surface);
-            const nextPitch = cameraElevation >= 85 ? DEFAULT_INITIAL_CAMERA_PITCH_DEGREES : 0;
-            const height = Math.max(20, camera.position.distanceTo(surface) * Math.cos(nextPitch * DEG_TO_RAD));
-            applyCameraPose(computeCameraPose(lat, lng, height, hit.height, nextPitch));
+            const planView = cameraElevation < 85;
+            const nextPitch = planView ? 0 : DEFAULT_INITIAL_CAMERA_PITCH_DEGREES;
+            const currentFov = camera instanceof THREE.PerspectiveCamera ? camera.fov : WORKING_VIEW_FOV_DEGREES;
+            const nextDistance = distanceForFieldOfView(camera.position.distanceTo(surface), currentFov,
+              planView ? PLAN_VIEW_FOV_DEGREES : WORKING_VIEW_FOV_DEGREES);
+            const height = Math.max(20, nextDistance * Math.cos(nextPitch * DEG_TO_RAD));
+            applyCameraPose({ ...computeCameraPose(lat, lng, height, hit.height, nextPitch), planView });
             hasAppliedSettledViewRef.current = true;
             setIsInitialCameraApplied(true);
             revealCanvasAfterPose();
@@ -5302,7 +5410,7 @@ export function GlobeSitePlannerMap({
             <span className="text-[10px] font-black uppercase text-[#151515]/70">Loading tiles...</span>
           </div>
         )}
-        {selectedInspectionZone && isBuildingZoneType(selectedInspectionZone.zone_type) && (
+        {selectedInspectionZone && !groundSurfaceFor(selectedInspectionZone) && isBuildingZoneType(selectedInspectionZone.zone_type) && (
           <button
             type="button"
             onClick={() => {
@@ -5374,8 +5482,6 @@ export function GlobeSitePlannerMap({
         )}
         {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" onClick={() => setShowGroundReview(true)}>Review ground</button>}
         {import.meta.env.DEV && cleanupBoundary && onSaveMapCleanup && <button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold" disabled={Boolean(detailEditing || entrancePick || placementDraft || hasDrawingTool || measureModeActive)} onClick={() => { setWalkMode(null); onZoneSelected(null); setShowMapCleanup(true); }}>Map cleanup pilot</button>}
-        {siteZones.some(zone=>zone.building_id||zone.building_ids?.length)&&<button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-          onClick={()=>setShowEntranceReview(true)}>Review entrances</button>}
         </>, mapToolsTarget)}
         {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable' || Boolean(sharedGroundState.snapshot?.excludedCells?.length)) && (
           <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
@@ -5384,7 +5490,7 @@ export function GlobeSitePlannerMap({
         )}
         {sharedGroundState.status === 'ready' && buildingGroundingIssues.some((issue) => issue.reason !== 'ground_not_ready') && (
           <button type="button" onClick={() => setShowBuildingGroundProblems(true)} className="min-h-11 rounded-full border-2 border-amber-700 bg-amber-50 px-3 py-1.5 text-[11px] font-bold text-slate-900">
-            Check building ground
+            {buildingCaptureIssues(buildingGroundingIssues).length ? 'Check building ground' : 'Review entrance connections'}
           </button>
         )}
       </div>

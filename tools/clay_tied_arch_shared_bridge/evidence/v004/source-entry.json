@@ -1,0 +1,29 @@
+{
+  "archetype_id": "clay-tied-arch-shared-bridge",
+  "variant_id": "clay-tied-arch-shared-bridge-v1",
+  "source_origin": "catalogue_reference_nomination",
+  "source_archetype": "shared_cycle_pedestrian_bridge/variant_1",
+  "sources": [
+    {
+      "role": "front",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\shared-cycle-pedestrian-bridge\\variant_1.png",
+      "path": "sources/front.png",
+      "bytes": 1241385,
+      "sha256": "e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f"
+    },
+    {
+      "role": "oblique",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\shared-cycle-pedestrian-bridge\\variant_1_angle_60.jpg",
+      "path": "sources/oblique.jpg",
+      "bytes": 936813,
+      "sha256": "562dd0b5136f4949798e346d6ff8507e3b8a3c7a964edb8911e914965d0ecdde"
+    },
+    {
+      "role": "top",
+      "original_path": "C:\\Users\\andre\\.codex\\worktrees\\review-spatial-20261026\\CityPrompt\\frontend\\public\\archetypes\\streets\\shared-cycle-pedestrian-bridge\\variant_1_angle_90.jpg",
+      "path": "sources/top.jpg",
+      "bytes": 813673,
+      "sha256": "f9ad53e48ce5a5253912a3d1161a924c21dd5af38c86dc51605ad6ec855ffd0c"
+    }
+  ]
+}

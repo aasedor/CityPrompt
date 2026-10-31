@@ -14,6 +14,8 @@ import {
 } from '@/components/viewer/globe/modelMaterialQuality';
 import type { LegoAssemblyInstance, LegoAssemblyPlan } from './legoAssemblyApi';
 import { centreNativeClayClone } from './nativeClayPlacement';
+import { prepareBuildingOnlyScene } from './buildingOnlyScene';
+import { retainResourceForDeferredDisposal } from '@/components/viewer/globe/strictModeResourceDisposal';
 
 // Shared building blocks for the single-zone composer (LegoAssemblyPreview)
 // and the plan-level builder (LegoBuilderPanel).
@@ -241,11 +243,14 @@ export function ModuleInstance({ instance, nativeScaleLocked = false }: { instan
   const gl = useThree((state) => state.gl);
   const extendLoader = useMemo(() => createKtx2LoaderExtension(gl), [gl]);
   const { scene } = useGLTF(url, true, true, extendLoader);
+  const buildingOnly = useMemo(() => prepareBuildingOnlyScene(scene, instance.model_url), [scene, instance.model_url]);
+  useEffect(() => retainResourceForDeferredDisposal(buildingOnly,
+    value => value.ownedGeometries.forEach(geometry => geometry.dispose())), [buildingOnly]);
   const model = useMemo(() => {
-    const cloned = scene.clone(true);
+    const cloned = buildingOnly.clone.clone(true);
     normalizeLegoModuleMaterials(cloned);
     return nativeScaleLocked ? centreNativeClayClone(cloned) : cloned;
-  }, [scene, nativeScaleLocked]);
+  }, [buildingOnly, nativeScaleLocked]);
   useEffect(() => () => disposeArchitecturalCloneMaterials(model), [model]);
   const [sx, sy, sz] = instance.scale;
   const [x, y, z] = instance.position;

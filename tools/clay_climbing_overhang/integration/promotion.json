@@ -1,0 +1,86 @@
+{
+  "entry": {
+    "candidate": "clay-climbing-overhang-clay-v007",
+    "family": "rlasm-clay-climbing-overhang-claude-v007",
+    "archetype_id": "climbing_wall_building",
+    "archetype_label": "Climbing centre",
+    "variant_id": "climbing_overhang",
+    "variant_label": "The Overhang climbing centre",
+    "native_floors": 3,
+    "design_dimensions_m": {
+      "width": 39,
+      "depth": 36,
+      "height": 20.8
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1.png",
+        "bytes": 1349697,
+        "sha256": "345d575a53846738cda1d24794ec0cc409cb5f2335cc624a41c403d83eb5bde8"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_60.jpg",
+        "bytes": 837723,
+        "sha256": "55c334948355972cab086576da047e5d72f85c4682acc308d9507296cfc538ea"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_90.jpg",
+        "bytes": 775997,
+        "sha256": "a6854c9b52d8ccd115ab1110b5466f61cec8486b533d4112577a4561ccdd6bb0"
+      }
+    ],
+    "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+    "limitations": [
+      "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+      "Fixed native geometry; snug bounds derive from complete retained architecture.",
+      "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+    ],
+    "picker": {
+      "id": "claude_climbing_overhang_v007",
+      "group_id": "civic",
+      "reshape_mode": "fixed_native",
+      "width": 160,
+      "depth": 160,
+      "max_size": 600,
+      "description": "White precast recreation centre with a folded timber climbing shell and planted rooftop pool deck.",
+      "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+    }
+  },
+  "model_file": "../candidates/clay-climbing-overhang-clay-v007.glb",
+  "review_file": "source-review-adapter.json",
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c"
+  },
+  "trial": {
+    "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
+    "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+    "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+    "tested_at": "2026-10-31T00:09:45.963445+00:00",
+    "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+    "evidence": [
+      "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+      "overhang-close-EXACT_3D_SOURCE.png",
+      "overhang-low-EXACT_3D_SOURCE.png",
+      "overhang-ground-BROWSER_SCREENSHOT.png",
+      "fixed-model-plot-probes.json",
+      "REVIEW.txt"
+    ],
+    "checks": {
+      "catalogue_card": true,
+      "exact_variant": true,
+      "ground_contact": true,
+      "small_and_large_plot": true,
+      "rotation": true,
+      "save_reload": true,
+      "close_and_occluded_capture": true,
+      "no_console_errors": true
+    },
+    "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+  }
+}

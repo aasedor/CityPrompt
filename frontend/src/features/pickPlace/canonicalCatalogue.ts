@@ -5,20 +5,24 @@ import {
 import { buildAestheticSelectionProps } from '@/components/viewer/aestheticSelection';
 import { calgaryGroup, classifyCalgaryVariant, type CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import type { SiteZoneProperties, SiteZoneType } from '@/types';
-import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, isPlaceable, type CatalogueAsset } from './assetRegistry';
+import { CATALOGUE_ASSETS, FLEXIBLE_PARK_ASSETS, MANUAL_STREET_ASSETS, PATHWAY_ASSETS, MODULAR_BRIDGE_ASSETS, OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, LOCAL_TOWER_ASSETS, isPlaceable, hasDrawnBridgeReplacement, type CatalogueAsset } from './assetRegistry';
 import starter from '@/data/classroomStarter.json';
 import validation from '@/data/validationCatalogue.json';
 import expansion from '@/data/classroomExpansion.json';
 import { catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
 import { cataloguePresentationFor } from './cataloguePresentation';
-import { CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS } from './assetRegistry';
+import { lessonForChoice, teachingSearchTerms } from '@/features/catalogueLearning/teaching';
+import { CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, PARKADE_TRIAL_ASSETS, COURT_ONLY_SPORT_ASSETS } from './assetRegistry';
 import { LOCAL_CLAUDE_ASSETS } from './claudeAssetLocalTrial';
+import { LOCAL_TEACHING_BUILDINGS } from './localTeachingBuildings';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
+import { groupCourtCatalogueChoices } from './courtCatalogueGroups';
 
 export interface CanonicalChoice {
   id: string; domain: CatalogueDomain; option: AestheticOption;
   placements: CatalogueAsset[];
+  groupedVariants?: boolean;
 }
 export const CANONICAL_DOMAINS = {
   building: BUILDING_AESTHETIC_OPTIONS_V2,
@@ -108,15 +112,18 @@ export function resolveCatalogueRoster(entries: CatalogueRosterEntry[], assets =
 
 // Local validation roster: no legacy variants or generic massing fallbacks in discovery.
 const resolvedRoster = resolveCatalogueRoster([...validation.entries, ...expansion.entries,
+  ...COURT_ONLY_SPORT_ASSETS.filter(isPlaceable).map(asset => ({ domain: 'park',
+    archetype_id: String(asset.properties.green_space_archetype_id),
+    variant_id: asset.model.variantId, placement_id: asset.id })),
   ...[...LOCAL_CLAUDE_ASSETS.filter(asset =>
     !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id)
     && !PUBLIC_REALM_RELEASE_ASSETS.some(release => release.zoneType === asset.zoneType && release.model.variantId === asset.model.variantId)),
-  ...PUBLIC_REALM_RELEASE_ASSETS].map(asset => ({
+  ...PUBLIC_REALM_RELEASE_ASSETS.filter(asset => !hasDrawnBridgeReplacement(asset))].map(asset => ({
     domain: asset.zoneType === 'building' ? 'building' : asset.zoneType === 'road' ? 'street' : 'park',
     archetype_id: String(asset.properties.development_archetype_id ?? asset.properties.road_archetype_id ?? asset.properties.green_space_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id,
   })),
-  ...[...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS].map(asset => ({ domain: 'building',
+  ...[...LOCAL_TEACHING_BUILDINGS, ...OCTOBER_BUILDING_ASSETS, ...COMMUNITY_BUILDING_ASSETS, ...FINAL_FIVE_BUILDING_ASSETS, ...CLAUDE_FIVE_TRIAL_ASSETS, ...PARKADE_BUILDING_ASSETS, ...PARKADE_TRIAL_ASSETS, ...CLAUDE_BUILDING_RELEASE_ASSETS, ...LOCAL_TOWER_ASSETS].map(asset => ({ domain: 'building',
     archetype_id: String(asset.properties.development_archetype_id),
     variant_id: asset.model.variantId, placement_id: asset.id }))]);
 /** Supplemental choices must share the reviewed registry's exact identity and
@@ -127,9 +134,9 @@ function registeredSupplement(asset: CatalogueAsset): CatalogueAsset {
   if (!registered) throw new Error(`Missing supplemental catalogue registration: ${asset.id}`);
   return registered;
 }
-export const CANONICAL_CHOICES: CanonicalChoice[] = [
+export const CANONICAL_CHOICES: CanonicalChoice[] = groupCourtCatalogueChoices([
   ...resolvedRoster.choices,
-  ...PATHWAY_ASSETS.map(registeredSupplement).map(asset => ({
+  ...[...PATHWAY_ASSETS, ...MODULAR_BRIDGE_ASSETS].map(registeredSupplement).map(asset => ({
     id: `street_pathway:${asset.properties.road_archetype_id}:${asset.model.variantId}`,
     domain: 'street_pathway' as const, placements: [asset], option: {
       id: String(asset.properties.road_archetype_id), label: asset.label,
@@ -147,7 +154,7 @@ export const CANONICAL_CHOICES: CanonicalChoice[] = [
       variants: [{ id: asset.model.variantId, label: asset.label, thumbnailUrl: asset.thumbnail }],
     } };
   }),
-];
+]);
 export const UNAVAILABLE_CATALOGUE_ENTRIES = resolvedRoster.unavailable;
 /** Exact starter variants only. Parent cards must not quietly expose their other
  * variants under the classroom promise. The full catalogue remains separate. */
@@ -173,7 +180,16 @@ CANONICAL_CHOICES.push(...MANUAL_STREET_ASSETS.map(registeredSupplement).map(ass
 })));
 export const CLASSROOM_CHOICES = CANONICAL_CHOICES;
 const normalizeSearch = (v: string) => v.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
+const BRIDGE_ARCHETYPES = new Set(['landmark_signature_bridge', 'urban_vehicular_bridge',
+  'urban_pedestrian_footbridge', 'shared_cycle_pedestrian_bridge', 'landscape_park_pedestrian_bridge',
+  'dedicated_cycle_bridge', 'rail_transit_viaduct']);
+/** Discovery only: preserve native placement, dimensions and release eligibility. */
+export function isBridgeChoice(choice: CanonicalChoice): boolean {
+  return choice.domain === 'street_pathway' && (BRIDGE_ARCHETYPES.has(choice.option.id)
+    || choice.placements.some(asset => BRIDGE_ARCHETYPES.has(String(asset.properties.road_archetype_id))));
+}
 export function choiceMatchesGroup(choice: CanonicalChoice, groupId: string) {
+  if (groupId === 'bridges') return isBridgeChoice(choice);
   return !groupId || choice.option.calgaryGuide?.groupId === groupId
     || choice.option.variants?.some(variant => classifyCalgaryVariant(choice.option.id, variant.id)?.groupId === groupId)
     || choice.placements.some(asset => asset.calgaryGuide.groupId === groupId);
@@ -194,20 +210,27 @@ export function filterCanonicalChoices(domain: CatalogueDomain, query = '', grou
   return choices.filter(choice => {
     if (choice.domain !== domain || !choiceMatchesGroup(choice, groupId)) return false;
     const group = calgaryGroup(choice.option.calgaryGuide);
+    const lesson = lessonForChoice(choice);
+    const semanticSearchAllowed = !lesson || lesson.status === 'classified';
     const presentations = choice.placements.map(asset => cataloguePresentationFor(asset.id));
     const presentationTerms = presentations.flatMap(presentation => {
-      return presentation ? [presentation.label, presentation.description, ...presentation.searchTags] : [];
+      return presentation ? [presentation.label,
+        ...(semanticSearchAllowed ? [presentation.description, ...presentation.searchTags] : [])] : [];
     });
     // Exact presentation copy supersedes broad parent browsing tags. Keep the
     // original rendering metadata untouched and available for future entries.
     const fullyPresented = presentations.length > 0 && presentations.every(Boolean);
-    const fallbackTerms = fullyPresented ? [] : [choice.option.label, choice.option.description, choice.option.categoryId,
-      ...(choice.option.generationTags ?? []), ...(choice.option.variants ?? []).map(v => v.label),
-      ...choice.placements.map(asset => asset.label)];
+    // Held/stale records retain literal name/ID discovery. Legacy descriptions
+    // and tags can contain the unsupported classification, so withhold them too.
+    const fallbackTerms = fullyPresented ? [] : [choice.option.label,
+      ...(choice.option.variants ?? []).map(v => v.label), ...choice.placements.map(asset => asset.label),
+      ...(semanticSearchAllowed ? [choice.option.description, choice.option.categoryId,
+        ...(choice.option.generationTags ?? [])] : [])];
     const haystack = normalize([choice.option.id, group?.label, ...(group?.districts ?? []),
       ...presentationTerms,
       ...fallbackTerms,
       ...catalogueStyleIds(choice).map(id => catalogueStyleLabel(id)),
+      ...teachingSearchTerms(choice),
       ...(choice.option.variants ?? []).map(v => v.id)].join(' '));
     return terms.every(term => haystack.includes(term));
   });

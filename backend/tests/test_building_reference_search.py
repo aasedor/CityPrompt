@@ -17,11 +17,16 @@ from app.services.photo_building import photo_state
 
 def page(**overrides):
     info = {
-        "mime": "image/jpeg", "width": 1000, "height": 700, "sha1": "a" * 40,
+        "mime": "image/jpeg",
+        "width": 1000,
+        "height": 700,
+        "sha1": "a" * 40,
         "thumburl": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Hall.jpg",
         "descriptionurl": "https://commons.wikimedia.org/wiki/File:Hall.jpg",
-        "extmetadata": {"LicenseShortName": {"value": "CC BY-SA 4.0"},
-                        "Artist": {"value": '<a href="x">Photographer &amp; Co.</a>'}},
+        "extmetadata": {
+            "LicenseShortName": {"value": "CC BY-SA 4.0"},
+            "Artist": {"value": '<a href="x">Photographer &amp; Co.</a>'},
+        },
         **overrides,
     }
     return {"pageid": 1, "title": "File:Hall.jpg", "imageinfo": [info]}
@@ -40,11 +45,13 @@ def test_candidates_require_image_license_and_trusted_host():
     assert candidate["id"] == search.commons_candidate(page())["id"]
     assert search.commons_candidate(page(thumburl="https://thumb.wikimedia.org/wikipedia/commons/thumb/a/Hall.jpg"))
     for override in (
-        {"mime": "image/svg+xml"}, {"extmetadata": {}},
+        {"mime": "image/svg+xml"},
+        {"extmetadata": {}},
         {"thumburl": "http://127.0.0.1/private"},
         {"thumburl": "https://upload.wikimedia.org.evil.test/a.jpg"},
         {"thumburl": "https://evil@upload.wikimedia.org/wikipedia/commons/a.jpg"},
-        {"descriptionurl": "javascript:alert(1)"}, {"width": 10},
+        {"descriptionurl": "javascript:alert(1)"},
+        {"width": 10},
     ):
         assert search.commons_candidate(page(**override)) is None
 
@@ -53,14 +60,19 @@ def test_signed_candidates_reject_changed_metadata_and_other_buildings():
     candidate = search.sign_candidate(search.commons_candidate(page()), "building-a")
     assert search.verified_candidate(candidate, "building-a")
     assert not search.verified_candidate(candidate, "building-b")
-    assert not search.verified_candidate({**candidate, "image_url": "https://upload.wikimedia.org/another.jpg"}, "building-a")
+    assert not search.verified_candidate(
+        {**candidate, "image_url": "https://upload.wikimedia.org/another.jpg"}, "building-a"
+    )
 
 
 @pytest.mark.anyio
 async def test_search_deduplicates_and_preserves_attribution(monkeypatch):
     client = AsyncMock()
-    response = httpx.Response(200, json={"query": {"pages": {"1": page(), "2": {**page(), "pageid": 2}}}},
-                              request=httpx.Request("GET", search.COMMONS_API))
+    response = httpx.Response(
+        200,
+        json={"query": {"pages": {"1": page(), "2": {**page(), "pageid": 2}}}},
+        request=httpx.Request("GET", search.COMMONS_API),
+    )
     client.get.return_value = response
     manager = AsyncMock()
     manager.__aenter__.return_value = client
@@ -75,17 +87,23 @@ async def test_search_deduplicates_and_preserves_attribution(monkeypatch):
 async def test_download_rejects_arbitrary_hosts_and_redirects(monkeypatch):
     with pytest.raises(ValueError, match="not supported"):
         await search.download_building_view({"image_url": "https://127.0.0.1/private"})
+
     def handler(request):
         return httpx.Response(302, headers={"location": "http://localhost/private"})
+
     real_client = httpx.AsyncClient
-    monkeypatch.setattr(search.httpx, "AsyncClient", lambda **kw: real_client(transport=httpx.MockTransport(handler), **kw))
+    monkeypatch.setattr(
+        search.httpx, "AsyncClient", lambda **kw: real_client(transport=httpx.MockTransport(handler), **kw)
+    )
     with pytest.raises(httpx.HTTPStatusError):
         await search.download_building_view(search.commons_candidate(page()))
 
 
 @pytest.mark.anyio
 async def test_search_retains_selected_candidates_across_view_queries(monkeypatch):
-    building = SimpleNamespace(specifications={"other": "preserved", "photo_reference_search": {"candidates": [{"id": "old"}]}})
+    building = SimpleNamespace(
+        specifications={"other": "preserved", "photo_reference_search": {"candidates": [{"id": "old"}]}}
+    )
     db = AsyncMock()
     monkeypatch.setattr(api, "_editable_building", AsyncMock(return_value=building))
     monkeypatch.setattr(api, "search_building_views", AsyncMock(return_value=[{"id": "new"}]))
@@ -98,10 +116,15 @@ async def test_search_retains_selected_candidates_across_view_queries(monkeypatc
 @pytest.mark.anyio
 async def test_web_sources_import_before_charge_and_preserve_provenance(monkeypatch):
     from app.tasks import processing
+
     building_id = uuid.uuid4()
     candidate = search.sign_candidate(search.commons_candidate(page()), str(building_id))
-    building = SimpleNamespace(id=building_id, project_id=uuid.uuid4(), generation_status="idle",
-        specifications={"photo_reference_search": {"candidates": [candidate]}})
+    building = SimpleNamespace(
+        id=building_id,
+        project_id=uuid.uuid4(),
+        generation_status="idle",
+        specifications={"photo_reference_search": {"candidates": [candidate]}},
+    )
     db = AsyncMock()
     monkeypatch.setattr(api, "_editable_building", AsyncMock(return_value=building))
     monkeypatch.setattr(api, "_check_engine_available", lambda _: None)

@@ -15,7 +15,7 @@ export function savedRenderIsSource(render: Presentation): boolean {
 
 export function savedRenderNotice(render: Presentation): string {
   if (render.variant === 'provider_original') return '';
-  if (render.model === '3d-capture') return 'Original 3D capture used for local image generation.';
+  if (render.model === '3d-capture') return 'Original 3D source capture.';
   if (savedRenderIsSource(render)) return '3D source returned. The AI finish could not be verified and was kept separately for review.';
   return savedRenderNeedsReview(render)
     ? 'Review building locations, shapes, and streets against your plan before presenting.' : '';

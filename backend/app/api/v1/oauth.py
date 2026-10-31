@@ -7,20 +7,99 @@ from datetime import datetime, timezone
 from urllib.parse import urlencode, urlparse
 
 import httpx
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
 from fastapi.responses import RedirectResponse
-from sqlalchemy import select
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from fastapi.routing import APIRoute
+from pydantic import BaseModel, EmailStr, Field, TypeAdapter, ValidationError
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import create_access_token, create_refresh_token
+from app.core.rate_limit import enforce_rate_limit
+from app.core.security import (
+    issue_session_tokens,
+    revoke_user_sessions,
+    validate_session_version,
+    token_subject,
+)
 from app.models.models import User
-from app.services.oauth_state import issue_state, bind_browser, consume_state
+from app.services.oauth_state import (
+    issue_state,
+    bind_browser,
+    consume_state,
+    validate_challenge,
+)
+from app.services.oauth_exchange import issue_exchange, consume_exchange
+from app.schemas.schemas import TokenResponse, UserResponse
 
-router = APIRouter()
 settings = get_settings()
 logger = logging.getLogger(__name__)
+CALLBACK_HEADERS = {"Cache-Control": "no-store", "Referrer-Policy": "no-referrer"}
+
+
+class OAuthRoute(APIRoute):
+    def get_route_handler(self):
+        handler = super().get_route_handler()
+
+        async def private_response(request):
+            try:
+                response = await handler(request)
+            except RequestValidationError:
+                # Framework validation normally echoes the submitted verifier.
+                return JSONResponse(
+                    {"detail": "Invalid sign-in request."},
+                    status_code=422,
+                    headers=CALLBACK_HEADERS,
+                )
+            except HTTPException as exc:
+                exc.headers = {**(exc.headers or {}), **CALLBACK_HEADERS}
+                raise
+            response.headers.update(CALLBACK_HEADERS)
+            return response
+
+        return private_response
+
+
+router = APIRouter(route_class=OAuthRoute)
+
+
+class OAuthExchangeRequest(BaseModel):
+    code: str = Field(min_length=43, max_length=43, pattern=r"^[A-Za-z0-9_-]+$")
+    code_verifier: str = Field(min_length=43, max_length=128, pattern=r"^[A-Za-z0-9._~-]+$")
+
+
+@router.post("/exchange", response_model=TokenResponse)
+async def exchange_code(
+    body: OAuthExchangeRequest,
+    request: Request,
+    response: Response,
+    db: AsyncSession = Depends(get_db),
+):
+    response.headers.update(CALLBACK_HEADERS)
+    await enforce_rate_limit(request, 120, 60, bucket="auth-oauth-exchange-ip")
+    origin = request.headers.get("origin")
+    if not _is_allowed_frontend_origin(origin):
+        raise HTTPException(400, "Start sign-in from the application.")
+    record = await consume_exchange(body.code, body.code_verifier, origin)
+    user_id = token_subject({"sub": record.get("user_id")})
+    result = await db.execute(
+        select(User).where(User.id == user_id).with_for_update().execution_options(populate_existing=True)
+    )
+    user = result.scalar_one_or_none()
+    if not user or not user.is_active:
+        raise HTTPException(401, "Account is unavailable. Start sign-in again.")
+    validate_session_version(record, user)
+    access, refresh = await issue_session_tokens(user, db)
+    await db.commit()
+    return TokenResponse(
+        access_token=access,
+        refresh_token=refresh,
+        user=UserResponse.model_validate(user),
+    )
+
 
 # =============================================================================
 # Google OAuth2
@@ -28,7 +107,7 @@ logger = logging.getLogger(__name__)
 
 GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth"
 GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token"
-GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v2/userinfo"
+GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
 
 
 def _allowed_frontend_origins() -> set[str]:
@@ -69,11 +148,99 @@ def _is_allowed_frontend_origin(frontend_origin: str | None) -> bool:
 
 def _oauth_error_redirect(frontend_origin: str, message: str) -> RedirectResponse:
     params = urlencode({"oauth_error": message})
-    return RedirectResponse(url=f"{frontend_origin}/oauth/callback?{params}", status_code=302)
+    return RedirectResponse(
+        url=f"{frontend_origin}/oauth/callback?{params}",
+        status_code=302,
+        headers=CALLBACK_HEADERS,
+    )
+
+
+async def _code_redirect(frontend_origin: str, user: User, challenge: str, db: AsyncSession) -> RedirectResponse:
+    # Yield-dependency cleanup can run after the 302 body is delivered. Commit
+    # first so an immediate exchange can see a newly created provider account.
+    await db.commit()
+    code = await issue_exchange(user, frontend_origin, challenge)
+    return RedirectResponse(
+        f"{frontend_origin}/oauth/callback?{urlencode({'code': code})}",
+        status_code=302,
+        headers=CALLBACK_HEADERS,
+    )
+
+
+async def _resolve_oauth_user(db: AsyncSession, provider: str, profile: dict) -> User:
+    """Bind identities by the provider's immutable OIDC subject, never by mutable mail."""
+    subject = profile.get("sub")
+    if not isinstance(subject, str) or not subject.strip() or len(subject) > 255:
+        raise HTTPException(400, "The sign-in provider did not return a valid account identity.")
+
+    result = await db.execute(
+        select(User)
+        .where(User.oauth_provider == provider, User.oauth_subject == subject)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
+    user = result.scalar_one_or_none()
+    if user:
+        if not user.is_active:
+            raise HTTPException(403, "Account is disabled")
+        return user
+
+    try:
+        email = str(TypeAdapter(EmailStr).validate_python(profile.get("email"))).strip().lower()
+        if len(email) > 255:
+            raise ValueError("Email too long")
+    except (ValidationError, ValueError):
+        raise HTTPException(400, "The sign-in provider did not return a valid email address.")
+
+    # Google is authoritative for Gmail and verified Workspace addresses only.
+    # Microsoft email/preferred_username/UPN are display hints, not proof of mail ownership.
+    verified = provider == "google" and profile.get("email_verified") is True
+    authoritative = verified and (email.endswith("@gmail.com") or bool(profile.get("hd")))
+    if provider == "google" and not verified:
+        raise HTTPException(400, "Google has not verified this email address.")
+
+    result = await db.execute(
+        select(User).where(func.lower(User.email) == email).with_for_update().execution_options(populate_existing=True)
+    )
+    matches = result.scalars().all()
+    if len(matches) > 1:
+        raise HTTPException(409, "Multiple existing accounts use this email. Contact an administrator.")
+    user = matches[0] if matches else None
+    if user:
+        if not user.is_active:
+            raise HTTPException(403, "Account is disabled")
+        if user.oauth_subject or user.oauth_provider not in (None, provider) or not authoritative:
+            raise HTTPException(
+                409,
+                "An account already uses this email. Use its existing sign-in method or password recovery.",
+            )
+        # Local registrations never proved email ownership. Authoritative first
+        # social sign-in must remove the pre-existing credential and every session.
+        user.hashed_password = None
+        revoke_user_sessions(user)
+        user.oauth_provider = provider
+        user.oauth_subject = subject
+    else:
+        user = User(
+            email=email,
+            hashed_password=None,
+            full_name=profile.get("name"),
+            role="editor",
+            oauth_provider=provider,
+            oauth_subject=subject,
+        )
+        db.add(user)
+        await db.flush()
+        await db.refresh(user)
+    return user
 
 
 @router.get("/google")
-async def google_login(frontend_origin: str | None = Query(default=None)):
+async def google_login(
+    request: Request,
+    frontend_origin: str | None = Query(default=None),
+    code_challenge: str | None = Query(default=None),
+):
     """Return the Google OAuth2 authorization URL for the client to redirect to."""
     if not settings.google_client_id:
         raise HTTPException(
@@ -81,16 +248,31 @@ async def google_login(frontend_origin: str | None = Query(default=None)):
             detail="Google OAuth is not configured",
         )
 
+    await enforce_rate_limit(request, 120, 60, bucket="oauth-start-google")
+    validate_challenge(code_challenge)
     origin = frontend_origin if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url
-    return {"authorization_url": settings.google_redirect_uri.removesuffix('/callback') + '/start?' + urlencode({'frontend_origin': origin})}
+    return {
+        "authorization_url": settings.google_redirect_uri.removesuffix("/callback")
+        + "/start?"
+        + urlencode({"frontend_origin": origin, "code_challenge": code_challenge})
+    }
 
 
 @router.get("/google/start")
-async def google_start(frontend_origin: str | None = Query(default=None)):
+async def google_start(
+    request: Request,
+    frontend_origin: str | None = Query(default=None),
+    code_challenge: str | None = Query(default=None),
+):
     if not settings.google_client_id:
         raise HTTPException(501, "Google OAuth is not configured")
-    origin = frontend_origin.rstrip('/') if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url.rstrip('/')
-    state, binding = await issue_state('google', origin)
+    origin = (
+        frontend_origin.rstrip("/")
+        if _is_allowed_frontend_origin(frontend_origin)
+        else settings.frontend_url.rstrip("/")
+    )
+    await enforce_rate_limit(request, 120, 60, bucket="oauth-redirect-google")
+    state, binding = await issue_state("google", origin, validate_challenge(code_challenge))
     params = {
         "client_id": settings.google_client_id,
         "redirect_uri": settings.google_redirect_uri,
@@ -101,7 +283,7 @@ async def google_start(frontend_origin: str | None = Query(default=None)):
         "state": state,
     }
     authorization_url = f"{GOOGLE_AUTH_URL}?{urlencode(params)}"
-    return bind_browser(RedirectResponse(authorization_url, status_code=302), 'google', binding)
+    return bind_browser(RedirectResponse(authorization_url, status_code=302), "google", binding)
 
 
 @router.get("/google/callback")
@@ -116,7 +298,8 @@ async def google_callback(
     """Handle the Google OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
     # Verify before error handling, provider exchange or database lookup. The
     # redirect origin comes from the issued record, never callback JSON.
-    frontend_origin = await consume_state(request, 'google', state)
+    attempt = await consume_state(request, "google", state)
+    frontend_origin = attempt["origin"]
 
     if error:
         reason = error_description or error
@@ -152,7 +335,11 @@ async def google_callback(
             except Exception:
                 provider_reason = None
             reason = provider_reason or token_response.text[:220] or f"HTTP {token_response.status_code}"
-            logger.warning("Google token exchange failed (%s): %s", token_response.status_code, reason)
+            logger.warning(
+                "Google token exchange failed (%s): %s",
+                token_response.status_code,
+                reason,
+            )
             return _oauth_error_redirect(frontend_origin, f"Google token exchange failed: {reason}")
 
         token_data = token_response.json()
@@ -179,59 +366,24 @@ async def google_callback(
             except Exception:
                 provider_reason = None
             reason = provider_reason or userinfo_response.text[:220] or f"HTTP {userinfo_response.status_code}"
-            logger.warning("Google userinfo fetch failed (%s): %s", userinfo_response.status_code, reason)
+            logger.warning(
+                "Google userinfo fetch failed (%s): %s",
+                userinfo_response.status_code,
+                reason,
+            )
             return _oauth_error_redirect(frontend_origin, f"Failed to fetch Google user profile: {reason}")
 
         userinfo = userinfo_response.json()
 
-    email = userinfo.get("email")
-    if not email:
-        return _oauth_error_redirect(frontend_origin, "Google account does not have an email address")
-
-    full_name = userinfo.get("name")
-
-    # Find or create user
-    result = await db.execute(select(User).where(User.email == email))
-    user = result.scalar_one_or_none()
-
-    if not user:
-        user = User(
-            email=email,
-            hashed_password=None,
-            full_name=full_name,
-            role="editor",
-            oauth_provider="google",
-        )
-        db.add(user)
-        await db.flush()
-        await db.refresh(user)
-    else:
-        # Update OAuth provider if not set (linking existing account)
-        if not user.oauth_provider:
-            user.oauth_provider = "google"
-            await db.flush()
-
-    if not user.is_active:
-        return _oauth_error_redirect(frontend_origin, "Account is disabled")
+    try:
+        user = await _resolve_oauth_user(db, "google", userinfo)
+    except HTTPException as exc:
+        return _oauth_error_redirect(frontend_origin, str(exc.detail))
 
     user.last_login_at = datetime.now(timezone.utc)
     await db.flush()
 
-    # Generate JWT tokens
-    access_token = create_access_token(str(user.id), user.role)
-    refresh_token = create_refresh_token(str(user.id))
-
-    # Redirect to frontend with tokens as query params
-    redirect_params = urlencode(
-        {
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-        }
-    )
-    return RedirectResponse(
-        url=f"{frontend_origin}/oauth/callback?{redirect_params}",
-        status_code=302,
-    )
+    return await _code_redirect(frontend_origin, user, attempt["challenge"], db)
 
 
 # =============================================================================
@@ -240,11 +392,15 @@ async def google_callback(
 
 MICROSOFT_AUTH_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/authorize"
 MICROSOFT_TOKEN_URL = "https://login.microsoftonline.com/common/oauth2/v2.0/token"
-MICROSOFT_USERINFO_URL = "https://graph.microsoft.com/v1.0/me"
+MICROSOFT_USERINFO_URL = "https://graph.microsoft.com/oidc/userinfo"
 
 
 @router.get("/microsoft")
-async def microsoft_login(frontend_origin: str | None = Query(default=None)):
+async def microsoft_login(
+    request: Request,
+    frontend_origin: str | None = Query(default=None),
+    code_challenge: str | None = Query(default=None),
+):
     """Return the Microsoft OAuth2 authorization URL for the client to redirect to."""
     if not settings.microsoft_client_id:
         raise HTTPException(
@@ -252,16 +408,31 @@ async def microsoft_login(frontend_origin: str | None = Query(default=None)):
             detail="Microsoft OAuth is not configured",
         )
 
+    await enforce_rate_limit(request, 120, 60, bucket="oauth-start-microsoft")
+    validate_challenge(code_challenge)
     origin = frontend_origin if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url
-    return {"authorization_url": settings.microsoft_redirect_uri.removesuffix('/callback') + '/start?' + urlencode({'frontend_origin': origin})}
+    return {
+        "authorization_url": settings.microsoft_redirect_uri.removesuffix("/callback")
+        + "/start?"
+        + urlencode({"frontend_origin": origin, "code_challenge": code_challenge})
+    }
 
 
 @router.get("/microsoft/start")
-async def microsoft_start(frontend_origin: str | None = Query(default=None)):
+async def microsoft_start(
+    request: Request,
+    frontend_origin: str | None = Query(default=None),
+    code_challenge: str | None = Query(default=None),
+):
     if not settings.microsoft_client_id:
         raise HTTPException(501, "Microsoft OAuth is not configured")
-    origin = frontend_origin.rstrip('/') if _is_allowed_frontend_origin(frontend_origin) else settings.frontend_url.rstrip('/')
-    state, binding = await issue_state('microsoft', origin)
+    origin = (
+        frontend_origin.rstrip("/")
+        if _is_allowed_frontend_origin(frontend_origin)
+        else settings.frontend_url.rstrip("/")
+    )
+    await enforce_rate_limit(request, 120, 60, bucket="oauth-redirect-microsoft")
+    state, binding = await issue_state("microsoft", origin, validate_challenge(code_challenge))
     params = {
         "client_id": settings.microsoft_client_id,
         "redirect_uri": settings.microsoft_redirect_uri,
@@ -272,7 +443,7 @@ async def microsoft_start(frontend_origin: str | None = Query(default=None)):
         "state": state,
     }
     authorization_url = f"{MICROSOFT_AUTH_URL}?{urlencode(params)}"
-    return bind_browser(RedirectResponse(authorization_url, status_code=302), 'microsoft', binding)
+    return bind_browser(RedirectResponse(authorization_url, status_code=302), "microsoft", binding)
 
 
 @router.get("/microsoft/callback")
@@ -284,9 +455,13 @@ async def microsoft_callback(
     db: AsyncSession = Depends(get_db),
 ):
     """Handle the Microsoft OAuth2 callback: exchange code for tokens, find or create user, return JWT."""
-    frontend_origin = await consume_state(request, 'microsoft', state)
+    attempt = await consume_state(request, "microsoft", state)
+    frontend_origin = attempt["origin"]
     if error or not code:
-        return _oauth_error_redirect(frontend_origin, "Microsoft sign-in was cancelled or did not return a code. Start sign-in again.")
+        return _oauth_error_redirect(
+            frontend_origin,
+            "Microsoft sign-in was cancelled or did not return a code. Start sign-in again.",
+        )
     if not settings.microsoft_client_id or not settings.microsoft_client_secret:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
@@ -336,58 +511,12 @@ async def microsoft_callback(
 
         userinfo = userinfo_response.json()
 
-    # Microsoft Graph returns email in 'mail' or 'userPrincipalName'
-    email = userinfo.get("mail") or userinfo.get("userPrincipalName")
-    if not email:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Microsoft account does not have an email address",
-        )
-
-    full_name = userinfo.get("displayName")
-
-    # Find or create user
-    result = await db.execute(select(User).where(User.email == email))
-    user = result.scalar_one_or_none()
-
-    if not user:
-        user = User(
-            email=email,
-            hashed_password=None,
-            full_name=full_name,
-            role="editor",
-            oauth_provider="microsoft",
-        )
-        db.add(user)
-        await db.flush()
-        await db.refresh(user)
-    else:
-        # Update OAuth provider if not set (linking existing account)
-        if not user.oauth_provider:
-            user.oauth_provider = "microsoft"
-            await db.flush()
-
-    if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Account is disabled",
-        )
+    try:
+        user = await _resolve_oauth_user(db, "microsoft", userinfo)
+    except HTTPException as exc:
+        return _oauth_error_redirect(frontend_origin, str(exc.detail))
 
     user.last_login_at = datetime.now(timezone.utc)
     await db.flush()
 
-    # Generate JWT tokens
-    access_token = create_access_token(str(user.id), user.role)
-    refresh_token = create_refresh_token(str(user.id))
-
-    # Redirect to frontend with tokens as query params
-    redirect_params = urlencode(
-        {
-            "access_token": access_token,
-            "refresh_token": refresh_token,
-        }
-    )
-    return RedirectResponse(
-        url=f"{frontend_origin}/oauth/callback?{redirect_params}",
-        status_code=302,
-    )
+    return await _code_redirect(frontend_origin, user, attempt["challenge"], db)

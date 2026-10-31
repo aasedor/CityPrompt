@@ -11,11 +11,13 @@ import re
 import uuid
 from pathlib import PurePosixPath
 from urllib.parse import urlsplit
+from threading import Lock
 
 import boto3
+from anyio import CancelScope
 from botocore.config import Config
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import Response
+from fastapi.responses import Response, StreamingResponse
 from PIL import Image, ImageOps
 from starlette.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
@@ -31,6 +33,8 @@ from app.core.security import (
     get_current_user,
     is_admin_or_above,
     require_auth,
+    session_version,
+    validate_session_version,
 )
 from app.models.models import ModelLibraryEntry, Project, RenderAuditLog, User
 
@@ -38,6 +42,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 settings = get_settings()
+STREAM_CHUNK_BYTES = 64 * 1024
 
 
 class FileReadTicketRequest(BaseModel):
@@ -56,6 +61,7 @@ async def _file_ticket_user(file_path: str, file_ticket: str, db: AsyncSession) 
     user = result.scalar_one_or_none()
     if not user or not user.is_active:
         raise HTTPException(status_code=401, detail="File ticket account is inactive")
+    validate_session_version(payload, user)
     return user
 
 
@@ -69,7 +75,10 @@ async def issue_file_read_ticket(
     """Issue an exact-object read ticket after checking current ownership/access."""
     await _authorize_file(request.file_path, user, db, None, None)
     response.headers.update(_cache_headers(False))
-    return {"file_ticket": create_file_asset_ticket(request.file_path, user.id), "expires_in": 900}
+    return {
+        "file_ticket": create_file_asset_ticket(request.file_path, user.id, session_version=session_version(user)),
+        "expires_in": 900,
+    }
 
 
 def _key_from_url(url: str | None) -> str | None:
@@ -120,14 +129,20 @@ async def _authorize_file(
                 # The project ticket was verified above, including revocation.
                 # It must not turn another requester's control files into shared
                 # media. Exact-file tickets arrive here as their resolved user.
-                requester_id = str(user.id) if user else (
-                    decode_token(asset_ticket).get("sub") if asset_ticket and not share_token else None
+                requester_id = (
+                    str(user.id)
+                    if user
+                    else (decode_token(asset_ticket).get("sub") if asset_ticket and not share_token else None)
                 )
-                own_attempt = not share_token and requester_id and any(
-                    len(parts) >= 5
-                    and str(item.get("id")) == parts[3]
-                    and str(item.get("requested_by") or project.owner_id) == requester_id
-                    for item in attempts
+                own_attempt = (
+                    not share_token
+                    and requester_id
+                    and any(
+                        len(parts) >= 5
+                        and str(item.get("id")) == parts[3]
+                        and str(item.get("requested_by") or project.owner_id) == requester_id
+                        for item in attempts
+                    )
                 )
                 if not own_attempt:
                     raise HTTPException(status_code=403, detail="Video capture controls are private to their requester")
@@ -207,14 +222,109 @@ def _safe_download_name(requested: str | None, file_path: str) -> str:
 
 
 def _s3_client():
-    return boto3.client(
+    # Each worker creates its own Session; boto3's shared default Session must
+    # not be initialized concurrently by file requests.
+    return boto3.session.Session().client(
         "s3",
         endpoint_url=settings.s3_endpoint_url,
         aws_access_key_id=settings.s3_access_key,
         aws_secret_access_key=settings.s3_secret_key,
         region_name=settings.s3_region,
-        config=Config(signature_version="s3v4"),
+        config=Config(
+            signature_version="s3v4",
+            connect_timeout=5,
+            read_timeout=15,
+            retries={"total_max_attempts": 2, "mode": "standard"},
+        ),
     )
+
+
+def _close_storage(body, client) -> None:
+    for resource in (body, client):
+        if resource is not None:
+            try:
+                resource.close()
+            except Exception:
+                logger.warning("Storage resource cleanup failed")
+
+
+def _head_storage(file_path: str):
+    client = _s3_client()
+    try:
+        return client.head_object(Bucket=settings.s3_bucket_name, Key=file_path)
+    finally:
+        _close_storage(None, client)
+
+
+class _S3File:
+    """Own SDK resources through cancellation and the worker-to-loop handoff."""
+
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+        self._lock = Lock()
+        self._body = self._client = None
+        self._closed = False
+
+    def open(self):
+        client = _s3_client()
+        try:
+            obj = client.get_object(Bucket=settings.s3_bucket_name, Key=self.file_path)
+            body = obj["Body"]
+        except BaseException:
+            _close_storage(None, client)
+            raise
+        with self._lock:
+            closed = self._closed
+            if not closed:
+                self._body, self._client = body, client
+        # Raw task cancellation can arrive while a blocking SDK open is still
+        # running. Its eventual result still has a deterministic owner.
+        if closed:
+            _close_storage(body, client)
+        return obj
+
+    def read(self):
+        with self._lock:
+            body = self._body
+        return body.read(STREAM_CHUNK_BYTES) if body is not None else b""
+
+    def close(self):
+        with self._lock:
+            if self._closed:
+                return
+            self._closed = True
+            body, client = self._body, self._client
+            self._body = self._client = None
+        _close_storage(body, client)
+
+    async def aclose(self):
+        with CancelScope(shield=True):
+            await run_in_threadpool(self.close)
+
+
+class _S3FileResponse(StreamingResponse):
+    def __init__(self, source: _S3File, **kwargs):
+        self._source = source
+        super().__init__(self._chunks(), **kwargs)
+
+    async def _chunks(self):
+        try:
+            while chunk := await run_in_threadpool(self._source.read):
+                yield chunk
+        finally:
+            await self._source.aclose()
+
+    async def __call__(self, scope, receive, send):
+        try:
+            await super().__call__(scope, receive, send)
+        finally:
+            # Also covers a failed/cancelled header send before the iterator's
+            # first step, where an async generator's own finally cannot run.
+            with CancelScope(shield=True):
+                try:
+                    await self.body_iterator.aclose()
+                finally:
+                    await self._source.aclose()
 
 
 @router.head("/{file_path:path}")
@@ -232,9 +342,10 @@ async def head_file(
     if file_ticket:
         user = await _file_ticket_user(file_path, file_ticket, db)
     public = await _authorize_file(file_path, user, db, share_token, asset_ticket)
+    await db.close()
 
     try:
-        obj = _s3_client().head_object(Bucket=settings.s3_bucket_name, Key=file_path)
+        obj = await run_in_threadpool(_head_storage, file_path)
     except Exception as exc:
         raise HTTPException(status_code=404, detail="File not found in storage") from exc
 
@@ -253,14 +364,16 @@ def _render_thumbnail(file_path: str) -> bytes:
     """Produce a small gallery preview without changing the saved original."""
     if not re.fullmatch(r"projects/[^/]+/renders/[^/]+\.(?:png|jpe?g|webp)", file_path, re.IGNORECASE):
         raise HTTPException(status_code=400, detail="Previews are available for saved render images only")
+    client = body = None
     try:
-        obj = _s3_client().get_object(Bucket=settings.s3_bucket_name, Key=file_path)
-        try:
-            data = obj["Body"].read()
-        finally:
-            obj["Body"].close()
+        client = _s3_client()
+        obj = client.get_object(Bucket=settings.s3_bucket_name, Key=file_path)
+        body = obj["Body"]
+        data = body.read()
     except Exception as exc:
         raise HTTPException(status_code=404, detail="File not found in storage") from exc
+    finally:
+        _close_storage(body, client)
     try:
         with Image.open(BytesIO(data)) as source:
             source.thumbnail((384, 384), Image.Resampling.LANCZOS)
@@ -290,25 +403,26 @@ async def get_file(
     if file_ticket:
         user = await _file_ticket_user(file_path, file_ticket, db)
     public = await _authorize_file(file_path, user, db, share_token, asset_ticket)
+    # These routes only read authorization state. Release its connection before
+    # storage I/O or a slow client can hold it for the lifetime of the stream.
+    await db.close()
 
     if thumbnail and not download:
         preview = await run_in_threadpool(_render_thumbnail, file_path)
         return Response(content=preview, media_type="image/webp", headers=_cache_headers(public))
 
+    source = _S3File(file_path)
     try:
-        obj = _s3_client().get_object(Bucket=settings.s3_bucket_name, Key=file_path)
-        file_data = obj["Body"].read()
-        content_type = obj.get("ContentType", "application/octet-stream")
-    except Exception as exc:
-        raise HTTPException(status_code=404, detail="File not found in storage") from exc
-
-    headers = _cache_headers(public)
-    if download:
-        safe_name = _safe_download_name(filename, file_path)
-        headers["Content-Disposition"] = f'attachment; filename="{safe_name}"'
-
-    return Response(
-        content=file_data,
-        media_type=content_type,
-        headers=headers,
-    )
+        obj = await run_in_threadpool(source.open)
+        headers = _cache_headers(public)
+        if obj.get("ContentLength") is not None:
+            headers["Content-Length"] = str(obj["ContentLength"])
+        if download:
+            safe_name = _safe_download_name(filename, file_path)
+            headers["Content-Disposition"] = f'attachment; filename="{safe_name}"'
+        return _S3FileResponse(source, media_type=obj.get("ContentType", "application/octet-stream"), headers=headers)
+    except BaseException as exc:
+        await source.aclose()
+        if isinstance(exc, Exception):
+            raise HTTPException(status_code=404, detail="File not found in storage") from exc
+        raise

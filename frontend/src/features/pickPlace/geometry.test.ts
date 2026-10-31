@@ -8,6 +8,18 @@ const zone=(coords:number[][],type='building',id='z')=>({id,zone_type:type,coord
 // Geometry limits are independent of which house is in the current catalogue.
 const boundedPlot={minWidth:12,minDepth:16,maxSize:240,properties:{}} as PlaceAsset;
 describe('pick and reshape geometry',()=>{
+  it('preserves a locked tower footprint even if a stale corner drag reaches the geometry handler',()=>{
+    const asset=placeAsset('claude_trial_brick_podium_condo_tower');
+    const coordinates=rectangleAt(center,57.04,47.04,35);
+    expect(resizeRectangleCorner(coordinates,0,center,asset)).toEqual(coordinates);
+  });
+  it('keeps reviewed scale-band plots resizable when editable is omitted',()=>{
+    const asset={...boundedPlot,footprintProgram:{...placeAsset('trial_postwar_bungalow').footprintProgram!,editable:undefined}};
+    const coordinates=rectangleAt(center,36,24);
+    const resized=resizeRectangleCorner(coordinates,0,coordinates[2],asset);
+    expect(rectangleDimensions(resized).width).toBeCloseTo(12,3);
+    expect(rectangleDimensions(resized).depth).toBeCloseTo(16,3);
+  });
   it.each([0,37,90,175])('keeps metre dimensions at latitude 51 at %s degrees',angle=>{
     const d=rectangleDimensions(rectangleAt(center,36,16,angle));
     expect(d.width).toBeCloseTo(36,4);expect(d.depth).toBeCloseTo(16,4);

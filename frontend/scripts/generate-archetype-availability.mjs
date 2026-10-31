@@ -23,10 +23,10 @@ const domains = Object.freeze({
   },
 });
 
-const transportStandardsText = readFileSync(resolve(frontendRoot, 'src/data/transportStandards.ts'), 'utf8');
+const transportStandards = JSON.parse(readFileSync(resolve(frontendRoot, 'src/data/transportStandardEntries.json'), 'utf8'));
 const streetSectionById = new Map(
-  [...transportStandardsText.matchAll(/"archetypeId":\s*"([^"]+)"[\s\S]*?"sectionSvgUrl":\s*"([^"]+)"/g)]
-    .map((match) => [match[1], match[2]]),
+  transportStandards.filter(entry => typeof entry.sectionSvgUrl === 'string')
+    .map(entry => [entry.archetypeId, entry.sectionSvgUrl]),
 );
 
 function assetExists(url) {

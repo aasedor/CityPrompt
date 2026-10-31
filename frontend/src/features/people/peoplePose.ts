@@ -14,22 +14,32 @@ export function createPeopleActionPose(actor: PeopleActor, walking = {speed:1.2,
   const softenWalk = createWalkingCorrection(actor.root,height);
   const relaxStanding = createStandingCorrection(actor.root,height);
   const floorCorrections = new Map<PeopleActionId,number>();
-  const vector=new Vector3(), origin=new Vector3(), target=new Vector3(), current=new Vector3();
-  const delta=new Quaternion(), worldRotation=new Quaternion(), parentRotation=new Quaternion();
+  const vector=new Vector3(), target=new Vector3(), current=new Vector3();
+  const delta=new Quaternion();
   const inverse=new Matrix4();
+  // Targets below describe outward distance, not a rig's left/right X sign.
+  // The catalogue's Blender rigs have left on +X; assuming left is -X aims
+  // upper arms through the chest. Measure each shoulder in actor space once.
+  const sideSigns = Object.fromEntries(['l','r'].map(side => {
+    const shoulder = actor.root.getObjectByName(`upperarm_${side}`);
+    const point = shoulder ? actor.root.worldToLocal(shoulder.getWorldPosition(new Vector3())) : null;
+    return [side, point && Math.abs(point.x)>1e-5 ? Math.sign(point.x) : side==='l'?1:-1];
+  }));
   function aim(name:string,endName:string,x:number,y:number,z:number){
     const bone=actor.root.getObjectByName(name),end=actor.root.getObjectByName(endName);
     if(!bone?.parent||!end)return;
     root.updateWorldMatrix(true,true);
-    bone.getWorldPosition(origin);end.getWorldPosition(current);current.sub(origin).normalize();
-    target.set(x*unit,y*unit,z*unit);actor.root.localToWorld(target);target.sub(origin).normalize();
+    // Aim in the parent's rigid coordinates. Decomposing world quaternions
+    // loses the nonuniform body-proportion scales used by the community rigs.
+    inverse.copy(bone.parent.matrixWorld).invert();
+    current.setFromMatrixPosition(end.matrixWorld).applyMatrix4(inverse).sub(bone.position).normalize();
+    target.set(x*unit,y*unit,z*unit);actor.root.localToWorld(target);target.applyMatrix4(inverse).sub(bone.position).normalize();
     delta.setFromUnitVectors(current,target);
-    bone.getWorldQuaternion(worldRotation);bone.parent.getWorldQuaternion(parentRotation);
-    bone.quaternion.copy(parentRotation.invert().multiply(delta.multiply(worldRotation)));
+    bone.quaternion.premultiply(delta);
   }
   function arm(side:'l'|'r',elbow:number[],hand:number[]){
-    aim(`upperarm_${side}`,`lowerarm_${side}`,...elbow as [number,number,number]);
-    aim(`lowerarm_${side}`,`hand_${side}`,...hand as [number,number,number]);
+    aim(`upperarm_${side}`,`lowerarm_${side}`,Math.abs(elbow[0])*sideSigns[side],elbow[1],elbow[2]);
+    aim(`lowerarm_${side}`,`hand_${side}`,Math.abs(hand[0])*sideSigns[side],hand[1],hand[2]);
   }
   function clearBounds(){actor.root.traverse(object=>{if((object as SkinnedMesh).isSkinnedMesh){const mesh=object as SkinnedMesh;mesh.computeBoundingBox();mesh.computeBoundingSphere();}});}
   /** Measured once per actor/action, in actor-parent metres rather than ECEF. */
@@ -58,7 +68,8 @@ export function createPeopleActionPose(actor: PeopleActor, walking = {speed:1.2,
     if(!locomotion && !['sitting','lying_down','dancing','stretching'].includes(action))relaxStanding();
     const pulse=capture?Math.sin(seconds*3+phase):0;
     if(action==='sitting'){
-      for(const [side,x] of [['l',-.1],['r',.1]] as const){
+      for(const side of ['l','r'] as const){
+        const x=sideSigns[side]*.1;
         aim(`thigh_${side}`,`calf_${side}`,x,.98,.43);aim(`calf_${side}`,`foot_${side}`,x,.53,.43);
         arm(side,[x*2.5,.94,.15],[x*1.4,.99,.39]);
       }

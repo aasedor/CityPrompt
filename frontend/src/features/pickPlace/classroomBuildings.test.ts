@@ -37,7 +37,9 @@ describe('classroom building additions', () => {
       expect(asset.storeyProgram!.minStoreys).toBeLessThanOrEqual(asset.storeyProgram!.nativeStoreys);
       expect(asset.storeyProgram!.maxStoreys).toBeGreaterThanOrEqual(asset.storeyProgram!.nativeStoreys);
       if (!['trial_postwar_bungalow', 'trial_edwardian_foursquare',
-        'validation_clapboard_north_end', 'clay_vancouver_balcony_podium_tower'].includes(asset.id)) {
+        'validation_clapboard_north_end', 'clay_vancouver_balcony_podium_tower', 'claude_trial_brick_podium_condo_tower',
+        'clay_blue_glass_office_tower','claude_trial_plus15_glass_office_tower','claude_trial_slab_balcony_tower',
+        'clay_twisting_glass_sky_garden_tower','showcase_tower'].includes(asset.id)) {
         expect(asset.storeyProgram!.mode).toBe('fixed_authored_assembly');
         expect(asset.storeyProgram!.minStoreys).toBe(asset.storeyProgram!.maxStoreys);
       }

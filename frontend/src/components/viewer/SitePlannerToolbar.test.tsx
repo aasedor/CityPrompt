@@ -13,18 +13,21 @@ describe('Student drawing toolbar', () => {
     expect(screen.getByText(/based on a draft Street Manual/)).toBeInTheDocument();
   });
   beforeEach(() => useViewerStore.setState({ activeSitePlannerTool: null, streetViewPegman: null }));
-  it('starts with building, park and road, keeping optional tools available', () => {
-    const boundary = vi.fn();
-    render(<SitePlannerToolbar onSiteBoundary={boundary} onMasterPlan={vi.fn()} isGlobeMode />);
+  it('starts with building, park and road and keeps the simplified optional tools', () => {
+    render(<SitePlannerToolbar onSiteBoundary={vi.fn()} onMasterPlan={vi.fn()} isGlobeMode />);
     expect(screen.getByRole('button', { name: 'Building' })).toHaveAttribute('data-tour', 'tool-buildings');
     expect(screen.getByRole('button', { name: 'Park' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Road' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Site Boundary' })).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'More Tools' }));
     expect(screen.getByRole('button', { name: 'More Tools' })).toHaveAttribute('aria-expanded', 'true');
-    fireEvent.click(screen.getByRole('button', { name: 'Site Boundary' }));
-    expect(boundary).toHaveBeenCalledOnce();
-    expect(screen.getByRole('button', { name: 'Master Plan' })).toBeInTheDocument();
+    for (const name of ['Site Boundary', 'Master Plan', 'Street View', 'Plaza', 'Development Area']) {
+      expect(screen.queryByRole('button', { name })).not.toBeInTheDocument();
+    }
+    expect(screen.getByRole('button', { name: 'Water' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Ground surface' }));
+    expect(useViewerStore.getState().activeSitePlannerTool).toBe('development_area');
+    expect(useViewerStore.getState().activeToolProperties).toEqual({ ground_surface_material: 'grass' });
   });
   it('switches drawing modes and keeps Select reachable with clear completion instructions', () => {
     const measure = vi.fn();
@@ -43,9 +46,9 @@ describe('Student drawing toolbar', () => {
     expect(measure).toHaveBeenLastCalledWith(false);
   });
   it('clears street view before an optional drawing tool and reflects an externally selected plaza', () => {
+    useViewerStore.getState().setStreetViewActive(true);
     render(<SitePlannerToolbar />);
     fireEvent.click(screen.getByRole('button', { name: 'More Tools' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Street View' }));
     expect(useViewerStore.getState().streetViewPegman).toBeTruthy();
     fireEvent.click(screen.getByRole('button', { name: 'Water' }));
     expect(useViewerStore.getState().streetViewPegman).toBeNull();

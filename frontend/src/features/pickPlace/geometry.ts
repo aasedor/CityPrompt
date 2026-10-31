@@ -1,10 +1,13 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import { hasFixedBuildingFootprint } from './buildingFootprintProgram';
 import { envelopeFits, envelopesOverlap } from '@/components/viewer/globe/neighborhoodParkLayout';
 import type { SiteZone } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { assetForZone, type PlaceAsset } from './catalogue';
 import { buildingPlacementEnvelope } from './buildingPlacementEdges';
 import { streetSurfaceMaskZone } from '@/components/viewer/globe/streetSurfaceMask';
+import { isSurfacePath } from './streetConnectionProblem';
+import { groundSurfaceFor, groundSurfaceProblem } from '@/features/groundSurfaces/groundSurfaces';
 
 export function rectangleAt(center: number[], width: number, depth: number, degrees = 0): number[][] {
   const yaw = degrees * Math.PI / 180, c = Math.cos(yaw), s = Math.sin(yaw);
@@ -24,7 +27,7 @@ export function rectangleDimensions(coords: number[][]) {
 
 /** Keep the opposite corner fixed, preserve right angles and native-size limits. */
 export function resizeRectangleCorner(coords: number[][], corner: number, pointer: number[], asset: PlaceAsset) {
-  if (isFixedNativeScene(asset.properties)) return coords;
+  if (isFixedNativeScene(asset.properties) || hasFixedBuildingFootprint(asset)) return coords;
   const { degrees } = rectangleDimensions(coords);
   const fixed = coords[(corner+2)%4], yaw = degrees*Math.PI/180, c=Math.cos(yaw), s=Math.sin(yaw);
   const east=(pointer[0]-fixed[0])*metersPerDegLon(fixed[1]), north=(pointer[1]-fixed[1])*METERS_PER_DEG_LAT;
@@ -45,11 +48,19 @@ export function placementProblem(
     const origin=coords[0];
     const local=(ring:number[][])=>ring.map(p=>({x:(p[0]-origin[0])*metersPerDegLon(origin[1]),y:(p[1]-origin[1])*METERS_PER_DEG_LAT}));
     const ownProperties=properties ?? zones.find(z=>z.id===ignoreId)?.properties;
+    const groundPath = isSurfacePath({zone_type:'road',properties:ownProperties});
     const footprint = local(buildingPlacementEnvelope({coordinates:coords,properties:ownProperties}));
+    if (groundSurfaceFor({properties:ownProperties})) return groundSurfaceProblem(coords,boundary);
     // Saved plots must remain inside the site, matching the server's contract.
-    if (boundary && !envelopeFits(local(coords),local(boundary.coordinates))) return 'Keep the whole plot and its surrounding space inside your site boundary. Move it inward or resize the plot.';
+    if (boundary && !envelopeFits(local(coords),local(boundary.coordinates))) return isFixedNativeScene(ownProperties)
+      ? 'This fixed-size model needs more clear space inside your site boundary. Move or rotate it, or choose a smaller model.'
+      : 'Keep the whole plot and its surrounding space inside your site boundary. Move it inward or resize the plot.';
     for (const zone of zones) {
       if (zone.id===ignoreId || !['building','residential','green_space','parking','road'].includes(zone.zone_type)) continue;
+      // Simple paths are a ground finish, not an exclusive building/park plot.
+      // Keep this symmetric so placing the path first does not reserve land.
+      if (groundPath && ['building','residential','green_space'].includes(zone.zone_type)) continue;
+      if (zone.zone_type === 'road' && !ownProperties?.road_archetype_id && isSurfacePath(zone)) continue;
       if (zone.zone_type === 'road' && allowStreetIntersections) continue;
       const other=zone.zone_type==='road' ? streetSurfaceMaskZone(zone).coordinates : buildingPlacementEnvelope(zone);
       if (envelopesOverlap(footprint,local(other))) {

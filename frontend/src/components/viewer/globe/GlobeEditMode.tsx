@@ -1,4 +1,6 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
+import { hasNativePark } from '@/features/parks/nativeParkRegistry';
+import { hasFixedBuildingFootprint } from '@/features/pickPlace/buildingFootprintProgram';
 /**
  * GlobeEditMode.tsx — Zone editing UI for the 3D globe.
  *
@@ -33,6 +35,7 @@ import { hasElevatedStation } from './elevatedRailProgram';
 import { snapStreetEndpoint } from '@/features/pickPlace/streetSnapping';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
 import { useGlobeDragRef } from './useGlobeDragRef';
+import { resolvePreparedSiteTerrainForZone } from './sitePreparationSurface';
 import {
   getObjectFilteredTerrainHeight,
   getRepresentativeTerrainHeight,
@@ -52,6 +55,7 @@ function isBuildableZoneType(zoneType: string | null | undefined): boolean {
 
 interface GlobeEditModeProps {
   zone: SiteZone;
+  allowFootprintResize?: boolean;
   zones?: SiteZone[];
   terrainHeight: number;
   onZoneUpdated: (zoneId: string, coordinates: number[][]) => boolean | void;
@@ -188,6 +192,7 @@ function getTerrainProbePoints(
 
 export function GlobeEditMode({
   zone,
+  allowFootprintResize = true,
   zones = [],
   terrainHeight,
   onZoneUpdated,
@@ -201,6 +206,9 @@ export function GlobeEditMode({
   const [liveCoords, setLiveCoords] = useState<number[][] | null>(null);
   const [liveRouteControls, setLiveRouteControls] = useState<number[][] | null>(null);
   const [pendingCommitCoords, setPendingCommitCoords] = useState<number[][] | null>(null);
+  const pendingCommitSourceRef = useRef(zone);
+  const latestZoneRef = useRef(zone);
+  useEffect(() => { latestZoneRef.current = zone; }, [zone]);
   const [sampledTerrainHeight, setSampledTerrainHeight] = useState<number | null>(null);
   const [isRotating, setIsRotating] = useState(false);
   const dragRef = useGlobeDragRef();
@@ -208,7 +216,7 @@ export function GlobeEditMode({
   const routeEditing = isFixedSectionStreet(zone);
   const savedRouteControls = useMemo(() => parsePersistedCenterline(zone.properties?.plan_route_controls),
     [zone.properties?.plan_route_controls]);
-  const handleCoords = routeEditing
+  const handleCoords = isFixedNativeScene(zone.properties) || hasFixedBuildingFootprint(assetForZone(zone)) ? [] : routeEditing
     ? liveRouteControls ?? (liveCoords ? extractCenterline(liveCoords)
       : savedRouteControls ?? extractCenterline(renderedCoords))
     : renderedCoords;
@@ -237,7 +245,8 @@ export function GlobeEditMode({
   );
   const storedTerrainHeight = Number.isFinite(storedTerrain) ? storedTerrain : null;
   const filterObjectHeights = shouldFilterObjectTerrainHeight(zone.zone_type);
-  const zoneTerrainHeight = resolveZoneTerrainHeight(
+  const preparedTerrainHeight = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
+  const zoneTerrainHeight = preparedTerrainHeight ?? resolveZoneTerrainHeight(
     sampledTerrainHeight,
     storedTerrainHeight,
     terrainHeight,
@@ -257,6 +266,9 @@ export function GlobeEditMode({
   }, [zoneTerrainHeight]);
 
   const sampleZoneTerrainHeight = useCallback(() => {
+    // Hidden photogrammetry can still be raycast. Its roofs/terrain must not
+    // pull handles away from the authored replacement ground.
+    if (preparedTerrainHeight !== null) return true;
     const tilesGroup = tiles?.group;
     if (!tilesGroup?.children?.length) return false;
 
@@ -280,7 +292,7 @@ export function GlobeEditMode({
         : sampledHeight
     ));
     return true;
-  }, [filterObjectHeights, tiles, zone.coordinates, zoneCentroid, zoneTerrainHeight]);
+  }, [filterObjectHeights, tiles, zone.coordinates, zoneCentroid, zoneTerrainHeight, preparedTerrainHeight]);
 
   useEffect(() => {
     setSampledTerrainHeight(null);
@@ -305,7 +317,7 @@ export function GlobeEditMode({
     raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
 
     const tilesGroup = tiles?.group;
-    if (tilesGroup?.children?.length) {
+    if (preparedTerrainHeight === null && tilesGroup?.children?.length) {
       const hit = raycaster.intersectObjects(tilesGroup.children, true)[0]?.point;
       if (hit) {
         return pointToLngLat(hit, terrainEllipsoid.current);
@@ -317,7 +329,7 @@ export function GlobeEditMode({
     if (!result) return null;
 
     return pointToLngLat(hit, terrainEllipsoid.current);
-  }, [camera, gl, tiles]);
+  }, [camera, gl, tiles, preparedTerrainHeight]);
 
   const pointerToRotationPlaneLocal = useCallback((
     e: PointerEvent | MouseEvent,
@@ -355,12 +367,18 @@ export function GlobeEditMode({
 
   useEffect(() => {
     if (isDraggingBody || isRotating || dragIndex !== null || !pendingCommitCoords) return;
-    if (coordsMatch(zone.coordinates, pendingCommitCoords)) {
+    // The save path can snap the preview again. Once saved geometry or its
+    // revision changes, use that authoritative shape so Undo/Redo and a new
+    // selection cannot leave handles stranded at the old drag preview.
+    const source = pendingCommitSourceRef.current;
+    if (coordsMatch(zone.coordinates, pendingCommitCoords)
+      || zone.id !== source.id || zone.updated_at !== source.updated_at
+      || !coordsMatch(zone.coordinates, source.coordinates)) {
       setLiveCoords(null);
       setLiveRouteControls(null);
       setPendingCommitCoords(null);
     }
-  }, [dragIndex, isDraggingBody, isRotating, pendingCommitCoords, zone.coordinates]);
+  }, [dragIndex, isDraggingBody, isRotating, pendingCommitCoords, zone.coordinates, zone.id, zone.updated_at]);
 
   // Start dragging the zone body
   const handleBodyPointerDown = useCallback((e: any) => {
@@ -418,6 +436,7 @@ export function GlobeEditMode({
 
       // Commit final coordinates to React state (one re-render)
       if (finalCoords) {
+        pendingCommitSourceRef.current = latestZoneRef.current.id === zone.id ? latestZoneRef.current : zone;
         setPendingCommitCoords(finalCoords);
         if (onZoneUpdated(zone.id, finalCoords) === false) { setPendingCommitCoords(null); setLiveCoords(null); }
       } else {
@@ -615,6 +634,7 @@ export function GlobeEditMode({
         : null;
 
       if (finalCoords) {
+        pendingCommitSourceRef.current = latestZoneRef.current.id === zone.id ? latestZoneRef.current : zone;
         setPendingCommitCoords(finalCoords);
         if (onZoneUpdated(zone.id, finalCoords) === false) { setPendingCommitCoords(null); setLiveCoords(null); }
       } else {
@@ -655,11 +675,12 @@ export function GlobeEditMode({
     renderedCoords,
     rotationHandle,
     setControlsEnabled,
-    zone.id,
+    zone,
   ]);
 
   // Start dragging a vertex
   const handleVertexPointerDown = useCallback((index: number, e: any) => {
+    if (isFixedNativeScene(zone.properties)) return;
     e.stopPropagation();
     onInteractionStart?.();
     setDragIndex(index);
@@ -710,6 +731,7 @@ export function GlobeEditMode({
 
       // Commit final coordinates to React state
       if (finalCoords) {
+        pendingCommitSourceRef.current = latestZoneRef.current.id === zone.id ? latestZoneRef.current : zone;
         setPendingCommitCoords(routeEditing ? streetCoordinateUpdate(zone, finalCoords).coordinates : finalCoords);
         if (onZoneUpdated(zone.id, finalCoords) === false) {
           setPendingCommitCoords(null); setLiveCoords(null); setLiveRouteControls(null);
@@ -853,7 +875,7 @@ export function GlobeEditMode({
         </EastNorthUpFrame>
       )}
 
-      {handleCoords.map((coord, i) => (
+      {allowFootprintResize && !isFixedNativeScene(zone.properties) && !hasNativePark(zone) && assetForZone(zone)?.reshapeMode !== 'fixed_native' && !hasFixedBuildingFootprint(assetForZone(zone)) && handleCoords.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
           lat={coord[1] * DEG_TO_RAD}

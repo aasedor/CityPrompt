@@ -1,0 +1,45 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "5e3150afb5b14183172cd4aef5551f66627eab33ec6aefc58a697fb7dd458259",
+  "bounds_m": [
+    [
+      -10.5,
+      -18.0,
+      -0.11999999731779099
+    ],
+    [
+      10.5,
+      18.0,
+      4.0
+    ]
+  ],
+  "mesh_instances": 8,
+  "triangles": 8908,
+  "materials": [
+    "board",
+    "court",
+    "key",
+    "metal",
+    "padding",
+    "paint",
+    "rim",
+    "runoff"
+  ],
+  "equipment_top_samples_m": [
+    3.0586609840393066,
+    3.0586609840393066
+  ],
+  "perimeter_probes": 16,
+  "surface_samples_m": [
+    0.0,
+    -0.012000083923339844
+  ],
+  "checks": [
+    "exact GLB hash",
+    "measured native reserve",
+    "court-only material allowlist",
+    "open perimeter",
+    "equipment height",
+    "continuous ground"
+  ]
+}

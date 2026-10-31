@@ -1,0 +1,667 @@
+{
+  "schema": "cityprompt.rlasm.independent-review@1",
+  "candidate": "postwar-side-split-house-clay-v003",
+  "archetype_id": "postwar_side_split_house",
+  "variant_id": "cream_siding_brick_raised_sleeping_wing",
+  "model_sha256": "e5b80f45a78909bd0910f29bf0587d99c4bcb3225e7418e8d06e94c4dbfdf00f",
+  "method": "RLASM v6.1",
+  "reviewer": "Independent architectural-clay verifier /root/housing_pilot_visual_review",
+  "reviewed_utc": "2026-10-25T20:16:20.539216+00:00",
+  "review_scope": "holistic_architectural_clay",
+  "holistic": true,
+  "scope_limits": "Holistic source-locked architectural-clay review of the whole building and all final evidence. Closes only this asset delivery profile; no textured-keeper, engineering, live-runtime, installation, activation or publication approval.",
+  "decision": "architectural_clay_pass",
+  "review_state": "architectural_clay_reviewed",
+  "architectural_clay_pass": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_p2": 0,
+  "keeper_approved": false,
+  "runtime_activation": false,
+  "runtime_integration": "NOT TESTED",
+  "metadata_is_visual_proof": false,
+  "pixel_inspection": {
+    "mode": "Every listed source image, whole original board, full-resolution exact-GLB render and phone board directly reopened with original-resolution view_image in this v003 review",
+    "render_count": 19,
+    "render_dimensions": [
+      1600,
+      1200
+    ],
+    "phone_board_count": 3,
+    "phone_board_dimensions": [
+      1080,
+      1920
+    ],
+    "enrolled_source_role_count": 5,
+    "whole_original_board_count": 2,
+    "inspected_files": [
+      {
+        "path": "sources/front.png",
+        "sha256": "a64eac5b0f5a007061a62d4dc089a5e18e6699538a3bdd0f386a81becfcc1751"
+      },
+      {
+        "path": "sources/oblique.png",
+        "sha256": "3169350dc3cce868c081191ccfa38bfe217bb52e2fff16286b6c53aa3997baac"
+      },
+      {
+        "path": "sources/top.png",
+        "sha256": "d80f7c2e2b12ebfa2e826a11a3d616833fb3d71f9a6ff80162418dfe9e712985"
+      },
+      {
+        "path": "sources/front_prior.png",
+        "sha256": "5a402ab7b5ae4c642442525e378251d8ca1b339b25d9a317211db63b6a2a14d8"
+      },
+      {
+        "path": "sources/oblique_prior.png",
+        "sha256": "b7eabb1206b1b075231402c1f8f3f862ea2db2cbdd35c9aa09ee9a0b309bfe8e"
+      },
+      {
+        "path": "sources/original-board.png",
+        "sha256": "31241e3a4d312f4845c7cc060ef76709e2c7699c1970ca3ee4b23445368f2bc4"
+      },
+      {
+        "path": "sources/prior-board-v001.png",
+        "sha256": "a23448a590f4e3be74bd9ea344533bc15e837f49da80060623d13af83495bf47"
+      },
+      {
+        "path": "boards/locked-source-board.png",
+        "sha256": "f00eb9950774bab51d34e19501ab8751141fd8ed153bfb039b561e700b0b7201"
+      },
+      {
+        "path": "boards/phone-source-comparison.png",
+        "sha256": "9a59b928b14eba10fa50204c8389f19ebaf372115655cc80d4ee69f0ede078f2"
+      },
+      {
+        "path": "boards/phone-construction.png",
+        "sha256": "6fcb483a4b6daabfd9b5907b8e75248887f9662c0cf7849c50d33899bd7ab99c"
+      },
+      {
+        "path": "boards/phone-stair-supplement.png",
+        "sha256": "748c29e9b7cd0b5962b7fb25b8d1f9bcfc99edb71abab4d8db9e57fcb19f3c45"
+      },
+      {
+        "path": "renders/front.png",
+        "sha256": "0bf00f3c3e1d31ddd42053b58b36cee245cb19233e4674c7f06b892bdeeec08c"
+      },
+      {
+        "path": "renders/front_corner.png",
+        "sha256": "77fb9aea622e73929d61680d77a49c9101ff33808989898e2657992b688d8eee"
+      },
+      {
+        "path": "renders/aerial.png",
+        "sha256": "0a778929e99a395825e01cc4065bd5aae843fac5a053d030e19f7f71e69b73eb"
+      },
+      {
+        "path": "renders/top.png",
+        "sha256": "e01b0931915463f0bf24476410bc997400e3c7cc1ce6218fd92fad1db6b660dd"
+      },
+      {
+        "path": "renders/left_side.png",
+        "sha256": "292bb56e90b3dd1c0b1775905aea4aa098e70b5bd49af32c20dff8d919e88eac"
+      },
+      {
+        "path": "renders/right_side.png",
+        "sha256": "a1fa381e10002caa42c72e7b3c9591060b68dc2f6e06ea8f5cda0166af5093bc"
+      },
+      {
+        "path": "renders/rear.png",
+        "sha256": "c1db308d345b0f3b4ce95fab520ffd283baf1fe5b44e752330eee7c418952d0a"
+      },
+      {
+        "path": "renders/rear_side.png",
+        "sha256": "daed4e0a550ee23b50ebab6b3aee60922dd27880f08ee58da91434de9c6faa7f"
+      },
+      {
+        "path": "renders/facade_close.png",
+        "sha256": "7b0d16cd297669fff6f74b724511f230e7298674bb2d26717c94f5a6ebaaf047"
+      },
+      {
+        "path": "renders/architecture_close.png",
+        "sha256": "93d42a3de08199aad0a9eb1eec55816e0badfee5e40143f181ab4c45d20cd75d"
+      },
+      {
+        "path": "renders/glass_close.png",
+        "sha256": "0b6f8fff78b6eb7ee93deb79008aadc81965837b1b2e415e9c87bc394b1c0618"
+      },
+      {
+        "path": "renders/entry_contacts.png",
+        "sha256": "15301961a9b861eaf7bec86cf463002743aa9fccec6001836351cfdde097562f"
+      },
+      {
+        "path": "renders/stair_up.png",
+        "sha256": "60faa2275b7362ca6e4ef3d2b37d211ceda05ea23bc6bd38d8b475783182fd65"
+      },
+      {
+        "path": "renders/stair_up_axial.png",
+        "sha256": "5fbfcd92564c0e85e7cb4a59fb65a1bdf776cfe05647ce7b951031f5202c9e73"
+      },
+      {
+        "path": "renders/upper_arrival.png",
+        "sha256": "b96ba80c243084030e46e3408dc7342701f1e23cfe327913253d721e98bf1ff1"
+      },
+      {
+        "path": "renders/stair_down.png",
+        "sha256": "3e0d543f5fb16277a70176cc18c7cff94ac88e8258a5a5d878bccbf86b149d0c"
+      },
+      {
+        "path": "renders/lower_arrival.png",
+        "sha256": "f69d6be49b27fc49507fe577aeb3566da7545f54692cbfb0c0a53b4e0d1d4cc8"
+      },
+      {
+        "path": "renders/occupied_lower.png",
+        "sha256": "e710bf97d737cdb4200aa78f7740b6c251af99fd0e80fa3af3db0cc089637bda"
+      },
+      {
+        "path": "renders/occupied_upper.png",
+        "sha256": "e9e5d3acb0b6cc6730bedc2cda66a97b521f1d0cf887393c3d10edcadd864db5"
+      }
+    ]
+  },
+  "source_compatibility_review": {
+    "origin": "Original generated teaching design; not a named historic building replica.",
+    "accepted_roles": [
+      "front",
+      "oblique",
+      "top",
+      "front_prior",
+      "oblique_prior"
+    ],
+    "authority": "Corrected top governs perpendicular roof axes and unequal wing-depth hierarchy; both front/oblique generations agree on principal front and single-window left-end construction.",
+    "rejected_evidence": "Both rear-left proposals add incompatible left-end openings; prior top has incorrect raised-roof direction. Preserved whole boards/provenance retain the rejection. No rejected panel was used as a rear/side acceptance target.",
+    "plan_calibration": "Native low/raised body depths6m/8m give1.333 ratio, matching the approximate source roof-depth hierarchy about267px/360px. Known front faces stay atY-4 and rear extents step atY2/Y4. Exact metre scale and offsets remain documented architectural inference; the source is high aerial rather than orthographic survey.",
+    "unseen_elevations": "Rear/right and newly exposed raised rear-side continue the compatible opening/brick/siding grammar as explicit inferences.",
+    "result": "PASS architectural-clay source lock and visible plan hierarchy."
+  },
+  "per_view_pixel_findings": [
+    {
+      "path": "renders/front.png",
+      "findings": "Source front hierarchy is retained: low left living wing, raised right front gable, wide three-part picture window, green glazed-upper door, paired upper and short lower openings. Front registration is unchanged and complete subject fits with margin."
+    },
+    {
+      "path": "renders/front_corner.png",
+      "findings": "Shorter living-wing side, single source left-end window and source front openings remain coherent. Cross-roof shared-wall relationship is seated with no exposed shards, floating fascia or earlier coincident-face artifact."
+    },
+    {
+      "path": "renders/aerial.png",
+      "findings": "The deeper raised wing and shorter living wing now produce the source-defining stepped roof/plan. Both complete roofs, two seated vents, foundations and main entry remain visible. Newly exposed raised rear-side is authored rather than left blank."
+    },
+    {
+      "path": "renders/top.png",
+      "findings": "Prior P0 is closed: low wing is6m deep and raised wing8m, with a clear rear step and depth ratio1.333 close to the source approximate1.35. Known front faces stay aligned; source high-aerial projection is not treated as a surveyed plan."
+    },
+    {
+      "path": "renders/left_side.png",
+      "findings": "Complete single-window low gable, foundation and revised roof are visible. Behind it, the newly exposed raised rear-side has physical upper/lower openings and continuous siding/brick. The rejected extra low-end window pattern is absent."
+    },
+    {
+      "path": "renders/right_side.png",
+      "findings": "Complete inferred raised-side upper/lower opening rhythm, brick/siding boundary, foundation and roof fit with neutral margin. No blank surface or new construction discontinuity was found."
+    },
+    {
+      "path": "renders/rear.png",
+      "findings": "Recessed low-wing rear and door/steps now follow the revised Y2 datum, with raised wing continuing toY4. Complete source-consistent inferred envelope remains visible; the rear door is naturally partly occluded by the deeper adjacent wing."
+    },
+    {
+      "path": "renders/rear_side.png",
+      "findings": "Stepped rear composition, complete high gable, both roof systems, inferred openings and grade contacts are coherent. No floating projection or leftover equal-depth shell was found."
+    },
+    {
+      "path": "renders/facade_close.png",
+      "findings": "Actual picture-window section, wide centre/narrow side lights, pane, occupied living depth, green glazed-upper leaf and supported three-tread entrance remain correct after furniture relocation."
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "findings": "Low roof enters a sealed raised shared wall below the higher roof. Rake, fascia, ridge and clapboard terminate coherently after low-roof recentering; no hole, exposed carrier top or bright inspection-light patch was observed."
+    },
+    {
+      "path": "renders/glass_close.png",
+      "findings": "Recessed pane reveals sofa, relocated kitchen/dining and opposite physical openings at separate depths. This tight view proves occupation/optics; facade_close supplies the complete exterior opening section."
+    },
+    {
+      "path": "renders/entry_contacts.png",
+      "findings": "Three front treads visibly bear at grade and meet0.53m sill/threshold. The foundation has continuous ground contact. Fresh exact-GLB samples independently confirm front treads and relocated rear tread."
+    },
+    {
+      "path": "renders/stair_up.png",
+      "findings": "This retained context camera is still partly occluded by shared wall; it is not used alone for full-flight proof. It now also shows the separate relocated lower passage at the edge."
+    },
+    {
+      "path": "renders/stair_up_axial.png",
+      "findings": "Authored baseline camera exposes the complete upper tread run, lower living-floor connection, physical upper floor opening and guard relationships. Together with upper_arrival it proves the entire upper circulation connection."
+    },
+    {
+      "path": "renders/upper_arrival.png",
+      "findings": "Upper landing, cut destination floor, guard end posts and clear arrival surface are visibly continuous. No unsupported slot or floating guard endpoint recurs."
+    },
+    {
+      "path": "renders/stair_down.png",
+      "findings": "Relocated three-step lower flight is fully inspectable, with seated posts meeting rails and steps, a real floor/wall cut and continuous living departure."
+    },
+    {
+      "path": "renders/lower_arrival.png",
+      "findings": "Relocated lower bridge and all short-flight steps connect to the recreation floor through the physical shared-wall passage. No open slot, buried riser or post/rail separation was found."
+    },
+    {
+      "path": "renders/occupied_lower.png",
+      "findings": "Enclosed recreation programme remains visible with sofa, table, low windows, floor and ceiling. Unequal floor offsets and clearances are explicitly inferred, not engineering/code evidence."
+    },
+    {
+      "path": "renders/occupied_upper.png",
+      "findings": "Occupied raised sleeping level retains real paired openings, beds, a clear visible floor route and enclosed roof depth. No new furniture/envelope collision was seen."
+    }
+  ],
+  "phone_findings": [
+    {
+      "path": "boards/phone-source-comparison.png",
+      "findings": "The corrected shorter/deeper wing relationship and rear step are visible in the top row at phone scale. Front opening registration and cross-gable identity remain legible; source/model roles and inference boundary are labelled."
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "findings": "Physical picture-window section, roof junction, occupied glass depth and grounded entrance remain legible. The valid axial stair camera now replaces the former underside-only panel."
+    },
+    {
+      "path": "boards/phone-stair-supplement.png",
+      "findings": "Axial/upper-arrival pair, relocated lower-flight/arrival pair and both occupied levels prove connected circulation and residential occupation at phone scale. Unequal offsets and runtime boundary remain explicit."
+    }
+  ],
+  "categories": {
+    "identity_plan_proportions": "PASS clay: unequal wing depths and stepped outline now match source hierarchy while preserving known front registration and source-specific front/left openings. Metric values remain inferred.",
+    "roof_topology_contacts": "PASS: perpendicular gable systems, recentered shorter low roof, shared-wall closure, bounded fascia/ridge and both seated vents form a complete envelope.",
+    "complete_elevations": "PASS: front and single-window low end retain source identity; inferred rear/right and newly exposed raised rear-side are complete and inspectable.",
+    "openings_optics": "PASS clay: real carrier cuts, returns, recessed frames/panes and occupied depth remain visible. Front picture-window division and staggered paired upper/lower openings retain source grammar.",
+    "circulation_program": "PASS concept geometry: visible upper and lower flights, floor/wall cuts, continuous departures/arrival bridges and seated guard endpoints. Lower flight moved toY0.3 to fit shorter wing; residential furniture remains inside occupied floors.",
+    "foundation_entries": "PASS native geometry: base reachesZ0; front/rear native steps and0.53m thresholds remain coherent, with rear entry followingY2. Live terrain/route checks remain NOT TESTED.",
+    "camera_validity": "PASS full19-view suite: whole-building views retain neutral margin. Axial and upper-arrival jointly prove upper stairs; descending pair proves relocated lower stairs. Retained stair_up is context only.",
+    "materials": "PASS source-palette texture-free architectural clay, without PBR keeper claims.",
+    "landscape": "No designed landscape is claimed; green QA context is excluded from delivered native building.",
+    "lifecycle": "Clay review only, fixed native variant, no keeper/activation/publication or live-runtime claim."
+  },
+  "prior_review": {
+    "path": "../split-v002/review/independent-review.json",
+    "preserved": true,
+    "sha256": "15e81f2d171a7dd948f6a03f6bdf02442178f28fa9b12663dd7e211e17c81999"
+  },
+  "prior_blocker_closure": [
+    {
+      "id": "SPLIT-V002-P0-01",
+      "status": "closed",
+      "proof": [
+        "renders/top.png",
+        "renders/aerial.png",
+        "renders/front_corner.png",
+        "renders/left_side.png",
+        "renders/rear.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "finding": "Equal-depth rectangular model replaced by complete6m low/8m raised bodies with a stepped rear plan. Newly exposed raised side has actual openings and continued brick/siding; rear low-wall, entrance and furniture follow shortened depth. Front registration remains stable.",
+      "dependent_regression": "All19 exact-GLB views and all3 phone boards were reviewed anew; both stair connections, shared-wall closure, recentered low roof/vent and occupied programme remain coherent."
+    }
+  ],
+  "adversarial_regression": [
+    "No former shared end-strip coincident-face artifact, exposed gable top, roof shard or bright QA emitter patch reappears.",
+    "Single-window left low gable remains consistent with both compatible obliques; rejected rear-left opening proposals are not copied.",
+    "Relocated rear entry/steps follow shortened low-wing end. Lower departure, all three treads and bridge still connect afterY shift.",
+    "Upper full-flight axial proof is now in the authored baseline; the partly occluded context camera is not treated as sufficient alone.",
+    "Occupied lower/upper rooms, revised living kitchen/dining, physical openings, full footprint and neutral camera margins remain intact."
+  ],
+  "fresh_independent_verification": {
+    "status": "PASS_INDEPENDENT_BYTES_DIMENSIONS_AND_28_CONTACTS",
+    "model_sha256": "e5b80f45a78909bd0910f29bf0587d99c4bcb3225e7418e8d06e94c4dbfdf00f",
+    "model_bytes": 826444,
+    "triangles": 14572,
+    "source_hashes_checked": 5,
+    "whole_board_hashes_checked": 2,
+    "archived_script_hashes_checked": 6,
+    "supplement_hashes_checked": 22,
+    "render_count": 19,
+    "phone_board_count": 3,
+    "textures": 0,
+    "images": 0,
+    "cameras": 0,
+    "qa_lights": 0,
+    "native_bounds_m": [
+      [
+        -7.269999980926514,
+        -4.849999904632568,
+        0.0
+      ],
+      [
+        7.264999866485596,
+        4.269999980926514,
+        5.722499847412109
+      ]
+    ],
+    "probes": [
+      {
+        "id": "front first",
+        "point": [
+          -0.4,
+          -4.75
+        ],
+        "axis": "z",
+        "expected": 0.17666666666666667,
+        "actual": 0.17666666209697734,
+        "passed": true
+      },
+      {
+        "id": "front second",
+        "point": [
+          -0.4,
+          -4.43
+        ],
+        "axis": "z",
+        "expected": 0.35333333333333333,
+        "actual": 0.35333332419395447,
+        "passed": true
+      },
+      {
+        "id": "front top",
+        "point": [
+          -0.4,
+          -4.15
+        ],
+        "axis": "z",
+        "expected": 0.53,
+        "actual": 0.5299999713897705,
+        "passed": true
+      },
+      {
+        "id": "rear first",
+        "point": [
+          -0.4,
+          2.75
+        ],
+        "axis": "z",
+        "expected": 0.17666666666666667,
+        "actual": 0.17666666209697723,
+        "passed": true
+      },
+      {
+        "id": "living departure",
+        "point": [
+          -0.8,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.53,
+        "actual": 0.5299999713897706,
+        "passed": true
+      },
+      {
+        "id": "departure nose",
+        "point": [
+          -0.72,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.53,
+        "actual": 0.5299999713897705,
+        "passed": true
+      },
+      {
+        "id": "down tread1",
+        "point": [
+          -0.56,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.3866666666666667,
+        "actual": 0.3866666555404663,
+        "passed": true
+      },
+      {
+        "id": "down tread2",
+        "point": [
+          -0.28,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.24333333333333335,
+        "actual": 0.24333333969116216,
+        "passed": true
+      },
+      {
+        "id": "down tread3",
+        "point": [
+          0,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.1,
+        "actual": 0.10000000149011612,
+        "passed": true
+      },
+      {
+        "id": "up start living",
+        "point": [
+          -0.75,
+          -1.6
+        ],
+        "axis": "z",
+        "expected": 0.53,
+        "actual": 0.5299999713897705,
+        "passed": true
+      },
+      {
+        "id": "up first tread",
+        "point": [
+          -0.56,
+          -1.6
+        ],
+        "axis": "z",
+        "expected": 0.707,
+        "actual": 0.7070000171661377,
+        "passed": true
+      },
+      {
+        "id": "low roof carrier",
+        "point": [
+          -0.3,
+          0.5
+        ],
+        "axis": "z",
+        "expected": 3.7449999999999997,
+        "actual": 3.7450000046054766,
+        "passed": true
+      },
+      {
+        "id": "high roof carrier",
+        "point": [
+          6,
+          0
+        ],
+        "axis": "z",
+        "expected": 4.910827067669173,
+        "actual": 4.910826852016018,
+        "passed": true
+      },
+      {
+        "id": "lower bridge 0.1",
+        "point": [
+          0.1,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.1,
+        "actual": 0.10000000149011613,
+        "passed": true
+      },
+      {
+        "id": "lower bridge 0.25",
+        "point": [
+          0.25,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.1,
+        "actual": 0.10000000149011613,
+        "passed": true
+      },
+      {
+        "id": "lower bridge 0.35",
+        "point": [
+          0.35,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.1,
+        "actual": 0.10000000149011613,
+        "passed": true
+      },
+      {
+        "id": "lower bridge 0.5",
+        "point": [
+          0.5,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.1,
+        "actual": 0.10000000149011613,
+        "passed": true
+      },
+      {
+        "id": "lower bridge 0.68",
+        "point": [
+          0.68,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.1,
+        "actual": 0.10000000149011613,
+        "passed": true
+      },
+      {
+        "id": "lower bridge 0.8",
+        "point": [
+          0.8,
+          0.3
+        ],
+        "axis": "z",
+        "expected": 0.1,
+        "actual": 0.10000000149011612,
+        "passed": true
+      },
+      {
+        "id": "upper bridge 2.05",
+        "point": [
+          2.05,
+          -1.6
+        ],
+        "axis": "z",
+        "expected": 2.3,
+        "actual": 2.299999952316284,
+        "passed": true
+      },
+      {
+        "id": "upper bridge 2.2",
+        "point": [
+          2.2,
+          -1.6
+        ],
+        "axis": "z",
+        "expected": 2.3,
+        "actual": 2.299999952316284,
+        "passed": true
+      },
+      {
+        "id": "upper bridge 2.3",
+        "point": [
+          2.3,
+          -1.6
+        ],
+        "axis": "z",
+        "expected": 2.3,
+        "actual": 2.299999952316284,
+        "passed": true
+      },
+      {
+        "id": "upper bridge 2.35",
+        "point": [
+          2.35,
+          -1.6
+        ],
+        "axis": "z",
+        "expected": 2.3,
+        "actual": 2.299999952316284,
+        "passed": true
+      },
+      {
+        "id": "upper bridge 2.4",
+        "point": [
+          2.4,
+          -1.6
+        ],
+        "axis": "z",
+        "expected": 2.3,
+        "actual": 2.299999952316284,
+        "passed": true
+      },
+      {
+        "id": "upper bridge 2.5",
+        "point": [
+          2.5,
+          -1.6
+        ],
+        "axis": "z",
+        "expected": 2.3,
+        "actual": 2.299999952316284,
+        "passed": true
+      },
+      {
+        "id": "shared closure (-3.9, 4.2)",
+        "point": [
+          -3.9,
+          4.2
+        ],
+        "axis": "x",
+        "expected": 0.35,
+        "actual": 0.34999990463256836,
+        "passed": true
+      },
+      {
+        "id": "shared closure (3.9, 4.2)",
+        "point": [
+          3.9,
+          4.2
+        ],
+        "axis": "x",
+        "expected": 0.35,
+        "actual": 0.34999990463256836,
+        "passed": true
+      },
+      {
+        "id": "shared closure (0, 4.4)",
+        "point": [
+          0,
+          4.4
+        ],
+        "axis": "x",
+        "expected": 0.35,
+        "actual": 0.3499999940395355,
+        "passed": true
+      }
+    ]
+  },
+  "verification_method": "Read-only independent trimesh import of delivered GLB; world triangles mapped glTF(x,y,z) to Blender-native(x,-z,y). Vectorized Moller-Trumbore rays independently checked all28 tread, departure, bridge, roof and shared-wall contacts. Source/whole-board/script/image hashes and image dimensions were freshly read and checked; no source code was executed to produce the review verdict.",
+  "supporting_records": [
+    "sources/source-provenance.json",
+    "prework-manifest.json",
+    "evidence/delivery-verification.json",
+    "evidence/archived-builder-scripts-verified.json",
+    "evidence/measured-entrances-and-contacts.json",
+    "evidence/review-supplement-manifest.json",
+    "review/runtime-integration-NOT-TESTED.md"
+  ],
+  "blockers": [],
+  "non_blocking_findings": [],
+  "limitations": [
+    "Original generated teaching design, not a replica of a named historic property; no historic construction year or surveyed plan is claimed.",
+    "Exact metric dimensions, concealed roof structure, unseen rear/right elevations, newly exposed raised-side composition and0.10/0.53/2.30m internal floor offsets are architectural inferences.",
+    "Source top is near-vertical high aerial with projection effects, not a survey. This pass covers the preserved visible depth hierarchy and source registration within the clay profile.",
+    "Fine materials, surface weathering, operating systems and detailed construction certification are outside clay review. No engineering, access, fire or code-compliance approval.",
+    "All live placement, terrain fit, route connections, resizing, editing/recovery, save/reload, runtime performance and capture remain NOT TESTED.",
+    "Exact variant remains fixed native scale, uninstalled and unactivated. No generic sibling substitution, seed activation, catalogue publication, paid generation or deployment is authorized by this review."
+  ],
+  "reviewer_modified_builder_source_or_metadata": false,
+  "reviewer_output": "review/independent-review.json"
+}

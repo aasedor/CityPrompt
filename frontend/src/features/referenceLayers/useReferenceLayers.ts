@@ -2,7 +2,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { getApiErrorMessage } from '@/services/api';
-import { referenceLayerQueryKey, referenceLayersApi } from './api';
+import { referenceLayerQueryKey, referenceLayersApi, type ReferenceLayer } from './api';
+import { isLegacyCalgaryTransportLayer } from './existingTransport';
 
 const keyFor = (projectId: string) => `cityprompt:reference-visibility:${projectId}`;
 
@@ -28,7 +29,15 @@ export function useReferenceLayers(projectId: string | undefined) {
     enabled: Boolean(projectId),
     staleTime: 30_000,
   });
-  const layers = query.data?.layers ?? [];
+  const { layers, legacyTransportLayers } = useMemo(() => {
+    const layers: ReferenceLayer[] = [], legacyTransportLayers: ReferenceLayer[] = [];
+    for (const layer of query.data?.layers ?? []) {
+      // Retire the route pilot without deleting project data or changing a
+      // saved park connection that still refers to its original snapshot.
+      (isLegacyCalgaryTransportLayer(layer) ? legacyTransportLayers : layers).push(layer);
+    }
+    return { layers, legacyTransportLayers };
+  }, [query.data?.layers]);
   const toggleLayer = useCallback((layerId: string) => {
     if (!projectId) return;
     setHiddenByProject((previous) => {
@@ -47,6 +56,7 @@ export function useReferenceLayers(projectId: string | undefined) {
   });
   return {
     layers,
+    legacyTransportLayers,
     visibleLayers: layers.filter((layer) => !hiddenIds.has(layer.id)),
     hiddenIds,
     toggleLayer,

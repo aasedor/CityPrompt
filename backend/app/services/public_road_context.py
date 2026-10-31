@@ -1,8 +1,45 @@
 """Read-only, bounded map context for optional conceptual street connections."""
+
+import asyncio
 import math
+import time
+from collections import OrderedDict
+
+import httpx
 from shapely.geometry import Polygon
 
-from app.services.osm_context import OSMContextFetcher
+from app.services.osm_context import OSMContextFetcher, OVERPASS_URL
+
+# Independent read-only OSM mirrors, listed in the official Overpass API wiki.
+# A complete lookup stays within the browser's 35 s request deadline.
+PUBLIC_ROAD_ENDPOINTS = (OVERPASS_URL, "https://overpass.private.coffee/api/interpreter")
+CONTEXT_CACHE_TTL_SECONDS = 600
+CONTEXT_CACHE_MAX_ENTRIES = 32
+_context_cache: OrderedDict[bytes, tuple[float, dict]] = OrderedDict()
+
+
+async def _nearby_context(shape):
+    key = shape.wkb
+    cached = _context_cache.get(key)
+    if cached and time.monotonic() - cached[0] < CONTEXT_CACHE_TTL_SECONDS:
+        _context_cache.move_to_end(key)
+        return cached[1]
+    _context_cache.pop(key, None)
+    fetcher = OSMContextFetcher(
+        timeout=8,
+        endpoints=PUBLIC_ROAD_ENDPOINTS,
+        feature_caps={"roads": 500, "buildings": 500, "water": 100, "parks": 100},
+    )
+    try:
+        data = await asyncio.wait_for(fetcher.fetch(shape), timeout=20)
+    except TimeoutError as exc:
+        raise httpx.ReadTimeout("Nearby map lookup exceeded its time limit.") from exc
+    if data.get("truncated"):
+        raise ValueError("Nearby map data is too dense for automatic connections. Position a connection manually.")
+    _context_cache[key] = (time.monotonic(), data)
+    while len(_context_cache) > CONTEXT_CACHE_MAX_ENTRIES:
+        _context_cache.popitem(last=False)
+    return data
 
 
 def eligible_public_road(road: dict) -> bool:
@@ -13,8 +50,10 @@ def eligible_public_road(road: dict) -> bool:
         return False
     if any(":conditional" in key for key in tags):
         return False
-    if any(str(tags.get(key, "yes")).lower() not in {"yes", "designated", "permissive"}
-           for key in ["access", "vehicle", "motor_vehicle"]):
+    if any(
+        str(tags.get(key, "yes")).lower() not in {"yes", "designated", "permissive"}
+        for key in ["access", "vehicle", "motor_vehicle"]
+    ):
         return False
     if any(str(tags.get(key, "no")).lower() not in {"no", "false", "0"} for key in ["bridge", "tunnel"]):
         return False
@@ -26,12 +65,15 @@ def eligible_public_road(road: dict) -> bool:
 
 async def fetch_public_road_context(shape, clear_inside: bool = False):
     minx, miny, maxx, maxy = shape.bounds
-    if (abs(shape.centroid.y) > 80 or (maxx - minx) * 111320 * math.cos(math.radians(shape.centroid.y)) > 1500
-            or (maxy - miny) * 111320 > 1500):
-        raise ValueError("Automatic connections support sites up to 1.5 km across. Position a connection manually for this site.")
-    data = await OSMContextFetcher(timeout=25, feature_caps={"roads": 500, "buildings": 500, "water": 100, "parks": 100}).fetch(shape)
-    if data.get("truncated"):
-        raise ValueError("Nearby map data is too dense for automatic connections. Position a connection manually.")
+    if (
+        abs(shape.centroid.y) > 80
+        or (maxx - minx) * 111320 * math.cos(math.radians(shape.centroid.y)) > 1500
+        or (maxy - miny) * 111320 > 1500
+    ):
+        raise ValueError(
+            "Automatic connections support sites up to 1.5 km across. Position a connection manually for this site."
+        )
+    data = await _nearby_context(shape)
     blockers = []
     for building in data.get("buildings", []):
         coordinates = building["coordinates"]
@@ -43,10 +85,27 @@ async def fetch_public_road_context(shape, clear_inside: bool = False):
             polygon = polygon.envelope
         outside = polygon.difference(shape) if clear_inside else polygon
         parts = [outside] if outside.geom_type == "Polygon" else getattr(outside, "geoms", [])
-        blockers.extend([list(part.exterior.coords) for part in parts if part.geom_type == "Polygon" and not part.is_empty])
-    blockers += [w["coordinates"] for w in data.get("water", [])
-                 if len(w["coordinates"]) >= 4 and w["coordinates"][0] == w["coordinates"][-1]]
-    return {"source": "OpenStreetMap", "fetched_at": data.get("fetched_at"), "blockers": blockers,
-            "roads": [{"id": f"osm:way:{r['osm_id']}", "label": r.get("name") or "Mapped public street",
-                       "points": r["coordinates"], "widthM": r["width_m"]}
-                      for r in data.get("roads", []) if eligible_public_road(r)]}
+        blockers.extend(
+            [list(part.exterior.coords) for part in parts if part.geom_type == "Polygon" and not part.is_empty]
+        )
+    blockers += [
+        w["coordinates"]
+        for w in data.get("water", [])
+        if len(w["coordinates"]) >= 4 and w["coordinates"][0] == w["coordinates"][-1]
+    ]
+    return {
+        "source": "OpenStreetMap",
+        "provider_url": data.get("provider_url"),
+        "fetched_at": data.get("fetched_at"),
+        "blockers": blockers,
+        "roads": [
+            {
+                "id": f"osm:way:{r['osm_id']}",
+                "label": r.get("name") or "Mapped public street",
+                "points": r["coordinates"],
+                "widthM": r["width_m"],
+            }
+            for r in data.get("roads", [])
+            if eligible_public_road(r)
+        ],
+    }

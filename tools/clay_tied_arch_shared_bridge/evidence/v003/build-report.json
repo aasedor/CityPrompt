@@ -1,0 +1,193 @@
+{
+  "candidate": "clay-tied-arch-shared-bridge-clay-v003",
+  "status": "build_valid",
+  "representation_kind": "architectural_clay",
+  "authoring": {
+    "mesh_objects": 33,
+    "vertices": 13849,
+    "polygons": 21182,
+    "triangles": 21182,
+    "path": "clay-tied-arch-shared-bridge-clay-v003-authoring.blend",
+    "bytes": 2355216,
+    "sha256": "31d56d1965945decb810a554e66526e2703ede16a42faf88ec3bca575b271786"
+  },
+  "runtime": {
+    "path": "clay-tied-arch-shared-bridge-clay-v003.glb",
+    "bytes": 1296740,
+    "sha256": "a6424a720c83ae47ac8981b88227d1af2588e86ec4edbf35a2ddf8053ff73a56",
+    "meshes": 24,
+    "materials": 24,
+    "textures": 0,
+    "images": 0,
+    "mesh_objects": 24,
+    "vertices": 13849,
+    "polygons": 21182,
+    "triangles": 21182
+  },
+  "original_bounds_m": [
+    [
+      -140.0,
+      -200.0,
+      0.0
+    ],
+    [
+      140.0,
+      200.0,
+      31.479999542236328
+    ]
+  ],
+  "delivered_bounds_m": [
+    [
+      -140.0,
+      -200.0,
+      0.0
+    ],
+    [
+      140.0,
+      200.0,
+      31.479999542236328
+    ]
+  ],
+  "max_roundtrip_delta_m": 0.0,
+  "design_dimensions_m": {
+    "width": 52.0,
+    "depth": 13.2,
+    "height": 14.3
+  },
+  "native_dimensions_m": {
+    "width": 280.0,
+    "depth": 400.0,
+    "height": 31.479999542236328
+  },
+  "native_bottom_center_m": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "source_components_by_role": {
+    "water": 1,
+    "arch": 2,
+    "steel": 1,
+    "hardware": 1,
+    "red": 1,
+    "path": 1,
+    "concrete": 3,
+    "planting": 2,
+    "grass": 1,
+    "straw": 1,
+    "shrub": 1,
+    "flower": 1,
+    "rail": 1,
+    "paving": 1,
+    "quay": 1,
+    "brick": 2,
+    "brick2": 1,
+    "dark": 2,
+    "white": 1,
+    "pale": 3,
+    "roof": 2,
+    "stone": 1,
+    "timber": 1,
+    "tree": 1
+  },
+  "render_source": "actual optimized GLB reimport; no geometry/material replacement",
+  "renders": [
+    "renders/front.png",
+    "renders/front_corner.png",
+    "renders/aerial.png",
+    "renders/top.png",
+    "renders/left_side.png",
+    "renders/right_side.png",
+    "renders/rear.png",
+    "renders/rear_side.png",
+    "renders/facade_close.png",
+    "renders/architecture_close.png",
+    "renders/glass_close.png",
+    "renders/arch_springing.png",
+    "renders/hangers.png",
+    "renders/planter_divider.png",
+    "renders/cycle_lane.png",
+    "renders/deck_edge.png",
+    "renders/quay_under.png",
+    "renders/rear_north.png"
+  ],
+  "render_resolution": [
+    1440,
+    1080
+  ],
+  "render_engine": "CYCLES",
+  "render_device": "CPU",
+  "camera_safety_margin": {},
+  "detail_camera_landmarks": {},
+  "contacts": [
+    {
+      "name": "Tied-arch bridge: deck hung from two leaning arches, springings on quay abutments, canal between brick quays",
+      "box": [
+        -26.0,
+        26.0,
+        -6.6,
+        6.6
+      ]
+    }
+  ],
+  "opening_sections": [],
+  "authoring_modules": {
+    "canal": [
+      "Canal"
+    ],
+    "quays": [
+      "quays quay",
+      "quays paving",
+      "quays stone",
+      "quays concrete",
+      "quays dark",
+      "quays pale"
+    ],
+    "deck": [
+      "deck steel",
+      "deck arch",
+      "deck red",
+      "deck path",
+      "deck pale",
+      "deck concrete",
+      "deck planting",
+      "deck white"
+    ],
+    "railings": [
+      "railings rail"
+    ],
+    "arches": [
+      "arches arch",
+      "arches hardware",
+      "arches concrete"
+    ],
+    "planter": [
+      "planter planting",
+      "planter straw",
+      "planter grass",
+      "planter shrub",
+      "planter flower"
+    ],
+    "context": [
+      "context brick2",
+      "context roof",
+      "context dark",
+      "context pale",
+      "context brick",
+      "context timber",
+      "context tree",
+      "Warehouse sheds roof",
+      "Warehouse sheds"
+    ]
+  },
+  "carrier_aperture_audit": "PASS_CARRIER_APERTURES",
+  "renders_kept_from_interrupted_pass": [],
+  "finished_utc": "2026-10-19T23:47:03.712569+00:00",
+  "delivery_and_render_seconds": 5382.691192626007,
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "runtime_imported": false,
+  "scaling_verified": false,
+  "independent_review": "pending",
+  "builder_visual_review": "pending"
+}

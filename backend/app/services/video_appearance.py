@@ -137,8 +137,9 @@ async def run_appearance_render(req: VideoAppearanceRequest, user, db, *, attemp
                 "unproduced" if response.status_code in {400, 401, 403, 404, 409, 413, 415, 422, 429} else "unknown"
             )
             await write_evidence(
-                attempt, "provider-error", {"billing_status": billing, "status_code": response.status_code,
-                                            "provider_error_code": provider_code}
+                attempt,
+                "provider-error",
+                {"billing_status": billing, "status_code": response.status_code, "provider_error_code": provider_code},
             )
             raise HTTPException(502, "The photographic guide did not finish. Recover this attempt before trying again.")
         body = response.json()

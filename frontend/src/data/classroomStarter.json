@@ -471,7 +471,190 @@
   "revision": "4ff46e23abc65c10c77525e82f5d5b8c614218b9c920c0cfbed72060f62f165f",
   "status": "local-pilot-runtime-pending"
 }
-],
+,
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "urban_pedestrian_footbridge",
+  "variantId": "timber_covered_bridge_route_v1",
+  "placementId": "timber_covered_bridge_route_v1",
+  "revision": "4275b01adc0228982522fa7e5201d026e5823ee264f549e4ebda29ef56ebeeed",
+  "status": "local-pilot-runtime-pending",
+  "review": {
+    "asset": "derived-pilot-pending",
+    "runtime": "NOT TESTED"
+  }
+},
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "landscape_park_pedestrian_bridge",
+      "variantId": "planted_green_bridge_route_v1",
+      "placementId": "planted_green_bridge_route_v1",
+      "revision": "8f6984387ce9cb2ce1a67724ad6cac7f2eb093980fad074c4267775c315c30a9",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_stair.glb",
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_end.glb",
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_span.glb",
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_centre.glb",
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_right_span.glb",
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_right_end.glb",
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_right_stair.glb",
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_landscape.glb",
+        "public:street-kits/pilots/planted_green_bridge_route_v1/green_right_landscape.glb"
+      ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "rail_transit_viaduct",
+      "variantId": "brick_arch_viaduct_route_v1",
+      "placementId": "brick_arch_viaduct_route_v1",
+      "revision": "8d08d3198c319e64b24b047c168c7fc7f70bac0c27413486a75a18224da9bcb3",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/brick_arch_viaduct_route_v1/bridge_left_end.glb",
+        "public:street-kits/pilots/brick_arch_viaduct_route_v1/bridge_main.glb",
+        "public:street-kits/pilots/brick_arch_viaduct_route_v1/bridge_right_end.glb"
+      ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "rail_transit_viaduct",
+      "variantId": "rail_through_truss_route_v1",
+      "placementId": "rail_through_truss_route_v1",
+      "revision": "7a52155f5281a1c24fac0f4a101c7b063d1146885d04758e175574177d0fa8be",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/rail_through_truss_route_v1/bridge_left_end.glb",
+        "public:street-kits/pilots/rail_through_truss_route_v1/bridge_main.glb",
+        "public:street-kits/pilots/rail_through_truss_route_v1/bridge_right_end.glb",
+        "public:archetypes/streets/rail-transit-viaduct/rail-through-truss-route-v1.png"
+      ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "urban_vehicular_bridge",
+      "variantId": "stone_arch_road_bridge_route_v1",
+      "placementId": "stone_arch_road_bridge_route_v1",
+      "revision": "a256213669fee5c69ec63dbc19b400b68bb778ad579c7afe993970e88bd33076",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_left_end.glb",
+        "public:street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_main.glb",
+        "public:street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_right_end.glb"
+      ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "shared_cycle_pedestrian_bridge",
+      "variantId": "tied_arch_shared_bridge_route_v1",
+      "placementId": "tied_arch_shared_bridge_route_v1",
+      "revision": "578ad2d4ad34c6857a6683b006516588b5de8c3ffc8c80b7eefef3b50b7af08e",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_left_end.glb",
+        "public:street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_main.glb",
+        "public:street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_right_end.glb"
+      ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "urban_vehicular_bridge",
+      "variantId": "steel_truss_road_bridge_route_v1",
+      "placementId": "steel_truss_road_bridge_route_v1",
+      "revision": "b12e3e379cacb8138809d730432afa8dc5ad624e577976d156993f742fb0f26b",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_left_end.glb",
+        "public:street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_main.glb",
+        "public:street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_right_end.glb",
+        "public:archetypes/streets/urban-vehicular-bridge/steel-truss-road-bridge-route-v1.png"
+      ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "dedicated_cycle_bridge",
+      "variantId": "swooping_cycle_flyover_route_v1",
+      "placementId": "swooping_cycle_flyover_route_v1",
+      "revision": "3d630322a51347ed91e820ee5409a8a7bf0a9a6ab46048852eec4d859cba4006",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/swooping_cycle_flyover_route_v1/bridge_topology.glb",
+        "public:archetypes/streets/dedicated-cycle-bridge/swooping-cycle-flyover-route-v1.png"
+      ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "dedicated_cycle_bridge",
+      "variantId": "cable_stayed_cycle_ring_route_v1",
+      "placementId": "cable_stayed_cycle_ring_route_v1",
+      "revision": "4f117d8cdd59208d6ff9f60b8a16f26872110897abc3c15ae64df97243b8c684",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_core.glb",
+        "public:street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_left.glb",
+        "public:street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_right.glb",
+        "public:archetypes/streets/dedicated-cycle-bridge/cable-stayed-cycle-ring-route-v1.png"
+      ]
+    },
+    {
+      "domain": "street",
+      "representation": "native-modules",
+      "archetypeId": "urban_pedestrian_footbridge",
+      "variantId": "weathering_steel_v_footbridge_route_v1",
+      "placementId": "weathering_steel_v_footbridge_route_v1",
+      "revision": "29f94dbf5c21b80b5ed1309b2989d22bde1fa46574f4da3eb21f84ac0fd63f44",
+      "status": "local-pilot-runtime-pending",
+      "review": {
+        "asset": "derived-pilot-pending",
+        "runtime": "NOT TESTED"
+      },
+      "dependencies": [
+        "public:street-kits/pilots/weathering_steel_v_footbridge_route_v1/bridge_topology.glb",
+        "public:archetypes/streets/urban-pedestrian-footbridge/weathering-steel-v-footbridge-route-v1.png"
+      ]
+    }
+  ],
   "dependencies": [
     {
       "id": "public:archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",
@@ -814,6 +997,244 @@
       "bytes": 8353,
       "sha256": "2729664f70408c6cede7d98b6c97f3ab14e866115661ba434efd6133f9303401",
       "normalizeText": true
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_stair.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_left_stair.glb",
+      "sha256": "f2beaaa8e140b1b4cf40f043983e3f851849e59587c224e503dac6bc9b8a58af",
+      "bytes": 81520
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_left_end.glb",
+      "sha256": "0693343800ea8126aedf27faf31adf876b1fce1ae4152df18d6901aff97e02d6",
+      "bytes": 1057816
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_span.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_left_span.glb",
+      "sha256": "771d221ec444d5bd723ddc12df83254337f54a0262f666974e6813303d1e2ec7",
+      "bytes": 64384
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_centre.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_centre.glb",
+      "sha256": "4bbcc024ca853bfc9dfbdb090d0b172dd78e188177ef2bd38fbada0c23194f59",
+      "bytes": 6653328
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_right_span.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_right_span.glb",
+      "sha256": "cc7b8611c2f941a34d29c676f70092d081bd9ab4772c544ea9f77df301945837",
+      "bytes": 64384
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_right_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_right_end.glb",
+      "sha256": "bcbf8e2d3faad5d9bb2a057f3cb2c3a04de8cc95dd049b2139a30c39de6eb60e",
+      "bytes": 537836
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_right_stair.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_right_stair.glb",
+      "sha256": "018eabb68f9d61e5a943415b129cd8e3398602d0e9f2be4448fdb84a15e99754",
+      "bytes": 81520
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_left_landscape.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_left_landscape.glb",
+      "sha256": "e01230723c10cf69bfec0a8978658a4c0e39cdf84c77c2e8f723db6de039e5d3",
+      "bytes": 3006540
+    },
+    {
+      "id": "public:street-kits/pilots/planted_green_bridge_route_v1/green_right_landscape.glb",
+      "location": "public",
+      "path": "street-kits/pilots/planted_green_bridge_route_v1/green_right_landscape.glb",
+      "sha256": "8e338b4aedf9eddb86a67cc45150cff0b1e4ad0a24535cf4c8997d2beca84788",
+      "bytes": 3565084
+    },
+    {
+      "id": "public:street-kits/pilots/brick_arch_viaduct_route_v1/bridge_left_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/brick_arch_viaduct_route_v1/bridge_left_end.glb",
+      "sha256": "a55c9691f3d02f74f8eff291388ebfaab92ea3fb189f53c16b2461547b5fe27c",
+      "bytes": 690944
+    },
+    {
+      "id": "public:street-kits/pilots/brick_arch_viaduct_route_v1/bridge_main.glb",
+      "location": "public",
+      "path": "street-kits/pilots/brick_arch_viaduct_route_v1/bridge_main.glb",
+      "sha256": "41fd2d4f3291d5ea98275e3200065771218c76414f87f2530da4b855afc387d3",
+      "bytes": 462356
+    },
+    {
+      "id": "public:street-kits/pilots/brick_arch_viaduct_route_v1/bridge_right_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/brick_arch_viaduct_route_v1/bridge_right_end.glb",
+      "sha256": "511d0030c9397b1957ef38a4464286a2a3e6d433cd110ed726d53f8871a4428d",
+      "bytes": 183004
+    },
+    {
+      "id": "public:street-kits/pilots/rail_through_truss_route_v1/bridge_left_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/rail_through_truss_route_v1/bridge_left_end.glb",
+      "sha256": "355b6ef79a31012bc29063ecbf04eb49ea49f190db562c3a6fdc7d96894168dc",
+      "bytes": 1526988
+    },
+    {
+      "id": "public:street-kits/pilots/rail_through_truss_route_v1/bridge_main.glb",
+      "location": "public",
+      "path": "street-kits/pilots/rail_through_truss_route_v1/bridge_main.glb",
+      "sha256": "1cf84e7c690e9d9588f5ea7b8d57454d441610bb8518c659a7c9bfba94e7a9e6",
+      "bytes": 440616
+    },
+    {
+      "id": "public:street-kits/pilots/rail_through_truss_route_v1/bridge_right_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/rail_through_truss_route_v1/bridge_right_end.glb",
+      "sha256": "abd7125c42ed04601532429ac39d92c22f1b3977795adcbd77c7d2d966776dcc",
+      "bytes": 774320
+    },
+    {
+      "id": "public:street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_left_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_left_end.glb",
+      "sha256": "a230096f64c591b6cb5977d5c70e471d7c71dda61b53124e3d52eae663a32db2",
+      "bytes": 1543672
+    },
+    {
+      "id": "public:street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_main.glb",
+      "location": "public",
+      "path": "street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_main.glb",
+      "sha256": "edc8fe9c527ff7ef6438047caa781914c24793a34df988729df19726ab1ec7a7",
+      "bytes": 1063988
+    },
+    {
+      "id": "public:street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_right_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_right_end.glb",
+      "sha256": "d983895be4525b7d13d4b8e50994d7a8ecf1a2e3795464c15e981d87428e670d",
+      "bytes": 1782380
+    },
+    {
+      "id": "public:street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_left_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_left_end.glb",
+      "sha256": "d010b94214a5cab5811434a008dc43c39c01881facaf2b6b95cf6a1a01cfb71f",
+      "bytes": 296668
+    },
+    {
+      "id": "public:street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_main.glb",
+      "location": "public",
+      "path": "street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_main.glb",
+      "sha256": "bad3eba068f12519b36322a29d6dfee10e3d95f37ce36294a0a57927cfea193a",
+      "bytes": 1093388
+    },
+    {
+      "id": "public:street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_right_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_right_end.glb",
+      "sha256": "ff5938e089d7b1bccd2384341a1985a529ee4986381633ee5607c685bcefbecd",
+      "bytes": 296668
+    },
+    {
+      "id": "public:street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_left_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_left_end.glb",
+      "sha256": "86ad9896f3aab6786778326ad5cd98d23c3ddd7350b71780027d2f5917df9f5b",
+      "bytes": 857728
+    },
+    {
+      "id": "public:street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_main.glb",
+      "location": "public",
+      "path": "street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_main.glb",
+      "sha256": "c6812d50d36a7535fea305a6e1ebc33cf7818e7f49f4ca186bbb32cad52a590f",
+      "bytes": 1123596
+    },
+    {
+      "id": "public:street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_right_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_right_end.glb",
+      "sha256": "f0cb3c606d6ca13fd486427fdaf1d9db1cc4e90d72cdb26ea3d5c86433932514",
+      "bytes": 860156
+    },
+    {
+      "id": "public:street-kits/pilots/swooping_cycle_flyover_route_v1/bridge_topology.glb",
+      "location": "public",
+      "path": "street-kits/pilots/swooping_cycle_flyover_route_v1/bridge_topology.glb",
+      "sha256": "33c9c9020fbfb15c2292c2c79b0a5ac430fb0339bd50695bb36fd0590f3b410d",
+      "bytes": 2584540
+    },
+    {
+      "id": "public:street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_core.glb",
+      "location": "public",
+      "path": "street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_core.glb",
+      "sha256": "9b533b6ae48465983ad935b0176af36aa0edc7170072f4e0ea8ee9452a64a7c4",
+      "bytes": 393560
+    },
+    {
+      "id": "public:street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_left.glb",
+      "location": "public",
+      "path": "street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_left.glb",
+      "sha256": "0ef5dcc10792346171d4f3bd012b97b3b096ccf7a32a83fa67259acf55d2bcb1",
+      "bytes": 123680
+    },
+    {
+      "id": "public:street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_right.glb",
+      "location": "public",
+      "path": "street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_right.glb",
+      "sha256": "16cad0ce7e5ade06693c61944e2892536c678fd8796d7f737c324fdd9ec870b9",
+      "bytes": 123680
+    },
+    {
+      "id": "public:street-kits/pilots/weathering_steel_v_footbridge_route_v1/bridge_topology.glb",
+      "location": "public",
+      "path": "street-kits/pilots/weathering_steel_v_footbridge_route_v1/bridge_topology.glb",
+      "sha256": "4aa83ba538242870786a5463716234f139671b300489ca9e89177becc70c1fc5",
+      "bytes": 836828
+    },
+    {
+      "id": "public:archetypes/streets/rail-transit-viaduct/rail-through-truss-route-v1.png",
+      "location": "public",
+      "path": "archetypes/streets/rail-transit-viaduct/rail-through-truss-route-v1.png",
+      "sha256": "05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3",
+      "bytes": 1216789
+    },
+    {
+      "id": "public:archetypes/streets/urban-vehicular-bridge/steel-truss-road-bridge-route-v1.png",
+      "location": "public",
+      "path": "archetypes/streets/urban-vehicular-bridge/steel-truss-road-bridge-route-v1.png",
+      "sha256": "42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6",
+      "bytes": 1315817
+    },
+    {
+      "id": "public:archetypes/streets/dedicated-cycle-bridge/swooping-cycle-flyover-route-v1.png",
+      "location": "public",
+      "path": "archetypes/streets/dedicated-cycle-bridge/swooping-cycle-flyover-route-v1.png",
+      "sha256": "ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd",
+      "bytes": 1373407
+    },
+    {
+      "id": "public:archetypes/streets/dedicated-cycle-bridge/cable-stayed-cycle-ring-route-v1.png",
+      "location": "public",
+      "path": "archetypes/streets/dedicated-cycle-bridge/cable-stayed-cycle-ring-route-v1.png",
+      "sha256": "c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66",
+      "bytes": 1220653
+    },
+    {
+      "id": "public:archetypes/streets/urban-pedestrian-footbridge/weathering-steel-v-footbridge-route-v1.png",
+      "location": "public",
+      "path": "archetypes/streets/urban-pedestrian-footbridge/weathering-steel-v-footbridge-route-v1.png",
+      "sha256": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7",
+      "bytes": 1431655
     }
   ]
 }

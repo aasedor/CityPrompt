@@ -7,11 +7,8 @@ import { resolveStreetJunctionLayout } from '@/components/viewer/globe/streetJun
 import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetProgram';
 import { extractZoneCenterline } from '@/utils/roadGeometry';
 import { isFixedSectionStreet } from './streetPlacement';
-import { nativeStreetPilotForZone } from '@/components/viewer/globe/nativeStreetPilot';
-
-/** Exact, flat walking surfaces can overlap without a vehicle junction kit. */
-export const isSurfacePath = (zone: Pick<SiteZone, 'zone_type' | 'properties'>) =>
-  nativeStreetPilotForZone(zone, true)?.program?.adapter === 'narrow-pathway-v1';
+import { isSurfacePath } from './surfacePath';
+export { isSurfacePath } from './surfacePath';
 
 /** Only accept overlaps that the shared junction renderer can actually join. */
 export function streetConnectionProblem(candidate: Pick<SiteZone, 'coordinates'|'properties'> & Partial<SiteZone>, zones: SiteZone[]): string | null {
@@ -36,7 +33,7 @@ export function streetConnectionProblem(candidate: Pick<SiteZone, 'coordinates'|
       const ax=(q[0]-p[0])*sx,ay=(q[1]-p[1])*METERS_PER_DEG_LAT,bx=(s[0]-r[0])*sx,by=(s[1]-r[1])*METERS_PER_DEG_LAT;
       return (ax*bx+ay*by)/Math.hypot(ax,ay)/Math.hypot(bx,by)<-.999;
     }));
-    if(!aligned)return 'This overlap cannot form a complete junction. Use a 45–135° crossing with longer straight approaches, align the endpoints, or separate the streets.';
+    if(!aligned)return 'There is not enough clear space for this junction. Try moving the connection along the street, leaving longer approaches, or use an angle between 30° and 150°.';
   }
   const network = [...zones.filter(zone => zone.id !== draft.id), draft];
   if (detectConnectedStreetIntersections(network, true).some(node =>

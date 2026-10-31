@@ -1,0 +1,187 @@
+{
+  "schema": "cityprompt.planning-history-candidates@1",
+  "records": [
+    {
+      "id": "prairie_school_house",
+      "title": "Prairie School house",
+      "archetypeId": "prairie_school_house",
+      "variantId": "roman_brick_hip_roof",
+      "modelSha256": "0d84ec0a10f478d3c57f97ff7de47be1a9c83dcfaf5caa189492bdf040df9b7a",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "reform_interwar"
+      ],
+      "designPeriod": "Prairie School influence, c. 1890s–1920s; contemporary original interpretation",
+      "eraRationale": "The exact original source uses a horizontal house composition, low roof, broad eaves and Roman-brick emphasis.",
+      "canadianContext": "Compare Canadian domestic landscape relationships while keeping Prairie School distinct from the Canadian geographic Prairies.",
+      "internationalContext": "The movement’s early 20th-century Midwestern US context is an international teaching connection.",
+      "sourceIds": [
+        "prairie"
+      ],
+      "formId": "single_family",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [],
+      "styleLabel": "Prairie School",
+      "typeLabel": "Detached single-family house"
+    },
+    {
+      "id": "postmodern_neighbourhood_library",
+      "title": "Postmodern neighbourhood library",
+      "archetypeId": "postmodern_neighbourhood_library",
+      "variantId": "broken_pediment_reading_room",
+      "modelSha256": "7fb72964e6da37efab1c3f3a024c33bceb445c52b7b4e2a7dce5b9012d9c534e",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "late_twentieth"
+      ],
+      "designPeriod": "Postmodern influence, c. 1960s–1990s; contemporary original interpretation",
+      "eraRationale": "The original library uses a strongly marked entrance, historical references, contrasting forms and colour.",
+      "canadianContext": "Compare late 20th-century civic identity, context and communication with current community facilities.",
+      "internationalContext": "Postmodernism is an architectural movement, not proof of a participatory planning process.",
+      "sourceIds": [
+        "postmodern"
+      ],
+      "formId": "civic_or_cultural",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [],
+      "styleLabel": "Postmodernism",
+      "typeLabel": "Civic library"
+    },
+    {
+      "id": "bauhaus_design_workshop",
+      "title": "Bauhaus-inspired design workshop",
+      "archetypeId": "bauhaus_design_workshop",
+      "variantId": "glazed_studio_low_wing",
+      "modelSha256": "9bb30f08a744b62325e012ba52ccc57ce7cd65b5b753774af5e8c145733ab648",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "reform_interwar",
+        "postwar"
+      ],
+      "designPeriod": "Bauhaus influence, 1919–1933; later Canadian postwar Modernist connections",
+      "eraRationale": "The original glazed workshop references functional volumes and visible making spaces; no historic building is reconstructed.",
+      "canadianContext": "Connect interwar European ideas with Canadian postwar uptake of Modernist architecture.",
+      "internationalContext": "The source references Bauhaus-related architecture, not a measured reconstruction of Dessau.",
+      "sourceIds": [
+        "bauhaus",
+        "canadian_modern"
+      ],
+      "formId": "civic_or_cultural",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [],
+      "styleLabel": "Bauhaus-inspired modernism",
+      "typeLabel": "Education / community workshop"
+    },
+    {
+      "id": "destijl_artist_studio",
+      "title": "De Stijl artist studio",
+      "archetypeId": "destijl_artist_studio",
+      "variantId": "primary_planes_glazed_studio",
+      "modelSha256": "770f5eb08631a3fd3de71d43385d20049d18fe6f664f5b55dd13074ce8f70e15",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "reform_interwar"
+      ],
+      "designPeriod": "De Stijl influence, 1910s–1930s; contemporary original interpretation",
+      "eraRationale": "The studio’s interlocking planes and limited primary-colour palette reference the Dutch interwar movement.",
+      "canadianContext": "Use this international example to compare architectural composition with Canadian contemporary infill.",
+      "internationalContext": "The movement’s Dutch origin remains explicit; colourful planes do not establish a neighbourhood planning ideology.",
+      "sourceIds": [
+        "destijl"
+      ],
+      "formId": "civic_or_cultural",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [],
+      "styleLabel": "De Stijl-inspired",
+      "typeLabel": "Artist studio / small cultural workspace"
+    },
+    {
+      "id": "mughal_reading_pavilion",
+      "title": "Mughal-inspired reading pavilion",
+      "archetypeId": "mughal_reading_pavilion",
+      "variantId": "cusped_arcade_central_dome",
+      "modelSha256": "21ca71237504d6804a2eba435c25c0f4379793b68ad6ab9e6ff6450a7e3596c5",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "early_traditions"
+      ],
+      "designPeriod": "Mughal-inspired reference, broadly 16th–18th centuries; contemporary original interpretation",
+      "eraRationale": "The pavilion’s cusped arcade, dome, shade and ordered composition reference a historical South Asian design family.",
+      "canadianContext": "Use it as an international comparison for shelter, public space and garden relationships in Canadian urban design.",
+      "internationalContext": "Mughal is one South Asian historical influence, not all South Asian or Islamic architecture.",
+      "sourceIds": [
+        "mughal"
+      ],
+      "formId": "civic_or_cultural",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [],
+      "styleLabel": "Mughal-inspired",
+      "typeLabel": "Open reading pavilion / cultural amenity"
+    },
+    {
+      "id": "wartime_victory_house",
+      "title": "Wartime / Victory house",
+      "archetypeId": "wartime_victory_house",
+      "variantId": "cream_clapboard_steep_side_gable",
+      "modelSha256": "4b0df5c7fecb6b4a48002da119096b964fd03570503df1cb5fca91ae000fa2bb",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "reform_interwar",
+        "postwar"
+      ],
+      "designPeriod": "1940s to early 1950s association",
+      "eraRationale": "The steep side-gabled roof, simple clapboard and occupied attic illustrate a compact wartime and early postwar small-house form.",
+      "canadianContext": "Connect wartime and veteran housing delivery with later adaptation of existing Canadian neighbourhoods; this is not a reconstruction of a particular programme house.",
+      "internationalContext": "Compact standardized houses also appear internationally. Similar appearance does not establish the same delivery programme or ownership.",
+      "sourceIds": [
+        "victory_housing"
+      ],
+      "formId": "one_and_half_storey_detached",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [
+        "housing_delivery"
+      ],
+      "styleLabel": "Wartime small-house vernacular",
+      "typeLabel": "Detached house, one full storey plus occupied attic"
+    },
+    {
+      "id": "postwar_side_split_house",
+      "title": "Postwar side-split house",
+      "archetypeId": "postwar_side_split_house",
+      "variantId": "cream_siding_brick_raised_sleeping_wing",
+      "modelSha256": "e5b80f45a78909bd0910f29bf0587d99c4bcb3225e7418e8d06e94c4dbfdf00f",
+      "status": "offline_review_candidate",
+      "runtimeActivation": false,
+      "eraIds": [
+        "postwar"
+      ],
+      "designPeriod": "1950s to 1970s association; split-levels appear in CMHC's 1954 catalogue",
+      "eraRationale": "Staggered living and sleeping levels, a picture window and restrained brick/siding palette connect this original design to postwar small-house forms.",
+      "canadianContext": "CMHC’s 1954 catalogue includes split-level designs. Compare household space and adapting postwar Canadian housing without claiming this is a catalogue plan.",
+      "internationalContext": "Split-level layouts occur internationally. A house alone does not establish a suburban street pattern or car dependence.",
+      "sourceIds": [
+        "cmhc_1954"
+      ],
+      "formId": "split_level_detached",
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "planningIds": [
+        "housing_delivery"
+      ],
+      "styleLabel": "Mid-century suburban vernacular",
+      "typeLabel": "Detached house with staggered living, lower and upper levels"
+    }
+  ]
+}

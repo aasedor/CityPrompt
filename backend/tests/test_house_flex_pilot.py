@@ -21,20 +21,28 @@ def program_families():
     _, rows = load_program(ROOT)
     grouped = {}
     for row in rows:
-        descriptor = descriptor_from_library_entry(SimpleNamespace(
-            id=row["id"], name=row["name"], model_url=row["model_url"],
-            metadata_=row["metadata"], is_public=True,
-        ))
+        descriptor = descriptor_from_library_entry(
+            SimpleNamespace(
+                id=row["id"],
+                name=row["name"],
+                model_url=row["model_url"],
+                metadata_=row["metadata"],
+                is_public=True,
+            )
+        )
         assert descriptor is not None
         grouped.setdefault(row["variantId"], []).append(descriptor)
     return grouped
 
 
-@pytest.mark.parametrize("variant", [
-    "bungalow_postwar_ranch",
-    "toronto_foursquare_red_brick",
-    "clapboard_north_end",
-])
+@pytest.mark.parametrize(
+    "variant",
+    [
+        "bungalow_postwar_ranch",
+        "toronto_foursquare_red_brick",
+        "clapboard_north_end",
+    ],
+)
 @pytest.mark.parametrize("storeys", [1, 2])
 @pytest.mark.parametrize("scale", [0.85, 1.0, 1.15])
 def test_house_pilot_selects_a_complete_assembly_with_uniform_xy_scale(variant, storeys, scale):
@@ -58,11 +66,14 @@ def test_house_pilot_selects_a_complete_assembly_with_uniform_xy_scale(variant, 
     assert plan["fit"]["delivery_format"] in {"architectural_clay", "architectural_clay_module_v1"}
 
 
-@pytest.mark.parametrize("variant", [
-    "bungalow_postwar_ranch",
-    "toronto_foursquare_red_brick",
-    "clapboard_north_end",
-])
+@pytest.mark.parametrize(
+    "variant",
+    [
+        "bungalow_postwar_ranch",
+        "toronto_foursquare_red_brick",
+        "clapboard_north_end",
+    ],
+)
 def test_house_pilot_rejects_storeys_outside_the_finite_program(variant):
     family = program_families()[variant]
     with pytest.raises(AssemblyPlanningError):

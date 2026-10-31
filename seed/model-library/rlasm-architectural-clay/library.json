@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-10-23",
+  "updated_at": "2026-10-30",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -12128,6 +12128,745 @@
       "review": {
         "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-toronto-bay-and-gable-house-clay-v004.json",
         "sha256": "33179a5f2784c5b371c3fad952985b12a3f57a860a0b34ad0bf434adec58158a",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-climbing-crucible-clay-v004",
+      "family": "rlasm-clay-climbing-crucible-claude-v004",
+      "archetype_id": "climbing_wall_building",
+      "archetype_label": "Climbing centre",
+      "variant_id": "climbing_crucible",
+      "variant_label": "The Crucible climbing centre",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 101,
+        "depth": 28,
+        "height": 28.14
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0.png",
+          "bytes": 1254544,
+          "sha256": "a2b53e14adb38bae7599241724773027be0f01b112e97c090d51a9737cc5d1c8"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_60.jpg",
+          "bytes": 815928,
+          "sha256": "8443b0f6a5b3da03d2936bd77ae457ccb085eea419b57ade87abcd2318425bff"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_90.jpg",
+          "bytes": 896561,
+          "sha256": "cb1a5bf529bebca56c1c8787b626d2204ae17b3b326293575fde4ab2634ed9c9"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "limitations": [
+        "Architectural clay teaching model; original source is immutable.",
+        "Runtime retains the building and its integral rooftop garden, running track and pavilion; roads, neighbouring warehouses and large surrounding landscaping are removed.",
+        "Fixed native geometry, authored four occupied levels. Snug runtime bounds are derived separately from retained geometry; seed source dimensions remain original GLB bounds.",
+        "Prepared level site trial only; natural/sloped terrain and independent climbing safety/compliance are not verified."
+      ],
+      "picker": {
+        "id": "claude_climbing_crucible_v004",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 154,
+        "depth": 129,
+        "max_size": 600,
+        "description": "Corten industrial climbing centre with a dark hexagonal wall, glazed east hall and planted rooftop running track.",
+        "reshape_description": "Move and rotate the complete building at its authored size. Integral roof landscaping stays with the model."
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc"
+      },
+      "local_trial": {
+        "model_sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "crucible-close-EXACT_3D_SOURCE.png",
+          "crucible-low-EXACT_3D_SOURCE.png",
+          "crucible-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-climbing-crucible-clay-v004.glb",
+        "bytes": 3247880,
+        "sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc",
+        "native_dimensions_m": {
+          "width": 150.0,
+          "height": 39.599998474121094,
+          "depth": 125.0999984741211
+        },
+        "mesh_count": 52,
+        "material_count": 48,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-climbing-crucible-clay-v004.json",
+        "sha256": "c2095ee9b1af38bd59d74e299bd2006b842b52eea051433ec2ca20385da40415",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-climbing-overhang-clay-v007",
+      "family": "rlasm-clay-climbing-overhang-claude-v007",
+      "archetype_id": "climbing_wall_building",
+      "archetype_label": "Climbing centre",
+      "variant_id": "climbing_overhang",
+      "variant_label": "The Overhang climbing centre",
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 39,
+        "depth": 36,
+        "height": 20.8
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1.png",
+          "bytes": 1349697,
+          "sha256": "345d575a53846738cda1d24794ec0cc409cb5f2335cc624a41c403d83eb5bde8"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_60.jpg",
+          "bytes": 837723,
+          "sha256": "55c334948355972cab086576da047e5d72f85c4682acc308d9507296cfc538ea"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_1_angle_90.jpg",
+          "bytes": 775997,
+          "sha256": "a6854c9b52d8ccd115ab1110b5466f61cec8486b533d4112577a4561ccdd6bb0"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "limitations": [
+        "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+        "Fixed native geometry; snug bounds derive from complete retained architecture.",
+        "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+      ],
+      "picker": {
+        "id": "claude_climbing_overhang_v007",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 160,
+        "depth": 160,
+        "max_size": 600,
+        "description": "White precast recreation centre with a folded timber climbing shell and planted rooftop pool deck.",
+        "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c"
+      },
+      "local_trial": {
+        "model_sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "overhang-close-EXACT_3D_SOURCE.png",
+          "overhang-low-EXACT_3D_SOURCE.png",
+          "overhang-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-climbing-overhang-clay-v007.glb",
+        "bytes": 3498636,
+        "sha256": "16cf31e6511175a12410d0268844bf640550f1ea4cd4f193798428398c38de8c",
+        "native_dimensions_m": {
+          "width": 130.0,
+          "height": 33.20000076293945,
+          "depth": 148.0
+        },
+        "mesh_count": 55,
+        "material_count": 52,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-climbing-overhang-clay-v007.json",
+        "sha256": "06243132b3375b02dda795564000cb8adb29e7152765ee56e9ad466c2a62c25e",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-climbing-reef-clay-v009",
+      "family": "rlasm-clay-climbing-reef-claude-v009",
+      "archetype_id": "climbing_wall_building",
+      "archetype_label": "Climbing centre",
+      "variant_id": "climbing_reef",
+      "variant_label": "The Reef climbing centre",
+      "native_floors": 1,
+      "design_dimensions_m": {
+        "width": 34,
+        "depth": 30,
+        "height": 7.9
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3.png",
+          "bytes": 1359680,
+          "sha256": "c510322572ffa49702465f621dd95575a967787b28a37e96755cec68263fc595"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_60.jpg",
+          "bytes": 817640,
+          "sha256": "122c06c58a3287c7eb1a503e9d94ce4a6b712275f42e5c65e1bbfdc592027ac9"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_3_angle_90.jpg",
+          "bytes": 811835,
+          "sha256": "cf5e6092abfb9702cc5fa59e2ba60b579be0c420489a4e31528466d43ec8fe34"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "limitations": [
+        "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+        "Fixed native geometry; snug bounds derive from complete retained architecture.",
+        "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+      ],
+      "picker": {
+        "id": "claude_climbing_reef_v009",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 304,
+        "depth": 304,
+        "max_size": 600,
+        "description": "Contour-banded teal climbing shell with twelve skylights and its compact safety apron.",
+        "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab"
+      },
+      "local_trial": {
+        "model_sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "reef-close-EXACT_3D_SOURCE.png",
+          "reef-low-EXACT_3D_SOURCE.png",
+          "reef-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-climbing-reef-clay-v009.glb",
+        "bytes": 3910236,
+        "sha256": "15af2637eec8a96cd6fc4e8b9f23d8ceac5223899ba81d126cc8c96aa66c05ab",
+        "native_dimensions_m": {
+          "width": 300.0,
+          "height": 9.505199733066547,
+          "depth": 300.0
+        },
+        "mesh_count": 40,
+        "material_count": 49,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-climbing-reef-clay-v009.json",
+        "sha256": "2ac562989759473fab91d7a8beb4e0f2bc03aca12c43410e7a1440694d83259d",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-calgary-sandstone-heritage-clay-v006",
+      "family": "rlasm-clay-calgary-sandstone-heritage-claude-v006",
+      "archetype_id": "calgary_sandstone_heritage",
+      "archetype_label": "Calgary sandstone heritage",
+      "variant_id": "sandstone_claude_clock_tower_v006",
+      "variant_label": "Sandstone clock-tower block",
+      "native_floors": 4,
+      "design_dimensions_m": {
+        "width": 48,
+        "depth": 48,
+        "height": 49.5
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
+          "bytes": 1406587,
+          "sha256": "629de326189254e092f55158bcf48ffa15404aef28ac7e6fc9f98272e322027d"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_60.jpg",
+          "bytes": 955727,
+          "sha256": "2fdc718649d51b41c15b269b0aa3adc38d994e44a985905a776fa122d68de8c6"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-sandstone-heritage/variant_0_angle_90.jpg",
+          "bytes": 860843,
+          "sha256": "c73923f39bcfd440a6df2b7384cf9b15a0ffea08f6a2558600eabc1a5ec3539d"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+      "limitations": [
+        "Original reviewed architectural-clay GLB unchanged. Roads, neighbours and oversized site context excluded by exact runtime ownership contract.",
+        "Fixed native geometry; snug bounds derive from complete retained architecture.",
+        "Prepared level site pilot; natural/sloped terrain, paid AI fidelity and code compliance unverified."
+      ],
+      "picker": {
+        "id": "claude_sandstone_clock_tower_v006",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 95,
+        "depth": 95,
+        "max_size": 600,
+        "description": "Richardsonian Romanesque sandstone civic block with an internal court and copper-spired clock tower.",
+        "reshape_description": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model."
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7"
+      },
+      "local_trial": {
+        "model_sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "sandstone-close-EXACT_3D_SOURCE.png",
+          "sandstone-low-EXACT_3D_SOURCE.png",
+          "sandstone-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-calgary-sandstone-heritage-clay-v006.glb",
+        "bytes": 4190248,
+        "sha256": "461054186065cd99dcda1f6c064c1bc5b73f6652162d0db27b08de97ef9967a7",
+        "native_dimensions_m": {
+          "width": 88.0199966430664,
+          "height": 49.29999923706055,
+          "depth": 84.0
+        },
+        "mesh_count": 16,
+        "material_count": 16,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-calgary-sandstone-heritage-clay-v006.json",
+        "sha256": "2294b138bb5af4c39beefb31b3935052ed235d6677778e0806d61fddd97213aa",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-cantilever-fire-station-clay-v010",
+      "family": "rlasm-claude-practical-fire-station-v010",
+      "archetype_id": "modern_fire_station",
+      "archetype_label": "Modern fire station",
+      "variant_id": "fire_cantilevered_modern",
+      "variant_label": "Modern fire station",
+      "native_floors": 2,
+      "design_dimensions_m": {
+        "width": 49.989999771118164,
+        "depth": 40.34000015258789,
+        "height": 31.007999420166016
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/modern_fire_station/variant_2.png",
+          "bytes": 1073268,
+          "sha256": "6715ca6d2f3fde8f4ddd12ca6a470cba4d470fbc781c5988ccecb25c5c07340d"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/modern_fire_station/variant_2_angle_60.jpg",
+          "bytes": 786954,
+          "sha256": "256755fda932c4d8434cd957d9bb3e9e86ba7cee6c9fc277d70463a11b06daad"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/modern_fire_station/variant_2_angle_90.jpg",
+          "bytes": 753818,
+          "sha256": "3936e8d805938931b3fd26eb94360aa5b3e3d98cbaa26ef0ce032d235f3a5d28"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
+      "limitations": [
+        "Source-locked RLASM6.1 architectural-clay model; independently reviewed, no textured keeper claim.",
+        "Compact building and integral entrance/apparatus approach; no surrounding roads.",
+        "Fixed native assembly. Prepared level local trial; slopes, code compliance and paid AI fidelity not verified.",
+        "Full heavy source/GLB review render evidence remains external; build helper hashes are pinned."
+      ],
+      "picker": {
+        "id": "claude_fire_station_v010",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 53,
+        "depth": 44,
+        "max_size": 600,
+        "description": "Cantilevered oxblood fire station with four glazed apparatus bays, a glass clock tower and compact apron.",
+        "reshape_description": "Move and rotate the complete building at its authored size."
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be"
+      },
+      "local_trial": {
+        "model_sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "fire-station-close-EXACT_3D_SOURCE.png",
+          "fire-station-low-EXACT_3D_SOURCE.png",
+          "fire-station-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-cantilever-fire-station-clay-v010.glb",
+        "bytes": 698336,
+        "sha256": "acf653e6ad58c420228fab2447ccddc106af7833f814c45431637e1b0180e2be",
+        "native_dimensions_m": {
+          "width": 49.989999771118164,
+          "height": 31.007999420166016,
+          "depth": 40.34000015258789
+        },
+        "mesh_count": 17,
+        "material_count": 17,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-cantilever-fire-station-clay-v010.json",
+        "sha256": "63cd5a0ac49cfea63de6062a544b29ac27582152db210b342a0076c38c0a7b2e",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-braced-frame-hospital-clay-v006",
+      "family": "rlasm-claude-practical-hospital-v006",
+      "archetype_id": "regional_hospital_medical_center",
+      "archetype_label": "Regional teaching hospital",
+      "variant_id": "regional_hospital_contemporary_teaching",
+      "variant_label": "Regional teaching hospital",
+      "native_floors": 9,
+      "design_dimensions_m": {
+        "width": 71.00500106811523,
+        "depth": 63.72500228881836,
+        "height": 39.79999923706055
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
+          "bytes": 1295867,
+          "sha256": "4e6289d461f2ad8bba095c0e5f7a67751234a066b022a585244f8dbb937e20a4"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_60.jpg",
+          "bytes": 924620,
+          "sha256": "67e7bf7fa9838b5cded4c385e863aa84e4c267598b0c9bc67909edf92f2f2c8b"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_90.jpg",
+          "bytes": 860461,
+          "sha256": "1bceac8705902772c973d29c3bca3ff7f9e0cb5a85475c4ac23336571ae1491e"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
+      "limitations": [
+        "Source-locked RLASM6.1 architectural-clay model; independently reviewed, no textured keeper claim.",
+        "Compact building and integral entrance/apparatus approach; no surrounding roads.",
+        "Fixed native assembly. Prepared level local trial; slopes, code compliance and paid AI fidelity not verified.",
+        "Full heavy source/GLB review render evidence remains external; build helper hashes are pinned."
+      ],
+      "picker": {
+        "id": "claude_hospital_v006",
+        "group_id": "civic",
+        "reshape_mode": "fixed_native",
+        "width": 75,
+        "depth": 67,
+        "max_size": 600,
+        "description": "Braced teaching hospital with a perforated clinical block, connected glazed atrium and compact entrance canopy.",
+        "reshape_description": "Move and rotate the complete building at its authored size."
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad"
+      },
+      "local_trial": {
+        "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "hospital-close-EXACT_3D_SOURCE.png",
+          "hospital-low-EXACT_3D_SOURCE.png",
+          "hospital-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-braced-frame-hospital-clay-v006.glb",
+        "bytes": 4417092,
+        "sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad",
+        "native_dimensions_m": {
+          "width": 71.00500106811523,
+          "height": 39.79999923706055,
+          "depth": 63.72500228881836
+        },
+        "mesh_count": 17,
+        "material_count": 17,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-braced-frame-hospital-clay-v006.json",
+        "sha256": "7c0aa282ab72028dcf073dc67206dcbd89d509084178e65eb54ecbc211837419",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "clay-student-residence-tower-clay-v004",
+      "family": "rlasm-claude-practical-student-residence-v004",
+      "archetype_id": "student_residence_tower",
+      "archetype_label": "Student residence tower",
+      "variant_id": "contemporary_curtainwall_biophilic",
+      "variant_label": "Student residence tower",
+      "native_floors": 12,
+      "design_dimensions_m": {
+        "width": 32.40792655944824,
+        "depth": 28.899999618530273,
+        "height": 47.8994140625
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0.png",
+          "bytes": 1206622,
+          "sha256": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_60.jpg",
+          "bytes": 930652,
+          "sha256": "d2ecf16c6ffe4b806890db42e133d903535b6747b443362f99a2a185012dc244"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_90.jpg",
+          "bytes": 876613,
+          "sha256": "0ed3c8e1b63539593ab28a714984d718c13d9f885d94a5efcb62a5c947a8be1e"
+        }
+      ],
+      "external_evidence": "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
+      "limitations": [
+        "Source-locked RLASM6.1 architectural-clay model; independently reviewed, no textured keeper claim.",
+        "Compact building and integral entrance/apparatus approach; no surrounding roads.",
+        "Fixed native assembly. Prepared level local trial; slopes, code compliance and paid AI fidelity not verified.",
+        "Full heavy source/GLB review render evidence remains external; build helper hashes are pinned."
+      ],
+      "picker": {
+        "id": "claude_student_residence_v004",
+        "group_id": "towers",
+        "reshape_mode": "fixed_native",
+        "width": 36,
+        "depth": 32,
+        "max_size": 600,
+        "description": "Twelve-storey student residence with recessed planted terraces, an oval glass roof lounge and roof garden.",
+        "reshape_description": "Move and rotate the complete building at its authored size."
+      },
+      "runtime_enabled": true,
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+        "date": "2026-10-30",
+        "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74"
+      },
+      "local_trial": {
+        "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
+        "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+        "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+        "tested_at": "2026-10-31T00:09:45.963445+00:00",
+        "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+        "evidence": [
+          "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+          "student-residence-close-EXACT_3D_SOURCE.png",
+          "student-residence-low-EXACT_3D_SOURCE.png",
+          "student-residence-ground-BROWSER_SCREENSHOT.png",
+          "fixed-model-plot-probes.json",
+          "REVIEW.txt"
+        ],
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/clay-student-residence-tower-clay-v004.glb",
+        "bytes": 4773768,
+        "sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
+        "native_dimensions_m": {
+          "width": 32.407925686584576,
+          "height": 47.8994140625,
+          "depth": 28.899999618530273
+        },
+        "mesh_count": 18,
+        "material_count": 18,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-student-residence-tower-clay-v004.json",
+        "sha256": "20659bc8a7a8b42e0a879def0c30b2396c982e8a17fbd9104121a85e1be8d369",
         "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
         "unresolved_p0": 0,
         "unresolved_p1": 0

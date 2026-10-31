@@ -9,6 +9,20 @@ const data: TransportSnapshot = { type: 'FeatureCollection', network: '5a', retr
   { type: 'Feature', id: 'stop', properties: { category: 'service-stop', source: 'test' }, geometry: { type: 'Point', coordinates: [-114.07, 51.05] } },
 ] };
 describe('grounded transportation', () => {
+  it('uses one ground sample and a small flat marker for optional public points', () => {
+    const points = { ...data, features: [data.features[1]], featureCount: 1 };
+    const result = buildGroundedTransport(points, 'reference:public-data:trees', 990, { pointRadius: 2.5 });
+    expect(result.nodes).toHaveLength(1);
+    expect(result.objects[0].geometry.getAttribute('position').array.every(n => n === 0)).toBe(true);
+    result.setHeight(result.nodes[0], 1030);
+    const positions = result.objects[0].geometry.getAttribute('position');
+    for (let i = 0; i < positions.count; i++) {
+      const local = new THREE.Vector3().fromBufferAttribute(positions, i);
+      expect(local.distanceTo(result.nodes[0].position)).toBeLessThan(2.55);
+      expect(WGS84_ELLIPSOID.getPositionElevation(local.add(result.origin))).toBeCloseTo(1030.2, 1);
+    }
+    result.dispose();
+  });
   it('rejects transient Calgary tile heights kilometres above or below the city without inventing ground', () => {
     const root = new THREE.Group(), shown = new THREE.Mesh(); root.add(shown);
     const ray = new THREE.Raycaster();

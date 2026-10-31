@@ -1,0 +1,21 @@
+{
+  "candidate": "clay-cantilever-fire-station-clay-v010",
+  "scope": "prose correction only; original hashed build evidence preserved",
+  "supersedes_field": "prework-manifest.json.contact_contract",
+  "contact_contract": [
+    "Ground slab seated at zero grade",
+    "Compact eight-metre apparatus apron with bay bollards",
+    "Glazed bay thresholds at authored slab level",
+    "Steel piers and cantilever soffit",
+    "Clock tower on its own slab, tied to east wall"
+  ],
+  "absent_intentionally": [
+    "flagpole",
+    "memorial wall",
+    "benches",
+    "trees",
+    "separate shelter",
+    "surrounding roads"
+  ],
+  "geometry_changed": false
+}

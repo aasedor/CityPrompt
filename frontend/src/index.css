@@ -154,6 +154,27 @@ html.dark .bg-accent-50        { background-color: var(--city-bg); }
 html.dark .bg-accent-50\/80   { background-color: rgba(18,13,34,0.8); }
 html.dark .bg-accent-50\/95   { background-color: rgba(18,13,34,0.95); }
 html.dark .bg-white            { background-color: var(--city-surface); }
+html.dark .bg-white\/80       { background-color: rgb(33 23 53 / 80%); }
+html.dark .bg-white\/90       { background-color: rgb(33 23 53 / 90%); }
+html.dark .bg-white\/95       { background-color: rgb(33 23 53 / 95%); }
+html.dark .bg-\[\#fffdf6\],
+html.dark .bg-\[\#fffdf6\]\/95 { background-color: var(--city-surface); }
+html.dark .bg-\[\#fff9ed\] { background-color: var(--city-surface-soft); }
+html.dark .bg-slate-50,
+html.dark .bg-slate-100,
+html.dark .bg-slate-200 { background-color: var(--city-surface-soft); }
+
+/* Studio panels use slate foregrounds as well as the original city palette.
+   Change their surface and text together so controls remain legible. */
+html.dark .text-slate-950,
+html.dark .text-slate-900,
+html.dark .text-slate-800 { color: var(--city-ink); }
+html.dark .text-slate-700,
+html.dark .text-slate-600,
+html.dark .text-slate-500 { color: var(--city-muted); }
+html.dark .text-teal-900 { color: #5eead4; }
+html.dark .hover\:bg-slate-100:hover,
+html.dark .hover\:bg-lime-100:hover { background-color: var(--city-surface-soft); }
 
 html.dark .bg-\[\#fff9ec\]      { background-color: var(--city-bg); }
 html.dark .bg-\[\#fff9ec\]\/90 { background-color: rgba(18,13,34,0.9); }
@@ -167,6 +188,16 @@ html.dark .bg-\[\#ff9f0a\],
 html.dark .bg-\[\#ffb13b\],
 html.dark .bg-\[\#fefaf7\],
 html.dark .bg-\[\#fefaf7\].text-\[\#151515\] {
+  color: #151515;
+}
+html.dark .bg-\[\#c9ff3d\].text-slate-950,
+html.dark .bg-\[\#c9ff3d\] .text-slate-950,
+html.dark .bg-lime-50,
+html.dark .bg-lime-50.text-slate-900,
+html.dark .bg-lime-300,
+html.dark .bg-lime-300.text-slate-950,
+html.dark .bg-emerald-400.text-slate-950,
+html.dark .bg-amber-500.text-slate-950 {
   color: #151515;
 }
 

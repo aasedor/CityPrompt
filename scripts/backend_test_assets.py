@@ -3,6 +3,7 @@
 The repository's default historical-LFS exclusion remains unchanged. No asset
 generation, deployment or global Git configuration changes occur here.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -48,7 +49,14 @@ def fixture_assets(root: Path = ROOT) -> dict[str, str]:
     for entry in read("frontend/src/features/parks/detailCatalogueExtras.json"):
         if entry.get("sourceKit") == "traffic-safety-v1":
             add(Path("frontend/public") / entry["url"].lstrip("/"), entry["sha256"])
-    if not assets or len(assets) > 80:
+
+    for pilot in read("backend/app/data/nativeBridgePilots.json"):
+        if pilot["program"]["adapter"] == "source-span-bridge-v1":
+            sha = pilot["sourceAssemblySha256"]
+            add(Path("frontend/public/street-kits/claude-20261023") / f"{sha}.glb", sha)
+        for module in pilot["modules"].values():
+            add(Path("frontend/public") / module["url"].lstrip("/"), module["sha256"])
+    if not assets or len(assets) > 81:
         raise ValueError("Review unexpected backend fixture batch size")
     return assets
 
@@ -68,7 +76,9 @@ def main():
     args = parser.parse_args()
     assets = fixture_assets()
     if args.fetch_lfs:
-        subprocess.run(["git", "lfs", "pull", "--include=" + ",".join(sorted(assets)), "--exclude="], cwd=ROOT, check=True)
+        subprocess.run(
+            ["git", "lfs", "pull", "--include=" + ",".join(sorted(assets)), "--exclude="], cwd=ROOT, check=True
+        )
     verify(ROOT, assets)
     print(f"Verified {len(assets)} exact backend test assets")
 

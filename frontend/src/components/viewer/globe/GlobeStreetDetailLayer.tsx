@@ -83,7 +83,7 @@ import {
   type ConnectedStreetIntersection,
   type FourWayStreetIntersection,
 } from './streetGraphIntersections';
-import { buildSectionJunctionGeometry, buildStreetJunctionSurface, clipStreetGeometryOutsideJunction, resolveStreetJunctionLayout, streetJunctionContainsPoint, type StreetJunctionLayout } from './streetJunctionGeometry';
+import { buildSectionJunctionGeometry, buildStreetJunctionSurface, clipStreetGeometryOutsideJunction, resolveStreetJunctionLayout, streetJunctionContainsPoint, streetJunctionOverlapsFootprint, type StreetJunctionLayout } from './streetJunctionGeometry';
 import { STREET_APPEARANCE_KITS } from './streetFamilyCatalog';
 import {
   direct3DInstanceUserData,
@@ -802,6 +802,8 @@ function StreetRibbonDetail({
         x: (node.longitude - centroid.lng) * longitudeScale,
         y: (node.latitude - centroid.lat) * METERS_PER_DEG_LAT,
         clearanceM: Math.max(node.axisAHalfWidthM, node.axisBHalfWidthM) + 4,
+        ...(node.surfaceLayout ? { overlapsFootprint: (points:Array<{x:number;y:number}>) => streetJunctionOverlapsFootprint(node.surfaceLayout!,points,
+          (node.longitude-centroid.lng)*longitudeScale,(node.latitude-centroid.lat)*METERS_PER_DEG_LAT) } : {}),
       })),
       zone.properties?.road_native_stops,
     ), centroid, sceneZones, zone.id);
@@ -1437,9 +1439,11 @@ function AccessibleFourWayIntersectionDetail({
     return vehicle ?? (source ? resolvePilotStreetSectionProfile(source) : null);
   }, [connectedZones, node.surfaceLayout?.surfaceZoneId, node.surfaceLayout?.pedestrianAxes]);
   const promenadeProfile = useMemo(() => {
-    const source = connectedZones.find((zone) => nativeStreetPilotForZone(zone)?.id === 'student_market_street_v1');
+    const source = connectedZones.find((zone) => nativeStreetPilotForZone(zone)?.id === 'student_market_street_v1')
+      ?? connectedZones.find(zone => nativeStreetPilotForZone(zone) && node.surfaceLayout?.pedestrianAxes?.includes(true)
+        && !resolvePilotStreetSectionProfile(zone)?.bands.some(band => band.kind === 'motor'));
     return source ? resolvePilotStreetSectionProfile(source) : null;
-  }, [connectedZones]);
+  }, [connectedZones,node.surfaceLayout?.pedestrianAxes]);
   const surfaceMaterials = useMemo(() => {
     if (!surfaceProfile) return null;
     const make = (kind: 'motor' | 'sidewalk') => {
@@ -1449,7 +1453,8 @@ function AccessibleFourWayIntersectionDetail({
       const recipe = resolveStreetBandMaterial(surfaceProfile, band);
       return createStreetSurfaceMaterialResources(recipe.kind, recipe.options);
     };
-    const promenadeBand = promenadeProfile?.bands.find((item) => item.kind === 'path');
+    const promenadeBand = promenadeProfile?.bands.find((item) => item.kind === 'path')
+      ?? promenadeProfile?.bands.find((item) => item.kind === 'sidewalk');
     const promenade = promenadeBand && promenadeProfile
       ? resolveStreetBandMaterial(promenadeProfile, promenadeBand) : null;
     return { pavement: make('motor'), sidewalks: make('sidewalk'),

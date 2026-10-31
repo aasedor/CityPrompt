@@ -6,6 +6,28 @@ import { StudioSaveStatus, StudioToolSheet } from './StudioControls';
 afterEach(()=>vi.unstubAllGlobals());
 
 describe('drawing save recovery',()=>{
+  it('keeps recovery visible before the tools even when compact tools are collapsed',()=>{
+    vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
+    render(<StudioToolSheet navigation={<p>Workflow</p>} notice={<StudioSaveStatus
+      saving={false} draftCount={1} loadError={false} discardableCount={1}
+      onRetry={vi.fn()} onReload={vi.fn()} onDiscardRejected={vi.fn()} />}>
+      <button>Draw site boundary</button>
+    </StudioToolSheet>);
+    const recovery=screen.getByRole('button',{name:'Discard rejected drawing'});
+    expect(recovery).toBeVisible();
+    expect(recovery.compareDocumentPosition(screen.getByRole('button',{name:'Show design tools'})) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByRole('button',{name:'Draw site boundary',hidden:true})).not.toBeVisible();
+  });
+  it('gives legacy crossed-outline drafts an actionable error without raw coordinates',()=>{
+    const discard=vi.fn();
+    render(<StudioSaveStatus saving={false} draftCount={1} loadError={false}
+      saveError="A drawing change was not saved. Polygon boundary self-intersects or overlaps; undo the last point and redraw (Self-intersection[-114 51])"
+      discardableCount={1} onRetry={vi.fn()} onReload={vi.fn()} onDiscardRejected={discard} />);
+    expect(screen.getByRole('alert')).toHaveTextContent('Discard the rejected drawing, then draw it again.');
+    expect(screen.queryByText(/Self-intersection/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button',{name:'Discard rejected drawing'}));
+    expect(discard).toHaveBeenCalledOnce();
+  });
   it('keeps narrow-screen tools collapsed until requested and can return to the map',()=>{
     vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
     render(<StudioToolSheet navigation={<p>Workflow</p>}><button>Draw site boundary</button></StudioToolSheet>);

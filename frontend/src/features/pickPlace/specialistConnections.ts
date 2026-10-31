@@ -3,6 +3,8 @@ import type {SiteZone} from '@/types';
 import {extractZoneCenterline,effectiveRoadWidth} from '@/utils/roadGeometry';
 import {CANAL_VARIANT,BRIDGE_VARIANT,isSpecialistStreet} from '@/components/viewer/globe/specialistStreetProgram';
 import { isElevatedRail } from '@/components/viewer/globe/elevatedRailProgram';
+import { modularBridgeProgramFor } from '@/components/viewer/globe/modularBridgeProgram';
+import { modularBridgeConnectionProblem } from './modularBridgeConnections';
 
 function enters(a:number[],b:number[],left:number,right:number,lo:number,hi:number){
   let first=0,last=1;
@@ -21,6 +23,13 @@ export function specialistConnectionProblem(candidate:Pick<SiteZone,'coordinates
   for(const zone of next){
     const variant=zone.properties?.road_selected_variant_id;
     if(!isSpecialistStreet(variant)||isFixedNativeScene(zone.properties))continue;
+    if (import.meta.env.DEV && modularBridgeProgramFor(variant)) {
+      for (const other of next.filter(z=>z.zone_type==='road'&&z.id!==zone.id)) {
+        const problem=modularBridgeConnectionProblem(zone,other);
+        if (problem) return problem;
+      }
+      continue;
+    }
     const route=extractZoneCenterline(zone);if(route.length<2)continue;
     const spans=variant===CANAL_VARIANT?route.slice(1).map((p,i)=>[route[i],p]):[[route[0],route[route.length-1]]];
     for(const [a,b] of spans){

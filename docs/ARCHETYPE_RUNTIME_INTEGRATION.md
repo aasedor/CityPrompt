@@ -84,6 +84,15 @@ runtime acceptance and publication status separate from successful installation.
 
 ### Site landscape compatibility
 
+Audit the GLB's own near-grade meshes as well as the runtime foundation. A
+landscaped runtime pad can still be hidden by an embedded grey display slab or
+source-illustration street. Finish only revision-resolved, explicitly identified
+ground geometry; preserve real paving, stairs, roofs, source bytes and bounds.
+Check complete native models and repeated-storey podiums separately. A failed
+building download must recover through the advertised Retry action after an
+unrelated save, without claiming a persistent massing proxy is detailed-ready.
+See [the October 28 building repair](BUILDING_MODEL_GROUND_REPAIR_2026-10-28.md).
+
 Every new building, street and park must work with the shared
 [Generate 3D Site Landscape feature](SITE_LANDSCAPE_2026-09-20.md). Declare the
 complete occupied plot and use the shared building-approach / park-access route
@@ -118,6 +127,12 @@ context generation retains its protected footprint and access routes.
 | C8 Visibility | Inspect low views from several directions plus aerial and exact 3D capture. No persistent proxy, duplicate surface, floating base, buried path, hidden gap, or furniture obstructing a route. Preserve surrounding context and capture ownership. When AI imagery is used, compare it with the exact same-camera source for count, location, outline, scale, function, access and invented elements; record automatic pass, human review or fallback. A visually attractive image alone is not faithful evidence. |
 | C9 Student use | Complete the advertised placement/connection workflow through ordinary controls, without API-authored geometry or numeric offsets supplied by a developer. Check keyboard, pointer, and supported viewport behavior; report touch separately if not tested. |
 
+For fixed-native building rotation, exercise Q/E as well as the rotation field
+at the actual site latitude. Rotation must preserve metre dimensions and right
+angles; rotating raw longitude/latitude distorts the plot away from the equator
+and can replace a valid detailed model with planned massing. Reopen the saved
+scene and verify its detailed representation, not only the inspector's angle.
+
 Street previews must validate unfinished routes before calling strict geometry
 builders. A short, bent or oversized draft must keep drawing controls available
 and explain the route requirement; detailed geometry resumes when it is valid.
@@ -126,6 +141,27 @@ and keep incomplete geometry ineligible for capture. Verify short → valid →
 oversized → valid transitions and retry/edit recovery. The BRT crash reproduced
 and repaired on 1 October 2026 also applies to canal, bridge, tram and elevated
 rail previews; their authored length and station limits remain in force.
+
+For repeatable streets, keep the student route envelope separate from immutable
+source-programme hashes. Frontend drawing, walking, recipe capabilities and
+server validation must agree on the same envelope. Test beyond former limits,
+retain native section/module scale, and preserve exact historical recipe locks.
+Audit material ownership across the complete travel width at source-fixture
+centres as well as module seams: a repeated full-ROW access-link paving region
+must not replace native road/cycle bands with transverse false sidewalks. Retain
+the link through pedestrian/planting bands, local authored crossings and source
+markings; actual junction surfaces still belong to the shared network renderer.
+Use material-aware geometry rays in both route directions and at partial final
+modules, then inspect the native scene. See the [29 October continuity repair](NATIVE_STREET_CONTINUITY_REPAIR_2026-10-29.md)
+for the bounded regression and pending visual checks.
+A fixed bridge span or placement-only reference scene is not a repeatable route.
+On prepared ground, edit handles and pointer picking must use that same datum;
+hidden photogrammetry can still be raycast and must not pull handles onto roofs.
+A supported X-to-T or T-to-X edit may change arm count while preserving a complete
+junction between the same streets. Keep lost-connection rejection and consumed
+node matching for multiple crossings. Record gestures near angular limits
+separately from clear supported-angle passes. See the
+[October 28 long-route review](LONG_STREET_BROWSER_REVIEW_2026-10-28.md).
 
 Surface-only pedestrian routes must explicitly declare zero motor lanes. Verify
 the same narrow width in the footprint, graph, section and capture; a missing
@@ -180,6 +216,28 @@ second preview-only request that can pass planning but fail locked placement.
 After generation, reload and wait for tile/model readiness before judging the
 scene. See the [seven-house Currie repair](CURRIE_GENERATE_3D_RECIPE_REPAIR_2026-09-20.md).
 
+For supported storey edits, verify the complete plan-to-place path against the
+saved zone. A successful planning response alone does not prove the recipe can
+be persisted. A fixed model may reserve a placement plot larger than its model
+footprint; the browser request and server's final locked target must resolve the
+same trusted variant/revision/programme dimensions, independently of that plot.
+Never trust client-supplied native dimensions or relax the target comparison.
+Exercise the finite range, Retry, Undo/Redo and reopen after real compilation.
+The [Brick Podium pilot](STUDENT_REVIEW_TOWERS_COURTS_2026-10-26.md) reproduced
+this distinction with a 54 × 44 m model inside a 57 × 47 m plot.
+
+For authored storey programmes, measure the whole source's horizontal centre
+and carry that same frame through every podium/floor/roof module. Rotate and
+scale the shared origin offset once with the stack; independently centring
+narrower floors or an asymmetric bridge moves their intended contacts. A
+complete selected assembly instead uses whole-model bounds centring, including
+when its delivery format is `architectural_clay_module_v1`. Require the
+planner's explicit native lock for that path; repeated stacks retain their
+shared frame, and bounded house programmes retain their explicit uniform-scale
+opt-in. Test actual installed-row metadata through planning and rendering,
+native → alternate → native, rotated plots, unit vertical scale and reopen.
+See [the local tower review](TOWER_STOREY_OPTIONS_LOCAL_REVIEW_2026-10-27.md).
+
 For each pilot, test a level case, a slope, an edge/unsupported case with
 recovery, and an edit while ground is pending. Keep the matrix finite. Shared
 algorithm tests may be cited across candidates when the implementation is
@@ -201,6 +259,15 @@ Treat a hard rejection against an invisible plot envelope as a classroom defect
 when the visible geometry appears clear; do not blame the student or weaken the
 authoritative envelope to make the test pass.
 
+Entrance connectivity is advisory for classroom authoring and rendering. Keep
+unresolved approaches visible with their actual repair guidance; an optional
+automatic entrance route must not reject an otherwise clear building placement.
+All building sides and rotated corners may snap to the sidewalk within 3 m,
+using the complete reserved envelope. Exact capture still requires real models,
+current verified ground and faithful scene geometry. Only the explicit known
+entrance advisory reasons may bypass the capture blocker list; missing models,
+unsupported contact and unknown failures remain blocking.
+
 Parks use the same bounded translation recovery as buildings, with native court
 dimensions and rotation preserved. Hardscape streets and existing entrance paths
 are obstacles for parks in preview, drag and save; only street-to-street authoring
@@ -211,7 +278,11 @@ After changing a connected street's bend, body position or section, recheck the
 renderable junction patches, not just polygon contact. Live route edits clamp to
 the nearest connected position along the gesture; neighbouring routes stay put.
 Section replacements that cannot retain a working junction need recovery guidance.
-Keep existing angular, sidewalk and approach-length checks unchanged. The September
+For small straight-route inaccuracies, try bounded candidate adjustments (at most
+3 m per route vertex and 5 degrees), then run the existing angular, sidewalk,
+approach-length, boundary, occupied-land and network checks on the adjusted
+geometry. Carry its centerline and editing controls together; never relax the
+junction checks or move neighbouring streets to obtain a connection. The September
 24 Currie rehearsal caught a T that disappeared after an apparently harmless bend
 edit; its exact route is retained in `currieRehearsalStreetEdit.json`.
 
@@ -382,6 +453,17 @@ when extending runtime details to future archetypes; do not blindly exclude
 other properties that may be actual compiler inputs.
 
 ## Streets and paths
+
+Simple `narrow-pathway-v1` walking finishes are nonexclusive relative to building
+and park plots. Test both drawing orders: neither plot collision checks nor
+synthetic street reservations may move or reject an otherwise valid ground path.
+Pass the candidate's exact properties through create, reshape, duplicate and
+section-change validation. Keep site containment, recipe identity and motor-road
+junction protections. Seat path finishes at the shared public-realm surface datum
+so shallow building ground caps cannot bury an entrance approach; retain normal
+depth testing against walls, stairs and raised amenities. This does not approve
+routes through physical obstacles or demonstrate accessible grade continuity.
+See the [28 October pathway review](GROUND_PATHWAY_OVERLAP_REVIEW_2026-10-28.md).
 
 For reusable placeholder vegetation, use `GlobeLandscapeTreeStand` and its
 metric species profiles. The [lightweight crown recipe and Currie check](LIGHTWEIGHT_TREES_2026-09-20.md)
@@ -733,3 +815,14 @@ Keep raw attempt inputs and video control guides requester-private even when the
 saved output is shared. Test revocation against GET, HEAD, Range and old tickets;
 refresh current project authorization on each read. A healthy process or mocked
 unit test alone does not establish Linux prefork crash/timeout recovery.
+
+## Two-endpoint bridge draft and persistence regression
+
+For route-capable bridges, verify first-click hover, both confirmed endpoints plus cursor motion, extra click endpoint adjustment, Enter/Finish and the complete click/click/double-click event sequence. Coordinates and sampled-height arrays must retain the same two endpoints; ordinary street bend/duplicate behavior must remain unchanged. Repeat endpoint edits against the actual PostgreSQL enum-backed API, then Undo/Redo/reload and download the exact source. Mocked session tests alone do not prove a valid database query. Keep original fixed saves and production gates distinct from the new route revision.
+
+
+## Source-derived bridge route contracts
+
+Use the complete occupied geometry to define each endpoint interval, including skew caps, tower backs and full stair flights. Preserve original source bytes and material ownership; record derivative-only stairs/approaches explicitly. At minimum span, complete landscape/support companion assemblies must fit rather than silently disappear. Keep road/rail lane counts tied to source programmes, not generic deck widths. Compare compiled metric envelopes at the same millimetre precision while retaining immutable source locks.
+
+For overlapping stair flights, filter candidate walking surfaces by current foot height before choosing the nearest plan surface. Exact skew tread polygons can be necessary; an inscribed strip may leave corner holes. Offline ray and prior-height traversal tests do not replace browser walking. Endpoint edit, Undo/Redo, PostgreSQL persistence, full reload, source capture and at-grade connection acceptance remain separate evidence gates.

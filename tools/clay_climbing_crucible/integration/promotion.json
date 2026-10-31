@@ -1,0 +1,87 @@
+{
+  "entry": {
+    "candidate": "clay-climbing-crucible-clay-v004",
+    "family": "rlasm-clay-climbing-crucible-claude-v004",
+    "archetype_id": "climbing_wall_building",
+    "archetype_label": "Climbing centre",
+    "variant_id": "climbing_crucible",
+    "variant_label": "The Crucible climbing centre",
+    "native_floors": 4,
+    "design_dimensions_m": {
+      "width": 101,
+      "depth": 28,
+      "height": 28.14
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0.png",
+        "bytes": 1254544,
+        "sha256": "a2b53e14adb38bae7599241724773027be0f01b112e97c090d51a9737cc5d1c8"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_60.jpg",
+        "bytes": 815928,
+        "sha256": "8443b0f6a5b3da03d2936bd77ae457ccb085eea419b57ade87abcd2318425bff"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/climbing_wall_building/variant_0_angle_90.jpg",
+        "bytes": 896561,
+        "sha256": "cb1a5bf529bebca56c1c8787b626d2204ae17b3b326293575fde4ab2634ed9c9"
+      }
+    ],
+    "external_evidence": "https://drive.google.com/drive/folders/1UtEhCLP2_rSEPbMp9A_eFQGhVDxwMDJm",
+    "limitations": [
+      "Architectural clay teaching model; original source is immutable.",
+      "Runtime retains the building and its integral rooftop garden, running track and pavilion; roads, neighbouring warehouses and large surrounding landscaping are removed.",
+      "Fixed native geometry, authored four occupied levels. Snug runtime bounds are derived separately from retained geometry; seed source dimensions remain original GLB bounds.",
+      "Prepared level site trial only; natural/sloped terrain and independent climbing safety/compliance are not verified."
+    ],
+    "picker": {
+      "id": "claude_climbing_crucible_v004",
+      "group_id": "civic",
+      "reshape_mode": "fixed_native",
+      "width": 154,
+      "depth": 129,
+      "max_size": 600,
+      "description": "Corten industrial climbing centre with a dark hexagonal wall, glazed east hall and planted rooftop running track.",
+      "reshape_description": "Move and rotate the complete building at its authored size. Integral roof landscaping stays with the model."
+    }
+  },
+  "model_file": "../candidates/clay-climbing-crucible-clay-v004.glb",
+  "review_file": "source-review-adapter.json",
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc"
+  },
+  "trial": {
+    "model_sha256": "6947f1c1059594c3b29188455d702dd4f87507dbbdf91bb1eb7bdaa3dc8ecebc",
+    "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+    "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+    "tested_at": "2026-10-31T00:09:45.963445+00:00",
+    "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+    "evidence": [
+      "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+      "crucible-close-EXACT_3D_SOURCE.png",
+      "crucible-low-EXACT_3D_SOURCE.png",
+      "crucible-ground-BROWSER_SCREENSHOT.png",
+      "fixed-model-plot-probes.json",
+      "REVIEW.txt"
+    ],
+    "checks": {
+      "catalogue_card": true,
+      "exact_variant": true,
+      "ground_contact": true,
+      "small_and_large_plot": true,
+      "rotation": true,
+      "save_reload": true,
+      "close_and_occluded_capture": true,
+      "no_console_errors": true
+    },
+    "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "entry": {
+    "candidate": "clay-braced-frame-hospital-clay-v006",
+    "family": "rlasm-claude-practical-hospital-v006",
+    "archetype_id": "regional_hospital_medical_center",
+    "archetype_label": "Regional teaching hospital",
+    "variant_id": "regional_hospital_contemporary_teaching",
+    "variant_label": "Regional teaching hospital",
+    "native_floors": 9,
+    "design_dimensions_m": {
+      "width": 71.00500106811523,
+      "depth": 63.72500228881836,
+      "height": 39.79999923706055
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
+        "bytes": 1295867,
+        "sha256": "4e6289d461f2ad8bba095c0e5f7a67751234a066b022a585244f8dbb937e20a4"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_60.jpg",
+        "bytes": 924620,
+        "sha256": "67e7bf7fa9838b5cded4c385e863aa84e4c267598b0c9bc67909edf92f2f2c8b"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/regional-hospital-medical-center/variant_0_angle_90.jpg",
+        "bytes": 860461,
+        "sha256": "1bceac8705902772c973d29c3bca3ff7f9e0cb5a85475c4ac23336571ae1491e"
+      }
+    ],
+    "external_evidence": "https://drive.google.com/drive/folders/1XWdPXl6pEhU_uojJXorA8_t-c2Gxv1BU",
+    "limitations": [
+      "Source-locked RLASM6.1 architectural-clay model; independently reviewed, no textured keeper claim.",
+      "Compact building and integral entrance/apparatus approach; no surrounding roads.",
+      "Fixed native assembly. Prepared level local trial; slopes, code compliance and paid AI fidelity not verified.",
+      "Full heavy source/GLB review render evidence remains external; build helper hashes are pinned."
+    ],
+    "picker": {
+      "id": "claude_hospital_v006",
+      "group_id": "civic",
+      "reshape_mode": "fixed_native",
+      "width": 75,
+      "depth": 67,
+      "max_size": 600,
+      "description": "Braced teaching hospital with a perforated clinical block, connected glazed atrium and compact entrance canopy.",
+      "reshape_description": "Move and rotate the complete building at its authored size."
+    }
+  },
+  "model_file": "../candidates/clay-braced-frame-hospital-clay-v006.glb",
+  "review_file": "independent-review.json",
+  "approval": {
+    "authorized_by": "human_user",
+    "quote": "Yes, let’s do all the archetypes that we recently ok’d",
+    "date": "2026-10-30",
+    "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad"
+  },
+  "trial": {
+    "model_sha256": "c5d9ce66b8021c7af38c82f9fdffa36639459ff3adac94935b3aacf335c47aad",
+    "project_url": "http://127.0.0.1:5177/projects/77c257a6-a2c4-45b0-8099-582338966c5d",
+    "tested_by": "Codex ordinary desktop browser simulation; API plot probes explicitly separate",
+    "tested_at": "2026-10-31T00:09:45.963445+00:00",
+    "source_commit": "73272b55bb18df64110ea862e55dc5e2e69f5143",
+    "evidence": [
+      "https://drive.google.com/drive/folders/19o9gPoRPIgGLi4bZNoZY2iS62Pxah0eD",
+      "hospital-close-EXACT_3D_SOURCE.png",
+      "hospital-low-EXACT_3D_SOURCE.png",
+      "hospital-ground-BROWSER_SCREENSHOT.png",
+      "fixed-model-plot-probes.json",
+      "REVIEW.txt"
+    ],
+    "checks": {
+      "catalogue_card": true,
+      "exact_variant": true,
+      "ground_contact": true,
+      "small_and_large_plot": true,
+      "rotation": true,
+      "save_reload": true,
+      "close_and_occluded_capture": true,
+      "no_console_errors": true
+    },
+    "notes": "Prepared level site only. Ordinary browser search/card/drop, Q/E rotation, save/reload, close oblique and partially out-of-frame low capture passed; no browser error logs. Half/native/triple plot support was checked separately through authenticated API plans: undersized rejected, accepted plots preserve unit scale. Fixed-size UI exposes no resize controls. Boundary setup and inverse repair of the reproduced old keyboard-rotation distortion used the disposable QA API fixture; building placement and corrected rotations were ordinary UI actions. No user projects touched. Natural terrain, interior navigation, delete/undo/redo stress, mixed street/park approaches and paid AI fidelity remain untested; no code-compliance claim."
+  }
+}

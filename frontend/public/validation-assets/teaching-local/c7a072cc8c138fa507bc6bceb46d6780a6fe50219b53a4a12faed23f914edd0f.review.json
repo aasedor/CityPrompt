@@ -1,0 +1,365 @@
+{
+  "schema": "cityprompt.rlasm.independent-architectural-clay-review@1",
+  "candidate": "prairie-school-house-clay-v004",
+  "model_sha256": "0d84ec0a10f478d3c57f97ff7de47be1a9c83dcfaf5caa189492bdf040df9b7a",
+  "reviewer": "Codex independent RLASM reviewer /root/teaching_prairie_review; separate from builder",
+  "reviewed_utc": "2026-10-25T08:41:24.724569+00:00",
+  "method": "RLASM v6.1",
+  "representation_kind": "architectural_clay",
+  "scope": "Fresh holistic source-locked architectural-clay review of all three unchanged source extracts, source board, all fourteen complete full-resolution GLB-reimport renders and both 1080x1920 phone boards. Checked source compatibility, massing/ratios, roof topology, every elevation, program, palette, apertures/optics, room depth, supports/load paths, contacts, circulation, landscape interface, visibility, cameras and all previous defects. No previous category pass substituted for current inspection.",
+  "holistic_review_performed": true,
+  "architectural_clay_pass": true,
+  "decision": "architectural_clay_reviewed",
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_p2": 2,
+  "findings": [
+    {
+      "id": "DETAIL-01",
+      "severity": "P2",
+      "status": "non-blocking declared clay simplification",
+      "finding": "The physical rectangular front art-glass border leads simplify the fine upper gridwork in source casements and sidelights. The main window cadence, openings and room depth remain intact. This is acceptable within the declared classroom architectural-clay scope, without detailed/textured-keeper fidelity.",
+      "evidence": [
+        "sources/prairie-front.png",
+        "renders/glass_close.png",
+        "renders/facade_close.png"
+      ],
+      "follow_up": "Retain the fine-leadwork simplification in limitations. Further source-specific leadwork is optional bounded polish."
+    },
+    {
+      "id": "DOC-01",
+      "severity": "P2",
+      "status": "non-blocking record wording",
+      "finding": "evidence/layout-provenance.json retains the phrase four original source-board panels in its operation description, although its exact hash keys/regions, actual board, prework and authoritative source-provenance.json consistently contain only the three enrolled compatible roles. This stale count does not change the enrolled bytes or disguise a fourth source.",
+      "evidence": [
+        "evidence/layout-provenance.json",
+        "sources/source-provenance.json",
+        "boards/locked-source-board.png"
+      ],
+      "follow_up": "Correct the stale operation-count sentence in a separate clearly identified metadata correction if this wording is reused; preserve this reviewed evidence and hashes."
+    }
+  ],
+  "source_lock_review": {
+    "roles": [
+      "front",
+      "oblique",
+      "top"
+    ],
+    "compatible_minimum_lock_pass": true,
+    "original_board_sha256": "eea5ede9ca649bd68c16f784af21a0e9797dce976961bbd79edf96814b99033b",
+    "independent_crop_pixel_checks": {
+      "front": {
+        "pixels_identical": true,
+        "region_px": [
+          0,
+          0,
+          768,
+          461
+        ],
+        "sha256": "000a95a75e4b7a2d45635e293278fe6417d0b90e7db4b4383606a3d8413cacbf"
+      },
+      "oblique": {
+        "pixels_identical": true,
+        "region_px": [
+          768,
+          0,
+          1536,
+          461
+        ],
+        "sha256": "7a23ab5a9b5c5a1becb1fff6d49d5129d72d04d3c75aabd36ca50d7c4b13ad75"
+      },
+      "top": {
+        "pixels_identical": true,
+        "region_px": [
+          0,
+          502,
+          768,
+          983
+        ],
+        "sha256": "fc37068cb8cc3a03db479ceca4c0dd2cb423da07d6ac77be165ecd80ed921690"
+      }
+    },
+    "rejected_views": "Original mirrored rear quadrant and additional chimney-drift rear proposal are explicitly excluded with exact hashes/reasons; source pixels were not repainted to follow the model.",
+    "inferred_views": "Rear, left elevation, metric scale and hidden rooms are declared architectural inferences. Their grammar/completeness were reviewed, with no exact unseen-source or historical-fidelity claim."
+  },
+  "regression_review": [
+    {
+      "id": "v003 ROOF-01",
+      "status": "resolved",
+      "proof": "Fresh front.png ridge-to-front-eave rise is approximately135px over1248px width, about0.108, versus source approximately80/748, about0.107. Main wall/window datums and single-hip top plan remain intact. Roof reads as a distinct broad hip in front, sides, aerial and phone comparison."
+    },
+    {
+      "id": "v002 SOURCE-01",
+      "status": "resolved within declared inference scope",
+      "proof": "Fresh source board and unchanged compatible extracts govern identity. Both contradictory rear proposals remain rejected; no exact rear match is asserted."
+    },
+    {
+      "id": "v002 GEOMETRY-01",
+      "status": "resolved",
+      "proof": "Fresh top.png retains the chimney near the source rear eave at about0.095 roof depth inward. Its support continues to grade and remains clear of the rear door/windows."
+    },
+    {
+      "id": "v001 rear door sill obstruction",
+      "status": "resolved",
+      "proof": "Fresh rear, rear-side and living views contain no sill belt crossing the garden-door aperture."
+    },
+    {
+      "id": "roof-change contact and camera regression",
+      "status": "pass",
+      "proof": "Updated chimney close shows seated cap and plane-following flashing; complete elevations, aerial and top retain neutral safety margins to highest terminations and full footprint."
+    }
+  ],
+  "whole_set_observations": {
+    "front": "Four-plus-four casement cadence, central recessed entry, horizontal bands, complete base and now source-consistent roof silhouette.",
+    "front_corner": "Complete broad-eave hip and three-casement right side; high oblique camera differs from source pose but does not obscure envelope proof.",
+    "aerial": "Closed roof planes and bounded ridge; no holes, shards or floating roof-mounted assembly.",
+    "top": "Full footprint, single hip/ridge graph, correct chimney rear-left relation and neutral margin.",
+    "left_side": "Inferred two paired window groups have actual apertures/room depth; roof and foundation are complete; chimney support reaches grade.",
+    "right_side": "Three-casement band is open, with visible interior occupation, complete wall bands and supported eave.",
+    "rear": "Inferred rear openings and clear garden door avoid the supported chimney; belts stop outside doorway.",
+    "rear_side": "Full rear/side grammar, ground contact, coherent roof and positive chimney support.",
+    "facade_close": "Physical returns, recessed door/sidelights, handle, threshold and landing are legible and connected.",
+    "architecture_close": "Closed eave/fascia corner and front opening sections; close is intentionally cropped to its contact/detail role.",
+    "glass_close": "Actual optical layer, physical border leads and separately offset room/furniture depth are visible.",
+    "chimney_contact": "Cap bears on shaft; bounded flashing meets actual roof surface and remains within the recalculated close view.",
+    "living_programme": "Enclosed and visibly occupied residential depth, with hidden plan disclosed as inference.",
+    "entrance_low": "Door/return/sidelight relationship and step are continuous; no floating landing or blocked approach.",
+    "phone_source_comparison": "Labels distinguish generated reference from exact-GLB clay; corrected principal silhouette survives phone scale.",
+    "phone_construction": "Glazing, rooms, entry and roof-mounted contact remain legible at1080x1920."
+  },
+  "independent_binary_and_file_checks": {
+    "model_path": "prairie-school-house-clay-v004.glb",
+    "bytes": 383580,
+    "glb_version": 2,
+    "images": 0,
+    "textures": 0,
+    "camera_count": 0,
+    "all_review_input_receipt_hashes_match": true,
+    "all_14_render_dimensions_verified": [
+      1600,
+      1200
+    ],
+    "both_phone_dimensions_verified": [
+      1080,
+      1920
+    ],
+    "render_provenance_limit": "Exact model hash and file facts independently checked. GLB-reimport render provenance is supported by builder records; reviewer did not independently rerun Blender."
+  },
+  "inspected_files": [
+    {
+      "path": "boards/locked-source-board.png",
+      "bytes": 943156,
+      "sha256": "4e127ea9fa5f9141bf46bb0828fa584fa3c1c330382d41af3b7107ff7318a3eb",
+      "width_px": 1800,
+      "height_px": 620,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "sources/prairie-front.png",
+      "bytes": 462757,
+      "sha256": "000a95a75e4b7a2d45635e293278fe6417d0b90e7db4b4383606a3d8413cacbf",
+      "width_px": 768,
+      "height_px": 461,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "sources/prairie-oblique.png",
+      "bytes": 466415,
+      "sha256": "7a23ab5a9b5c5a1becb1fff6d49d5129d72d04d3c75aabd36ca50d7c4b13ad75",
+      "width_px": 768,
+      "height_px": 461,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "sources/prairie-top.png",
+      "bytes": 625153,
+      "sha256": "fc37068cb8cc3a03db479ceca4c0dd2cb423da07d6ac77be165ecd80ed921690",
+      "width_px": 768,
+      "height_px": 481,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1585380,
+      "sha256": "26beb31fa291c944e579ee76c458338a9fe1d0ce822b93551879725d675c4368",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1630378,
+      "sha256": "69413a379e0928d5fb3a346c829f3c06248cb9386da49023009394094e84f6ef",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1645234,
+      "sha256": "3a50fffa0cfc4e425c716999e53437f4085a7001a5b4112139e8e0d7b9150484",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1501723,
+      "sha256": "9af6271f45695d3b464db17b1226aed14a93c019092c959d650bba87a86eeb8e",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1582043,
+      "sha256": "f7641a7adde7d89648a45d2c0c353280942c7a44804a48bd0f786e8f0131c027",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1559743,
+      "sha256": "ca092226605ce81bfbfd7529a14288842af443ccfa732dc7ef96d0274bcb30f1",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1584339,
+      "sha256": "dd9dc376b2c23b59d10b0bb897aa44b785cca4df8df972ec55952147cc1f651d",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1620099,
+      "sha256": "1c1f752e0e2b490c25aa18177926b1109d604d0c93971044f4bc611eca599ed9",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1647821,
+      "sha256": "a7dde132bc9e799d7a9cd12e47c1b69086b330b1f8979633bf170c5c2406f93f",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1701736,
+      "sha256": "aae3e266a287b6360e8311437937bd8ca158423e0612b9283b701d9a7760390c",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1687665,
+      "sha256": "e955b9d3f1ece94c249afe4b4035b065980621f828cf4a8cc8427ee7641d1d4b",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/chimney_contact.png",
+      "bytes": 1607568,
+      "sha256": "552e1b31870e6c86c6f3179bbe3e5c49f1a7fd3e30c02e3254a8ad5306393feb",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/living_programme.png",
+      "bytes": 1671018,
+      "sha256": "0b849a183981624d63108508734583f32c450546c61e26c0a1320210d5a8f22c",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "renders/entrance_low.png",
+      "bytes": 1646944,
+      "sha256": "c7275433d58e76df202bd0e15baf514571408f25d84a22729b9cbef07c49e509",
+      "width_px": 1600,
+      "height_px": 1200,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "bytes": 1087491,
+      "sha256": "680ba6224cb5224f325fd81982ded6afb9435829aa58ed2eda2fde0a8639b1a8",
+      "width_px": 1080,
+      "height_px": 1920,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "bytes": 817255,
+      "sha256": "43a56fea360646e626e3c565b721739d0f7b20957f8670493de0cb6c8af4a76f",
+      "width_px": 1080,
+      "height_px": 1920,
+      "inspection": "Fresh full-resolution pixels opened individually through view_image detail=original"
+    }
+  ],
+  "supporting_records": [
+    {
+      "path": "sources/source-provenance.json",
+      "sha256": "0df398f6b6968721409fb73f9b9d94f44b06bddff3c8a88cb7fcd540cded23f6",
+      "role": "Supporting provenance, delivery record or relevant construction parameters; pixel proof remains the inspected_images."
+    },
+    {
+      "path": "prework-manifest.json",
+      "sha256": "24ad219b790c15ee3492a735743b126f6e6ce33bd5dd3f9e74d8f824f3acf726",
+      "role": "Supporting provenance, delivery record or relevant construction parameters; pixel proof remains the inspected_images."
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "e86dae28131a033f7fad6552a154aec79733e2de5de8ad80290058f720a8a2dd",
+      "role": "Supporting provenance, delivery record or relevant construction parameters; pixel proof remains the inspected_images."
+    },
+    {
+      "path": "evidence/layout-provenance.json",
+      "sha256": "a113881a69ccaa935d64d54e196c16e12a857de6450f6469e8099c2b3d9ce79b",
+      "role": "Supporting provenance, delivery record or relevant construction parameters; pixel proof remains the inspected_images."
+    },
+    {
+      "path": "evidence/review-input-manifest.json",
+      "sha256": "616600ccfcd6d8a3688b1daab868ad5ebc8f42302d2b99b9a7401e79dc4b6756",
+      "role": "Supporting provenance, delivery record or relevant construction parameters; pixel proof remains the inspected_images."
+    },
+    {
+      "path": "review/builder-review.json",
+      "sha256": "bf67da6aa5ee650aa72efe6c8ba3109a516abd44d0ccf740574cb0f839339f2c",
+      "role": "Supporting provenance, delivery record or relevant construction parameters; pixel proof remains the inspected_images."
+    },
+    {
+      "path": "scripts/build.py",
+      "sha256": "77711316cfe67aeb94f7c39843b756a9471af20f9e1a55fd9186a1cc8bde33da",
+      "role": "Supporting provenance, delivery record or relevant construction parameters; pixel proof remains the inspected_images."
+    }
+  ],
+  "prior_review": {
+    "path": "../prairie-school-house-clay-v003/review/independent-holistic-review.json",
+    "sha256": "0468cfed8f92bdbb5849d8c7d179af58b42db89911f88c7a795f98bfd1526d09",
+    "state": "Preserved unchanged; this is a fresh v004 holistic decision."
+  },
+  "limitations": [
+    "Architectural-clay visual pass only, exact parent prairie_school_house and variant roman_brick_hip_roof; not keeper_approved or fully textured-keeper approval.",
+    "Original generated teaching design, not an existing verified historic building or surveyed metric reconstruction.",
+    "Rear, left elevation, scale and hidden internal layout are explicit architectural inferences. Fine upper art-glass grids are simplified.",
+    "The oblique source and review cameras are not image registered; no pixel-overlap score or photogrammetric accuracy is claimed.",
+    "Source-palette texture-free clay has no source-conditioned PBR materials or realistic brick/roof surface texture.",
+    "Runtime placement, picker integration, terrain fit, controls, resizing, save/reload and mixed-scene performance were not tested. Exact-variant fixed-native delivery only; no arbitrary scaling approval.",
+    "A human must separately activate any architectural-clay runtime tier. This review grants no runtime activation, publication, deployment or engineering approval."
+  ],
+  "keeper_approved": false,
+  "human_activation_granted": false,
+  "runtime_verified": false,
+  "immutable_record": true
+}

@@ -7,6 +7,13 @@ const zone: SiteZone = { id: 'plot', project_id: 'project', zone_type: 'building
   name: 'Hill house', building_ids: ['model'], coordinates: [[-114, 51], [-113.9999, 51], [-114, 51.0001]],
   color: '#fff', sort_order: 1, created_at: 'before', updated_at: 'before' };
 
+it('explains model-revision recovery instead of telling students to change terrain', () => {
+  render(<BuildingGroundProblems issues={[{buildingId:'model',reason:'review_model_revision_unavailable'}]}
+    zones={[zone]} onClose={vi.fn()} onSelect={vi.fn()}/>);
+  expect(screen.getByText(/Restore the required local model or choose a replacement in Buildings/)).toBeTruthy();
+  expect(screen.queryByText(/ground beneath this building could not be confirmed/)).toBeNull();
+});
+
 it('selects the exact saved plot for repair without changing its geometry', () => {
   const select = vi.fn(); const before = JSON.stringify(zone);
   render(<BuildingGroundProblems issues={[{ buildingId: 'model', reason: 'foundation_exceeds_3m' }]}
@@ -45,4 +52,18 @@ it('explains how to recover usable width between the new side rails', () => {
     zones={[zone]} onClose={vi.fn()} onSelect={vi.fn()}/>);
   expect(screen.getByText(/side rails leave too little walking space/)).toBeTruthy();
   expect(screen.getByText(/at least 1.36 m/)).toBeTruthy();
+});
+
+it('keeps entrance recovery advisory and permits rendering while contact checks remain required',()=>{
+  const {rerender}=render(<BuildingGroundProblems issues={[{buildingId:'model',reason:'entrance_anchor_not_at_edge'}]}
+    zones={[zone]} onClose={vi.fn()} onSelect={vi.fn()}/>);
+  expect(screen.getByText(/Rendering is available/)).toBeTruthy();
+  expect(screen.queryByText(/need their ground placement resolved before rendering/)).toBeNull();
+  rerender(<BuildingGroundProblems issues={[{buildingId:'model',reason:'incomplete_footprint_ground'}]}
+    zones={[zone]} onClose={vi.fn()} onSelect={vi.fn()}/>);
+  expect(screen.getByText(/need their ground placement resolved before rendering/)).toBeTruthy();
+  expect(screen.queryByText(/Rendering is available/)).toBeNull();
+  rerender(<BuildingGroundProblems issues={[{buildingId:'model',reason:'incomplete_footprint_ground'},{buildingId:'model',reason:'entrance_anchor_not_at_edge'}]}
+    zones={[zone]} onClose={vi.fn()} onSelect={vi.fn()}/>);
+  expect(screen.queryByText(/Rendering is available/)).toBeNull();
 });

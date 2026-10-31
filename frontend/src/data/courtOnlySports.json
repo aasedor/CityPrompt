@@ -1,0 +1,144 @@
+{
+  "assets": [
+    {
+      "id": "native-park:court_only_basketball_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Basketball court only",
+      "description": "Individual court with markings, equipment and clear playing reserve. Combine and repeat to build an athletic park.",
+      "thumbnail": "/archetypes/openspaces/court-only-basketball-v001/preview.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "fixed_native",
+      "width": 21,
+      "depth": 36,
+      "minWidth": 21,
+      "minDepth": 36,
+      "maxWidth": 21,
+      "maxDepth": 36,
+      "maxSize": 36,
+      "model": {
+        "variantId": "court_only_basketball_v1",
+        "revision": "6392a787429c551108dd2d99912b690816d838035400d322883c7952f3423117",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "Court dimensions stay fixed. Move, rotate or Place another to assemble your athletic park.",
+      "properties": {
+        "green_space_archetype_id": "court_only_basketball",
+        "green_space_selected_variant_id": "court_only_basketball_v1",
+        "green_space_native_layout_id": "court_only_basketball_v1--native-v1",
+        "court_only_native": true,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:court_only_tennis_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Tennis court only",
+      "description": "Individual court with markings, equipment and clear playing reserve. Combine and repeat to build an athletic park.",
+      "thumbnail": "/archetypes/openspaces/court-only-tennis-v001/preview.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "fixed_native",
+      "width": 18.3,
+      "depth": 36.6,
+      "minWidth": 18.3,
+      "minDepth": 36.6,
+      "maxWidth": 18.3,
+      "maxDepth": 36.6,
+      "maxSize": 36.6,
+      "model": {
+        "variantId": "court_only_tennis_v1",
+        "revision": "eed1f8f2dd6a444847b93f1a5e98dd297cba50409dd456b2b19e2119d84ab8b5",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "Court dimensions stay fixed. Move, rotate or Place another to assemble your athletic park.",
+      "properties": {
+        "green_space_archetype_id": "court_only_tennis",
+        "green_space_selected_variant_id": "court_only_tennis_v1",
+        "green_space_native_layout_id": "court_only_tennis_v1--native-v1",
+        "court_only_native": true,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:court_only_pickleball_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Pickleball court only",
+      "description": "Individual court with markings, equipment and clear playing reserve. Combine and repeat to build an athletic park.",
+      "thumbnail": "/archetypes/openspaces/court-only-pickleball-v001/preview.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "fixed_native",
+      "width": 10.4,
+      "depth": 19.6,
+      "minWidth": 10.4,
+      "minDepth": 19.6,
+      "maxWidth": 10.4,
+      "maxDepth": 19.6,
+      "maxSize": 19.6,
+      "model": {
+        "variantId": "court_only_pickleball_v1",
+        "revision": "9d6876edb170afc909a8cad57260c599cf6b09fd16bc97023c3e1d9c35fdd351",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "Court dimensions stay fixed. Move, rotate or Place another to assemble your athletic park.",
+      "properties": {
+        "green_space_archetype_id": "court_only_pickleball",
+        "green_space_selected_variant_id": "court_only_pickleball_v1",
+        "green_space_native_layout_id": "court_only_pickleball_v1--native-v1",
+        "court_only_native": true,
+        "pick_place_automatic_3d": true
+      }
+    },
+    {
+      "id": "native-park:court_only_beach_volleyball_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Beach volleyball court only",
+      "description": "Individual court with markings, equipment and clear playing reserve. Combine and repeat to build an athletic park.",
+      "thumbnail": "/archetypes/openspaces/court-only-beach-volleyball-v001/preview.png",
+      "calgaryGuide": {
+        "groupId": "play_sport",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "fixed_native",
+      "width": 14,
+      "depth": 22,
+      "minWidth": 14,
+      "minDepth": 22,
+      "maxWidth": 14,
+      "maxDepth": 22,
+      "maxSize": 22,
+      "model": {
+        "variantId": "court_only_beach_volleyball_v1",
+        "revision": "1ce0ad75c0496a1eda8855d6ba8db37c439e1e77260cb038a0e77b4cb1b27aa8",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "Court dimensions stay fixed. Move, rotate or Place another to assemble your athletic park.",
+      "properties": {
+        "green_space_archetype_id": "court_only_beach_volleyball",
+        "green_space_selected_variant_id": "court_only_beach_volleyball_v1",
+        "green_space_native_layout_id": "court_only_beach_volleyball_v1--native-v1",
+        "court_only_native": true,
+        "pick_place_automatic_3d": true
+      }
+    }
+  ]
+}

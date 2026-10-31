@@ -22,6 +22,7 @@ from shapely.ops import transform
 from shapely.errors import ShapelyError
 
 from app.services.shapefile_import import _jsonable, _sibling
+from app.services.shapefile_resources import validate_archive, validate_shapefile_components
 
 MAX_UPLOAD_BYTES = 25 * 1024 * 1024
 MAX_UNCOMPRESSED_BYTES = 100 * 1024 * 1024
@@ -230,12 +231,10 @@ def parse_shapefile_reference(data: bytes) -> ParsedReference:
     except zipfile.BadZipFile as exc:
         raise ReferenceImportError("The file is not a valid ZIP archive.") from exc
     with archive:
-        entries = archive.infolist()
-        if len(entries) > 100 or sum(entry.file_size for entry in entries) > MAX_UNCOMPRESSED_BYTES:
-            raise ReferenceImportError("The ZIP is too large when expanded (maximum 100 MB and 100 entries).")
-        if any(entry.flag_bits & 1 for entry in entries):
-            raise ReferenceImportError("Encrypted ZIP archives are not supported.")
-        names = [entry.filename for entry in entries if not entry.is_dir()]
+        try:
+            names = validate_archive(archive, max_expanded_bytes=MAX_UNCOMPRESSED_BYTES)
+        except ValueError as exc:
+            raise ReferenceImportError(str(exc)) from exc
         shps = [name for name in names if name.lower().endswith(".shp")]
         if len(shps) != 1:
             raise ReferenceImportError("Upload exactly one shapefile dataset per ZIP.")
@@ -245,6 +244,11 @@ def parse_shapefile_reference(data: bytes) -> ParsedReference:
             raise ReferenceImportError(
                 "The ZIP must contain matching .shp, .shx and .dbf files; include .prj for the source CRS."
             )
+        try:
+            shp_data, shx_data, dbf_data = archive.read(shps[0]), archive.read(shx), archive.read(dbf)
+            validate_shapefile_components(shp_data, dbf_data, shx_data)
+        except (ValueError, zipfile.BadZipFile, RuntimeError) as exc:
+            raise ReferenceImportError(str(exc)) from exc
         warnings: list[str] = []
         if prj:
             try:
@@ -263,9 +267,9 @@ def parse_shapefile_reference(data: bytes) -> ParsedReference:
                 encoding = "utf-8" if code_page == "65001" else f"cp{code_page}" if code_page.isdigit() else code_page
                 codecs.lookup(encoding)
             reader = shapefile.Reader(
-                shp=io.BytesIO(archive.read(shps[0])),
-                shx=io.BytesIO(archive.read(shx)),
-                dbf=io.BytesIO(archive.read(dbf)),
+                shp=io.BytesIO(shp_data),
+                shx=io.BytesIO(shx_data),
+                dbf=io.BytesIO(dbf_data),
                 encoding=encoding,
             )
             if len(reader) > MAX_FEATURES:

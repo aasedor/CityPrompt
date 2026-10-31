@@ -6,7 +6,8 @@ import { streetAssetForZone, streetCoordinateUpdate } from './streetPlacement';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
 import { resolvePilotStreetSectionProfile } from '@/components/viewer/globe/streetSectionProfiles';
 import { roundAuthoredStreetRoute } from '@/utils/streetRouteCurves';
-import { LEGACY_SECTION_STREET_ASSETS } from './assetRegistry';
+import { LEGACY_SECTION_STREET_ASSETS, PATHWAY_ASSETS } from './assetRegistry';
+import { bufferPathwayToPolygon } from '@/utils/pathwayFootprint';
 
 it('uses the rendered section width for every current eligible street variant', () => {
   for (const choice of CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway' && c.placements.every(a => a.kind === 'street'))) {
@@ -61,4 +62,19 @@ it('refits a curved route when a different fixed street section is selected', ()
   expect(update.properties.plan_route_controls).toEqual(controls);
   expect(update.properties.plan_centerline).toEqual(expected);
   expect(update.coordinates).toEqual(bufferLineToPolygon(expected, 20));
+});
+
+it('changes pathway finish without restoring a self-intersecting strip on a hairpin',()=>{
+  const sx=111320*Math.cos(51*Math.PI/180);
+  const controls=[[0,0],[20,0],[1,1],[20,2]].map(([x,y])=>[-114+x/sx,51+y/111320]);
+  const old=PATHWAY_ASSETS[0];
+  const zone: SiteZone={id:'path',project_id:'qa',color:'#777',sort_order:0,created_at:'',updated_at:'',
+    zone_type:'road',coordinates:bufferPathwayToPolygon(controls,old.sectionWidth),
+    properties:{...old.properties,plan_centerline:controls,plan_route_controls:controls}};
+  for(const asset of PATHWAY_ASSETS){
+    const update=streetDesignUpdate(zone,asset);
+    expect(update.coordinates).toEqual(bufferPathwayToPolygon(update.properties.plan_centerline as number[][],asset.sectionWidth));
+    expect(update.properties.plan_route_controls).toEqual(controls);
+    expect(update.properties.road_selected_variant_id).toBe(asset.model.variantId);
+  }
 });

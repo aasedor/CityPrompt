@@ -1,0 +1,65 @@
+{
+  "schema": "cityprompt.rlasm.source-lock@1",
+  "method": "RLASM v6.1",
+  "archetype_id": "student_residence_tower",
+  "variant_id": "variant_0",
+  "catalogue_variant_id": "contemporary_curtainwall_biophilic",
+  "source_origin": "catalogue_reference_nomination",
+  "sibling_variant_mixing_allowed": false,
+  "excluded_sibling_files": [
+    "variant_1.png",
+    "variant_1_angle_60.jpg",
+    "variant_1_angle_90.jpg",
+    "variant_2.png",
+    "variant_2_angle_60.jpg",
+    "variant_2_angle_90.jpg",
+    "variant_3.png",
+    "variant_3_angle_60.jpg",
+    "variant_3_angle_90.jpg"
+  ],
+  "excluded_duplicate": "hero.png (LFS pointer locally; composite hero, not a locked view)",
+  "records": [
+    {
+      "archetype_id": "student_residence_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "contemporary_curtainwall_biophilic",
+      "role": "front",
+      "path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0.png",
+      "file": "variant_0.png",
+      "bytes": 1206622,
+      "sha256": "f71657f046d330b5756618863a8b70f768c4ed2e279f22096e5950fce259dfdc",
+      "dimensions_px": [
+        1024,
+        768
+      ]
+    },
+    {
+      "archetype_id": "student_residence_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "contemporary_curtainwall_biophilic",
+      "role": "oblique",
+      "path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_60.jpg",
+      "file": "variant_0_angle_60.jpg",
+      "bytes": 930652,
+      "sha256": "d2ecf16c6ffe4b806890db42e133d903535b6747b443362f99a2a185012dc244",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    },
+    {
+      "archetype_id": "student_residence_tower",
+      "variant_id": "variant_0",
+      "catalogue_variant_id": "contemporary_curtainwall_biophilic",
+      "role": "top",
+      "path": "frontend/public/archetypes/buildings/student-residence-tower/variant_0_angle_90.jpg",
+      "file": "variant_0_angle_90.jpg",
+      "bytes": 876613,
+      "sha256": "0ed3c8e1b63539593ab28a714984d718c13d9f885d94a5efcb62a5c947a8be1e",
+      "dimensions_px": [
+        1195,
+        896
+      ]
+    }
+  ]
+}

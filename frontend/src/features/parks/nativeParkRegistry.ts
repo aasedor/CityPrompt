@@ -42,9 +42,10 @@ export function parkSelection(layout: NativeParkLayout, coordinates: number[][])
 }
 export function nativeParkProperties(properties: SiteZoneProperties, layout: NativeParkLayout, coordinates: number[][]): SiteZoneProperties {
   const next = { ...properties };
-  for (const key of ['public_realm_trial_asset','validation_fixed_fixture','validation_native_url','park_trio_layout','public_realm_lego','public_realm_fallback']) delete next[key];
+  for (const key of ['public_realm_trial_asset','validation_fixed_fixture','validation_native_url','park_trio_layout','public_realm_lego','public_realm_fallback','court_only_native']) delete next[key];
   return { ...next, green_space_archetype_id: layout.archetypeId, green_space_selected_variant_id: layout.variantId,
-    green_space_native_layout: parkSelection(layout, coordinates), pick_place_automatic_3d: true };
+    green_space_native_layout: parkSelection(layout, coordinates), pick_place_automatic_3d: true,
+    ...(layout.archetypeId.startsWith('court_only_') ? {court_only_native:true} : {}) };
 }
 export function nativeParkFootprint(selection: NativeParkSelection, layout: NativeParkLayout): number[][] {
   const f = selection.frame, c = Math.cos(f.yaw), s = Math.sin(f.yaw);

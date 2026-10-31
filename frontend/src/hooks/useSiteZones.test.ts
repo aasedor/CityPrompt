@@ -72,6 +72,32 @@ describe('useSiteZones', () => {
     });
   });
 
+  it('opens the new parking capacity panel after save without leaving students drawing another outline', async () => {
+    const created = { ...makeZone(REAL_ZONE_ID), zone_type: 'parking' as const,
+      properties: { ground_surface_material: 'asphalt', parking_layout_version: 1, parking_row_direction: 'auto' } };
+    vi.mocked(siteZonesApi.create).mockResolvedValue(created);
+    useViewerStore.setState({ activeSitePlannerTool: 'parking' });
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+    act(() => result.current.handleZoneCreated(created.coordinates, 'parking', created.properties));
+    await waitFor(() => expect(useViewerStore.getState().selectedZoneId).toBe(REAL_ZONE_ID));
+    expect(useViewerStore.getState().activeSitePlannerTool).toBeNull();
+  });
+  it('does not cancel a newer parking outline when the previous lot finishes saving late', async () => {
+    const created = { ...makeZone(REAL_ZONE_ID), zone_type: 'parking' as const,
+      properties: { ground_surface_material: 'asphalt', parking_layout_version: 1, parking_row_direction: 'auto' } };
+    let complete!: (zone: SiteZone) => void;
+    vi.mocked(siteZonesApi.create).mockReturnValue(new Promise<SiteZone>(resolve => { complete = resolve; }));
+    useViewerStore.setState({ activeSitePlannerTool: 'parking' });
+    const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
+    act(() => result.current.handleZoneCreated(created.coordinates, 'parking', created.properties));
+    await waitFor(() => expect(siteZonesApi.create).toHaveBeenCalled());
+    act(() => useViewerStore.setState({ activeSitePlannerTool: 'parking', selectedZoneId: null }));
+    await act(async () => complete(created));
+    await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
+    expect(useViewerStore.getState().activeSitePlannerTool).toBe('parking');
+    expect(useViewerStore.getState().selectedZoneId).toBeNull();
+  });
+
   it('handleZoneUpdated skips the API for temp ids and updates the cache only', () => {
     queryClient.setQueryData(['site-zones', PROJECT_ID], [makeZone(TEMP_ZONE_ID)]);
     const { result } = renderHook(() => useSiteZones(PROJECT_ID), { wrapper });
@@ -82,6 +108,18 @@ describe('useSiteZones', () => {
     expect(siteZonesApi.update).not.toHaveBeenCalled();
     const cached = queryClient.getQueryData<SiteZone[]>(['site-zones', PROJECT_ID]);
     expect(cached?.[0].coordinates).toEqual(newCoords);
+  });
+
+  it('rejects a boundary drag that excludes a house before committing a preview or write', () => {
+    const boundary = {...makeZone(REAL_ZONE_ID), coordinates:[[0,0],[1,0],[1,1],[0,1]]};
+    const house = {...makeZone('a3bb189e-8bf9-3888-9912-ace4e6543003'), zone_type:'building',
+      name:'Student house', coordinates:[[.7,.7],[.8,.7],[.8,.8],[.7,.8]]} as SiteZone;
+    queryClient.setQueryData(['site-zones', PROJECT_ID],[boundary,house]);
+    const {result} = renderHook(()=>useSiteZones(PROJECT_ID),{wrapper});
+    expect(result.current.handleZoneUpdated(REAL_ZONE_ID,[[0,0],[.5,0],[.5,.5],[0,.5]])).toBe(false);
+    expect(siteZonesApi.update).not.toHaveBeenCalled();
+    expect(queryClient.getQueryData<SiteZone[]>(['site-zones', PROJECT_ID])?.[0].coordinates).toEqual(boundary.coordinates);
+    expect(toast.error).toHaveBeenCalledWith(expect.stringContaining('Student house'));
   });
 
   it('handleZoneUpdated calls the API for persisted ids', async () => {
@@ -192,8 +230,8 @@ describe('useSiteZones', () => {
 
     await waitFor(() => expect(result.current.createZone.isSuccess).toBe(true));
     await waitFor(() => expect(toast).toHaveBeenCalledWith(
-      'Site boundary saved. Nearby map context is unavailable for now; you can keep designing.',
-      { icon: 'ℹ️' },
+      'Site boundary saved. Nearby map context is unavailable. You can keep designing.',
+      { icon: 'ℹ️', duration: 8000 },
     ));
     expect(toast.error).not.toHaveBeenCalled();
     expect(queryClient.getQueryData<SiteZone[]>(['site-zones', PROJECT_ID])?.[0]?.id).toBe(REAL_ZONE_ID);

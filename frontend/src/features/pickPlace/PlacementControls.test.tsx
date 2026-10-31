@@ -1,12 +1,15 @@
+import '@testing-library/jest-dom/vitest';
 import { useState } from 'react';
 import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { PlacementControls } from './PlacementControls';
 import type { PlacementDraft } from './GlobePlacementPreview';
-import { PLACE_ASSETS } from './catalogue';
+import { PLACE_ASSETS, placeAsset } from './catalogue';
 import { generatedPlacementDraft } from './generatedPlacement';
 
-const asset = PLACE_ASSETS[0];
+// Dimension editing belongs to an adaptable programme. Native buildings keep
+// their source geometry fixed and expose rotation only.
+const asset = placeAsset('neighbourhood_park');
 const vancouver = PLACE_ASSETS.find(candidate => candidate.id === 'clay_vancouver_balcony_podium_tower')!;
 function Harness() {
   const [draft, setDraft] = useState<PlacementDraft>({ assetId: asset.id, width: asset.width, depth: asset.depth, degrees: 0 });
@@ -24,9 +27,66 @@ function GeneratedHarness() {
   }));
   return <><PlacementControls draft={draft} onChange={setDraft} /><pre data-testid="draft">{JSON.stringify(draft)}</pre></>;
 }
+function ImportedHarness({ width, depth }: { width: number; depth: number }) {
+  const [draft, setDraft] = useState<PlacementDraft>(() => generatedPlacementDraft({
+    id: 'imported-glb', project_id: 'original', name: 'Imported GLB', preview_url: null,
+    model_url: '/api/v1/files/projects/original/models/imported.glb',
+    floor_count: null, height_meters: 1.9, width_m: width, depth_m: depth,
+    size_estimated: false, source_kind: 'imported_glb',
+  }));
+  return <><PlacementControls draft={draft} onChange={setDraft} /><pre data-testid="draft">{JSON.stringify(draft)}</pre></>;
+}
 const current = () => JSON.parse(screen.getByTestId('draft').textContent!) as PlacementDraft;
 afterEach(()=>{cleanup();vi.unstubAllGlobals();});
 describe('pre-placement reshaping', () => {
+  it.each([false, true])('shows readable imported dimensions in narrow=%s controls while rotation preserves native precision', narrow => {
+    const width = 24.000001907348633, depth = 26.499999046325684;
+    if (narrow) vi.stubGlobal('matchMedia', () => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() }));
+    render(<ImportedHarness width={width} depth={depth} />);
+    if (narrow) {
+      expect(screen.getByText('24 × 26.5 m · 0°')).toBeVisible();
+      fireEvent.click(screen.getByRole('button', { name: 'Size & rotation' }));
+    }
+    expect(screen.getByText('Fixed size 24 × 26.5 m. Move or rotate to fit.')).toBeVisible();
+    expect(screen.queryByText(/original plot/)).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Placement degrees'), { target: { value: '45' } });
+    expect(current()).toMatchObject({ width, depth, degrees: 45 });
+    fireEvent.keyDown(window, { key: 'q' });
+    expect(current()).toMatchObject({ width, depth, degrees: 60 });
+    expect(screen.getByText('Fixed size 24 × 26.5 m. Move or rotate to fit.')).toBeVisible();
+  });
+
+  it.each([{ width: 1.02, depth: 1.11 }, { width: 1200, depth: 2000 }])(
+    'rotates an imported $width × $depth m GLB without exposing size changes or imposing building-size bounds', ({ width, depth }) => {
+      render(<ImportedHarness width={width} depth={depth} />);
+      expect(screen.queryByLabelText('Placement width')).not.toBeInTheDocument();
+      expect(screen.queryByLabelText('Placement depth')).not.toBeInTheDocument();
+      fireEvent.change(screen.getByLabelText('Placement degrees'), { target: { value: '45' } });
+      expect(current()).toMatchObject({ width, depth, degrees: 45, faceStreet: false });
+      expect(current().inputError).toBeUndefined();
+      fireEvent.keyDown(window, { key: 'q' });
+      expect(current()).toMatchObject({ width, depth, degrees: 60 });
+      expect(current().inputError).toBeUndefined();
+    },
+  );
+
+  it('withholds unavailable footprint resizing for a storey-editable brick tower', () => {
+    const tower=PLACE_ASSETS.find(candidate=>candidate.id==='claude_trial_brick_podium_condo_tower')!;
+    render(<PlacementControls draft={{assetId:tower.id,width:tower.width,depth:tower.depth,degrees:0}} onChange={vi.fn()}/>);
+    expect(screen.queryByLabelText('Placement width')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Placement depth')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Placement degrees')).toBeEnabled();
+    expect(screen.getByRole('status')).toHaveTextContent(/fixed.*move.*rotate/i);
+  });
+  it('describes fixed dimensions without promising an unavailable resize range', () => {
+    const fixed = PLACE_ASSETS.find(candidate=>candidate.properties.validation_fixed_fixture===true)!;
+    render(<PlacementControls draft={{assetId:fixed.id,width:fixed.width,depth:fixed.depth,degrees:0}} onChange={vi.fn()}/>);
+    expect(screen.queryByLabelText('Placement width')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Placement depth')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Placement degrees')).toBeEnabled();
+    expect(screen.getByRole('status')).toHaveTextContent(/fixed.*move.*rotate/i);
+    expect(screen.queryByText(/Minimum .*maximum/)).toBeNull();
+  });
   it('keeps narrow placement compact while preserving advanced dimensions',()=>{
     vi.stubGlobal('matchMedia',()=>({matches:true,addEventListener:vi.fn(),removeEventListener:vi.fn()}));
     render(<VancouverHarness/>);
@@ -37,7 +97,7 @@ describe('pre-placement reshaping', () => {
     expect(current().degrees).toBe(45);
     expect(screen.queryByLabelText('Placement width')).toBeNull();
   });
-  it.each([asset, PLACE_ASSETS.find(candidate => candidate.zoneType === 'green_space')!])('rotates a $label placement with Q/E and Shift for fine control', selected => {
+  it.each([placeAsset('infill_home'), asset])('rotates a $label placement with Q/E and Shift for fine control', selected => {
     function KeyboardHarness() {
       const [draft, setDraft] = useState<PlacementDraft>({ assetId: selected.id, width: selected.width, depth: selected.depth, degrees: 0 });
       return <><PlacementControls draft={draft} onChange={setDraft} /><pre data-testid="draft">{JSON.stringify(draft)}</pre></>;
@@ -145,12 +205,13 @@ describe('pre-placement reshaping', () => {
     expect((screen.getByLabelText('Placement width') as HTMLInputElement).value).toBe('');
     expect(screen.getByRole('status').textContent).toContain('Enter dimensions');
   });
-  it('uses Vancouver’s reviewed per-axis footprint limits before placement', () => {
+  it('rotates Vancouver without exposing unsupported plot resizing', () => {
     render(<VancouverHarness />);
-    expect(screen.getByLabelText('Placement width')).toMatchObject({ min: '51.1', max: '57.5' });
-    expect(screen.getByLabelText('Placement depth')).toMatchObject({ min: '43.1', max: '47.5' });
-    fireEvent.change(screen.getByLabelText('Placement width'), { target: { value: '58' } });
-    expect(current().inputError).toBeTruthy();
+    expect(screen.queryByLabelText('Placement width')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Placement depth')).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Placement degrees'), { target: { value: '90' } });
+    expect(current()).toMatchObject({ width: vancouver.width, depth: vancouver.depth, degrees: 90 });
+    expect(current().inputError).toBeUndefined();
   });
   it('lets a saved model resize and rotate before click placement', () => {
     render(<GeneratedHarness />);

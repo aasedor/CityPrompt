@@ -1,4 +1,5 @@
 """A photographic look reference must not replace the source video's layout."""
+
 import pytest
 from fastapi import HTTPException
 
@@ -33,9 +34,13 @@ def test_appearance_reference_roles_survive_preflight_and_transport(count, has_c
     else:
         assert "Use Image1" in prompt
     payload = build_omni_payload(
-        model="gemini-omni-1.1-flash", guide_base64=req.guide_frame_base64,
-        guide_mime_type="image/jpeg", prompt=prompt, duration_seconds=4,
-        control_mode="preview_video", preview_video_base64=req.preview_video_base64,
+        model="gemini-omni-1.1-flash",
+        guide_base64=req.guide_frame_base64,
+        guide_mime_type="image/jpeg",
+        prompt=prompt,
+        duration_seconds=4,
+        control_mode="preview_video",
+        preview_video_base64=req.preview_video_base64,
         preview_video_mime_type="video/webm",
         character_reference_base64=req.character_reference_base64,
         route_keyframes=[(_jpeg_data_url(), "image/jpeg")] * count,
@@ -52,18 +57,29 @@ def test_appearance_reference_roles_survive_preflight_and_transport(count, has_c
 
 @pytest.mark.parametrize("count", [0, 3])
 def test_appearance_mode_requires_one_or_two_images(count):
-    req = _preview_request(omni_reference_mode="appearance_references",
-                           route_keyframes_base64=[_jpeg_data_url()] * count)
+    req = _preview_request(
+        omni_reference_mode="appearance_references", route_keyframes_base64=[_jpeg_data_url()] * count
+    )
     with pytest.raises(HTTPException, match="one or two"):
         video._preflight_values(req)
 
 
-@pytest.mark.parametrize("provider,mode", [
-    ("seedance_mini", "preview_video"), ("internal_enhance", "preview_video"),
-    ("omni", "single_frame"), ("omni", "multi_keyframe"),
-])
+@pytest.mark.parametrize(
+    "provider,mode",
+    [
+        ("seedance_mini", "preview_video"),
+        ("internal_enhance", "preview_video"),
+        ("omni", "single_frame"),
+        ("omni", "multi_keyframe"),
+    ],
+)
 def test_appearance_mode_cannot_be_sent_to_another_provider_or_control_mode(provider, mode):
-    req = _preview_request(provider=provider, control_mode=mode, duration_seconds=8,
-        omni_reference_mode="appearance_references", route_keyframes_base64=[_jpeg_data_url()])
+    req = _preview_request(
+        provider=provider,
+        control_mode=mode,
+        duration_seconds=8,
+        omni_reference_mode="appearance_references",
+        route_keyframes_base64=[_jpeg_data_url()],
+    )
     with pytest.raises(HTTPException, match="Appearance references require Omni preview"):
         video._preflight_values(req)

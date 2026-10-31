@@ -3,8 +3,10 @@ import type { CatalogueAsset } from './assetRegistry';
 import type { CanonicalChoice } from './canonicalCatalogue';
 import type { CatalogueDomain } from '@/features/calgaryCatalogue/guide';
 import { cataloguePresentationFor } from './cataloguePresentation';
+import { planningIds, styleDefinition, teachingStyleIds } from '@/features/catalogueLearning/teaching';
+import { eraIds } from '@/features/catalogueLearning/planningHistory';
 
-export interface CatalogueFacets { styleId: string; sizeId: string }
+export interface CatalogueFacets { styleId: string; sizeId: string; planningId?:string; eraId?:string }
 interface SizeBand { id: string; label: string; min: number; max: number }
 const AREA_BANDS: SizeBand[] = [
   { id: 'small', label: 'Under 500 m²', min: 0, max: 500 },
@@ -52,9 +54,12 @@ const normalizeStyle = (value: string) => value.trim().toLowerCase().replace(/[\
 
 /** Browsing evidence only. Positive catalogue tags may supplement the authored
  * category; material, location, and render-prompt text never invent a style. */
-export function catalogueStyleIds(choice: CanonicalChoice): string[] {
+export function catalogueStyleIds(choice: CanonicalChoice, variantId?: string): string[] {
   if (choice.domain !== 'building') return [];
-  const presentation = cataloguePresentationFor(choice.placements[0]?.id);
+  const teaching = teachingStyleIds(choice, variantId);
+  if (teaching !== undefined) return teaching;
+  const asset = variantId ? choice.placements.find(item => item.model.variantId === variantId) : choice.placements[0];
+  const presentation = cataloguePresentationFor(asset?.id);
   if (presentation) return [...presentation.styleIds];
   const ids = new Set<string>();
   const category = normalizeStyle(choice.option.categoryId ?? '');
@@ -70,12 +75,14 @@ export function catalogueStyleIds(choice: CanonicalChoice): string[] {
 export function catalogueStyleLabel(id: string, categories: AestheticCategory[] = []): string {
   if (id === 'unknown') return 'Style not catalogued';
   if (STYLE_LABELS[id]) return STYLE_LABELS[id];
+  const definition = styleDefinition(id);
+  if (definition) return definition.label;
   return categories.find(category => category.id === id)?.label
     ?? id.replace(/_/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
 }
 
 export function availableCatalogueStyles(choices: CanonicalChoice[], categories: AestheticCategory[]) {
-  const ids = new Set(choices.flatMap(catalogueStyleIds));
+  const ids = new Set(choices.flatMap(choice=>catalogueStyleIds(choice)));
   if (choices.some(choice => choice.domain === 'building' && !catalogueStyleIds(choice).length)) ids.add('unknown');
   return [...ids].map(id => ({ id, label: catalogueStyleLabel(id, categories) }))
     .sort((a,b) => a.label.localeCompare(b.label));
@@ -109,8 +116,10 @@ export function catalogueSizeLabel(asset: CatalogueAsset | undefined): string {
   return `Default plot ${number.format(asset.width)} × ${number.format(asset.depth)} m · ${number.format(value)} m²`;
 }
 
-export function choiceMatchesFacets(choice: CanonicalChoice, { styleId, sizeId }: CatalogueFacets): boolean {
+export function choiceMatchesFacets(choice: CanonicalChoice, { styleId, sizeId, planningId, eraId }: CatalogueFacets): boolean {
   const styles = catalogueStyleIds(choice);
   return (!styleId || (styleId === 'unknown' ? !styles.length : styles.includes(styleId)))
-    && (!sizeId || catalogueSizeId(choice) === sizeId);
+    && (!sizeId || catalogueSizeId(choice) === sizeId)
+    && (!planningId || planningIds(choice).includes(planningId))
+    && (!eraId || eraIds(choice).includes(eraId));
 }

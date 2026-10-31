@@ -20,9 +20,7 @@ from tests.test_kling_video import png
 @pytest.fixture
 async def pilot(isolated, monkeypatch):  # noqa: F811
     f = isolated
-    settings = f.settings.model_copy(
-        update={"kling_animation_enabled": True, "fal_key": "mock-key-never-sent"}
-    )
+    settings = f.settings.model_copy(update={"kling_animation_enabled": True, "fal_key": "mock-key-never-sent"})
     monkeypatch.setattr(animation, "get_settings", lambda: settings)
     monkeypatch.setattr(video, "get_settings", lambda: settings)
     source_bytes = png()
@@ -83,9 +81,7 @@ async def pilot(isolated, monkeypatch):  # noqa: F811
 
 async def generate(f, req=None):
     async with f.sessions() as db:
-        return await animation.animate_render(
-            req or f.request, await db.get(User, f.user.id), db
-        )
+        return await animation.animate_render(req or f.request, await db.get(User, f.user.id), db)
 
 
 @pytest.mark.asyncio
@@ -112,9 +108,7 @@ async def test_scene_direction_is_saved_submitted_once_and_cannot_change_on_repl
 
 async def recover(f, attempt):
     async with f.sessions() as db:
-        return await animation.recover_animation(
-            f.project.id, uuid.UUID(attempt.id), await db.get(User, f.user.id), db
-        )
+        return await animation.recover_animation(f.project.id, uuid.UUID(attempt.id), await db.get(User, f.user.id), db)
 
 
 @pytest.mark.asyncio
@@ -132,9 +126,7 @@ async def test_free_preflight_reads_finished_full_resolution_without_provider_or
         )
         assert (result.width, result.height, result.duration_seconds) == (1600, 900, 5)
         assert result.estimated_cost_usd == 0.56 and result.generate_audio is False
-        assert (await db.get(Project, f.project.id)).metadata_[TRIAL_KEY][
-            "video_requests"
-        ] == {}
+        assert (await db.get(Project, f.project.id)).metadata_[TRIAL_KEY]["video_requests"] == {}
         assert (await db.get(User, f.user.id)).render_credits == 1000
     f.submit.assert_not_awaited()
     f.upload.assert_not_awaited()
@@ -143,13 +135,18 @@ async def test_free_preflight_reads_finished_full_resolution_without_provider_or
 @pytest.mark.asyncio
 async def test_wide_render_preflight_and_submission_keep_original_and_derivative_provenance(pilot, monkeypatch):
     import hashlib
+
     f = pilot
     original = png(2032, 736)
     monkeypatch.setattr(animation, "_read_source", lambda _: original)
     async with f.sessions() as db:
         result = await animation.preflight_animation(
-            animation.RenderAnimationPreflightRequest(project_id=f.project.id, source_render_id=f.request.source_render_id),
-            await db.get(User, f.user.id), db)
+            animation.RenderAnimationPreflightRequest(
+                project_id=f.project.id, source_render_id=f.request.source_render_id
+            ),
+            await db.get(User, f.user.id),
+            db,
+        )
         assert (result.width, result.height) == (2032, 736)
         assert (result.provider_width, result.provider_height, result.source_padded) == (2032, 814, True)
     f.submit.assert_not_awaited()
@@ -183,18 +180,12 @@ async def test_concurrent_idempotent_requests_reserve_bill_and_submit_once(pilot
             "generate_audio": False,
             "cfg_scale": 0.5,
         }
-        assert (
-            stored["project_id"] == str(project.id)
-            and stored["prompt"]
-            and stored["negative_prompt"]
-        )
+        assert stored["project_id"] == str(project.id) and stored["prompt"] and stored["negative_prompt"]
         assert (await db.get(User, f.user.id)).render_credits == 950
         assert len(project.metadata_[TRIAL_KEY]["video_requests"]) == 1
         assert len((await db.execute(select(ApiUsageLog))).scalars().all()) == 1
     with pytest.raises(HTTPException) as exc:
-        await generate(
-            f, f.request.model_copy(update={"source_render_id": uuid.uuid4()})
-        )
+        await generate(f, f.request.model_copy(update={"source_render_id": uuid.uuid4()}))
     assert exc.value.status_code == 409
     f.submit.assert_awaited_once()
 
@@ -211,13 +202,9 @@ async def test_receipt_is_durable_before_poll_and_recovery_survives_failure_new_
     assert paused.recoverable and paused.interaction_id == "saved-fal-request"
     f.poll.side_effect = None
     result = await recover(f, paused)
-    assert result.status == "complete" and result.source_render_id == str(
-        f.request.source_render_id
-    )
+    assert result.status == "complete" and result.source_render_id == str(f.request.source_render_id)
     assert result.fidelity_status is None
-    assert (
-        f.saved[result.video_url.removeprefix("/api/v1/files/")] == b"mock-paid-video"
-    )
+    assert f.saved[result.video_url.removeprefix("/api/v1/files/")] == b"mock-paid-video"
     assert (await recover(f, result)).video_url == result.video_url
     assert (await generate(f)).video_url == result.video_url
     f.submit.assert_awaited_once()
@@ -285,11 +272,7 @@ async def test_project_ownership_render_membership_and_source_fallback_are_enfor
         )
         db.add_all([stranger, viewer])
         await db.flush()
-        db.add(
-            ProjectShare(
-                project_id=f.project.id, user_id=viewer.id, permission="viewer"
-            )
-        )
+        db.add(ProjectShare(project_id=f.project.id, user_id=viewer.id, permission="viewer"))
         await db.commit()
         for actor in [stranger, viewer]:
             with pytest.raises(HTTPException) as exc:
@@ -321,9 +304,7 @@ async def test_project_ownership_render_membership_and_source_fallback_are_enfor
 
 
 @pytest.mark.asyncio
-async def test_storage_failure_retains_receipt_and_recovers_without_rebilling(
-    pilot, monkeypatch
-):
+async def test_storage_failure_retains_receipt_and_recovers_without_rebilling(pilot, monkeypatch):
     f = pilot
     first = await generate(f)
     save = documents._upload_to_storage
@@ -351,9 +332,7 @@ async def test_restart_with_stale_poll_lease_and_changed_endpoint_uses_original_
         meta["video_pilot_attempts"] = [
             {
                 **meta["video_pilot_attempts"][0],
-                "poll_lease_until": (
-                    datetime.now(timezone.utc) - timedelta(seconds=1)
-                ).isoformat(),
+                "poll_lease_until": (datetime.now(timezone.utc) - timedelta(seconds=1)).isoformat(),
             }
         ]
         project.metadata_ = meta
@@ -404,33 +383,23 @@ async def test_saved_output_is_shared_but_recovery_and_provider_receipt_stay_pri
         await db.flush()
         db.add_all(
             [
-                ProjectShare(
-                    project_id=f.project.id, user_id=viewer.id, permission="viewer"
-                ),
-                ProjectShare(
-                    project_id=f.project.id, user_id=editor.id, permission="editor"
-                ),
+                ProjectShare(project_id=f.project.id, user_id=viewer.id, permission="viewer"),
+                ProjectShare(project_id=f.project.id, user_id=editor.id, permission="editor"),
             ]
         )
         await db.commit()
         output_key = result.video_url.removeprefix("/api/v1/files/")
         for actor in [viewer, editor]:
-            assert (
-                await files._authorize_file(output_key, actor, db, None, None) is False
-            )
+            assert await files._authorize_file(output_key, actor, db, None, None) is False
             gallery = await video.list_video_attempts(f.project.id, actor, db)
             assert gallery.attempts[0].video_url == result.video_url
-            assert gallery.attempts[0].source_render_id == str(
-                f.request.source_render_id
-            )
+            assert gallery.attempts[0].source_render_id == str(f.request.source_render_id)
             assert not gallery.attempts[0].recoverable
             assert gallery.attempts[0].interaction_id is None
             assert gallery.attempts[0].request_id == ""
             assert gallery.attempts[0].generation_settings is None
         with pytest.raises(HTTPException) as exc:
-            await animation.recover_animation(
-                f.project.id, uuid.UUID(first.id), editor, db
-            )
+            await animation.recover_animation(f.project.id, uuid.UUID(first.id), editor, db)
         assert exc.value.status_code == 403
 
 
@@ -456,8 +425,5 @@ async def test_stale_poll_cannot_overwrite_a_newer_completed_result(pilot):
             status="failed",
             error="late failure",
         )
-        assert (
-            restored["video_url"] == current["video_url"]
-            and restored["status"] == "complete"
-        )
+        assert restored["video_url"] == current["video_url"] and restored["status"] == "complete"
         assert restored["poll_lease_id"] == "newer-worker"

@@ -1,6 +1,14 @@
 import type { PlaceAsset } from './assetRegistry';
+import { hasFixedBuildingFootprint as hasFixedNativeBuildingFootprint } from './fixedBuildingFootprint';
 
 export type BuildingFootprintProgram = NonNullable<PlaceAsset['footprintProgram']>;
+
+/** Storey editing can be supported while the authored plan stays locked. */
+export function hasFixedBuildingFootprint(asset: PlaceAsset | undefined): boolean {
+  const program = asset?.footprintProgram;
+  return hasFixedNativeBuildingFootprint(asset)
+    || Boolean(program && (program.editable === false || program.minScale === program.maxScale));
+}
 
 export function footprintProgramSupports(program: BuildingFootprintProgram, scale: unknown): boolean {
   const parsed = Number(scale);
@@ -13,9 +21,10 @@ export function footprintProgramTarget(
 ): { widthM: number; depthM: number; scale: number } {
   const parsed = Number(scale);
   const safeScale = footprintProgramSupports(program, parsed) ? parsed : program.defaultScale;
+  const fixed = program.minScale === program.maxScale;
   return {
-    widthM: Math.round(program.nativeWidthM * safeScale * 10000) / 10000,
-    depthM: Math.round(program.nativeDepthM * safeScale * 10000) / 10000,
+    widthM: fixed ? program.nativeWidthM * safeScale : Math.round(program.nativeWidthM * safeScale * 10000) / 10000,
+    depthM: fixed ? program.nativeDepthM * safeScale : Math.round(program.nativeDepthM * safeScale * 10000) / 10000,
     scale: safeScale,
   };
 }

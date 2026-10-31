@@ -14,6 +14,19 @@ from scripts.hosted_assets import DETAIL_MANIFESTS
 
 
 class HostedAssetsTests(unittest.TestCase):
+    def test_bridge_modules_are_delivered_even_when_the_picker_hides_pilots(self):
+        bridges = json.loads((ROOT / "frontend/src/data/nativeBridgePilots.json").read_text())
+        modules = [{"url": module["url"], "kind": "glb", "sha256": module["sha256"]}
+                   for bridge in bridges for module in bridge["modules"].values()]
+        requirements = public_requirements({"choices": [], "bridge_module_dependencies": modules})
+        self.assertTrue(modules)
+        self.assertEqual(set(requirements), {module["url"] for module in modules})
+        for module in modules:
+            self.assertEqual(requirements[module["url"]]["sha256"], module["sha256"])
+        with self.assertRaisesRegex(ValueError, "Conflicting"):
+            public_requirements({"choices": [{"checks": [{**modules[0], "sha256": "0" * 64}]}],
+                                 "bridge_module_dependencies": modules})
+
     def test_people_models_and_thumbnails_have_exact_hosted_payloads(self):
         name = 'frontend/src/features/people/peopleCatalogue.json'
         self.assertIn(name, DETAIL_MANIFESTS)

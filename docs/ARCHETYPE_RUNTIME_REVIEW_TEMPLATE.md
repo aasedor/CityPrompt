@@ -17,6 +17,7 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 - Vacant test site, protected reference, disposable test project:
 - Mixed-scene project and separate oversized-candidate project, if applicable:
 - Supported plot dimensions, axes/base datum, reshape/repetition behavior:
+- Authored storey programme: exact source/module hashes, shared whole-source origin, complete-assembly bounds centre, native-lock flag, and any bounded uniform-scale opt-in:
 - Supported terrain modes and connection capabilities:
 - Public-realm detail: metric plant height/footprint, paving scale, instance/texture budgets, and native close/aerial evidence:
 - Replacement furniture: complete mesh envelope/base datum, legacy-asset flag independence, component and in-site evidence:
@@ -33,6 +34,20 @@ Default status is NOT TESTED. Do not prefill a pass from another archetype.
 
 ## Gates
 
+For a new exact variant, check both the backend trusted parent/child inventory
+and generated native-model reporting facts before the browser compile. A picker
+card or successful `/plan` response alone does not prove `/place-community` accepts it.
+Verify the actual visible model and camera before saving capture evidence; a new
+reshape-panel title can coexist with a previously selected native mesh. Record any
+explicit re-selection needed, and exclude stale-camera drafts from delivery.
+
+For context removal from merged-material GLBs, check complete functional assemblies
+against the authoring recipe as well as retained bounds/counts. A touching kilometre
+of quay can weld to a bridge footway; removing vehicle bodies can leave their glass
+behind. Prove whole decks/footways, original closed end faces and complete prop removal.
+Use the same pinned ownership revision in hover preview, placed geometry and saved
+identity. A compact bounding box or matching triangle total alone is insufficient.
+
 Use PASS / FAIL / NOT TESTED / N/A. Attach evidence to each PASS and a reason
 to each N/A. Use the shared checklist for each gate's full meaning.
 
@@ -47,6 +62,10 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 | C7 Failure and recovery | NOT TESTED | |
 | C8 Low/aerial views, exact capture and any AI-image comparison | NOT TESTED | Same-camera source/output; count, outline, location, scale, access, material/function, additions; pass/review/fallback |
 | C9 Student controls and supported inputs | NOT TESTED | |
+
+For fixed-native buildings, record Q/E and rotation-field evidence at the actual
+site latitude: metre dimensions/right angles preserved, exact model retained
+after save/reopen. A displayed angle alone does not prove detailed-model fit.
 | B1 Native placement | NOT TESTED | |
 | B2 Measured entrance evidence | NOT TESTED | |
 | B3 Entrance authoring | NOT TESTED | |
@@ -73,7 +92,11 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Direct selection where an authored zone overlaps prepared ground | NOT TESTED | After reload, select the contained zone from the canvas, select the site elsewhere, then reselect the zone; confirm its edit handles and settings. |
 | Proposed off-site public-road endpoint; Undo/Redo/reload and low junction grade | NOT TESTED | Confirm the mapped road visually; marker or stored height alone is insufficient. |
 | Fixed street bend through ordinary controls | NOT TESTED | Add bend point, drag the route handle, then reload and compare centreline, compiler identity and handle count. |
-| Narrow pedestrian section and bend control retention | NOT TESTED | Zero motor lanes; identical footprint/graph/section width; sparse handles survive boundary snap, save, Undo/Redo and reload. |
+| Long repeatable route and exact edit datum | NOT TESTED | Draw beyond the former length cap; retain native section/module scale, complete geometry and sparse handles. Extend, Undo/Redo and reopen. Verify handles and pointer picks use prepared ground rather than hidden tiles. Record browser-tested length separately from validator maximum; retain fixed bridge/reference limits. |
+| Repeated street travel-surface ownership | NOT TESTED | Sample full native road/cycle widths at source-fixture centres, module seams, endpoints and a partial final module in both directions. Keep pedestrian access links and authored local crossings/markings, with no repeated full-ROW false sidewalk across travel bands. Check explicit junction clipping/crossings separately; geometry rays do not establish a native visual pass. |
+| X-to-T and T-to-X recovery | NOT TESTED | Preserve a complete junction between the same streets while allowing a supported change in arm count. Check for a clamped spur, multiple crossings, near-angle-limit gestures and saved/reopened topology. |
+| Narrow pedestrian section and bend control retention | NOT TESTED | Zero motor lanes; identical footprint/graph/section width; sparse handles survive boundary snap, save, Undo/Redo and reload. Include tight switchbacks, retraces, crossings, loops and short first/last segments. Attest actual route length and the same joined surface in browser and compiler; do not infer length from a filled loop's plot area or recover a winding path as a vehicle axis. |
+| Nonexclusive ground paths across building and park plots | NOT TESTED | Draw and edit an exact surface-path variant through an existing plot; reverse the placement order. Keep the route in place, its finish above shallow ground caps, and walls/steps/raised amenities depth-tested. Verify variant change, Undo/Redo and reload; retain site limits and motor-road protections. |
 | Native street production recipe and unchanged Apply | NOT TESTED | Backend catalogue, exact profile/revision/module locks, editor variant/width, reload without DEV marker; no fallback to a sibling. |
 | Finite street draft and connected section replacement | NOT TESTED | Exact variant/archetype/width before recipe creation, real existing zone ID, unchanged neighbours, no persisted preview flag; invalid saved recipes and lost junctions reject. |
 | Angled join and short-arm recovery | NOT TESTED | Width-aware snapping, sampled-curve node identity, owned pavement/sidewalk surface, no crossing-only fallback on unsupported joins. |
@@ -90,10 +113,14 @@ Mark type-specific gates N/A with a reason; keep applicable unrun cases open.
 | Edit during pending ground / tile refinement | NOT TESTED | |
 | Delete / Undo / Redo; referenced route target | NOT TESTED | |
 | Interrupted navigation or measurement | NOT TESTED | |
+| Interrupted building asset download; Retry after an unrelated save | NOT TESTED | Bounded automatic retry; actual cache reload; preserved source identity; no proxy reported as detailed-ready. |
+| Embedded display slab / street on prepared ground | NOT TESTED | Check both GLB-owned ground and runtime foundation, native and repeated podiums; retain entrance paving, architectural materials, complete bounds and source bytes. |
 | Failed/conflicting save; retry without lost edits | NOT TESTED | |
 | Boundary exclusion: readable object labels and unchanged saved geometry | NOT TESTED | |
 | Save/reload/reopen; exact persisted identity | NOT TESTED | |
 | Generate to 3D: panel recipe matches locked compiler; reload and inspect visible models | NOT TESTED | |
+| Supported storey edit: plan and saved-zone compilation agree | NOT TESTED | Distinguish model footprint from reserved placement plot. Bind both request and final server target to the exact variant/revision/programme; test finite range, Retry, Undo/Redo and reopen with the compiled geometry. Planning success alone cannot pass this row. |
+| Storey source frame and complete-model centring | NOT TESTED | Measure the whole source centre. Repeated modules share one rotated/scaled origin offset; complete native-locked assemblies centre by whole bounds even in module delivery format. Preserve bounded house opt-ins. Verify actual row metadata, rotated plots, native → alternate → native, unit vertical scale and reopen. |
 | Capture blocked while stale, then succeeds | NOT TESTED | |
 | Site landscape compatibility | NOT TESTED | Continuous custom base stays below the archetype; trees respect complete plot and access. Move or route/variant edit invalidates; Undo/Redo/reload/export retain the correct result. Verify surrounding-tile colour feathering and ground-height seams separately. Custom artwork cannot cover objects or export before loading. |
 | Student-authored placement and connections | NOT TESTED | |
@@ -199,3 +226,14 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot
 alone is not student-ready acceptance. Do not invent a review or approval.
+
+## Two-endpoint bridge draft and persistence regression
+
+For route-capable bridges, verify first-click hover, both confirmed endpoints plus cursor motion, extra click endpoint adjustment, Enter/Finish and the complete click/click/double-click event sequence. Coordinates and sampled-height arrays must retain the same two endpoints; ordinary street bend/duplicate behavior must remain unchanged. Repeat endpoint edits against the actual PostgreSQL enum-backed API, then Undo/Redo/reload and download the exact source. Mocked session tests alone do not prove a valid database query. Keep original fixed saves and production gates distinct from the new route revision.
+
+
+## Source-derived bridge route contracts
+
+Use the complete occupied geometry to define each endpoint interval, including skew caps, tower backs and full stair flights. Preserve original source bytes and material ownership; record derivative-only stairs/approaches explicitly. At minimum span, complete landscape/support companion assemblies must fit rather than silently disappear. Keep road/rail lane counts tied to source programmes, not generic deck widths. Compare compiled metric envelopes at the same millimetre precision while retaining immutable source locks.
+
+For overlapping stair flights, filter candidate walking surfaces by current foot height before choosing the nearest plan surface. Exact skew tread polygons can be necessary; an inscribed strip may leave corner holes. Offline ray and prior-height traversal tests do not replace browser walking. Endpoint edit, Undo/Redo, PostgreSQL persistence, full reload, source capture and at-grade connection acceptance remain separate evidence gates.

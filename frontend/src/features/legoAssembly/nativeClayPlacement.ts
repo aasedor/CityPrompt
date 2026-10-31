@@ -2,7 +2,10 @@ import * as THREE from 'three';
 import type { LegoAssemblyPlan } from './legoAssemblyApi';
 
 export function isNativeClayPlan(plan: { fit?: LegoAssemblyPlan['fit'] | null }): boolean {
-  return plan.fit?.native_scale_locked === true && plan.fit.delivery_format === 'architectural_clay';
+  // Complete authored height choices can use the module delivery format too.
+  // The planner marks only whole select-and-place assemblies as native locked;
+  // repeated floor stacks retain their common source frame and remain uncentred.
+  return plan.fit?.native_scale_locked === true && isArchitecturalClayPlan(plan);
 }
 
 export function isArchitecturalClayPlan(plan: { fit?: LegoAssemblyPlan['fit'] | null }): boolean {

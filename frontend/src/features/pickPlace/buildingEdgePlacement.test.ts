@@ -108,6 +108,19 @@ describe('reviewed building contact envelopes',()=>{
     expect(yCenter(result.coordinates)).toBeCloseTo(10+contract.depth/2+.02,2);
     expect(JSON.stringify(moving)).toBe(saved);
   });
+  it('places a reviewed tower side beside the sidewalk while preserving its reserved envelope',()=>{
+    const moving=building('clay_vancouver_balcony_podium_tower',0,0,90);
+    const envelope=buildingPlacementEnvelope(moving),north=Math.max(...envelope.map(p=>(p[1]-51)*METERS_PER_DEG_LAT));
+    moving.coordinates=moving.coordinates.map(p=>[p[0],p[1]+(10+north+2)/METERS_PER_DEG_LAT]);
+    const before=JSON.stringify(moving),road={id:'road',zone_type:'road',properties:{width:20},coordinates:rectangleAt(ll(0,0),150,20)} as SiteZone;
+    const result=snapPlacement(moving.coordinates,[road],site,undefined,moving.properties,'building');
+    expect(result.problem).toBeNull();expect(result.snapped).toBe(true);
+    expect(yCenter(result.coordinates)-north).toBeCloseTo(10.02,2);
+    expect(check({...moving,coordinates:result.coordinates},[road])).toBeNull();
+    expect(rectangleDimensions(result.coordinates).width).toBeCloseTo(rectangleDimensions(moving.coordinates).width,4);
+    expect(rectangleDimensions(result.coordinates).degrees).toBeCloseTo(90,4);
+    expect(JSON.stringify(moving)).toBe(before);
+  });
   it.each(['trial_postwar_bungalow','trial_edwardian_foursquare','validation_clapboard_north_end','clay_vancouver_balcony_podium_tower'])(
     'keeps %s contact bounds unchanged across its supported heights',id=>{
       const z=building(id),program=placeAsset(id).storeyProgram!;

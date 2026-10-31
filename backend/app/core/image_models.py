@@ -35,8 +35,4 @@ PAID_IMAGE_CREDIT_MULTIPLIERS = {
 
 
 def image_provider_key(settings, model: str) -> str:
-    return (
-        settings.gemini_api_key
-        if model == NANO_BANANA_MODEL
-        else settings.openai_api_key
-    )
+    return settings.gemini_api_key if model == NANO_BANANA_MODEL else settings.openai_api_key

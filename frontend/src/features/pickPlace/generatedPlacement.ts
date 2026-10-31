@@ -17,14 +17,13 @@ export function generatedPlacementDraft(model: UserGeneratedBuilding): Placement
 export function placementDraftProperties(draft: PlacementDraft, elevation?: number, coordinates?: number[][]): SiteZoneProperties {
   const model = draft.generatedModel;
   if (!model) return placementProperties(placeAsset(draft.assetId), elevation, coordinates);
-  const floors = model.floor_count ?? 2;
+  const floors = model.floor_count ?? (model.source_kind === 'imported_glb' ? undefined : 2);
   return {
     user_generated_source_id: model.id,
     native_plot_axes: true,
     community_3d_mask_existing_tiles: true,
     height: model.height_meters,
-    floor_count: floors,
-    floors,
+    ...(floors !== undefined ? {floor_count: floors, floors} : {}),
     ...(Number.isFinite(elevation) ? { terrain_elevation_m: elevation } : {}),
   };
 }

@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "status": "local_runtime_review",
+  "sourceScenesUnchanged": true,
+  "variants": [
+    {
+      "id": "planted_green_bridge_route_v1",
+      "sourceAssemblySha256": "d7dddc9371b5cf554bcb372b6d46c8fc0e6256d7335bd47ff542420463f20066",
+      "sourceRecipeSha256": "8f6984387ce9cb2ce1a67724ad6cac7f2eb093980fad074c4267775c315c30a9",
+      "programSha256": "417c0de80a93dc77e40c0f9a9a5cafcccdfa4662837a1e91d53a264fa8d5d36a",
+      "referenceSha256": "fd3f4b85a8f168fb4684cdcb34750d9654ff8c525d54cfdbb9a7c535a31d32fb"
+    },
+    {
+      "id": "brick_arch_viaduct_route_v1",
+      "sourceAssemblySha256": "3d5a0e6fb50d12d19de78c5ea0f992ff5a371d2269fb115e1b2e064f64c84033",
+      "sourceRecipeSha256": "8d08d3198c319e64b24b047c168c7fc7f70bac0c27413486a75a18224da9bcb3",
+      "programSha256": "eecb7f4a47c331cd0e5f9bb3fbec6751f36d227de0936a7718e091b1040f759c",
+      "referenceSha256": "fcc775ae4c2424d122d676e73fe85a22e3b005555b817af3dd1e3dab89db94b2"
+    },
+    {
+      "id": "rail_through_truss_route_v1",
+      "sourceAssemblySha256": "db0886ff61868fddfe5a88b2381372983da344fe14edde4adecc8805efb7c813",
+      "sourceRecipeSha256": "7a52155f5281a1c24fac0f4a101c7b063d1146885d04758e175574177d0fa8be",
+      "programSha256": "bb5b37781818a3e175579d6bdbe042b60fc9921d1df4d1fcf045e2d09aea6ddb",
+      "referenceSha256": "05a81c56f62e11f4d84f294e68dff98c7cdfd1de3ac48fbf4a8ab2577ea2f3a3"
+    },
+    {
+      "id": "stone_arch_road_bridge_route_v1",
+      "sourceAssemblySha256": "5300077e633cecc901ef86bb0a78e0b7bd0dce0588c613becbb2195b92337d6d",
+      "sourceRecipeSha256": "a256213669fee5c69ec63dbc19b400b68bb778ad579c7afe993970e88bd33076",
+      "programSha256": "dac41bff45b13335a0275394874c12f2470abac3c01b7b61843aab5ea75b53b6",
+      "referenceSha256": "73a50019577d60995e107a2e5e936e2381819fc33b81d39b0d38c99c7aaf79a8"
+    },
+    {
+      "id": "tied_arch_shared_bridge_route_v1",
+      "sourceAssemblySha256": "7900ce3b41b0a668b4c68e6dc86d55a8ee3e7eb1d06076b637e0114be5ead94e",
+      "sourceRecipeSha256": "578ad2d4ad34c6857a6683b006516588b5de8c3ffc8c80b7eefef3b50b7af08e",
+      "programSha256": "941959c8676a178e7c10af55e6be71bb1a4456fba66c6b45fcae5aea59717dda",
+      "referenceSha256": "e7cb390844e8ef6adb2a7f9928d19b349a5d07b423e827f12c3407ce492eef0f"
+    },
+    {
+      "id": "steel_truss_road_bridge_route_v1",
+      "sourceAssemblySha256": "d01804b356b2748d9426cd29e4c16d4709a33260abacedc25c3cc3203ddbdf30",
+      "sourceRecipeSha256": "b12e3e379cacb8138809d730432afa8dc5ad624e577976d156993f742fb0f26b",
+      "programSha256": "7274a8a86447e234520e53d9f2f1673085d400c9ca4c314b12099062e02983dc",
+      "referenceSha256": "42e7507fd4b69a758111c3a44c39ba6afa0778da2e4cc621ea51cd60b207cfa6"
+    },
+    {
+      "id": "swooping_cycle_flyover_route_v1",
+      "sourceAssemblySha256": "4c075a5a31b0611a96dade6f0572247d5649ebfb4ebf17cd73f794651809c3f4",
+      "sourceRecipeSha256": "3d630322a51347ed91e820ee5409a8a7bf0a9a6ab46048852eec4d859cba4006",
+      "programSha256": "54d48171dccf2950ea642972d1eee20d2ef541a2afd4d77e9871a8fdc2671886",
+      "referenceSha256": "ed500b98870febb7f8a37e5d373a1c02c2c241e57ef0a3f1a14b68ddc6111cdd"
+    },
+    {
+      "id": "cable_stayed_cycle_ring_route_v1",
+      "sourceAssemblySha256": "c1ef7008750f60ae622b2c7bb910f8d3ef352f57b4dcd492817d9b47ff0e0e11",
+      "sourceRecipeSha256": "4f117d8cdd59208d6ff9f60b8a16f26872110897abc3c15ae64df97243b8c684",
+      "programSha256": "178a273925d481a206bdfd441a875695ab68b9ef9411cd868906e6864be8dc08",
+      "referenceSha256": "c3bbebd85c5bc1553088d0d23ee5ad838facb5ddcd1c6b1ddf693fbb7e775f66"
+    },
+    {
+      "id": "weathering_steel_v_footbridge_route_v1",
+      "sourceAssemblySha256": "2384d6eed060180c3c68d4ba5040b0968ca6e6229d6846c27327faa204f23ac2",
+      "sourceRecipeSha256": "29f94dbf5c21b80b5ed1309b2989d22bde1fa46574f4da3eb21f84ac0fd63f44",
+      "programSha256": "05f70d136aca98b3cac75f85338c69eec78057a9c744e23cc2163e440c8630bf",
+      "referenceSha256": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7"
+    }
+  ],
+  "modules": [
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_left_stair",
+      "sha256": "f2beaaa8e140b1b4cf40f043983e3f851849e59587c224e503dac6bc9b8a58af",
+      "bytes": 81520,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_left_stair.glb"
+    },
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_left_end",
+      "sha256": "0693343800ea8126aedf27faf31adf876b1fce1ae4152df18d6901aff97e02d6",
+      "bytes": 1057816,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_left_end.glb"
+    },
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_left_span",
+      "sha256": "771d221ec444d5bd723ddc12df83254337f54a0262f666974e6813303d1e2ec7",
+      "bytes": 64384,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_left_span.glb"
+    },
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_centre",
+      "sha256": "4bbcc024ca853bfc9dfbdb090d0b172dd78e188177ef2bd38fbada0c23194f59",
+      "bytes": 6653328,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_centre.glb"
+    },
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_right_span",
+      "sha256": "cc7b8611c2f941a34d29c676f70092d081bd9ab4772c544ea9f77df301945837",
+      "bytes": 64384,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_right_span.glb"
+    },
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_right_end",
+      "sha256": "bcbf8e2d3faad5d9bb2a057f3cb2c3a04de8cc95dd049b2139a30c39de6eb60e",
+      "bytes": 537836,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_right_end.glb"
+    },
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_right_stair",
+      "sha256": "018eabb68f9d61e5a943415b129cd8e3398602d0e9f2be4448fdb84a15e99754",
+      "bytes": 81520,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_right_stair.glb"
+    },
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_left_landscape",
+      "sha256": "e01230723c10cf69bfec0a8978658a4c0e39cdf84c77c2e8f723db6de039e5d3",
+      "bytes": 3006540,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_left_landscape.glb"
+    },
+    {
+      "variant": "planted_green_bridge_route_v1",
+      "kind": "green_right_landscape",
+      "sha256": "8e338b4aedf9eddb86a67cc45150cff0b1e4ad0a24535cf4c8997d2beca84788",
+      "bytes": 3565084,
+      "url": "/street-kits/pilots/planted_green_bridge_route_v1/green_right_landscape.glb"
+    },
+    {
+      "variant": "brick_arch_viaduct_route_v1",
+      "kind": "bridge_left_end",
+      "sha256": "a55c9691f3d02f74f8eff291388ebfaab92ea3fb189f53c16b2461547b5fe27c",
+      "bytes": 690944,
+      "url": "/street-kits/pilots/brick_arch_viaduct_route_v1/bridge_left_end.glb"
+    },
+    {
+      "variant": "brick_arch_viaduct_route_v1",
+      "kind": "bridge_main",
+      "sha256": "41fd2d4f3291d5ea98275e3200065771218c76414f87f2530da4b855afc387d3",
+      "bytes": 462356,
+      "url": "/street-kits/pilots/brick_arch_viaduct_route_v1/bridge_main.glb"
+    },
+    {
+      "variant": "brick_arch_viaduct_route_v1",
+      "kind": "bridge_right_end",
+      "sha256": "511d0030c9397b1957ef38a4464286a2a3e6d433cd110ed726d53f8871a4428d",
+      "bytes": 183004,
+      "url": "/street-kits/pilots/brick_arch_viaduct_route_v1/bridge_right_end.glb"
+    },
+    {
+      "variant": "rail_through_truss_route_v1",
+      "kind": "bridge_left_end",
+      "sha256": "355b6ef79a31012bc29063ecbf04eb49ea49f190db562c3a6fdc7d96894168dc",
+      "bytes": 1526988,
+      "url": "/street-kits/pilots/rail_through_truss_route_v1/bridge_left_end.glb"
+    },
+    {
+      "variant": "rail_through_truss_route_v1",
+      "kind": "bridge_main",
+      "sha256": "1cf84e7c690e9d9588f5ea7b8d57454d441610bb8518c659a7c9bfba94e7a9e6",
+      "bytes": 440616,
+      "url": "/street-kits/pilots/rail_through_truss_route_v1/bridge_main.glb"
+    },
+    {
+      "variant": "rail_through_truss_route_v1",
+      "kind": "bridge_right_end",
+      "sha256": "abd7125c42ed04601532429ac39d92c22f1b3977795adcbd77c7d2d966776dcc",
+      "bytes": 774320,
+      "url": "/street-kits/pilots/rail_through_truss_route_v1/bridge_right_end.glb"
+    },
+    {
+      "variant": "stone_arch_road_bridge_route_v1",
+      "kind": "bridge_left_end",
+      "sha256": "a230096f64c591b6cb5977d5c70e471d7c71dda61b53124e3d52eae663a32db2",
+      "bytes": 1543672,
+      "url": "/street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_left_end.glb"
+    },
+    {
+      "variant": "stone_arch_road_bridge_route_v1",
+      "kind": "bridge_main",
+      "sha256": "edc8fe9c527ff7ef6438047caa781914c24793a34df988729df19726ab1ec7a7",
+      "bytes": 1063988,
+      "url": "/street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_main.glb"
+    },
+    {
+      "variant": "stone_arch_road_bridge_route_v1",
+      "kind": "bridge_right_end",
+      "sha256": "d983895be4525b7d13d4b8e50994d7a8ecf1a2e3795464c15e981d87428e670d",
+      "bytes": 1782380,
+      "url": "/street-kits/pilots/stone_arch_road_bridge_route_v1/bridge_right_end.glb"
+    },
+    {
+      "variant": "tied_arch_shared_bridge_route_v1",
+      "kind": "bridge_left_end",
+      "sha256": "d010b94214a5cab5811434a008dc43c39c01881facaf2b6b95cf6a1a01cfb71f",
+      "bytes": 296668,
+      "url": "/street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_left_end.glb"
+    },
+    {
+      "variant": "tied_arch_shared_bridge_route_v1",
+      "kind": "bridge_main",
+      "sha256": "bad3eba068f12519b36322a29d6dfee10e3d95f37ce36294a0a57927cfea193a",
+      "bytes": 1093388,
+      "url": "/street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_main.glb"
+    },
+    {
+      "variant": "tied_arch_shared_bridge_route_v1",
+      "kind": "bridge_right_end",
+      "sha256": "ff5938e089d7b1bccd2384341a1985a529ee4986381633ee5607c685bcefbecd",
+      "bytes": 296668,
+      "url": "/street-kits/pilots/tied_arch_shared_bridge_route_v1/bridge_right_end.glb"
+    },
+    {
+      "variant": "steel_truss_road_bridge_route_v1",
+      "kind": "bridge_left_end",
+      "sha256": "86ad9896f3aab6786778326ad5cd98d23c3ddd7350b71780027d2f5917df9f5b",
+      "bytes": 857728,
+      "url": "/street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_left_end.glb"
+    },
+    {
+      "variant": "steel_truss_road_bridge_route_v1",
+      "kind": "bridge_main",
+      "sha256": "c6812d50d36a7535fea305a6e1ebc33cf7818e7f49f4ca186bbb32cad52a590f",
+      "bytes": 1123596,
+      "url": "/street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_main.glb"
+    },
+    {
+      "variant": "steel_truss_road_bridge_route_v1",
+      "kind": "bridge_right_end",
+      "sha256": "f0cb3c606d6ca13fd486427fdaf1d9db1cc4e90d72cdb26ea3d5c86433932514",
+      "bytes": 860156,
+      "url": "/street-kits/pilots/steel_truss_road_bridge_route_v1/bridge_right_end.glb"
+    },
+    {
+      "variant": "swooping_cycle_flyover_route_v1",
+      "kind": "bridge_topology",
+      "sha256": "33c9c9020fbfb15c2292c2c79b0a5ac430fb0339bd50695bb36fd0590f3b410d",
+      "bytes": 2584540,
+      "url": "/street-kits/pilots/swooping_cycle_flyover_route_v1/bridge_topology.glb"
+    },
+    {
+      "variant": "cable_stayed_cycle_ring_route_v1",
+      "kind": "ring_core",
+      "sha256": "9b533b6ae48465983ad935b0176af36aa0edc7170072f4e0ea8ee9452a64a7c4",
+      "bytes": 393560,
+      "url": "/street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_core.glb"
+    },
+    {
+      "variant": "cable_stayed_cycle_ring_route_v1",
+      "kind": "ring_ramp_left",
+      "sha256": "0ef5dcc10792346171d4f3bd012b97b3b096ccf7a32a83fa67259acf55d2bcb1",
+      "bytes": 123680,
+      "url": "/street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_left.glb"
+    },
+    {
+      "variant": "cable_stayed_cycle_ring_route_v1",
+      "kind": "ring_ramp_right",
+      "sha256": "16cad0ce7e5ade06693c61944e2892536c678fd8796d7f737c324fdd9ec870b9",
+      "bytes": 123680,
+      "url": "/street-kits/pilots/cable_stayed_cycle_ring_route_v1/ring_ramp_right.glb"
+    },
+    {
+      "variant": "weathering_steel_v_footbridge_route_v1",
+      "kind": "bridge_topology",
+      "sha256": "4aa83ba538242870786a5463716234f139671b300489ca9e89177becc70c1fc5",
+      "bytes": 836828,
+      "url": "/street-kits/pilots/weathering_steel_v_footbridge_route_v1/bridge_topology.glb"
+    }
+  ]
+}

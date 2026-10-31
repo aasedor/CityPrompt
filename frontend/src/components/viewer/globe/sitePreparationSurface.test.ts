@@ -43,6 +43,14 @@ const compiledPark = {
 };
 
 describe('compiled site preparation', () => {
+  it('supports a caller-specific numerical seam without admitting millimetre overhangs',()=>{
+    const coordinates=(ring:number[][])=>ring.map(([x,y])=>[-114+x/(111320*Math.cos(51*Math.PI/180)),51+y/111320]);
+    const boundary={...zone('site','site_boundary'),coordinates:coordinates([[0,0],[12,0],[12,12],[0,12]])};
+    const exact={...zone('model','building'),coordinates:boundary.coordinates};
+    const overhang={...exact,coordinates:coordinates([[-0.001,0],[11.999,0],[11.999,12],[-0.001,12]])};
+    expect(preparedSiteContainsZone(boundary,exact,0.00001)).toBe(true);
+    expect(preparedSiteContainsZone(boundary,overhang,0.00001)).toBe(false);
+  });
   it('keeps centimetre projection drift on the prepared datum but rejects actual boundary overhangs', () => {
     const coordinates = (ring: number[][]): [number, number][] => ring.map(([x, y]) =>
       [-114 + x / (111320 * Math.cos(51 * Math.PI / 180)), 51 + y / 111320]);

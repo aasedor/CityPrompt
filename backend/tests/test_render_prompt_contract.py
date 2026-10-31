@@ -187,16 +187,22 @@ def test_aerial_guide_framing_does_not_call_the_source_street_level():
     assert "preserve their positions, silhouettes, storey counts" in prompt
 
 
-@pytest.mark.parametrize("view_mode,mode,style,expected", [
-    ("aerial", "scene", "photorealistic", True),
-    ("aerial", "scene", "photomontage", True),
-    ("street", "scene", "photorealistic", False),
-    ("aerial", "reproject", "isometric", False),
-    ("aerial", "scene", "clay-maquette", False),
-])
+@pytest.mark.parametrize(
+    "view_mode,mode,style,expected",
+    [
+        ("aerial", "scene", "photorealistic", True),
+        ("aerial", "scene", "photomontage", True),
+        ("street", "scene", "photorealistic", False),
+        ("aerial", "reproject", "isometric", False),
+        ("aerial", "scene", "clay-maquette", False),
+    ],
+)
 def test_google_tile_refinement_is_limited_to_same_camera_photographic_aerials(view_mode, mode, style, expected):
     from app.services.direct_3d_render import _presentation_prompt
-    prompt = _presentation_prompt("Maintain the design.", presentation_mode=mode, style=style, object_id_manifest=None, view_mode=view_mode)
+
+    prompt = _presentation_prompt(
+        "Maintain the design.", presentation_mode=mode, style=style, object_id_manifest=None, view_mode=view_mode
+    )
     assert ("AERIAL CONTEXT REFINEMENT" in prompt) is expected
     assert RENDER_PRESERVATION_LOCK in prompt
     if expected:

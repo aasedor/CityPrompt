@@ -1,21 +1,25 @@
 import * as THREE from 'three';
 import { canalRoute, canalRouteProblem, canalWalkingHeight, type CanalPoint } from './canalRoute';
 import type {StreetRouteStation} from './nativeStreetPilot';
+import { nativeStreetMaxLength } from './streetRoutePolicy';
 import { hasElevatedStation, isElevatedRail, RAIL_LIFT_X_M, RAIL_LIFT_Y_M, RAIL_PLATFORM_HEIGHT_M, type RailStation } from './elevatedRailProgram';
+import { modularBridgeProgramFor, modularBridgeRouteProblem, modularBridgeWalkingHeight } from './modularBridgeProgram';
 
 export const CANAL_VARIANT='amsterdam_gracht_v1';
 export const BRIDGE_VARIANT='landmark_signature_bridge_v2';
-export const isSpecialistStreet=(variant:unknown)=>variant===CANAL_VARIANT || variant===BRIDGE_VARIANT || isElevatedRail(variant);
+export const isSpecialistStreet=(variant:unknown)=>variant===CANAL_VARIANT || variant===BRIDGE_VARIANT || isElevatedRail(variant) || Boolean(modularBridgeProgramFor(variant));
 export interface SpecialistFixture {kind:string;x:number;y:number;z:number;yaw:number;scale:number;anchorM?:number}
 
 export function specialistRouteProblem(variant:string,route:StreetRouteStation[]):string|null {
+  const bridgeProgram = modularBridgeProgramFor(variant);
+  if (bridgeProgram) return modularBridgeRouteProblem(bridgeProgram, route);
   if(!isSpecialistStreet(variant))return null;
   if(variant===CANAL_VARIANT)return canalRouteProblem(route);
-  const min=isElevatedRail(variant)?48:260,max=isElevatedRail(variant)?288:480;
+  const min=isElevatedRail(variant)?48:260,max=nativeStreetMaxLength(variant);
   if(route.length<2)return 'Draw two endpoints for this straight specialist street.';
   const a=route[0],b=route[route.length-1],dx=b.x-a.x,dy=b.y-a.y,length=Math.hypot(dx,dy);
   if(!Number.isFinite(length)||length<min-.01||length>max+.01)
-    return isElevatedRail(variant)?'Keep the elevated rail route 48–288 m long.':'Keep the bridge route 260–480 m long for its rigid span and two gradual approaches.';
+    return isElevatedRail(variant)?`Keep the elevated rail route 48–${max} m long.`:'Keep the bridge route 260–480 m long for its rigid span and two gradual approaches.';
   let previous=-1;
   for(const p of route){
     const x=p.x-a.x,y=p.y-a.y,station=(x*dx+y*dy)/length;
@@ -51,7 +55,9 @@ export function specialistFixtures(variant:string,length:number,route:CanalPoint
 }
 
 /** Source-height camera support, in metres above the prepared site. */
-export function specialistWalkingHeight(variant:string,x:number,station:number,length:number,stops:RailStation[]=[],onUpperLevel=false):number|null {
+export function specialistWalkingHeight(variant:string,x:number,station:number,length:number,stops:RailStation[]=[],onUpperLevel=false,preferredHeight?:number):number|null {
+  const bridgeProgram = modularBridgeProgramFor(variant);
+  if (bridgeProgram) return modularBridgeWalkingHeight(bridgeProgram, x, station, length,preferredHeight);
   if(station<0||station>length)return null;
   // The public route stays below the protected tracks, including when a map
   // click initially hits the deck or train roof.

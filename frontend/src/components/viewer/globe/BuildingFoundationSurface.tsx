@@ -23,6 +23,12 @@ export function BuildingLandscapeSurfaceProvider({ zones, children }: { zones: S
   return boundary ? <PreparedGroundFinish boundary={boundary} zones={zones}>{children}</PreparedGroundFinish> : <>{children}</>;
 }
 
+/** Authored ground receives the same finish only on an explicitly prepared site. */
+export function useBuildingLandscapeGround(zone: SiteZone | undefined) {
+  const ground = useContext(GroundFinish);
+  return ground && zone && resolvePreparedSiteTerrainForZone(zone, ground.zones, 0) !== null ? ground : null;
+}
+
 /** Keep taller retaining faces concrete. Ground cover follows horizontal caps
  * and shallow prepared edges; authored stairs and walks remain above them. */
 export function landscapedFoundationGeometry(source: THREE.BufferGeometry, coverShallowSides = false) {

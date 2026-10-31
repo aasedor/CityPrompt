@@ -30,4 +30,13 @@ describe('authored building identity and dimensions', () => {
     expect(assetForZone({ properties })).toBeUndefined();
     expect(nativeBuildingUrl({ properties })).toBeUndefined();
   });
+  it.each([
+    {floor_count:1,floors:1,height:7.34,height_m:7.34,development_height_override_m:7.34},
+    {building_footprint_scale:0.85},
+    {floor_count:3,floors:3,height:13.62,height_m:13.62,development_height_override_m:13.62},
+    {building_footprint_scale:NaN},
+  ])('uses the compiled house assembly instead of a mismatched native preview for %o', change=>{
+    const properties={...placementProperties(placeAsset('validation_clapboard_north_end')),...change};
+    expect(nativeBuildingUrl({properties})).toBeUndefined();
+  });
 });

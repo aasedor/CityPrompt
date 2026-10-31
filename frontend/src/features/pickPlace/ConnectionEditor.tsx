@@ -33,7 +33,9 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
   const [enabled,setEnabled]=useState(isPark ? Boolean(park) : Boolean(existing));
   const [streetId,setStreetId]=useState(existing?.streetId ?? park?.streetId ?? roads[0]?.id ?? '');
   const [groundConfirmed,setGroundConfirmed]=useState(park?.existingGroundConfirmed ?? false);
-  const mappedPaths=useMemo(()=>transportContext.lines.filter(line=>line.kind==='path').map(line=>{
+  // Keep only the previously saved target available for editing/recovery.
+  // Retired, invisible City routes must not become new connection choices.
+  const mappedPaths=useMemo(()=>transportContext.lines.filter(line=>line.kind==='path'&&line.id===park?.streetId).map(line=>{
     const origin=dimensions.center, sx=111320*Math.cos(origin[1]*Math.PI/180);
     const local=(p:number[])=>[(p[0]-origin[0])*sx,(p[1]-origin[1])*111320];
     const distance=Math.min(...line.points.slice(1).map((end,i)=>{
@@ -42,7 +44,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
       return Math.hypot(a[0]+t*dx,a[1]+t*dy);
     }));
     return {...line,distance};
-  }).filter(line=>line.distance<100 || line.id===streetId).sort((a,b)=>a.distance-b.distance).slice(0,30),[transportContext,dimensions.center,streetId]);
+  }),[transportContext,dimensions.center,park?.streetId]);
   const [x,setX]=useState(displayMetres(existing ? existing.xM*(existing.scaleWithPlot?dimensions.width/existing.referenceWidthM:1) : 0));
   const [y,setY]=useState(displayMetres(existing ? existing.yM*(existing.scaleWithPlot?dimensions.depth/existing.referenceDepthM:1) : -dimensions.depth/2+2));
   const pickPlotPoint=(clientX:number,clientY:number,rect:DOMRect)=>{
@@ -108,7 +110,7 @@ export function ConnectionEditor({ zone, zones, visibleIds, disabled, onSave, on
         {isPark && !enabled && <p className="text-sm">The park will choose a nearby suitable sidewalk automatically.</p>}
         {enabled && <>
           {!isPark && <label className="flex min-h-11 items-center gap-2"><input type="checkbox" checked={automatic} onChange={e=>setAutomatic(e.target.checked)}/>Snap to the nearest sidewalk as I move this building</label>}
-          <label className="block text-sm">Sidewalk target<select disabled={!isPark && automatic} className={field} value={streetId} onChange={e=>{setStreetId(e.target.value);setGroundConfirmed(false);}}><option value="">Choose a street or path</option>{roads.map(road=><option key={road.id} value={road.id}>{roadOptionLabel(road)}</option>)}{isPark&&<optgroup label="Existing mapped paths · nearest first">{mappedPaths.map(path=><option key={path.id} value={path.id}>{Math.round(path.distance)} m · {path.label} · {path.id.slice(-8)}</option>)}</optgroup>}</select></label>
+          <label className="block text-sm">Sidewalk target<select disabled={!isPark && automatic} className={field} value={streetId} onChange={e=>{setStreetId(e.target.value);setGroundConfirmed(false);}}><option value="">Choose a street or path</option>{roads.map(road=><option key={road.id} value={road.id}>{roadOptionLabel(road)}</option>)}{isPark&&mappedPaths.length>0&&<optgroup label="Saved mapped path">{mappedPaths.map(path=><option key={path.id} value={path.id}>{Math.round(path.distance)} m · {path.label} · {path.id.slice(-8)}</option>)}</optgroup>}</select></label>
           {isPark&&streetId.startsWith('existing:')&&<div className="rounded-lg bg-blue-50 p-3 text-sm">
             <p>Uses the recorded path width where available, otherwise its centreline. Check the Google scene: shared access routes may also carry vehicles, and mapped data does not establish precise curbs or elevation.</p>
             <label className="mt-2 flex min-h-11 items-center gap-2"><input type="checkbox" checked={groundConfirmed} onChange={e=>setGroundConfirmed(e.target.checked)}/>I checked that this is suitable pedestrian access at ground level</label>

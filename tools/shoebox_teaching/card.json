@@ -1,0 +1,21 @@
+{
+  "archetypeId": "montreal_shoebox_house",
+  "variantId": "red_brick_flat_roof_cornice",
+  "title": "Montréal shoebox house",
+  "use": "Residential",
+  "form": "Compact one-storey house with a rectangular plan and flat roof",
+  "aesthetic": "Montréal urban vernacular",
+  "designPeriod": "Early 20th-century association, broadly 1900–1940",
+  "dateBasis": "approximate_design_association",
+  "constructionYear": null,
+  "tenure": "not_inferred",
+  "affordability": "not_inferred",
+  "runtimeActivation": false,
+  "description": "A shoebox is a small, one-storey home with a flat roof. Montréal examples sit within neighbourhoods that also contain duplexes and triplexes. This original teaching design uses a modest brick front, central entrance and shallow cornice. It illustrates an urban house form, not a particular historic property.",
+  "lookFor": ["One storey under a flat roof", "A central door between two windows", "Modest brick frontage and shallow cornice"],
+  "planningConnections": ["Historic neighbourhood grain", "Conservation and adaptation", "Comparing small homes with taller plexes"],
+  "designQuestion": "How could this small home adapt while keeping its contribution to the street?",
+  "componentLimit": "A single house does not establish neighbourhood density, ownership, current affordability or a planning ideology.",
+  "sourceUrls": ["https://montreal.ca/articles/les-maisons-jumelees-dans-vsp-6143"],
+  "evidenceBasis": "City of Montréal typology/history context plus original generated reference pixels; exact metric scale, unseen structure and internal plan are architectural inferences."
+}

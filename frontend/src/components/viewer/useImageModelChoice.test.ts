@@ -3,10 +3,28 @@ import { beforeEach, expect, it, vi } from 'vitest';
 import { rendersApi } from '@/services/api';
 import { useImageModelChoice } from './useImageModelChoice';
 import { useRenderDraft } from './globe/useRenderDraft';
-import { comfyTrialsApi } from '@/services/comfyTrials';
 vi.mock('@/services/api', () => ({rendersApi:{imageModels:vi.fn()}}));
-vi.mock('@/services/comfyTrials', () => ({comfyTrialsApi:{presets:vi.fn().mockResolvedValue({presets:[]})}}));
-beforeEach(() => sessionStorage.clear());
+beforeEach(() => {
+  sessionStorage.clear();
+  vi.mocked(rendersApi.imageModels).mockReset().mockResolvedValue({ default_model: 'gpt-image-2', models: [] });
+});
+it('clears stale account credit metadata immediately and ignores an earlier account response', async () => {
+  let resolveFirst!: (value: Awaited<ReturnType<typeof rendersApi.imageModels>>) => void;
+  let resolveSecond!: (value: Awaited<ReturnType<typeof rendersApi.imageModels>>) => void;
+  vi.mocked(rendersApi.imageModels)
+    .mockResolvedValue({ default_model: 'gpt-image-2', credit_balance: 100, credit_exempt: false, models: [] })
+    .mockImplementationOnce(() => new Promise(resolve => { resolveFirst = resolve; }))
+    .mockImplementationOnce(() => new Promise(resolve => { resolveSecond = resolve; }));
+  const hook = renderHook(({ revision }) => useImageModelChoice({ compareByDefault: false, accountRevision: revision }), { initialProps: { revision: 'first:100:editor' } });
+  hook.rerender({ revision: 'second:0:editor' });
+  expect(hook.result.current.availability).toBeNull();
+  await act(async () => resolveFirst({ default_model: 'gpt-image-2', credit_balance: 100, credit_exempt: false, models: [{ id: 'gpt-image-2', available: true, minimum_credit_cost: 33 }] }));
+  expect(hook.result.current.availability).toBeNull();
+  await act(async () => resolveSecond({ default_model: 'gpt-image-2', credit_balance: 0, credit_exempt: false, models: [{ id: 'gpt-image-2', available: true, minimum_credit_cost: 33 }] }));
+  expect(hook.result.current.availability?.credit_balance).toBe(0);
+  hook.rerender({ revision: 'second:100:editor' });
+  expect(hook.result.current.availability).toBeNull();
+});
 it('remembers an explicitly selected Google engine without changing the default engine',async()=>{
   vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2',models:[{id:'gemini-nano-banana-2.1',available:true}]});
   const first=renderHook(()=>useImageModelChoice({projectId:'google',compareByDefault:false}));
@@ -18,19 +36,14 @@ it('remembers an explicitly selected Google engine without changing the default 
   expect(next.result.current.imageModel).toBe('gemini-nano-banana-2.1');
   await waitFor(()=>expect(next.result.current.availability).not.toBeNull());
 });
-it('adds local images beside GPT, remembers the selection, and excludes local video', async () => {
-  vi.mocked(rendersApi.imageModels).mockResolvedValue({ default_model: 'gpt-image-2', models: [{ id: 'gpt-image-2', available: true }] });
-  vi.mocked(comfyTrialsApi.presets).mockResolvedValue({ credit_cost: 0, presets: [
-    { id: 'flux-klein', kind: 'image', available: true }, { id: 'qwen-image', kind: 'image', available: false }, { id: 'wan-video', kind: 'video', available: true },
-  ] as never });
-  const first = renderHook(() => useImageModelChoice({projectId:'local'}));
-  await waitFor(() => expect(first.result.current.availability?.models).toHaveLength(3));
-  act(() => first.result.current.setImageModel('flux-klein'));
-  first.unmount();
-  const reopened = renderHook(() => useImageModelChoice({projectId:'local'}));
-  expect(reopened.result.current.imageModel).toBe('flux-klein');
-  const masked = renderHook(() => useImageModelChoice({projectId:'local',allowLocal:false,compareByDefault:false}));
-  expect(masked.result.current.imageModel).toBe('gpt-image-2');
+it.each(['flux-klein', 'qwen-image'])('replaces a retired %s draft with the discovered default without submitting a render', async model => {
+  sessionStorage.setItem('cityprompt:render-draft:retired', JSON.stringify({ imageModel: model, customPrompt: 'Keep the brick facade' }));
+  vi.mocked(rendersApi.imageModels).mockResolvedValue({ default_model: 'gpt-image-2.5-sunburst', models: [{ id: 'gpt-image-2.5-sunburst', available: true }] });
+  const hook = renderHook(() => useImageModelChoice({ projectId: 'retired', compareByDefault: false }));
+  expect(hook.result.current.imageModel).toBe('gpt-image-2');
+  await waitFor(() => expect(hook.result.current.imageModel).toBe('gpt-image-2.5-sunburst'));
+  expect(rendersApi.imageModels).toHaveBeenCalledOnce();
+  expect(JSON.parse(sessionStorage.getItem('cityprompt:render-draft:retired')!).customPrompt).toBe('Keep the brick facade');
 });
 it('requests one discovered default engine unless the user explicitly selects comparison', async () => {
   vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2.5-flare',models:['gpt-image-2','gpt-image-2.5-flare','gpt-image-2.5-sunburst'].map(id=>({id,available:true}))} as Awaited<ReturnType<typeof rendersApi.imageModels>>);
@@ -41,6 +54,7 @@ it('requests one discovered default engine unless the user explicitly selects co
   expect(hook.result.current.imageModel).toBe('compare-all-three');
 });
 it('retains the engine through panel remount and prompt edits without leaking across projects', async () => {
+  vi.mocked(rendersApi.imageModels).mockResolvedValue({ default_model: 'gpt-image-2.5-flare', models: [{ id: 'gpt-image-2.5-flare', available: true }] });
   const styles = ['photorealistic', 'watercolour'];
   const first = renderHook(() => ({ engine: useImageModelChoice({ projectId: 'a', compareByDefault: false }), draft: useRenderDraft('a', styles) }));
   await waitFor(() => expect(first.result.current.engine.availability).not.toBeNull());
@@ -56,6 +70,13 @@ it('retains the engine through panel remount and prompt edits without leaking ac
   reopened.rerender({ id: 'a' });
   expect(reopened.result.current.imageModel).toBe('gpt-image-2.5-sunburst');
 });
+it('does not invent a balance when discovery fails', async () => {
+  vi.mocked(rendersApi.imageModels).mockRejectedValue(new Error('server unavailable'));
+  const hook = renderHook(() => useImageModelChoice({ compareByDefault: false, accountRevision: 'editor:0:editor' }));
+  await waitFor(() => expect(hook.result.current.availability).not.toBeNull());
+  expect(hook.result.current.availability?.credit_balance).toBeUndefined();
+  expect(hook.result.current.availability?.credit_exempt).toBeUndefined();
+});
 it('preserves an explicit engine when availability changes or storage is corrupt', async () => {
   sessionStorage.setItem('cityprompt:render-draft:a', '{broken');
   vi.mocked(rendersApi.imageModels).mockResolvedValue({ default_model: 'gpt-image-2.5-flare', models: [{ id: 'gpt-image-2.5-sunburst', available: false }] });
@@ -67,3 +88,16 @@ it('preserves an explicit engine when availability changes or storage is corrupt
   const reopened = renderHook(() => useImageModelChoice({ projectId: 'a', compareByDefault: false }));
   expect(reopened.result.current.imageModel).toBe('gpt-image-2.5-sunburst');
 });
+
+it.each([null, [], {}, {default_model:'gpt-image-2',models:null},
+  {default_model:'gpt-image-2',models:[null]},
+  {default_model:'unknown-engine',models:[],credit_balance:999,credit_exempt:true}])(
+  'keeps the project usable when discovery returns malformed metadata %j', async response => {
+    vi.mocked(rendersApi.imageModels).mockResolvedValue(response as unknown as Awaited<ReturnType<typeof rendersApi.imageModels>>);
+    const hook=renderHook(()=>useImageModelChoice({compareByDefault:false}));
+    await waitFor(()=>expect(hook.result.current.availability).toEqual({default_model:'gpt-image-2',models:[]}));
+    expect(hook.result.current.imageModel).toBe('gpt-image-2');
+    expect(hook.result.current.availability?.credit_balance).toBeUndefined();
+    expect(hook.result.current.availability?.credit_exempt).toBeUndefined();
+  },
+);

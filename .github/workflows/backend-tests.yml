@@ -8,7 +8,7 @@ on:
       - "backend/**"
       - ".github/workflows/backend-tests.yml"
   push:
-    branches: [main]
+    branches: [main, deployment-version]
     paths:
       - "backend/**"
 
@@ -62,6 +62,9 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Check deployment secret and local network boundaries
+        run: python -m pytest ../scripts/tests/test_deployment_secret_boundaries.py ../scripts/tests/test_compose_data_ports.py -q
 
       - name: Hydrate and verify exact backend binary fixtures
         run: |

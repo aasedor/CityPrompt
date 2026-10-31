@@ -167,6 +167,33 @@ describe('deriveCityPromptWorkflow', () => {
     expect(ready.hasOutput).toBe(true);
   });
 
+  it.each(['stale', 'missing'] as const)('directs an unready applied landscape (%s) to its Site controls', state => {
+    const boundary=activeBoundary(true);
+    boundary.properties={...boundary.properties,community_3d_landscape_mode:'generated',
+      community_3d_landscape:state==='stale'
+        ? {...boundary.properties!.community_3d_landscape as object,state:'stale'} : undefined,
+    };
+    const workflow=deriveCityPromptWorkflow([boundary,compiledBuilding()]);
+    expect(workflow.canRender).toBe(false);
+    expect(workflow.renderReason).toContain('Site');
+    expect(workflow.renderReason).toContain('Generate 3D Site Landscape');
+    expect(workflow.renderReason).toContain('Apply landscape');
+    if(state==='stale') expect(workflow.renderReason).toContain('Remove landscape');
+    else expect(workflow.renderReason).not.toContain('Remove landscape');
+    expect(workflow.renderReason).not.toMatch(/automatically|Retry 3D update/);
+  });
+
+  it('retains automatic retry guidance for a stale automatic landscape', () => {
+    const boundary=activeBoundary(true);
+    boundary.properties={...boundary.properties,community_3d_landscape_mode:'automatic',
+      community_3d_landscape:{...boundary.properties!.community_3d_landscape as object,state:'stale'},
+    };
+    const workflow=deriveCityPromptWorkflow([boundary,compiledBuilding()]);
+    expect(workflow.canRender).toBe(false);
+    expect(workflow.renderReason).toContain('automatically');
+    expect(workflow.renderReason).toContain('Retry 3D update');
+  });
+
   it('treats stale compiled metadata as needing regeneration', () => {
     const stale = compiledBuilding();
     stale.properties = {

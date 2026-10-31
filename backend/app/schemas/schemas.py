@@ -1239,8 +1239,32 @@ class RenderPreviewRequest(BaseModel):
 
     prompt: str = Field(min_length=3, max_length=500, description="Prompt for the render")
     style: Optional[str] = Field(None, description="Architectural style ID")
-    source_type: str = Field(default="text", description="Source type: text, sketch, floor_plan")
-    source_image_url: Optional[str] = Field(None, description="Source image URL for sketch-to-render")
+    source_type: Literal["text", "sketch", "floor_plan"] = "text"
+    source_document_id: Optional[uuid.UUID] = Field(
+        None, description="Uploaded image document in the building's project"
+    )
+    source_image_url: Optional[str] = Field(
+        None, max_length=100, description="Compatibility alias: exact relative /api/v1/documents/{id}/file path"
+    )
+
+    @model_validator(mode="after")
+    def validate_preview_source(self):
+        if self.source_image_url:
+            prefix, suffix = "/api/v1/documents/", "/file"
+            try:
+                document_id = uuid.UUID(self.source_image_url[len(prefix) : -len(suffix)])
+            except (ValueError, TypeError):
+                raise ValueError("Choose an uploaded project image; external source URLs are not supported.") from None
+            if self.source_image_url != f"{prefix}{document_id}{suffix}":
+                raise ValueError("Choose an uploaded project image; external source URLs are not supported.")
+            if self.source_document_id and self.source_document_id != document_id:
+                raise ValueError("Source image identifiers do not match.")
+            self.source_document_id = document_id
+        if self.source_type == "text" and self.source_document_id:
+            raise ValueError("Choose sketch or floor_plan for an image source.")
+        if self.source_type != "text" and not self.source_document_id:
+            raise ValueError("Choose an uploaded project image for sketch or floor_plan previews.")
+        return self
 
 
 class RenderPreviewResponse(BaseModel):

@@ -3,6 +3,7 @@ Document upload and processing API endpoints.
 """
 
 import logging
+import math
 import uuid
 from pathlib import Path
 
@@ -13,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.database import get_db
-from app.core.security import check_project_asset_access, get_current_user, require_auth
+from app.core.security import check_project_asset_access, check_project_permission, get_current_user, require_auth
 from app.models.models import Document, Project, ProjectShare, User
 from app.schemas.schemas import DocumentResponse, ProcessingStatusResponse
 from app.tasks.worker import celery_app
@@ -131,13 +132,20 @@ async def upload_document(
 
         # A fast worker must not race the request transaction for this row.
         # Preserve the uploaded document even if the broker is unavailable.
+        document.processing_task_id = str(uuid.uuid4())
         await db.commit()
         try:
-            process_document.delay(str(document.id), extract_only=is_reference)
+            process_document.apply_async(
+                args=[str(document.id)],
+                kwargs={"extract_only": is_reference},
+                task_id=document.processing_task_id,
+            )
         except Exception:
             logger.exception("Could not queue document processing for %s", document.id)
             document.processing_status = "failed"
-            document.extracted_data = {"error": "Your file is saved, but text extraction could not start. Please try the upload again when the service is available."}
+            document.extracted_data = {
+                "error": "Your file is saved, but text extraction could not start. Please try the upload again when the service is available."
+            }
             await db.commit()
 
     return document
@@ -173,30 +181,68 @@ async def trigger_processing(
             )
 
     document.processing_status = "pending"
-    await db.flush()
+    document.processing_task_id = str(uuid.uuid4())
+    await db.commit()
 
     # Queue processing task
     from app.tasks.processing import process_document
 
-    task = process_document.delay(str(document.id))
+    try:
+        process_document.apply_async(
+            args=[str(document.id)], kwargs={"extract_only": False}, task_id=document.processing_task_id
+        )
+    except Exception:
+        logger.exception("Could not queue document processing for %s", document.id)
+        document.processing_status = "failed"
+        await db.commit()
+        raise HTTPException(status_code=503, detail="Document processing could not start. Please try again.") from None
 
     return ProcessingStatusResponse(
-        job_id=task.id,
+        job_id=document.processing_task_id,
         status="queued",
         message=f"Document '{document.filename}' queued for processing",
     )
 
 
 @router.get("/status/{job_id}", response_model=ProcessingStatusResponse)
-async def get_processing_status(job_id: str):
-    """Check the status of a document processing job."""
+async def get_processing_status(
+    job_id: uuid.UUID,
+    user: User = Depends(require_auth),
+    db: AsyncSession = Depends(get_db),
+):
+    """Poll only the document's current task after rechecking project access."""
+    job_id = str(job_id)
+    record = await db.execute(select(Document).where(Document.processing_task_id == job_id))
+    document = record.scalar_one_or_none()
+    if document is None:
+        raise HTTPException(status_code=404, detail="Document processing job not found")
+    await check_project_permission(document.project_id, user, db)
+
+    # Resource validation is a deterministic failure: the worker may finish
+    # normally after persisting it, so Celery SUCCESS alone is insufficient.
+    if getattr(document, "processing_status", None) == "failed":
+        return ProcessingStatusResponse(
+            job_id=job_id,
+            status="failed",
+            progress=0.0,
+            message="Processing failed. Please check the uploaded file and try again.",
+        )
+
     result = celery_app.AsyncResult(job_id)
 
     # Map Celery states to our status values
     state = result.state
     meta = result.info if isinstance(result.info, dict) else {}
+    progress = meta.get("progress", 0.0)
+    try:
+        progress = float(progress) if isinstance(progress, (int, float)) else 0.0
+    except OverflowError:
+        progress = 0.0
+    if not math.isfinite(progress):
+        progress = 0.0
+    progress = max(0.0, min(1.0, progress))
 
-    if state == "PENDING":
+    if state in {"PENDING", "RECEIVED", "RETRY"}:
         return ProcessingStatusResponse(
             job_id=job_id,
             status="queued",
@@ -207,15 +253,15 @@ async def get_processing_status(job_id: str):
         return ProcessingStatusResponse(
             job_id=job_id,
             status="processing",
-            progress=meta.get("progress", 0.0),
-            message=f"Step: {meta.get('step', 'unknown')}",
+            progress=progress,
+            message="Processing document",
         )
     elif state == "GENERATING":
         return ProcessingStatusResponse(
             job_id=job_id,
             status="generating",
-            progress=meta.get("progress", 0.0),
-            message=f"Step: {meta.get('step', 'unknown')}",
+            progress=progress,
+            message="Generating document models",
         )
     elif state == "SUCCESS":
         return ProcessingStatusResponse(
@@ -223,21 +269,21 @@ async def get_processing_status(job_id: str):
             status="completed",
             progress=1.0,
             message="Processing complete",
-            result=result.result if isinstance(result.result, dict) else None,
+            result={"document_id": str(document.id)},
         )
-    elif state == "FAILURE":
+    elif state in {"FAILURE", "REVOKED"}:
         return ProcessingStatusResponse(
             job_id=job_id,
             status="failed",
             progress=0.0,
-            message=str(result.info) if result.info else "Processing failed",
+            message="Processing failed. Please try again.",
         )
     else:
         return ProcessingStatusResponse(
             job_id=job_id,
-            status=state.lower(),
-            progress=meta.get("progress", 0.0),
-            message=f"State: {state}",
+            status="processing",
+            progress=progress,
+            message="Processing document",
         )
 
 

@@ -2,10 +2,17 @@ import { describe, expect, it } from 'vitest';
 import {
   estimateProjectFrameHeight,
   projectedFrameFraction,
+  projectFrameRoofHeight,
   PROJECT_FRAME_MIN_HEIGHT_M,
 } from './projectFrameHeight';
 
 describe('project camera framing height', () => {
+  it('includes an edited tower height above its native roof', () => {
+    expect(projectFrameRoofHeight({ nativeHeight: 58.8, heightM: 135.6, floorCount: 40, isBuilding: true })).toBe(135.6);
+    expect(projectFrameRoofHeight({ nativeHeight: 58.8, floorCount: 40, isBuilding: true })).toBe(160);
+    expect(projectFrameRoofHeight({ nativeHeight: 29.4, heightM: NaN, floorCount: 1, isBuilding: true })).toBe(29.4);
+    expect(projectFrameRoofHeight({ nativeHeight: 8, heightM: 135.6, floorCount: 40, isBuilding: false })).toBe(8);
+  });
   it('detects a cropped rooftop even when the footprint span fits', () => {
     // The former span-only test sees 60% width; the roof is above the frame.
     expect(projectedFrameFraction([{ x: 300, y: -100 }, { x: 900, y: 650 }], 1200, 900)).toBeGreaterThan(1);
@@ -21,6 +28,14 @@ describe('project camera framing height', () => {
   it('frames a small hero park at the close-site safety floor', () => {
     expect(estimateProjectFrameHeight(146)).toBe(PROJECT_FRAME_MIN_HEIGHT_M);
     expect(PROJECT_FRAME_MIN_HEIGHT_M).toBe(70);
+  });
+
+  it('allows a single small building to fill the view without the whole-site height floor', () => {
+    const height = estimateProjectFrameHeight(26, 75, 60, 0.7, 8);
+    expect(height).toBeGreaterThanOrEqual(8);
+    expect(height).toBeLessThan(25);
+    // Whole-site callers retain their established safety margin.
+    expect(estimateProjectFrameHeight(26)).toBe(70);
   });
 
   it('backs away monotonically for larger extents and tighter frame targets', () => {

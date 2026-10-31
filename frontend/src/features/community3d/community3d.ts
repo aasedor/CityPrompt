@@ -4,6 +4,7 @@ import type { Building, SiteZone, SiteZoneProperties } from '@/types';
 import { resolveParkLegoContract } from '@/components/viewer/globe/parkLegoFamilies';
 import { validateStreetRecipeProperties } from '@/components/viewer/globe/streetLegoContract';
 import nativeStreetPilots from '@/data/nativeStreetPilots.json';
+import { groundSurfaceFor } from '@/features/groundSurfaces/groundSurfaces';
 
 const nativeStreetVariantIds = new Set<string>(nativeStreetPilots.map(pilot => pilot.id));
 
@@ -233,6 +234,9 @@ function hasCanonicalPublicRealmFallback(
  */
 export function resolveCommunity3DKind(zone: SiteZone): Community3DKind | null {
   if (zone.zone_type === 'site_boundary') return null;
+  // Independently authored finishes are already physical ground. They must
+  // never inherit development_area's building compiler or default 10 m mass.
+  if (groundSurfaceFor(zone)) return null;
 
   const props = propertiesOf(zone);
   const role = typeof props._plan_role === 'string' ? props._plan_role : undefined;

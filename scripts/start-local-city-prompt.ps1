@@ -12,6 +12,9 @@ $artifactRoot = Join-Path $repoRoot 'artifacts\local-dev'
 $backendRoot = Join-Path $repoRoot 'backend'
 $frontendRoot = Join-Path $repoRoot 'frontend'
 $celeryPidPath = Join-Path $artifactRoot 'celery-worker.pid'
+$celeryBeatPidPath = Join-Path $artifactRoot 'celery-beat.pid'
+$celerySchedulePath = Join-Path $artifactRoot 'celerybeat-schedule'
+$requiredCeleryQueues = @('celery', 'direct3d', 'direct3d-maintenance', 'classroom-documents')
 
 New-Item -ItemType Directory -Force -Path $artifactRoot | Out-Null
 
@@ -44,8 +47,34 @@ function Wait-Until {
     throw "Timed out waiting for $Description after $StartupTimeoutSeconds seconds."
 }
 
+function Get-RuntimePublicRoot {
+    if ($env:CITYPROMPT_PUBLIC_DIR) { return $env:CITYPROMPT_PUBLIC_DIR }
+    $profilePath = Join-Path $repoRoot 'artifacts/local-runtime.json'
+    if (Test-Path -LiteralPath $profilePath) {
+        $profile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
+        if ($profile.schema -ne 'cityprompt.local-runtime@1') { throw 'Invalid local runtime profile.' }
+        if ($profile.publicDir) {
+            if (-not [System.IO.Path]::IsPathRooted($profile.publicDir) -or -not (Test-Path -LiteralPath $profile.publicDir -PathType Container)) {
+                throw 'Local runtime profile needs an existing absolute publicDir path.'
+            }
+            return $profile.publicDir
+        }
+    }
+    return Join-Path $frontendRoot 'public'
+}
+
+function Get-RuntimeGitUpstream {
+    try {
+        $upstream = ((git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null) | Out-String).Trim()
+        if ($LASTEXITCODE -eq 0) { return $upstream }
+    }
+    catch { # An unpublished local branch has no upstream; use the normal LFS fallback.
+    }
+    return $null
+}
+
 function Get-UnhydratedRuntimeLfsAssets {
-    $publicRoot = Join-Path $frontendRoot 'public'
+    $publicRoot = Get-RuntimePublicRoot
     $parkKitRoot = Join-Path $publicRoot 'park-kits'
     $candidateFiles = if (Test-Path -LiteralPath $parkKitRoot) {
         @(Get-ChildItem -LiteralPath $parkKitRoot -Recurse -File -Filter '*.glb')
@@ -83,6 +112,21 @@ function Ensure-RuntimeLfsAssets {
         return
     }
 
+    $runtimePublicRoot = Get-RuntimePublicRoot
+    if ([System.IO.Path]::GetFullPath($runtimePublicRoot) -ne [System.IO.Path]::GetFullPath((Join-Path $frontendRoot 'public'))) {
+        # Vite's asset guard serves exact verified LFS cache bytes from this
+        # shared runtime. Audit its actual catalogue instead of hydrating every
+        # historical image angle in an unrelated worktree.
+        $previousPublicRoot = $env:CITYPROMPT_PUBLIC_DIR
+        try {
+            $env:CITYPROMPT_PUBLIC_DIR = $runtimePublicRoot
+            & node (Join-Path $frontendRoot 'scripts/check-catalogue-delivery.mjs') --report (Join-Path $artifactRoot 'catalogue-delivery.json')
+            if ($LASTEXITCODE -ne 0) { throw 'Runtime catalogue assets failed exact-byte verification.' }
+        }
+        finally { $env:CITYPROMPT_PUBLIC_DIR = $previousPublicRoot }
+        return
+    }
+
     $pointers = @(Get-UnhydratedRuntimeLfsAssets)
     if ($pointers.Count -eq 0) {
         return
@@ -98,11 +142,11 @@ function Ensure-RuntimeLfsAssets {
     # copy that archive into dist. The browser directly consumes park kits and
     # shared landscape components and authoritative catalogue image roots.
     $include = 'frontend/public/park-kits/**/*.glb,frontend/public/native-park-assets/**,frontend/public/street-kits/**,frontend/public/landscape-pilots/**/*.glb,frontend/public/archetypes/buildings/**,frontend/public/archetypes/openspaces/**,frontend/public/archetypes/streets/**'
-    $upstream = ((git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>$null) | Out-String).Trim()
+    $upstream = Get-RuntimeGitUpstream
     Write-Host "Hydrating $($pointers.Count) Git LFS catalogue/model assets..."
     Push-Location $repoRoot
     try {
-        if ($LASTEXITCODE -eq 0 -and $upstream.Contains('/')) {
+        if ($upstream -and $upstream.Contains('/')) {
             $slash = $upstream.IndexOf('/')
             $remote = $upstream.Substring(0, $slash)
             $branch = $upstream.Substring($slash + 1)
@@ -128,8 +172,11 @@ function Ensure-RuntimeLfsAssets {
 }
 
 function Test-DockerReady {
-    docker version --format '{{.Server.Version}}' 2>$null | Out-Null
-    return $LASTEXITCODE -eq 0
+    try {
+        docker version --format '{{.Server.Version}}' 2>$null | Out-Null
+        return $LASTEXITCODE -eq 0
+    }
+    catch { return $false }
 }
 
 function Ensure-DockerDesktop {
@@ -156,15 +203,33 @@ function Get-ContainerName {
 function Test-ContainerRunning {
     param([Parameter(Mandatory)][string]$Name)
 
-    $running = docker inspect $Name --format '{{.State.Running}}' 2>$null
-    return $LASTEXITCODE -eq 0 -and $running -eq 'true'
+    try {
+        $running = docker inspect $Name --format '{{.State.Running}}' 2>$null
+        return $LASTEXITCODE -eq 0 -and $running -eq 'true'
+    }
+    catch { return $false }
 }
 
 function Ensure-Infrastructure {
     $required = @('devplatform-db', 'devplatform-redis', 'devplatform-minio')
+    $profilePath = Join-Path $repoRoot 'artifacts/local-runtime.json'
+    $usesProfileContainers = $false
+    if (Test-Path -LiteralPath $profilePath) {
+        $profile = Get-Content -LiteralPath $profilePath -Raw | ConvertFrom-Json
+        if ($profile.infrastructureContainers) {
+            $required = @($profile.infrastructureContainers)
+            if ($required.Count -ne 3 -or @($required | Where-Object { $_ -isnot [string] -or $_ -notmatch '^[a-zA-Z0-9][a-zA-Z0-9_.-]+$' }).Count -gt 0) {
+                throw 'Local runtime profile must name the three existing database, Redis and storage containers.'
+            }
+            $usesProfileContainers = $true
+        }
+    }
     $missing = @($required | Where-Object { -not (Get-ContainerName -Name $_) })
 
     if ($missing.Count -gt 0) {
+        if ($usesProfileContainers) {
+            throw "Runtime data containers are missing: $($missing -join ', '). Restore them before starting this worktree."
+        }
         Write-Host "Creating missing local infrastructure: $($missing -join ', ')"
         Push-Location $repoRoot
         try {
@@ -185,11 +250,11 @@ function Ensure-Infrastructure {
         }
     }
 
-    Wait-Until -Description 'PostgreSQL health' -Condition {
-        (docker inspect devplatform-db --format '{{.State.Health.Status}}' 2>$null) -eq 'healthy'
-    }
-    Wait-Until -Description 'Redis health' -Condition {
-        (docker inspect devplatform-redis --format '{{.State.Health.Status}}' 2>$null) -eq 'healthy'
+    foreach ($name in $required) {
+        Wait-Until -Description "$name health" -Condition {
+            $health = docker inspect $name --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}running{{end}}' 2>$null
+            $LASTEXITCODE -eq 0 -and $health -in @('healthy', 'running')
+        }
     }
 }
 
@@ -220,7 +285,7 @@ function Stop-KnownDockerApiPortConflicts {
     # Site DNA may execute against stale source even though the local API is
     # correct. The launcher owns the application processes; only the stateful
     # db/redis/minio containers stay shared.
-    foreach ($name in @('cityprompt-celery', 'devplatform-celery')) {
+    foreach ($name in @('cityprompt-celery', 'devplatform-celery', 'cityprompt-celery-beat', 'devplatform-celery-beat')) {
         if (Test-ContainerRunning -Name $name) {
             Write-Host "Stopping stale Docker worker $name (stateful services remain running)..."
             docker stop $name | Out-Null
@@ -330,12 +395,21 @@ function Ensure-Backend {
     }
 }
 
-function Get-LocalCeleryWorkerPid {
-    if (-not (Test-Path -LiteralPath $celeryPidPath)) {
+function Test-CeleryProcessRole {
+    param($Process, [ValidateSet('worker', 'beat')][string]$Role)
+    return $Process -and $Process.Name -match '^python(?:\.exe)?$' -and
+        $Process.CommandLine -match 'celery' -and
+        $Process.CommandLine -match 'app\.tasks\.worker' -and
+        $Process.CommandLine -match "(?:^|\s)$Role(?:\s|$)"
+}
+
+function Get-LocalCeleryProcessPid {
+    param([string]$PidPath, [ValidateSet('worker', 'beat')][string]$Role)
+    if (-not (Test-Path -LiteralPath $PidPath)) {
         return $null
     }
 
-    $rawPid = (Get-Content -LiteralPath $celeryPidPath -Raw).Trim()
+    $rawPid = (Get-Content -LiteralPath $PidPath -Raw).Trim()
     $workerPid = 0
     if (-not [int]::TryParse($rawPid, [ref]$workerPid)) {
         return $null
@@ -343,13 +417,24 @@ function Get-LocalCeleryWorkerPid {
 
     $worker = Get-CimInstance Win32_Process -Filter "ProcessId=$workerPid" -ErrorAction SilentlyContinue
     if (
-        $worker -and
-        $worker.Name -match '^python(?:\.exe)?$' -and
-        $worker.CommandLine -match 'celery' -and
-        $worker.CommandLine -match 'app\.tasks\.worker' -and
-        $worker.CommandLine -match '\bworker\b'
+        (Test-CeleryProcessRole -Process $worker -Role $Role) -and
+        ($worker.CommandLine -replace '\\','/') -match ('--pidfile(?:=|\s+)"?' + [regex]::Escape(($PidPath -replace '\\','/')) + '"?(?:\s|$)')
     ) {
         return $workerPid
+    }
+    return $null
+}
+
+function Get-LocalCeleryWorkerPid {
+    return Get-LocalCeleryProcessPid -PidPath $celeryPidPath -Role worker
+}
+
+function Get-LocalCeleryBeatPid {
+    $beatPid = Get-LocalCeleryProcessPid -PidPath $celeryBeatPidPath -Role beat
+    if (-not $beatPid) { return $null }
+    $beat = Get-CimInstance Win32_Process -Filter "ProcessId=$beatPid" -ErrorAction SilentlyContinue
+    if (($beat.CommandLine -replace '\\','/') -match ('--schedule(?:=|\s+)"?' + [regex]::Escape(($celerySchedulePath -replace '\\','/')) + '"?(?:\s|$)')) {
+        return $beatPid
     }
     return $null
 }
@@ -366,9 +451,22 @@ function Test-CeleryWorkerReady {
 
     Push-Location $backendRoot
     try {
-        $ping = & $PythonPath -m celery -A app.tasks.worker inspect ping --timeout 3 2>$null
-        return $LASTEXITCODE -eq 0 -and ($ping -join "`n") -match '\bpong\b'
+        # A broadcast pong can come from another checkout or a default-queue
+        # worker. Bind the response to our owned OS process, then inspect that
+        # exact node's real subscriptions before accepting reuse.
+        $statsJson = & $PythonPath -m celery -A app.tasks.worker inspect stats --timeout 3 --json 2>$null
+        if ($LASTEXITCODE -ne 0) { return $false }
+        $stats = ($statsJson -join "`n") | ConvertFrom-Json
+        $nodes = @($stats.PSObject.Properties | Where-Object { $_.Value.pid -eq $WorkerPid })
+        if ($nodes.Count -ne 1) { return $false }
+        $workerNode = $nodes[0].Name
+        $queueJson = & $PythonPath -m celery -A app.tasks.worker inspect active_queues --destination $workerNode --timeout 3 --json 2>$null
+        if ($LASTEXITCODE -ne 0) { return $false }
+        $report = ($queueJson -join "`n") | ConvertFrom-Json
+        $queues = @($report.PSObject.Properties | Where-Object Name -eq $workerNode | ForEach-Object { $_.Value } | ForEach-Object { $_.name })
+        return @($requiredCeleryQueues | Where-Object { $_ -notin $queues }).Count -eq 0
     }
+    catch { return $false }
     finally {
         Pop-Location
     }
@@ -384,6 +482,13 @@ function Ensure-CeleryWorker {
     }
 
     $workerPid = Get-LocalCeleryWorkerPid
+    $otherWorkers = @(Get-CimInstance Win32_Process | Where-Object {
+        (Test-CeleryProcessRole -Process $_ -Role worker) -and $_.ProcessId -ne $workerPid
+    })
+    if ($otherWorkers.Count -gt 0) {
+        $owners = ($otherWorkers | Select-Object -ExpandProperty ProcessId) -join ', '
+        throw "A Celery worker not owned by this launcher is already running (PID $owners). Stop it before starting this worktree."
+    }
     if ($KeepBackend -and $workerPid -and (Test-CeleryWorkerReady -WorkerPid $workerPid -PythonPath $python.Source)) {
         return
     }
@@ -400,24 +505,14 @@ function Ensure-CeleryWorker {
         Remove-Item -LiteralPath $celeryPidPath -Force
     }
 
-    $otherWorkers = @(Get-CimInstance Win32_Process | Where-Object {
-        $_.Name -match '^python(?:\.exe)?$' -and
-        $_.CommandLine -match 'celery' -and
-        $_.CommandLine -match 'app\.tasks\.worker' -and
-        $_.CommandLine -match '\bworker\b'
-    })
-    if ($otherWorkers.Count -gt 0) {
-        $owners = ($otherWorkers | Select-Object -ExpandProperty ProcessId) -join ', '
-        throw "A Celery worker not owned by this launcher is already running (PID $owners). Stop it before starting this worktree."
-    }
-
     Write-Host 'Starting City Prompt background worker...'
     Start-Process -FilePath $python.Source `
         -ArgumentList @(
             '-m', 'celery', '-A', 'app.tasks.worker', 'worker',
             '--loglevel=info', '--pool=solo',
             '--hostname=cityprompt-local@%h',
-            "--pidfile=$celeryPidPath"
+            "--queues=$($requiredCeleryQueues -join ',')",
+            "--pidfile=`"$celeryPidPath`""
         ) `
         -WorkingDirectory $backendRoot `
         -RedirectStandardOutput (Join-Path $artifactRoot 'celery.out.log') `
@@ -428,6 +523,59 @@ function Ensure-CeleryWorker {
         $startedPid = Get-LocalCeleryWorkerPid
         $startedPid -and (Test-CeleryWorkerReady -WorkerPid $startedPid -PythonPath $python.Source)
     }
+}
+
+function Ensure-CeleryBeat {
+    $python = Get-Command python.exe -ErrorAction SilentlyContinue
+    if (-not $python) { $python = Get-Command python -ErrorAction SilentlyContinue }
+    if (-not $python) { throw 'Python is not installed or is not on PATH.' }
+    $beatPid = Get-LocalCeleryBeatPid
+    $otherBeats = @(Get-CimInstance Win32_Process | Where-Object {
+        (Test-CeleryProcessRole -Process $_ -Role beat) -and $_.ProcessId -ne $beatPid
+    })
+    if ($otherBeats.Count -gt 0) {
+        $owners = ($otherBeats | Select-Object -ExpandProperty ProcessId) -join ', '
+        throw "A Celery scheduler not owned by this launcher is already running (PID $owners). Stop it before starting this worktree."
+    }
+    if ($KeepBackend -and $beatPid) { return }
+    if ($beatPid) {
+        Write-Host 'Restarting the City Prompt recovery scheduler for the current worktree...'
+        Stop-Process -Id $beatPid -Force
+        Wait-Until -Description 'the previous City Prompt recovery scheduler to stop' -Condition {
+            -not (Get-Process -Id $beatPid -ErrorAction SilentlyContinue)
+        }
+    }
+    if (Test-Path -LiteralPath $celeryBeatPidPath) { Remove-Item -LiteralPath $celeryBeatPidPath -Force }
+    Write-Host 'Starting City Prompt recovery scheduler...'
+    Start-Process -FilePath $python.Source `
+        -ArgumentList @('-m', 'celery', '-A', 'app.tasks.worker', 'beat', '--loglevel=info',
+            "--pidfile=`"$celeryBeatPidPath`"", "--schedule=`"$celerySchedulePath`"") `
+        -WorkingDirectory $backendRoot `
+        -RedirectStandardOutput (Join-Path $artifactRoot 'celery-beat.out.log') `
+        -RedirectStandardError (Join-Path $artifactRoot 'celery-beat.err.log') `
+        -WindowStyle Hidden
+    Wait-Until -Description 'City Prompt recovery scheduler' -Condition { Get-LocalCeleryBeatPid }
+}
+
+function Ensure-DatabaseSchema {
+    $python = Get-Command python.exe -ErrorAction SilentlyContinue
+    if (-not $python) { $python = Get-Command python -ErrorAction SilentlyContinue }
+    if (-not $python) { throw 'Python is not installed or is not on PATH.' }
+    Write-Host 'Checking the current City Prompt database schema...'
+    Push-Location $backendRoot
+    try {
+        & $python.Source -m scripts.prepare_database
+        if ($LASTEXITCODE -ne 0) { throw 'Database preparation failed. The local stack was not declared ready.' }
+    }
+    finally { Pop-Location }
+}
+
+function Test-ApplicationReady {
+    try {
+        $report = Invoke-RestMethod -Uri 'http://127.0.0.1:8000/ready' -TimeoutSec 6
+        return $report.status -eq 'ready'
+    }
+    catch { return $false }
 }
 
 function Ensure-Frontend {
@@ -460,12 +608,15 @@ function Ensure-Frontend {
 Ensure-RuntimeLfsAssets
 Ensure-DockerDesktop
 Ensure-Infrastructure
+Ensure-DatabaseSchema
 Ensure-Backend
 if (-not $SkipFrontend) {
     & python (Join-Path $repoRoot 'scripts/check_model_library_storage.py') --require-catalogue --report (Join-Path $artifactRoot 'model-library-storage.json')
     if ($LASTEXITCODE -ne 0) { throw 'Catalogue model storage is incomplete. Restore the exact seed models in this backend environment before opening the frontend.' }
 }
 Ensure-CeleryWorker
+Ensure-CeleryBeat
+Wait-Until -Description 'City Prompt operational readiness (database, storage, routed workers and recovery heartbeat)' -Condition { Test-ApplicationReady }
 Ensure-Frontend
 
 Write-Host ''
@@ -473,4 +624,5 @@ Write-Host 'City Prompt local stack is ready.' -ForegroundColor Green
 Write-Host 'Frontend: http://127.0.0.1:5174/'
 Write-Host 'API:      http://127.0.0.1:8000/health (also localhost for OAuth callbacks)'
 Write-Host 'Worker:   Celery ready (Site DNA, AI Planner, renders, and processing)'
+Write-Host 'Recovery: Celery beat ready (durable image maintenance)'
 Write-Host "Logs:     $artifactRoot"

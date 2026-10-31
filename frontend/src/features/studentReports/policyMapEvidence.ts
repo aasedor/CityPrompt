@@ -42,7 +42,7 @@ export async function collectPolicyMapEvidence(coordinates: number[][], zones?: 
       return plan.designations.filter(item => categories.has(item.name)).map(designation => ({
         title: `${plan.title}: ${designation.name}`, url: plan.source,
         page: designation.page, section: designation.section,
-        excerpt: `${plan.edition} · map snapshot ${plan.snapshot}. ${designation.summary} ${designation.considerations.join(' ')} Urban Form is policy context, not statutory zoning or a compliance verdict.`,
+        excerpt: `${plan.edition} · map snapshot ${plan.snapshot}. ${designation.summary} ${designation.considerations.join(' ')} ${plan.mapLabel ?? 'Urban Form'} is policy context, not statutory zoning or a compliance verdict.`,
       }));
     } catch {
       return [{ title: `${plan.title}: map evidence unavailable`, url: plan.source,

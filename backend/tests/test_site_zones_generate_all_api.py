@@ -25,6 +25,33 @@ def _scalars_result(values):
 
 
 @pytest.mark.anyio
+async def test_generate_all_never_creates_or_queues_buildings_for_ground_finishes(
+    client, mock_db, test_user, auth_headers
+):
+    project_id = uuid.uuid4()
+    finish = SimpleNamespace(
+        id=uuid.uuid4(),
+        project_id=project_id,
+        name="Ground",
+        zone_type="development_area",
+        properties={"ground_surface_material": "black_pavers", "_plan_role": "building"},
+        geometry=None,
+        building_id=None,
+        building_ids=[],
+    )
+    project = FakeProject(id=project_id, owner_id=test_user.id)
+    mock_db.execute = AsyncMock(
+        side_effect=[_scalar_result(test_user), _scalar_result(project), _scalars_result([finish])]
+    )
+    response = await client.post(f"/api/v1/site-zones/projects/{project_id}/generate-all", headers=auth_headers)
+    assert response.status_code == 200
+    result = response.json()
+    assert result["buildings_created"] == result["generations_queued"] == 0
+    assert result["failed_zones"] == []
+    assert finish.building_id is None and finish.building_ids == []
+
+
+@pytest.mark.anyio
 async def test_generate_all_handles_invalid_building_ids_payload(client, mock_db, test_user, auth_headers):
     project_id = uuid.uuid4()
     zone = SimpleNamespace(

@@ -16,13 +16,13 @@ import { DetailModelInstances } from "./DetailModelInstances";
 import { PeopleModelInstances } from '@/features/people/PeopleModel';
 import type { DetailPlacement } from "./detailInstances";
 import { useSharedSiteGround } from "@/components/viewer/globe/SharedSiteGroundProvider";
-import { authoredCameraGround } from "@/components/viewer/globe/authoredCameraGround";
 import { raycastTerrainHeightAtLatLng } from "@/components/viewer/globe/GlobeZoneLayer";
 import { PROJECT_DETAILS_CAPTURE_USER_DATA } from "@/components/viewer/globe/direct3dCapture";
 import type { ProjectBench, ProjectTree, ProjectProp } from "./projectBenches";
 import { detailAsset } from './detailCatalogue';
 import { detailPlacementSupport } from './safetyPlacement';
 import { useSafetySurfaceVersion } from './safetySupport';
+import { detailPlacementGroundHeight } from './detailGround';
 
 const NO_PROPS: ProjectProp[] = [];
 const NO_TREES: ProjectTree[] = [];
@@ -94,7 +94,7 @@ export function GlobeProjectBenches({
       const asset = detailAsset(b.variant);
       const support=(asset.safety || isPeopleAsset(asset))?detailPlacementSupport(b.variant,b,zones.map(zone=>zone.id)):null;
       if(support&&!support.ok){unsupported.push(b.id);continue;}
-      const height = support?.ok && support.height!==undefined ? support.height : authoredCameraGround(zones, b.lng, b.lat, measured);
+      const height = detailPlacementGroundHeight(asset, zones, b.lng, b.lat, measured, support?.ok ? support.height : undefined);
       const group = groups.get(b.variant) ?? [];
       group.push({ ...b, height, angle: editing?.id === b.id ? editing.angle : b.angle });
       groups.set(b.variant, group);

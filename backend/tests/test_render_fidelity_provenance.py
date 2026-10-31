@@ -319,6 +319,7 @@ async def test_direct_endpoint_freezes_server_plan_before_provider_and_returns_s
             side_effect=[
                 SimpleNamespace(scalars=lambda: SimpleNamespace(all=lambda: [zone])),
                 SimpleNamespace(scalars=lambda: SimpleNamespace(all=lambda: [building])),
+                SimpleNamespace(scalar_one_or_none=lambda: SimpleNamespace(metadata_={})),
             ]
         )
     )
@@ -326,12 +327,14 @@ async def test_direct_endpoint_freezes_server_plan_before_provider_and_returns_s
     monkeypatch.setattr(endpoint, "lock_residual_landscape_project", AsyncMock())
     monkeypatch.setattr(endpoint, "_validate_direct_3d_project_zones", lambda *_, **kwargs: [])
     monkeypatch.setattr(
-        endpoint, "get_settings", lambda: SimpleNamespace(
+        endpoint,
+        "get_settings",
+        lambda: SimpleNamespace(
             openai_api_key="fake",
             render_global_daily_token_cap=0,
             direct_3d_jobs_enabled=False,
             direct_3d_images_enabled=True,
-        )
+        ),
     )
     monkeypatch.setattr(endpoint, "_reserve_direct_render", AsyncMock(return_value=SimpleNamespace(id="reservation")))
     monkeypatch.setattr(endpoint, "_finalize_direct_audit", AsyncMock())

@@ -22,17 +22,26 @@ isolated = image_job_fixture
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("code,expected", [
-    ("insufficient_quota", "insufficient_quota"),
-    ("rate_limit_exceeded", "rate_limit_exceeded"),
-    ("private detail with spaces", None),
-])
-async def test_failed_guide_keeps_a_safe_provider_code_without_retrying_or_billing(isolated, monkeypatch, code, expected):
+@pytest.mark.parametrize(
+    "code,expected",
+    [
+        ("insufficient_quota", "insufficient_quota"),
+        ("rate_limit_exceeded", "rate_limit_exceeded"),
+        ("private detail with spaces", None),
+    ],
+)
+async def test_failed_guide_keeps_a_safe_provider_code_without_retrying_or_billing(
+    isolated, monkeypatch, code, expected
+):
     f = isolated
     monkeypatch.setattr(appearance, "get_settings", lambda: f.settings)
     monkeypatch.setattr(appearance, "write_evidence", f.write)
     monkeypatch.setattr(appearance, "validate_scene", AsyncMock(return_value="c" * 64))
-    provider = AsyncMock(return_value=httpx.Response(429, json={"error": {"code": code, "message": "Do not store private provider prose"}}))
+    provider = AsyncMock(
+        return_value=httpx.Response(
+            429, json={"error": {"code": code, "message": "Do not store private provider prose"}}
+        )
+    )
     monkeypatch.setattr(appearance, "call_image_edit", provider)
     a = await submit(f, req=request(f))
     await execute(f, a)
@@ -177,12 +186,15 @@ async def test_only_aerial_guides_request_google_tile_refinement(isolated, monke
     monkeypatch.setattr(appearance, "get_settings", lambda: f.settings)
     monkeypatch.setattr(appearance, "write_evidence", f.write)
     monkeypatch.setattr(appearance, "validate_scene", AsyncMock(return_value="c" * 64))
-    provider = AsyncMock(return_value=httpx.Response(200, json={"data": [{"b64_json": _jpeg_data_url().split(",", 1)[1]}]}))
+    provider = AsyncMock(
+        return_value=httpx.Response(200, json={"data": [{"b64_json": _jpeg_data_url().split(",", 1)[1]}]})
+    )
     monkeypatch.setattr(appearance, "call_image_edit", provider)
     payload = request(f).model_dump(mode="json")
     payload["source_request"] = {
-        "project_id": str(f.project.id), "guide_frame_base64": _jpeg_data_url(),
-        "route_points": [{"x": .2, "y": .8}, {"x": .8, "y": .2}],
+        "project_id": str(f.project.id),
+        "guide_frame_base64": _jpeg_data_url(),
+        "route_points": [{"x": 0.2, "y": 0.8}, {"x": 0.8, "y": 0.2}],
         "camera_motion": camera_motion,
     }
     a = await submit(f, req=VideoAppearanceRequest.model_validate(payload))

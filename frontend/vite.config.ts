@@ -7,6 +7,7 @@ import { selectViteEnvDir } from './src/config/viteEnvDir';
 import { catalogueAssetGuard } from './scripts/catalogue-asset-guard.mjs';
 import { packedCatalogue } from './scripts/packed-catalogue.mjs';
 import { applyLocalRuntimeProfile, localRuntimeGuard } from './scripts/local-runtime-guard.mjs';
+import { publicEnvironment } from './scripts/public-env.mjs';
 
 function gitCommonDir(projectRoot: string): string | null {
   const dotGit = path.join(projectRoot, '.git');
@@ -45,6 +46,7 @@ function resolveEnvDir(): string {
   const explicitEnvDir = process.env.VITE_ENV_DIR
     ? path.resolve(process.env.VITE_ENV_DIR)
     : undefined;
+  if (explicitEnvDir) return explicitEnvDir;
   const projectRoot = path.resolve(__dirname, '..');
   const projectEnv = path.join(projectRoot, '.env');
   // An interrupted recovery can leave an empty placeholder .env at the
@@ -67,7 +69,10 @@ function resolveEnvDir(): string {
 export default defineConfig(({ command, mode }) => {
   const localRuntime = command === 'serve' && mode !== 'test'
     ? applyLocalRuntimeProfile(path.resolve(__dirname, '..')) : null;
+  const envDir = resolveEnvDir();
+  const { values: publicEnv, ...publicEnvConfig } = publicEnvironment(mode, envDir);
   return {
+  ...publicEnvConfig,
   // Dependencies may be junctioned across worktrees. Keep optimized browser
   // scripts in this checkout so another preview cannot invalidate live chunks.
   cacheDir: path.resolve(__dirname, '../artifacts/vite-cache'),
@@ -77,8 +82,8 @@ export default defineConfig(({ command, mode }) => {
   // Worktrees share browser API keys through the repository's ignored Git
   // common directory. VITE_ENV_DIR and a worktree-root .env remain explicit
   // overrides for unusual local or CI setups.
-  envDir: resolveEnvDir(),
-  plugins: [react(), catalogueAssetGuard(), packedCatalogue(), localRuntimeGuard(), {
+  envDir,
+  plugins: [react(), catalogueAssetGuard(), packedCatalogue(), localRuntimeGuard(publicEnv), {
     name: 'local-terrain-rehearsal-data',
     apply: 'serve',
     configureServer(server) {
@@ -124,6 +129,10 @@ export default defineConfig(({ command, mode }) => {
     },
   },
   build: {
+    // Conservative standard minification keeps the expanded metadata/runtime
+    // inside the existing JS budget; no unsafe transforms or feature removal.
+    minify: 'terser',
+    terserOptions: { compress: { passes: 3 } },
     // Keep the route graph available to the bundle budget check. Render does
     // not serve this file to application code, and the file is only a few KB.
     manifest: true,
@@ -152,7 +161,7 @@ export default defineConfig(({ command, mode }) => {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test-setup.ts',
-    include: ['src/**/*.{test,spec}.{ts,tsx}'],
+    include: ['src/**/*.{test,spec}.{ts,tsx,mjs}'],
     css: false,
   },
   };

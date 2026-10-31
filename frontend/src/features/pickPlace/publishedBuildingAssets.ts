@@ -1027,7 +1027,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 19.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.610000610351562,
+      24.6100006103515625,
       15.179999828338623,
       12.390000343322754
     ],
@@ -1307,7 +1307,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 20.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.360000610351562,
+      24.3600006103515625,
       16.152999877929688,
       10.449999809265137
     ],
@@ -1347,7 +1347,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 20.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.360000610351562,
+      24.3600006103515625,
       16.08299970626831,
       13.75
     ],
@@ -1588,7 +1588,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "maxSize": 100.0,
     "nativeDimensions": [
       13.34000015258789,
-      21.472000122070312,
+      21.4720001220703125,
       9.0
     ],
     "reshapeDescription": "One complete two-home building at its native size. Resize the surrounding plot; the homes do not stretch or repeat.",
@@ -3239,6 +3239,286 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "development_archetype_label": "Toronto Bay And Gable",
       "floors": 2,
       "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_climbing_crucible_v004",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "The Crucible climbing centre",
+    "description": "Corten industrial climbing centre with a dark hexagonal wall, glazed east hall and planted rooftop running track.",
+    "thumbnail": "/archetypes/buildings/climbing_wall_building/variant_0.png",
+    "model": {
+      "variantId": "climbing_crucible",
+      "revision": "clay-climbing-crucible-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 154.0,
+    "depth": 129.0,
+    "minWidth": 154.0,
+    "minDepth": 129.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      150.0,
+      125.0999984741211,
+      39.599998474121094
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size. Integral roof landscaping stays with the model.",
+    "properties": {
+      "building_archetype_id": "climbing_wall_building",
+      "development_archetype_id": "climbing_wall_building",
+      "development_selected_variant_id": "climbing_crucible",
+      "development_archetype_label": "The Crucible climbing centre",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_climbing_overhang_v007",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "The Overhang climbing centre",
+    "description": "White precast recreation centre with a folded timber climbing shell and planted rooftop pool deck.",
+    "thumbnail": "/archetypes/buildings/climbing_wall_building/variant_1.png",
+    "model": {
+      "variantId": "climbing_overhang",
+      "revision": "clay-climbing-overhang-clay-v007",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 160.0,
+    "depth": 160.0,
+    "minWidth": 160.0,
+    "minDepth": 160.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      130.0,
+      148.0,
+      33.20000076293945
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model.",
+    "properties": {
+      "building_archetype_id": "climbing_wall_building",
+      "development_archetype_id": "climbing_wall_building",
+      "development_selected_variant_id": "climbing_overhang",
+      "development_archetype_label": "The Overhang climbing centre",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_climbing_reef_v009",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "The Reef climbing centre",
+    "description": "Contour-banded teal climbing shell with twelve skylights and its compact safety apron.",
+    "thumbnail": "/archetypes/buildings/climbing_wall_building/variant_3.png",
+    "model": {
+      "variantId": "climbing_reef",
+      "revision": "clay-climbing-reef-clay-v009",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 304.0,
+    "depth": 304.0,
+    "minWidth": 304.0,
+    "minDepth": 304.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      300.0,
+      300.0,
+      9.505199733066547
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model.",
+    "properties": {
+      "building_archetype_id": "climbing_wall_building",
+      "development_archetype_id": "climbing_wall_building",
+      "development_selected_variant_id": "climbing_reef",
+      "development_archetype_label": "The Reef climbing centre",
+      "floors": 1,
+      "floor_count": 1,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_sandstone_clock_tower_v006",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Sandstone clock-tower block",
+    "description": "Richardsonian Romanesque sandstone civic block with an internal court and copper-spired clock tower.",
+    "thumbnail": "/archetypes/buildings/calgary-sandstone-heritage/variant_0.png",
+    "model": {
+      "variantId": "sandstone_claude_clock_tower_v006",
+      "revision": "clay-calgary-sandstone-heritage-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 95.0,
+    "depth": 95.0,
+    "minWidth": 95.0,
+    "minDepth": 95.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      88.0199966430664,
+      84.0,
+      49.29999923706055
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size. Integral architectural programme stays with the model.",
+    "properties": {
+      "building_archetype_id": "calgary_sandstone_heritage",
+      "development_archetype_id": "calgary_sandstone_heritage",
+      "development_selected_variant_id": "sandstone_claude_clock_tower_v006",
+      "development_archetype_label": "Sandstone clock-tower block",
+      "floors": 4,
+      "floor_count": 4,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_fire_station_v010",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Modern fire station",
+    "description": "Cantilevered oxblood fire station with four glazed apparatus bays, a glass clock tower and compact apron.",
+    "thumbnail": "/archetypes/buildings/modern_fire_station/variant_2.png",
+    "model": {
+      "variantId": "fire_cantilevered_modern",
+      "revision": "clay-cantilever-fire-station-clay-v010",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 53.0,
+    "depth": 44.0,
+    "minWidth": 53.0,
+    "minDepth": 44.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      49.989999771118164,
+      40.34000015258789,
+      31.007999420166016
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size.",
+    "properties": {
+      "building_archetype_id": "modern_fire_station",
+      "development_archetype_id": "modern_fire_station",
+      "development_selected_variant_id": "fire_cantilevered_modern",
+      "development_archetype_label": "Modern fire station",
+      "floors": 2,
+      "floor_count": 2,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_hospital_v006",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Regional teaching hospital",
+    "description": "Braced teaching hospital with a perforated clinical block, connected glazed atrium and compact entrance canopy.",
+    "thumbnail": "/archetypes/buildings/regional-hospital-medical-center/variant_0.png",
+    "model": {
+      "variantId": "regional_hospital_contemporary_teaching",
+      "revision": "clay-braced-frame-hospital-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "civic",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 75.0,
+    "depth": 67.0,
+    "minWidth": 75.0,
+    "minDepth": 67.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      71.00500106811523,
+      63.72500228881836,
+      39.79999923706055
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size.",
+    "properties": {
+      "building_archetype_id": "regional_hospital_medical_center",
+      "development_archetype_id": "regional_hospital_medical_center",
+      "development_selected_variant_id": "regional_hospital_contemporary_teaching",
+      "development_archetype_label": "Regional teaching hospital",
+      "floors": 9,
+      "floor_count": 9,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "claude_student_residence_v004",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Student residence tower",
+    "description": "Twelve-storey student residence with recessed planted terraces, an oval glass roof lounge and roof garden.",
+    "thumbnail": "/archetypes/buildings/student-residence-tower/variant_0.png",
+    "model": {
+      "variantId": "contemporary_curtainwall_biophilic",
+      "revision": "clay-student-residence-tower-clay-v004",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "towers",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 36.0,
+    "depth": 32.0,
+    "minWidth": 36.0,
+    "minDepth": 32.0,
+    "maxSize": 600.0,
+    "nativeDimensions": [
+      32.407925686584576,
+      28.899999618530273,
+      47.8994140625
+    ],
+    "reshapeDescription": "Move and rotate the complete building at its authored size.",
+    "properties": {
+      "building_archetype_id": "student_residence_tower",
+      "development_archetype_id": "student_residence_tower",
+      "development_selected_variant_id": "contemporary_curtainwall_biophilic",
+      "development_archetype_label": "Student residence tower",
+      "floors": 12,
+      "floor_count": 12,
       "native_plot_axes": true
     }
   }

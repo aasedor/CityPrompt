@@ -1,0 +1,470 @@
+{
+  "schema": "cityprompt.rlasm.independent_architectural_clay_review@1",
+  "candidate": "bauhaus-design-workshop-clay-v003",
+  "candidate_path": "C:/dev-artifacts/CityPrompt/teaching-wave2-20261025/bauhaus-design-workshop-clay-v003",
+  "model_sha256": "9bb30f08a744b62325e012ba52ccc57ce7cd65b5b753774af5e8c145733ab648",
+  "reviewer": {
+    "name": "Independent RLASM architectural-clay verifier",
+    "agent": "/root/teaching_wave2_visual_review",
+    "independent_of_builder": true
+  },
+  "review_date": "2026-10-25",
+  "review_method": "RLASM v6.1 architectural-clay delivery profile and rlasm-expert/references/review-contract.md",
+  "review_scope": "Holistic, source-locked, adversarial offline architectural-clay review of all 14 mandatory exact-GLB render originals, all four compatible source panels and original board, locked source board, and both phone boards. Not a category-only closure.",
+  "holistic": true,
+  "category_closure_only": false,
+  "mandatory_views": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "stair_contact",
+    "workshop_programme",
+    "entrance_low"
+  ],
+  "inspected_every_mandatory_view": true,
+  "full_resolution_pixel_inspection": true,
+  "render_dimensions_px": [
+    1600,
+    1200
+  ],
+  "phone_boards": [
+    "boards/phone-source-comparison.png",
+    "boards/phone-construction.png"
+  ],
+  "phone_board_dimensions_px": [
+    1080,
+    1920
+  ],
+  "source_origin": "Original generated teaching building; not a named historic reconstruction",
+  "source_limits": [
+    "The source labelled TRUE TOP is a high aerial, not an orthographic measured plan.",
+    "The source labelled REAR-LEFT OBLIQUE is another compatible front-high oblique, not a rear view.",
+    "Unseen rear/right construction, internal layout, metric scale and detailed dimensions are declared architectural inferences; this review does not validate those as surveyed facts.",
+    "The locked-source-board displays the three minimum source roles. The fourth compatible panel was also opened directly and compared.",
+    "Clay intentionally omits bitmap textures, source-conditioned PBR finish and source landscaping; no textured-keeper fidelity claim is made."
+  ],
+  "inspected_files": [
+    {
+      "path": "sources/original-board.png",
+      "bytes": 2582136,
+      "sha256": "898462ebb295abcf1abd761f6ea3aeeaa99805d2e93a4dc08fa68936ee19aa43",
+      "dimensions_px": [
+        1536,
+        1024
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "sources/front.png",
+      "bytes": 475523,
+      "sha256": "ce39896e4c9fea0afcfe77894c189a051e1427e61834e47d41c136b9b3a64b03",
+      "dimensions_px": [
+        767,
+        470
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "sources/oblique.png",
+      "bytes": 463322,
+      "sha256": "5d842900e6b463e9d116e7ebb34e8d6b1305c4ed96433cdacb6e7f6e6480707a",
+      "dimensions_px": [
+        767,
+        470
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "sources/top.png",
+      "bytes": 665485,
+      "sha256": "29f1d0e495979a9c9b02e60e3b4192f9e7fa039def5eeb69d9be0ea48ea0ad8c",
+      "dimensions_px": [
+        767,
+        474
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "sources/oblique_high.png",
+      "bytes": 585716,
+      "sha256": "b626670b819595aa9f95b2001c8acca3125cee9f1c38b7ded4d74bc2b9abe638",
+      "dimensions_px": [
+        767,
+        474
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "boards/locked-source-board.png",
+      "bytes": 966824,
+      "sha256": "40262ccd9e0510d6e38f087286df6d00244e6e49dff9c44682bf9c90f0f4001b",
+      "dimensions_px": [
+        1800,
+        620
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/front.png",
+      "bytes": 1641485,
+      "sha256": "91bb9451e78dcac4a8b781d05b255053a490ee60ae4e941012adbd17c5a1d844",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/front_corner.png",
+      "bytes": 1688388,
+      "sha256": "9a11d67840bc97749ff550c081b6d7524f7f8e42edc0ffbcd4d629a9dc5a1dfe",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/aerial.png",
+      "bytes": 1716479,
+      "sha256": "702cf840bbdec1b60a5a5d5b6a21d08bf82b603710c2ce6d6734e975d2fb9980",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/top.png",
+      "bytes": 1552942,
+      "sha256": "4d944b3842950824760103b64b88995db1715e1ee37ace7d13da0c1a830830db",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/left_side.png",
+      "bytes": 1651281,
+      "sha256": "4b915c27cbf2fe843f351067f8e40365a712fda7c55bc135bba72f3fe7cdaa89",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/right_side.png",
+      "bytes": 1575397,
+      "sha256": "31b867b4cbf17892d5df1f507bfac6ee01f054d814bf11edc118e6e7e9f0f169",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/rear.png",
+      "bytes": 1603679,
+      "sha256": "3e3225e7c6745a49b5c53a3f6cd65350123f6cf76ea1ac237855b5422e248ec2",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/rear_side.png",
+      "bytes": 1649862,
+      "sha256": "265f2da1c4b18d0e7d4fcc21e663ff0f79e5da445acea6e0d5f520c6c5906814",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/facade_close.png",
+      "bytes": 1668472,
+      "sha256": "359c747bb49874b1881706ff29bdf003c604105fa7042561477a24ddfed5fd19",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "bytes": 1843635,
+      "sha256": "947ab6e63d75f5592b33c2c01f51c41b374f18f94d21231b1a36f117204a40e2",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/glass_close.png",
+      "bytes": 1709628,
+      "sha256": "0f8420fb820db294c7610f42e2f3066ce85f1ee0815e44d8de89f2cdc41ebd72",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/stair_contact.png",
+      "bytes": 1847748,
+      "sha256": "30c8793f72a98cae390a82a9ce9ef89fcb594424106dd43271e1dda53a845d22",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/workshop_programme.png",
+      "bytes": 1684099,
+      "sha256": "07ff427ecf429bb19fb0194d246a7ec232ac09435aea3f594f2d2228dc3dceab",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "renders/entrance_low.png",
+      "bytes": 1660046,
+      "sha256": "ddc880a6ded42d2e069486f51c2d969c8999d900b6479637bddaec8129e29b50",
+      "dimensions_px": [
+        1600,
+        1200
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "boards/phone-source-comparison.png",
+      "bytes": 1113421,
+      "sha256": "e91d113dff6af92518d6b7dc3f4f227db0a8c33b91c257b7a00561a30bf0c95d",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "bytes": 936127,
+      "sha256": "fb060e7803a8bdd25716e2fbb5925048d86c7c53eda63f98b6c5288ce43b01f9",
+      "dimensions_px": [
+        1080,
+        1920
+      ],
+      "inspection": "original_resolution_pixels_opened"
+    }
+  ],
+  "model_file_audit": {
+    "path": "bauhaus-design-workshop-clay-v003.glb",
+    "bytes": 1325160,
+    "sha256": "9bb30f08a744b62325e012ba52ccc57ce7cd65b5b753774af5e8c145733ab648",
+    "textures": 0,
+    "images": 0,
+    "meshes": 11,
+    "buffers_with_external_uri": [],
+    "cameras": 0,
+    "model_hash_matches_requested": true
+  },
+  "supporting_evidence": [
+    {
+      "path": "sources/source-provenance.json",
+      "sha256": "03effb15562e30d1cb27e86a3a6463e56def396493ebb702f23efb851ebed55d"
+    },
+    {
+      "path": "evidence/review-input-manifest.json",
+      "sha256": "6724b8d26787501a65f99c9f1cce7c4728bddcae28d8cf0104ff02a8f9ded844"
+    },
+    {
+      "path": "evidence/native-entrance-contract.json",
+      "sha256": "6e7f325e312e3776ebef4621441ef14ae6b44cb50b0910ef9e66a234c9afdab9"
+    },
+    {
+      "path": "evidence/delivery-verification.json",
+      "sha256": "a9fadd2549f6cb5b1c0bc802f848cf96a5a7a8667e30ba2e5aab1140a1c50e2f"
+    },
+    {
+      "path": "review/builder-visual-review.json",
+      "sha256": "bad169737808e32598c2b677531285238d1ca60e65b5dbe0da31ec9af94b823e"
+    },
+    {
+      "path": "build-report.json",
+      "sha256": "7cf406908fd12d23211f8aeff1112c9880ef82f6e117b4aca9fc50ba18de5efb",
+      "scope": "Read relevant opening/summary, render-origin, bounds and contacts fields; object inventory is supporting evidence only."
+    }
+  ],
+  "pixel_findings": [
+    {
+      "category": "source_identity_and_ratios",
+      "result": "pass",
+      "evidence": [
+        "sources/front.png",
+        "sources/oblique.png",
+        "sources/top.png",
+        "sources/oblique_high.png",
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/top.png",
+        "boards/phone-source-comparison.png"
+      ],
+      "observation": "The two-storey dark-framed studio, five front bays, glazed left return, lower pale right wing, three narrow front strips, recessed red entry and two flat roofs retain the source identity. The front main-to-wing width and tall-to-low height relationships remain close to the source at building and phone scale. The plan preserves the deeper primary block and shallower attached wing."
+    },
+    {
+      "category": "complete_elevations_and_topology",
+      "result": "pass",
+      "evidence": [
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/aerial.png",
+        "renders/top.png"
+      ],
+      "observation": "Both side and rear envelopes are complete, with native base contact, consistent floor/coping levels and visibly recessed apertures. The inferred rear/right schedules continue the design language without being presented as source-proven geometry. No open corner, detached wall, clipped stage or missing roof face was observed."
+    },
+    {
+      "category": "roof_and_weathering_contacts",
+      "result": "pass_for_clay",
+      "evidence": [
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/architecture_close.png",
+        "renders/rear_side.png"
+      ],
+      "observation": "Both opaque roof decks are closed and seated. Continuous perimeter coping and bounded small roof vents are visible. The high-to-low join has no exposed void, black slot, floating cap or penetrating rod. Detailed waterproofing, drainage and PBR weathering were not assessed as engineered or textured construction."
+    },
+    {
+      "category": "physical_apertures_and_optics",
+      "result": "pass_for_clay",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/entrance_low.png",
+        "renders/glass_close.png",
+        "renders/architecture_close.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png"
+      ],
+      "observation": "Front glazing has physical frame/reveal depth and reads through into one enclosed occupied room. Narrow wing slots show section depth and interior separation rather than facade pictures. The red front door is plain and recessed with a long vertical pull. Glazing retains mild reflection while leaving workstations and circulation readable; no large QA light-disc reflections or milky opaque veil were observed."
+    },
+    {
+      "category": "transparent_workshop_programme",
+      "result": "pass_for_clay",
+      "evidence": [
+        "renders/glass_close.png",
+        "renders/workshop_programme.png",
+        "renders/architecture_close.png",
+        "renders/front_corner.png"
+      ],
+      "observation": "Supported worktables, stools, drawing sheets and rolls, model bases with maquettes, storage and inclined drawing boards establish an occupied design studio. The room remains visible through the shell at whole-building and close scales. Simplified clay programme is not claimed as detailed machinery or a surveyed interior."
+    },
+    {
+      "category": "native_support_entry_and_circulation",
+      "result": "pass_with_P2_polish",
+      "evidence": [
+        "renders/facade_close.png",
+        "renders/entrance_low.png",
+        "renders/stair_contact.png",
+        "renders/architecture_close.png",
+        "renders/front_corner.png",
+        "renders/left_side.png"
+      ],
+      "observation": "The recessed entry meets a seated native landing. Columns and floors bear visibly. The two flights meet the intermediate and upper occupied levels, with visible stringers and landing supports. Intermediate landing edges now have guards; the stair close and upper architecture view together prove the route and upper void guards. A small local handrail endpoint mismatch is recorded separately as P2; no open landing edge or floating flight was observed."
+    },
+    {
+      "category": "cameras_and_proof_visibility",
+      "result": "pass",
+      "evidence": [
+        "renders/front.png",
+        "renders/front_corner.png",
+        "renders/aerial.png",
+        "renders/top.png",
+        "renders/left_side.png",
+        "renders/right_side.png",
+        "renders/rear.png",
+        "renders/rear_side.png",
+        "renders/facade_close.png",
+        "renders/architecture_close.png",
+        "renders/glass_close.png",
+        "renders/stair_contact.png",
+        "renders/workshop_programme.png",
+        "renders/entrance_low.png"
+      ],
+      "observation": "All 14 originals were opened individually at 1600x1200, rather than approving from the contact sheet or metadata. Whole-envelope roles retain neutral safety margin from native grade through coping/vents and full footprint. Detail cameras expose their named entrance, glazing, roof/frame, programme and stair relationships. Interior exposure is sufficient. The two 1080x1920 phone boards were also opened directly."
+    },
+    {
+      "category": "regression_against_prior_finite_blockers",
+      "result": "closed_for_v003_clay_scope",
+      "evidence": [
+        "renders/entrance_low.png",
+        "renders/glass_close.png",
+        "renders/stair_contact.png",
+        "renders/architecture_close.png",
+        "boards/phone-construction.png"
+      ],
+      "observation": "The parent-supplied v001/v002 blocker list was used as a regression checklist only. In v003 the plain source-specific red entrance, visible room depth, valid stair camera, absence of reflected QA emitter discs and intermediate landing guards are visible. Earlier versions and their decisions were not changed."
+    }
+  ],
+  "findings": [
+    {
+      "id": "CLAY-P2-001",
+      "severity": "P2",
+      "category": "stair_handrail_finish",
+      "status": "non_blocking_polish",
+      "files": [
+        "renders/stair_contact.png",
+        "boards/phone-construction.png"
+      ],
+      "pixel_region_xywh": [
+        395,
+        220,
+        55,
+        50
+      ],
+      "observation": "At the far handrail/end-post junction near the intermediate return, the diagonal rail end and post cap have a small local alignment/seating mismatch visible in the full-resolution close.",
+      "implication": "The landing perimeter, posts, route and flight support remain present and readable. This local endpoint finish does not conceal an unguarded edge or disconnect the circulation route in the offline architectural-clay evidence.",
+      "finite_polish": "In a later bounded polish version, make the rail endpoint meet the post cap cleanly and recheck the complete exact-GLB camera set. No overwrite or additional build is authorized by this review."
+    }
+  ],
+  "unresolved_p0": [],
+  "unresolved_p1": [],
+  "unresolved_p2": [
+    "CLAY-P2-001"
+  ],
+  "unresolved_counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1
+  },
+  "blockers": [],
+  "decision": "approved_offline_architectural_clay",
+  "architectural_clay_reviewed": true,
+  "textured_keeper_approved": false,
+  "keeper_approved": false,
+  "runtime_activation": false,
+  "runtime_integration_verified": false,
+  "accessibility_approved": false,
+  "engineering_approved": false,
+  "publication_approved": false,
+  "continuous_scaling_approved": false,
+  "remaining_limits": "Runtime placement, terrain fit, entry/exit controls, accessible approach, engineering and any catalogue activation remain untested/unapproved. Approval applies only to this exact GLB hash and these immutable source/evidence bytes.",
+  "mutations": "Only this new review JSON was written using exclusive creation. No existing sources, models, render evidence, lifecycle records or Git source files were changed."
+}

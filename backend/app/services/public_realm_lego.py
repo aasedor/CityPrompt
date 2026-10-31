@@ -63,11 +63,15 @@ def public_realm_fallback_marker(
     """
 
     props = properties or {}
+    from app.services.native_modular_bridge import is_modular_bridge
+
+    if is_modular_bridge(props):
+        return None  # A raised source-module bridge cannot become a flat street.
     # Saved validation rectangles retain their separate native assembly binding.
     # A fixed native assembly must never be labelled a generic fallback.
-    if props.get('validation_fixed_fixture') is True:
+    if props.get("validation_fixed_fixture") is True:
         return None
-    if props.get('green_space_native_layout') is not None:
+    if props.get("green_space_native_layout") is not None:
         # A missing native layout must never turn into a generic park.
         return None
     is_street = props.get("_plan_role") == "street" or zone_type in {"road", "street", "path"}
@@ -2044,20 +2048,39 @@ def manual_street_capabilities() -> tuple[PublicRealmFamilyCapability, ...]:
     capabilities = []
     for row in rows:
         section = row["section"]
-        digest = hashlib.sha256(json.dumps(section, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()).hexdigest()
+        digest = hashlib.sha256(
+            json.dumps(section, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode()
+        ).hexdigest()
         width = row["widthM"]
         if digest != row["sourceSectionSha256"] or abs(sum(z["width_m"] for z in section["zones"]) - width) > 1e-6:
             raise ValueError(f"Manual street source/width mismatch: {row['variantId']}")
-        capabilities.append(PublicRealmFamilyCapability(
-            family_id=row["familyId"], kind="street", title=row["title"], generator="street_section",
-            selections=(PublicRealmSelectionCapability(
-                archetype_id=row["archetypeId"], variant_id=row["variantId"], profile_id=row["variantId"],
-                profile_version=1, appearance_kit_id="calgary_contemporary_native", is_default=True,
-                component_set_ids=(f"manual_section:{digest}", "manual_streets_v1"),
-                compatibility=PublicRealmCompatibility(target_type="street_segment", nominal_row_width_m=width,
-                    min_row_width_m=width-.05, max_row_width_m=width+.05, min_length_m=width, max_length_m=2000),
-            ),),
-        ))
+        capabilities.append(
+            PublicRealmFamilyCapability(
+                family_id=row["familyId"],
+                kind="street",
+                title=row["title"],
+                generator="street_section",
+                selections=(
+                    PublicRealmSelectionCapability(
+                        archetype_id=row["archetypeId"],
+                        variant_id=row["variantId"],
+                        profile_id=row["variantId"],
+                        profile_version=1,
+                        appearance_kit_id="calgary_contemporary_native",
+                        is_default=True,
+                        component_set_ids=(f"manual_section:{digest}", "manual_streets_v1"),
+                        compatibility=PublicRealmCompatibility(
+                            target_type="street_segment",
+                            nominal_row_width_m=width,
+                            min_row_width_m=width - 0.05,
+                            max_row_width_m=width + 0.05,
+                            min_length_m=width,
+                            max_length_m=2000,
+                        ),
+                    ),
+                ),
+            )
+        )
     return tuple(capabilities)
 
 
@@ -2068,10 +2091,17 @@ def public_realm_capability_fingerprint(
 
 
 def _catalog_prompt(capabilities: tuple[PublicRealmFamilyCapability, ...]) -> str:
+    from app.services.native_modular_bridge import MODULAR_BRIDGE_IDENTITIES
+    from app.services.native_street_registry import native_street_roster
+
+    ready_bridges = {row["variantId"] for row in native_street_roster()["entries"] if row.get("status") == "ready"}
+    pending_bridges = MODULAR_BRIDGE_IDENTITIES.keys() - ready_bridges
     lines = ["EXECUTABLE PUBLIC REALM LEGO CATALOG " "(select only exact archetype and variant identifiers below):"]
     if not capabilities:
         return lines[0] + "\n- No executable public-realm families are available."
     for capability in capabilities:
+        if any(selection.variant_id in pending_bridges for selection in capability.selections):
+            continue  # Explicit local execution does not approve AI planning discovery.
         sources: dict[str, list[str]] = {}
         for selection in capability.selections:
             sources.setdefault(selection.archetype_id, []).append(selection.variant_id)
@@ -2218,7 +2248,14 @@ def _compatibility_violations(
                     "supported": [envelope.min_row_width_m, envelope.max_row_width_m],
                 }
             )
-        if not _in_range(target.length_m, envelope.min_length_m, envelope.max_length_m):
+        # Metric recipe targets are normalized to millimetres. Compare source
+        # bounds at that same precision without changing their immutable locks;
+        # placement still checks the exact drawn route against its source.
+        if not _in_range(
+            target.length_m,
+            round(envelope.min_length_m, 3) if envelope.min_length_m is not None else None,
+            round(envelope.max_length_m, 3) if envelope.max_length_m is not None else None,
+        ):
             violations.append(
                 {
                     "field": "target.length_m",
@@ -2666,18 +2703,24 @@ def plan_public_realm_zone_recipe(
     """
 
     props = properties or {}
+    from app.services.native_modular_bridge import is_modular_bridge
+
     # Adding a route capability must not silently convert existing assembly
     # fixtures. Strict planner requests still require an executable recipe.
-    if props.get('validation_fixed_fixture') is True and not strict:
+    if props.get("validation_fixed_fixture") is True and not strict and not is_modular_bridge(props):
         return None
     from app.services.native_brt import validate_brt_properties
+
     validate_brt_properties(props)
     from app.services.native_tram import validate_tram_properties
+
     validate_tram_properties(props)
     from app.services.native_specialist_streets import validate_specialist_properties
+
     validate_specialist_properties(props)
-    if props.get('green_space_native_layout') is not None:
+    if props.get("green_space_native_layout") is not None:
         from app.services.native_parks import plan_native_park
+
         return plan_native_park(geometry_wgs84, props)
     is_street = props.get("_plan_role") == "street" or zone_type in {"road", "street", "path"}
     if is_street:
@@ -2719,22 +2762,41 @@ def plan_public_realm_zone_recipe(
         local_metric_crs_for_polygon(geometry_wgs84),
     )
     metric_geometry = project_geometry(geometry_wgs84, transformer)
+    from app.services.surface_path import surface_path_centerline_metric, surface_path_width
+
+    path_line = surface_path_centerline_metric(geometry_wgs84, props) if is_street else None
     centerline_metric = None
     if is_street and props.get("plan_centerline") is not None:
         from app.services.plan_geometry.generator import validate_street_plan_centerline_wgs84
 
         if validate_street_plan_centerline_wgs84(geometry_wgs84, props["plan_centerline"]):
             centerline_metric = project_geometry(LineString(props["plan_centerline"]), transformer)
-    target = _target_from_metric_geometry(
-        metric_geometry,
-        props,
-        target_type=target_types.pop(),
-        # Strictness controls failure behavior, not recipe geometry.  Every
-        # emitted V1 recipe must use the same target policy so a manual compile
-        # and Direct's later canonical replan cannot disagree.
-        attest_segment_width=True,
-        centerline_metric=centerline_metric,
-    )
+    if is_modular_bridge(props):
+        from app.services.native_modular_bridge import modular_bridge_route_length
+
+        width = props["width"]
+        if centerline_metric is None:
+            raise ValueError("Modular bridge needs its current two-endpoint route inside the occupied footprint.")
+        ribbon = centerline_metric.buffer(width / 2, cap_style=2, join_style=2)
+        if not ribbon.buffer(0.1).covers(metric_geometry) or not metric_geometry.buffer(0.1).covers(ribbon):
+            raise ValueError("Keep the complete modular bridge footprint at its native width and route length.")
+        target = StreetSegmentTarget(
+            row_width_m=width, length_m=round(modular_bridge_route_length(props["plan_centerline"]), 3)
+        )
+    else:
+        target = (
+            StreetSegmentTarget(row_width_m=surface_path_width(props), length_m=round(path_line.length, 3))
+            if path_line is not None
+            else _target_from_metric_geometry(
+                metric_geometry,
+                props,
+                target_type=target_types.pop(),
+                # Strictness controls failure behavior, not recipe geometry. Every
+                # emitted V1 recipe uses the same target policy for later capture.
+                attest_segment_width=True,
+                centerline_metric=centerline_metric,
+            )
+        )
     exact_variant_id = variant_id or next(
         (
             candidate_variant
@@ -2791,7 +2853,7 @@ def plan_public_realm_zone_recipe(
             catalog=catalog,
         )
     except PublicRealmPlanningError:
-        if strict:
+        if strict or is_modular_bridge(props):
             raise
         return None
 
@@ -2804,8 +2866,8 @@ def _historical_catalog_locks() -> dict[str, dict[str, str]]:
     family definition is still executable. Changed families need their own
     retained version; an old global fingerprint cannot bless new geometry.
     """
-    path = Path(__file__).resolve().parents[1] / 'data/publicRealmCatalogHistory.json'
-    return json.loads(path.read_text(encoding='utf-8'))['catalogs']
+    path = Path(__file__).resolve().parents[1] / "data/publicRealmCatalogHistory.json"
+    return json.loads(path.read_text(encoding="utf-8"))["catalogs"]
 
 
 def public_realm_recipe_identity(
@@ -2817,9 +2879,10 @@ def public_realm_recipe_identity(
 
     if value is None:
         return None
-    if (isinstance(value, dict) and value.get('schema_version') == 2) or getattr(value, 'schema_version', None) == 2:
+    if (isinstance(value, dict) and value.get("schema_version") == 2) or getattr(value, "schema_version", None) == 2:
         from app.services.native_parks import native_park_identity
-        return native_park_identity(value.model_dump(mode='json') if hasattr(value, 'model_dump') else value)
+
+        return native_park_identity(value.model_dump(mode="json") if hasattr(value, "model_dump") else value)
     try:
         recipe = (
             value if isinstance(value, PublicRealmRecipePayload) else PublicRealmRecipePayload.model_validate(value)
@@ -2840,20 +2903,27 @@ def public_realm_recipe_identity(
     if capability is None:
         return None
     if public_realm_capability_fingerprint(capability) != recipe.capability_fingerprint:
-        # Existing canals retain their exact source programme and original
-        # 80–320 m contract. Never use the old fingerprint to bless a new route.
-        if recipe.family_id != 'street_native_amsterdam_gracht_v1':
+        # Saved short-route recipes retain their original exact envelope and
+        # locks. Replanning below still forbids extending an old fingerprint.
+        from app.services.native_street_candidate_contract import (
+            retained_native_street_capabilities,
+            native_street_runtime_capabilities,
+        )
+
+        live = next((c for c in native_street_runtime_capabilities() if c.family_id == recipe.family_id), None)
+        if live is None or public_realm_capability_fingerprint(live) != public_realm_capability_fingerprint(capability):
             return None
-        from app.services.native_street_candidate_contract import retained_canal_capability
-        retained = retained_canal_capability()
-        if public_realm_capability_fingerprint(retained) != recipe.capability_fingerprint:
+        retained = retained_native_street_capabilities().get(recipe.family_id)
+        if retained is None or public_realm_capability_fingerprint(retained) != recipe.capability_fingerprint:
             return None
         capability = retained
-        catalog = replace(catalog, capabilities=tuple(
-            retained if c.family_id == retained.family_id else c for c in catalog.capabilities))
+        catalog = replace(
+            catalog,
+            capabilities=tuple(retained if c.family_id == retained.family_id else c for c in catalog.capabilities),
+        )
     if recipe.catalog_fingerprint != catalog.fingerprint:
         trusted = _historical_catalog_locks().get(recipe.catalog_fingerprint, {})
-        if trusted.get(f'{recipe.family_id}@{recipe.family_version}') != recipe.capability_fingerprint:
+        if trusted.get(f"{recipe.family_id}@{recipe.family_version}") != recipe.capability_fingerprint:
             return None
         # Replan with the same exact capability and original catalogue identity.
         # All canonical field comparisons below remain mandatory.

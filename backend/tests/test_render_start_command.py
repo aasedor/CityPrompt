@@ -15,17 +15,21 @@ def run_start(**environment):
     if not bash:
         pytest.skip("Bash is required to exercise the Linux container entrypoint")
     script = Path(__file__).parents[1] / "scripts/start.sh"
-    env = {key: value for key, value in os.environ.items()
-           if key not in {"RUN_DATABASE_MIGRATIONS", "BOOTSTRAP_ADMIN_EMAIL", "BOOTSTRAP_ADMIN_PASSWORD"}}
+    env = {
+        key: value
+        for key, value in os.environ.items()
+        if key not in {"RUN_DATABASE_MIGRATIONS", "BOOTSTRAP_ADMIN_EMAIL", "BOOTSTRAP_ADMIN_PASSWORD"}
+    }
     env.update(environment)
     # Both commands are shell stubs; no Python module or API server executes.
-    command = '''
+    command = """
 python() { printf 'python:%s\\n' "$*"; return "${TEST_MIGRATION_EXIT:-0}"; }
 exec() { printf 'exec:%s\\n' "$*"; }
 source "$1"
-'''
-    return subprocess.run([bash, "-c", command, "startup-test", script.as_posix()],
-                          env=env, capture_output=True, text=True, timeout=15)
+"""
+    return subprocess.run(
+        [bash, "-c", command, "startup-test", script.as_posix()], env=env, capture_output=True, text=True, timeout=15
+    )
 
 
 def test_default_start_migrates_before_api():
