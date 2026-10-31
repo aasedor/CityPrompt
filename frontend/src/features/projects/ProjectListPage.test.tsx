@@ -118,6 +118,8 @@ describe('project render preview pressure', () => {
   });
 
   it('pauses and cancels previews for New Project, then resumes when the form closes', async () => {
+    // The separate 100-project case covers scale; this case exercises form transitions.
+    vi.mocked(projectsApi.list).mockResolvedValue(projects.slice(0, 5) as never);
     const view = setup('/projects');
     await waitFor(() => expect(rendersApi.list).toHaveBeenCalledTimes(3));
     fireEvent.click(screen.getByRole('button', { name: 'New Project' }));
@@ -139,6 +141,7 @@ describe('project render preview pressure', () => {
   });
 
   it('can create without waiting for the active preview batch', async () => {
+    vi.mocked(projectsApi.list).mockResolvedValue(projects.slice(0, 5) as never);
     const view = setup('/projects');
     await waitFor(() => expect(rendersApi.list).toHaveBeenCalledTimes(3));
     fireEvent.click(screen.getByRole('button', { name: 'New Project' }));
