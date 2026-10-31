@@ -102,7 +102,8 @@ test('production starter omits only local trials and exclusively trial-owned dep
 test('extracted static registries preserve every original transport fact and render preset', () => {
   for (const [name, count, hash] of [
     ['transportStandardEntries.json', 56, '3b445ced12bcc0087b9f95e74632d72a8d1858d9d5273acca999ba8ca3a53749'],
-    ['aiRenderStylePresets.json', 14, '138ff3588a9445559a4fef8188e2fe25e63711200a4539eeb669a4618cfb68d2'],
+    // Hash updated 2026-10-31 after restoring mis-encoded punctuation in the preset prompts.
+    ['aiRenderStylePresets.json', 14, '9b4fa2fd14f3e6a7c8021ddfb1a117688bd83b4077e539ae4bfda858dd309ba7'],
     ['streetViewStylePresets.json', 14, '38a24f8d56744a3c264dc756f1aedf19ab5bb40c8be9d88d98661bd9d8183ccf'],
   ]) {
     const original = JSON.parse(readFileSync(resolve('src/data', name), 'utf8'));
