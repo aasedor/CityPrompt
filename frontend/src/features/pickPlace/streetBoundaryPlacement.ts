@@ -6,6 +6,7 @@ import { streetConnectionProblem } from './streetConnectionProblem';
 import { streetEditConnectionCheck } from './streetEditConnections';
 import { isFixedSectionStreet, streetSectionWidth } from './streetPlacement';
 import { snapStreetJunctionPlacement } from './streetJunctionSnapping';
+import { modularBridgeProgramFor } from '@/components/viewer/globe/modularBridgeProgram';
 
 /** The coordinate-save pipeline samples editing controls itself. Passing an
  * already sampled boundary result back through it discards the small handle
@@ -39,7 +40,8 @@ export function snapStreetBoundaryPlacement(zone: SiteZone, zones: SiteZone[], b
   const connected = streetEditConnectionCheck(original, [...context, original]);
   const validJunction = (next: SiteZone) => !placementProblem(next.coordinates, context, boundary, zone.id, { allowStreetIntersections: true, properties:next.properties })
     && !streetConnectionProblem(next, context) && connected(next);
-  zone = snapStreetJunctionPlacement(zone, context, validJunction);
+  const bridge = modularBridgeProgramFor(properties.road_selected_variant_id);
+  if (!bridge) zone = snapStreetJunctionPlacement(zone, context, validJunction);
   properties = zone.properties ?? {};
   const candidate = (coordinates: number[][]) => ({
     ...zone, coordinates, properties: translatedProperties(properties, zone.coordinates, coordinates),
@@ -47,7 +49,9 @@ export function snapStreetBoundaryPlacement(zone: SiteZone, zones: SiteZone[], b
   const problem = (next: SiteZone) => placementProblem(next.coordinates, context, boundary, zone.id, { allowStreetIntersections: true, properties:next.properties })
     ?? streetConnectionProblem(next, context)
     ?? (connected(next) ? null : 'Keep the existing street junction connected.');
-  const coordinates = snapFootprintToSiteBoundary(zone.coordinates, boundary, coords => !problem(candidate(coords)));
+  // Keep the two bridge anchors identical in preview, save and edit. Its full
+  // native envelope must fit; do not pull a valid first anchor toward a kerb.
+  const coordinates = bridge ? zone.coordinates : snapFootprintToSiteBoundary(zone.coordinates, boundary, coords => !problem(candidate(coords)));
   const result = candidate(coordinates);
   return { coordinates: result.coordinates, properties: result.properties, problem: problem(result) };
 }

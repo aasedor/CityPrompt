@@ -15,8 +15,42 @@ _SUPPORT_OVERLAP_M = {"timber_covered_bridge_route_v1": 5 / 3}
 _AREA_TOLERANCE_M2 = 1e-6
 
 
+def validate_modular_bridge_footprint(geometry, properties):
+    """Match a source bridge to its authored axis, even when width > span.
+
+    Generic road principal-axis recovery is not valid for these wide stair and
+    approach reservations. Retain the same 10 cm corridor tolerance as clearance.
+    """
+    validate_specialist_properties(properties)
+    if not isinstance(geometry, Polygon) or geometry.is_empty or not geometry.is_valid or geometry.interiors:
+        raise ValueError("Keep a complete valid modular bridge footprint.")
+    profile = modular_bridge_profile(properties["road_selected_variant_id"])
+    route = properties["plan_centerline"]
+    if not isinstance(route, list):
+        raise ValueError("Modular bridge clearance requires its explicit saved two-endpoint coordinate array.")
+    origin = route[0]
+    sx = 111320 * math.cos(math.radians(origin[1]))
+
+    def local(point):
+        return ((point[0] - origin[0]) * sx, (point[1] - origin[1]) * 111320)
+
+    dx, dy = local(route[-1])
+    length = math.hypot(dx, dy)
+    ux, uy = dx / length, dy / length
+    half = profile["widthM"] / 2
+    occupied = Polygon(
+        [
+            (ux * along - uy * across, uy * along + ux * across)
+            for along, across in ((0, -half), (length, -half), (length, half), (0, half))
+        ]
+    )
+    footprint = Polygon([local(point) for point in geometry.exterior.coords])
+    if not occupied.buffer(0.1).covers(footprint) or not footprint.buffer(0.1).covers(occupied):
+        raise ValueError("Keep the modular bridge footprint aligned with its current saved two-endpoint route.")
+
+
 def _validate_bridge_pair(bridge_coordinates, bridge_properties, other_coordinates, other_properties):
-    validate_specialist_properties(bridge_properties)
+    validate_modular_bridge_footprint(Polygon(bridge_coordinates), bridge_properties)
     profile = modular_bridge_profile(bridge_properties["road_selected_variant_id"])
     route = bridge_properties["plan_centerline"]
     if not isinstance(route, list):
@@ -41,9 +75,6 @@ def _validate_bridge_pair(bridge_coordinates, bridge_properties, other_coordinat
         )
 
     occupied = corridor(0, length)
-    footprint = Polygon([local(point) for point in bridge_coordinates])
-    if not occupied.buffer(0.1).covers(footprint) or not footprint.buffer(0.1).covers(occupied):
-        raise ValueError("Keep the modular bridge footprint aligned with its current saved two-endpoint route.")
     other = Polygon([local(point) for point in other_coordinates])
     overlap = occupied.intersection(other)
     if overlap.area <= _AREA_TOLERANCE_M2:
