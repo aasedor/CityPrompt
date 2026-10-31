@@ -74,8 +74,12 @@ def flush_native_street_junction_levels() -> dict[str, float]:
 def native_street_runtime_capabilities() -> tuple[PublicRealmFamilyCapability, ...]:
     data_dir = Path(__file__).resolve().parents[1] / "data"
     roster = native_street_roster()
-    allowed = {row["variantId"]: row for row in roster["entries"] if row["representation"] == "native-modules"
-               and (row["variantId"] not in MODULAR_BRIDGE_IDENTITIES or native_bridge_available(row["variantId"]))}
+    allowed = {
+        row["variantId"]: row
+        for row in roster["entries"]
+        if row["representation"] == "native-modules"
+        and (row["variantId"] not in MODULAR_BRIDGE_IDENTITIES or native_bridge_available(row["variantId"]))
+    }
     candidates = build_native_street_candidate_catalog(data_dir / "nativeStreetPilots.json")
     accepted = []
     for capability in candidates.capabilities:

@@ -9,6 +9,22 @@ const manifest = JSON.parse(source);
 const urls = text => [...new Set([...text.matchAll(/\/(?:park|street)-kits\/claude-20261023\/[a-f0-9]{64}\.(?:glb|png|jpg)/g)].map(match => match[0]))].sort();
 const projected = value => productionRuntimeSourceText(registryPath, JSON.stringify(value));
 
+test('bridge receipts inventory complete profiles without escaped canonical-string phantom URLs', () => {
+  const text = readFileSync(new URL('../src/data/nativeBridgeRelease.json', import.meta.url), 'utf8');
+  const original = JSON.parse(text);
+  const filtered = JSON.parse(productionRuntimeSourceText('src/data/nativeBridgeRelease.json', text));
+  assert.equal(filtered.entries.length, 10);
+  assert.ok(filtered.entries.every(entry=>!Object.hasOwn(entry,'profileCanonical')));
+  assert.deepEqual(filtered.entries.map(entry=>entry.profile), original.entries.map(entry=>entry.profile));
+  assert.equal(filtered.entries.reduce((sum,entry)=>sum+Object.keys(entry.profile.modules).length,0),34);
+  assert.deepEqual(JSON.parse(text), original, 'Inventory projection never rewrites admission receipts');
+  assert.deepEqual(JSON.parse(productionRuntimeSourceText('src\\data\\nativeBridgeRelease.json',text)),filtered);
+  for (const malformed of [{...original,schema:'unknown'},{...original,entries:null},
+    {...original,entries:[{profile:null,profileCanonical:'{}'}]}]) {
+    assert.throws(()=>productionRuntimeSourceText('src/data/nativeBridgeRelease.json',JSON.stringify(malformed)),/Invalid native bridge receipt/);
+  }
+});
+
 test('the exact production registry requires only the twelve approved model and thumbnail pairs', () => {
   const selected = manifest.models.filter(row => row.status === 'ready');
   assert.equal(selected.length, 12);

@@ -4,8 +4,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { build } from 'esbuild';
 import { packedCatalogue, productionStarter } from './packed-catalogue.mjs';
+const routeIds = ['timber_covered_bridge_route_v1', 'planted_green_bridge_route_v1', 'brick_arch_viaduct_route_v1',
+  'rail_through_truss_route_v1', 'stone_arch_road_bridge_route_v1', 'tied_arch_shared_bridge_route_v1',
+  'steel_truss_road_bridge_route_v1', 'swooping_cycle_flyover_route_v1', 'cable_stayed_cycle_ring_route_v1',
+  'weathering_steel_v_footbridge_route_v1'];
 
-test('production bridge lookup ships timber without the nine held bridge profiles', async () => {
+test('production bridge lookup ships exactly the finite ten-route release cohort', async () => {
   const result = await build({
     stdin: { contents: "export { nativeBridgeSources } from '../src/components/viewer/globe/nativeBridgeSources';", resolveDir: fileURLToPath(new URL('.', import.meta.url)) },
     alias: { '@': fileURLToPath(new URL('../src', import.meta.url)) },
@@ -13,17 +17,26 @@ test('production bridge lookup ships timber without the nine held bridge profile
     define: { 'import.meta.env.DEV': 'false', 'import.meta.env.MODE': '"production"' },
   });
   const code = result.outputFiles[0].text;
-  assert.ok(code.includes('timber_covered_bridge_route_v1'));
-  for (const id of ['planted_green_bridge_route_v1','weathering_steel_v_footbridge_route_v1','cable_stayed_cycle_ring_route_v1']) assert.ok(!code.includes(id));
+  const runtime = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+  assert.deepEqual(runtime.nativeBridgeSources.map(row=>row.id), routeIds);
 });
 
-test('production roster keeps the timber pilot dependencies while the other nine stay pending', () => {
+test('production roster closes all ten bridge dependencies while unrelated pending entries stay held', () => {
   const source = readFileSync(new URL('../src/data/classroomStarter.json',import.meta.url),'utf8');
   const roster = JSON.parse(productionStarter(source));
-  const timber = roster.entries.find(entry=>entry.variantId==='timber_covered_bridge_route_v1');
-  assert.ok(timber);
-  for (const id of timber.dependencies) assert.ok(roster.dependencies.some(dep=>dep.id===id),id);
-  assert.ok(!roster.entries.some(entry=>entry.variantId==='planted_green_bridge_route_v1'));
+  for (const routeId of routeIds) {
+    const entry = roster.entries.find(item=>item.variantId===routeId);
+    assert.ok(entry, routeId);
+    for (const id of entry.dependencies) assert.ok(roster.dependencies.some(dep=>dep.id===id),id);
+  }
+  assert.ok(!roster.entries.some(entry=>entry.status==='local-pilot-runtime-pending'));
+  const input = JSON.parse(source);
+  input.entries.push({...input.entries[0],variantId:'held_unreviewed_bridge_route_v1',
+    placementId:'held_unreviewed_bridge_route_v1',status:'local-pilot-runtime-pending',dependencies:['public:held-bridge.glb']});
+  input.dependencies.push({id:'public:held-bridge.glb'});
+  const held = JSON.parse(productionStarter(JSON.stringify(input)));
+  assert.ok(!held.entries.some(entry=>entry.variantId==='held_unreviewed_bridge_route_v1'));
+  assert.ok(!held.dependencies.some(dep=>dep.id==='public:held-bridge.glb'));
 });
 
 test('the exact bridge release uses the existing catalogue codec', () => {
