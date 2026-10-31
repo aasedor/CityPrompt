@@ -74,3 +74,12 @@ Follow `docs/RENDER_RELEASE_2026-10-13.md` and its predecessor. Before cutover:
 At preparation time, live frontend/API still identify `62e31ad62`. Render access
 requires completing the existing GitHub 2FA verification or connecting the Render
 plugin. No live deployment has been claimed from the local trial results.
+
+The final production-packet audit caught 34 missing bridge module files: the
+catalogue auditor checked them but omitted their dependencies from its report.
+The report and hosted-asset closure now carry those exact locked modules even
+while their pilot cards remain hidden. The first failed packet is retained as
+evidence; only a newly verified packet is eligible for cutover. Current-head CI
+also exposed a Python namespace collision when storage tests ran from the
+backend directory. That step runs the same tests from the repository root.
+The focused asset/storage checks passed 24 tests, with independent review.

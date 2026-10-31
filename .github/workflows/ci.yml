@@ -92,7 +92,8 @@ jobs:
           python -m tools.catalogue_promotion check --metadata-only
 
       - name: Test expected catalogue storage and exact byte checks
-        run: python -m pytest ../scripts/tests/test_check_model_library_storage.py -q
+        working-directory: .
+        run: python -m pytest scripts/tests/test_check_model_library_storage.py -q
 
       - name: Lint with ruff
         run: ruff check .

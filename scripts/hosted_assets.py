@@ -87,7 +87,8 @@ def write_asset(root: Path, url: str, data: bytes) -> dict:
 
 def public_requirements(report: dict) -> dict[str, dict]:
     checks = [check for choice in report["choices"] for check in choice["checks"]]
-    for key in ("saved_layout_dependencies", "saved_model_revisions", "rustic_park_dependencies"):
+    for key in ("saved_layout_dependencies", "saved_model_revisions", "rustic_park_dependencies",
+                "bridge_module_dependencies"):
         checks.extend(report.get(key, []))
     result = {}
     for check in checks:

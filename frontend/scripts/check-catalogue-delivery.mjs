@@ -116,6 +116,7 @@ const report = {schema:'cityprompt.catalogue-delivery-audit@1',checked_utc:new D
   saved_layout_dependencies:savedLayoutChecks.map(check=>({...check,...results.get(check.url)})),
   saved_model_revisions:savedRevisionChecks.map(check=>({...check,...results.get(check.url)})),
   rustic_park_dependencies:rusticKitChecks.map(check=>({...check,...results.get(check.url)})),
+  bridge_module_dependencies:bridgeModuleChecks.map(check=>({...check,...results.get(check.url)})),
   choices:rows.map(row=>({...row,status:row.checks.every(check=>results.get(check.url||check.sourcePath).status!=='FAIL')?(metadataOnly?'METADATA_ONLY':'PASS'):'FAIL',checks:row.checks.map(check=>({...check,...results.get(check.url||check.sourcePath)}))}))};
 if (output) writeFileSync(output,JSON.stringify(report,null,2)+'\n');
 if (packetDirectory && report.failures.length===0 && !metadataOnly) {
