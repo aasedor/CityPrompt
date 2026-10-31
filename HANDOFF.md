@@ -12,7 +12,8 @@ describes how the repository is organised and what remains open.
 - `deployment-version` is the canonical working, integration and release
   branch and GitHub's default branch. Every merged change lands here through a
   pull request, and the live site is built from it.
-- `main` is kept only as a synchronized mirror. Do not base work on it.
+- `main` is frozen at its 3 October 2026 state (`30de8b2c`, also tagged
+  `archive/2026-10-30/main`) and is not used. Do not base work on it.
 - Short-lived branches are `codex/<topic>` or `claude/<topic>`; retired
   branches are preserved as `archive/<date>/<branch>` tags before deletion.
 - There are no release tags yet; tag the commit that is live before any
@@ -114,5 +115,5 @@ the hosted deployment.
 4. Record in the Render dashboard which branch each service deploys from, and
    hand over the dashboard access itself; nothing in this repository can
    reproduce it.
-5. Decide whether `main` stays as a mirror or is deleted so that a single
-   branch remains.
+5. Optionally delete `main` once its protection rule is removed; its tip is
+   preserved by the archive tag, so nothing is lost.

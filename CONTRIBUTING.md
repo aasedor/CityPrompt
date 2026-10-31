@@ -1,8 +1,8 @@
 # Contributing to City Prompt
 
 City Prompt uses `deployment-version` as its canonical working, integration
-and release branch; it is also GitHub's default branch. `main` is kept as a
-synchronized mirror of it and is not a development target. Keep changes small,
+and release branch; it is also GitHub's default branch. `main` is frozen at its
+3 October 2026 state and is not a development target. Keep changes small,
 verified, and easy to review; do not leave completed work on long-lived pilot
 branches.
 

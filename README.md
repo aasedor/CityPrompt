@@ -16,9 +16,9 @@ The application combines:
 - optional AI providers for document interpretation, images, 3D generation,
   and video.
 
-`deployment-version` is the canonical working and release branch; `main` is
-kept as a synchronized mirror of it. Long-lived pilot branches are not part of
-the release workflow.
+`deployment-version` is the canonical working and release branch. `main` is
+frozen at its 3 October 2026 state and is not used. Long-lived pilot branches
+are not part of the release workflow.
 
 ## Student workflow
 
