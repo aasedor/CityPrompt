@@ -23,6 +23,97 @@ function setup() {
   };
 }
 describe('scoped media downloads', () => {
+  it('rejects a canceled consumer without aborting another consumer of the shared ticket', async () => {
+    const { access, projectTicket } = setup();
+    const response = deferred<{ asset_ticket: string; expires_in: number }>();
+    let ticketSignal: AbortSignal | undefined;
+    projectTicket.mockImplementation((_id: string, signal?: AbortSignal) => {
+      ticketSignal = signal;
+      return response.promise;
+    });
+    const firstController = new AbortController();
+    const data = { image_url: '/api/v1/files/projects/shared/renders/a.png' };
+    let firstState = 'pending';
+    const first = access.prepare(data, undefined, firstController.signal).then(
+      () => { firstState = 'resolved'; }, error => { firstState = error.name; },
+    );
+    const second = access.prepare(data);
+    try {
+      firstController.abort();
+      await vi.waitFor(() => expect(firstState).toBe('AbortError'));
+      expect(projectTicket).toHaveBeenCalledOnce();
+      expect(ticketSignal?.aborted).toBe(false);
+    } finally {
+      response.resolve({ asset_ticket: 'shared-ticket', expires_in: 900 });
+      await first;
+    }
+    expect((await second).image_url).toContain('asset_ticket=shared-ticket');
+  });
+
+  it('cancels an abandoned ticket and keeps its late completion from replacing or deleting a new request', async () => {
+    const { access, projectTicket } = setup();
+    const old = deferred<{ asset_ticket: string; expires_in: number }>();
+    const current = deferred<{ asset_ticket: string; expires_in: number }>();
+    const signals: Array<AbortSignal | undefined> = [];
+    projectTicket.mockImplementationOnce((_id: string, signal?: AbortSignal) => { signals.push(signal); return old.promise; })
+      .mockImplementationOnce((_id: string, signal?: AbortSignal) => { signals.push(signal); return current.promise; });
+    const data = { image_url: '/api/v1/files/projects/shared/renders/a.png' };
+    const controllers = [new AbortController(), new AbortController()];
+    const abandoned = controllers.map(controller => access.prepare(data, undefined, controller.signal).catch(error => error));
+    try {
+      controllers.forEach(controller => controller.abort());
+      expect(signals[0]?.aborted).toBe(true);
+      const replacement = access.prepare(data);
+      expect(projectTicket).toHaveBeenCalledTimes(2);
+      old.resolve({ asset_ticket: 'abandoned-ticket', expires_in: 900 });
+      await Promise.all(abandoned);
+      expect(access.resolve(data.image_url)).not.toContain('abandoned-ticket');
+      const sameReplacement = access.prepare(data);
+      expect(projectTicket).toHaveBeenCalledTimes(2);
+      current.resolve({ asset_ticket: 'current-ticket', expires_in: 900 });
+      expect((await replacement).image_url).toContain('asset_ticket=current-ticket');
+      expect((await sameReplacement).image_url).toContain('asset_ticket=current-ticket');
+    } finally {
+      old.resolve({ asset_ticket: 'abandoned-ticket', expires_in: 900 });
+      current.resolve({ asset_ticket: 'current-ticket', expires_in: 900 });
+      await Promise.all(abandoned);
+    }
+  });
+
+  it('aborts project and file tickets and never starts the remaining queued scopes', async () => {
+    const { access, projectTicket, fileTicket } = setup();
+    const response = deferred<{ asset_ticket: string; file_ticket: string; expires_in: number }>();
+    const signals: Array<AbortSignal | undefined> = [];
+    const request = (_path: string, signal?: AbortSignal) => { signals.push(signal); return response.promise; };
+    projectTicket.mockImplementation(request); fileTicket.mockImplementation(request);
+    const controller = new AbortController();
+    let state = 'pending';
+    const pending = access.prepare(Array.from({length:12}, (_, index) => ({image_url:index % 2
+      ? `/api/v1/files/library/${index}.glb` : `/api/v1/files/projects/${index}/renders/a.png`,
+    })), undefined, controller.signal).then(() => { state = 'resolved'; }, error => { state = error.name; });
+    try {
+      expect(signals).toHaveLength(6);
+      controller.abort();
+      await vi.waitFor(() => expect(state).toBe('AbortError'));
+      expect(signals.every(signal => signal?.aborted)).toBe(true);
+    } finally {
+      response.resolve({ asset_ticket:'project', file_ticket:'file', expires_in:900 });
+      await pending;
+    }
+    expect(signals).toHaveLength(6);
+    await access.refresh();
+    expect(signals).toHaveLength(6);
+  });
+
+  it('does not start ticket requests for an already canceled preparation', async () => {
+    const { access, projectTicket } = setup();
+    const controller = new AbortController();
+    controller.abort();
+    await expect(access.prepare({image_url:'/api/v1/files/projects/p/renders/a.png'}, undefined, controller.signal))
+      .rejects.toMatchObject({name:'AbortError'});
+    expect(projectTicket).not.toHaveBeenCalled();
+  });
+
   it('discards private tickets and keeps public media usable when session storage becomes inaccessible', async () => {
     const session = vi.fn<() => string | null>().mockReturnValue('account-a');
     const projectTicket = vi.fn().mockResolvedValue({ asset_ticket: 'private-ticket', expires_in: 900 });
@@ -64,7 +155,7 @@ describe('scoped media downloads', () => {
   it('uses exact-file tickets for a private library and public tokens for shared presentations', async () => {
     const { access, fileTicket, projectTicket } = setup();
     expect((await access.prepare({ model_url: '/api/v1/files/library/a/model.glb' })).model_url).toContain('file_ticket=one-file');
-    expect(fileTicket).toHaveBeenCalledWith('library/a/model.glb');
+    expect(fileTicket).toHaveBeenCalledWith('library/a/model.glb', expect.any(AbortSignal));
     const shared = await access.prepare({ image_url: '/api/v1/files/projects/p/renders/a.png' }, { projectId: 'p', shareToken: 'panel' });
     expect(shared.image_url).toContain('share_token=panel');
     expect(projectTicket).not.toHaveBeenCalled();
@@ -78,7 +169,7 @@ describe('scoped media downloads', () => {
   it('requests the decoded exact storage key for filenames with spaces', async () => {
     const { access, fileTicket } = setup();
     const data = await access.prepare({ model_url: '/api/v1/files/library/a/My%20house.glb' });
-    expect(fileTicket).toHaveBeenCalledWith('library/a/My house.glb');
+    expect(fileTicket).toHaveBeenCalledWith('library/a/My house.glb', expect.any(AbortSignal));
     expect(data.model_url).toContain('My%20house.glb?file_ticket=one-file');
   });
   it('renews existing gallery URLs after a long session and notifies their consumers', async () => {

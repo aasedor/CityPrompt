@@ -1,13 +1,23 @@
 export interface AssetContext { projectId?: string; shareToken?: string }
 interface Ticket { value: string; expiresAt: number }
 interface TicketResponse { expires_in: number; asset_ticket?: string; file_ticket?: string }
+interface PendingTicket {
+  promise: Promise<void>;
+  controller: AbortController;
+  consumers: number;
+  settled: boolean;
+}
 interface Options {
   baseUrl: string;
   origin: () => string;
   /** Stable account identity, not the rotating access-token bytes. */
   session: () => string | null;
-  projectTicket: (id: string) => Promise<TicketResponse>;
-  fileTicket: (path: string) => Promise<TicketResponse>;
+  projectTicket: (id: string, signal?: AbortSignal) => Promise<TicketResponse>;
+  fileTicket: (path: string, signal?: AbortSignal) => Promise<TicketResponse>;
+}
+
+function throwIfAborted(signal?: AbortSignal) {
+  if (signal?.aborted) throw signal.reason ?? new DOMException('The operation was aborted.', 'AbortError');
 }
 
 function readAccessIdentity(accessToken: string | null): { subject: string; version: unknown } | null {
@@ -44,7 +54,7 @@ export function createAssetAccess(options: Options) {
   let session: string | null = null;
   let generation = 0;
   const tickets = new Map<string, Ticket>();
-  const pending = new Map<string, Promise<void>>();
+  const pending = new Map<string, PendingTicket>();
   const objectProjects = new Map<string, string>();
   const targets = new Map<string, NonNullable<ReturnType<typeof scope>>>();
   const listeners = new Set<() => void>();
@@ -84,30 +94,62 @@ export function createAssetAccess(options: Options) {
     if (file && !file.startsWith('projects/')) return { key: `file:${file}`, file };
     return project ? { key: `project:${project}`, project } : null;
   };
-  const ensure = async (target: NonNullable<ReturnType<typeof scope>>) => {
+  const ensure = async (target: NonNullable<ReturnType<typeof scope>>, signal?: AbortSignal) => {
+    throwIfAborted(signal);
     targets.set(target.key, target);
     const cached = tickets.get(target.key);
     if (cached && cached.expiresAt > Date.now() + 60_000) return;
-    const existing = pending.get(target.key);
-    if (existing) return existing;
-    const expectedGeneration = generation;
-    const request = (async () => {
-      try {
-        const result = target.project ? await options.projectTicket(target.project) : await options.fileTicket(target.file!);
+    let request = pending.get(target.key);
+    if (!request) {
+      const expectedGeneration = generation;
+      const entry: PendingTicket = {
+        promise: Promise.resolve(), controller: new AbortController(), consumers: 0, settled: false,
+      };
+      pending.set(target.key, entry);
+      entry.promise = (async () => {
+        const result = target.project
+          ? await options.projectTicket(target.project, entry.controller.signal)
+          : await options.fileTicket(target.file!, entry.controller.signal);
         refreshSession();
         const value = result.asset_ticket || result.file_ticket;
-        if (value && generation === expectedGeneration && session) {
+        if (value && !entry.controller.signal.aborted && generation === expectedGeneration
+          && pending.get(target.key) === entry && session) {
           tickets.set(target.key, { value, expiresAt: Date.now() + result.expires_in * 1000 });
           changed();
         }
-      } finally {
-        // An old account's completion must not release the next account's
-        // pending request for the same resource key.
-        if (generation === expectedGeneration) pending.delete(target.key);
-      }
-    })();
-    pending.set(target.key, request);
-    return request;
+      })().finally(() => {
+        entry.settled = true;
+        // Canceled or old-account completions must not delete a newer request.
+        if (pending.get(target.key) === entry) pending.delete(target.key);
+      });
+      request = entry;
+    }
+    const entry = request;
+    entry.consumers += 1;
+    return new Promise<void>((resolve, reject) => {
+      let finished = false;
+      const release = () => {
+        if (finished) return;
+        finished = true;
+        signal?.removeEventListener('abort', abort);
+        entry.consumers -= 1;
+        if (!entry.settled && entry.consumers === 0) {
+          if (pending.get(target.key) === entry) {
+            pending.delete(target.key);
+            // A canceled first load is not a background renewal target.
+            if (!tickets.has(target.key)) targets.delete(target.key);
+          }
+          entry.controller.abort();
+        }
+      };
+      const abort = () => {
+        release();
+        reject(signal?.reason ?? new DOMException('The operation was aborted.', 'AbortError'));
+      };
+      signal?.addEventListener('abort', abort, {once:true});
+      entry.promise.then(() => { release(); resolve(); }, error => { release(); reject(error); });
+      if (signal?.aborted) abort();
+    });
   };
   const resolve = (value: string, context?: AssetContext): string => {
     if (!value) return value;
@@ -132,7 +174,8 @@ export function createAssetAccess(options: Options) {
     }
     return options.baseUrl || /^https?:\/\//.test(value) ? url.href : `${url.pathname}${url.search}${url.hash}`;
   };
-  const prepare = async <T>(data: T, context?: AssetContext): Promise<T> => {
+  const prepare = async <T>(data: T, context?: AssetContext, signal?: AbortSignal): Promise<T> => {
+    throwIfAborted(signal);
     refreshSession();
     const scopes = new Map<string, NonNullable<ReturnType<typeof scope>>>();
     const collect = (value: unknown, inherited = context) => {
@@ -163,9 +206,14 @@ export function createAssetAccess(options: Options) {
       // protected download still enforces access and can be retried on refetch.
       const queue = [...scopes.values()];
       await Promise.all(Array.from({ length: Math.min(6, queue.length) }, async () => {
-        while (queue.length && generation === expectedGeneration) { const target = queue.shift()!; try { await ensure(target); } catch { /* leave URL protected */ } }
+        while (queue.length && generation === expectedGeneration) {
+          throwIfAborted(signal);
+          const target = queue.shift()!;
+          try { await ensure(target, signal); } catch { throwIfAborted(signal); /* leave URL protected */ }
+        }
       }));
     }
+    throwIfAborted(signal);
     const decorate = (value: unknown, inherited = context): unknown => {
       if (typeof value === 'string') return ownUrl(value) ? resolve(value, inherited) : value;
       if (Array.isArray(value)) return value.map((item) => decorate(item, inherited));
