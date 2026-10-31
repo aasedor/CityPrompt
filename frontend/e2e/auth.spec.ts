@@ -4,8 +4,13 @@ test.describe('Auth flow', () => {
   test('login page shows sign-in form with link to register', async ({ page }) => {
     await page.goto('/login');
 
-    // The heading should say "Sign in"
-    await expect(page.getByRole('heading', { name: 'Sign in' })).toBeVisible();
+    // Bookmarked sign-in routes use the current student landing and inline form.
+    const hero = page.getByRole('region', { name: 'Build your final project.', exact: true });
+    await expect(hero).toBeVisible();
+    await expect(hero.getByRole('heading', { level: 1, name: 'Build your final project.', exact: true })).toBeVisible();
+    await expect(hero.getByRole('img', { name: 'Kensington Courtyard design study showing the proposal within surrounding streets, transit, buildings and hillside terrain', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Your project starts here.', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Plan visual futures.', exact: true })).toHaveCount(0);
 
     // Email and password inputs are present
     await expect(page.getByLabel('Email')).toBeVisible();
