@@ -12,6 +12,8 @@ import { ProjectEditModal } from './ProjectEditModal';
 import { RenderEditModal } from '@/components/viewer/RenderEditModal';
 import { AnimateRenderButton } from '@/components/viewer/AnimateRenderButton';
 import { isTextEntryTarget } from '@/utils/domEvents';
+import { allSettledWithConcurrency } from '@/features/legoAssembly/allSettledWithConcurrency';
+import { savedRenderPreviewUrl } from './SavedRenderCard';
 
 export function ProjectListPage() {
   const { user: currentUser } = useAuthStore();
@@ -19,7 +21,7 @@ export function ProjectListPage() {
   const queryClient = useQueryClient();
   const location = useLocation();
   const navigate = useNavigate();
-  const [showCreate, setShowCreate] = useState(false);
+  const [showCreate, setShowCreate] = useState(() => location.pathname === '/projects/new');
   const [newName, setNewName] = useState('');
   const [newDescription, setNewDescription] = useState('');
   const [addressQuery, setAddressQuery] = useState('');
@@ -125,21 +127,33 @@ export function ProjectListPage() {
 
   const { data: rendersByProject = {}, isLoading: rendersLoading } = useQuery({
     queryKey: ['projects', currentUser?.id, 'saved-renders', projects?.map((project) => project.id) ?? []],
-    enabled: Boolean(currentUser?.id && projects?.length),
-    queryFn: async () => {
-      const entries = await Promise.all(
-        (projects ?? []).map(async (project) => {
-          try {
-            return [project.id, await rendersApi.list(project.id)] as const;
-          } catch {
-            return [project.id, []] as const;
-          }
-        }),
+    enabled: Boolean(currentUser?.id && projects?.length && !showCreate),
+    queryFn: async ({ signal }) => {
+      const items = projects ?? [];
+      // Bound the whole operation, including the API's asset-ticket preparation.
+      const results = await allSettledWithConcurrency(
+        items,
+        (project) => {
+          signal.throwIfAborted();
+          return rendersApi.list(project.id, signal);
+        },
+        3,
       );
-      return Object.fromEntries(entries) as Record<string, SavedRender[]>;
+      signal.throwIfAborted();
+      return Object.fromEntries(items.map((project, index) => {
+        const result = results[index];
+        return [project.id, result.status === 'fulfilled' ? result.value : []];
+      })) as Record<string, SavedRender[]>;
     },
     staleTime: 30_000,
   });
+
+  useEffect(() => {
+    if (showCreate) {
+      // Opening the form gives project creation priority over optional previews.
+      void queryClient.cancelQueries({ queryKey: ['projects', currentUser?.id, 'saved-renders'] });
+    }
+  }, [currentUser?.id, queryClient, showCreate]);
 
   const createMutation = useMutation({
     mutationFn: (request: CreateProjectRequest) => projectsApi.create(request),
@@ -480,8 +494,10 @@ export function ProjectListPage() {
                             title="Open saved render"
                           >
                             <img
-                              src={resolveApiFileUrl(render.image_url)}
+                              src={savedRenderPreviewUrl(resolveApiFileUrl(render.image_url))}
                               alt={render.prompt || `${project.name} saved render`}
+                              loading="lazy"
+                              decoding="async"
                               className="h-full w-full object-cover transition group-hover/render:scale-105"
                             />
                             {index === 3 && hiddenCount > 0 && (

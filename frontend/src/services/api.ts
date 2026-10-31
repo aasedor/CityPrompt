@@ -67,8 +67,8 @@ const assetAccess = createAssetAccess({
   baseUrl: API_BASE_URL,
   origin: () => window.location.origin,
   session: () => assetSessionIdentity(localStorage.getItem('access_token')),
-  projectTicket: async (id) => (await api.post(`/api/v1/shares/projects/${id}/asset-ticket`)).data,
-  fileTicket: async (file_path) => (await api.post('/api/v1/files/read-ticket', { file_path })).data,
+  projectTicket: async (id, signal) => (await api.post(`/api/v1/shares/projects/${id}/asset-ticket`, undefined, { signal })).data,
+  fileTicket: async (file_path, signal) => (await api.post('/api/v1/files/read-ticket', { file_path }, { signal })).data,
 });
 
 export function resolveApiFileUrl(url: string, context?: AssetContext): string {
@@ -228,7 +228,7 @@ api.interceptors.response.use(async (response) => {
   const publicToken = route.match(/\/shares\/shared\/([^/?]+)/)?.[1] || response.config.params?.share_token;
   const projectId = route.match(/\/projects\/([0-9a-f-]{36})(?:\/|$)/i)?.[1]
     || (publicToken ? response.data.id : undefined);
-  response.data = await assetAccess.prepare(response.data, { projectId, shareToken: publicToken });
+  response.data = await assetAccess.prepare(response.data, { projectId, shareToken: publicToken }, response.config.signal as AbortSignal | undefined);
   return response;
 });
 
@@ -1784,8 +1784,8 @@ export const rendersApi = {
     return normalizeSavedRender(data);
   },
 
-  list: async (projectId: string): Promise<SavedRender[]> => {
-    const { data } = await api.get(`/api/v1/render/projects/${projectId}/renders`);
+  list: async (projectId: string, signal?: AbortSignal): Promise<SavedRender[]> => {
+    const { data } = await api.get(`/api/v1/render/projects/${projectId}/renders`, { signal });
     return data.map(normalizeSavedRender);
   },
 
