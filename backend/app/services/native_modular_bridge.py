@@ -11,8 +11,10 @@ from app.services.native_source_bridge import SOURCE_BRIDGE_SOURCES, validate_so
 
 
 MANIFEST = Path(__file__).resolve().parents[1] / "data/nativeStreetPilots.json"
-MODULAR_BRIDGE_IDENTITIES = {"timber_covered_bridge_route_v1": ("urban_pedestrian_footbridge", 6),
-                             **{key:(value[0],None) for key,value in SOURCE_BRIDGE_SOURCES.items()}}
+MODULAR_BRIDGE_IDENTITIES = {
+    "timber_covered_bridge_route_v1": ("urban_pedestrian_footbridge", 6),
+    **{key: (value[0], None) for key, value in SOURCE_BRIDGE_SOURCES.items()},
+}
 MODULE_KINDS = {"bridge_left_stair", "bridge_left_end", "bridge_bay", "bridge_right_end", "bridge_right_stair"}
 BRIDGE_FIELDS = {"approachM", "endM", "bayM", "deckHeightM", "clearWidthM"}
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
@@ -32,7 +34,11 @@ def validate_modular_bridge_profile(row):
     """Reject incomplete or unsupported source-module adapters before execution."""
     program = row.get("program")
     variant = row.get("id")
-    if variant in SOURCE_BRIDGE_SOURCES or isinstance(program,dict) and program.get('adapter')=='source-span-bridge-v1':
+    if (
+        variant in SOURCE_BRIDGE_SOURCES
+        or isinstance(program, dict)
+        and program.get("adapter") == "source-span-bridge-v1"
+    ):
         validate_source_bridge_profile(row)
         return
     if variant not in MODULAR_BRIDGE_IDENTITIES and (
@@ -90,7 +96,7 @@ def modular_bridge_profiles():
     for row in load_native_street_rows(MANIFEST):
         program = row.get("program")
         if row.get("id") in MODULAR_BRIDGE_IDENTITIES or (
-            isinstance(program, dict) and program.get("adapter") in {"modular-bridge-v1","source-span-bridge-v1"}
+            isinstance(program, dict) and program.get("adapter") in {"modular-bridge-v1", "source-span-bridge-v1"}
         ):
             validate_modular_bridge_profile(row)
             if row["id"] in profiles or row.get("status") != "candidate":

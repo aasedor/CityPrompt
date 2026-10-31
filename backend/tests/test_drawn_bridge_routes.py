@@ -387,7 +387,7 @@ def test_delivered_modular_bridge_closes_exact_source_bytes_and_runtime_recipe()
 
     root = Path(__file__).resolve().parents[2]
     rows = json.loads((root / "backend/app/data/nativeBridgePilots.json").read_text(encoding="utf-8"))
-    row = next(row for row in rows if row['id']==VARIANT)
+    row = next(row for row in rows if row["id"] == VARIANT)
     assert row["sourceAssemblySha256"] == "0dbeb2731dbe390ead3b053d65853262887454aecaf36fb8a9d16a5b66a195ad"
     assert set(row["modules"]) == set(MODULES)
     for module in row["modules"].values():

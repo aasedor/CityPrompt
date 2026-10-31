@@ -2251,9 +2251,11 @@ def _compatibility_violations(
         # Metric recipe targets are normalized to millimetres. Compare source
         # bounds at that same precision without changing their immutable locks;
         # placement still checks the exact drawn route against its source.
-        if not _in_range(target.length_m,
-                         round(envelope.min_length_m,3) if envelope.min_length_m is not None else None,
-                         round(envelope.max_length_m,3) if envelope.max_length_m is not None else None):
+        if not _in_range(
+            target.length_m,
+            round(envelope.min_length_m, 3) if envelope.min_length_m is not None else None,
+            round(envelope.max_length_m, 3) if envelope.max_length_m is not None else None,
+        ):
             violations.append(
                 {
                     "field": "target.length_m",

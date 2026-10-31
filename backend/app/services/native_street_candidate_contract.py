@@ -49,7 +49,7 @@ def flush_native_street_junction_levels() -> dict[str, float]:
         program = row.get("program")
         if row["id"] not in allowed or not program or row["id"] == "student_main_street_v1":
             continue
-        if program["adapter"] in {"modular-bridge-v1","source-span-bridge-v1"}:
+        if program["adapter"] in {"modular-bridge-v1", "source-span-bridge-v1"}:
             continue  # Elevated spans do not supply an at-grade junction surface.
         bands = row["sections"]
         narrow = program["adapter"] == "narrow-pathway-v1"
@@ -120,7 +120,11 @@ def build_native_street_candidate_catalog(
         ):
             raise ValueError(f"{pilot_id} has an invalid surface-only pathway contract")
         if (
-            not (width == _SURFACE_PATH_WIDTHS[pilot_id] if surface_path else 5 <= width <= (160 if row.get('program',{}).get('adapter')=='source-span-bridge-v1' else 60))
+            not (
+                width == _SURFACE_PATH_WIDTHS[pilot_id]
+                if surface_path
+                else 5 <= width <= (160 if row.get("program", {}).get("adapter") == "source-span-bridge-v1" else 60)
+            )
             or not isinstance(sections, list)
             or not sections
         ):
@@ -144,7 +148,10 @@ def build_native_street_candidate_catalog(
             ("reference", row["referenceSha256"]),
         ]
         program = row.get("program")
-        modular_bridge = program is not None and program.get("adapter") in {"modular-bridge-v1","source-span-bridge-v1"}
+        modular_bridge = program is not None and program.get("adapter") in {
+            "modular-bridge-v1",
+            "source-span-bridge-v1",
+        }
         if program is not None:
             digest = hashlib.sha256(json.dumps(program, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
             if row.get("programSha256") != digest:

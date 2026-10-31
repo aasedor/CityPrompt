@@ -63,7 +63,7 @@ def validate_specialist_properties(properties):
         minimum, maximum = program["minLengthM"], program["maxLengthM"]
         if props.get("connect_to_public_road"):
             raise ValueError("This pedestrian bridge cannot connect directly to an ordinary public road.")
-        lanes=SOURCE_BRIDGE_LANES.get(props['road_selected_variant_id'],0)
+        lanes = SOURCE_BRIDGE_LANES.get(props["road_selected_variant_id"], 0)
         if isinstance(props.get("lane_count"), bool) or props.get("lane_count") != lanes:
             raise ValueError("Keep this bridge’s source traffic lanes and original native width.")
     else:
@@ -109,9 +109,11 @@ def validate_specialist_properties(properties):
         return
     dx, dy = local[-1]
     length = math.hypot(dx, dy)
-    tolerance=1e-6 if modular_bridge and program.get('adapter')=='source-span-bridge-v1' else 0.01
+    tolerance = 1e-6 if modular_bridge and program.get("adapter") == "source-span-bridge-v1" else 0.01
     if not minimum - tolerance <= length <= maximum + tolerance:
-        raise ValueError(f"Keep this route {math.ceil(minimum)}–{math.floor(maximum)} m long for its complete crossing and approaches.")
+        raise ValueError(
+            f"Keep this route {math.ceil(minimum)}–{math.floor(maximum)} m long for its complete crossing and approaches."
+        )
     previous = -1
     for x, y in local:
         station = (x * dx + y * dy) / length
