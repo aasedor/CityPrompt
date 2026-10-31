@@ -1,18 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import metadata from '@/data/cataloguePresentation.json';
+import bridgeRelease from '@/data/nativeBridgeRelease.json';
 import { CANONICAL_CHOICES, filterCanonicalChoices } from './canonicalCatalogue';
-import { CATALOGUE_ASSETS } from './assetRegistry';
+import { CATALOGUE_ASSETS, MODULAR_BRIDGE_ASSETS, hasDrawnBridgeReplacement } from './assetRegistry';
+import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
 import { cataloguePresentationFor } from './cataloguePresentation';
 import { catalogueStyleIds } from './catalogueFacets';
 
 const choiceFor = (id: string) => CANONICAL_CHOICES.find(choice => choice.placements.some(asset => asset.id === id))!;
 
 describe('catalogue presentation metadata', () => {
-  it('covers the exact active placement roster without stale entries or internal status copy', () => {
+  it('covers active curated placements and retains exact historical bridge copy without stale entries', () => {
     const active = CANONICAL_CHOICES.flatMap(choice => choice.placements.map(asset => asset.id));
+    const drawnBridgeIds = new Set(MODULAR_BRIDGE_ASSETS.map(asset => asset.id));
+    expect([...drawnBridgeIds].sort()).toEqual(bridgeRelease.entries.map(entry => entry.profile.id).sort());
+    const retained = PUBLIC_REALM_RELEASE_ASSETS.filter(hasDrawnBridgeReplacement).map(asset => asset.id);
+    const presented = [...active.filter(id => !drawnBridgeIds.has(id)), ...retained];
     expect(new Set(active).size).toBe(active.length);
-    expect(Object.keys(metadata).sort()).toEqual([...active].sort());
-    for (const id of active) {
+    expect(Object.keys(metadata).sort()).toEqual([...presented].sort());
+    for (const id of retained) expect(choiceFor(id), id).toBeUndefined();
+    for (const id of presented) {
       const entry = cataloguePresentationFor(id)!;
       expect(entry.label.trim(), id).not.toBe('');
       expect(entry.description.trim(), id).not.toBe('');
@@ -22,6 +29,18 @@ describe('catalogue presentation metadata', () => {
     }
     expect(cataloguePresentationFor(undefined)).toBeUndefined();
     expect(cataloguePresentationFor('unregistered-future-placement')).toBeUndefined();
+  });
+
+  it.each(MODULAR_BRIDGE_ASSETS.map(asset => asset.id))('uses the exact authored route copy for drawn bridge %s', id => {
+    const choice = choiceFor(id);
+    expect(choice).toBeDefined();
+    const asset = MODULAR_BRIDGE_ASSETS.find(item => item.id === id)!;
+    expect(cataloguePresentationFor(id)).toBeUndefined();
+    expect(choice.placements).toEqual([asset]);
+    expect(choice.option.label).toBe(asset.label);
+    expect(choice.option.description).toBe(asset.description);
+    expect(asset.description).toMatch(/two endpoints/i);
+    expect(filterCanonicalChoices('street_pathway', asset.model.variantId)).toContain(choice);
   });
 
   it('uses researched exact variant styles while keeping disputed buildings unclassified', () => {

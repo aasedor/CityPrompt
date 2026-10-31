@@ -5,6 +5,7 @@ import { StreetDesignControls } from './StreetDesignControls';
 import { STREET_ASSETS, ALL_MANUAL_STREET_ASSETS } from './assetRegistry';
 import { CANONICAL_CHOICES } from './canonicalCatalogue';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
+import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
 
 it('lets a student choose a supported width and see the resulting type before saving', () => {
   const line = [[-114, 51], [-113.998, 51]];
@@ -36,11 +37,11 @@ it('lets a student choose a supported width and see the resulting type before sa
 });
 
 it('offers no street preset or width controls for a saved fixed native segment', () => {
-  const fixed = CANONICAL_CHOICES.filter(c => c.domain === 'street_pathway'
-    && c.placements.some(a => a.model.method === 'fixed_public_realm_v1'));
+  // Superseded bridge cards leave discovery, but their saved native scenes must
+  // still reject route controls rather than silently becoming a drawn bridge.
+  const fixed = PUBLIC_REALM_RELEASE_ASSETS.filter(asset => asset.zoneType === 'road');
   expect(fixed).toHaveLength(9);
-  for (const choice of fixed) {
-    const asset = choice.placements[0];
+  for (const asset of fixed) {
     const zone = { id: asset.id, project_id: 'project', color: '#777', sort_order: 0, created_at: '', updated_at: '',
       zone_type: 'road', coordinates: [], properties: asset.properties } as SiteZone;
     const save = vi.fn();

@@ -32,15 +32,25 @@ function productionCatalogue(trial) {
     import path from 'node:path';
     const result = await build({
       stdin: { contents: ${JSON.stringify(`
-        import { CLASSROOM_CHOICES } from './canonicalCatalogue';
-        import { CATALOGUE_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, validateRegistry } from './assetRegistry';
+        import { CLASSROOM_CHOICES, resolveCatalogueRoster } from './canonicalCatalogue';
+        import { CATALOGUE_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, MODULAR_BRIDGE_ASSETS, hasDrawnBridgeReplacement, validateRegistry } from './assetRegistry';
+        import { PUBLIC_REALM_RELEASE_ASSETS } from './publicRealmRelease';
         import { assetForZone, placementProperties } from './catalogue';
         import { storeyProgramSupports } from './buildingStoreyProgram';
         import { hasFixedBuildingFootprint } from './fixedBuildingFootprint';
+        const retired = PUBLIC_REALM_RELEASE_ASSETS.filter(hasDrawnBridgeReplacement);
+        const oldBridges = resolveCatalogueRoster(retired.map(asset => ({ domain: 'street',
+          archetype_id: String(asset.properties.road_archetype_id), variant_id: asset.model.variantId,
+          placement_id: asset.id })));
         const tower = CATALOGUE_ASSETS.find(asset => asset.id === '${towerId}');
         const saved = tower && JSON.parse(JSON.stringify({ properties: placementProperties(tower) }));
         console.log(JSON.stringify({
           choices: CLASSROOM_CHOICES.map(choice => ({ id: choice.id, placements: choice.placements.map(asset => asset.id) })),
+          drawnBridgeIds: MODULAR_BRIDGE_ASSETS.map(asset => asset.id),
+          retiredBridgeChoices: oldBridges.choices.map(choice => ({ id: choice.id, placements: choice.placements.map(asset => asset.id) })),
+          retiredBridgeUnavailable: oldBridges.unavailable,
+          retiredBridgeSavedIds: retired.map(asset => assetForZone({ properties: placementProperties(asset) })?.id),
+          retiredBridgeIds: retired.map(asset => asset.id),
           tower,
           savedId: saved && assetForZone(saved)?.id,
           fixedFootprint: hasFixedBuildingFootprint(tower),
@@ -89,7 +99,20 @@ describe('published native twisting tower in production', () => {
     const profile = profiles.get(expected.trial);
     const additions = profile.choices.filter(choice => choice.placements.some(id => approvedBuildingIds.includes(id)));
     expect(additions.flatMap(choice => choice.placements).sort()).toEqual([...approvedBuildingIds].sort());
-    const previous = profile.choices.filter(choice => choice.id !== choiceId && !additions.includes(choice));
+    // Ten explicit drawn additions supersede only five discovery cards. Restore
+    // the retained historical references before checking the original unchanged
+    // fingerprints; every older identity is still protected by the same hashes.
+    expect(profile.drawnBridgeIds).toHaveLength(10);
+    const bridges = profile.choices.filter(choice => choice.placements.some(id => profile.drawnBridgeIds.includes(id)));
+    expect(bridges).toHaveLength(10);
+    expect(profile.retiredBridgeChoices).toHaveLength(5);
+    expect(profile.retiredBridgeUnavailable).toEqual([]);
+    expect(profile.retiredBridgeSavedIds).toEqual(profile.retiredBridgeIds);
+    for (const choice of profile.retiredBridgeChoices) {
+      expect(profile.choices.some(current => current.id === choice.id)).toBe(false);
+    }
+    const previous = [...profile.choices.filter(choice => choice.id !== choiceId && !additions.includes(choice) && !bridges.includes(choice)),
+      ...profile.retiredBridgeChoices];
     expect(previous).toHaveLength(expected.count);
     expect(digest(previous.map(choice => choice.id))).toBe(expected.choices);
     expect(digest(previous.flatMap(choice => choice.placements))).toBe(expected.placements);

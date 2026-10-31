@@ -109,10 +109,13 @@ describe('strict Public Realm LEGO street recipe validation', () => {
 
   it('accepts every exact executable selection with its mapped appearance', () => {
     for (const selection of PUBLIC_REALM_STREET_SELECTIONS) {
+      const minimumLengthM = selection.minLengthM ?? 0;
+      const maximumLengthM = selection.maxLengthM ?? Number.POSITIVE_INFINITY;
+      expect(minimumLengthM).toBeLessThanOrEqual(maximumLengthM);
       const target = selection.targetType === 'street_node'
         ? { target_type: 'street_node', approach_row_width_m: 22, diameter_m: 28, arm_count: 4 }
         : { target_type: 'street_segment', row_width_m: selection.rowWidthM ?? 10,
-            length_m: Math.max(80, selection.minLengthM ?? 0) };
+            length_m: Math.min(Math.max(80, minimumLengthM), maximumLengthM) };
       const result = validatePublicRealmStreetRecipe(recipe({
         family_id: selection.familyId,
         archetype_id: selection.archetypeId,
@@ -123,6 +126,31 @@ describe('strict Public Realm LEGO street recipe validation', () => {
       }));
       expect(result, `${selection.familyId}/${selection.variantId}`).toMatchObject({ valid: true });
     }
+  });
+
+  it('keeps the tied arch exact span bounds, profile identity and module locks strict', () => {
+    const selection = PUBLIC_REALM_STREET_SELECTIONS.find(item => item.variantId === 'tied_arch_shared_bridge_route_v1');
+    expect(selection).toBeDefined();
+    if (!selection) throw new Error('Exact tied arch selection missing');
+    expect(selection).toMatchObject({rowWidthM:16,minLengthM:59.616482,maxLengthM:71.016482});
+    const compiled = recipe({
+      family_id:selection.familyId,archetype_id:selection.archetypeId,variant_id:selection.variantId,
+      appearance_kit_id:selection.appearanceKitId,profile_id:selection.profileId,
+      component_set_ids:selection.componentSetIds,
+      target:{target_type:'street_segment',row_width_m:16,length_m:65.316482},
+    });
+    expect(validatePublicRealmStreetRecipe(compiled)).toMatchObject({valid:true});
+    for (const length of [59.6,71.1,80]) {
+      expect(validatePublicRealmStreetRecipe({...compiled,
+        target:{target_type:'street_segment',row_width_m:16,length_m:length},
+      })).toMatchObject({valid:false,code:'target_incompatible'});
+    }
+    expect(validatePublicRealmStreetRecipe({...compiled,profile_id:'unrelated-profile'}))
+      .toMatchObject({valid:false,code:'integrity_incompatible'});
+    const changedLocks = [...selection.componentSetIds!];
+    changedLocks[changedLocks.length - 1] = 'f'.repeat(64);
+    expect(validatePublicRealmStreetRecipe({...compiled,component_set_ids:changedLocks}))
+      .toMatchObject({valid:false,code:'integrity_incompatible'});
   });
 
   it.each([
