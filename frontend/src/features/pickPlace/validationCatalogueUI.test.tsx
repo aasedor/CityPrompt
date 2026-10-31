@@ -40,6 +40,8 @@ describe('local student validation discovery',()=>{
 
   // Each choice is independent: a slow aggregate case previously hid the
   // failing street behind a 60-second timeout during concurrent build/QA.
+  // Later pages re-render every earlier card, so the deepest choices need the
+  // same budget as the categories test on a loaded CI runner (5s is too tight).
   it.each(CANONICAL_CHOICES.filter(choice => choice.domain === 'street_pathway').map((choice, index) => ({
     index, asset: choice.placements[0], label: choice.placements[0].label,
   })))('selects $label from its catalogue page', ({ index, asset }) => {
@@ -70,7 +72,7 @@ describe('local student validation discovery',()=>{
     }
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(onPickCanonical).not.toHaveBeenCalled();
-  });
+  }, 30000);
   it('leaves street drawing in Streets and reserves the primary action for walking',()=>{
     const onPickStreet=vi.fn();
     render(<PlacementPalette primaryAction={<button>Walk</button>} selected={null} onPick={vi.fn()} onPickStreet={onPickStreet}
