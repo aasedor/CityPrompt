@@ -7,6 +7,7 @@ import { streetRouteProblem } from './streetPlacement';
 import { snapStreetToBoundary } from './streetBoundarySnapping';
 import { BRT_VARIANT } from '@/components/viewer/globe/brtStreetProgram';
 import { streetConnectionProblem } from './streetConnectionProblem';
+import { modularBridgeProgramFor } from '@/components/viewer/globe/modularBridgeProgram';
 
 const sx = 111320 * Math.cos(51 * Math.PI / 180);
 const ll = (x: number, y: number) => [-114 + x / sx, 51 + y / 111320];
@@ -15,7 +16,10 @@ const boundary = { id: 'site', zone_type: 'site_boundary', coordinates: [ll(0, 0
 const props = { width: 20, pick_place_street_section: 'test' };
 
 describe('street boundary entrances', () => {
-  it.each(STREET_ASSETS)('$label fits flush at each edge with its full native width', asset => {
+  // Bridge drawings fit their structural span first. A 150 m gesture cannot
+  // promise a contained flyover whose minimum supported span exceeds this site.
+  // Their supported fit and unfit-parcel rejection are covered in the bridge suite.
+  it.each(STREET_ASSETS.filter(a=>!modularBridgeProgramFor(a.model.variantId)))('$label fits flush at each edge with its full native width', asset => {
     for (const start of [ll(0, 150), ll(300, 150), ll(150, 0), ll(150, 300)]) {
       const result = streetDrawingGeometry([start, ll(150, 150)], asset.properties, [boundary]);
       expect(placementProblem(result.coordinates, [], boundary)).toBeNull();

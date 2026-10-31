@@ -1324,9 +1324,22 @@ def _public_realm_recipe_for_zone(
                 validate_street_plan_centerline_wgs84(
                     source_geometry,
                     properties.get("plan_centerline"),
+                    properties=properties,
                 )
             )
             if not centerline_is_valid:
+                from app.services.native_modular_bridge import is_modular_bridge
+
+                if is_modular_bridge(properties):
+                    raise HTTPException(
+                        status_code=422,
+                        detail={
+                            "code": "invalid_plan_centerline",
+                            "message": "Keep the bridge footprint aligned with its current supported two-endpoint route.",
+                            "zone_id": str(zone.id),
+                            "kind": kind,
+                        },
+                    )
                 recovered_centerline = recover_street_plan_centerline_wgs84(source_geometry)
                 if recovered_centerline and validate_street_plan_centerline_wgs84(
                     source_geometry,

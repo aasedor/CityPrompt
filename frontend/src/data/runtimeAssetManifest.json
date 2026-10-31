@@ -486,6 +486,7 @@
     "src/features/pickPlace/UserGeneratedBuildings.tsx",
     "src/features/pickPlace/assetRegistry.ts",
     "src/features/pickPlace/boundaryEdit.ts",
+    "src/features/pickPlace/bridgeDrawingSpan.ts",
     "src/features/pickPlace/brtConnections.ts",
     "src/features/pickPlace/buildingAssetRecovery.ts",
     "src/features/pickPlace/buildingFootprintProgram.ts",
