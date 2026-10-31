@@ -1,5 +1,8 @@
 frontend/public/families/**/*.glb filter=lfs diff=lfs merge=lfs -text
 frontend/public/park-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
+# Exact release thumbnail whose bytes already exist in LFS under
+# archetypes/openspaces/princes-island-park/variant_0.png (same oid).
+frontend/public/park-kits/claude-20261023/1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7.png filter=lfs diff=lfs merge=lfs -text
 frontend/public/street-kits/**/*.glb filter=lfs diff=lfs merge=lfs -text
 tools/clay_timber_covered_footbridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
 tools/clay_tied_arch_shared_bridge/candidates/*.glb filter=lfs diff=lfs merge=lfs -text
