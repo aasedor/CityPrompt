@@ -11,8 +11,10 @@ from typing import Literal
 import httpx
 from fastapi import APIRouter, Depends, Query, HTTPException, Request
 from pydantic import BaseModel, Field, field_validator
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
+from app.core.database import get_db
 from app.core.provider_limits import admit_maps_request
 from app.core.security import get_current_user
 
@@ -144,9 +146,13 @@ async def read_elevation(
     lat: float = Query(..., ge=-90, le=90, description="Latitude"),
     lng: float = Query(..., ge=-180, le=180, description="Longitude"),
     user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
     if user is None:
         return _unavailable(lat, lng, "authentication_required")
+    # Authentication is the only database read here. Return its connection
+    # before waiting on Redis admission or the external Maps provider.
+    await db.close()
     await admit_maps_request(request, user)
     return await get_elevation(lat, lng)
 
@@ -181,13 +187,19 @@ async def get_elevation(
 
 
 @router.post("/batch", response_model=BatchElevationResponse)
-async def read_elevation_batch(request: Request, body: BatchElevationRequest, user=Depends(get_current_user)):
+async def read_elevation_batch(
+    request: Request,
+    body: BatchElevationRequest,
+    user=Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
     if user is None:
         return BatchElevationResponse(
             elevations=[estimate_geoid_undulation(lat, lng) for lng, lat in body.points],
             statuses=["unavailable"] * len(body.points),
             sources=["renderer_fallback"] * len(body.points),
         )
+    await db.close()
     await admit_maps_request(request, user, max(1, math.ceil(len(body.points) / 250)))
     return await get_elevation_batch(body)
 

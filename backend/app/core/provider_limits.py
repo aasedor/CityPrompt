@@ -1,8 +1,10 @@
 """Authenticated admission for server-funded Maps calls, shared across endpoints."""
 
 from fastapi import Depends, HTTPException, Request
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
+from app.core.database import get_db
 from app.core.rate_limit import enforce_rate_limit
 from app.core.security import require_auth
 
@@ -21,5 +23,10 @@ async def admit_maps_request(request: Request, user, units: int = 1) -> None:
         )
 
 
-async def require_maps_admission(request: Request, user=Depends(require_auth)) -> None:
+async def require_maps_admission(
+    request: Request, user=Depends(require_auth), db: AsyncSession = Depends(get_db)
+) -> None:
+    # Geocoding does no database work after auth; slow admission/provider calls
+    # must not hold a pooled connection needed to open or save projects.
+    await db.close()
     await admit_maps_request(request, user)
