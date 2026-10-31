@@ -2554,5 +2554,61 @@
       "court only",
       "athletic park"
     ]
+  },
+  "claude_climbing_crucible_v004": {
+    "label": "The Crucible Climbing Centre",
+    "description": "Indoor climbing centre for an urban recreation site.",
+    "styleIds": [],
+    "searchTags": [
+      "The Crucible Climbing Centre"
+    ]
+  },
+  "claude_climbing_overhang_v007": {
+    "label": "The Overhang Climbing Centre",
+    "description": "Indoor climbing centre with an overhanging upper volume.",
+    "styleIds": [],
+    "searchTags": [
+      "The Overhang Climbing Centre"
+    ]
+  },
+  "claude_climbing_reef_v009": {
+    "label": "The Reef Climbing Centre",
+    "description": "Indoor climbing centre with a clustered sculptural form.",
+    "styleIds": [],
+    "searchTags": [
+      "The Reef Climbing Centre"
+    ]
+  },
+  "claude_sandstone_clock_tower_v006": {
+    "label": "Sandstone Clock-Tower Block",
+    "description": "Sandstone civic block with a clock tower.",
+    "styleIds": [],
+    "searchTags": [
+      "Sandstone Clock-Tower Block"
+    ]
+  },
+  "claude_fire_station_v010": {
+    "label": "Modern Fire Station",
+    "description": "Fire station with vehicle bays and a projecting upper floor.",
+    "styleIds": [],
+    "searchTags": [
+      "Modern Fire Station"
+    ]
+  },
+  "claude_hospital_v006": {
+    "label": "Regional Teaching Hospital",
+    "description": "Teaching hospital with a glazed atrium and braced structural frame.",
+    "styleIds": [],
+    "searchTags": [
+      "Regional Teaching Hospital"
+    ]
+  },
+  "claude_student_residence_v004": {
+    "label": "Student Residence Tower",
+    "description": "Student housing in a compact residential tower.",
+    "styleIds": [],
+    "searchTags": [
+      "Student Residence Tower"
+    ]
   }
 }

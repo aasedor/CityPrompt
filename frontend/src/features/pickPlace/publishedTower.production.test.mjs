@@ -4,6 +4,13 @@ import { createHash } from 'node:crypto';
 
 const towerId = 'clay_twisting_glass_sky_garden_tower';
 const choiceId = 'building:glass_tower_podium_modern:glass_tower_twisted';
+// Explicitly authorized additions after the original tower-only release.
+// Keep the original fingerprints below unchanged for every older placement.
+const approvedBuildingIds = [
+  'claude_climbing_crucible_v004', 'claude_climbing_overhang_v007', 'claude_climbing_reef_v009',
+  'claude_sandstone_clock_tower_v006', 'claude_fire_station_v010', 'claude_hospital_v006',
+  'claude_student_residence_v004',
+];
 const digest = values => createHash('sha256').update([...values].sort().join('\n')).digest('hex');
 
 // These are the source-roster fingerprints recorded before this additive
@@ -80,7 +87,9 @@ describe('published native twisting tower in production', () => {
 
   it.each(previousProfiles)('preserves the previous $count choices with Claude trial=$trial', expected => {
     const profile = profiles.get(expected.trial);
-    const previous = profile.choices.filter(choice => choice.id !== choiceId);
+    const additions = profile.choices.filter(choice => choice.placements.some(id => approvedBuildingIds.includes(id)));
+    expect(additions.flatMap(choice => choice.placements).sort()).toEqual([...approvedBuildingIds].sort());
+    const previous = profile.choices.filter(choice => choice.id !== choiceId && !additions.includes(choice));
     expect(previous).toHaveLength(expected.count);
     expect(digest(previous.map(choice => choice.id))).toBe(expected.choices);
     expect(digest(previous.flatMap(choice => choice.placements))).toBe(expected.placements);

@@ -4,6 +4,7 @@ import { choiceMatchesFacets, catalogueStyleIds } from '@/features/pickPlace/cat
 import { planningIds, teachingSearchTerms } from './teaching';
 import { availableEras, eraIds, formLabel, historyForChoice } from './planningHistory';
 import historyData from '@/data/cataloguePlanningHistory.json';
+import release from '@/data/claudeBuildingRelease.json';
 
 const choiceFor = (id: string) => CANONICAL_CHOICES.find(choice => choice.placements.some(asset => asset.id === id))!;
 
@@ -112,9 +113,25 @@ describe('historical planning interpretation', () => {
       { id: 'postwar', label: 'Postwar expansion · c. 1945–1975' },
     ]);
     expect(availableEras([bungalow], 'street_pathway')).toEqual([]);
-    expect(Object.keys(historyData.lessons)).toHaveLength(197);
+    expect(Object.keys(historyData.lessons)).toHaveLength(204);
     expect(CANONICAL_CHOICES.filter(choice => !historyForChoice(choice))).toEqual([]);
     expect(CANONICAL_CHOICES.some(choice => choice.id.includes('bauhaus_workshop'))).toBe(false);
+  });
+
+  it('binds all seven newly approved models while withholding unreviewed historical claims', () => {
+    const additions = release.entries.filter(row => !row.asset_id.startsWith('claude_trial_'));
+    expect(additions).toHaveLength(7);
+    for (const row of additions) {
+      const choice = choiceFor(row.asset_id);
+      expect(choice, row.asset_id).toBeDefined();
+      expect(historyForChoice(choice), row.asset_id).toMatchObject({
+        status: 'review', lesson: { modelRevision: row.candidate, variantId: row.variant_id,
+          archetypeId: row.archetype_id, constructionYear: null },
+      });
+      expect(eraIds(choice)).toEqual([]);
+      expect(planningIds(choice)).toEqual([]);
+      expect(catalogueStyleIds(choice)).toEqual([]);
+    }
   });
 
   it('names every classified form explicitly without assigning a housing tenure', () => {
