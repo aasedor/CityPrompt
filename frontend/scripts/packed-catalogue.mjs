@@ -83,7 +83,7 @@ export function packedCatalogue() {
       if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename) && !STATIC_METADATA.test(filename)) return null;
       const source = readFileSync(id, 'utf8');
       return { code: packCatalogue(filename.endsWith('/src/data/classroomStarter.json')
-        ? productionStarter(source) : source, { encoding: /\/src\/data\/(?:buildingArchetypes|nativeStreetPilots)\.json$/.test(filename) ? 'z85' : 'base64' }), map: null };
+        ? productionStarter(source) : source, { encoding: /\/src\/data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes)\.json$/.test(filename) ? 'z85' : 'base64' }), map: null };
     },
   };
 }

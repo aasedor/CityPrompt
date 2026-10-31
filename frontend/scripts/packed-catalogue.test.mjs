@@ -12,12 +12,15 @@ import { packCatalogue, packedCatalogue, productionStarter } from './packed-cata
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
 
-for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['nativeStreetPilots.json', 4000]]) {
+for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['nativeStreetPilots.json', 4000], ['openSpaceArchetypes.json', 8000]]) {
   test(`${filename}: production transport recovers bridge headroom without changing catalogue values`, async () => {
     const path = resolve('src/data', filename), source = readFileSync(path, 'utf8');
     const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
+    const minified = await minify(module, { module: true, compress: { passes: 3 } });
+    const runtime = await import(`data:text/javascript;base64,${Buffer.from(minified.code).toString('base64')}`);
+    assert.deepEqual(runtime.default, JSON.parse(source));
     assert.ok(module.length < packCatalogue(source).length - minimumSaving, 'Recover bundle space through lossless transport, retaining every catalogue field');
   });
 }
