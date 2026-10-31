@@ -28,7 +28,7 @@ export function StreetRoutePanel({ zone, disabled, onReshape, onClose, onDelete,
   const specialist=isSpecialistStreet(zone.properties?.road_selected_variant_id);
   const elevatedRail=isElevatedRail(zone.properties?.road_selected_variant_id);
   const modularBridge=modularBridgeProgramFor(zone.properties?.road_selected_variant_id);
-  const sourceBridge=import.meta.env.DEV&&modularBridge?.adapter==='source-span-bridge-v1';
+  const sourceBridge=modularBridge?.adapter==='source-span-bridge-v1';
   const bridgeIntro=sourceBridge
     ? `Draw two endpoints to set the bridge span. ${modularBridge.bridge.trafficKind==='rail'||modularBridge.bridge.trafficKind==='road'?'This bridge has elevated endpoints.':'The source-derived approaches stay with the bridge.'} Automatic road intersections are unsupported.`
     : 'Draw two endpoints to set the bridge span. The covered deck and compact stairs form one crossing; automatic road intersections and vehicle connections are unsupported.';

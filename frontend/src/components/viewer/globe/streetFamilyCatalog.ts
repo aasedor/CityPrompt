@@ -270,7 +270,7 @@ function nativeFamily(id: NativeStreetFamilyId): PublicRealmStreetFamilyDefiniti
       ? ['rigid_modules','straight_route','manual_stops','junctions_outside_stops']
       : street.id==='amsterdam_gracht_v1' ? ['rigid_modules','curved_route','outer_bank_connections','native_arch_crossing','open_channel_extension']
       : street.program?.adapter==='modular-bridge-v1' ? ['native_bridge_modules','straight_route','adjustable_span','compact_stair_approaches','grade_separated_span']
-      : import.meta.env.DEV && street.program?.adapter==='source-span-bridge-v1' ? ['native_bridge_modules','two_endpoint_route','adjustable_span','source_owned_approaches','grade_separated_span']
+      : street.program?.adapter==='source-span-bridge-v1' ? ['native_bridge_modules','two_endpoint_route','adjustable_span','source_owned_approaches','grade_separated_span']
       : street.id==='landmark_signature_bridge_v2' ? ['rigid_modules','straight_route','fixed_structural_span','graded_approaches','ground_endpoint_connections','grade_separated_underpass']
       : ['rigid_modules', 'curved_route', 'shared_junctions'],
   };

@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 import { encodeZ85, decodeZ85, Z85_ALPHABET } from './z85-codec.mjs';
 
-const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|nativeBridgePilots|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion|streetManual|nativeStreetModuleBounds|publicRealmRelease20261023)\.json$/;
+const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|nativeBridgePilots|nativeBridgeRelease|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion|streetManual|nativeStreetModuleBounds|publicRealmRelease20261023)\.json$/;
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|people\/(?:peopleCatalogue|inclusivePeopleCatalogue|peopleAppearancePreviews)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 

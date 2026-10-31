@@ -265,11 +265,21 @@
   "variantId": "timber_covered_bridge_route_v1",
   "placementId": "timber_covered_bridge_route_v1",
   "revision": "4275b01adc0228982522fa7e5201d026e5823ee264f549e4ebda29ef56ebeeed",
-  "status": "local-pilot-runtime-pending",
+  "status": "prepared-level-production-pilot",
   "review": {
-    "asset": "derived-pilot-pending",
-    "runtime": "NOT TESTED"
-  }
+    "asset": "source-locked-bridge-only",
+    "runtime": "prepared-level-scoped-pass",
+    "evidence": "docs/showcase/TIMBER_DRAWN_BRIDGE_RUNTIME_REVIEW_2026-10-30.md",
+    "releaseReceipt": "nativeBridgeRelease.json",
+    "limitations": "Full end-to-end walking and hosted production trial remain NOT TESTED."
+  },
+  "dependencies": [
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb"
+  ]
 },
     {
       "domain": "street",

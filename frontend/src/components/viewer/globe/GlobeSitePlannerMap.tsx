@@ -5172,7 +5172,7 @@ export function GlobeSitePlannerMap({
         </div>
       )}
 
-      {activeSitePlannerTool === 'road' && !(import.meta.env.DEV && import.meta.env.MODE === 'development' && modularBridgeProgramFor(activeToolProperties?.road_selected_variant_id)) && !interactionPaused && !captureOverlaysHidden && <aside aria-label="Public road suggestions"
+      {activeSitePlannerTool === 'road' && !(modularBridgeProgramFor(activeToolProperties?.road_selected_variant_id)) && !interactionPaused && !captureOverlaysHidden && <aside aria-label="Public road suggestions"
         className="absolute right-3 top-28 z-40 max-w-64 rounded-lg border border-cyan-500 bg-white p-3 text-xs text-slate-900 shadow-lg">
         <label className="flex min-h-8 items-center gap-2 font-semibold"><input type="checkbox" checked={publicRoadSnapSupported && publicRoadSnapEnabled} disabled={!publicRoadSnapSupported}
           onChange={event => setPublicRoadSnapEnabled(event.target.checked)} />Snap to nearby public roads</label>

@@ -479,11 +479,21 @@
   "variantId": "timber_covered_bridge_route_v1",
   "placementId": "timber_covered_bridge_route_v1",
   "revision": "4275b01adc0228982522fa7e5201d026e5823ee264f549e4ebda29ef56ebeeed",
-  "status": "local-pilot-runtime-pending",
+  "status": "prepared-level-production-pilot",
   "review": {
-    "asset": "derived-pilot-pending",
-    "runtime": "NOT TESTED"
-  }
+    "asset": "source-locked-bridge-only",
+    "runtime": "prepared-level-scoped-pass",
+    "evidence": "docs/showcase/TIMBER_DRAWN_BRIDGE_RUNTIME_REVIEW_2026-10-30.md",
+    "releaseReceipt": "nativeBridgeRelease.json",
+    "limitations": "Full end-to-end walking and hosted production trial remain NOT TESTED."
+  },
+  "dependencies": [
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb",
+    "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb"
+  ]
 },
     {
       "domain": "street",
@@ -1235,6 +1245,41 @@
       "path": "archetypes/streets/urban-pedestrian-footbridge/weathering-steel-v-footbridge-route-v1.png",
       "sha256": "05d426a55b9f63d2a0d997eec0745e2ebccd4e75359d3948939861600d75b3a7",
       "bytes": 1431655
+    },
+    {
+      "id": "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb",
+      "location": "public",
+      "path": "street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb",
+      "sha256": "809464012e9ec5a0e6f80668b35e4a77a5d256a432fd95e9c90b283f24382f8e",
+      "bytes": 50624
+    },
+    {
+      "id": "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb",
+      "sha256": "76babe3579ca81530fbe013b1a088bb14a1bede9486dfcdd50d8c612366a41fc",
+      "bytes": 143580
+    },
+    {
+      "id": "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb",
+      "location": "public",
+      "path": "street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb",
+      "sha256": "fc56d96e008318e3fb9a0edf6fe9ed8dc91014e899fb6e6d1f549dce54d14374",
+      "bytes": 146568
+    },
+    {
+      "id": "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb",
+      "location": "public",
+      "path": "street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb",
+      "sha256": "10562dbbcae0c856a591d78f98bd1fda16434fcdf20d53685c6ceb4ce382fdc9",
+      "bytes": 140892
+    },
+    {
+      "id": "public:street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb",
+      "location": "public",
+      "path": "street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb",
+      "sha256": "8c2937bf27f8b4136ad61c6b89106f36f52419a86588c91874cf3988e96fbb18",
+      "bytes": 50624
     }
   ]
 }

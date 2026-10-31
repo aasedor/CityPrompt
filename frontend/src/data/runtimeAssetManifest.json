@@ -147,6 +147,7 @@
     "src/components/viewer/globe/modelMaterialQuality.ts",
     "src/components/viewer/globe/modelRenderZones.ts",
     "src/components/viewer/globe/modularBridgeProgram.ts",
+    "src/components/viewer/globe/nativeBridgeSources.ts",
     "src/components/viewer/globe/nativeStreetAssets.ts",
     "src/components/viewer/globe/nativeStreetInstances.ts",
     "src/components/viewer/globe/nativeStreetJunction.ts",
@@ -307,6 +308,7 @@
     "src/data/localTeachingBuildings.json",
     "src/data/localTowerStoreyPrograms.json",
     "src/data/nativeBridgePilots.json",
+    "src/data/nativeBridgeRelease.json",
     "src/data/nativeParks.json",
     "src/data/nativeStreetModuleBounds.json",
     "src/data/nativeStreetPilots.json",
@@ -678,10 +680,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3725,
+    "explicitReferenceCount": 3731,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5509,
-    "requiredLogicalBytes": 12912387514,
+    "requiredFileCount": 5515,
+    "requiredLogicalBytes": 12914277643,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -23896,7 +23898,16 @@
         "src/data/archetypeReferenceAvailability.json",
         "src/data/catalogueHeroImages.json",
         "src/data/nativeBridgePilots.json",
+        "src/data/nativeBridgeRelease.json",
         "src/data/streetPathArchetypes.json"
+      ],
+      "logicalBytes": 1357841,
+      "lfsOid": "2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936"
+    },
+    {
+      "url": "/archetypes/streets/urban-pedestrian-footbridge/variant_2.png\\",
+      "sources": [
+        "src/data/nativeBridgeRelease.json"
       ],
       "logicalBytes": 1357841,
       "lfsOid": "2d5045f8631465754074095cc48c9fab1b8727dac0be9cde3866d999a821d936"
@@ -31850,7 +31861,17 @@
     {
       "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb",
       "sources": [
-        "src/data/nativeBridgePilots.json"
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json",
+        "src/data/nativeBridgeRelease.json"
+      ],
+      "logicalBytes": 146568,
+      "lfsOid": "fc56d96e008318e3fb9a0edf6fe9ed8dc91014e899fb6e6d1f549dce54d14374"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_bay.glb\\",
+      "sources": [
+        "src/data/nativeBridgeRelease.json"
       ],
       "logicalBytes": 146568,
       "lfsOid": "fc56d96e008318e3fb9a0edf6fe9ed8dc91014e899fb6e6d1f549dce54d14374"
@@ -31858,7 +31879,17 @@
     {
       "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb",
       "sources": [
-        "src/data/nativeBridgePilots.json"
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json",
+        "src/data/nativeBridgeRelease.json"
+      ],
+      "logicalBytes": 143580,
+      "lfsOid": "76babe3579ca81530fbe013b1a088bb14a1bede9486dfcdd50d8c612366a41fc"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_end.glb\\",
+      "sources": [
+        "src/data/nativeBridgeRelease.json"
       ],
       "logicalBytes": 143580,
       "lfsOid": "76babe3579ca81530fbe013b1a088bb14a1bede9486dfcdd50d8c612366a41fc"
@@ -31866,7 +31897,17 @@
     {
       "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb",
       "sources": [
-        "src/data/nativeBridgePilots.json"
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json",
+        "src/data/nativeBridgeRelease.json"
+      ],
+      "logicalBytes": 50624,
+      "lfsOid": "809464012e9ec5a0e6f80668b35e4a77a5d256a432fd95e9c90b283f24382f8e"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_left_stair.glb\\",
+      "sources": [
+        "src/data/nativeBridgeRelease.json"
       ],
       "logicalBytes": 50624,
       "lfsOid": "809464012e9ec5a0e6f80668b35e4a77a5d256a432fd95e9c90b283f24382f8e"
@@ -31874,7 +31915,17 @@
     {
       "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb",
       "sources": [
-        "src/data/nativeBridgePilots.json"
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json",
+        "src/data/nativeBridgeRelease.json"
+      ],
+      "logicalBytes": 140892,
+      "lfsOid": "10562dbbcae0c856a591d78f98bd1fda16434fcdf20d53685c6ceb4ce382fdc9"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_end.glb\\",
+      "sources": [
+        "src/data/nativeBridgeRelease.json"
       ],
       "logicalBytes": 140892,
       "lfsOid": "10562dbbcae0c856a591d78f98bd1fda16434fcdf20d53685c6ceb4ce382fdc9"
@@ -31882,7 +31933,17 @@
     {
       "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb",
       "sources": [
-        "src/data/nativeBridgePilots.json"
+        "src/data/classroomStarter.json",
+        "src/data/nativeBridgePilots.json",
+        "src/data/nativeBridgeRelease.json"
+      ],
+      "logicalBytes": 50624,
+      "lfsOid": "8c2937bf27f8b4136ad61c6b89106f36f52419a86588c91874cf3988e96fbb18"
+    },
+    {
+      "url": "/street-kits/pilots/timber_covered_bridge_route_v1/bridge_right_stair.glb\\",
+      "sources": [
+        "src/data/nativeBridgeRelease.json"
       ],
       "logicalBytes": 50624,
       "lfsOid": "8c2937bf27f8b4136ad61c6b89106f36f52419a86588c91874cf3988e96fbb18"

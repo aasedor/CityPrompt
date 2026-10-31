@@ -1,10 +1,9 @@
 import type { NativeStreetPose, StreetRouteStation } from './nativeStreetPilot';
-import bridges from '@/data/nativeBridgePilots.json';
+import { nativeBridgeSource } from './nativeBridgeSources';
 import { sourceSpanBridgeLayout, sourceSpanBridgeWalkingHeight, type SourceSpanBridge } from './sourceSpanBridgeProgram';
 
 export function modularBridgeProgramFor(variant: unknown): ModularBridgeProgram | undefined {
-  return import.meta.env.DEV && import.meta.env.MODE === 'development'
-    ? bridges.find(row => row.id === variant)?.program as ModularBridgeProgram | undefined : undefined;
+  return nativeBridgeSource(variant)?.program as ModularBridgeProgram | undefined;
 }
 
 export interface ModularBridgeProgram {
@@ -13,6 +12,7 @@ export interface ModularBridgeProgram {
     & Partial<SourceSpanBridge>;
 }
 interface BridgePilot {
+  id?: string;
   widthM: number; program: ModularBridgeProgram;
   modules: Record<string, { url: string; sha256: string }>;
 }
@@ -40,12 +40,12 @@ export function modularBridgePoses(pilot: BridgePilot, route: StreetRouteStation
   const problem = modularBridgeRouteProblem(pilot.program, route, true);
   if (problem) throw new Error(problem);
   const a = route[0], b = route[route.length - 1], dx = b.x - a.x, dy = b.y - a.y, length = Math.hypot(dx, dy);
-  if(import.meta.env.DEV&&pilot.program.adapter==='source-span-bridge-v1'&&pilot.program.bridge.parts){
+  if(pilot.program.adapter==='source-span-bridge-v1'&&pilot.program.bridge.parts){
     return sourceSpanBridgeLayout(pilot.program.bridge as SourceSpanBridge,length).map(part=>{
       const asset=pilot.modules[part.kind];
       if(!asset)throw new Error('A bridge component has no verified module binding.');
       const stationM=part.startM+part.lengthM/2;
-      return {kind:part.kind,...asset,x:a.x+dx*stationM/length,y:a.y+dy*stationM/length,
+      return {kind:part.kind,...asset,bridgeVariantId:pilot.id,x:a.x+dx*stationM/length,y:a.y+dy*stationM/length,
         z:(a.z??0)+((b.z??0)-(a.z??0))*stationM/length,yaw:Math.atan2(dy,dx)-Math.PI/2,
         scale:1,stationM,surfaceLiftM:0,longitudinalScale:part.scale,
         ...(part.deformation?{bridgeDeformation:part.deformation}:{})};
@@ -65,7 +65,7 @@ export function modularBridgePoses(pilot: BridgePilot, route: StreetRouteStation
     const asset = pilot.modules[part.kind];
     if (!asset) throw new Error('A bridge component has no verified module binding.');
     const stationM = start + part.length / 2; start += part.length;
-    return { kind: part.kind, ...asset, x: a.x + dx * stationM / length, y: a.y + dy * stationM / length,
+    return { kind: part.kind, ...asset, bridgeVariantId:pilot.id, x: a.x + dx * stationM / length, y: a.y + dy * stationM / length,
       z: (a.z ?? 0) + ((b.z ?? 0) - (a.z ?? 0)) * stationM / length,
       yaw: Math.atan2(dy, dx) - Math.PI / 2, scale: 1, stationM, surfaceLiftM: 0,
       ...(part.kind === 'bridge_bay' ? { longitudinalScale: bayLength / bayM } : {}),
@@ -76,7 +76,7 @@ export function modularBridgePoses(pilot: BridgePilot, route: StreetRouteStation
 /** The source uses risers <= 0.2 m at each end and a 4 m clear deck.
  * Return null outside that real walking surface, including the empty banks. */
 export function modularBridgeWalkingHeight(program: ModularBridgeProgram, lateral: number, station: number, length: number,preferredHeight?:number): number | null {
-  if(import.meta.env.DEV&&program.adapter==='source-span-bridge-v1'&&program.bridge.parts)
+  if(program.adapter==='source-span-bridge-v1'&&program.bridge.parts)
     return sourceSpanBridgeWalkingHeight(program.bridge as SourceSpanBridge,lateral,station,length,preferredHeight);
   const { approachM, deckHeightM, clearWidthM } = program.bridge;
   if (![lateral, station, length].every(Number.isFinite) || Math.abs(lateral) > clearWidthM / 2
