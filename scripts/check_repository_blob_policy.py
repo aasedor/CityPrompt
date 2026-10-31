@@ -4,6 +4,10 @@
 The check inspects committed blobs, not smudged working-tree files. A hydrated
 LFS object therefore remains valid because the Git object is still a compact
 pointer.
+
+Scope: a pull request audits its whole delta against the base branch; a push
+audits every commit since the push's previous tip (``--base``), falling back to
+``HEAD^`` only when that tip is unknown (branch creation, rewritten history).
 """
 
 from __future__ import annotations
@@ -31,6 +35,16 @@ SOURCE_JSON_BUDGETS = {
     "frontend/src/features/policyPlans/data/heritageUrbanForm.json": (2 * 1024 * 1024, "features"),
     "frontend/src/features/policyPlans/data/south-shaganappiUrbanForm.json": (2 * 1024 * 1024, "features"),
     "frontend/src/features/policyPlans/data/west-elbowUrbanForm.json": (2 * 1024 * 1024, "features"),
+    # Official transportation and transit vector layers are editable GeoJSON
+    # sources served from /policy-maps/transport-vectors-v1 and imported by
+    # their unit tests, so they stay ordinary readable blobs with exact caps.
+    "frontend/public/policy-maps/transport-vectors-v1/5a.geojson": (8 * 1024 * 1024, "features"),
+    "frontend/public/policy-maps/transport-vectors-v1/service-routes.geojson": (6656 * 1024, "features"),
+    "frontend/public/policy-maps/transport-vectors-v1/service-stops.geojson": (3 * 1024 * 1024, "features"),
+    # The native street pilot registry is a top-level list of pilots (collection
+    # None). The backend copy must stay byte-identical to the frontend source.
+    "frontend/src/data/nativeStreetPilots.json": (2560 * 1024, None),
+    "backend/app/data/nativeStreetPilots.json": (2560 * 1024, None),
 }
 LFS_HEADER = b"version https://git-lfs.github.com/spec/v1\n"
 
@@ -48,8 +62,11 @@ def git(repo: Path, *args: str, check: bool = True) -> bytes:
 
 
 def resolve_base(repo: Path, explicit: str | None) -> str | None:
-    if explicit:
-        return explicit
+    if explicit and explicit.strip("0"):
+        if git(repo, "rev-parse", "--verify", "--quiet", f"{explicit}^{{commit}}", check=False):
+            return explicit
+        # The previous tip of a rewritten or shallow history cannot be diffed.
+        print(f"Base {explicit} is not a reachable commit; auditing the PR base or HEAD^ instead.", file=sys.stderr)
 
     github_base = os.environ.get("GITHUB_BASE_REF")
     if github_base:
@@ -107,6 +124,13 @@ def valid_lfs_pointer(blob: bytes) -> bool:
     )
 
 
+def has_expected_collection(source: object, collection: str | None) -> bool:
+    """A named budget applies only to the dataset shape it was granted for."""
+    if collection is None:
+        return isinstance(source, list)
+    return isinstance(source, dict) and isinstance(source.get(collection), list)
+
+
 def audit_paths(repo: Path, paths: list[str], max_bytes: int) -> list[str]:
     failures: list[str] = []
     for path in paths:
@@ -127,7 +151,7 @@ def audit_paths(repo: Path, paths: list[str], max_bytes: int) -> list[str]:
             try:
                 source = json.loads(blob)
                 budget, collection = SOURCE_JSON_BUDGETS[path]
-                if isinstance(source, dict) and isinstance(source.get(collection), list):
+                if has_expected_collection(source, collection):
                     limit = budget
             except (ValueError, UnicodeDecodeError):
                 pass

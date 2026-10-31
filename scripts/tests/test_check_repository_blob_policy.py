@@ -137,6 +137,48 @@ class BlobPolicyTests(unittest.TestCase):
         commit_file(self.repo, named, too_large)
         self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
 
+    def test_transport_vector_budgets_require_feature_collections(self) -> None:
+        for named, cap in (
+            ("frontend/public/policy-maps/transport-vectors-v1/5a.geojson", 8 * 1024 * 1024),
+            ("frontend/public/policy-maps/transport-vectors-v1/service-routes.geojson", 6656 * 1024),
+            ("frontend/public/policy-maps/transport-vectors-v1/service-stops.geojson", 3 * 1024 * 1024),
+        ):
+            with self.subTest(path=named):
+                source = json.dumps({"type": "FeatureCollection", "features": [], "notes": "x" * (1024 * 1024)}).encode()
+                commit_file(self.repo, named, source)
+                self.assertEqual(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES), [])
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], max_bytes=64))
+                commit_file(self.repo, named, json.dumps({"routes": [], "notes": "x" * (1024 * 1024)}).encode())
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+                commit_file(self.repo, named, json.dumps({"features": [], "notes": "x" * cap}).encode())
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+
+    def test_list_registry_budget_requires_a_top_level_list(self) -> None:
+        for named in ("frontend/src/data/nativeStreetPilots.json", "backend/app/data/nativeStreetPilots.json"):
+            with self.subTest(path=named):
+                pilots = json.dumps([{"id": "pilot", "notes": "x" * (1024 * 1024)}]).encode()
+                commit_file(self.repo, named, pilots)
+                self.assertEqual(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES), [])
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], max_bytes=64))
+                commit_file(self.repo, named, json.dumps({"pilots": [], "notes": "x" * (1024 * 1024)}).encode())
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+                commit_file(self.repo, named, json.dumps([{"notes": "x" * (2560 * 1024)}]).encode())
+                self.assertTrue(blob_policy.audit_paths(self.repo, [named], blob_policy.DEFAULT_MAX_BYTES))
+
+    def test_explicit_base_must_be_a_reachable_commit(self) -> None:
+        base = subprocess.run(
+            ["git", "-C", str(self.repo), "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip()
+        commit_file(self.repo, "new.txt", b"new\n")
+        self.assertEqual(blob_policy.resolve_base(self.repo, base), base)
+        # A branch-creation push reports an all-zero previous tip.
+        self.assertEqual(blob_policy.resolve_base(self.repo, "0" * 40), "HEAD^")
+        # A rewritten history leaves the previous tip unreachable.
+        self.assertEqual(blob_policy.resolve_base(self.repo, "f" * 40), "HEAD^")
+
     def test_changed_paths_only_returns_new_commit_delta(self) -> None:
         base = subprocess.run(
             ["git", "-C", str(self.repo), "rev-parse", "HEAD"],
