@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
-const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion|streetManual|nativeStreetModuleBounds|publicRealmRelease20261023)\.json$/;
+const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|nativeBridgePilots|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion|streetManual|nativeStreetModuleBounds|publicRealmRelease20261023)\.json$/;
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|people\/(?:peopleCatalogue|inclusivePeopleCatalogue|peopleAppearancePreviews)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
@@ -25,9 +25,12 @@ export function packCatalogue(source) {
   const packed = [8, 6, 9, 7, 5, 4, 3, 2, 1]
     .flatMap(memLevel => [0, 1].map(strategy => deflateSync(bytes, { level: 9, memLevel, strategy })))
     .reduce((a, b) => b.length < a.length ? b : a).toString('base64');
+  // Validated constant data: discard decoding only when its value is unused.
   return `import { unzlibSync, strFromU8 } from 'three/examples/jsm/libs/fflate.module.js';
+export default /* @__PURE__ */ (() => {
 const bytes = Uint8Array.from(atob(${JSON.stringify(packed)}), character => character.charCodeAt(0));
-export default JSON.parse(strFromU8(unzlibSync(bytes)));`;
+return JSON.parse(strFromU8(unzlibSync(bytes)));
+})();`;
 }
 
 /** Local runtime trials are DEV-only. Do not ship their discovery receipts or
@@ -54,7 +57,7 @@ export function packPublishedBuildingCatalogue(input) {
   }
   const data = source.slice(prefix.length, -suffix.length);
   if (!Array.isArray(JSON.parse(data))) throw new Error('Expected generated building catalogue array');
-  return packCatalogue(data).replace('export default JSON.parse', 'export const CATALOGUE_BUILDING_ASSETS = JSON.parse')
+  return packCatalogue(data).replace('export default ', 'export const CATALOGUE_BUILDING_ASSETS = ')
     + "\nexport const PUBLISHED_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset => asset.readiness === 'ready');";
 }
 
