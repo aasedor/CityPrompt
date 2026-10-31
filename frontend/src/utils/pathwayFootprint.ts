@@ -4,10 +4,27 @@ import clipping, { type MultiPolygon, type Polygon } from 'polygon-clipping';
  * surfaces and round joins instead of saving a self-intersecting miter strip. */
 export function pathwaySurfacePolygons(points: readonly number[][], width: number): MultiPolygon {
   if (points.length < 2 || !(width > 0) || !Number.isFinite(width)) return [];
+  // Terrain sampling inserts collinear stations. Buffering each of them adds
+  // coincident segment edges and tangent circles that make the union sensitive
+  // to nanometre coordinate differences. They do not change the walking surface.
+  const route: number[][] = [];
+  for (const point of points) {
+    route.push(point);
+    while (route.length >= 3) {
+      const [a, b, c] = route.slice(-3);
+      const dx = c[0] - a[0], dy = c[1] - a[1];
+      const length = Math.hypot(dx, dy);
+      if (length < 1e-8) break; // Keep reversals and enclosed loops.
+      const along = ((b[0] - a[0]) * dx + (b[1] - a[1]) * dy) / length;
+      const across = Math.abs((b[0] - a[0]) * dy - (b[1] - a[1]) * dx) / length;
+      if (along < 0 || along > length || across > 1e-8) break;
+      route.splice(route.length - 2, 1);
+    }
+  }
   const pieces: Polygon[] = [];
   const radius = width / 2;
-  for (let i = 1; i < points.length; i++) {
-    const [x, y] = points[i - 1], [endX, endY] = points[i];
+  for (let i = 1; i < route.length; i++) {
+    const [x, y] = route[i - 1], [endX, endY] = route[i];
     const length = Math.hypot(endX - x, endY - y);
     if (length < 1e-8) continue;
     const nx = -(endY - y) / length * radius, ny = (endX - x) / length * radius;
@@ -16,7 +33,7 @@ export function pathwaySurfacePolygons(points: readonly number[][], width: numbe
       [endX - nx, endY - ny], [x - nx, y - ny], [x + nx, y + ny],
     ]]);
   }
-  for (const [x, y] of points.slice(1, -1)) {
+  for (const [x, y] of route.slice(1, -1)) {
     const ring: [number, number][] = Array.from({ length: 24 }, (_, i) => {
       const angle = i * Math.PI / 12;
       return [x + Math.cos(angle) * radius, y + Math.sin(angle) * radius];
