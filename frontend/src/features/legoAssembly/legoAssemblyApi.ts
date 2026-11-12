@@ -73,6 +73,8 @@ export interface LegoAssemblyPlan {
     compatibility_source?: string;
     /** The authored form is uniformly scaled and centred inside the polygon. */
     footprint_mode?: 'archetype_contain' | 'envelope_fill';
+    /** Building resize pilot: one exact model stretched per axis, height 1. */
+    resize_trial?: { program_id: string; width_scale: number; depth_scale: number; vertical_scale: number };
   };
   footprint_segments?: Array<{
     id: string;
@@ -105,6 +107,8 @@ export interface LegoPlanRequest {
   allow_forced_fit?: boolean;
   footprint_profile?: LegoFootprintProfile;
   wing_depth_m?: number;
+  /** Building resize pilot only: names the server-owned trial contract. */
+  footprint_program_id?: string;
   project_id?: string;
 }
 

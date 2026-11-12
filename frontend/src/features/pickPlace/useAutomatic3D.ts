@@ -14,6 +14,7 @@ import { representationNotice } from './representationNotice';
 import { nativeBuildingContract, nativeBuildingUrl } from './nativeBuildingContract';
 import { buildingAssetRevision, retryBuildingAssets } from './buildingAssetRecovery';
 import { automaticSiteTreesEnabled } from '@/features/siteLandscape/automaticSiteTrees';
+import { isResizeTrialShapeFreely } from './buildingResizeTrial';
 
 const physicalZone = (zone: SiteZone) => resolveCommunity3DKind(zone) !== null && !zone.id.startsWith('temp-');
 const physicalScopeZone = (zone: SiteZone) => zone.zone_type !== 'site_boundary'
@@ -79,8 +80,9 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
   // key below for revision comparisons; only the rebuild trigger excludes it.
   const key = visibilityKey + authoredPlacementKey([...scopeZones, ...(boundary ? [boundary] : [])], false);
   const compiled = deriveCityPromptWorkflow(persistedZones).sceneReady;
+  // A Shape freely building is massing by choice; it has no detail to refresh.
   const canRefreshDetail = candidates.some(zone => getCommunity3DMeta(zone)?.generator === 'planned_massing'
-    && !(zone.zone_type === 'building' && nativeBuildingUrl(zone)));
+    && !(zone.zone_type === 'building' && nativeBuildingUrl(zone)) && !isResizeTrialShapeFreely(zone.properties));
   const hasInstalledMassingUpgrade = candidates.some(zone => zone.zone_type === 'building'
     && getCommunity3DMeta(zone)?.generator === 'planned_massing' && nativeBuildingContract(zone)
     && !nativeBuildingUrl(zone));
@@ -149,7 +151,9 @@ export function useAutomatic3D(projectId: string | undefined, zones: SiteZone[],
         }
         if (state.current === run) {
           setStatus('ready');
-          setMessage(result.plannedMasses ? 'Some detailed models are unavailable. Simple building volumes are shown.' : 'Your 3D scene updates automatically.');
+          const chosenMasses = ('resolvedBuildings' in result ? result.resolvedBuildings ?? [] : [])
+            .filter(item => item.explicitMassing).length;
+          setMessage(result.plannedMasses > chosenMasses ? 'Some detailed models are unavailable. Simple building volumes are shown.' : 'Your 3D scene updates automatically.');
         }
       } catch (error) {
         const newestZones = latest.current;

@@ -28,6 +28,7 @@ import {
 import { compileProjectCommunity3D } from './projectCommunityCompile';
 import { automaticSiteTreesEnabled } from '@/features/siteLandscape/automaticSiteTrees';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { isResizeTrialShapeFreely, resizeTrialStretch } from '@/features/pickPlace/buildingResizeTrial';
 
 const BUILDABLE_ZONE_TYPES = new Set<string>([
   'building',
@@ -170,6 +171,9 @@ export interface ZoneBuildItem {
   sourceLockedRlasm?: boolean;
   placeState?: 'placing' | 'placed' | 'failed';
   massingState?: 'compiling' | 'compiled' | 'failed';
+  /** Building resize pilot: the student chose Shape freely. This building is
+   * compiled as shaped massing on purpose; no detailed plan is requested. */
+  explicitMassing?: boolean;
 }
 
 export function recipeFromPlan(
@@ -249,6 +253,9 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       && Number.isFinite(footprintNativeWidth) && footprintNativeWidth > 0
       && Number.isFinite(footprintNativeDepth) && footprintNativeDepth > 0
     );
+    // Building resize pilot (both null/false while its flag is off).
+    const trialStretch = resizeTrialStretch(zone.properties);
+    const explicitMassing = isResizeTrialShapeFreely(zone.properties);
     const sourceLockedRlasm = Boolean(
       zone.building_id
       && communityMeta?.generator === 'meshy'
@@ -268,13 +275,14 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       archetypeId: context.archetype_id,
       targets: {
         ...defaults,
-        width_m: usesAuthoredFootprintScale
+        width_m: trialStretch ? trialStretch.widthM : usesAuthoredFootprintScale
           ? footprintNativeWidth * footprintScale
           : authoredPlot?.width_m ?? footprint?.width_m ?? defaults.width_m,
-        depth_m: usesAuthoredFootprintScale
+        depth_m: trialStretch ? trialStretch.depthM : usesAuthoredFootprintScale
           ? footprintNativeDepth * footprintScale
           : authoredPlot?.depth_m ?? footprint?.depth_m ?? defaults.depth_m,
-        footprint_profile: footprint?.profile ?? 'rectangle',
+        // The stretched model is a rectangle whatever the plot's corners do.
+        footprint_profile: trialStretch ? 'rectangle' : footprint?.profile ?? 'rectangle',
         // AI binding persists the exact shaped-family thickness returned by
         // its strict plan. A catalogue compatibility midpoint is guidance,
         // not executable proof, so omit it when no positive binding exists.
@@ -288,6 +296,7 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
           ] as [number, number]
         : null,
       sourceLockedRlasm,
+      ...(explicitMassing ? { explicitMassing: true } : {}),
       // Deleting a generated Building leaves the planning polygon available
       // for another design.  A historical compile marker alone must not make
       // the builder think the now-unlinked model is still placed.
@@ -474,6 +483,8 @@ export function buildPlanRequestForItem(item: ZoneBuildItem, allowForcedFit = fa
     project_id: item.zone.project_id,
     allow_forced_fit: allowForcedFit,
     ...legoArchetypeContextFromZone(item.zone.properties),
+    // Building resize pilot: only a declared Exact model stretch names it.
+    ...(resizeTrialStretch(item.zone.properties) ? { footprint_program_id: resizeTrialStretch(item.zone.properties)!.programId } : {}),
   };
 }
 
@@ -514,7 +525,8 @@ export async function compileMixedCommunity3D(
   const indicesByArchetype = new Map<string, number[]>();
   const ungroupedIndices: number[] = [];
   buildingItems.forEach((item, index) => {
-    if (item.zone.properties?.user_generated_source_id) { markCompleted(); return; }
+    // A chosen model or an explicit Shape freely massing needs no plan.
+    if (item.zone.properties?.user_generated_source_id || item.explicitMassing) { markCompleted(); return; }
     if (!item.archetypeId) {
       ungroupedIndices.push(index);
       return;
@@ -600,7 +612,9 @@ export async function compileMixedCommunity3D(
       label: item.label,
       kind: 'building',
       generators: new Set<CommunityCompileGenerator>(
-        item.zone.properties?.user_generated_source_id ? ['meshy'] : planResults[index]?.status === 'fulfilled'
+        item.zone.properties?.user_generated_source_id ? ['meshy']
+          : item.explicitMassing ? ['planned_massing']
+          : planResults[index]?.status === 'fulfilled'
           ? ['lego_assembly']
           : ['planned_massing', 'meshy'],
       ),
@@ -660,7 +674,7 @@ export async function compileMixedCommunity3D(
   assertCommunityCompileResponse(expectedItems, response);
   announceCommunity3DPresentationReady(scopeZoneIds);
   const resolvedBuildings = buildingItems.map((item, index) => {
-    if (item.zone.properties?.user_generated_source_id) return item;
+    if (item.zone.properties?.user_generated_source_id || item.explicitMassing) return item;
     const result = planResults[index];
     if (result?.status === 'fulfilled') return { ...item, plan: result.value };
     const planningFailure = result?.status === 'rejected'

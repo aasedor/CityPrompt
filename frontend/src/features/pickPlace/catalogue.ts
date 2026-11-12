@@ -10,6 +10,7 @@ import { storeyProgramSupports } from './buildingStoreyProgram';
 import { footprintProgramTarget } from './buildingFootprintProgram';
 import { savedModelRevision } from './savedModelRevision';
 import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
+import { withResizeTrial } from './buildingResizeTrial';
 export type { PlaceAsset, PlaceAssetId } from './assetRegistry';
 const OBJECT_ASSETS = CATALOGUE_ASSETS.filter((asset): asset is PlaceAsset => asset.kind === 'object');
 // Resolve older saved IDs without returning those versions to student discovery.
@@ -68,7 +69,8 @@ export function assetForZone(zone: Pick<SiteZone, 'properties'>): PlaceAsset | u
     properties.floor_count ?? properties.floors,
     properties.development_height_override_m ?? properties.height_m ?? properties.height,
   );
-  if (native && exactVariant && (properties.development_height_override_m == null || supportedStoreyEdit)) return native;
+  // Building resize pilot (flag off: returns the same asset unchanged).
+  if (native && exactVariant && (properties.development_height_override_m == null || supportedStoreyEdit)) return withResizeTrial(native, properties);
   if (native || properties.pick_place_automatic_3d === true || String(properties.pick_place_asset).startsWith('canonical-building:') || String(properties.pick_place_asset).startsWith('canonical-park:')) {
     return canonicalBuildingForProperties(properties) ?? canonicalParkForProperties(properties);
   }

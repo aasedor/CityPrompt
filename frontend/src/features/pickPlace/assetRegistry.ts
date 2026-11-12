@@ -71,10 +71,14 @@ export interface PlaceAsset extends AssetRecord {
     supportedStoreys?: number[];
   };
   /** A reviewed, uniform horizontal scale band for the complete authored
-   * assembly.  The parcel remains unchanged and Z is never scaled. */
+   * assembly.  The parcel remains unchanged and Z is never scaled.
+   * `independent_horizontal_scale` is the building resize pilot's programme:
+   * the same band applies to width and depth separately. It is attached per
+   * saved building by buildingResizeTrial.withResizeTrial, never in this
+   * registry, and only while VITE_ENABLE_BUILDING_RESIZE_TRIAL is on. */
   footprintProgram?: {
     id: string;
-    mode: 'uniform_horizontal_scale';
+    mode: 'uniform_horizontal_scale' | 'independent_horizontal_scale';
     nativeWidthM: number;
     nativeDepthM: number;
     minScale: number;

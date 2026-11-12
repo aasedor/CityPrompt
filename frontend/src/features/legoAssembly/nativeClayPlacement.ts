@@ -5,7 +5,16 @@ export function isNativeClayPlan(plan: { fit?: LegoAssemblyPlan['fit'] | null })
   // Complete authored height choices can use the module delivery format too.
   // The planner marks only whole select-and-place assemblies as native locked;
   // repeated floor stacks retain their common source frame and remain uncentred.
-  return plan.fit?.native_scale_locked === true && isArchitecturalClayPlan(plan);
+  return (plan.fit?.native_scale_locked === true || isResizeTrialPlan(plan)) && isArchitecturalClayPlan(plan);
+}
+
+/** Building resize pilot: the exact clay source stretched in width and depth.
+ * It is seated, grounded and picked like the native model; only its plan
+ * transform carries the stretch. The server alone can produce this marker. */
+export function isResizeTrialPlan(plan: { fit?: LegoAssemblyPlan['fit'] | null }): boolean {
+  const trial = plan.fit?.resize_trial;
+  return plan.fit?.assembly_mode === 'fixed_landmark' && trial?.vertical_scale === 1
+    && Number.isFinite(trial.width_scale) && Number.isFinite(trial.depth_scale);
 }
 
 export function isArchitecturalClayPlan(plan: { fit?: LegoAssemblyPlan['fit'] | null }): boolean {

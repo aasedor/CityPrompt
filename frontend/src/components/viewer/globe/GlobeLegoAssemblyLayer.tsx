@@ -79,7 +79,8 @@ import {
   setArchitecturalGlazingLod,
   type ArchitecturalGlazingLod,
 } from './modelMaterialQuality';
-import { buildLegoMassingMeshData, legoMassingColor } from './legoMassingGeometry';
+import { buildLegoMassingDressingData, buildLegoMassingMeshData, legoMassingColor, type LegoMassingDressingOptions, type LegoMassingMeshData } from './legoMassingGeometry';
+import { resizeTrialMassingDressing } from '@/features/pickPlace/buildingResizeTrial';
 import {
   LEGO_DISTINCT_FAMILY_RENDER_BUDGET,
   LEGO_STACK_RENDER_BUDGET,
@@ -250,7 +251,10 @@ function LegoMassingStack({
   selected,
   proposalForDirect3D,
   onBuildingClick,
+  dressing = null,
 }: {
+  /** Building resize pilot: floor lines and repeating window bays. */
+  dressing?: (LegoMassingDressingOptions & { floorLineColor: string; windowColor: string }) | null;
   building: Building;
   heightMeters: number | null | undefined;
   colorSeed: string;
@@ -290,6 +294,21 @@ function LegoMassingStack({
     return next;
   }, [frame.centroidLat, frame.centroidLng, height, ring]);
   useEffect(() => () => geometry?.dispose(), [geometry]);
+  const dressingGeometry = useMemo(() => {
+    const data = dressing ? buildLegoMassingDressingData(ring, frame.centroidLng, frame.centroidLat, height, dressing) : null;
+    if (!data) return null;
+    const toGeometry = (part: LegoMassingMeshData) => {
+      if (!part.indices.length) return null;
+      const next = new THREE.BufferGeometry();
+      next.setAttribute('position', new THREE.Float32BufferAttribute(part.positions, 3));
+      next.setIndex(part.indices);
+      next.computeVertexNormals();
+      next.computeBoundingSphere();
+      return next;
+    };
+    return { floorLines: toGeometry(data.floorLines), windows: toGeometry(data.windows) };
+  }, [dressing, frame.centroidLat, frame.centroidLng, height, ring]);
+  useEffect(() => () => { dressingGeometry?.floorLines?.dispose(); dressingGeometry?.windows?.dispose(); }, [dressingGeometry]);
 
   const groundFootprints = useMemo(() => [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)], [ring, frame.centroidLng, frame.centroidLat]);
   const foundation = useBuildingFoundation(groundFootprints, frame, building.id, preparedBoundary, preparedSiteTerrainHeight, onGroundingStatus);
@@ -397,6 +416,15 @@ function LegoMassingStack({
           side={THREE.DoubleSide}
         />
       </mesh>
+      {dressing && dressingGeometry && [
+        [dressingGeometry.floorLines, dressing.floorLineColor, 0.9] as const,
+        [dressingGeometry.windows, dressing.windowColor, 0.35] as const,
+      ].map(([part, color, roughness]) => part && (
+        <mesh key={color} geometry={part} renderOrder={LEGO_RENDER_ORDER} raycast={() => null}
+          userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
+          <meshStandardMaterial color={color} roughness={roughness} metalness={0.02} side={THREE.DoubleSide} />
+        </mesh>
+      ))}
       {foundation.geometry && <BuildingFoundationSurface frame={frame} zone={zone} geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
         userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA} />}
       <BuildingEntranceApproachMesh approach={foundation.approach} />
@@ -811,6 +839,16 @@ export function GlobeLegoAssemblyLayer({
     }
     return map;
   }, [zones]);
+  // Building resize pilot: dressing for freely shaped massing only. Empty
+  // while the pilot flag is off, so every other mass renders as before.
+  const dressingByZoneId = useMemo(() => {
+    const map = new Map<string, NonNullable<ReturnType<typeof resizeTrialMassingDressing>>>();
+    for (const zone of zones) {
+      const dressing = resizeTrialMassingDressing(zone.properties);
+      if (dressing) map.set(zone.id, dressing);
+    }
+    return map;
+  }, [zones]);
 
   useEffect(() => {
     if (import.meta.env.DEV && skippedWithoutFootprint > 0) {
@@ -924,6 +962,7 @@ export function GlobeLegoAssemblyLayer({
               building={building}
               heightMeters={entry.massing.height_meters}
               colorSeed={entry.massing.archetype_id ?? 'planned-massing'}
+              dressing={dressingByZoneId.get(zone?.id ?? '') ?? null}
               ring={ring}
               frame={frame}
               zone={zone}

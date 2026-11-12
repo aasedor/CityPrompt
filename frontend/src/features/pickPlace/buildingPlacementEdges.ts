@@ -1,6 +1,7 @@
 import type { SiteZone } from '@/types';
 import { CATALOGUE_ASSETS } from './assetRegistry';
 import { footprintProgramSupports } from './buildingFootprintProgram';
+import { resizeTrialChangesEnvelope } from './buildingResizeTrial';
 import { storeyProgramSupports } from './buildingStoreyProgram';
 import edges from '@/data/buildingPlacementEdges.json';
 import { computeCentroid, metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
@@ -27,6 +28,9 @@ export function buildingEdgeContract(zone: PlacedZone) {
   if (!row || asset?.kind!=='object' || asset.zoneType!=='building' || asset.reshapeMode!=='fixed_native'
     || asset.model.variantId!==row.variantId || asset.model.revision!==row.revision
     || p.development_selected_variant_id!==row.variantId || p.pick_place_model_revision!==row.revision) return null;
+  // Building resize pilot: reviewed side clearances describe the native model
+  // only. A stretched or freely shaped building keeps its whole saved polygon.
+  if(resizeTrialChangesEnvelope(p))return null;
   if(p.development_height_override_m!=null && (!asset.storeyProgram || !storeyProgramSupports(
     asset.storeyProgram,p.floor_count ?? p.floors,p.development_height_override_m,
   )))return null;

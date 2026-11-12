@@ -1,5 +1,6 @@
 import type { SiteZone } from '@/types';
 import { assetForZone } from './catalogue';
+import { resizeTrialChangesEnvelope } from './buildingResizeTrial';
 
 /** Read resolved facts without rewriting saved project geometry or metadata. */
 export function nativeBuildingContract(zone: Pick<SiteZone, 'properties'>) {
@@ -15,6 +16,8 @@ export function nativeBuildingContract(zone: Pick<SiteZone, 'properties'>) {
 }
 
 export function nativeBuildingUrl(zone: Pick<SiteZone, 'properties'>): string | undefined {
+  // Building resize pilot: a stretch belongs to its compiled recipe.
+  if (resizeTrialChangesEnvelope(zone.properties)) return undefined;
   const contract = nativeBuildingContract(zone);
   if (contract && !contract.rigid) {
     const storeys = Number(zone.properties?.floor_count ?? zone.properties?.floors ?? contract.storeys);
