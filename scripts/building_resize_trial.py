@@ -98,6 +98,8 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
     margin = stretch.get("fit_plot_margin_m")
     if margin is not None and not 0 <= float(margin) <= 10:
         raise ValueError("The fit margin is invalid")
+    if not isinstance(stretch.get("squeeze_on_plot_resize"), bool):
+        raise ValueError("squeeze_on_plot_resize must be true or false")
 
     shape = manifest["shape_freely"]
     if not (

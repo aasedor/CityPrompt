@@ -32,6 +32,10 @@ export const RESIZE_TRIAL_SETTINGS = {
   /** Fit building to plot: clear space kept on each side, in metres.
    *  null keeps the model's own authored plot margin. */
   fitPlotMarginM: contract.stretch.fit_plot_margin_m as number | null,
+  /** Exact model: true lets a plot that is made too small squeeze the model
+   *  to fit. false keeps the model as it is and stops the plot at the model's
+   *  current size, so only the width, depth and Fit controls ever stretch it. */
+  squeezeOnPlotResize: contract.stretch.squeeze_on_plot_resize,
   /** Shape freely: smallest outline a student may draw. */
   minWidthM: contract.shape_freely.minimum_width_m,
   minDepthM: contract.shape_freely.minimum_depth_m,
@@ -356,7 +360,7 @@ export function resizeTrialFigures(coordinates: number[][], storeys: unknown, si
 
 /** The asset as the editing tools must see it for this saved building. */
 export function withResizeTrial(asset: PlaceAsset, properties: SiteZoneProperties | null | undefined,
-  enabled = buildingResizeTrialEnabled()): PlaceAsset {
+  enabled = buildingResizeTrialEnabled(), squeeze: boolean = RESIZE_TRIAL_SETTINGS.squeezeOnPlotResize): PlaceAsset {
   const family = resizeTrialFamilyForAsset(asset, enabled);
   const state = family ? readResizeTrialState(properties, enabled) : null;
   if (!family || !state) return asset;
@@ -370,24 +374,31 @@ export function withResizeTrial(asset: PlaceAsset, properties: SiteZonePropertie
   // Rounded up to 0.1 m: the plot inputs step in tenths, and a ragged minimum
   // would make the browser refuse round sizes such as 30 m.
   const tenth = (value: number) => Math.ceil(value * 10 - 1e-6) / 10;
-  const least = resizeTrialPlotFor(family, settings.scaleMin, settings.scaleMin);
+  // With squeezing off, the plot stops at the room the model needs right now.
+  const least = squeeze ? resizeTrialPlotFor(family, settings.scaleMin, settings.scaleMin)
+    : resizeTrialPlotFor(family, state.widthScale, state.depthScale);
   const smallest = { widthM: tenth(least.widthM), depthM: tenth(least.depthM) };
   return { ...asset,
     footprintProgram: { id: RESIZE_TRIAL_PROGRAM_ID, mode: 'independent_horizontal_scale',
       nativeWidthM: family.nativeWidthM, nativeDepthM: family.nativeDepthM,
       minScale: settings.scaleMin, maxScale: settings.scaleMax, defaultScale: 1, step: settings.scaleStep },
-    // The plot may shrink until the model reaches its smallest stretch.
-    minWidth: Math.min(asset.minWidth, smallest.widthM), minDepth: Math.min(asset.minDepth, smallest.depthM),
-    reshapeDescription: 'Resize the plot, then use Fit building to plot or set the building width and depth. The exact model stretches 70–140%; its height and storeys never change.' };
+    // Squeezing on: the plot may shrink until the model reaches its smallest
+    // stretch. Squeezing off: it stops at the room this stretch needs.
+    minWidth: squeeze ? Math.min(asset.minWidth, smallest.widthM) : smallest.widthM,
+    minDepth: squeeze ? Math.min(asset.minDepth, smallest.depthM) : smallest.depthM,
+    reshapeDescription: squeeze
+      ? 'Resize the plot, then use Fit building to plot or set the building width and depth. A plot made too small squeezes the exact model to fit. Its height and storeys never change.'
+      : 'Resize the plot, then use Fit building to plot or set the building width and depth. The plot cannot be smaller than the building. Its height and storeys never change.' };
 }
 
 /** A plot edit in Exact model: when the building no longer fits the new plot
  *  it is squeezed to fit, inside the band. Returns the properties to save
  *  with the new coordinates, or null when nothing needs to change. */
 export function resizeTrialPlotReshape(zone: { coordinates: number[][]; properties?: SiteZoneProperties | null },
-  coordinates: number[][], asset?: PlaceAsset, enabled = buildingResizeTrialEnabled()): SiteZoneProperties | null {
+  coordinates: number[][], asset?: PlaceAsset, enabled = buildingResizeTrialEnabled(),
+  squeeze: boolean = RESIZE_TRIAL_SETTINGS.squeezeOnPlotResize): SiteZoneProperties | null {
   const state = readResizeTrialState(zone.properties, enabled);
-  if (!state || state.mode !== 'exact_model' || coordinates.length !== 4 || !zone.properties) return null;
+  if (!squeeze || !state || state.mode !== 'exact_model' || coordinates.length !== 4 || !zone.properties) return null;
   const plot = resizeTrialOutlineFrame(coordinates);
   const needed = resizeTrialPlotFor(state.family, state.widthScale, state.depthScale);
   const fit = fitResizeTrialScalesToPlot(state.family, plot.widthM, plot.depthM);

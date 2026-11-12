@@ -11,7 +11,8 @@
     "default_scale": 1.0,
     "step": 0.05,
     "vertical_scale": 1.0,
-    "fit_plot_margin_m": null
+    "fit_plot_margin_m": null,
+    "squeeze_on_plot_resize": true
   },
   "shape_freely": {
     "minimum_width_m": 9.0,

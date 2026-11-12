@@ -94,6 +94,7 @@ def test_a_matching_lfs_pointer_or_the_exact_bytes_verify(tmp_path):
         (lambda p: p["families"][0].update(candidate="unreviewed-clay-v001"), "not in the reviewed clay library"),
         (lambda p: p["families"].append(dict(p["families"][0])), "exactly one building"),
         (lambda p: p["massing"].update(window_width_m=4.0), "massing dressing"),
+        (lambda p: p["stretch"].update(squeeze_on_plot_resize="yes"), "squeeze_on_plot_resize"),
         (lambda p: p["shape_freely"].update(minimum_width_m=500), "Shape freely limits"),
     ],
 )

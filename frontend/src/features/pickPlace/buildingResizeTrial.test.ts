@@ -293,6 +293,21 @@ describe('flag on', () => {
     expect(resizeTrialPlotReshape(wide, at(48.2, 22.3), asset())).toBeNull();
   });
 
+  it('can leave the model alone and stop the plot at the building instead (squeeze switched off)', () => {
+    expect(RESIZE_TRIAL_SETTINGS.squeezeOnPlotResize).toBe(true);
+    const at = (width: number, depth: number) => rectangleAt(ll(0, 0), width, depth, 0);
+    expect(resizeTrialPlotReshape(placed(), at(30, 22), asset(), true, false)).toBeNull();
+    // An unstretched model keeps the catalogue plot as its minimum.
+    const native = withResizeTrial(asset(), placed().properties, true, false);
+    expect([native.minWidth, native.minDepth]).toEqual([36.4, 22]);
+    // A stretched one stops where it needs room: 0.8 x 32.36 + 4.04 and 1.2 x 17.98 + 4.02.
+    const stretched = exactModelProperties(placementProperties(asset()), family(), 0.8, 1.2, asset());
+    const held = withResizeTrial(asset(), stretched, true, false);
+    expect([held.minWidth, held.minDepth]).toEqual([30, 25.6]);
+    expect(held.reshapeDescription).toMatch(/cannot be smaller than the building/);
+    expect(held.footprintProgram?.mode).toBe('independent_horizontal_scale');
+  });
+
   it('turns Shape freely into an editable outline that keeps the building identity', () => {
     const base = placementProperties(asset());
     const freely = shapeFreelyProperties(exactModelProperties(base, family(), 1.2, 0.9, asset()), 'stretch_out_of_band');
