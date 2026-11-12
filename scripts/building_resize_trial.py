@@ -100,6 +100,13 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
         raise ValueError("The fit margin is invalid")
     if not isinstance(stretch.get("squeeze_on_plot_resize"), bool):
         raise ValueError("squeeze_on_plot_resize must be true or false")
+    rigid = stretch.get("rigid_prop_materials")
+    if (
+        not isinstance(rigid, list)
+        or any(not isinstance(name, str) or not name for name in rigid)
+        or not 0 < float(stretch["rigid_prop_max_size_m"]) <= 10
+    ):
+        raise ValueError("The rigid prop settings are invalid")
 
     shape = manifest["shape_freely"]
     if not (
@@ -123,6 +130,22 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
     spacing = massing.get("floor_line_spacing_m")
     if spacing is not None and not float(spacing) > 0:
         raise ValueError("The floor line spacing is invalid")
+    if massing.get("style") not in {"archetype_kit", "floor_lines_and_windows"}:
+        raise ValueError("Unknown massing style")
+    kit = massing["kit"]
+    lengths = [value for key, value in kit.items() if key.endswith("_m")]
+    colors = kit["colors"]
+    if (
+        len(lengths) < 18
+        or any(isinstance(value, bool) or not float(value) > 0 for value in lengths)
+        or not float(kit["window_width_m"]) < float(kit["window_bay_module_m"])
+        or not float(kit["loggia_width_m"]) < float(kit["loggia_bay_module_m"])
+        or not float(kit["loggia_height_m"]) < float(kit["upper_floor_height_m"])
+        or not float(kit["window_sill_m"]) + float(kit["window_height_m"]) < float(kit["upper_floor_height_m"])
+        or len(colors) != 12
+        or any(not re.fullmatch(r"#[0-9a-f]{6}", str(color)) for color in colors.values())
+    ):
+        raise ValueError("The facade kit settings are invalid")
 
     library = json.loads((root / CLAY_ROOT / "library.json").read_text(encoding="utf-8"))
     entries = {entry["candidate"]: entry for entry in library["entries"]}

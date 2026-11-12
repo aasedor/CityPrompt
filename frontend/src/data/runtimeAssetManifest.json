@@ -403,6 +403,7 @@
     "src/features/legoAssembly/mountModelBuildingWalking.ts",
     "src/features/legoAssembly/nativeClayPlacement.ts",
     "src/features/legoAssembly/projectCommunityCompile.ts",
+    "src/features/legoAssembly/resizeTrialRigidProps.ts",
     "src/features/legoAssembly/walkModelTransform.ts",
     "src/features/parks/BenchDetailEditor.tsx",
     "src/features/parks/DetailCataloguePicker.tsx",

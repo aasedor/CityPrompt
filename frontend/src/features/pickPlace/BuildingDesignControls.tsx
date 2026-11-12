@@ -276,7 +276,7 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
         <span className="font-semibold">{trial.reason === 'stretch_out_of_band'
           ? `Switched to Shape freely automatically. The size you asked for is outside the exact model’s ${percent(RESIZE_TRIAL_SETTINGS.scaleMin)}–${percent(RESIZE_TRIAL_SETTINGS.scaleMax)} range.`
           : 'This building is shaped freely.'}</span>{' '}
-        It is shown as shaped massing with floor lines and repeating window bays, not the detailed model. Choose Exact model to return to the detailed building.</p>}
+        It is drawn on your outline with this building’s own window and balcony bays, which repeat and never stretch. It is not the detailed model. Choose Exact model to return to it.</p>}
       {trialMode === 'exact_model' ? <>
         <div className="mt-2 grid grid-cols-2 gap-2">
           <label className="text-xs font-semibold">Building width (m)<input aria-label="Building width (m)" type="number" step="any"
@@ -293,7 +293,7 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
         <p className="mt-2 text-xs text-slate-600">The exact model stretches {metres(trial.family.nativeWidthM * RESIZE_TRIAL_SETTINGS.scaleMin)}–{metres(trial.family.nativeWidthM * RESIZE_TRIAL_SETTINGS.scaleMax)} m wide and {metres(trial.family.nativeDepthM * RESIZE_TRIAL_SETTINGS.scaleMin)}–{metres(trial.family.nativeDepthM * RESIZE_TRIAL_SETTINGS.scaleMax)} m deep ({percent(RESIZE_TRIAL_SETTINGS.scaleMin)}–{percent(RESIZE_TRIAL_SETTINGS.scaleMax)}). Height and storeys never change.</p>
         {trialDecision?.kind === 'shape_freely' && !trialHandoverProblem && <p role="status" className="mt-1 text-xs font-semibold text-amber-900">This size is outside the exact model’s range. Applying switches this building to Shape freely.</p>}
         {trialHandoverProblem && <p role="alert" className="mt-1 text-xs text-red-700">{trialHandoverProblem}</p>}
-      </> : trial.mode === 'exact_model' && <p className="mt-2 text-xs text-slate-600">Applying replaces the detailed model with an outline you can reshape: drag its corners or add points. Storeys and floor height stay the same. Window bays repeat at a fixed width; they never stretch.</p>}
+      </> : trial.mode === 'exact_model' && <p className="mt-2 text-xs text-slate-600">Applying replaces the detailed model with an outline you can reshape: drag its corners or add points. Storeys and floor heights stay the same. Window and balcony bays repeat at a fixed width; they never stretch.</p>}
     </fieldset>}
     <p className="text-xs text-slate-600">{storeyProgram
       ? storeyProgram.mode === 'fixed_authored_assembly'

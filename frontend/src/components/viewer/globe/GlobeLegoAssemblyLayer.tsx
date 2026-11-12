@@ -40,7 +40,8 @@ import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import type { NativeEntranceHit } from '@/features/pickPlace/pickBuildingEntrance';
 import { supportsNativeEntranceStepPick } from '@/features/pickPlace/pedestrianConnections';
 import type { LegoAssemblyRecipe } from '@/features/legoAssembly/legoAssemblyApi';
-import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { centreNativeClayClone, isArchitecturalClayPlan, isNativeClayPlan, isResizeTrialPlan } from '@/features/legoAssembly/nativeClayPlacement';
+import { keepPropsRigidUnderStretch } from '@/features/legoAssembly/resizeTrialRigidProps';
 import { prepareBuildingOnlyScene } from '@/features/legoAssembly/buildingOnlyScene';
 import { buildingWalkRevision } from '@/features/legoAssembly/buildingWalking';
 import { mountBuildingInspection } from '@/features/legoAssembly/buildingInspection';
@@ -79,8 +80,8 @@ import {
   setArchitecturalGlazingLod,
   type ArchitecturalGlazingLod,
 } from './modelMaterialQuality';
-import { buildLegoMassingDressingData, buildLegoMassingMeshData, legoMassingColor, type LegoMassingDressingOptions, type LegoMassingMeshData } from './legoMassingGeometry';
-import { resizeTrialMassingDressing } from '@/features/pickPlace/buildingResizeTrial';
+import { buildLegoMassingDressingData, buildLegoMassingKitData, buildLegoMassingMeshData, legoMassingColor, type LegoMassingColoredMesh, type LegoMassingMeshData } from './legoMassingGeometry';
+import { resizeTrialMassingDressing, type ResizeTrialMassingDressing } from '@/features/pickPlace/buildingResizeTrial';
 import {
   LEGO_DISTINCT_FAMILY_RENDER_BUDGET,
   LEGO_STACK_RENDER_BUDGET,
@@ -253,8 +254,8 @@ function LegoMassingStack({
   onBuildingClick,
   dressing = null,
 }: {
-  /** Building resize pilot: floor lines and repeating window bays. */
-  dressing?: (LegoMassingDressingOptions & { floorLineColor: string; windowColor: string }) | null;
+  /** Building resize pilot: how a freely shaped building's massing is drawn. */
+  dressing?: ResizeTrialMassingDressing | null;
   building: Building;
   heightMeters: number | null | undefined;
   colorSeed: string;
@@ -294,21 +295,34 @@ function LegoMassingStack({
     return next;
   }, [frame.centroidLat, frame.centroidLng, height, ring]);
   useEffect(() => () => geometry?.dispose(), [geometry]);
-  const dressingGeometry = useMemo(() => {
-    const data = dressing ? buildLegoMassingDressingData(ring, frame.centroidLng, frame.centroidLat, height, dressing) : null;
-    if (!data) return null;
-    const toGeometry = (part: LegoMassingMeshData) => {
+  // Each entry is one drawn part of the dressing: its geometry and surface.
+  const dressingParts = useMemo(() => {
+    if (!dressing) return null;
+    const toGeometry = (part: LegoMassingMeshData | LegoMassingColoredMesh) => {
       if (!part.indices.length) return null;
       const next = new THREE.BufferGeometry();
       next.setAttribute('position', new THREE.Float32BufferAttribute(part.positions, 3));
+      if ('colors' in part) next.setAttribute('color', new THREE.Float32BufferAttribute(part.colors, 3));
       next.setIndex(part.indices);
       next.computeVertexNormals();
       next.computeBoundingSphere();
       return next;
     };
-    return { floorLines: toGeometry(data.floorLines), windows: toGeometry(data.windows) };
+    if (dressing.kind === 'kit') {
+      // The facade kit is a complete shell and replaces the plain prism.
+      const data = buildLegoMassingKitData(ring, frame.centroidLng, frame.centroidLat, dressing.kit);
+      return data && { shell: true, parts: [
+        { key: 'solid', geometry: toGeometry(data.solid), color: undefined, roughness: 0.78 },
+        { key: 'glass', geometry: toGeometry(data.glass), color: undefined, roughness: 0.4 },
+      ] };
+    }
+    const data = buildLegoMassingDressingData(ring, frame.centroidLng, frame.centroidLat, height, dressing);
+    return data && { shell: false, parts: [
+      { key: 'floor-lines', geometry: toGeometry(data.floorLines), color: dressing.floorLineColor, roughness: 0.9 },
+      { key: 'windows', geometry: toGeometry(data.windows), color: dressing.windowColor, roughness: 0.35 },
+    ] };
   }, [dressing, frame.centroidLat, frame.centroidLng, height, ring]);
-  useEffect(() => () => { dressingGeometry?.floorLines?.dispose(); dressingGeometry?.windows?.dispose(); }, [dressingGeometry]);
+  useEffect(() => () => { dressingParts?.parts.forEach(part => part.geometry?.dispose()); }, [dressingParts]);
 
   const groundFootprints = useMemo(() => [geographicFootprint(ring, frame.centroidLng, frame.centroidLat)], [ring, frame.centroidLng, frame.centroidLat]);
   const foundation = useBuildingFoundation(groundFootprints, frame, building.id, preparedBoundary, preparedSiteTerrainHeight, onGroundingStatus);
@@ -409,20 +423,21 @@ function LegoMassingStack({
           onBuildingClick?.(building.id);
         }}
       >
+        {/* A facade-kit shell draws the walls itself. The prism stays as the
+            click and inspection target, but is not painted over the recesses. */}
         <meshStandardMaterial
           color={legoMassingColor(`${colorSeed}:${building.id}`)}
           roughness={0.82}
           metalness={0.02}
           side={THREE.DoubleSide}
+          visible={!dressingParts?.shell}
         />
       </mesh>
-      {dressing && dressingGeometry && [
-        [dressingGeometry.floorLines, dressing.floorLineColor, 0.9] as const,
-        [dressingGeometry.windows, dressing.windowColor, 0.35] as const,
-      ].map(([part, color, roughness]) => part && (
-        <mesh key={color} geometry={part} renderOrder={LEGO_RENDER_ORDER} raycast={() => null}
+      {dressingParts?.parts.map(part => part.geometry && (
+        <mesh key={part.key} geometry={part.geometry} renderOrder={LEGO_RENDER_ORDER} raycast={() => null}
           userData={proposalForDirect3D ? direct3DBuildingInstanceUserData(building, zone) : DIRECT_3D_CAPTURE_CONTEXT_USER_DATA}>
-          <meshStandardMaterial color={color} roughness={roughness} metalness={0.02} side={THREE.DoubleSide} />
+          <meshStandardMaterial color={part.color ?? '#ffffff'} vertexColors={part.color === undefined}
+            roughness={part.roughness} metalness={0.02} side={THREE.DoubleSide} />
         </mesh>
       ))}
       {foundation.geometry && <BuildingFoundationSurface frame={frame} zone={zone} geometry={foundation.geometry} renderOrder={LEGO_RENDER_ORDER}
@@ -508,15 +523,23 @@ function LegoStackInstance({
           restyleUntextured: !preserveSourceMaterials,
         });
         const cloned = isNativeClayPlan(recipe) ? centreNativeClayClone(prepared) : prepared;
+        // Measure the model's own envelope before any prop is adjusted.
+        const bounds = isNativeClayPlan(recipe)
+          ? new THREE.Box3().setFromObject(cloned, true)
+          : new THREE.Box3().setFromObject(scene);
+        // Building resize pilot: trees and shrubs keep their real proportions
+        // when the exact model is stretched. The geometries it creates belong
+        // to this stack and are disposed with it.
+        const rigidProps = isResizeTrialPlan(recipe)
+          ? keepPropsRigidUnderStretch(cloned, instance.scale[0], instance.scale[1]) : [];
         return {
           key: `${instance.asset_id}-${instance.level}-${index}`,
           cloned,
           landscape,
-          buildingOnly,
+          buildingOnly: rigidProps.length
+            ? { ...buildingOnly, ownedGeometries: [...buildingOnly.ownedGeometries, ...rigidProps] } : buildingOnly,
           transform: legoInstanceTransform(instance),
-          bounds: isNativeClayPlan(recipe)
-            ? new THREE.Box3().setFromObject(cloned, true)
-            : new THREE.Box3().setFromObject(scene),
+          bounds,
         };
       })
       .filter((entry): entry is NonNullable<typeof entry> => entry !== null);

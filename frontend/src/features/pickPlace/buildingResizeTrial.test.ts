@@ -370,8 +370,21 @@ describe('flag on', () => {
     const base = placementProperties(asset());
     expect(resizeTrialMassingDressing(base)).toBeNull();
     expect(resizeTrialMassingDressing(exactModelProperties(base, family(), 1.2, 1, asset()))).toBeNull();
-    expect(resizeTrialMassingDressing(shapeFreelyProperties(base))).toMatchObject({ storeys: 5, floorLineSpacingM: null,
+    // By default the building's own facade kit, with floor levels measured from the model.
+    expect(RESIZE_TRIAL_SETTINGS.massingStyle).toBe('archetype_kit');
+    expect(resizeTrialMassingDressing(shapeFreelyProperties(base))).toMatchObject({ kind: 'kit', kit: { storeys: 5,
+      groundFloorHeightM: 4, upperFloorHeightM: 3.2, windowBayModuleM: 3.5, loggiaBayModuleM: 5.3,
+      colors: { wall: '#d4bd97', timber: '#bf9969' } } });
+    // The plain fallback style stays available.
+    expect(resizeTrialMassingDressing(shapeFreelyProperties(base), true, 'floor_lines_and_windows')).toMatchObject({
+      kind: 'lines', storeys: 5, floorLineSpacingM: null,
       bayModuleM: RESIZE_TRIAL_SETTINGS.bayModuleM, windowWidthM: RESIZE_TRIAL_SETTINGS.windowWidthM });
+    expect(resizeTrialMassingDressing({ ...shapeFreelyProperties(base), floor_count: 3, floors: 3 })).toMatchObject({ kit: { storeys: 3 } });
+  });
+
+  it('keeps the model’s planting rigid by name, up to a prop’s size', () => {
+    expect(RESIZE_TRIAL_SETTINGS.rigidPropMaterials).toEqual(['CLAY_PLANTING']);
+    expect(RESIZE_TRIAL_SETTINGS.rigidPropMaxSizeM).toBe(2.5);
   });
 
   it('describes Shape freely as a choice, not a missing model', () => {

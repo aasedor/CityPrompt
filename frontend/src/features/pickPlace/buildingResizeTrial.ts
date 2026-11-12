@@ -36,6 +36,10 @@ export const RESIZE_TRIAL_SETTINGS = {
    *  to fit. false keeps the model as it is and stops the plot at the model's
    *  current size, so only the width, depth and Fit controls ever stretch it. */
   squeezeOnPlotResize: contract.stretch.squeeze_on_plot_resize,
+  /** Exact model: parts with these material names keep their real proportions
+   *  when the model is stretched (a tree stays a tree), up to this size. */
+  rigidPropMaterials: contract.stretch.rigid_prop_materials as readonly string[],
+  rigidPropMaxSizeM: contract.stretch.rigid_prop_max_size_m,
   /** Shape freely: smallest outline a student may draw. */
   minWidthM: contract.shape_freely.minimum_width_m,
   minDepthM: contract.shape_freely.minimum_depth_m,
@@ -43,7 +47,35 @@ export const RESIZE_TRIAL_SETTINGS = {
   /** Shape freely: largest outline extent and corner count. */
   maxSizeM: contract.shape_freely.maximum_size_m,
   maxOutlinePoints: contract.shape_freely.maximum_outline_points,
-  /** Massing dressing: fixed window bay module. Bays repeat; they never stretch. */
+  /** Shape freely look. 'archetype_kit' builds the facade from the kit below;
+   *  'floor_lines_and_windows' is the plain fallback: lines and window squares. */
+  massingStyle: contract.massing.style as 'archetype_kit' | 'floor_lines_and_windows',
+  /** The facade kit: floor levels, bay modules, openings and colours measured
+   *  from the pilot model. Bays repeat on their module; they never stretch. */
+  kit: {
+    plinthHeightM: contract.massing.kit.plinth_height_m,
+    groundFloorHeightM: contract.massing.kit.ground_floor_height_m,
+    upperFloorHeightM: contract.massing.kit.upper_floor_height_m,
+    parapetHeightM: contract.massing.kit.parapet_height_m,
+    cornerPierM: contract.massing.kit.corner_pier_m,
+    windowBayModuleM: contract.massing.kit.window_bay_module_m,
+    windowWidthM: contract.massing.kit.window_width_m,
+    windowHeightM: contract.massing.kit.window_height_m,
+    windowSillM: contract.massing.kit.window_sill_m,
+    groundWindowHeightM: contract.massing.kit.ground_window_height_m,
+    groundWindowSillM: contract.massing.kit.ground_window_sill_m,
+    loggiaBayModuleM: contract.massing.kit.loggia_bay_module_m,
+    loggiaWidthM: contract.massing.kit.loggia_width_m,
+    loggiaHeightM: contract.massing.kit.loggia_height_m,
+    loggiaDepthM: contract.massing.kit.loggia_depth_m,
+    loggiaMinWallM: contract.massing.kit.loggia_min_wall_m,
+    railingHeightM: contract.massing.kit.railing_height_m,
+    entranceWidthM: contract.massing.kit.entrance_width_m,
+    entranceDepthM: contract.massing.kit.entrance_depth_m,
+    entranceHeightM: contract.massing.kit.entrance_height_m,
+    colors: contract.massing.kit.colors,
+  },
+  /** Fallback style: fixed window bay module. Bays repeat; they never stretch. */
   bayModuleM: contract.massing.bay_module_m,
   windowWidthM: contract.massing.window_width_m,
   windowHeightM: contract.massing.window_height_m,
@@ -369,7 +401,7 @@ export function withResizeTrial(asset: PlaceAsset, properties: SiteZonePropertie
     return { ...asset, reshapeMode: 'authored_footprint', footprintProgram: undefined, entranceSnap: undefined,
       minWidth: settings.minWidthM, minDepth: settings.minDepthM,
       maxSize: Math.max(settings.maxSizeM, asset.maxSize), maxWidth: undefined, maxDepth: undefined,
-      reshapeDescription: 'Shape freely: drag the white corners or add an outline point. Storeys and floor height stay as the exact model. Window bays repeat at a fixed width; they never stretch.' };
+      reshapeDescription: 'Shape freely: drag the white corners or add an outline point. Storeys and floor heights stay as the exact model. Window and balcony bays repeat at a fixed width; they never stretch.' };
   }
   // Rounded up to 0.1 m: the plot inputs step in tenths, and a ragged minimum
   // would make the browser refuse round sizes such as 30 m.
@@ -411,18 +443,25 @@ export function resizeTrialPlotReshape(zone: { coordinates: number[][]; properti
   return exactModelProperties(zone.properties, state.family, widthScale, depthScale, asset);
 }
 
-/** Floor lines and window bays for a freely shaped building's massing, or
- *  null for every other building. Storeys come from the saved building, so
- *  the lines sit exactly on its own floor height. */
+/** How a freely shaped building's massing is drawn, or null for every other
+ *  building. Storeys come from the saved building. The kit style builds the
+ *  whole facade; the lines style only adds floor lines and window squares. */
 export function resizeTrialMassingDressing(
   properties: SiteZoneProperties | null | undefined, enabled = buildingResizeTrialEnabled(),
+  style: 'archetype_kit' | 'floor_lines_and_windows' = RESIZE_TRIAL_SETTINGS.massingStyle,
 ) {
   const state = readResizeTrialState(properties, enabled);
   if (!state || state.mode !== 'shape_freely') return null;
   const saved = Number(properties?.floor_count ?? properties?.floors);
   const settings = RESIZE_TRIAL_SETTINGS;
+  const storeys = Number.isInteger(saved) && saved > 0 ? saved : state.family.nativeStoreys;
+  if (style === 'archetype_kit') {
+    return { kind: 'kit' as const, kit: { ...settings.kit, storeys,
+      floorLineHeightM: settings.floorLineHeightM, surfaceOffsetM: settings.surfaceOffsetM } };
+  }
   return {
-    storeys: Number.isInteger(saved) && saved > 0 ? saved : state.family.nativeStoreys,
+    kind: 'lines' as const,
+    storeys,
     floorLineSpacingM: settings.floorLineSpacingM,
     bayModuleM: settings.bayModuleM,
     windowWidthM: settings.windowWidthM,
@@ -435,3 +474,5 @@ export function resizeTrialMassingDressing(
     windowColor: settings.windowColor,
   };
 }
+
+export type ResizeTrialMassingDressing = NonNullable<ReturnType<typeof resizeTrialMassingDressing>>;

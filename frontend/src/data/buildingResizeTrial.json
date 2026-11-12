@@ -12,7 +12,9 @@
     "step": 0.05,
     "vertical_scale": 1.0,
     "fit_plot_margin_m": null,
-    "squeeze_on_plot_resize": true
+    "squeeze_on_plot_resize": true,
+    "rigid_prop_materials": ["CLAY_PLANTING"],
+    "rigid_prop_max_size_m": 2.5
   },
   "shape_freely": {
     "minimum_width_m": 9.0,
@@ -22,6 +24,44 @@
     "maximum_outline_points": 24
   },
   "massing": {
+    "style": "archetype_kit",
+    "kit": {
+      "source": "Dimensions and colours measured from final-seniors-apartments-clay-v003.glb. Glass and frame are darker than the model's, because massing glass is opaque and has no room behind it. Bays repeat on these modules and never stretch.",
+      "plinth_height_m": 0.15,
+      "ground_floor_height_m": 4.0,
+      "upper_floor_height_m": 3.2,
+      "parapet_height_m": 0.48,
+      "corner_pier_m": 0.55,
+      "window_bay_module_m": 3.5,
+      "window_width_m": 2.5,
+      "window_height_m": 2.28,
+      "window_sill_m": 0.5,
+      "ground_window_height_m": 2.87,
+      "ground_window_sill_m": 0.42,
+      "loggia_bay_module_m": 5.3,
+      "loggia_width_m": 4.45,
+      "loggia_height_m": 2.72,
+      "loggia_depth_m": 1.4,
+      "loggia_min_wall_m": 20.0,
+      "railing_height_m": 1.05,
+      "entrance_width_m": 9.2,
+      "entrance_depth_m": 1.6,
+      "entrance_height_m": 3.85,
+      "colors": {
+        "wall": "#d4bd97",
+        "timber": "#bf9969",
+        "frame": "#5b5e55",
+        "glass": "#6f7f7d",
+        "curtain": "#e3dbc7",
+        "slab": "#d4d1c4",
+        "railing": "#454d4b",
+        "roof": "#b6bab5",
+        "plinth": "#aaada8",
+        "joint": "#b8af9b",
+        "cap": "#868673",
+        "units": "#a3a7a1"
+      }
+    },
     "bay_module_m": 3.6,
     "window_width_m": 1.8,
     "window_height_m": 1.5,
