@@ -17,7 +17,9 @@ One building can now be fitted to any space in two ways.
   70–140% per axis. Height scale stays exactly 1.
 - **Shape freely** replaces the model with an outline the student draws. It
   compiles to `planned_massing`, keeps archetype, variant, storeys and floor
-  height, and is dressed with floor lines and window bays that repeat.
+  heights, and is drawn with the building's own facade kit: window bays,
+  recessed balconies, entrance, parapet and roof plant, on fixed modules that
+  repeat and never stretch.
 
 A stretch that leaves the band hands over to Shape freely automatically and
 says so, before applying and again after reload.
@@ -96,17 +98,28 @@ The frontend exposes the same values as named constants in
 | `stretch.step` | 0.05 | Reserved for a slider; the inputs accept any size |
 | `stretch.fit_plot_margin_m` | `null` | Clear space kept each side by Fit building to plot. `null` keeps the model's own plot margin (about 2.0 m) |
 | `stretch.squeeze_on_plot_resize` | `true` | `true`: a plot made too small squeezes the exact model to fit. `false`: the model is left alone and the plot stops at the room it needs |
+| `stretch.rigid_prop_materials` | `["CLAY_PLANTING"]` | Model parts with these material names keep their real proportions under a stretch |
+| `stretch.rigid_prop_max_size_m` | 2.5 | Only parts up to this size count as props. Longer runs such as hedges stretch |
 | `shape_freely.minimum_width_m` / `minimum_depth_m` | 9.0 / 9.0 | Smallest outline |
 | `shape_freely.minimum_area_m2` | 100 | Stops thin slivers that pass the width test |
 | `shape_freely.maximum_size_m` | 120 | Largest outline extent |
 | `shape_freely.maximum_outline_points` | 24 | Corner limit |
-| `massing.bay_module_m` | 3.6 | Window bay module. Bays repeat, never stretch |
-| `massing.window_width_m` / `window_height_m` / `window_sill_m` | 1.8 / 1.5 / 0.9 | Window size and sill |
-| `massing.wall_end_margin_m` | 0.9 | Solid wall kept at each end of a facade |
-| `massing.floor_line_spacing_m` | `null` | `null` draws one line per storey at the building's own floor height |
+| `massing.style` | `archetype_kit` | How Shape freely is drawn. `floor_lines_and_windows` is the plain fallback |
+| `massing.kit.ground_floor_height_m` / `upper_floor_height_m` | 4.0 / 3.2 | Floor levels, measured from the model. Floor lines sit on them |
+| `massing.kit.plinth_height_m` / `parapet_height_m` | 0.15 / 0.48 | Base band and parapet, measured |
+| `massing.kit.window_bay_module_m` / `window_width_m` | 3.5 / 2.5 | Window bay module and window width |
+| `massing.kit.window_height_m` / `window_sill_m` | 2.28 / 0.5 | Upper-floor window |
+| `massing.kit.ground_window_height_m` / `ground_window_sill_m` | 2.87 / 0.42 | Ground-floor window |
+| `massing.kit.loggia_bay_module_m` / `loggia_width_m` | 5.3 / 4.45 | Balcony bay module and opening |
+| `massing.kit.loggia_height_m` / `loggia_depth_m` | 2.72 / 1.4 | Balcony opening height and recess depth |
+| `massing.kit.loggia_min_wall_m` | 20 | Only a wall this long carries balcony columns |
+| `massing.kit.corner_pier_m` | 0.55 | Solid wall at each end of a facade |
+| `massing.kit.railing_height_m` | 1.05 | Balcony railing |
+| `massing.kit.entrance_width_m` / `_depth_m` / `_height_m` | 9.2 / 1.6 / 3.85 | Entrance canopy on the front wall |
+| `massing.kit.colors.*` | 12 colours | Measured from the model's materials. Glass and frame are darkened on purpose |
 | `massing.floor_line_height_m` | 0.12 | Floor line band height |
-| `massing.surface_offset_m` | 0.03 | Stand-off from the wall |
-| `massing.floor_line_color` / `window_color` | `#8f8a82` / `#4d5a66` | Dressing colours |
+| `massing.surface_offset_m` | 0.03 | Stand-off of frames and lines from the wall |
+| `massing.bay_module_m`, `window_*`, `wall_end_margin_m`, `floor_line_spacing_m`, `floor_line_color`, `window_color` | | Used only by the plain fallback style |
 
 A hard ceiling of 0.5–1.6 for the band lives in
 `building_flex_contract.py` and the script. The file may narrow the band
@@ -149,6 +162,38 @@ older code cannot mistake a trial building for a house-pilot one.
 - Shape freely is certified in `_assert_resize_trial_shape_freely`: it must
   arrive without a recipe, and its outline minimum is measured on the server.
 
+### Facade kit for Shape freely
+
+`buildLegoMassingKitData` in `legoMassingGeometry.ts` builds a complete shell
+for any outline from the kit values. It measures nothing itself.
+
+- **Vertical:** plinth, a 4.0 m ground floor, 3.2 m upper floors, parapet with
+  a dark cap, flat roof and roof plant. A subtle line marks each floor.
+- **Horizontal:** a wall of 20 m or more gets a window bay at each end and as
+  many balcony bays as fit between them. A shorter wall gets window bays only.
+  Whatever is left over becomes solid wall, shared between both ends.
+- **Front:** the first drawn edge is the front. It carries the timber-fin
+  entrance canopy, or a plain door when the wall is too narrow for it.
+- **Check:** on a 24 m wall the kit gives window, three balconies, window,
+  which is the model's own front.
+
+The plain prism stays in place as the click and inspection target but is not
+painted, because the shell has real recesses the prism would plug.
+
+### Rigid props under a stretch
+
+`keepPropsRigidUnderStretch` runs on the viewer's own clone of the exact model
+before the stretch is applied. Small planting keeps its shape and moves to
+where the stretch puts it, so a tree stays a tree. It changes geometry copies
+only. The cached GLB and its bytes are never touched.
+
+### Review page
+
+`frontend/resize-pilot-review.html` renders the reference images, the exact
+model and Shape freely side by side with the real code, so proportions and
+colours can be tuned without a database. See
+[Tune by eye without a database](#tune-by-eye-without-a-database).
+
 ### Editing
 
 - `assetForZone` returns the trial view of the asset: a resizable plot for
@@ -189,12 +234,14 @@ Frontend
 - `frontend/src/features/pickPlace/ReshapePanel.tsx` — resizable plot, outline tools, live figures.
 - `frontend/src/features/pickPlace/buildingPlacementEdges.ts`, `nativeBuildingContract.ts`, `representationNotice.ts`, `useAutomatic3D.ts` — guards and wording.
 - `frontend/src/features/legoAssembly/communityCompiler.ts`, `legoAssemblyApi.ts`, `nativeClayPlacement.ts` — stretch targets, explicit massing, centring.
-- `frontend/src/components/viewer/globe/legoMassingGeometry.ts`, `GlobeLegoAssemblyLayer.tsx` — floor lines and window bays.
+- `frontend/src/components/viewer/globe/legoMassingGeometry.ts`, `GlobeLegoAssemblyLayer.tsx` — the facade kit, and the plain floor-line fallback.
+- `frontend/src/features/legoAssembly/resizeTrialRigidProps.ts` — planting keeps its proportions under a stretch.
+- `frontend/resize-pilot-review.html`, `frontend/src/review/resizePilotReview.tsx` — the review page.
 - `frontend/src/components/viewer/globe/GlobeEditMode.tsx` — plot corner handles for the exact model.
 - `frontend/src/features/projects/ProjectViewPage.tsx` — save path.
 - `frontend/scripts/public-env.mjs`, `public-env.test.mjs` — flag added to the browser env allowlist.
-- `frontend/src/data/runtimeAssetManifest.json` — two new source files registered.
-- Six new or extended test files beside the code they cover.
+- `frontend/src/data/runtimeAssetManifest.json` — three new source files registered.
+- Seven new or extended test files beside the code they cover.
 
 Docs
 
@@ -233,8 +280,10 @@ passed.
 | Reshaped building keeps its whole polygon as contact envelope | Reviewed side clearances describe the native model only | Independent of the flag. This asset has no row today |
 | Stretch joins the compiled source fingerprint | A stretch that leaves the polygon alone must still mark the compile stale | Only zones declaring the programme. All other hashes are unchanged |
 | Whole-model centring also accepts the planner's `fit.resize_trial` marker | The checklist requires the planner's explicit native lock for that path. A stretch is not locked, so the planner sends an explicit marker of its own | Server-produced marker only |
+| The plain massing prism is not painted when the facade kit draws the building | The kit has real balcony recesses that the prism would plug. The prism still takes clicks and inspection | Flag on, Shape freely, kit style |
+| Planting geometry is copied and reshaped per stretched building | So trees and shrubs keep their proportions. The cached GLB is untouched | Resize-trial plans at a stretch other than 100% |
 | Flag added to `PUBLIC_ENV_NAMES` and to its test fixture | That gate strips every unlisted `VITE_` name, and its test requires each consumer to be listed | One name |
-| Two entries added to `runtimeAssetManifest.json` `sourceInputs` | The manifest check lists every reachable source file | Hand-inserted, see below |
+| Three entries added to `runtimeAssetManifest.json` `sourceInputs` | The manifest check lists every reachable source file | Hand-inserted, see below |
 
 ## Tests run
 
@@ -242,12 +291,12 @@ Run in the sandbox on this branch.
 
 | Check | Result |
 | --- | --- |
-| `pytest tests/test_building_resize_trial.py tests/test_building_resize_trial_script.py` | 71 passed |
+| `pytest tests/test_building_resize_trial.py tests/test_building_resize_trial_script.py` | 78 passed |
 | Backend neighbours: flex contract, house pilot, placement edges, towers, brick podium, clay runtime, lego assembly, residual landscape, student report, native home plot | 427 passed |
-| Full backend suite `pytest tests/` | 3,408 passed, 74 skipped, 15 failed, 16 errors. The 31 are pre-existing, see below |
+| Full backend suite `pytest tests/` | 3,415 passed, 74 skipped, 15 failed, 16 errors. The 31 are pre-existing, see below |
 | `ruff check .` and `black --check --line-length=120 .` in `backend/` | Passed |
-| New frontend tests (6 files) | 62 passed |
-| Full frontend suite `npx vitest run` | 4,590 passed, 47 skipped, 6 failed. The 6 are pre-existing, see below |
+| New frontend tests (7 files) | 76 passed |
+| Full frontend suite `npx vitest run` | 4,604 passed, 47 skipped, 6 failed. The 6 are pre-existing, see below |
 | `npm run type-check` | Passed |
 | `npx eslint --max-warnings=0` on every changed frontend file | Passed |
 | `npm run check:dead-code` | Passed |
@@ -313,9 +362,9 @@ None of these were run. Do not read any of them as passed.
 **Tooling**
 
 - `npm run check:runtime-assets`. It cannot finish in the sandbox: it reports
-  376 missing asset files on untouched `deployment-version` too. The two new
+  376 missing asset files on untouched `deployment-version` too. The three new
   `sourceInputs` lines were inserted by hand and checked with a copy of the
-  generator's own source walk (679 expected, 679 recorded). Run
+  generator's own source walk (680 expected, 680 recorded). Run
   `npm run check:runtime-assets` locally and regenerate if it disagrees.
 - `npm run test:e2e` (Playwright).
 - `python scripts/building_resize_trial.py --check-database`.
@@ -328,44 +377,49 @@ variant needs `docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md` completed before its
 student runtime integration is called ready. That review is not done. It
 needs the viewer.
 
-## What the harness renders showed
+## What the review page showed
 
-After the code was pushed I rendered the real GLB, the real panels and the
-real massing functions in a temporary browser harness (headless Chromium,
-software rendering, harness lighting, no globe and no database). The harness
-and its screenshots are not committed. These are observations, not passed
-checks; the viewer checks above are all still open.
+I rendered the review page in headless Chromium with software rendering and
+compared it with the archetype reference images. The page uses its own
+lighting and has no globe and no database. These are observations to guide
+tuning. They are not passed checks, and the screenshots are not committed.
 
-- **Exact model.** Height holds at every stretch. At 70% width the windows
-  narrow to slots. At 140% width the balconies and glazing widen noticeably.
-- **Terrace and roof.** The terrace furniture, the trees and the rooftop
-  units stretch with the model. Trees go thin at 70% and fat at 140%. This is
-  the most visible distortion and the strongest argument for a narrower band.
-- **Massing dressing.** Bays repeat as designed: 8 across the model's own
-  footprint, 13 across a 50 m wall, 24 across a 90 m wall, window width
-  constant throughout.
-- **Floor lines.** At 0.12 m they read as hairlines from across a site.
-- **Massing shading.** The walls shade unevenly, darker towards the roof.
-  That comes from the existing prism mesh sharing corner vertices, not from
-  the dressing. It affects every planned mass, so I left it alone.
-- **Panels.** Both modes, the out-of-band warning, the automatic-switch label
-  and the live figures render as intended at the 288 px panel width.
+- **Shape freely now reads as the same building.** On a 24 × 16 m block the
+  kit gives the model's own front: framed end windows with curtains, three
+  timber-lined balcony columns with railings, the timber-fin entrance, a dark
+  parapet cap and roof plant.
+- **It holds on awkward outlines.** A 50 m bar, an L shape, a five-corner
+  outline, the 9 × 12 m minimum and a 90 m bar all drew cleanly. Balcony
+  columns appear only on long walls.
+- **Trees and shrubs keep their shape at 70% and 140%.** Before this change
+  they went thin and fat.
+- **Still stretched on the exact model:** terrace furniture, the umbrella and
+  the rooftop units, and every window and balcony. Windows are narrow at 70%.
+- **The kit's glass and frames are darker than the clay model's.** That was
+  deliberate, to read like the reference. It means Shape freely has stronger
+  window contrast than Exact model.
+- **Not like the reference, and not addressed:** brick texture, lit interiors,
+  planting and paving around the building. The model is architectural clay by
+  design, and the surroundings belong to the site, not this pilot.
 
 ## Needs tuning by eye
 
-1. **The band.** 0.70 and 1.40 are your numbers. Check whether balconies and
-   windows still read as real at both ends, and at 70% × 140% together.
-2. **Bay module and windows.** 3.6 m bays with 1.8 × 1.5 m windows are a
-   reasonable guess, not a measurement of this model's bays.
-3. **Floor line weight and colour.** 0.12 m may vanish at district scale.
-4. **Surface offset.** 0.03 m may z-fight at distance on some GPUs.
-5. **Minimum size.** 9 × 9 m and 100 m² allow a small point block. Raise them
-   if a mid-rise that small looks wrong.
-6. **Fit margin.** `null` keeps about 2 m each side. Set `0` for buildings
+1. **The band.** 0.70 and 1.40 are your numbers. Windows are narrow slots at
+   70% and balconies are wide at 140%. Judge both in the viewer.
+2. **Glass and frame colour.** The kit uses darker glass and frames than the
+   clay model. Lighten `colors.glass` and `colors.frame` if Shape freely should
+   match Exact model more closely than the reference.
+3. **Balcony rule.** Balcony columns go on every wall of 20 m or more. Raise
+   `loggia_min_wall_m` if side and rear walls should stay plain.
+4. **Entrance canopy.** It projects 1.6 m beyond the drawn outline, as the
+   model's does. Set `entrance_depth_m` lower if that crowds a street.
+5. **Roof plant on small roofs.** The largest unit looks heavy on a 9 m block.
+6. **Surface offset.** 0.03 m may z-fight at distance on some GPUs.
+7. **Minimum size.** 9 × 9 m and 100 m² allow a small point block.
+8. **Fit margin.** `null` keeps about 2 m each side. Set `0` for buildings
    that should meet the plot edge.
-7. **Ground floor.** Every storey gets the same window row. There is no door,
-   lobby or taller ground floor on the massing.
-8. **Roof.** The massing has a flat top with no parapet line.
+9. **More rigid props.** Only planting is rigid. Furniture shares materials
+   with facade parts, so it was left to stretch rather than risk gaps.
 
 ## Known limits of this first pass
 
@@ -385,6 +439,10 @@ checks; the viewer checks above are all still open.
   Nothing is deleted, and switching the flags back on restores it. Existing
   buildings keep their last compiled look until their next edit or Retry.
 - Dwelling counts for a stretched or shaped building are not modelled.
+- The kit's windows are flat panels and its shell has no interior.
+- The kit takes its storeys from the saved building and its floor heights
+  from the kit. Its walls top out at the parapet, 17.4 m. The server still
+  records the model's full 19.0 m, which is where the roof plant ends.
 - Place another, from a stretched or freely shaped building, places a fresh
   exact model on its catalogue plot. The stretch is not copied.
 
@@ -458,6 +516,30 @@ Fit building to plot on a 60 m wide plot and read the handover label; switch
 to Shape freely, add an outline point and drag it; undo back to the start;
 reload.
 
+## Tune by eye without a database
+
+The review page needs only the frontend dev server.
+
+```powershell
+cd frontend
+$env:VITE_ENABLE_BUILDING_RESIZE_TRIAL = 'true'
+npm run dev
+```
+
+Then open `http://localhost:5174/resize-pilot-review.html` with one of:
+
+| Address ending | Shows |
+| --- | --- |
+| `?view=compare&model=<GLB URL>` | Reference images, exact model and Shape freely side by side |
+| `?view=stretch&model=<GLB URL>` | The exact model at six stretches |
+| `?view=massing` | The facade kit on six outlines |
+| `?view=panel-exact`, `panel-stretched`, `panel-free-auto`, `panel-free-l` | The panel in each state |
+
+`<GLB URL>` is any address your browser can load
+`final-seniors-apartments-clay-v003.glb` from, for example your local file
+API. Without it the massing and panel views still work. Edit
+`buildingResizeTrial.json`, save, and the page reloads with the new values.
+
 ## Switch it on in staging
 
 Staging is defined in `render.staging.yaml`. That file is unchanged.
@@ -483,4 +565,7 @@ To switch off, remove both variables and redeploy both sides.
 3. `feat(resize-pilot): frontend trial logic, compiler and massing dressing`
 4. `feat(resize-pilot): stretch controls, Shape freely and live figures`
 5. `feat(resize-pilot): make the plot squeeze a named, switchable setting`
-6. `docs(resize-pilot): handoff`
+6. `docs(resize-pilot): handoff`, then a correction after the first renders
+7. `feat(resize-pilot): draw Shape freely with the building's own facade kit`
+8. `feat(resize-pilot): review page for tuning by eye`
+9. `docs(resize-pilot): record the facade kit, rigid planting and review page`
