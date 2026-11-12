@@ -46,6 +46,7 @@ import { TerraceSummary } from '@/features/pickPlace/TerraceSummary';
 import { CALGARY_LOCAL_PLACEMENT, isFixedSectionStreet, streetCoordinateUpdate, streetRouteProblem, streetSectionWidth } from '@/features/pickPlace/streetPlacement';
 import { assetForZone, placeAsset, placementProperties, type PlaceAssetId } from '@/features/pickPlace/catalogue';
 import { placementProblem, rectangleAt } from '@/features/pickPlace/geometry';
+import { isResizeTrialShapeFreely, resizeTrialOutlineProblem, resizeTrialPlotReshape } from '@/features/pickPlace/buildingResizeTrial';
 import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 import { brtConnectionProblem } from '@/features/pickPlace/brtConnections';
 import { specialistConnectionProblem } from '@/features/pickPlace/specialistConnections';
@@ -451,13 +452,22 @@ export function ProjectViewPage() {
         ?? streetConnectionProblem({...zone,...(streetUpdate??{coordinates})},siteZones)
         ?? nativeStreetRouteProblem({...zone,...(streetUpdate??{coordinates})},getActiveSiteBoundary(siteZones))
         ?? nativeParkFitProblem({...zone,coordinates,properties:nativeParkEditProperties(zone,coordinates)}) ?? (zone.zone_type === 'green_space' ? parkOutlineProblem(coordinates) ?? flexibleParkFitProblem(coordinates,zone.properties)
-        : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building') : null)
+        : assetForZone(zone)?.reshapeMode === 'authored_footprint' ? parkOutlineProblem(coordinates)?.replace(/park/g, 'building')
+          ?? (isResizeTrialShapeFreely(zone.properties) ? resizeTrialOutlineProblem(coordinates) : null) : null)
         ?? (isFixedSectionStreet(zone) ? streetRouteProblem(coordinates, streetSectionWidth(zone),
           parsePersistedCenterline(streetUpdate?.properties?.plan_route_controls) ?? undefined, streetUpdate?.properties ?? zone.properties) : null)
         ?? placementProblem(footprint, siteZones,
           publicRoadConnectionFits(zone, footprint, getActiveSiteBoundary(siteZones)) ? null : getActiveSiteBoundary(siteZones), zoneId,
           { allowStreetIntersections: isFixedSectionStreet(zone), properties:streetUpdate?.properties ?? zone.properties });
       if(problem) { toast.error(problem, { position: 'top-center' }); return false; }
+    }
+    // Building resize pilot: a plot too small for the exact model squeezes it
+    // in the same save, so Undo restores plot and building together.
+    const squeezed = zone ? resizeTrialPlotReshape(zone, coordinates, assetForZone(zone)) : null;
+    if (zone && squeezed) {
+      updateZone.mutate({ zoneId, data: { coordinates, properties: squeezed },
+        previousData: { coordinates: zone.coordinates, properties: zone.properties } });
+      return true;
     }
     return handleZoneUpdated(zoneId, coordinates) !== false;
   };
@@ -1432,12 +1442,14 @@ export function ProjectViewPage() {
             onSaveDetails={properties => updateZone.mutateAsync({zoneId:selectedZone.id,data:{properties},previousData:{properties:selectedZone.properties}})}
             onDetailsEditingChange={setEditingBenchDetails}
             zones={siteZones} onUpdateParkLayout={data => updateZone.mutateAsync({zoneId:selectedZone.id,data,previousData:{coordinates:selectedZone.coordinates,properties:selectedZone.properties}})}
-            onUpdateDesign={properties => {
+            onUpdateDesign={(properties, trialCoordinates) => {
               const footprintChanged=properties.building_footprint_scale!==selectedZone.properties?.building_footprint_scale;
               const nextAsset=assetForZone({properties});
-              const coordinates=nextAsset ? buildingOnlySelectionCoordinates(selectedZone,nextAsset) : selectedZone.coordinates;
+              // Building resize pilot: a stretch or mode change may carry its own outline.
+              const coordinates=trialCoordinates ?? (nextAsset ? buildingOnlySelectionCoordinates(selectedZone,nextAsset) : selectedZone.coordinates);
               const resized=coordinates!==selectedZone.coordinates;
-              const problem=footprintChanged || resized ? placementProblem(coordinates,siteZones,getActiveSiteBoundary(siteZones),selectedZone.id,{properties}) : null;
+              const problem=footprintChanged || resized ? (isResizeTrialShapeFreely(properties) ? resizeTrialOutlineProblem(coordinates) : null)
+                ?? placementProblem(coordinates,siteZones,getActiveSiteBoundary(siteZones),selectedZone.id,{properties}) : null;
               if(problem){toast.error(problem,{position:'top-center'});return;}
               updateZone.mutate({ zoneId: selectedZone.id, data: { properties,...(resized?{coordinates}:{}) },
                 previousData: { properties: selectedZone.properties,...(resized?{coordinates:selectedZone.coordinates}:{}) } });

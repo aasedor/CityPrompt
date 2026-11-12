@@ -19,6 +19,7 @@ import { Html } from '@react-three/drei';
 import { Ellipsoid, WGS84_ELLIPSOID } from '3d-tiles-renderer';
 import type { SiteZone } from '@/types';
 import { assetForZone } from '@/features/pickPlace/catalogue';
+import { readResizeTrialState } from '@/features/pickPlace/buildingResizeTrial';
 import { resizeRectangleCorner } from '@/features/pickPlace/geometry';
 import { snapBuildingMove, snapPlacement } from '@/features/pickPlace/snapPlacement';
 import { snapConnectedStreetEdit } from '@/features/pickPlace/streetEditConnections';
@@ -875,7 +876,9 @@ export function GlobeEditMode({
         </EastNorthUpFrame>
       )}
 
-      {allowFootprintResize && !isFixedNativeScene(zone.properties) && !hasNativePark(zone) && assetForZone(zone)?.reshapeMode !== 'fixed_native' && !hasFixedBuildingFootprint(assetForZone(zone)) && handleCoords.map((coord, i) => (
+      {/* Building resize pilot: its exact model keeps a resizable plot, so its
+          corners stay draggable. readResizeTrialState is null with the flag off. */}
+      {allowFootprintResize && !isFixedNativeScene(zone.properties) && !hasNativePark(zone) && (assetForZone(zone)?.reshapeMode !== 'fixed_native' || readResizeTrialState(zone.properties) !== null) && !hasFixedBuildingFootprint(assetForZone(zone)) && handleCoords.map((coord, i) => (
         <EastNorthUpFrame
           key={`edit-v-${i}`}
           lat={coord[1] * DEG_TO_RAD}

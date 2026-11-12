@@ -17,6 +17,9 @@ import { BuildingDesignControls } from './BuildingDesignControls';
 import type { SiteZoneProperties } from '@/types';
 import { cataloguePresentationFor } from './cataloguePresentation';
 import { hasBuildingOnlyFootprint } from './buildingOnlyFootprint';
+import { RESIZE_TRIAL_SETTINGS, readResizeTrialState, resizeTrialFigures, resizeTrialOutlineProblem } from './buildingResizeTrial';
+import { polygonAreaM2 } from '@/components/viewer/mapEngine/geoUtils';
+import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
 export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onDuplicate, onMore, onTerrace, onUpdateDesign, zones = [], onUpdateParkLayout, onSaveDetails, onDetailsEditingChange }: {
   onDetailsEditingChange?: (editing:boolean) => void;
@@ -28,11 +31,16 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   onMore: () => void;
   onConnections?: () => void;
   onTerrace?: () => void;
-  onUpdateDesign?: (properties: SiteZoneProperties) => void;
+  /** `coordinates` arrives only from the building resize pilot. */
+  onUpdateDesign?: (properties: SiteZoneProperties, coordinates?: number[][]) => void;
 }) {
   const asset = assetForZone(zone)!;
   const fixedFixture = isFixedNativeScene(zone.properties);
-  const fixedFootprint = fixedFixture || asset.reshapeMode === 'fixed_native' || hasFixedBuildingFootprint(asset) || hasNativePark(zone);
+  // Building resize pilot (null while its flag is off). Its exact model keeps
+  // a resizable plot; Shape freely edits the building outline itself.
+  const trial = readResizeTrialState(zone.properties);
+  const shapeFreely = trial?.mode === 'shape_freely';
+  const fixedFootprint = !trial && (fixedFixture || asset.reshapeMode === 'fixed_native' || hasFixedBuildingFootprint(asset) || hasNativePark(zone));
   const buildingOnly = hasBuildingOnlyFootprint(asset);
   const isPark = zone.zone_type === 'green_space' && !fixedFixture;
   const keepOutline = isPark || asset.reshapeMode === 'authored_footprint';
@@ -60,12 +68,25 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     const candidate = reshapeParkOutline(zone.coordinates, Number(width), Number(depth), Number(degrees), outline || undefined);
     return flexibleParkFitProblem(candidate, zone.properties);
   }, [dimensionsValid, zone.coordinates, zone.properties, width, depth, degrees, outline]);
-  const valid = dimensionsValid && !flexibleProblem;
+  const freeOutline = useMemo(() => shapeFreely && dimensionsValid
+    ? reshapeParkOutline(zone.coordinates, Number(width), Number(depth), Number(degrees)) : zone.coordinates,
+  [shapeFreely, dimensionsValid, zone.coordinates, width, depth, degrees]);
+  const freeProblem = shapeFreely ? resizeTrialOutlineProblem(freeOutline) : null;
+  const figures = useMemo(() => {
+    if (!shapeFreely) return null;
+    const boundary = getActiveSiteBoundary(zones);
+    return resizeTrialFigures(freeOutline, zone.properties?.floor_count ?? zone.properties?.floors,
+      boundary ? polygonAreaM2(boundary.coordinates) : null);
+  }, [shapeFreely, freeOutline, zone.properties, zones]);
+  const valid = dimensionsValid && !flexibleProblem && !freeProblem;
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
   return <aside aria-label="Reshape object" className="absolute bottom-4 inset-x-4 top-auto z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-4 sm:top-28 sm:max-h-none">
     <div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">{cataloguePresentationFor(asset.id)?.label ?? asset.label}</h2><button aria-label="Close reshape" onClick={onClose} className="flex h-11 w-11 items-center justify-center text-slate-900"><X size={18}/></button></div>
-    <p className="mb-3 text-xs text-slate-600">{fixedFootprint ? 'Fixed native footprint: move and rotate only.' : isFlexiblePark(zone.properties) ? 'Drag white corners to make an irregular park. Add an outline point for more bends; the planted layout adapts when saved.' : isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : zone.properties?.native_home_plot === true ? 'Drag the Move handle on the selected plot to move this house. Use a corner to reshape or the orange handle to turn it.' : zone.properties?.native_plot_axes === true ? 'Drag the Move handle on the selected plot to move this building. Use a corner to reshape or the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
-    {!isPark && !fixedFixture && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m, zone.properties?.building_footprint_scale])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
+    <p className="mb-3 text-xs text-slate-600">{shapeFreely ? 'Shape freely: drag the white corners to fit any space, or add an outline point for more bends. Use the orange handle to turn it.'
+      : trial ? 'Drag the Move handle to move this building. Drag a plot corner to resize its plot; a smaller plot squeezes the exact model to fit. Use the orange handle to turn it.'
+      : fixedFootprint ? 'Fixed native footprint: move and rotate only.' : isFlexiblePark(zone.properties) ? 'Drag white corners to make an irregular park. Add an outline point for more bends; the planted layout adapts when saved.' : isPark ? 'Drag the park to move it. Drag individual white corners to fit its outline to the site; use the orange handle to turn it.' : zone.properties?.native_home_plot === true ? 'Drag the Move handle on the selected plot to move this house. Use a corner to reshape or the orange handle to turn it.' : zone.properties?.native_plot_axes === true ? 'Drag the Move handle on the selected plot to move this building. Use a corner to reshape or the orange handle to turn it.' : 'Drag the object to move it. Drag a corner to reshape; use the orange handle to turn it.'}</p>
+    {!isPark && !fixedFixture && onUpdateDesign && <BuildingDesignControls key={JSON.stringify([zone.id, zone.properties?.development_subcategory, zone.properties?.development_archetype_id, zone.properties?.development_selected_variant_id, zone.properties?.floors, zone.properties?.floor_count, zone.properties?.height, zone.properties?.height_m, zone.properties?.building_footprint_scale,
+      zone.properties?.building_footprint_mode, zone.properties?.building_footprint_width_scale, zone.properties?.building_footprint_depth_scale])} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {(!fixedFixture || zone.properties?.court_only_native===true) && onUpdateParkLayout && <ParkLayoutControls key={`${zone.id}:${zone.updated_at}`} zone={zone} zones={zones} disabled={disabled} onSave={onUpdateParkLayout}/>}
     {isPark && !hasNativePark(zone) && onUpdateDesign && <ParkComponentControls key={`${zone.id}:${zone.properties?.skate_spectator_edge}`} zone={zone} disabled={disabled} onSave={onUpdateDesign} />}
     {isPark && onSaveDetails && <BenchDetailControls zone={zone} disabled={disabled} onSave={onSaveDetails} onEditingChange={onDetailsEditingChange}/>}
@@ -87,9 +108,20 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
         <button type="button" className={`${button} mt-2 w-full`} disabled={disabled || zone.coordinates.length >= 128} onClick={()=>onReshape(addParkOutlinePoint(zone.coordinates))}>Add outline point</button>
         <p className="mt-2 text-xs text-slate-600">{isFlexiblePark(zone.properties) ? 'Resize keeps your outline. Paths and planting adapt to the saved shape; benches and trees keep their real size.' : 'Resize keeps your outline. Equipment and courts keep their real size; the selected complete layout must fit.'}</p>
       </div>}
+      {shapeFreely && figures && <div className="mb-3">
+        <dl role="status" aria-label="Building figures" className="grid grid-cols-2 gap-x-3 gap-y-1 rounded-lg bg-white p-2 text-xs text-slate-800">
+          <dt className="font-semibold">Footprint area</dt><dd className="text-right">{Math.round(figures.footprintAreaM2).toLocaleString()} m²</dd>
+          <dt className="font-semibold">Storeys</dt><dd className="text-right">{figures.storeys}</dd>
+          <dt className="font-semibold">Floor area</dt><dd className="text-right">{Math.round(figures.floorAreaM2).toLocaleString()} m²</dd>
+          <dt className="font-semibold">FAR</dt><dd className="text-right">{figures.far == null ? 'Draw a site boundary' : figures.far.toFixed(2)}</dd>
+        </dl>
+        <p className="mt-1 text-xs text-slate-600">Floor area is the outline × storeys. FAR is this building’s floor area ÷ your site area.</p>
+        <button type="button" className={`${button} mt-2 w-full`} disabled={disabled || zone.coordinates.length >= RESIZE_TRIAL_SETTINGS.maxOutlinePoints}
+          onClick={()=>{ const result=onReshape(addParkOutlinePoint(zone.coordinates)); setReshapeRejected(result===false); }}>Add outline point</button>
+      </div>}
       {!fixedFootprint && <div className="grid grid-cols-2 gap-2">
-        <label className="text-xs font-semibold text-slate-800">Plot width (m)<input aria-label="Plot width (m)" disabled={fixedFootprint} type="number" min={asset.minWidth} max={maxWidth} step="0.1" value={width} onChange={e=>setWidth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
-        <label className="text-xs font-semibold text-slate-800">Plot depth (m)<input aria-label="Plot depth (m)" disabled={fixedFootprint} type="number" min={asset.minDepth} max={maxDepth} step="0.1" value={depth} onChange={e=>setDepth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
+        <label className="text-xs font-semibold text-slate-800">{shapeFreely ? 'Building width (m)' : 'Plot width (m)'}<input aria-label="Plot width (m)" disabled={fixedFootprint} type="number" min={asset.minWidth} max={maxWidth} step="0.1" value={width} onChange={e=>setWidth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
+        <label className="text-xs font-semibold text-slate-800">{shapeFreely ? 'Building depth (m)' : 'Plot depth (m)'}<input aria-label="Plot depth (m)" disabled={fixedFootprint} type="number" min={asset.minDepth} max={maxDepth} step="0.1" value={depth} onChange={e=>setDepth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
       </div>}
       {buildingOnly && (Math.abs(dimensions.width-asset.width)>.15 || Math.abs(dimensions.depth-asset.depth)>.15) &&
         <button type="button" disabled={disabled} className={`${button} mt-2 w-full`} onClick={()=>{
@@ -101,9 +133,14 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
       {reshapeRejected && <p role="alert" className="mb-2 text-xs font-semibold text-red-700">Shape not saved. The existing plot is unchanged; check the placement message, then move the plot or try another size or angle.</p>}
       {!dimensionsValid && <p role="alert" className="mb-2 text-xs text-red-700">Use a width of {asset.minWidth}–{maxWidth} m and depth of {asset.minDepth}–{maxDepth} m.</p>}
       {flexibleProblem && <p role="alert" className="mb-2 text-xs text-red-700">{flexibleProblem}</p>}
+      {freeProblem && <p role="alert" className="mb-2 text-xs text-red-700">{freeProblem}</p>}
       <button disabled={disabled||!valid} className={`${button} w-full !bg-[#c9ff3d]`}>{disabled?'Saving…':'Apply shape'}</button>
     </form>
-    <div className="mt-2 grid grid-cols-2 gap-2"><button className={button} disabled={disabled} onClick={()=>onDuplicate(asset.id,buildingOnly?asset.width:Number(dimensions.width.toFixed(3)),buildingOnly?asset.depth:Number(dimensions.depth.toFixed(3)),Number(dimensions.degrees.toFixed(3)))}>Place another</button><button className={button} disabled={disabled} onClick={onDelete}>Delete</button></div>
+    <div className="mt-2 grid grid-cols-2 gap-2"><button className={button} disabled={disabled} onClick={()=>onDuplicate(asset.id,
+      // Building resize pilot: a copy is a fresh exact model on its own catalogue
+      // plot. A squeezed plot or a drawn outline is too small for an unstretched copy.
+      trial?trial.family.plotWidthM:buildingOnly?asset.width:Number(dimensions.width.toFixed(3)),
+      trial?trial.family.plotDepthM:buildingOnly?asset.depth:Number(dimensions.depth.toFixed(3)),Number(dimensions.degrees.toFixed(3)))}>Place another</button><button className={button} disabled={disabled} onClick={onDelete}>Delete</button></div>
     {onTerrace && !fixedFixture && !hasNativePark(zone) && <button onClick={onTerrace} className={`${button} mt-2 w-full`}>Terrace & path</button>}
     <button onClick={onMore} className="mt-2 min-h-11 text-xs text-slate-700 underline">More settings</button>
   </aside>;

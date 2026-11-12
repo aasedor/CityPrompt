@@ -7,17 +7,27 @@ import { CANONICAL_CHOICES, canonicalDrawing } from './canonicalCatalogue';
 import { canonicalBuildingAsset } from './canonicalBuildingPlacement';
 import { assetForZone, placementProperties } from './catalogue';
 import { savedModelRevision } from './savedModelRevision';
-import { withStoreyMetadata } from './assetRegistry';
+import { withStoreyMetadata, type PlaceAsset } from './assetRegistry';
 import { storeyProgramHeight, storeyProgramSupports } from './buildingStoreyProgram';
 import { footprintProgramSupports } from './buildingFootprintProgram';
+import {
+  RESIZE_TRIAL_SETTINGS, decideResizeTrialStretch, exactModelProperties, fitResizeTrialScalesToPlot,
+  readResizeTrialState, resizeTrialBuildingSize, resizeTrialOutlineFrame, resizeTrialOutlineProblem,
+  resizeTrialPlotFor, resizeTrialRectangle, shapeFreelyProperties, type ResizeTrialMode,
+} from './buildingResizeTrial';
 
 const choices = CANONICAL_CHOICES.filter(choice => choice.domain === 'building');
 const field = 'mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-sm text-slate-900';
 const heightText = (value: unknown) => String(Math.round(Number(value) * 100) / 100);
+const metres = (value: number) => String(Math.round(value * 100) / 100);
+const percent = (value: number) => `${Math.round(value * 100)}%`;
 
 /** Essential design properties share the existing save/undo/compiler path. */
 export function BuildingDesignControls({ zone, disabled, onSave, requireExplicitSelection = false }: {
-  zone: SiteZone; disabled: boolean; onSave: (properties: SiteZoneProperties) => void;
+  zone: SiteZone; disabled: boolean;
+  /** `coordinates` is set only by the building resize pilot, when a stretch or
+   * a mode change must move the saved outline together with its properties. */
+  onSave: (properties: SiteZoneProperties, coordinates?: number[][]) => void;
   requireExplicitSelection?: boolean;
 }) {
   const savedProperties = zone.properties ?? {};
@@ -63,16 +73,42 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
   const selectedAsset = choiceId === initialChoice?.id && variantId === initialVariant ? initialAsset
     : choice?.placements.find(asset => asset.kind === 'object' && asset.model.variantId === variantId);
   const storeyProgram = selectedAsset?.kind === 'object' ? selectedAsset.storeyProgram : undefined;
-  const footprintProgram = selectedAsset?.kind === 'object' ? selectedAsset.footprintProgram : undefined;
+  const selectedFootprintProgram = selectedAsset?.kind === 'object' ? selectedAsset.footprintProgram : undefined;
+  // Building resize pilot. `trial` is null unless its flag is on AND the saved
+  // building is the one pinned model, still selected in this form. Its
+  // independent-axis programme has its own controls below, so the uniform
+  // house-pilot slider and its saved fields stay out of the way.
+  const trial = !requireExplicitSelection && choiceId === initialChoice?.id && variantId === initialVariant
+    ? readResizeTrialState(savedProperties) : null;
+  const footprintProgram = selectedFootprintProgram?.mode === 'independent_horizontal_scale' ? undefined : selectedFootprintProgram;
+  const outline = trial && zone.coordinates.length >= 3 ? resizeTrialOutlineFrame(zone.coordinates) : null;
+  const clampScale = (value: number) => Math.max(RESIZE_TRIAL_SETTINGS.scaleMin, Math.min(RESIZE_TRIAL_SETTINGS.scaleMax, value));
+  // Returning from Shape freely starts from the nearest size the exact model can take.
+  const trialStart = !trial || !outline ? null : trial.mode === 'exact_model'
+    ? resizeTrialBuildingSize(trial.family, trial.widthScale, trial.depthScale)
+    : resizeTrialBuildingSize(trial.family, clampScale(outline.widthM / trial.family.nativeWidthM), clampScale(outline.depthM / trial.family.nativeDepthM));
+  const [trialMode, setTrialMode] = useState<ResizeTrialMode>(trial?.mode ?? 'exact_model');
+  const [trialWidth, setTrialWidth] = useState(trialStart ? metres(trialStart.widthM) : '');
+  const [trialDepth, setTrialDepth] = useState(trialStart ? metres(trialStart.depthM) : '');
+  // The inputs show centimetres; the saved stretch is finer. Until a size is
+  // actually typed, Apply must not round the building to what is displayed.
+  const [trialSizeEdited, setTrialSizeEdited] = useState(false);
+  const trialDecision = trial && trialMode === 'exact_model' && Number(trialWidth) > 0 && Number(trialDepth) > 0
+    ? decideResizeTrialStretch(trial.family, Number(trialWidth), Number(trialDepth)) : null;
+  // A size beyond the band becomes a freely shaped rectangle, which has limits of its own.
+  const trialHandoverProblem = trial && outline && trialDecision?.kind === 'shape_freely'
+    ? resizeTrialOutlineProblem(resizeTrialRectangle(outline.center, trialDecision.widthM, trialDecision.depthM, outline.degrees)) : null;
+  const trialValid = !trial || trialMode === 'shape_freely' || Boolean(outline && trialDecision && !trialHandoverProblem);
   const filtered = choices.filter(c => c.id === choiceId || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase()));
   const floorCountValid = Number.isInteger(Number(floors))
     && Number(floors) >= (storeyProgram?.minStoreys ?? 1)
     && Number(floors) <= (storeyProgram?.maxStoreys ?? 100);
-  const valid = choice && (!choice.option.variants?.length || Boolean(variant)) && floorCountValid
+  const baseValid = choice && (!choice.option.variants?.length || Boolean(variant)) && floorCountValid
     && !(choiceId === initialChoice?.id && variantId === initialVariant && savedProperties.pick_place_model_revision && !initialAsset)
     && height.trim() !== '' && Number.isFinite(Number(height)) && Number(height) > 0 && Number(height) <= 1000
     && (!storeyProgram || storeyProgramSupports(storeyProgram, floors, height))
     && (!footprintProgram || footprintProgram.editable === false || footprintProgramSupports(footprintProgram, footprintScale));
+  const valid = baseValid && trialValid;
   const choose = (nextChoiceId: string, nextVariantId?: string) => {
     const next = choices.find(c => c.id === nextChoiceId)!;
     const selectedVariant = next.option.variants?.find(v => v.id === nextVariantId)
@@ -91,8 +127,44 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
       : Number(value) * (variant?.suggestedFloorHeight ?? choice?.option.suggestedFloorHeight ?? 3.2)));
     setHeightEdited(true);
   };
-  return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={async event => {
-    event.preventDefault(); if (!valid || !choice || disabled || pending.current) return;
+  /** Building resize pilot: what one Apply (or Fit building to plot) saves.
+   * null means the pilot has nothing to change and the ordinary save runs. */
+  const resolveTrialSave = (base: SiteZoneProperties, fitToPlot: boolean):
+    { properties: SiteZoneProperties; coordinates?: number[][]; checkStretch?: boolean; problem?: string } | null => {
+    if (!trial || !outline) return null;
+    const { family } = trial;
+    const rectangle = (widthM: number, depthM: number) => resizeTrialRectangle(outline.center, widthM, depthM, outline.degrees);
+    if (trialMode === 'shape_freely' && !fitToPlot) {
+      if (trial.mode === 'shape_freely') return null;
+      // The outline starts as the building the student was just looking at.
+      const size = resizeTrialBuildingSize(family, trial.widthScale, trial.depthScale);
+      return { properties: shapeFreelyProperties(base), coordinates: rectangle(size.widthM, size.depthM) };
+    }
+    if (!fitToPlot && !trialSizeEdited && trial.mode === 'exact_model') return null;
+    const fit = fitToPlot ? fitResizeTrialScalesToPlot(family, outline.widthM, outline.depthM) : null;
+    const requested = fit ? resizeTrialBuildingSize(family, fit.widthScale, fit.depthScale)
+      : { widthM: Number(trialWidth), depthM: Number(trialDepth) };
+    const decision = decideResizeTrialStretch(family, requested.widthM, requested.depthM);
+    if (decision.kind === 'shape_freely') {
+      // Outside the band: hand over to Shape freely at the size asked for.
+      const coordinates = rectangle(decision.widthM, decision.depthM);
+      const problem = resizeTrialOutlineProblem(coordinates);
+      return problem ? { properties: base, problem }
+        : { properties: shapeFreelyProperties(base, decision.reason), coordinates };
+    }
+    if (trial.mode === 'exact_model' && decision.widthScale === trial.widthScale && decision.depthScale === trial.depthScale) return null;
+    const needed = resizeTrialPlotFor(family, decision.widthScale, decision.depthScale);
+    // A larger building takes the room it needs; a plot is never shrunk here.
+    const keepPlot = trial.mode === 'exact_model';
+    const widthM = keepPlot ? Math.max(outline.widthM, needed.widthM) : needed.widthM;
+    const depthM = keepPlot ? Math.max(outline.depthM, needed.depthM) : needed.depthM;
+    const moved = !keepPlot || widthM > outline.widthM + 0.05 || depthM > outline.depthM + 0.05;
+    return { properties: exactModelProperties(base, family, decision.widthScale, decision.depthScale,
+      selectedAsset?.kind === 'object' ? selectedAsset as PlaceAsset : undefined), checkStretch: true,
+      ...(moved ? { coordinates: rectangle(widthM, depthM) } : {}) };
+  };
+  const apply = async (fitToPlot = false) => {
+    if (!(fitToPlot ? baseValid : valid) || !choice || disabled || pending.current) return;
     const changedType = choiceId !== initialChoice?.id || variantId !== savedProperties.development_selected_variant_id;
     const selection = { choice, variant };
     const native = choice.placements.find(a => a.kind === 'object' && a.model.variantId === variantId);
@@ -100,6 +172,9 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
       building_footprint_scale: undefined, building_footprint_program_id: undefined,
       building_footprint_native_width_m: undefined, building_footprint_native_depth_m: undefined,
       model_native_dimensions_m: undefined, model_dimensions_revision: undefined, pick_place_model_revision: undefined,
+      // A different building leaves the resize pilot's state behind.
+      building_footprint_mode: undefined, building_footprint_width_scale: undefined,
+      building_footprint_depth_scale: undefined, building_footprint_mode_reason: undefined,
       ...canonicalDrawing(selection).properties, ...(native?.kind === 'object' ? placementProperties(native) : {}),
       pick_place_asset: native?.id ?? canonicalBuildingAsset(selection).id,
       building_archetype_id: choice.option.id, development_height_override_m: undefined,
@@ -124,17 +199,24 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
         : heightEdited ? { development_height_override_m: Number(height) } : {}),
     };
     setRuntimeError('');
+    const trialSave = changedType ? null : resolveTrialSave(nextProperties, fitToPlot);
+    if (trialSave?.problem) { setRuntimeError(trialSave.problem); return; }
+    const savedNext = trialSave?.properties ?? nextProperties;
     const needsAuthoredAssembly = storeyProgram && storeyProgram.mode !== 'fixed_authored_assembly'
       && (Number(floors) !== storeyProgram.nativeStoreys || Number(floors) !== Number(savedFloors));
     const needsScaledAssembly = footprintProgram && (selectedFootprintScale !== footprintProgram.defaultScale
       || selectedFootprintScale !== Number(savedProperties.building_footprint_scale ?? footprintProgram.defaultScale));
-    if (needsAuthoredAssembly || needsScaledAssembly) {
+    if (needsAuthoredAssembly || needsScaledAssembly || trialSave?.checkStretch) {
       pending.current=true;setChecking(true);
       try {
-        const item=deriveItems([{...zone,properties:nextProperties}])[0];
+        const item=deriveItems([{...zone,coordinates:trialSave?.coordinates ?? zone.coordinates,properties:savedNext}])[0];
         if (!item) throw new Error('This building cannot be checked against the current model library.');
-        await legoAssemblyApi.plan(buildPlanRequestForItem(item));
+        const plan=await legoAssemblyApi.plan(buildPlanRequestForItem(item));
         if (!active.current) return;
+        // Only the server can stretch the exact model. Anything else is not a stretch.
+        if (trialSave?.checkStretch && !plan?.fit?.resize_trial) {
+          throw new Error('The server did not stretch this model. Check that the building resize pilot is switched on for the server as well.');
+        }
       } catch(error) {
         if(active.current)setRuntimeError(`The building was not changed. ${getApiErrorMessage(error)}`);
         return;
@@ -146,8 +228,10 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
       setRuntimeError('The building changed while its model was being checked. Review it and apply again.');
       return;
     }
-    onSave(nextProperties);
-  }}>
+    if (trialSave?.coordinates) onSave(savedNext, trialSave.coordinates);
+    else onSave(savedNext);
+  };
+  return <form className="mb-3 space-y-2 border-b border-slate-300 pb-3" onSubmit={event => { event.preventDefault(); void apply(); }}>
     <fieldset disabled={checking} className="min-w-0 space-y-2">
     {Boolean(savedProperties.pick_place_model_revision) && !initialAsset && choiceId === initialChoice?.id && variantId === initialVariant
       && <p role="alert" className="text-xs text-amber-800">This saved model revision is unavailable. Your design is preserved. Select another building explicitly to replace it.</p>}
@@ -179,6 +263,38 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
         className="mt-1 min-h-11 w-full accent-lime-500" />
       <span className="block font-normal text-slate-600">Changes width and depth together. Storeys and height stay unchanged.</span>
     </label>}
+    {trial && outline && <fieldset className="min-w-0 rounded-lg border border-slate-400 bg-white p-2">
+      <legend className="px-1 text-xs font-semibold">Fit this building to your space</legend>
+      <div role="radiogroup" aria-label="Building shape" className="grid grid-cols-2 gap-2">
+        {(['exact_model', 'shape_freely'] as const).map(mode => <label key={mode}
+          className={`flex min-h-11 cursor-pointer items-center justify-center rounded-lg border px-2 text-sm font-semibold ${trialMode === mode ? 'border-slate-900 bg-lime-200' : 'border-slate-400 bg-white'}`}>
+          <input type="radio" name={`building-shape-${zone.id}`} className="sr-only" checked={trialMode === mode}
+            onChange={() => setTrialMode(mode)} />
+          {mode === 'exact_model' ? 'Exact model' : 'Shape freely'}</label>)}
+      </div>
+      {trial.mode === 'shape_freely' && <p role="status" className="mt-2 rounded bg-amber-50 p-2 text-xs text-slate-900">
+        <span className="font-semibold">{trial.reason === 'stretch_out_of_band'
+          ? `Switched to Shape freely automatically. The size you asked for is outside the exact model’s ${percent(RESIZE_TRIAL_SETTINGS.scaleMin)}–${percent(RESIZE_TRIAL_SETTINGS.scaleMax)} range.`
+          : 'This building is shaped freely.'}</span>{' '}
+        It is shown as shaped massing with floor lines and repeating window bays, not the detailed model. Choose Exact model to return to the detailed building.</p>}
+      {trialMode === 'exact_model' ? <>
+        <div className="mt-2 grid grid-cols-2 gap-2">
+          <label className="text-xs font-semibold">Building width (m)<input aria-label="Building width (m)" type="number" step="any"
+            min={RESIZE_TRIAL_SETTINGS.minWidthM} max={RESIZE_TRIAL_SETTINGS.maxSizeM} value={trialWidth}
+            onChange={e => { setTrialWidth(e.target.value); setTrialSizeEdited(true); }} className={field} />
+            <span className="block font-normal text-slate-600">{Number(trialWidth) > 0 ? percent(Number(trialWidth) / trial.family.nativeWidthM) : '—'} of the model</span></label>
+          <label className="text-xs font-semibold">Building depth (m)<input aria-label="Building depth (m)" type="number" step="any"
+            min={RESIZE_TRIAL_SETTINGS.minDepthM} max={RESIZE_TRIAL_SETTINGS.maxSizeM} value={trialDepth}
+            onChange={e => { setTrialDepth(e.target.value); setTrialSizeEdited(true); }} className={field} />
+            <span className="block font-normal text-slate-600">{Number(trialDepth) > 0 ? percent(Number(trialDepth) / trial.family.nativeDepthM) : '—'} of the model</span></label>
+        </div>
+        {trial.mode === 'exact_model' && <button type="button" disabled={disabled || checking || !baseValid} onClick={() => { void apply(true); }}
+          className="mt-2 min-h-11 w-full rounded-lg border border-slate-700 bg-white text-sm font-semibold disabled:opacity-40">Fit building to plot</button>}
+        <p className="mt-2 text-xs text-slate-600">The exact model stretches {metres(trial.family.nativeWidthM * RESIZE_TRIAL_SETTINGS.scaleMin)}–{metres(trial.family.nativeWidthM * RESIZE_TRIAL_SETTINGS.scaleMax)} m wide and {metres(trial.family.nativeDepthM * RESIZE_TRIAL_SETTINGS.scaleMin)}–{metres(trial.family.nativeDepthM * RESIZE_TRIAL_SETTINGS.scaleMax)} m deep ({percent(RESIZE_TRIAL_SETTINGS.scaleMin)}–{percent(RESIZE_TRIAL_SETTINGS.scaleMax)}). Height and storeys never change.</p>
+        {trialDecision?.kind === 'shape_freely' && !trialHandoverProblem && <p role="status" className="mt-1 text-xs font-semibold text-amber-900">This size is outside the exact model’s range. Applying switches this building to Shape freely.</p>}
+        {trialHandoverProblem && <p role="alert" className="mt-1 text-xs text-red-700">{trialHandoverProblem}</p>}
+      </> : trial.mode === 'exact_model' && <p className="mt-2 text-xs text-slate-600">Applying replaces the detailed model with an outline you can reshape: drag its corners or add points. Storeys and floor height stay the same. Window bays repeat at a fixed width; they never stretch.</p>}
+    </fieldset>}
     <p className="text-xs text-slate-600">{storeyProgram
       ? storeyProgram.mode === 'fixed_authored_assembly'
         ? `This exact model is currently available at ${storeyProgram.nativeStoreys} ${storeyProgram.nativeStoreys === 1 ? 'storey' : 'storeys'}.`
