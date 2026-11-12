@@ -35,6 +35,7 @@ from functools import lru_cache
 from typing import Any, Iterable, Literal
 
 from app.services.plan_geometry.archetypes import load_dims_table
+from app.services.building_flex_contract import ResizeTrialContract, resize_trial_contract
 from app.services.building_only_envelopes import building_only_dimensions
 
 
@@ -132,6 +133,10 @@ class AssemblyRequest:
     footprint_local_m: tuple[tuple[float, float], ...] | None = None
     native_home_plot: bool = False
     model_revision: str | None = None
+    # A server-validated footprint programme declared by the saved building.
+    # Only the building resize pilot reads it; it is inert while that server
+    # flag is off, and for every module the pilot manifest does not pin.
+    footprint_program_id: str | None = None
 
 
 AssemblyPlanningErrorCode = Literal["family_not_found", "family_incompatible"]
@@ -757,7 +762,11 @@ def _fixed_landmark_scale_contract(
     return scale_min, scale_max, max_axis_ratio
 
 
-def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
+def _fixed_landmark_is_select_and_place(
+    module: ModuleDescriptor,
+    *,
+    resize_trial: ResizeTrialContract | None = None,
+) -> bool:
     """Whether a reviewed landmark forbids the forced-resize escape hatch.
 
     Current compiler manifests express this twice: the placement contract says
@@ -765,8 +774,15 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
     exposes ``select_and_place`` / ``polygonFit: false`` to older importers.
     Honor either explicit declaration so already-imported families and future
     re-imports share the same runtime behavior.
+
+    ``resize_trial`` is the building resize pilot's explicit contract. It exists
+    only while the server flag is on and the request declares the programme,
+    and it releases only the exact variant, candidate and bytes its manifest
+    pins. Without it every rule below is unchanged.
     """
 
+    if resize_trial is not None and resize_trial.family_for_module(module) is not None:
+        return False
     placement = module.placement_contract or {}
     footprint = module.footprint_compatibility or {}
     placement_mode = _semantic_id(str(placement.get("mode") or ""))
@@ -797,6 +813,135 @@ def _fixed_landmark_is_select_and_place(module: ModuleDescriptor) -> bool:
         or footprint_mode == "select_and_place"
         or footprint.get("polygonFit") is False
     )
+
+
+def _requested_resize_trial(request: AssemblyRequest) -> ResizeTrialContract | None:
+    """The pilot contract for this request, or None (flag off / not declared)."""
+
+    if not request.footprint_program_id:
+        return None
+    return resize_trial_contract(request.footprint_program_id)
+
+
+def _resize_trial_plan(
+    assembled: ModuleDescriptor,
+    request: AssemblyRequest,
+    family: str,
+    contract: ResizeTrialContract,
+) -> tuple[dict[str, Any], float]:
+    """Stretch one exact model independently in width and depth.
+
+    The target is the stretched building itself, already validated by the
+    footprint contract. Height scale stays exactly 1, the authored front stays
+    on the plot's front edge (no quarter turn), and the stretched envelope must
+    stay inside the plot.
+    """
+
+    scale_x = request.target_width_m / assembled.width_m
+    scale_y = request.target_depth_m / assembled.depth_m
+    tolerance = 1e-6
+    if not all(
+        contract.minimum_scale - tolerance <= scale <= contract.maximum_scale + tolerance
+        for scale in (scale_x, scale_y)
+    ):
+        raise AssemblyPlanningError(
+            "This size is outside the exact model's "
+            f"{contract.minimum_scale:.0%}–{contract.maximum_scale:.0%} stretch range. "
+            "Use Shape freely for a larger change.",
+            requested=_requested_target_metadata(request),
+        )
+    if request.footprint_local_m is not None:
+        from shapely.geometry import box
+
+        envelope = box(
+            -request.target_width_m / 2,
+            -request.target_depth_m / 2,
+            request.target_width_m / 2,
+            request.target_depth_m / 2,
+        )
+        # One millimetre absorbs the drift of a plot saved in degrees.
+        if not _detached_plot(request).buffer(1e-3).covers(envelope):
+            raise AssemblyPlanningError(
+                "The stretched building does not fit inside its plot. " "Enlarge the plot or use Fit building to plot.",
+                requested=_requested_target_metadata(request),
+            )
+    width_scale, depth_scale = round(scale_x, 5), round(scale_y, 5)
+    unit = math.isclose(scale_x, 1.0, abs_tol=tolerance) and math.isclose(scale_y, 1.0, abs_tol=tolerance)
+    family_score = 100.0 + _module_score(assembled, request)
+    plan = {
+        "version": 3,
+        "family": family,
+        "archetype_id": request.archetype_id,
+        "reuse_keys": list(request.reuse_keys),
+        "target": {
+            "width_m": request.target_width_m,
+            "depth_m": request.target_depth_m,
+            "floors": request.target_floors,
+            "footprint_profile": "rectangle",
+            "wing_depth_m": request.target_depth_m,
+        },
+        "assembled_height_m": round(assembled.height_m, 4),
+        "instances": [
+            {
+                "asset_id": assembled.id,
+                "asset_name": assembled.name,
+                "model_url": assembled.model_url,
+                "family": assembled.family,
+                "role": "assembled",
+                "variant_key": assembled.variant_key,
+                "lod": assembled.lod,
+                "level": 0,
+                "segment_id": "landmark",
+                "position": [0.0, 0.0, 0.0],
+                "rotation_degrees": 0.0,
+                "scale": [width_scale, depth_scale, 1.0],
+                "native_dimensions_m": [
+                    assembled.width_m,
+                    assembled.depth_m,
+                    assembled.height_m,
+                ],
+            }
+        ],
+        "fit": {
+            "scale_x": width_scale,
+            "scale_y": depth_scale,
+            "envelope_scale_x": width_scale,
+            "envelope_scale_y": depth_scale,
+            "axis_ratio": round(max(scale_x / scale_y, scale_y / scale_x), 5),
+            "score": round(family_score, 5),
+            "profile": "rectangle",
+            "segment_count": 1,
+            "assembly_mode": "fixed_landmark",
+            # Not locked: the model is deliberately stretched. The browser
+            # still centres this exact clay source through ``resize_trial``.
+            "native_scale_locked": False,
+            "delivery_format": assembled.delivery_format,
+            "footprint_mode": "archetype_contain",
+            "compatibility_source": "resize_trial_native" if unit else "resize_trial_stretch",
+            "resize_trial": {
+                "program_id": contract.program_id,
+                "width_scale": width_scale,
+                "depth_scale": depth_scale,
+                "vertical_scale": 1.0,
+            },
+            "scale_band": {
+                "min": contract.minimum_scale,
+                "max": contract.maximum_scale,
+                "max_axis_ratio": round(contract.maximum_scale / contract.minimum_scale, 5),
+            },
+        },
+        "footprint_segments": [
+            {
+                "id": "landmark",
+                "centre_x_m": 0.0,
+                "centre_y_m": 0.0,
+                "length_m": request.target_width_m,
+                "thickness_m": request.target_depth_m,
+                "rotation_degrees": 0.0,
+            }
+        ],
+    }
+    return plan, family_score
 
 
 # Streetwall repeat: bars validate against the same relaxed band multi-wing
@@ -1331,6 +1476,7 @@ def _plan_vertical_assembly_core(
 
     best_plan: dict[str, Any] | None = None
     best_score = float("-inf")
+    resize_trial = _requested_resize_trial(request)
 
     # Two-pass contract: pass 1 honors the production fit bands; the forced
     # pass runs only when nothing fit and always builds the least-distorted
@@ -1382,8 +1528,16 @@ def _plan_vertical_assembly_core(
             ),
             request,
         )
+        if assembled and resize_trial is not None and resize_trial.family_for_module(assembled) is not None:
+            # Explicit pilot contract: independent width/depth stretch of the
+            # one pinned model. Out-of-band or overflowing targets raise.
+            plan, family_score = _resize_trial_plan(assembled, request, family, resize_trial)
+            if family_score > best_score:
+                best_score = family_score
+                best_plan = plan
+            continue
         if assembled:
-            select_and_place = _fixed_landmark_is_select_and_place(assembled)
+            select_and_place = _fixed_landmark_is_select_and_place(assembled, resize_trial=resize_trial)
             (
                 landmark_scale_min,
                 landmark_scale_max,

@@ -106,6 +106,9 @@ class LegoAssemblyPlanRequest(BaseModel):
     footprint_profile: Literal["rectangle", "l_shape", "u_shape", "courtyard"] = "rectangle"
     wing_depth_m: float | None = Field(default=None, gt=0)
     footprint_local_m: list[tuple[float, float]] | None = Field(default=None, min_length=3, max_length=2048)
+    # Building resize pilot only. Selects the server-owned trial contract; it
+    # never carries limits and is ignored while the server flag is off.
+    footprint_program_id: str | None = Field(default=None, min_length=1, max_length=120)
     # When planning for a shared project, use the same owner-visible private
     # module inventory that the AI Master Planner used for that project.
     project_id: uuid.UUID | None = None
@@ -419,6 +422,14 @@ def _strict_locked_building_plan(
             preserve_authored_axes=properties.get("native_home_plot") is True
             or properties.get("native_plot_axes") is True,
         )
+    # Only a server-validated Exact model stretch names the pilot programme.
+    # Shape freely, unrelated buildings and a disabled flag all pass None.
+    from app.services.building_flex_contract import resize_trial_stretch_program_id
+
+    try:
+        footprint_program_id = resize_trial_stretch_program_id(properties)
+    except ValueError as exc:
+        raise AssemblyPlanningError(str(exc)) from exc
     # Wing depth is intentionally omitted: the current imported family owns
     # the deterministic native/default thickness. The returned target is then
     # the independent value against which a submitted shaped recipe is bound.
@@ -435,11 +446,49 @@ def _strict_locked_building_plan(
             footprint_local_m=plot_coordinates,
             native_home_plot=properties.get("native_home_plot") is True,
             model_revision=properties.get("pick_place_model_revision") or None,
+            footprint_program_id=footprint_program_id,
         ),
         allow_forced_fit=allow_forced_fit,
     )
     assert_authored_height(plan, _positive_float(properties.get("development_height_override_m")))
     return plan
+
+
+def _assert_resize_trial_shape_freely(item: Community3DCompileItem, zone: SiteZone) -> bool:
+    """Building resize pilot: certify an explicit Shape freely massing.
+
+    Returns False for every other building (and always while the server flag
+    is off). A Shape freely building must arrive without a recipe and with an
+    outline no smaller than the trial minimum, measured here on the server.
+    """
+
+    from app.services.building_flex_contract import (
+        resize_trial_is_shape_freely,
+        resize_trial_outline_problem,
+    )
+
+    if not resize_trial_is_shape_freely(zone.properties or {}):
+        return False
+    if item.recipe is not None:
+        raise HTTPException(
+            status_code=409,
+            detail=(
+                "This building is set to Shape freely, so it is shown as shaped massing. "
+                "Refresh the project and rebuild it."
+            ),
+        )
+    geometry = _community_source_geometry(zone)
+    if geometry.geom_type != "Polygon" or len(geometry.interiors):
+        raise HTTPException(status_code=409, detail="A freely shaped building needs one outline without holes.")
+    ring = list(geometry.exterior.coords)
+    origin = ring[0]
+    east = 111_320 * math.cos(math.radians(origin[1]))
+    problem = resize_trial_outline_problem(
+        [((point[0] - origin[0]) * east, (point[1] - origin[1]) * 111_320) for point in ring]
+    )
+    if problem:
+        raise HTTPException(status_code=409, detail=problem)
+    return True
 
 
 async def _assert_ai_lego_recipes_are_current(
@@ -459,6 +508,10 @@ async def _assert_ai_lego_recipes_are_current(
         if kind != "building":
             continue
         properties = zone.properties or {}
+        if _assert_resize_trial_shape_freely(item, zone):
+            # The student explicitly chose shaped massing for this building.
+            # It is neither a missing recipe nor a family-pending fallback.
+            continue
         is_ai_zone = bool(str(properties.get("_plan_scenario") or "").strip())
         selected_identity = _selected_building_identity(properties)
         trusted_identity = (
@@ -859,6 +912,7 @@ async def create_lego_assembly_plan(
                 footprint_local_m=tuple(body.footprint_local_m) if body.footprint_local_m is not None else None,
                 native_home_plot=body.native_home_plot,
                 model_revision=body.model_revision,
+                footprint_program_id=body.footprint_program_id,
             ),
             allow_forced_fit=body.allow_forced_fit,
         )

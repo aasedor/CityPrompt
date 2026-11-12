@@ -77,7 +77,28 @@ def native_model_facts(properties: dict[str, Any]) -> dict | None:
     return row
 
 
+def _resize_trial_modified(properties: dict[str, Any]) -> bool:
+    """Building resize pilot: a stretched or freely shaped trial building."""
+    from app.services.building_flex_contract import (
+        RESIZE_TRIAL_SHAPE_FREELY,
+        resize_trial_state,
+    )
+
+    try:
+        state = resize_trial_state(properties)
+    except ValueError:
+        return False
+    return state is not None and (
+        state.mode == RESIZE_TRIAL_SHAPE_FREELY or state.width_scale != 1 or state.depth_scale != 1
+    )
+
+
 def uses_placement_plot(properties: dict[str, Any]) -> bool:
+    from app.services.building_flex_contract import resize_trial_is_shape_freely
+
+    # A freely shaped outline is the building's own floor plate, not a plot.
+    if resize_trial_is_shape_freely(properties):
+        return False
     return bool(
         properties.get("building_geometry_basis") == "placement_plot"
         or properties.get("native_home_plot") is True
@@ -99,6 +120,9 @@ def catalogue_housing_programme(properties: dict[str, Any]) -> dict | None:
     if not facts:
         return None
     if properties.get("floor_count", properties.get("floors", facts["storeys"])) != facts["storeys"]:
+        return None
+    # A stretched or reshaped pilot building is no longer the reviewed model.
+    if _resize_trial_modified(properties):
         return None
     programme = next(
         (

@@ -22,6 +22,27 @@ def building_edge_contracts():
     return {row["assetId"]: row for row in data["buildings"]}
 
 
+def _resize_trial_changes_envelope(p) -> bool:
+    """Building resize pilot: no reviewed contact envelope once reshaped.
+
+    The reviewed side clearances describe the native model only. A building
+    stretched independently in width or depth, or shaped freely, keeps its
+    whole saved polygon. This holds whether or not the pilot flag is on.
+    """
+    from app.services.building_flex_contract import RESIZE_TRIAL_PROGRAM_ID
+
+    if p.get("building_footprint_program_id") != RESIZE_TRIAL_PROGRAM_ID:
+        return False
+    if p.get("building_footprint_mode") != "exact_model":
+        return True
+    try:
+        width = float(p.get("building_footprint_width_scale", 1))
+        depth = float(p.get("building_footprint_depth_scale", 1))
+    except (TypeError, ValueError):
+        return True
+    return not (width == 1 and depth == 1)
+
+
 def building_contact_geometry(zone, geometry):
     """Return the reviewed envelope, or the unchanged source polygon."""
     p = getattr(zone, "properties", None) or {}
@@ -39,6 +60,8 @@ def building_contact_geometry(zone, geometry):
         or p.get("development_selected_variant_id") != row["variantId"]
         or p.get("pick_place_model_revision") != row["revision"]
     ):
+        return geometry
+    if _resize_trial_changes_envelope(p):
         return geometry
     ring = list(geometry.exterior.coords)[:-1]
     if len(ring) != 4:

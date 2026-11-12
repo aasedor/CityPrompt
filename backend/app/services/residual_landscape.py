@@ -435,6 +435,21 @@ def community_3d_source_properties(
                     }
                 ),
                 "saved_layout": _semantic_saved_layout(props),
+                # Building resize pilot. Present only for a building that
+                # declares the pilot programme, so every other source hash is
+                # byte-for-byte unchanged. A stretch or mode edit that leaves
+                # the polygon alone must still invalidate the compiled proof.
+                "resize_trial": (
+                    _compact_semantic_mapping(
+                        {
+                            "mode": _semantic_text(props.get("building_footprint_mode"), identifier=True),
+                            "width_scale": _semantic_number(props.get("building_footprint_width_scale"), positive=True),
+                            "depth_scale": _semantic_number(props.get("building_footprint_depth_scale"), positive=True),
+                        }
+                    )
+                    if props.get("building_footprint_program_id") == "building-resize-trial-v001"
+                    else None
+                ),
             }
         )
     if kind == "park":

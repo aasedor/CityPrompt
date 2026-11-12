@@ -1,0 +1,51 @@
+{
+  "schema": "cityprompt.building-resize-trial@1",
+  "id": "building-resize-trial-v001",
+  "status": "LOCAL_TRIAL_ONLY",
+  "method": "RLASM 6.1",
+  "note": "Single tuning file for the building resize pilot. Edit this file, then run `python scripts/building_resize_trial.py --write-mirror` so backend/app/data/buildingResizeTrial.json stays byte-identical. Nothing here publishes a catalogue entry or grants keeper approval.",
+  "stretch": {
+    "mode": "independent_horizontal_scale",
+    "minimum_scale": 0.7,
+    "maximum_scale": 1.4,
+    "default_scale": 1.0,
+    "step": 0.05,
+    "vertical_scale": 1.0,
+    "fit_plot_margin_m": null
+  },
+  "shape_freely": {
+    "minimum_width_m": 9.0,
+    "minimum_depth_m": 9.0,
+    "minimum_area_m2": 100.0,
+    "maximum_size_m": 120.0,
+    "maximum_outline_points": 24
+  },
+  "massing": {
+    "bay_module_m": 3.6,
+    "window_width_m": 1.8,
+    "window_height_m": 1.5,
+    "window_sill_m": 0.9,
+    "wall_end_margin_m": 0.9,
+    "floor_line_spacing_m": null,
+    "floor_line_height_m": 0.12,
+    "surface_offset_m": 0.03,
+    "floor_line_color": "#8f8a82",
+    "window_color": "#4d5a66"
+  },
+  "families": [
+    {
+      "asset_id": "final_seniors_apartments",
+      "label": "Aspen Terrace Seniors Apartments",
+      "family": "rlasm-clay-final-seniors-apartments",
+      "archetype_id": "final-seniors-apartments",
+      "variant_id": "final-seniors-apartments-v1",
+      "candidate": "final-seniors-apartments-clay-v003",
+      "path": "models/final-seniors-apartments-clay-v003.glb",
+      "bytes": 3097336,
+      "sha256": "9721947c0cf2f0ec6813c57e068fb34bd18d07ecbef15ca809b0e549d9823165",
+      "native_dimensions_m": [32.36000061035156, 17.980000495910645, 18.989999771118164],
+      "native_storeys": 5,
+      "placement_plot_m": [36.4, 22.0]
+    }
+  ]
+}

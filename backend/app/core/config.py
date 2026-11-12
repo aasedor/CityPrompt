@@ -363,6 +363,12 @@ class Settings(BaseSettings):
     master_planner_enabled: bool = True
     policy_corpus_bucket_prefix: str = "policy"
 
+    # --- Building resize pilot ---
+    # ENABLE_BUILDING_RESIZE_TRIAL. Off by default. With it off the trial
+    # programme id is treated like any unknown programme: ignored. Pair it with
+    # the frontend's VITE_ENABLE_BUILDING_RESIZE_TRIAL; never switch only one.
+    enable_building_resize_trial: bool = False
+
     @property
     def max_upload_size_bytes(self) -> int:
         return self.max_upload_size_mb * 1024 * 1024
