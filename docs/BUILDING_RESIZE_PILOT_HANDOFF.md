@@ -5,13 +5,18 @@ Written 2026-11-12 from a cloud sandbox. No 3D viewer, no database and no
 `C:\dev-artifacts` were available there. Everything listed under
 [Checks not run](#checks-not-run) is still open and is yours to do.
 
+Updated the same day with a second, more complex building: see
+[Second building](#second-building-brick-garden-courtyard).
+
 Nothing here is published. No catalogue entry, reviewed GLB byte, seed row or
 deployment file changed. The pilot does not change the RLASM 6.1 method and
 grants no keeper or runtime acceptance.
 
 ## What the pilot does
 
-One building can now be fitted to any space in two ways.
+Two buildings can now be fitted to any space, each in two ways. The first
+is a plain apartment block. The second is a mixed-use block around a
+courtyard, added to see how the approach holds on a harder form.
 
 - **Exact model** stretches the reviewed GLB independently in width and depth,
   70–140% per axis. Height scale stays exactly 1.
@@ -19,7 +24,7 @@ One building can now be fitted to any space in two ways.
   compiles to `planned_massing`, keeps archetype, variant, storeys and floor
   heights, and is drawn with the building's own facade kit: window bays,
   recessed balconies, entrance, parapet and roof plant, on fixed modules that
-  repeat and never stretch.
+  repeat and never stretch. Each building names its own kit.
 
 A stretch that leaves the band hands over to Shape freely automatically and
 says so, before applying and again after reload.
@@ -41,9 +46,9 @@ sides.
 Switch both flags together. One flag alone is a misconfiguration: a saved
 trial building then fails its 3D update with a recipe-mismatch error.
 
-## Asset chosen
+## Assets chosen
 
-**Aspen Terrace Seniors Apartments**
+### First building: Aspen Terrace Seniors Apartments
 
 | Field | Value |
 | --- | --- |
@@ -74,9 +79,42 @@ Alternatives considered and set aside: the Calgary Beltline mid-rise is a
 square mixed-use corner building, the Nordic Roof-Garden Apartments is nearly
 square with a roof pavilion and a 48 MB model, and Switchback is four storeys.
 
-Judgment call: this is a seniors' residence by programme. To pilot a different
-block, change the single `families` entry in the tuning file. The script
-refuses a model that is not in the reviewed clay library.
+Judgment call: this is a seniors' residence by programme. The script refuses
+a model that is not in the reviewed clay library.
+
+### Second building: Brick Garden Courtyard
+
+| Field | Value |
+| --- | --- |
+| Picker id | `final_courtyard_block` |
+| Archetype / variant | `final-courtyard-block` / `final-courtyard-block-v1` |
+| Candidate | `final-courtyard-block-clay-v006` |
+| Family | `rlasm-clay-final-courtyard-block` |
+| Model | `seed/model-library/rlasm-architectural-clay/models/final-courtyard-block-clay-v006.glb` |
+| Bytes / sha256 | 6,976,484 / `4edb11725a41a638d9f31c34ce86a739f3d92088966d6ff143079e6d65c88271` |
+| Native size | 30.38 × 26.30 × 15.00 m, 4 storeys. The walls are 30.0 × 24.4 m; awnings make up the rest |
+| Catalogue plot | 34.4 × 30.3 m |
+| Review | `PASS_INDEPENDENT_ARCHITECTURAL_CLAY`, 0 P0, 0 P1, published `ready` |
+| Stretch range | 21.27–42.53 m wide, 18.41–36.82 m deep |
+
+You asked for one "a bit more complex". It is more complex in three ways:
+
+- **Its plan is hollow.** Four wings surround a planted courtyard, so a free
+  outline has to decide where the courtyard goes and whether one fits at all.
+- **It is mixed use.** The ground floor is a stone base of shopfronts with
+  awnings and a gateway passage. The upper floors are brick homes.
+- **Its walls are not all alike.** Street fronts alternate balcony and window
+  bays. Side walls and courtyard walls carry plain paired windows.
+
+It also has a clean, regular rhythm, so a kit can be faithful to it. It has a
+reviewed entrance record (the gateway), no side-clearance row and no dwelling
+programme.
+
+Alternatives considered and set aside as the next steps up, not this one:
+the Beltline brick mixed-use mid-rise has a notched plan, a glazed corner and
+a set-back metal penthouse, and the Corner Café & Apartments has a mansard
+roof, dormers and a chamfered corner. Both need vocabulary this kit does not
+have.
 
 ## Tune everything in one file
 
@@ -105,18 +143,52 @@ The frontend exposes the same values as named constants in
 | `shape_freely.maximum_size_m` | 120 | Largest outline extent |
 | `shape_freely.maximum_outline_points` | 24 | Corner limit |
 | `massing.style` | `archetype_kit` | How Shape freely is drawn. `floor_lines_and_windows` is the plain fallback |
-| `massing.kit.ground_floor_height_m` / `upper_floor_height_m` | 4.0 / 3.2 | Floor levels, measured from the model. Floor lines sit on them |
-| `massing.kit.plinth_height_m` / `parapet_height_m` | 0.15 / 0.48 | Base band and parapet, measured |
-| `massing.kit.window_bay_module_m` / `window_width_m` | 3.5 / 2.5 | Window bay module and window width |
-| `massing.kit.window_height_m` / `window_sill_m` | 2.28 / 0.5 | Upper-floor window |
-| `massing.kit.ground_window_height_m` / `ground_window_sill_m` | 2.87 / 0.42 | Ground-floor window |
-| `massing.kit.loggia_bay_module_m` / `loggia_width_m` | 5.3 / 4.45 | Balcony bay module and opening |
-| `massing.kit.loggia_height_m` / `loggia_depth_m` | 2.72 / 1.4 | Balcony opening height and recess depth |
-| `massing.kit.loggia_min_wall_m` | 20 | Only a wall this long carries balcony columns |
-| `massing.kit.corner_pier_m` | 0.55 | Solid wall at each end of a facade |
-| `massing.kit.railing_height_m` | 1.05 | Balcony railing |
-| `massing.kit.entrance_width_m` / `_depth_m` / `_height_m` | 9.2 / 1.6 / 3.85 | Entrance canopy on the front wall |
-| `massing.kit.colors.*` | 12 colours | Measured from the model's materials. Glass and frame are darkened on purpose |
+| `families[].massing_kit` | a kit name | Which kit under `massing.kits` draws that building in Shape freely |
+| `massing.kits.<name>.type` | `apartment_bar` or `courtyard_block` | The vocabulary the kit is drawn with. The script checks every key the type needs |
+
+Kit `aspen_terrace`, type `apartment_bar`. Keys are under `massing.kits.aspen_terrace`.
+
+| JSON key | Value | Meaning |
+| --- | --- | --- |
+| `ground_floor_height_m` / `upper_floor_height_m` | 4.0 / 3.2 | Floor levels, measured from the model. Floor lines sit on them |
+| `plinth_height_m` / `parapet_height_m` | 0.15 / 0.48 | Base band and parapet, measured |
+| `window_bay_module_m` / `window_width_m` | 3.5 / 2.5 | Window bay module and window width |
+| `window_height_m` / `window_sill_m` | 2.28 / 0.5 | Upper-floor window |
+| `ground_window_height_m` / `ground_window_sill_m` | 2.87 / 0.42 | Ground-floor window |
+| `loggia_bay_module_m` / `loggia_width_m` | 5.3 / 4.45 | Balcony bay module and opening |
+| `loggia_height_m` / `loggia_depth_m` | 2.72 / 1.4 | Balcony opening height and recess depth |
+| `loggia_min_wall_m` | 20 | Only a wall this long carries balcony columns |
+| `corner_pier_m` | 0.55 | Solid wall at each end of a facade |
+| `railing_height_m` | 1.05 | Balcony railing |
+| `entrance_width_m` / `_depth_m` / `_height_m` | 9.2 / 1.6 / 3.85 | Entrance canopy on the front wall |
+| `colors.*` | 12 colours | Measured from the model's materials. Glass and frame are darkened on purpose |
+
+Kit `brick_garden_courtyard`, type `courtyard_block`. Keys are under `massing.kits.brick_garden_courtyard`.
+
+| JSON key | Value | Meaning |
+| --- | --- | --- |
+| `wing_depth_m` | 5.4 | Depth of every wing. The courtyard is what the wings leave open. **This changes the floor area a student reads** |
+| `courtyard_min_clear_m` | 8.0 | Smallest clear courtyard. An outline too small for it is built solid |
+| `ground_floor_height_m` / `upper_floor_height_m` | 4.2 / 3.2 | Shop floor and home floors, measured |
+| `plinth_height_m` / `parapet_height_m` | 0.15 / 0.64 | Base and parapet, measured. Four storeys top out at 14.59 m, as the model does |
+| `bay_module_m` | 4.285 | Street-front bay: one shopfront below, one balcony or window bay above. Seven fit the model's 30 m front |
+| `loggia_width_m` / `_height_m` / `_depth_m` | 3.1 / 3.01 / 1.15 | Recessed balcony opening |
+| `loggia_door_width_m` / `_height_m`, `railing_height_m` | 2.8 / 2.57, 1.06 | Balcony doors and railing |
+| `window_width_m` / `_height_m` / `_sill_m` | 2.55 / 1.96 / 0.62 | Three-light window on street fronts |
+| `side_bay_module_m`, `side_window_width_m` / `_height_m` / `_sill_m` | 3.485, 1.75 / 2.1 / 0.65 | Paired windows on side and courtyard walls, every floor |
+| `shop_window_width_m`, `shop_door_width_m`, `shop_front_height_m`, `shop_window_sill_m` | 2.17, 1.02, 3.12, 0.27 | One shopfront: window beside door |
+| `awning_width_m` / `_projection_m` / `_top_m` / `_drop_m` | 3.34 / 0.95 / 3.52 / 0.47 | Awning over each shopfront. It projects beyond the outline |
+| `shop_band_height_m` / `_projection_m` | 0.18 / 0.3 | Stone band over the shops |
+| `passage_width_m` / `_height_m` | 3.2 / 3.67 | Gateway in the middle of the front |
+| `string_course_height_m` / `_projection_m`, `lintel_height_m` | 0.12 / 0.19, 0.14 | Stone bands on side walls and lintels over openings |
+| `coping_height_m` / `_width_m` | 0.07 / 0.38 | Parapet coping |
+| `garden_inset_m` / `garden_height_m` | 3.0 / 0.45 | Planted bed in the courtyard and the paved margin round it |
+| `colors.*` | 12 colours | Measured from the model's materials. `glass` is darkened on purpose; `shopfront` is the shop glazing |
+
+Shared by every kit and by the fallback style:
+
+| JSON key | Value | Meaning |
+| --- | --- | --- |
 | `massing.floor_line_height_m` | 0.12 | Floor line band height |
 | `massing.surface_offset_m` | 0.03 | Stand-off of frames and lines from the wall |
 | `massing.bay_module_m`, `window_*`, `wall_end_margin_m`, `floor_line_spacing_m`, `floor_line_color`, `window_color` | | Used only by the plain fallback style |
@@ -162,10 +234,15 @@ older code cannot mistake a trial building for a house-pilot one.
 - Shape freely is certified in `_assert_resize_trial_shape_freely`: it must
   arrive without a recipe, and its outline minimum is measured on the server.
 
-### Facade kit for Shape freely
+### Facade kits for Shape freely
 
-`buildLegoMassingKitData` in `legoMassingGeometry.ts` builds a complete shell
-for any outline from the kit values. It measures nothing itself.
+Each kit builds a complete shell for any outline from its own values. The
+code measures nothing itself. `buildLegoMassingKit` in `legoMassingKits.ts`
+picks the builder by the kit's `type`. Wall-drawing helpers are shared in
+`legoMassingKitPainter.ts`, and plan geometry in `legoMassingRing.ts`.
+
+**Type `apartment_bar`** (`buildLegoMassingKitData` in `legoMassingGeometry.ts`),
+used by Aspen Terrace:
 
 - **Vertical:** plinth, a 4.0 m ground floor, 3.2 m upper floors, parapet with
   a dark cap, flat roof and roof plant. A subtle line marks each floor.
@@ -177,8 +254,58 @@ for any outline from the kit values. It measures nothing itself.
 - **Check:** on a 24 m wall the kit gives window, three balconies, window,
   which is the model's own front.
 
+**Type `courtyard_block`** (`buildLegoMassingCourtyardKitData` in
+`legoMassingCourtyardKit.ts`), used by Brick Garden Courtyard:
+
+- **Plan:** every wing is `wing_depth_m` deep, following the outline. What is
+  left in the middle is the courtyard, with a paved floor and a planted bed.
+  If no courtyard at least `courtyard_min_clear_m` across fits, the block is
+  built solid. An L shape with thick arms gets an L-shaped courtyard; a thin
+  bar gets none.
+- **Street fronts:** the first drawn edge is the front. It and every wall
+  roughly parallel to it are street fronts: a stone base of shopfronts with
+  awnings, then balcony and window bays that alternate from both ends, so a
+  front is always symmetrical.
+- **Sides and courtyard walls:** brick to the ground with paired windows on
+  every floor. Sides also carry a stone band at each floor.
+- **Gateway:** the middle bay of the front. It is a passage through to the
+  courtyard, or a recessed front door when the block is solid. The front keeps
+  an odd number of bays so the gateway always has a bay of its own.
+- **Check:** on the model's 30.0 × 24.4 m walls the kit gives seven bays in
+  the model's order (balcony, window, balcony, window, balcony, window,
+  balcony), six shops beside the gateway, floors at the model's levels and a
+  parapet at the model's 14.59 m.
+
 The plain prism stays in place as the click and inspection target but is not
-painted, because the shell has real recesses the prism would plug.
+painted, because the shell has real recesses and a courtyard the prism would
+plug.
+
+### Courtyard and the live figures
+
+For a courtyard kit the panel reports **Footprint area** as the outline less
+the courtyard, adds a **Courtyard** row, and computes floor area and FAR from
+the built footprint. It says so in the caption. When an outline is too small
+for a courtyard the row disappears and the panel says the block is built
+solid and how wide it needs to be.
+
+The same function draws the courtyard and measures it
+(`kitCourtyardRing`), so the figure matches the building on screen. The
+server does not compute these figures; see Known limits.
+
+### Adding another building
+
+1. Add a `families` entry: picker id, variant, candidate, model path, bytes,
+   sha256, native size, storeys and catalogue plot, all copied from
+   `seed/model-library/rlasm-architectural-clay/library.json`.
+2. Name its `massing_kit`. Reuse a kit if the facade matches, or add a kit of
+   an existing `type` with that building's measurements. A facade the two
+   types cannot draw needs a new builder.
+3. Run the script with `--write-mirror`, then without flags. It refuses a pin
+   that does not match the reviewed library and a kit with a missing key.
+4. Add the building to `REVIEWS` in `resizePilotReview.tsx` and look at it.
+
+Stretching needs nothing else. The band is shared by every building today; a
+per-building band would be a small change in the contract on both sides.
 
 ### Rigid props under a stretch
 
@@ -191,7 +318,7 @@ only. The cached GLB and its bytes are never touched.
 
 `frontend/resize-pilot-review.html` renders the reference images, the exact
 model and Shape freely side by side with the real code, so proportions and
-colours can be tuned without a database. See
+colours can be tuned without a database. It shows either building. See
 [Tune by eye without a database](#tune-by-eye-without-a-database).
 
 ### Editing
@@ -234,14 +361,16 @@ Frontend
 - `frontend/src/features/pickPlace/ReshapePanel.tsx` — resizable plot, outline tools, live figures.
 - `frontend/src/features/pickPlace/buildingPlacementEdges.ts`, `nativeBuildingContract.ts`, `representationNotice.ts`, `useAutomatic3D.ts` — guards and wording.
 - `frontend/src/features/legoAssembly/communityCompiler.ts`, `legoAssemblyApi.ts`, `nativeClayPlacement.ts` — stretch targets, explicit massing, centring.
-- `frontend/src/components/viewer/globe/legoMassingGeometry.ts`, `GlobeLegoAssemblyLayer.tsx` — the facade kit, and the plain floor-line fallback.
+- `frontend/src/components/viewer/globe/legoMassingGeometry.ts`, `GlobeLegoAssemblyLayer.tsx` — the apartment facade kit, and the plain floor-line fallback.
+- `frontend/src/components/viewer/globe/legoMassingCourtyardKit.ts` — the courtyard block facade kit.
+- `frontend/src/components/viewer/globe/legoMassingKits.ts`, `legoMassingKitPainter.ts`, `legoMassingRing.ts` — kit dispatch, shared wall drawing, and plan geometry (inset, courtyard, area).
 - `frontend/src/features/legoAssembly/resizeTrialRigidProps.ts` — planting keeps its proportions under a stretch.
 - `frontend/resize-pilot-review.html`, `frontend/src/review/resizePilotReview.tsx` — the review page.
 - `frontend/src/components/viewer/globe/GlobeEditMode.tsx` — plot corner handles for the exact model.
 - `frontend/src/features/projects/ProjectViewPage.tsx` — save path.
 - `frontend/scripts/public-env.mjs`, `public-env.test.mjs` — flag added to the browser env allowlist.
-- `frontend/src/data/runtimeAssetManifest.json` — three new source files registered.
-- Seven new or extended test files beside the code they cover.
+- `frontend/src/data/runtimeAssetManifest.json` — seven new source files registered.
+- Nine new or extended test files beside the code they cover.
 
 Docs
 
@@ -283,25 +412,27 @@ passed.
 | The plain massing prism is not painted when the facade kit draws the building | The kit has real balcony recesses that the prism would plug. The prism still takes clicks and inspection | Flag on, Shape freely, kit style |
 | Planting geometry is copied and reshaped per stretched building | So trees and shrubs keep their proportions. The cached GLB is untouched | Resize-trial plans at a stretch other than 100% |
 | Flag added to `PUBLIC_ENV_NAMES` and to its test fixture | That gate strips every unlisted `VITE_` name, and its test requires each consumer to be listed | One name |
-| Three entries added to `runtimeAssetManifest.json` `sourceInputs` | The manifest check lists every reachable source file | Hand-inserted, see below |
+| Seven entries added to `runtimeAssetManifest.json` `sourceInputs` | The manifest check lists every reachable source file | Hand-inserted, see below |
+| The script accepts more than one building, each listed once | The second building. It still refuses any model outside the reviewed library | Trial file only |
+| One of this pilot's own tests was rewritten, not loosened | It said every model but Aspen Terrace stays select-and-place. It now says exactly the listed buildings are released and every other model is unchanged | `test_the_default_is_released_only_through_the_explicit_contract` |
+| A courtyard block's live floor area leaves out its courtyard | Counting open ground as floor would overstate FAR | Panel figures, Shape freely, courtyard kits |
 
 ## Tests run
 
-Run in the sandbox on this branch.
+Run in the sandbox on this branch, after the second building was added.
 
 | Check | Result |
 | --- | --- |
-| `pytest tests/test_building_resize_trial.py tests/test_building_resize_trial_script.py` | 78 passed |
-| Backend neighbours: flex contract, house pilot, placement edges, towers, brick podium, clay runtime, lego assembly, residual landscape, student report, native home plot | 427 passed |
-| Full backend suite `pytest tests/` | 3,415 passed, 74 skipped, 15 failed, 16 errors. The 31 are pre-existing, see below |
+| `pytest tests/test_building_resize_trial.py tests/test_building_resize_trial_script.py` | 99 passed |
+| Full backend suite `pytest tests/` | 3,436 passed, 74 skipped, 15 failed, 16 errors. The 31 are pre-existing, see below |
 | `ruff check .` and `black --check --line-length=120 .` in `backend/` | Passed |
-| New frontend tests (7 files) | 76 passed |
-| Full frontend suite `npx vitest run` | 4,604 passed, 47 skipped, 6 failed. The 6 are pre-existing, see below |
+| The pilot's frontend tests (9 files) | 102 passed |
+| Full frontend suite `npx vitest run` | 4,630 passed, 47 skipped, 6 failed. The 6 are pre-existing, see below |
 | `npm run type-check` | Passed |
 | `npx eslint --max-warnings=0` on every changed frontend file | Passed |
 | `npm run check:dead-code` | Passed |
 | `node --test scripts/public-env.test.mjs` | 4 passed |
-| `python scripts/building_resize_trial.py` | Verified offline, model bytes matched the pin |
+| `python scripts/building_resize_trial.py` | Verified offline, both models' bytes matched their pins |
 
 The failures are not from this branch. I ran the same files on an untouched
 `deployment-version` worktree and the failing sets were identical. They need a
@@ -359,12 +490,22 @@ None of these were run. Do not read any of them as passed.
 - Direct 3D capture and any AI render of a trial building.
 - The student planning report with a Shape freely building.
 
+**For the courtyard block, in addition**
+
+- Everything above, for this model. None of it was run for either building.
+- The courtyard in the viewer: its paving against the terrain and the
+  foundation surface, and shadows inside it.
+- The gateway passage seen from street level and from a walking camera.
+- Awnings and the stone band against a neighbouring building or a street edge.
+- The reviewed gateway entrance and its approach path after a stretch.
+- The stretched courtyard, its galleries and planting at 70% and 140%.
+
 **Tooling**
 
 - `npm run check:runtime-assets`. It cannot finish in the sandbox: it reports
-  376 missing asset files on untouched `deployment-version` too. The three new
+  376 missing asset files on untouched `deployment-version` too. The seven new
   `sourceInputs` lines were inserted by hand and checked with a copy of the
-  generator's own source walk (680 expected, 680 recorded). Run
+  generator's own source walk (684 expected, 684 recorded). Run
   `npm run check:runtime-assets` locally and regenerate if it disagrees.
 - `npm run test:e2e` (Playwright).
 - `python scripts/building_resize_trial.py --check-database`.
@@ -374,8 +515,8 @@ None of these were run. Do not read any of them as passed.
 
 Per `docs/ARCHETYPE_RUNTIME_INTEGRATION.md`, a materially revised building
 variant needs `docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md` completed before its
-student runtime integration is called ready. That review is not done. It
-needs the viewer.
+student runtime integration is called ready. That review is not done for
+either variant. It needs the viewer.
 
 ## What the review page showed
 
@@ -402,6 +543,26 @@ tuning. They are not passed checks, and the screenshots are not committed.
   planting and paving around the building. The model is architectural clay by
   design, and the surroundings belong to the site, not this pilot.
 
+For the second building, rendered the same way:
+
+- **Shape freely reads as the same building.** On the model's 30.0 × 24.4 m
+  walls the kit gives the same seven-bay front, the stone shop base with six
+  awnings, the gateway, the coping and a courtyard of nearly the same size
+  (261 m² against the model's 269 m²).
+- **The courtyard follows the outline.** A 48 × 26 m block, an L shape and a
+  five-corner outline each got a courtyard of matching shape. An 18 × 14 m
+  block and an 80 × 14 m bar were built solid with a front door.
+- **The exact model stretched cleanly at all six test sizes.** The courtyard
+  stretches with the wings, so at 140% width the courtyard is wider and the
+  wings thicker. Courtyard planting kept its shape.
+- **Different from the exact model:** the kit has no courtyard galleries, no
+  wall lamps, no shop interiors and no trees. Its courtyard is a paved floor
+  with one planted bed. Its wings are one depth all round, where the model's
+  are 4.4 m front and rear and 6.3 m at the sides.
+- **Aspen Terrace is unchanged.** Its kit output is byte-identical before and
+  after the code was reorganised, checked on seven outlines at three storey
+  counts.
+
 ## Needs tuning by eye
 
 1. **The band.** 0.70 and 1.40 are your numbers. Windows are narrow slots at
@@ -420,6 +581,26 @@ tuning. They are not passed checks, and the screenshots are not committed.
    that should meet the plot edge.
 9. **More rigid props.** Only planting is rigid. Furniture shares materials
    with facade parts, so it was left to stretch rather than risk gaps.
+
+For the courtyard block:
+
+10. **Wing depth.** 5.4 m sits between the model's own wings. Real perimeter
+    blocks are usually 10 to 14 m deep. On a large outline thin wings leave a
+    very large courtyard and little floor area: an L of 60 × 46 m reports
+    1,028 m² built and 940 m² open. Raising `wing_depth_m` changes the look
+    and the figures together.
+11. **Smallest courtyard.** 8 m clear. Below that the block is solid.
+12. **Which walls are street fronts.** Walls within 45° of the front get shops
+    and balconies; the rest are sides. On an L shape that puts shops on three
+    walls. Judge whether rear fronts should be plainer.
+13. **Courtyard planting.** One flat planted bed. On a large courtyard it is
+    a large flat green.
+14. **Shop glazing.** `colors.shopfront` is a neutral grey-green. The
+    reference shows warm lit shops.
+15. **Awnings.** They project 0.95 m beyond the drawn outline on every street
+    front.
+16. **Band for this building.** It shares 0.70–1.40. At 70% width the shop
+    bays are narrow.
 
 ## Known limits of this first pass
 
@@ -445,6 +626,18 @@ tuning. They are not passed checks, and the screenshots are not committed.
   records the model's full 19.0 m, which is where the roof plant ends.
 - Place another, from a stretched or freely shaped building, places a fresh
   exact model on its catalogue plot. The stretch is not copied.
+- The courtyard is left out of floor area only in the panel's live figures.
+  Nothing on the server computes floor area for shaped massing, and any
+  project-wide total that multiplies a zone's outline by its storeys still
+  counts the courtyard. Check the student planning report before relying on
+  it for a courtyard block.
+- A freely shaped courtyard block has no entrance connection. Its gateway is
+  drawn but is not a snapped entrance.
+- The front is the first drawn edge. A student cannot yet choose another
+  wall as the front.
+- The viewer's foundation surface covers the whole outline, courtyard
+  included. Whether it shows through the courtyard paving on sloping ground
+  is not checked.
 
 ## Switch it on locally
 
@@ -508,13 +701,18 @@ tuning. They are not passed checks, and the screenshots are not committed.
    stored bytes match. It never writes. If the row is missing, install the
    clay library the usual way; this pilot adds no rows of its own.
 
-6. On `localhost:5174`, place **Aspen Terrace Seniors Apartments** and select
-   it. The panel shows **Fit this building to your space**.
+6. On `localhost:5174`, place **Aspen Terrace Seniors Apartments** or
+   **Brick Garden Courtyard** and select it. The panel shows **Fit this
+   building to your space**.
 
 Suggested first run: set width 38 m and apply; drag a plot corner inward; press
 Fit building to plot on a 60 m wide plot and read the handover label; switch
 to Shape freely, add an outline point and drag it; undo back to the start;
 reload.
+
+For the courtyard block, also: switch to Shape freely and read the Courtyard
+row; drag the outline narrower than 18.8 m and watch the courtyard close and
+the row go; widen it again; look through the gateway from street level.
 
 ## Tune by eye without a database
 
@@ -532,13 +730,17 @@ Then open `http://localhost:5174/resize-pilot-review.html` with one of:
 | --- | --- |
 | `?view=compare&model=<GLB URL>` | Reference images, exact model and Shape freely side by side |
 | `?view=stretch&model=<GLB URL>` | The exact model at six stretches |
+| `?view=model&model=<GLB URL>` | The exact model as authored, from four sides |
 | `?view=massing` | The facade kit on six outlines |
 | `?view=panel-exact`, `panel-stretched`, `panel-free-auto`, `panel-free-l` | The panel in each state |
 
-`<GLB URL>` is any address your browser can load
-`final-seniors-apartments-clay-v003.glb` from, for example your local file
-API. Without it the massing and panel views still work. Edit
-`buildingResizeTrial.json`, save, and the page reloads with the new values.
+Add `&building=final_courtyard_block` for the second building. Without it the
+page shows Aspen Terrace.
+
+`<GLB URL>` is any address your browser can load that building's GLB from,
+for example your local file API. Without it the massing and panel views still
+work. Edit `buildingResizeTrial.json`, save, and the page reloads with the
+new values.
 
 ## Switch it on in staging
 
@@ -569,3 +771,5 @@ To switch off, remove both variables and redeploy both sides.
 7. `feat(resize-pilot): draw Shape freely with the building's own facade kit`
 8. `feat(resize-pilot): review page for tuning by eye`
 9. `docs(resize-pilot): record the facade kit, rigid planting and review page`
+10. `feat(resize-pilot): add the Brick Garden Courtyard with its own courtyard kit`
+11. `docs(resize-pilot): record the second building`
