@@ -57,9 +57,12 @@ trial building then fails its 3D update with a recipe-mismatch error.
 
 Why this one:
 
-- It is a plain five-storey rectangular apartment bar with three repeating
-  balcony columns. A regular bar tolerates stretching better than a form whose
-  identity is a corner, a court or a roof feature.
+- It is a five-storey apartment block with three repeating balcony columns
+  on a rectangular plan. A regular block tolerates stretching better than a
+  form whose identity is a corner or a court.
+- Correction after rendering it: it is not a plain bar. One end has a
+  single-storey lounge wing with a planted roof terrace. That wing, its
+  furniture and its planting stretch with the rest of the model.
 - It is small (3.1 MB), already published and hash-pinned, and has a reviewed
   entrance record, so the entrance check has real data.
 - It has no reviewed side-clearance row and no dwelling programme, so the
@@ -324,6 +327,29 @@ Per `docs/ARCHETYPE_RUNTIME_INTEGRATION.md`, a materially revised building
 variant needs `docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md` completed before its
 student runtime integration is called ready. That review is not done. It
 needs the viewer.
+
+## What the harness renders showed
+
+After the code was pushed I rendered the real GLB, the real panels and the
+real massing functions in a temporary browser harness (headless Chromium,
+software rendering, harness lighting, no globe and no database). The harness
+and its screenshots are not committed. These are observations, not passed
+checks; the viewer checks above are all still open.
+
+- **Exact model.** Height holds at every stretch. At 70% width the windows
+  narrow to slots. At 140% width the balconies and glazing widen noticeably.
+- **Terrace and roof.** The terrace furniture, the trees and the rooftop
+  units stretch with the model. Trees go thin at 70% and fat at 140%. This is
+  the most visible distortion and the strongest argument for a narrower band.
+- **Massing dressing.** Bays repeat as designed: 8 across the model's own
+  footprint, 13 across a 50 m wall, 24 across a 90 m wall, window width
+  constant throughout.
+- **Floor lines.** At 0.12 m they read as hairlines from across a site.
+- **Massing shading.** The walls shade unevenly, darker towards the roof.
+  That comes from the existing prism mesh sharing corner vertices, not from
+  the dressing. It affects every planned mass, so I left it alone.
+- **Panels.** Both modes, the out-of-band warning, the automatic-switch label
+  and the live figures render as intended at the 288 px panel width.
 
 ## Needs tuning by eye
 
