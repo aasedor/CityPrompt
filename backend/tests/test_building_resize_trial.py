@@ -139,10 +139,11 @@ def test_the_backend_contract_mirrors_the_frontend_tuning_file_byte_for_byte():
     assert contracts.RESIZE_TRIAL_MANIFEST.read_bytes() == FRONTEND_CONTRACT.read_bytes()
 
 
-def test_the_trial_pins_the_exact_reviewed_library_entry():
+@pytest.mark.parametrize(("index", "candidate"), [(0, CANDIDATE), (1, "final-courtyard-block-clay-v006")])
+def test_the_trial_pins_the_exact_reviewed_library_entry(index, candidate):
     payload = json.loads(LIBRARY.read_text(encoding="utf-8"))
-    entry = next(row for row in payload["entries"] if row["candidate"] == CANDIDATE)
-    family = contracts._resize_trial_manifest().families[0]
+    entry = next(row for row in payload["entries"] if row["candidate"] == candidate)
+    family = contracts._resize_trial_manifest().families[index]
     assert (family.asset_id, family.variant_id, family.archetype_id) == (
         entry["picker"]["id"],
         entry["variant_id"],
@@ -161,7 +162,8 @@ def test_the_trial_pins_the_exact_reviewed_library_entry():
     assert raw["status"] == "LOCAL_TRIAL_ONLY"
     assert raw["stretch"]["vertical_scale"] == 1.0
     assert (raw["stretch"]["minimum_scale"], raw["stretch"]["maximum_scale"]) == (0.7, 1.4)
-    assert raw["families"][0]["bytes"] == entry["model"]["bytes"]
+    assert raw["families"][index]["bytes"] == entry["model"]["bytes"]
+    assert len(contracts._resize_trial_manifest().families) == len(raw["families"]) == 2
 
 
 def test_a_band_beyond_the_hard_ceiling_is_refused(monkeypatch, tmp_path):
@@ -325,9 +327,22 @@ def test_the_default_is_released_only_through_the_explicit_contract(trial_on):
     pinned = seniors_module()
     assert _fixed_landmark_is_select_and_place(pinned) is True
     assert _fixed_landmark_is_select_and_place(pinned, resize_trial=contract) is False
-    others = [module for module in descriptors() if module.source_variant_id != VARIANT]
+    # Exactly the buildings the contract lists are released. Every other
+    # reviewed model stays select-and-place even with the contract in hand.
+    released = {
+        module.source_variant_id
+        for module in descriptors()
+        if not _fixed_landmark_is_select_and_place(module, resize_trial=contract)
+        and _fixed_landmark_is_select_and_place(module)
+    }
+    assert released == {family.variant_id for family in contract.families} == {VARIANT, "final-courtyard-block-v1"}
+    others = [module for module in descriptors() if module.source_variant_id not in released]
     assert len(others) > 20
-    assert all(_fixed_landmark_is_select_and_place(module, resize_trial=contract) for module in others)
+    assert all(
+        _fixed_landmark_is_select_and_place(module, resize_trial=contract)
+        == _fixed_landmark_is_select_and_place(module)
+        for module in others
+    )
 
 
 def test_an_existing_placement_without_the_programme_is_unchanged_with_the_flag_on(trial_on):
@@ -571,3 +586,108 @@ def test_a_stretch_edit_changes_the_compiled_source_fingerprint():
         )
     }
     assert len(hashes) == 5
+
+
+# --- A second, more complex building: the courtyard block --------------------
+
+COURTYARD_ASSET = "final_courtyard_block"
+COURTYARD_VARIANT = "final-courtyard-block-v1"
+COURTYARD_CANDIDATE = "final-courtyard-block-clay-v006"
+COURTYARD_W = 30.3799991607666
+COURTYARD_D = 26.299999237060547
+COURTYARD_H = 15.0
+
+
+def courtyard_properties(mode="exact_model", width=1.0, depth=1.0, **overrides):
+    return properties(
+        mode,
+        width,
+        depth,
+        **{
+            "pick_place_asset": COURTYARD_ASSET,
+            "development_archetype_id": "final-courtyard-block",
+            "development_selected_variant_id": COURTYARD_VARIANT,
+            "pick_place_model_revision": COURTYARD_CANDIDATE,
+            "floors": 4,
+            "floor_count": 4,
+            **overrides,
+        },
+    )
+
+
+def courtyard_module():
+    return next(module for module in descriptors() if module.source_variant_id == COURTYARD_VARIANT)
+
+
+def courtyard_request(width, depth, plot=(60.0, 50.0)):
+    return AssemblyRequest(
+        COURTYARD_W * width,
+        COURTYARD_D * depth,
+        4,
+        archetype_id=COURTYARD_VARIANT,
+        reuse_keys=_building_reuse_keys(courtyard_properties()),
+        footprint_local_m=tuple(rectangle(*plot)),
+        model_revision=COURTYARD_CANDIDATE,
+        footprint_program_id=PROGRAM,
+    )
+
+
+def test_the_courtyard_block_is_validated_on_its_own_dimensions(trial_on):
+    assert contracts.trusted_building_footprint_target(courtyard_properties()) == pytest.approx(
+        (COURTYARD_W, COURTYARD_D)
+    )
+    assert contracts.trusted_building_footprint_target(courtyard_properties(width=1.4, depth=0.7)) == pytest.approx(
+        (COURTYARD_W * 1.4, COURTYARD_D * 0.7)
+    )
+    state = contracts.resize_trial_state(courtyard_properties(width=1.2, depth=0.9))
+    assert (state.family.asset_id, state.family.native_storeys) == (COURTYARD_ASSET, 4)
+    with pytest.raises(ValueError, match="outside the trial range"):
+        contracts.resize_trial_state(courtyard_properties(width=1.41))
+    # One building's identity never borrows the other's revision.
+    with pytest.raises(ValueError, match="not part of the resize trial"):
+        contracts.resize_trial_state(courtyard_properties(pick_place_model_revision=CANDIDATE))
+    with pytest.raises(ValueError, match="not part of the resize trial"):
+        contracts.resize_trial_state(properties(pick_place_model_revision=COURTYARD_CANDIDATE))
+    assert contracts.resize_trial_is_shape_freely(courtyard_properties(mode="shape_freely")) is True
+    assert uses_placement_plot(courtyard_properties(mode="shape_freely")) is False
+
+
+def test_the_courtyard_block_stays_select_and_place_without_the_trial_contract():
+    module = courtyard_module()
+    assert _fixed_landmark_is_select_and_place(module) is True
+    with pytest.raises(AssemblyPlanningError, match="fixed at its native size"):
+        plan_vertical_assembly(descriptors(), courtyard_request(0.8, 1.2), allow_forced_fit=False)
+
+
+@pytest.mark.parametrize(("width", "depth"), [(0.7, 0.7), (1.0, 1.0), (1.4, 0.7), (0.7, 1.4), (1.4, 1.4)])
+def test_the_courtyard_block_stretches_independently_with_unit_height(trial_on, width, depth):
+    contract = contracts.resize_trial_contract()
+    module = courtyard_module()
+    assert contract.family_for_module(module).asset_id == COURTYARD_ASSET
+    assert _fixed_landmark_is_select_and_place(module, resize_trial=contract) is False
+    plan = plan_vertical_assembly(descriptors(), courtyard_request(width, depth), allow_forced_fit=False)
+    instance = plan["instances"][0]
+    assert [row["role"] for row in plan["instances"]] == ["assembled"]
+    assert instance["asset_id"] == module.id
+    assert instance["scale"] == [width, depth, 1.0]
+    assert instance["native_dimensions_m"] == [COURTYARD_W, COURTYARD_D, COURTYARD_H]
+    assert plan["assembled_height_m"] == pytest.approx(COURTYARD_H, abs=1e-4)
+    assert plan["fit"]["resize_trial"] == {
+        "program_id": PROGRAM,
+        "width_scale": width,
+        "depth_scale": depth,
+        "vertical_scale": 1.0,
+    }
+
+
+def test_the_courtyard_block_is_refused_outside_the_band_or_its_plot(trial_on):
+    with pytest.raises(AssemblyPlanningError):
+        plan_vertical_assembly(descriptors(), courtyard_request(1.45, 1.0), allow_forced_fit=False)
+    # A plot narrower than the stretched model cannot hold it.
+    with pytest.raises(AssemblyPlanningError):
+        plan_vertical_assembly(descriptors(), courtyard_request(1.4, 1.0, plot=(40.0, 50.0)), allow_forced_fit=False)
+
+
+def test_the_courtyard_block_target_is_the_stretched_model_not_its_plot(trial_on):
+    placed = zone(courtyard_properties(width=1.2, depth=0.9), rectangle(45, 32))
+    assert _locked_building_target(placed)[:2] == pytest.approx((COURTYARD_W * 1.2, COURTYARD_D * 0.9))

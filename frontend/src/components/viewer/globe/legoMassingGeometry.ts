@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '../mapEngine/geoUtils';
+import { createKitMeshes, kitWall } from './legoMassingKitPainter';
+import { cleanRing, insideKitRing, localKitRing } from './legoMassingRing';
 
 export interface LegoMassingMeshData {
   positions: number[];
@@ -23,28 +25,6 @@ export function legoMassingColor(seed: string): string {
     hash = Math.imul(hash, 16777619);
   }
   return MASSING_PALETTE[Math.abs(hash) % MASSING_PALETTE.length];
-}
-
-function cleanRing(ring: readonly number[][]): number[][] {
-  const cleaned: number[][] = [];
-  for (const coordinate of ring) {
-    if (
-      !Array.isArray(coordinate)
-      || coordinate.length < 2
-      || !Number.isFinite(coordinate[0])
-      || !Number.isFinite(coordinate[1])
-    ) continue;
-    const previous = cleaned[cleaned.length - 1];
-    if (!previous || previous[0] !== coordinate[0] || previous[1] !== coordinate[1]) {
-      cleaned.push([coordinate[0], coordinate[1]]);
-    }
-  }
-  if (
-    cleaned.length > 1
-    && cleaned[0][0] === cleaned[cleaned.length - 1][0]
-    && cleaned[0][1] === cleaned[cleaned.length - 1][1]
-  ) cleaned.pop();
-  return cleaned;
 }
 
 /**
@@ -279,32 +259,13 @@ export function buildLegoMassingKitData(
   const storeys = Math.floor(style.storeys);
   if (cleaned.length < 3 || !(storeys >= 1) || !(style.groundFloorHeightM > 0) || !(style.upperFloorHeightM > 0)
     || !(style.windowBayModuleM > style.windowWidthM) || !(style.loggiaBayModuleM > style.loggiaWidthM)) return null;
-  const metresPerDegreeLongitude = metersPerDegLon(centroidLat);
-  let local = cleaned.map(([longitude, latitude]) => [
-    (longitude - centroidLng) * metresPerDegreeLongitude,
-    (latitude - centroidLat) * METERS_PER_DEG_LAT,
-  ]);
-  const signedArea = local.reduce((sum, point, index) => {
-    const next = local[(index + 1) % local.length];
-    return sum + point[0] * next[1] - next[0] * point[1];
-  }, 0) / 2;
-  if (!signedArea) return null;
-  // Work counter-clockwise, keeping the first drawn edge as wall 0 (the front).
-  if (signedArea < 0) local = [local[1], local[0], ...local.slice(2).reverse()];
+  // Counter-clockwise, keeping the first drawn edge as wall 0 (the front).
+  const local = localKitRing(cleaned, centroidLng, centroidLat);
+  if (!local) return null;
 
-  const solid: LegoMassingColoredMesh = { positions: [], indices: [], colors: [], vertexCount: 0 };
-  const glass: LegoMassingColoredMesh = { positions: [], indices: [], colors: [], vertexCount: 0 };
-  const linear = Object.fromEntries(Object.entries(style.colors).map(([key, hex]) => {
-    const color = new THREE.Color(hex);
-    return [key, [color.r, color.g, color.b]];
-  })) as Record<keyof LegoMassingKitStyle['colors'], number[]>;
   type Tone = keyof LegoMassingKitStyle['colors'];
-  const push = (mesh: LegoMassingColoredMesh, tone: Tone, corners: number[][]) => {
-    const base = mesh.vertexCount;
-    for (const corner of corners) { mesh.positions.push(corner[0], corner[1], corner[2]); mesh.colors.push(...linear[tone]); }
-    mesh.indices.push(base, base + 1, base + 2, base, base + 2, base + 3);
-    mesh.vertexCount += 4;
-  };
+  const meshes = createKitMeshes<Tone>(style.colors);
+  const { solid, glass, linear, push } = meshes;
 
   const plinth = style.plinthHeightM, off = style.surfaceOffsetM;
   const floorLevelsM = Array.from({ length: storeys }, (_, level) =>
@@ -318,24 +279,7 @@ export function buildLegoMassingKitData(
     const length = Math.hypot(end[0] - start[0], end[1] - start[1]);
     if (length < 1e-6) { walls.push({ lengthM: 0, bays: [], groundWindows: 0, entrance: false }); continue; }
     const along = [(end[0] - start[0]) / length, (end[1] - start[1]) / length];
-    const normal = [along[1], -along[0]];
-    /** u along the wall, v out from it (negative is inside), z up. */
-    const at = (u: number, v: number, z: number) =>
-      [start[0] + along[0] * u + normal[0] * v, start[1] + along[1] * u + normal[1] * v, z];
-    const face = (mesh: LegoMassingColoredMesh, tone: Tone, u0: number, u1: number, z0: number, z1: number, v = 0) => {
-      if (u1 - u0 > 1e-6 && z1 - z0 > 1e-6) push(mesh, tone, [at(u0, v, z0), at(u1, v, z0), at(u1, v, z1), at(u0, v, z1)]);
-    };
-    const flat = (tone: Tone, u0: number, u1: number, v0: number, v1: number, z: number, up: boolean) =>
-      push(solid, tone, up ? [at(u0, v0, z), at(u1, v0, z), at(u1, v1, z), at(u0, v1, z)]
-        : [at(u0, v1, z), at(u1, v1, z), at(u1, v0, z), at(u0, v0, z)]);
-    const cheek = (tone: Tone, u: number, v0: number, v1: number, z0: number, z1: number, towardsEnd: boolean) =>
-      push(solid, tone, towardsEnd ? [at(u, v0, z0), at(u, v1, z0), at(u, v1, z1), at(u, v0, z1)]
-        : [at(u, v1, z0), at(u, v0, z0), at(u, v0, z1), at(u, v1, z1)]);
-    const box = (tone: Tone, u0: number, u1: number, v0: number, v1: number, z0: number, z1: number) => {
-      face(solid, tone, u0, u1, z0, z1, v1);
-      cheek(tone, u0, v0, v1, z0, z1, false); cheek(tone, u1, v0, v1, z0, z1, true);
-      flat(tone, u0, u1, v0, v1, z1, true); flat(tone, u0, u1, v0, v1, z0, false);
-    };
+    const { face, flat, cheek, box } = kitWall(meshes, start, along);
     /** A framed window with two lights, a transom and a curtain at each side. */
     const windowAt = (centre: number, sill: number, width: number, height: number) => {
       const left = centre - width / 2, frame = 0.07;
@@ -465,24 +409,13 @@ export function buildLegoMassingKitData(
   const centre = local.reduce((sum, point) => [sum[0] + point[0] / local.length, sum[1] + point[1] / local.length], [0, 0]);
   const front = local[1], origin = local[0], frontLength = Math.hypot(front[0] - origin[0], front[1] - origin[1]) || 1;
   const ax = [(front[0] - origin[0]) / frontLength, (front[1] - origin[1]) / frontLength], ay = [-ax[1], ax[0]];
-  const inside = (x: number, y: number, clearance: number) => {
-    let within = false;
-    for (let i = 0, j = local.length - 1; i < local.length; j = i, i += 1) {
-      const a = local[i], b = local[j];
-      if ((a[1] > y) !== (b[1] > y) && x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0]) within = !within;
-      const dx = b[0] - a[0], dy = b[1] - a[1];
-      const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy || 1)));
-      if (Math.hypot(x - a[0] - t * dx, y - a[1] - t * dy) < clearance) return false;
-    }
-    return within;
-  };
   // Plant sizes and offsets follow the archetype's roof; a unit is left out
   // where the outline has no clear roof for it.
   for (const [dx, dy, width, depth, height] of [[1, 3, 3, 3, 1.8], [-3, 3, 2.2, 2, 1], [-2, -4, 1.8, 1.4, 0.8], [5, 4, 1.4, 1.5, 1.1]]) {
     const cx = centre[0] + ax[0] * dx + ay[0] * dy, cy = centre[1] + ax[1] * dx + ay[1] * dy;
     const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([sx, sy]) => [
       cx + ax[0] * sx * width / 2 + ay[0] * sy * depth / 2, cy + ax[1] * sx * width / 2 + ay[1] * sy * depth / 2]);
-    if (!corners.every(corner => inside(corner[0], corner[1], 1.5))) continue;
+    if (!corners.every(corner => insideKitRing(local, corner[0], corner[1], 1.5))) continue;
     // Each unit stands on a 0.24 m plinth, as on the archetype.
     const top = roofLevel + 0.24 + height;
     for (let side = 0; side < 4; side += 1) {

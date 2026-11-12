@@ -21,7 +21,7 @@ import edges from '@/data/buildingPlacementEdges.json';
 import {
   RESIZE_TRIAL_PROGRAM_ID, RESIZE_TRIAL_SETTINGS, buildingResizeTrialEnabled, decideResizeTrialStretch,
   exactModelProperties, fitResizeTrialScalesToPlot, isResizeTrialShapeFreely, readResizeTrialState,
-  resizeTrialChangesEnvelope, resizeTrialFamilyForAsset, resizeTrialFigures, resizeTrialMassingDressing,
+  resizeTrialChangesEnvelope, resizeTrialCourtyardNeedM, resizeTrialFamilyForAsset, resizeTrialFigures, resizeTrialMassingDressing,
   resizeTrialOutlineProblem, resizeTrialPlotFor, resizeTrialPlotMargins, resizeTrialPlotReshape,
   resizeTrialRectangle, resizeTrialStretch, shapeFreelyProperties, withResizeTrial,
 } from './buildingResizeTrial';
@@ -86,9 +86,13 @@ describe('flag on', () => {
       floorLineHeightM: contract.massing.floor_line_height_m,
     });
     expect(contract.stretch.vertical_scale).toBe(1);
+    // Every building names a facade kit that the file defines.
+    expect(contract.families.map(row => row.massing_kit)).toEqual(['aspen_terrace', 'brick_garden_courtyard']);
+    expect(Object.keys(RESIZE_TRIAL_SETTINGS.kits)).toEqual(Object.keys(contract.massing.kits));
+    expect(Object.values(RESIZE_TRIAL_SETTINGS.kits).map(kit => kit.type)).toEqual(['apartment_bar', 'courtyard_block']);
   });
 
-  it('covers one exact asset, variant and revision and nothing beside it', () => {
+  it('covers each listed asset by exact variant and revision and nothing beside it', () => {
     const trial = asset();
     expect(family()).toMatchObject({ assetId: ASSET_ID, variantId: trial.model.variantId, candidate: trial.model.revision,
       nativeStoreys: 5, plotWidthM: trial.width, plotDepthM: trial.depth });
@@ -364,6 +368,9 @@ describe('flag on', () => {
     expect(resizeTrialFigures(outline, 5).far).toBeNull();
     expect(resizeTrialFigures(outline, 5, 0).far).toBeNull();
     expect(resizeTrialFigures(outline, 'many', 10000)).toMatchObject({ storeys: 0, floorAreaM2: 0 });
+    // A building whose kit has no courtyard counts its whole outline, however large.
+    expect(resizeTrialFigures(rectangleAt(ll(0, 0), 60, 40, 0), 5, null, family()))
+      .toMatchObject({ courtyardAreaM2: 0, footprintAreaM2: expect.closeTo(2400, 0) });
   });
 
   it('dresses only freely shaped massing, at the building’s own storey count', () => {
@@ -372,7 +379,7 @@ describe('flag on', () => {
     expect(resizeTrialMassingDressing(exactModelProperties(base, family(), 1.2, 1, asset()))).toBeNull();
     // By default the building's own facade kit, with floor levels measured from the model.
     expect(RESIZE_TRIAL_SETTINGS.massingStyle).toBe('archetype_kit');
-    expect(resizeTrialMassingDressing(shapeFreelyProperties(base))).toMatchObject({ kind: 'kit', kit: { storeys: 5,
+    expect(resizeTrialMassingDressing(shapeFreelyProperties(base))).toMatchObject({ kind: 'kit', kit: { type: 'apartment_bar', storeys: 5,
       groundFloorHeightM: 4, upperFloorHeightM: 3.2, windowBayModuleM: 3.5, loggiaBayModuleM: 5.3,
       colors: { wall: '#d4bd97', timber: '#bf9969' } } });
     // The plain fallback style stays available.
@@ -394,5 +401,78 @@ describe('flag on', () => {
     expect(representationNotice([freely])).toBe('1 building is set to Shape freely and shown as shaped massing.');
     const fallback = compiled({ development_archetype_id: 'unknown' });
     expect(representationNotice([freely, fallback])).toMatch(/1 building is set to Shape freely.*1 building is shown as design massing/);
+  });
+});
+
+describe('a second, more complex building: the courtyard block', () => {
+  beforeEach(on);
+  const COURTYARD_ID = 'final_courtyard_block';
+  const courtyard = () => placeAsset(COURTYARD_ID);
+  const family = () => resizeTrialFamilyForAsset(courtyard())!;
+  const base = () => placementProperties(courtyard());
+
+  it('is covered only while the flag is on, by exact variant and revision', () => {
+    const trial = courtyard();
+    expect(family()).toMatchObject({ assetId: COURTYARD_ID, variantId: 'final-courtyard-block-v1', candidate: trial.model.revision,
+      nativeStoreys: 4, plotWidthM: trial.width, plotDepthM: trial.depth, massingKit: 'brick_garden_courtyard' });
+    expect([family().nativeWidthM, family().nativeDepthM, family().nativeHeightM]).toEqual(trial.nativeDimensions);
+    expect(resizeTrialFamilyForAsset({ ...trial, model: { ...trial.model, revision: 'final-courtyard-block-clay-v007' } })).toBeUndefined();
+    vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'false');
+    expect(resizeTrialFamilyForAsset(trial)).toBeUndefined();
+    expect(assetForZone(placed(base(), rectangleAt(ll(0, 0), 34.4, 30.3, 0)))).toBe(trial);
+  });
+
+  it('stretches in the same band on its own dimensions', () => {
+    expect(decideResizeTrialStretch(family(), 42.5, 18.5)).toMatchObject({ kind: 'exact_model' });
+    expect(decideResizeTrialStretch(family(), 42.6, 26.3)).toEqual({ kind: 'shape_freely', widthM: 42.6, depthM: 26.3, reason: 'stretch_out_of_band' });
+    expect(decideResizeTrialStretch(family(), 30.38, 18.3).kind).toBe('shape_freely');
+    const plot = resizeTrialPlotFor(family(), 1.4, 1);
+    expect(plot.widthM).toBeCloseTo(30.3799991607666 * 1.4 + 4.02, 2);
+    expect(plot.depthM).toBeCloseTo(30.3, 6);
+    const resolved = assetForZone(placed(base(), rectangleAt(ll(0, 0), 34.4, 30.3, 0)))!;
+    expect(resolved.footprintProgram).toMatchObject({ id: RESIZE_TRIAL_PROGRAM_ID, mode: 'independent_horizontal_scale', minScale: 0.7, maxScale: 1.4 });
+  });
+
+  it('moves its reviewed gateway entrance with the stretch', () => {
+    const reviewed = base().pedestrian_building_entrance as BuildingEntrance;
+    expect([reviewed.xM, reviewed.yM, reviewed.widthM, reviewed.fixedNative]).toEqual([0, -13.1, 3.2, true]);
+    const moved = exactModelProperties(base(), family(), 1.3, 0.8, courtyard()).pedestrian_building_entrance as BuildingEntrance;
+    expect(moved.xM).toBeCloseTo(0, 6);
+    expect(moved.yM).toBeCloseTo(-13.1 * 0.8, 3);
+    expect(moved.widthM).toBe(3.2);
+  });
+
+  it('is drawn with its own facade kit, not the apartment block’s', () => {
+    expect(resizeTrialMassingDressing(base())).toBeNull();
+    expect(resizeTrialMassingDressing(shapeFreelyProperties(base()))).toMatchObject({ kind: 'kit', kit: { type: 'courtyard_block',
+      storeys: 4, groundFloorHeightM: 4.2, upperFloorHeightM: 3.2, wingDepthM: 5.4, bayModuleM: 4.285,
+      colors: { wall: '#c0956f', stone: '#d1cab8', trim: '#4d655f' } } });
+    expect(resizeTrialMassingDressing({ ...shapeFreelyProperties(base()), floor_count: 6, floors: 6 })).toMatchObject({ kit: { storeys: 6 } });
+    expect(resizeTrialMassingDressing(shapeFreelyProperties(base()), true, 'floor_lines_and_windows')).toMatchObject({ kind: 'lines', storeys: 4 });
+  });
+
+  it('counts only built ground in its figures: the courtyard is open', () => {
+    const outline = rectangleAt(ll(0, 0), 30, 24.4, 0);
+    const figures = resizeTrialFigures(outline, 4, 10000, family());
+    expect(figures.courtyardAreaM2).toBeCloseTo(19.2 * 13.6, 1);
+    expect(figures.footprintAreaM2).toBeCloseTo(30 * 24.4 - 19.2 * 13.6, 1);
+    expect(figures.floorAreaM2).toBeCloseTo((30 * 24.4 - 19.2 * 13.6) * 4, 0);
+    expect(figures.far).toBeCloseTo((30 * 24.4 - 19.2 * 13.6) * 4 / 10000, 3);
+    // Turning the building changes nothing.
+    expect(resizeTrialFigures(rectangleAt(ll(0, 0), 30, 24.4, 37), 4, null, family()).courtyardAreaM2).toBeCloseTo(19.2 * 13.6, 1);
+    // Too small for a courtyard: the whole outline is built.
+    expect(resizeTrialFigures(rectangleAt(ll(0, 0), 18, 14, 0), 4, null, family()))
+      .toMatchObject({ courtyardAreaM2: 0, footprintAreaM2: expect.closeTo(252, 0) });
+    // Without the family the outline is all that is known.
+    expect(resizeTrialFigures(outline, 4, null).courtyardAreaM2).toBe(0);
+    // Two 5.4 m wings and an 8 m courtyard; the apartment block has no such rule.
+    expect(resizeTrialCourtyardNeedM(family())).toBeCloseTo(18.8, 6);
+    expect(resizeTrialCourtyardNeedM(resizeTrialFamilyForAsset(asset()))).toBeNull();
+    expect(resizeTrialCourtyardNeedM(undefined)).toBeNull();
+  });
+
+  it('keeps the same minimum outline as every freely shaped building', () => {
+    expect(resizeTrialOutlineProblem(rectangleAt(ll(0, 0), 30, 24.4, 0))).toBeNull();
+    expect(resizeTrialOutlineProblem(rectangleAt(ll(0, 0), 8, 24, 0))).toMatch(/at least 9 m wide/);
   });
 });

@@ -21,12 +21,14 @@ def copy_contract(tmp_path, *, model: bytes | None = None):
         target = tmp_path / relative
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / relative, target)
-    family = json.loads((ROOT / trial.TUNING_FILE).read_text(encoding="utf-8"))["families"][0]
-    target = tmp_path / trial.CLAY_ROOT / family["path"]
-    target.parent.mkdir(parents=True, exist_ok=True)
-    pointer = f"version https://git-lfs.github.com/spec/v1\noid sha256:{family['sha256']}\nsize {family['bytes']}\n"
-    target.write_bytes(pointer.encode() if model is None else model)
-    return family, target
+    families = json.loads((ROOT / trial.TUNING_FILE).read_text(encoding="utf-8"))["families"]
+    # Every trial model as a Git LFS pointer; `model` replaces the first one's bytes.
+    for index, row in reversed(list(enumerate(families))):
+        target = tmp_path / trial.CLAY_ROOT / row["path"]
+        target.parent.mkdir(parents=True, exist_ok=True)
+        pointer = f"version https://git-lfs.github.com/spec/v1\noid sha256:{row['sha256']}\nsize {row['bytes']}\n"
+        target.write_bytes(pointer.encode() if model is None or index else model)
+    return families[0], target
 
 
 def edit_tuning(tmp_path, change):
@@ -44,7 +46,11 @@ def test_the_repository_contract_verifies_offline():
         contracts.RESIZE_TRIAL_SCALE_FLOOR,
         contracts.RESIZE_TRIAL_SCALE_CEILING,
     )
-    assert [row["asset_id"] for row in rows] == ["final_seniors_apartments"]
+    assert [row["asset_id"] for row in rows] == ["final_seniors_apartments", "final_courtyard_block"]
+    assert [row["massing_kit"] for row in rows] == ["aspen_terrace", "brick_garden_courtyard"]
+    assert rows[1]["stretch_width_m"] == [21.27, 42.53]
+    assert rows[1]["stretch_depth_m"] == [18.41, 36.82]
+    assert (rows[1]["storeys"], rows[1]["height_scale"]) == (4, 1.0)
     assert rows[0]["model"] in {"verified", "lfs_pointer"}
     assert rows[0]["height_scale"] == 1.0
     assert rows[0]["stretch_width_m"] == [22.65, 45.3]
@@ -92,16 +98,27 @@ def test_a_matching_lfs_pointer_or_the_exact_bytes_verify(tmp_path):
         (lambda p: p["families"][0].update(sha256="0" * 64), "drifted from the reviewed library"),
         (lambda p: p["families"][0].update(native_storeys=6), "drifted from the reviewed library"),
         (lambda p: p["families"][0].update(candidate="unreviewed-clay-v001"), "not in the reviewed clay library"),
-        (lambda p: p["families"].append(dict(p["families"][0])), "exactly one building"),
+        (lambda p: p["families"].append(dict(p["families"][0])), "more than once"),
+        (lambda p: p["families"].clear(), "at least one building"),
+        (lambda p: p["families"][1].update(massing_kit="unknown_kit"), "no known facade kit"),
+        (lambda p: p["families"][1].update(sha256="0" * 64), "drifted from the reviewed library"),
         (lambda p: p["massing"].update(window_width_m=4.0), "massing dressing"),
         (lambda p: p["stretch"].update(squeeze_on_plot_resize="yes"), "squeeze_on_plot_resize"),
         (lambda p: p["stretch"].update(rigid_prop_materials="CLAY_PLANTING"), "rigid prop"),
         (lambda p: p["stretch"].update(rigid_prop_max_size_m=0), "rigid prop"),
         (lambda p: p["massing"].update(style="photoreal"), "Unknown massing style"),
-        (lambda p: p["massing"]["kit"].update(window_width_m=3.5), "facade kit"),
-        (lambda p: p["massing"]["kit"].update(loggia_height_m=3.2), "facade kit"),
-        (lambda p: p["massing"]["kit"]["colors"].update(wall="tan"), "facade kit"),
-        (lambda p: p["massing"]["kit"].update(upper_floor_height_m=-1), "facade kit"),
+        (lambda p: p["massing"]["kits"]["aspen_terrace"].update(window_width_m=3.5), "facade kit"),
+        (lambda p: p["massing"]["kits"]["aspen_terrace"].update(loggia_height_m=3.2), "facade kit"),
+        (lambda p: p["massing"]["kits"]["aspen_terrace"]["colors"].update(wall="tan"), "facade kit"),
+        (lambda p: p["massing"]["kits"]["aspen_terrace"].update(upper_floor_height_m=-1), "facade kit"),
+        (lambda p: p["massing"]["kits"]["aspen_terrace"].update(type="glass_tower"), "facade kit"),
+        (lambda p: p["massing"].update(kits={}), "facade kit"),
+        (lambda p: p["massing"]["kits"]["brick_garden_courtyard"].update(window_width_m=4.3), "facade kit"),
+        (lambda p: p["massing"]["kits"]["brick_garden_courtyard"].update(shop_front_height_m=4.2), "facade kit"),
+        (lambda p: p["massing"]["kits"]["brick_garden_courtyard"].update(wing_depth_m=0), "facade kit"),
+        (lambda p: p["massing"]["kits"]["brick_garden_courtyard"].pop("passage_width_m"), "facade kit"),
+        (lambda p: p["massing"]["kits"]["brick_garden_courtyard"]["colors"].pop("shopfront"), "facade kit"),
+        (lambda p: p["massing"]["kits"]["brick_garden_courtyard"]["colors"].update(joint="#a8937c"), "facade kit"),
         (lambda p: p["shape_freely"].update(minimum_width_m=500), "Shape freely limits"),
     ],
 )

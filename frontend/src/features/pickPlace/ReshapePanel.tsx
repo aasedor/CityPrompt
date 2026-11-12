@@ -17,7 +17,7 @@ import { BuildingDesignControls } from './BuildingDesignControls';
 import type { SiteZoneProperties } from '@/types';
 import { cataloguePresentationFor } from './cataloguePresentation';
 import { hasBuildingOnlyFootprint } from './buildingOnlyFootprint';
-import { RESIZE_TRIAL_SETTINGS, readResizeTrialState, resizeTrialFigures, resizeTrialOutlineProblem } from './buildingResizeTrial';
+import { RESIZE_TRIAL_SETTINGS, readResizeTrialState, resizeTrialCourtyardNeedM, resizeTrialFigures, resizeTrialOutlineProblem } from './buildingResizeTrial';
 import { polygonAreaM2 } from '@/components/viewer/mapEngine/geoUtils';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 
@@ -76,8 +76,9 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
     if (!shapeFreely) return null;
     const boundary = getActiveSiteBoundary(zones);
     return resizeTrialFigures(freeOutline, zone.properties?.floor_count ?? zone.properties?.floors,
-      boundary ? polygonAreaM2(boundary.coordinates) : null);
-  }, [shapeFreely, freeOutline, zone.properties, zones]);
+      boundary ? polygonAreaM2(boundary.coordinates) : null, trial?.family);
+  }, [shapeFreely, freeOutline, zone.properties, zones, trial?.family]);
+  const courtyardNeedM = shapeFreely ? resizeTrialCourtyardNeedM(trial?.family) : null;
   const valid = dimensionsValid && !flexibleProblem && !freeProblem;
   const button = 'min-h-11 rounded-lg border border-slate-700 bg-white px-3 text-sm font-semibold text-slate-900 disabled:opacity-40';
   return <aside aria-label="Reshape object" className="absolute bottom-4 inset-x-4 top-auto z-40 max-h-[42dvh] overflow-y-auto overscroll-contain rounded-xl border-2 border-slate-900 bg-[#fff9ec] p-3 shadow-xl sm:left-auto sm:w-72 sm:bottom-4 sm:top-28 sm:max-h-none">
@@ -111,11 +112,16 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
       {shapeFreely && figures && <div className="mb-3">
         <dl role="status" aria-label="Building figures" className="grid grid-cols-2 gap-x-3 gap-y-1 rounded-lg bg-white p-2 text-xs text-slate-800">
           <dt className="font-semibold">Footprint area</dt><dd className="text-right">{Math.round(figures.footprintAreaM2).toLocaleString()} m²</dd>
+          {figures.courtyardAreaM2 > 0 && <><dt className="font-semibold">Courtyard</dt><dd className="text-right">{Math.round(figures.courtyardAreaM2).toLocaleString()} m²</dd></>}
           <dt className="font-semibold">Storeys</dt><dd className="text-right">{figures.storeys}</dd>
           <dt className="font-semibold">Floor area</dt><dd className="text-right">{Math.round(figures.floorAreaM2).toLocaleString()} m²</dd>
           <dt className="font-semibold">FAR</dt><dd className="text-right">{figures.far == null ? 'Draw a site boundary' : figures.far.toFixed(2)}</dd>
         </dl>
-        <p className="mt-1 text-xs text-slate-600">Floor area is the outline × storeys. FAR is this building’s floor area ÷ your site area.</p>
+        <p className="mt-1 text-xs text-slate-600">{figures.courtyardAreaM2 > 0
+          ? 'Floor area is the footprint × storeys. The open courtyard is not counted. FAR is this building’s floor area ÷ your site area.'
+          : 'Floor area is the outline × storeys. FAR is this building’s floor area ÷ your site area.'}</p>
+        {courtyardNeedM != null && figures.courtyardAreaM2 === 0 && <p className="mt-1 text-xs font-semibold text-amber-900">
+          This outline is too small for a courtyard, so the block is built solid. A courtyard opens once the outline is at least {courtyardNeedM.toFixed(1)} m across everywhere.</p>}
         <button type="button" className={`${button} mt-2 w-full`} disabled={disabled || zone.coordinates.length >= RESIZE_TRIAL_SETTINGS.maxOutlinePoints}
           onClick={()=>{ const result=onReshape(addParkOutlinePoint(zone.coordinates)); setReshapeRejected(result===false); }}>Add outline point</button>
       </div>}

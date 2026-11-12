@@ -80,7 +80,8 @@ import {
   setArchitecturalGlazingLod,
   type ArchitecturalGlazingLod,
 } from './modelMaterialQuality';
-import { buildLegoMassingDressingData, buildLegoMassingKitData, buildLegoMassingMeshData, legoMassingColor, type LegoMassingColoredMesh, type LegoMassingMeshData } from './legoMassingGeometry';
+import { buildLegoMassingDressingData, buildLegoMassingMeshData, legoMassingColor, type LegoMassingColoredMesh, type LegoMassingMeshData } from './legoMassingGeometry';
+import { buildLegoMassingKit } from './legoMassingKits';
 import { resizeTrialMassingDressing, type ResizeTrialMassingDressing } from '@/features/pickPlace/buildingResizeTrial';
 import {
   LEGO_DISTINCT_FAMILY_RENDER_BUDGET,
@@ -310,7 +311,7 @@ function LegoMassingStack({
     };
     if (dressing.kind === 'kit') {
       // The facade kit is a complete shell and replaces the plain prism.
-      const data = buildLegoMassingKitData(ring, frame.centroidLng, frame.centroidLat, dressing.kit);
+      const data = buildLegoMassingKit(ring, frame.centroidLng, frame.centroidLat, dressing.kit);
       return data && { shell: true, parts: [
         { key: 'solid', geometry: toGeometry(data.solid), color: undefined, roughness: 0.78 },
         { key: 'glass', geometry: toGeometry(data.glass), color: undefined, roughness: 0.4 },

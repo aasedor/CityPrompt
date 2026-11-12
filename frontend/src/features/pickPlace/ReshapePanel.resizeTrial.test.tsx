@@ -76,6 +76,41 @@ describe('flag on', () => {
     expect(figures.getByText('Footprint area').nextSibling).toHaveTextContent('1,800 m²');
     expect(figures.getByText('Floor area').nextSibling).toHaveTextContent('9,000 m²');
     expect(figures.getByText('FAR').nextSibling).toHaveTextContent('0.90');
+    // An apartment block has no courtyard to report.
+    expect(figures.queryByText('Courtyard')).not.toBeInTheDocument();
+    expect(screen.getByText(/Floor area is the outline × storeys/)).toBeInTheDocument();
+    expect(screen.queryByText(/too small for a courtyard/)).not.toBeInTheDocument();
+  });
+
+  it('reports a courtyard block’s open courtyard and leaves it out of the floor area', () => {
+    const block = placeAsset('final_courtyard_block');
+    show(building(shapeFreelyProperties(placementProperties(block)), rectangleAt(ll(0, 0), 30, 24.4)));
+    const figures = within(screen.getByRole('status', { name: 'Building figures' }));
+    // 732 m² outline less a 19.2 × 13.6 m courtyard.
+    expect(figures.getByText('Footprint area').nextSibling).toHaveTextContent('471 m²');
+    expect(figures.getByText('Courtyard').nextSibling).toHaveTextContent('261 m²');
+    expect(figures.getByText('Storeys').nextSibling).toHaveTextContent('4');
+    expect(figures.getByText('Floor area').nextSibling).toHaveTextContent('1,884 m²');
+    expect(figures.getByText('FAR').nextSibling).toHaveTextContent('0.19');
+    expect(screen.getByText(/The open courtyard is not counted/)).toBeInTheDocument();
+    expect(screen.queryByText(/too small for a courtyard/)).not.toBeInTheDocument();
+    // Typed too narrow for a courtyard, the block becomes solid and says so by dropping the row.
+    fireEvent.change(screen.getByLabelText('Plot depth (m)'), { target: { value: '14' } });
+    expect(figures.queryByText('Courtyard')).not.toBeInTheDocument();
+    expect(figures.getByText('Footprint area').nextSibling).toHaveTextContent('420 m²');
+    expect(screen.getByText(/Floor area is the outline × storeys/)).toBeInTheDocument();
+    expect(screen.getByText(/too small for a courtyard, so the block is built solid.*at least 18\.8 m across/)).toBeInTheDocument();
+  });
+
+  it('offers the courtyard block the same stretch controls on its own dimensions', () => {
+    const block = placeAsset('final_courtyard_block');
+    show(building(placementProperties(block), rectangleAt(ll(0, 0), 34.4, 30.3)));
+    expect(screen.getByRole('radio', { name: 'Exact model' })).toBeChecked();
+    expect(screen.getByLabelText('Building width (m)')).toHaveValue(30.38);
+    expect(screen.getByLabelText('Building depth (m)')).toHaveValue(26.3);
+    expect(screen.getByText(/stretches 21\.27–42\.53 m wide and 18\.41–36\.82 m deep/)).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Building width (m)'), { target: { value: '48' } });
+    expect(screen.getByText('This size is outside the exact model’s range. Applying switches this building to Shape freely.')).toBeInTheDocument();
   });
 
   it('asks for a site boundary instead of inventing a FAR', () => {

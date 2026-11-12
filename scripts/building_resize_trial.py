@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Verify the building resize pilot. Dry-run by default; installs nothing.
 
-The pilot stretches one exact, reviewed mid-rise model. Its contract is a
+The pilot stretches the exact, reviewed models its tuning file lists. Its contract is a
 hash-pinned repository file, so there is no database row to create or change:
 
     frontend/src/data/buildingResizeTrial.json   (the single tuning file)
@@ -74,6 +74,75 @@ def model_state(path: Path, sha256: str, size: int) -> str:
     return "verified"
 
 
+_KIT_COLORS = {
+    "apartment_bar": "wall timber frame glass curtain slab railing roof plinth joint cap units",
+    "courtyard_block": "wall stone trim glass shopfront curtain railing roof plinth paving planting units",
+}
+# Every length a kit of each type must carry, in metres. The browser reads each one.
+_KIT_LENGTHS = {
+    "apartment_bar": (
+        "plinth_height ground_floor_height upper_floor_height parapet_height corner_pier window_bay_module "
+        "window_width window_height window_sill ground_window_height ground_window_sill loggia_bay_module "
+        "loggia_width loggia_height loggia_depth loggia_min_wall railing_height entrance_width entrance_depth "
+        "entrance_height"
+    ),
+    "courtyard_block": (
+        "plinth_height ground_floor_height upper_floor_height parapet_height wing_depth courtyard_min_clear "
+        "bay_module loggia_width loggia_height loggia_depth loggia_door_width loggia_door_height railing_height "
+        "window_width window_height window_sill side_bay_module side_window_width side_window_height "
+        "side_window_sill shop_window_width shop_door_width shop_front_height shop_window_sill awning_width "
+        "awning_projection awning_top awning_drop shop_band_height shop_band_projection passage_width "
+        "passage_height string_course_height string_course_projection lintel_height coping_height coping_width "
+        "garden_inset garden_height"
+    ),
+}
+
+
+def _check_kit(name: str, kit: dict) -> None:
+    """Refuse a facade kit that could not be drawn. Bays must fit their module and storey."""
+
+    kind = kit.get("type")
+    colors = kit.get("colors")
+    lengths = {key: value for key, value in kit.items() if key.endswith("_m")}
+    if (
+        kind not in _KIT_COLORS
+        or not isinstance(colors, dict)
+        or set(colors) != set(_KIT_COLORS[kind].split())
+        or any(not re.fullmatch(r"#[0-9a-f]{6}", str(color)) for color in colors.values())
+        or set(lengths) != {f"{key}_m" for key in _KIT_LENGTHS[kind].split()}
+        or any(
+            isinstance(value, bool) or not isinstance(value, (int, float)) or not value > 0
+            for value in lengths.values()
+        )
+    ):
+        raise ValueError(f"The facade kit settings are invalid: {name}")
+    upper, ground = kit["upper_floor_height_m"], kit["ground_floor_height_m"]
+    if kind == "apartment_bar":
+        fits = (
+            kit["window_width_m"] < kit["window_bay_module_m"]
+            and kit["loggia_width_m"] < kit["loggia_bay_module_m"]
+            and kit["loggia_height_m"] < upper
+            and kit["window_sill_m"] + kit["window_height_m"] < upper
+        )
+    else:
+        fits = (
+            kit["loggia_width_m"] < kit["bay_module_m"]
+            and kit["window_width_m"] < kit["bay_module_m"]
+            and kit["side_window_width_m"] < kit["side_bay_module_m"]
+            and kit["shop_window_width_m"] + kit["shop_door_width_m"] < kit["bay_module_m"]
+            and kit["loggia_door_width_m"] < kit["loggia_width_m"]
+            and kit["loggia_height_m"] < upper
+            and kit["window_sill_m"] + kit["window_height_m"] + kit["lintel_height_m"] < upper
+            and kit["side_window_sill_m"] + kit["side_window_height_m"] < upper
+            and kit["shop_front_height_m"] < ground
+            and kit["passage_height_m"] < ground
+            and kit["awning_drop_m"] < kit["awning_top_m"] < ground
+            and kit["garden_height_m"] < ground
+        )
+    if not fits:
+        raise ValueError(f"The facade kit settings are invalid: {name}")
+
+
 def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict, list[dict]]:
     """Validate the pilot contract offline and return it with one row per model."""
 
@@ -132,20 +201,11 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
         raise ValueError("The floor line spacing is invalid")
     if massing.get("style") not in {"archetype_kit", "floor_lines_and_windows"}:
         raise ValueError("Unknown massing style")
-    kit = massing["kit"]
-    lengths = [value for key, value in kit.items() if key.endswith("_m")]
-    colors = kit["colors"]
-    if (
-        len(lengths) < 18
-        or any(isinstance(value, bool) or not float(value) > 0 for value in lengths)
-        or not float(kit["window_width_m"]) < float(kit["window_bay_module_m"])
-        or not float(kit["loggia_width_m"]) < float(kit["loggia_bay_module_m"])
-        or not float(kit["loggia_height_m"]) < float(kit["upper_floor_height_m"])
-        or not float(kit["window_sill_m"]) + float(kit["window_height_m"]) < float(kit["upper_floor_height_m"])
-        or len(colors) != 12
-        or any(not re.fullmatch(r"#[0-9a-f]{6}", str(color)) for color in colors.values())
-    ):
-        raise ValueError("The facade kit settings are invalid")
+    kits = massing.get("kits")
+    if not isinstance(kits, dict) or not kits:
+        raise ValueError("The facade kit settings are invalid: no kits")
+    for name, kit in kits.items():
+        _check_kit(name, kit)
 
     library = json.loads((root / CLAY_ROOT / "library.json").read_text(encoding="utf-8"))
     entries = {entry["candidate"]: entry for entry in library["entries"]}
@@ -180,6 +240,8 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
         plot_width, plot_depth = family["placement_plot_m"]
         if plot_width < width or plot_depth < depth:
             raise ValueError(f"The placement plot is smaller than the model: {family['candidate']}")
+        if family.get("massing_kit") not in kits:
+            raise ValueError(f"The trial building names no known facade kit: {family['candidate']}")
         state = model_state(root / CLAY_ROOT / family["path"], family["sha256"], family["bytes"])
         rows.append(
             {
@@ -193,10 +255,13 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
                 "stretch_depth_m": [round(depth * minimum, 2), round(depth * maximum, 2)],
                 "storeys": family["native_storeys"],
                 "height_scale": 1.0,
+                "massing_kit": family["massing_kit"],
             }
         )
-    if len(rows) != 1:
-        raise ValueError("The pilot covers exactly one building")
+    if not rows:
+        raise ValueError("The pilot needs at least one building")
+    if len({row["asset_id"] for row in rows}) != len(rows):
+        raise ValueError("The pilot lists a building more than once")
     return manifest, rows
 
 

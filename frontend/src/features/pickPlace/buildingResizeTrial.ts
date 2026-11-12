@@ -1,22 +1,110 @@
 import contract from '@/data/buildingResizeTrial.json';
 import type { SiteZoneProperties } from '@/types';
 import { computeCentroid, METERS_PER_DEG_LAT, metersPerDegLon, polygonAreaM2 } from '@/components/viewer/mapEngine/geoUtils';
+import { kitCourtyardAreaM2 } from '@/components/viewer/globe/legoMassingRing';
+import type { LegoMassingKit } from '@/components/viewer/globe/legoMassingKits';
 import type { CatalogueAsset, PlaceAsset } from './assetRegistry';
 import { parkOutlineDimensions } from './parkOutline';
 
 /**
- * Building resize pilot. One mid-rise apartment block, two ways to fit it:
+ * Building resize pilot. Each building listed in the tuning file can be
+ * fitted in two ways:
  *
  *  - Exact model: the reviewed GLB stretched independently in width and depth
  *    inside a bounded band. Height is never scaled.
  *  - Shape freely: the student draws the outline; the building compiles to
- *    planned massing dressed with floor lines and repeating window bays.
+ *    planned massing drawn with that building's own facade kit, whose bays
+ *    repeat and never stretch.
  *
  * Everything is behind VITE_ENABLE_BUILDING_RESIZE_TRIAL (default off). With
  * the flag off every function here reports "no trial" and callers keep their
  * existing behaviour. The server validates every saved state again.
  */
 export const RESIZE_TRIAL_PROGRAM_ID = contract.id;
+
+type KitRow = (typeof contract.massing.kits)[keyof typeof contract.massing.kits];
+/** A kit without the two values every kit shares, which the dressing adds. */
+type KitSettings = LegoMassingKit extends infer Kit ? Kit extends LegoMassingKit
+  ? Omit<Kit, 'storeys' | 'surfaceOffsetM' | 'floorLineHeightM'> : never : never;
+
+/**
+ * The facade kits: floor levels, bay modules, openings and colours measured
+ * from each pilot model. Bays repeat on their module; they never stretch.
+ * `type` names the vocabulary a kit is drawn with.
+ */
+function kitSettings(kit: KitRow): KitSettings {
+  if ('wing_depth_m' in kit) {
+    return {
+      type: 'courtyard_block',
+      plinthHeightM: kit.plinth_height_m,
+      groundFloorHeightM: kit.ground_floor_height_m,
+      upperFloorHeightM: kit.upper_floor_height_m,
+      parapetHeightM: kit.parapet_height_m,
+      /** Every wing is this deep; the courtyard is what the wings leave open. */
+      wingDepthM: kit.wing_depth_m,
+      /** An outline too small for a courtyard this wide is built solid. */
+      courtyardMinClearM: kit.courtyard_min_clear_m,
+      bayModuleM: kit.bay_module_m,
+      loggiaWidthM: kit.loggia_width_m,
+      loggiaHeightM: kit.loggia_height_m,
+      loggiaDepthM: kit.loggia_depth_m,
+      loggiaDoorWidthM: kit.loggia_door_width_m,
+      loggiaDoorHeightM: kit.loggia_door_height_m,
+      railingHeightM: kit.railing_height_m,
+      windowWidthM: kit.window_width_m,
+      windowHeightM: kit.window_height_m,
+      windowSillM: kit.window_sill_m,
+      sideBayModuleM: kit.side_bay_module_m,
+      sideWindowWidthM: kit.side_window_width_m,
+      sideWindowHeightM: kit.side_window_height_m,
+      sideWindowSillM: kit.side_window_sill_m,
+      shopWindowWidthM: kit.shop_window_width_m,
+      shopDoorWidthM: kit.shop_door_width_m,
+      shopFrontHeightM: kit.shop_front_height_m,
+      shopWindowSillM: kit.shop_window_sill_m,
+      awningWidthM: kit.awning_width_m,
+      awningProjectionM: kit.awning_projection_m,
+      awningTopM: kit.awning_top_m,
+      awningDropM: kit.awning_drop_m,
+      shopBandHeightM: kit.shop_band_height_m,
+      shopBandProjectionM: kit.shop_band_projection_m,
+      passageWidthM: kit.passage_width_m,
+      passageHeightM: kit.passage_height_m,
+      stringCourseHeightM: kit.string_course_height_m,
+      stringCourseProjectionM: kit.string_course_projection_m,
+      lintelHeightM: kit.lintel_height_m,
+      copingHeightM: kit.coping_height_m,
+      copingWidthM: kit.coping_width_m,
+      gardenInsetM: kit.garden_inset_m,
+      gardenHeightM: kit.garden_height_m,
+      colors: kit.colors,
+    };
+  }
+  return {
+    type: 'apartment_bar',
+    plinthHeightM: kit.plinth_height_m,
+    groundFloorHeightM: kit.ground_floor_height_m,
+    upperFloorHeightM: kit.upper_floor_height_m,
+    parapetHeightM: kit.parapet_height_m,
+    cornerPierM: kit.corner_pier_m,
+    windowBayModuleM: kit.window_bay_module_m,
+    windowWidthM: kit.window_width_m,
+    windowHeightM: kit.window_height_m,
+    windowSillM: kit.window_sill_m,
+    groundWindowHeightM: kit.ground_window_height_m,
+    groundWindowSillM: kit.ground_window_sill_m,
+    loggiaBayModuleM: kit.loggia_bay_module_m,
+    loggiaWidthM: kit.loggia_width_m,
+    loggiaHeightM: kit.loggia_height_m,
+    loggiaDepthM: kit.loggia_depth_m,
+    loggiaMinWallM: kit.loggia_min_wall_m,
+    railingHeightM: kit.railing_height_m,
+    entranceWidthM: kit.entrance_width_m,
+    entranceDepthM: kit.entrance_depth_m,
+    entranceHeightM: kit.entrance_height_m,
+    colors: kit.colors,
+  };
+}
 
 /**
  * Every tunable of the pilot, named. The values live in ONE file,
@@ -50,31 +138,9 @@ export const RESIZE_TRIAL_SETTINGS = {
   /** Shape freely look. 'archetype_kit' builds the facade from the kit below;
    *  'floor_lines_and_windows' is the plain fallback: lines and window squares. */
   massingStyle: contract.massing.style as 'archetype_kit' | 'floor_lines_and_windows',
-  /** The facade kit: floor levels, bay modules, openings and colours measured
-   *  from the pilot model. Bays repeat on their module; they never stretch. */
-  kit: {
-    plinthHeightM: contract.massing.kit.plinth_height_m,
-    groundFloorHeightM: contract.massing.kit.ground_floor_height_m,
-    upperFloorHeightM: contract.massing.kit.upper_floor_height_m,
-    parapetHeightM: contract.massing.kit.parapet_height_m,
-    cornerPierM: contract.massing.kit.corner_pier_m,
-    windowBayModuleM: contract.massing.kit.window_bay_module_m,
-    windowWidthM: contract.massing.kit.window_width_m,
-    windowHeightM: contract.massing.kit.window_height_m,
-    windowSillM: contract.massing.kit.window_sill_m,
-    groundWindowHeightM: contract.massing.kit.ground_window_height_m,
-    groundWindowSillM: contract.massing.kit.ground_window_sill_m,
-    loggiaBayModuleM: contract.massing.kit.loggia_bay_module_m,
-    loggiaWidthM: contract.massing.kit.loggia_width_m,
-    loggiaHeightM: contract.massing.kit.loggia_height_m,
-    loggiaDepthM: contract.massing.kit.loggia_depth_m,
-    loggiaMinWallM: contract.massing.kit.loggia_min_wall_m,
-    railingHeightM: contract.massing.kit.railing_height_m,
-    entranceWidthM: contract.massing.kit.entrance_width_m,
-    entranceDepthM: contract.massing.kit.entrance_depth_m,
-    entranceHeightM: contract.massing.kit.entrance_height_m,
-    colors: contract.massing.kit.colors,
-  },
+  /** The facade kits by name. Each building names the kit it is drawn with. */
+  kits: Object.fromEntries(Object.entries(contract.massing.kits)
+    .map(([name, kit]) => [name, kitSettings(kit)])) as Readonly<Record<string, KitSettings>>,
   /** Fallback style: fixed window bay module. Bays repeat; they never stretch. */
   bayModuleM: contract.massing.bay_module_m,
   windowWidthM: contract.massing.window_width_m,
@@ -110,6 +176,8 @@ export interface ResizeTrialFamily {
   /** The catalogue's placement plot around the unscaled model. */
   plotWidthM: number;
   plotDepthM: number;
+  /** The facade kit this building is drawn with in Shape freely. */
+  massingKit: string;
 }
 
 const FAMILIES: ResizeTrialFamily[] = contract.families.map(row => ({
@@ -117,7 +185,7 @@ const FAMILIES: ResizeTrialFamily[] = contract.families.map(row => ({
   variantId: row.variant_id, candidate: row.candidate,
   nativeWidthM: row.native_dimensions_m[0], nativeDepthM: row.native_dimensions_m[1],
   nativeHeightM: row.native_dimensions_m[2], nativeStoreys: row.native_storeys,
-  plotWidthM: row.placement_plot_m[0], plotDepthM: row.placement_plot_m[1],
+  plotWidthM: row.placement_plot_m[0], plotDepthM: row.placement_plot_m[1], massingKit: row.massing_kit,
 }));
 
 /** Read at call time so a test can switch the flag without reloading modules. */
@@ -373,20 +441,41 @@ export function resizeTrialOutlineProblem(coordinates: number[][]): string | nul
 }
 
 export interface ResizeTrialFigures {
+  /** Ground the building covers. A courtyard is not part of it. */
   footprintAreaM2: number;
+  /** Open courtyard inside the block. 0 for a building without one. */
+  courtyardAreaM2: number;
   storeys: number;
   floorAreaM2: number;
   /** Floor area ÷ site area. null without a site boundary. */
   far: number | null;
 }
 
-/** Live figures for a freely shaped building: the outline is its floor plate. */
-export function resizeTrialFigures(coordinates: number[][], storeys: unknown, siteAreaM2?: number | null): ResizeTrialFigures {
+/** The smallest distance across an outline that still leaves this family a
+ *  courtyard: two wings and the minimum clear width. null for a building
+ *  whose facade kit has no courtyard. */
+export function resizeTrialCourtyardNeedM(family: ResizeTrialFamily | undefined): number | null {
+  const kit = family && RESIZE_TRIAL_SETTINGS.massingStyle === 'archetype_kit' ? RESIZE_TRIAL_SETTINGS.kits[family.massingKit] : undefined;
+  return kit?.type === 'courtyard_block' ? 2 * kit.wingDepthM + kit.courtyardMinClearM : null;
+}
+
+/** Courtyard a freely shaped building of this family leaves open, in m². */
+function resizeTrialCourtyardAreaM2(coordinates: number[][], family: ResizeTrialFamily | undefined): number {
+  const kit = family && RESIZE_TRIAL_SETTINGS.massingStyle === 'archetype_kit' ? RESIZE_TRIAL_SETTINGS.kits[family.massingKit] : undefined;
+  return kit?.type === 'courtyard_block' ? kitCourtyardAreaM2(coordinates, kit.wingDepthM, kit.courtyardMinClearM) : 0;
+}
+
+/** Live figures for a freely shaped building: its floor plate is the drawn
+ *  outline, less the courtyard when its facade kit leaves one open. */
+export function resizeTrialFigures(coordinates: number[][], storeys: unknown, siteAreaM2?: number | null,
+  family?: ResizeTrialFamily): ResizeTrialFigures {
   const count = Number(storeys);
   const floors = Number.isInteger(count) && count > 0 ? count : 0;
-  const footprintAreaM2 = coordinates.length >= 3 ? polygonAreaM2(coordinates) : 0;
+  const outlineAreaM2 = coordinates.length >= 3 ? polygonAreaM2(coordinates) : 0;
+  const courtyardAreaM2 = Math.min(outlineAreaM2, resizeTrialCourtyardAreaM2(coordinates, family));
+  const footprintAreaM2 = outlineAreaM2 - courtyardAreaM2;
   const floorAreaM2 = footprintAreaM2 * floors;
-  return { footprintAreaM2, storeys: floors, floorAreaM2,
+  return { footprintAreaM2, courtyardAreaM2, storeys: floors, floorAreaM2,
     far: siteAreaM2 && siteAreaM2 > 0 ? floorAreaM2 / siteAreaM2 : null };
 }
 
@@ -455,9 +544,10 @@ export function resizeTrialMassingDressing(
   const saved = Number(properties?.floor_count ?? properties?.floors);
   const settings = RESIZE_TRIAL_SETTINGS;
   const storeys = Number.isInteger(saved) && saved > 0 ? saved : state.family.nativeStoreys;
-  if (style === 'archetype_kit') {
-    return { kind: 'kit' as const, kit: { ...settings.kit, storeys,
-      floorLineHeightM: settings.floorLineHeightM, surfaceOffsetM: settings.surfaceOffsetM } };
+  const kit = settings.kits[state.family.massingKit];
+  if (style === 'archetype_kit' && kit) {
+    return { kind: 'kit' as const, kit: { ...kit, storeys,
+      floorLineHeightM: settings.floorLineHeightM, surfaceOffsetM: settings.surfaceOffsetM } as LegoMassingKit };
   }
   return {
     kind: 'lines' as const,

@@ -149,7 +149,7 @@ describe('buildLegoMassingKitData', () => {
   const ll = (x: number, y: number) => [longitude + x / metersPerDegLon(latitude), latitude + y / METERS_PER_DEG_LAT];
   const rectangle = (width: number, depth: number) => [ll(-width / 2, -depth / 2), ll(width / 2, -depth / 2),
     ll(width / 2, depth / 2), ll(-width / 2, depth / 2)];
-  const kit = contract.massing.kit;
+  const kit = contract.massing.kits.aspen_terrace;
   // The shipped tuning values, so a change to the file is a change to these expectations.
   const style: LegoMassingKitStyle = { storeys: 5, plinthHeightM: kit.plinth_height_m, groundFloorHeightM: kit.ground_floor_height_m,
     upperFloorHeightM: kit.upper_floor_height_m, parapetHeightM: kit.parapet_height_m, cornerPierM: kit.corner_pier_m,

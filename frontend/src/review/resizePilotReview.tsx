@@ -1,8 +1,9 @@
 // Building resize pilot · eye-tuning page. A development tool, not part of the app.
 //
 //   npm run dev, then open /resize-pilot-review.html?view=compare
-//   views: compare | stretch | massing | panel-exact | panel-stretched | panel-free-auto | panel-free-l
-//   &model=<URL of final-seniors-apartments-clay-v003.glb> shows the exact model.
+//   views: compare | stretch | massing | model | panel-exact | panel-stretched | panel-free-auto | panel-free-l
+//   &building=<picker id of a trial building>, default final_seniors_apartments
+//   &model=<URL of that building's GLB> shows the exact model.
 //
 // It runs the real code: the panel components, the plan transform, the rigid
 // prop pass and the massing geometry, with values from buildingResizeTrial.json.
@@ -27,22 +28,72 @@ import { keepPropsRigidUnderStretch } from '@/features/legoAssembly/resizeTrialR
 import { legoInstanceTransform } from '@/components/viewer/globe/legoGlobePlacement';
 import { prepareArchitecturalClone } from '@/components/viewer/globe/modelMaterialQuality';
 import {
-  buildLegoMassingDressingData, buildLegoMassingKitData, buildLegoMassingMeshData, legoMassingColor,
+  buildLegoMassingDressingData, buildLegoMassingMeshData, legoMassingColor,
   type LegoMassingColoredMesh, type LegoMassingMeshData,
 } from '@/components/viewer/globe/legoMassingGeometry';
+import { buildLegoMassingKit } from '@/components/viewer/globe/legoMassingKits';
 import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 
 declare global { interface Window { __ready?: boolean; __error?: string } }
 const query = new URLSearchParams(location.search);
 const view = query.get('view') ?? 'compare';
 const modelUrl = query.get('model');
-const REFERENCE = '/archetypes/buildings/final-seniors-apartments';
-const asset = placeAsset('final_seniors_apartments');
+const asset = placeAsset(query.get('building') ?? 'final_seniors_apartments');
 const family = resizeTrialFamilyForAsset(asset, true)!;
+const REFERENCE = `/archetypes/buildings/${family?.archetypeId}`;
 const centre = [-114.0719, 51.0447];
 const ll = (x: number, y: number) => [centre[0] + x / metersPerDegLon(centre[1]), centre[1] + y / METERS_PER_DEG_LAT];
 const rectangle = (width: number, depth: number) => [ll(-width / 2, -depth / 2), ll(width / 2, -depth / 2), ll(width / 2, depth / 2), ll(-width / 2, depth / 2)];
-const L_SHAPE = [ll(-25, -15), ll(25, -15), ll(25, 0), ll(0, 0), ll(0, 15), ll(-25, 15)];
+const lShape = (width: number, depth: number, arm: number) => [ll(-width / 2, -depth / 2), ll(width / 2, -depth / 2),
+  ll(width / 2, arm - depth / 2), ll(arm - width / 2, arm - depth / 2), ll(arm - width / 2, depth / 2), ll(-width / 2, depth / 2)];
+
+interface Shot { azimuth: number; elevation: number; distance: number; lookAt?: [number, number, number]; fov?: number }
+type Outline = [title: string, ring: number[][], shot: Shot];
+/** What each trial building is compared on. Sizes are metres. */
+interface Review {
+  /** The model's main block, drawn freely for the side-by-side comparison. */
+  block: [width: number, depth: number];
+  /** How far the model's box centre is from its main block's centre, along its width. */
+  blockOffsetM: number;
+  front: Shot; oblique: Shot; stretch: Shot;
+  /** A stretch outside the band, and an L-shaped outline, for the panel views. */
+  handover: [width: number, depth: number]; lOutline: number[][];
+  outlines: Outline[];
+}
+const framed = (azimuth: number, elevation: number): Shot => ({ azimuth, elevation, distance: 0 });
+const REVIEWS: Record<string, Review> = {
+  final_seniors_apartments: {
+    block: [24, 16], blockOffsetM: 4,
+    front: { azimuth: 0, elevation: 7, distance: 62, lookAt: [0, 8.2, 0] },
+    oblique: { azimuth: 38, elevation: 27, distance: 70, lookAt: [3, 6, 0] },
+    stretch: { azimuth: 30, elevation: 24, distance: 86, lookAt: [0, 6, 0] },
+    handover: [50, 17.98], lOutline: lShape(50, 30, 15),
+    outlines: [
+      ['Model footprint 32.4 × 18.0 m', rectangle(32.36, 17.98), { azimuth: 28, elevation: 22, distance: 84 }],
+      ['Automatic handover 50 × 18 m', rectangle(50, 18), { azimuth: 28, elevation: 22, distance: 104 }],
+      ['L shape 50 × 30 m', lShape(50, 30, 15), { azimuth: -32, elevation: 30, distance: 112 }],
+      ['Five-corner outline', [ll(-22, -12), ll(18, -14), ll(24, 4), ll(2, 14), ll(-20, 8)], { azimuth: 24, elevation: 28, distance: 98 }],
+      ['Minimum 9 × 12 m', rectangle(9, 12), { azimuth: 28, elevation: 20, distance: 62 }],
+      ['Long bar 90 × 12 m', rectangle(90, 12), { azimuth: 24, elevation: 18, distance: 150 }],
+    ],
+  },
+  final_courtyard_block: {
+    block: [30, 24.4], blockOffsetM: 0,
+    front: { azimuth: 0, elevation: 6, distance: 64, lookAt: [0, 7.4, 0] },
+    oblique: { azimuth: -36, elevation: 38, distance: 82, lookAt: [0, 4, 0] },
+    stretch: { azimuth: -32, elevation: 36, distance: 100, lookAt: [0, 4, 0] },
+    handover: [48, 26.3], lOutline: lShape(60, 46, 24),
+    outlines: [
+      ['Model footprint 30.0 × 24.4 m', rectangle(30, 24.4), framed(-34, 36)],
+      ['Automatic handover 48 × 26 m', rectangle(48, 26.3), framed(-34, 36)],
+      ['L shape 60 × 46 m', lShape(60, 46, 24), framed(-40, 42)],
+      ['Five-corner outline', [ll(-26, -18), ll(24, -20), ll(30, 6), ll(4, 22), ll(-24, 14)], framed(-30, 42)],
+      ['Too small for a courtyard, 18 × 14 m', rectangle(18, 14), framed(-34, 30)],
+      ['Long bar 80 × 14 m', rectangle(80, 14), framed(-28, 26)],
+    ],
+  },
+};
+const review = REVIEWS[asset?.id ?? ''] ?? REVIEWS.final_seniors_apartments;
 
 // Pages render several canvases; the page is ready when every one has drawn.
 let pending = 0;
@@ -67,17 +118,15 @@ function Panel({ properties, coordinates }: { properties: SiteZoneProperties; co
   </div>;
 }
 const PANELS: Record<string, () => { properties: SiteZoneProperties; coordinates: number[][] }> = {
-  'panel-exact': () => ({ properties: placementProperties(asset), coordinates: rectangleAt(centre, 36.4, 22, 15) }),
+  'panel-exact': () => ({ properties: placementProperties(asset), coordinates: rectangleAt(centre, family.plotWidthM, family.plotDepthM, 15) }),
   'panel-stretched': () => ({ properties: exactModelProperties(placementProperties(asset), family, 1.2, 0.9, asset),
-    coordinates: rectangleAt(centre, 44, 22, 15) }),
+    coordinates: rectangleAt(centre, resizeTrialPlotFor(family, 1.2, 0.9).widthM, family.plotDepthM, 15) }),
   'panel-free-auto': () => ({ properties: shapeFreelyProperties(placementProperties(asset), 'stretch_out_of_band'),
-    coordinates: rectangleAt(centre, 50, 17.98, 15) }),
-  'panel-free-l': () => ({ properties: shapeFreelyProperties(placementProperties(asset)), coordinates: L_SHAPE }),
+    coordinates: rectangleAt(centre, ...review.handover, 15) }),
+  'panel-free-l': () => ({ properties: shapeFreelyProperties(placementProperties(asset)), coordinates: review.lOutline }),
 };
 
 // ------------------------------------------------------------------ 3D stage
-interface Shot { azimuth: number; elevation: number; distance: number; lookAt?: [number, number, number]; fov?: number }
-
 function Canvas3D({ build, shot, width = 560, height = 380, grid = false }: {
   build: (scene: THREE.Scene) => void | Promise<void>; shot: Shot; width?: number; height?: number; grid?: boolean;
 }) {
@@ -116,9 +165,14 @@ function Canvas3D({ build, shot, width = 560, height = 380, grid = false }: {
     Promise.resolve(build(scene)).then(() => {
       if (disposed) return;
       const camera = new THREE.PerspectiveCamera(shot.fov ?? 30, width / height, 1, 1200);
-      const az = shot.azimuth * Math.PI / 180, el = shot.elevation * Math.PI / 180, look = shot.lookAt ?? [0, 8, 0];
-      camera.position.set(look[0] + Math.sin(az) * Math.cos(el) * shot.distance, look[1] + Math.sin(el) * shot.distance,
-        look[2] + Math.cos(az) * Math.cos(el) * shot.distance);
+      const az = shot.azimuth * Math.PI / 180, el = shot.elevation * Math.PI / 180;
+      // distance 0 frames whatever was built.
+      const box = new THREE.Box3(); scene.traverse(child => { if (child.userData.frame) box.expandByObject(child); });
+      const framed = shot.distance > 0 || box.isEmpty() ? null : box.getBoundingSphere(new THREE.Sphere());
+      const look = framed ? [framed.center.x, framed.center.y, framed.center.z] as [number, number, number] : shot.lookAt ?? [0, 8, 0];
+      const distance = framed ? framed.radius / Math.sin((shot.fov ?? 30) * Math.PI / 360) * 0.92 : shot.distance;
+      camera.position.set(look[0] + Math.sin(az) * Math.cos(el) * distance, look[1] + Math.sin(el) * distance,
+        look[2] + Math.cos(az) * Math.cos(el) * distance);
       camera.lookAt(...look);
       renderer.render(scene, camera); renderer.render(scene, camera);
     }).catch(error => { window.__error = String(error); }).finally(finished);
@@ -141,10 +195,10 @@ async function addExactModel(scene: THREE.Scene, widthScale: number, depthScale:
   keepPropsRigidUnderStretch(model, widthScale, depthScale);
   const transform = legoInstanceTransform({ position: [0, 0, 0], scale: [widthScale, depthScale, 1], rotation_degrees: 0 } as never);
   model.position.set(...transform.position); model.scale.set(...transform.scale); model.rotation.y = transform.rotationYRad;
-  // The model's box centre is 4 m right of its main block's centre. 'block'
-  // puts the main block in front of the camera, to compare like with like.
-  if (centreOn === 'block') model.position.x += 4 * widthScale;
-  shadows(model); scene.add(model);
+  // 'block' puts the model's main block in front of the camera, where its box
+  // centre is off to one side, to compare like with like.
+  if (centreOn === 'block') model.position.x += review.blockOffsetM * widthScale;
+  model.userData.frame = true; shadows(model); scene.add(model);
 }
 
 /** A freely shaped building, drawn by the same functions as the viewer layer. */
@@ -162,16 +216,17 @@ function addMassing(scene: THREE.Scene, ring: number[][], style?: 'archetype_kit
   };
   let caption = '';
   if (dressing.kind === 'kit') {
-    const data = buildLegoMassingKitData(ring, centre[0], centre[1], dressing.kit)!;
+    const data = buildLegoMassingKit(ring, centre[0], centre[1], dressing.kit)!;
     add(data.solid, undefined, 0.78); add(data.glass, undefined, 0.4);
     caption = data.walls.map(wall => wall.bays.map(bay => bay === 'loggia' ? 'B' : 'W').join('') || '–').join(' · ');
+    if ('courtyardAreaM2' in data) caption += data.courtyardAreaM2 ? ` · courtyard ${Math.round(Number(data.courtyardAreaM2))} m²` : ' · built solid';
   } else {
-    add(buildLegoMassingMeshData(ring, centre[0], centre[1], family.nativeHeightM)!, legoMassingColor('final-seniors-apartments:review'), 0.82);
+    add(buildLegoMassingMeshData(ring, centre[0], centre[1], family.nativeHeightM)!, legoMassingColor(`${family.archetypeId}:review`), 0.82);
     const data = buildLegoMassingDressingData(ring, centre[0], centre[1], family.nativeHeightM, dressing)!;
     add(data.floorLines, dressing.floorLineColor, 0.9); add(data.windows, dressing.windowColor, 0.35);
     caption = `bays ${data.baysPerWall.join(', ')}`;
   }
-  shadows(group); scene.add(group);
+  group.userData.frame = true; shadows(group); scene.add(group);
   return caption;
 }
 
@@ -197,42 +252,42 @@ function Reference({ file }: { file: string }) {
     style={{ width: 560, height: 380, objectFit: 'cover', display: 'block', borderRadius: 8 }} />;
 }
 const NOTE = 'Review page: real model, real placement and massing code, this page’s own lighting. Not the app’s globe.';
-const FRONT: Shot = { azimuth: 0, elevation: 7, distance: 62, lookAt: [0, 8.2, 0], fov: 30 };
-const OBLIQUE: Shot = { azimuth: 38, elevation: 27, distance: 70, lookAt: [3, 6, 0], fov: 30 };
 const STRETCHES = [[0.7, 1], [1, 1], [1.4, 1], [1, 0.7], [1, 1.4], [0.7, 1.4]];
+const block = `${review.block[0]} × ${review.block[1]} m`;
 
 function App() {
   if (!buildingResizeTrialEnabled()) return <p style={{ padding: 20 }}>Start the dev server with VITE_ENABLE_BUILDING_RESIZE_TRIAL=true.</p>;
   if (PANELS[view]) return <Panel {...PANELS[view]()} />;
-  if (view === 'compare') return <Sheet columns={3} title="Reference · Exact model · Shape freely" note={NOTE}>
+  if (!family) return <p style={{ padding: 20 }}>That building is not part of the resize pilot.</p>;
+  if (view === 'compare') return <Sheet columns={3} title={`${family.label} · reference, exact model, Shape freely`} note={NOTE}>
     <Figure title="Archetype reference" note="front"><Reference file="front.png" /></Figure>
-    <Figure title="Exact model, 100%"><Canvas3D shot={FRONT} build={scene => addExactModel(scene, 1, 1)} /></Figure>
-    <Figure title="Shape freely, same 24 × 16 m block"><Canvas3D shot={FRONT} build={scene => { addMassing(scene, rectangle(24, 16)); }} /></Figure>
+    <Figure title="Exact model, 100%"><Canvas3D shot={review.front} build={scene => addExactModel(scene, 1, 1)} /></Figure>
+    <Figure title={`Shape freely, same ${block} block`}><Canvas3D shot={review.front} build={scene => { addMassing(scene, rectangle(...review.block)); }} /></Figure>
     <Figure title="Archetype reference" note="oblique"><Reference file="oblique.png" /></Figure>
-    <Figure title="Exact model, 100%"><Canvas3D shot={OBLIQUE} build={scene => addExactModel(scene, 1, 1)} /></Figure>
-    <Figure title="Shape freely, same 24 × 16 m block"><Canvas3D shot={OBLIQUE} build={scene => { addMassing(scene, rectangle(24, 16)); }} /></Figure>
+    <Figure title="Exact model, 100%"><Canvas3D shot={review.oblique} build={scene => addExactModel(scene, 1, 1)} /></Figure>
+    <Figure title={`Shape freely, same ${block} block`}><Canvas3D shot={review.oblique} build={scene => { addMassing(scene, rectangle(...review.block)); }} /></Figure>
   </Sheet>;
-  if (view === 'stretch') return <Sheet title="Exact model · stretched in width and depth"
+  if (view === 'stretch') return <Sheet title={`${family.label} · exact model stretched in width and depth`}
     note={`${NOTE} Trees and shrubs keep their real proportions. Green line: the plot each stretch needs. 5 m grid.`}>
     {STRETCHES.map(([width, depth]) => <Figure key={`${width}-${depth}`} title={`Width ${Math.round(width * 100)}% · Depth ${Math.round(depth * 100)}%`}
       note={`${(family.nativeWidthM * width).toFixed(1)} × ${(family.nativeDepthM * depth).toFixed(1)} m, height unchanged`}>
-      <Canvas3D grid shot={{ azimuth: 30, elevation: 24, distance: 86, lookAt: [0, 6, 0] }} build={async scene => {
+      <Canvas3D grid shot={review.stretch} build={async scene => {
         await addExactModel(scene, width, depth, 'model');
         const plot = resizeTrialPlotFor(family, width, depth);
         plotOutline(scene, plot.widthM, plot.depthM);
       }} /></Figure>)}
   </Sheet>;
-  if (view === 'massing') return <Sheet title="Shape freely · facade kit on any outline"
+  if (view === 'massing') return <Sheet title={`${family.label} · Shape freely on any outline`}
     note={`${NOTE} W = window bay, B = balcony bay, per wall from the front. Bays repeat on fixed modules. 5 m grid.`}>
-    {([['Model footprint 32.4 × 18.0 m', rectangle(32.36, 17.98), { azimuth: 28, elevation: 22, distance: 84 }],
-      ['Automatic handover 50 × 18 m', rectangle(50, 18), { azimuth: 28, elevation: 22, distance: 104 }],
-      ['L shape 50 × 30 m', L_SHAPE, { azimuth: -32, elevation: 30, distance: 112 }],
-      ['Five-corner outline', [ll(-22, -12), ll(18, -14), ll(24, 4), ll(2, 14), ll(-20, 8)], { azimuth: 24, elevation: 28, distance: 98 }],
-      ['Minimum 9 × 12 m', rectangle(9, 12), { azimuth: 28, elevation: 20, distance: 62 }],
-      ['Long bar 90 × 12 m', rectangle(90, 12), { azimuth: 24, elevation: 18, distance: 150 }],
-    ] as [string, number[][], Omit<Shot, 'lookAt'>][]).map(([title, ring, shot]) => <MassingFigure key={title} title={title} ring={ring} shot={{ ...shot, lookAt: [0, 7, 0] }} />)}
+    {review.outlines.map(([title, ring, shot]) => <MassingFigure key={title} title={title} ring={ring}
+      shot={shot.distance ? { ...shot, lookAt: [0, 7, 0] } : shot} />)}
   </Sheet>;
-  return <p style={{ padding: 20 }}>Unknown view. Try ?view=compare, stretch, massing or panel-exact.</p>;
+  if (view === 'model') return <Sheet title={`${family.label} · exact model as authored`} note={`${NOTE} 5 m grid.`}>
+    {([['Front', 0, 8], ['Front oblique', 38, 27], ['Rear oblique', 218, 27], ['From above', 20, 62]] as [string, number, number][])
+      .map(([title, azimuth, elevation]) => <Figure key={title} title={title}>
+        <Canvas3D grid shot={{ azimuth, elevation, distance: 0 }} build={scene => addExactModel(scene, 1, 1, 'model')} /></Figure>)}
+  </Sheet>;
+  return <p style={{ padding: 20 }}>Unknown view. Try ?view=compare, stretch, massing, model or panel-exact.</p>;
 }
 function MassingFigure({ title, ring, shot }: { title: string; ring: number[][]; shot: Shot }) {
   const caption = useRef<HTMLSpanElement>(null);
