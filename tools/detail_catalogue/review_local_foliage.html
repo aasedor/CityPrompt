@@ -1,0 +1,71 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>loading</title>
+<!--
+  Offline review grid for a prairie foliage batch. Serve the repository root
+  (python -m http.server 8765 --bind 127.0.0.1) and open
+  /tools/detail_catalogue/review_local_foliage.html?dir=artifacts/prairie-foliage-final&mode=eye
+  mode: eye (1.7 m camera with a 1.8 m red post), oblique, card (the app's
+  catalogue-card lighting and orthographic framing) or mix. Review only; the
+  page never writes files and uses the frontend's installed three.js.
+-->
+<style>body{margin:0;background:#fff;font:12px system-ui}#grid{display:grid;grid-template-columns:repeat(var(--cols,5),1fr);gap:4px;padding:4px}
+.cell{border:1px solid #ccc;background:#f1f5f9}.cell canvas{display:block;width:100%}.cell p{margin:2px 4px;font-weight:600}</style>
+<script type="importmap">{"imports":{"three":"/frontend/node_modules/three/build/three.module.js","three/addons/":"/frontend/node_modules/three/examples/jsm/"}}</script>
+</head><body><div id="grid"></div>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const params = new URLSearchParams(location.search);
+const dir = (params.get('dir') || 'artifacts/prairie-foliage-final').replace(/^\/+|\/+$/g, '');
+const mode = params.get('mode') || 'eye';
+const cols = Number(params.get('cols') || 5);
+const only = params.get('only')?.split(',');
+const W = Number(params.get('w') || 360), H = Number(params.get('h') || 300);
+document.getElementById('grid').style.setProperty('--cols', cols);
+const rows = await (await fetch(`/${dir}/catalogue.json`)).json();
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setSize(W, H); renderer.setPixelRatio(1);
+const loader = new GLTFLoader();
+function scene(model, view) {
+  const s = new THREE.Scene();
+  if (view === 'card') { s.background = new THREE.Color('#f1f5f9'); s.add(new THREE.AmbientLight(0xffffff, 2)); const l = new THREE.DirectionalLight(0xffffff, 3); l.position.set(5, 10, 8); s.add(l); }
+  else { s.background = new THREE.Color('#dfe7ee'); s.add(new THREE.HemisphereLight(0xdde8f5, 0x6b6a5a, 1.6)); const l = new THREE.DirectionalLight(0xfff3dd, 2.4); l.position.set(6, 12, 5); s.add(l); }
+  s.add(model);
+  const box = new THREE.Box3().setFromObject(model); const size = box.getSize(new THREE.Vector3()); const centre = box.getCenter(new THREE.Vector3());
+  if (view !== 'card') {
+    const ground = new THREE.Mesh(new THREE.CircleGeometry(Math.max(size.x, size.z) * 1.1 + 1, 48), new THREE.MeshStandardMaterial({ color: '#8d9a6e', roughness: 1 }));
+    ground.rotation.x = -Math.PI / 2; ground.position.y = box.min.y - .002; s.add(ground);
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(.08, .08, 1.8, 10), new THREE.MeshStandardMaterial({ color: '#c9583f' }));
+    post.position.set(box.max.x + .6, box.min.y + .9, 0); s.add(post);
+  }
+  let camera;
+  if (view === 'card') {
+    const radius = size.length() / 2 || 1, aspect = W / H;
+    camera = new THREE.OrthographicCamera(-radius * aspect, radius * aspect, radius, -radius, radius * .01, radius * 20);
+    camera.position.copy(centre).add(new THREE.Vector3(1.4, 1, 1.8).normalize().multiplyScalar(radius * 4));
+  } else {
+    camera = new THREE.PerspectiveCamera(view === 'eye' ? 42 : 38, W / H, .1, 500);
+    const radius = Math.max(size.x, size.y, size.z);
+    if (view === 'eye') camera.position.set(centre.x + radius * .35, Math.min(1.7, box.min.y + 1.7), box.max.z + radius * 1.55 + 1.2);
+    else camera.position.set(centre.x + radius * 1.1, box.max.y + radius * 1.2, box.max.z + radius * 1.1);
+  }
+  camera.lookAt(view === 'eye' ? new THREE.Vector3(centre.x, box.min.y + size.y * .5, centre.z) : centre);
+  camera.updateProjectionMatrix();
+  return { s, camera };
+}
+for (const row of rows) {
+  if (only && !only.includes(row.id.replace(/^detail-prairie-/, ''))) continue;
+  const { scene: model } = await loader.loadAsync(`/${dir}/${row.url.split('/').pop()}`);
+  const views = mode === 'mix' ? ['eye', 'oblique'] : [mode];
+  for (const view of views) {
+    const { s, camera } = scene(model.clone(), view);
+    renderer.render(s, camera);
+    const cell = document.createElement('div'); cell.className = 'cell';
+    const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
+    canvas.getContext('2d').drawImage(renderer.domElement, 0, 0);
+    const p = document.createElement('p'); p.textContent = `${row.label} · ${row.dimensions.map(n => n.toFixed(1)).join('×')} m · ${row.triangles} tri · ${view}`;
+    cell.append(canvas, p); document.getElementById('grid').append(cell);
+  }
+}
+document.title = 'done';
+</script></body></html>

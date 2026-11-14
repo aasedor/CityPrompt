@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3725,
+    "explicitReferenceCount": 3755,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5509,
-    "requiredLogicalBytes": 12912387514,
+    "requiredFileCount": 5539,
+    "requiredLogicalBytes": 12966929010,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -26110,6 +26110,246 @@
       "lfsOid": "8fbbe90338cb2d5364af9a9fb5af42d1937c290d02e89a95fb40ed9403b91c76"
     },
     {
+      "url": "/park-kits/prairie-foliage-v1/amur-cherry.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1506152,
+      "lfsOid": "4d5a66a73827d5744e5145f8fc9785f657a22482ff2b4f04def7e8322490b4a6"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/balsam-poplar.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1512312,
+      "lfsOid": "dc9e1de6bb85a1f04d74307ebe86278b1075e7059a84ae989e75e50b63e2881f"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/buffaloberry.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 466692,
+      "lfsOid": "5564b98060a59358cd8959f8f909dea91c51081b38890f5797aa048471e20b85"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/bur-oak.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1422688,
+      "lfsOid": "2ccdad063f50cea83a4d1fc7036cac5488423d5cad93331402d6a5d6fe050663"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/caragana-hedge.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 553340,
+      "lfsOid": "615e9e391d034bfdc887916cefdf6bd71ec11d609a0f141d2d92ce8ce70dc038"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/colorado-blue-spruce.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1363900,
+      "lfsOid": "a8d5e91945c654ac2ca1613d95fe54953d9ae1ac0df03bf8377a463144009f80"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/common-lilac.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 634048,
+      "lfsOid": "ed807491ada9ce15902fb504fd751c06bad0f264e52f81aae1de0ec8b52c838a"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 337768,
+      "lfsOid": "6b050c1be830686fa3df2d797194c2491c12322fd1e0a32f4261b04dbe281628"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/creeping-juniper.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 363196,
+      "lfsOid": "c20c840b8034b2f06e748ecabb94e41d80f6e0602bc2bdaf86ef76f784ce873c"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/diabolo-ninebark.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 448924,
+      "lfsOid": "489410b87b1deb28cce62b06296c4cd1ea70822d548e9eb34ef137f541078965"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/feather-reed-grass.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 176444,
+      "lfsOid": "ee76c55ac8a7bfda4ce21f536d498608703f29f62fbbd1f947f8d412ce975400"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/green-ash.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1512296,
+      "lfsOid": "27f2d0724f5c83180dfa3fe01959eb4614e2e4c2d53920913f3b403fe3b12abe"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/highbush-cranberry.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 450752,
+      "lfsOid": "d2e3d29c753913fbdee9e0c57d28d71696a2f68e50b77ccd4a4011a4e1f71173"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/laurel-leaf-willow.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1512332,
+      "lfsOid": "db19177329607978d2deaf6711e037791f7c54a777255f048dd5b38292e9e0de"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/lodgepole-pine.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1322360,
+      "lfsOid": "33dd6af3cdfe9b7fe2277a717cc3c6e047060c6f2b5dfa72475d44a355a58716"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/manitoba-maple.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1588928,
+      "lfsOid": "894b33ce41f79c74753c9c9bc24ec1436e56785ebcccf7ec541fd2a87ed057f9"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/mugo-pine.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 343096,
+      "lfsOid": "acaf1b099cb37bfd2c57a7685d7320c7a261470160d8bbb743d18169ef801de0"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/paper-birch.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1573868,
+      "lfsOid": "0eb04366360a3870e5903e776f9ffbf3a01cba9dca5186fbcc7116542e1b7387"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/prickly-wild-rose.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 428400,
+      "lfsOid": "e3855fdf88876b6fd2001ef1ad491b44d1122bab6c34a054cf5097db28acdd48"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/rough-fescue-drift.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 112828,
+      "lfsOid": "02a1ad7de8eb74a48335840437d8f67b933b8eac239aec48685f5b33133a4398"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/saskatoon.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 376844,
+      "lfsOid": "08f09457021f3fb055a94a164f47e0e367d6953c87e2d2baae59c1f6218be559"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/schubert-chokecherry.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1187440,
+      "lfsOid": "f665a32f5945c588398b3f154a3c3064cc13180c09023c7a896dc4317f971b1a"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/showy-mountain-ash.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1394916,
+      "lfsOid": "41fb3874bdddee746b130ae8a19b549fa9f3439838b1bf98731b5c0338197053"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/shrubby-cinquefoil.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 593488,
+      "lfsOid": "cbdad927de0c9e8df2f819aae2fce47cafbb17f777d43f034ab682407aecc897"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/siberian-larch.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1236880,
+      "lfsOid": "2cc624898382e3c205b2f1b8dfe8a5ab65c0de59d6d13179e0a82871446b676c"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/snowberry.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 515016,
+      "lfsOid": "312babfb897777a116b5667d16334caab65a4940e69cc5f56a33c7ba0010dd7e"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1112440,
+      "lfsOid": "a09ee5e199e867702907e807bf4499ff75ed59b5e7699ef05406c0ef4514ddc1"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/trembling-aspen.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1282952,
+      "lfsOid": "e4758a42376944bebcc8d09fa4be9c16187e6e3bb1d3a6ce24201103df935cc6"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/white-spruce.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1517768,
+      "lfsOid": "3d83701d9ee87a0a7969f8d113187692476bff81df706c717d99ae5f835ff4f9"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/wolf-willow.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 422680,
+      "lfsOid": "2d3735eef77217a42acabc75eb4352420362cf5df1f22de9e3c58b29f25cfddf"
+    },
+    {
       "url": "/park-kits/pump-track-asphalt-competition/start-mound.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -32816,9 +33056,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 503,
-      "logicalBytes": 434305560,
-      "pathDigest": "2fcb914174da7d7f170ae385fee4fa73a046bdc80ab348205e746aef822f0408"
+      "fileCount": 533,
+      "logicalBytes": 461576308,
+      "pathDigest": "b573bbba49d82768028303923f6bc42028f14e017846bbe911f26ab75d29b66f"
     },
     {
       "name": "public-realm-skins",

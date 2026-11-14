@@ -3858,5 +3858,755 @@
     "triangles": 908,
     "meshes": 7,
     "bytes": 51492
+  },
+  {
+    "id": "detail-prairie-trembling-aspen",
+    "label": "Trembling aspen",
+    "category": "Trees",
+    "description": "Populus tremuloides \u00b7 Alberta native with pale bark and a light, open crown. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.799,
+      4.759,
+      11.588
+    ],
+    "url": "/park-kits/prairie-foliage-v1/trembling-aspen.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.152689,
+      0.002632,
+      -0.068694
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "e4758a42376944bebcc8d09fa4be9c16187e6e3bb1d3a6ce24201103df935cc6",
+    "triangles": 11236,
+    "meshes": 2,
+    "bytes": 1282952
+  },
+  {
+    "id": "detail-prairie-swedish-columnar-aspen",
+    "label": "Swedish columnar aspen",
+    "category": "Trees",
+    "description": "Populus tremula Erecta \u00b7 narrow upright screen tree planted across Calgary. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      2.42,
+      2.362,
+      10.737
+    ],
+    "url": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.023663,
+      0.001022,
+      -0.087165
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "a09ee5e199e867702907e807bf4499ff75ed59b5e7699ef05406c0ef4514ddc1",
+    "triangles": 9740,
+    "meshes": 2,
+    "bytes": 1112440
+  },
+  {
+    "id": "detail-prairie-balsam-poplar",
+    "label": "Balsam poplar",
+    "category": "Trees",
+    "description": "Populus balsamifera \u00b7 tall river-valley native with coarse ascending limbs. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      9.358,
+      8.004,
+      17.4
+    ],
+    "url": "/park-kits/prairie-foliage-v1/balsam-poplar.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.136157,
+      0.004542,
+      0.43926
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "dc9e1de6bb85a1f04d74307ebe86278b1075e7059a84ae989e75e50b63e2881f",
+    "triangles": 13248,
+    "meshes": 2,
+    "bytes": 1512312
+  },
+  {
+    "id": "detail-prairie-paper-birch",
+    "label": "Paper birch",
+    "category": "Trees",
+    "description": "Betula papyrifera \u00b7 white-barked native, often multi-stem, with fine drooping twigs. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.502,
+      4.693,
+      10.473
+    ],
+    "url": "/park-kits/prairie-foliage-v1/paper-birch.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.016131,
+      0.003998,
+      -0.182078
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "0eb04366360a3870e5903e776f9ffbf3a01cba9dca5186fbcc7116542e1b7387",
+    "triangles": 13788,
+    "meshes": 2,
+    "bytes": 1573868
+  },
+  {
+    "id": "detail-prairie-green-ash",
+    "label": "Green ash",
+    "category": "Trees",
+    "description": "Fraxinus pennsylvanica \u00b7 hardy boulevard shade tree with a rounded crown. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.703,
+      8.759,
+      12.706
+    ],
+    "url": "/park-kits/prairie-foliage-v1/green-ash.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.124221,
+      0.003691,
+      0.042719
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "27f2d0724f5c83180dfa3fe01959eb4614e2e4c2d53920913f3b403fe3b12abe",
+    "triangles": 13248,
+    "meshes": 2,
+    "bytes": 1512296
+  },
+  {
+    "id": "detail-prairie-bur-oak",
+    "label": "Bur oak",
+    "category": "Trees",
+    "description": "Quercus macrocarpa \u00b7 slow, broad prairie oak with heavy spreading limbs. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      9.302,
+      9.384,
+      11.094
+    ],
+    "url": "/park-kits/prairie-foliage-v1/bur-oak.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.282958,
+      0.004482,
+      0.164042
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "2ccdad063f50cea83a4d1fc7036cac5488423d5cad93331402d6a5d6fe050663",
+    "triangles": 12462,
+    "meshes": 2,
+    "bytes": 1422688
+  },
+  {
+    "id": "detail-prairie-manitoba-maple",
+    "label": "Manitoba maple",
+    "category": "Trees",
+    "description": "Acer negundo \u00b7 fast, wide, often multi-stem shelterbelt maple. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.762,
+      7.681,
+      10.823
+    ],
+    "url": "/park-kits/prairie-foliage-v1/manitoba-maple.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.165219,
+      0.006512,
+      -0.310526
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "894b33ce41f79c74753c9c9bc24ec1436e56785ebcccf7ec541fd2a87ed057f9",
+    "triangles": 13920,
+    "meshes": 2,
+    "bytes": 1588928
+  },
+  {
+    "id": "detail-prairie-laurel-leaf-willow",
+    "label": "Laurel leaf willow",
+    "category": "Trees",
+    "description": "Salix pentandra \u00b7 dense glossy rounded crown common in older Calgary neighbourhoods. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      10.287,
+      10.375,
+      12.853
+    ],
+    "url": "/park-kits/prairie-foliage-v1/laurel-leaf-willow.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.105124,
+      0.004826,
+      -0.095092
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "db19177329607978d2deaf6711e037791f7c54a777255f048dd5b38292e9e0de",
+    "triangles": 13248,
+    "meshes": 2,
+    "bytes": 1512332
+  },
+  {
+    "id": "detail-prairie-schubert-chokecherry",
+    "label": "Schubert chokecherry",
+    "category": "Trees",
+    "description": "Prunus virginiana Schubert \u00b7 small tree whose leaves turn deep purple by summer. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.421,
+      4.039,
+      6.579
+    ],
+    "url": "/park-kits/prairie-foliage-v1/schubert-chokecherry.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.089862,
+      0.002838,
+      -0.006578
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "f665a32f5945c588398b3f154a3c3064cc13180c09023c7a896dc4317f971b1a",
+    "triangles": 10398,
+    "meshes": 2,
+    "bytes": 1187440
+  },
+  {
+    "id": "detail-prairie-showy-mountain-ash",
+    "label": "Showy mountain ash",
+    "category": "Trees",
+    "description": "Sorbus decora \u00b7 compact ornamental with orange-red berry clusters. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.127,
+      4.148,
+      7.316
+    ],
+    "url": "/park-kits/prairie-foliage-v1/showy-mountain-ash.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.01865,
+      0.002096,
+      0.062185
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "41fb3874bdddee746b130ae8a19b549fa9f3439838b1bf98731b5c0338197053",
+    "triangles": 12218,
+    "meshes": 2,
+    "bytes": 1394916
+  },
+  {
+    "id": "detail-prairie-amur-cherry",
+    "label": "Amur cherry",
+    "category": "Trees",
+    "description": "Prunus maackii \u00b7 multi-stem ornamental with glossy copper-amber bark. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      3.815,
+      3.916,
+      7.018
+    ],
+    "url": "/park-kits/prairie-foliage-v1/amur-cherry.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.159235,
+      0.00425,
+      -0.256033
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "4d5a66a73827d5744e5145f8fc9785f657a22482ff2b4f04def7e8322490b4a6",
+    "triangles": 13194,
+    "meshes": 2,
+    "bytes": 1506152
+  },
+  {
+    "id": "detail-prairie-white-spruce",
+    "label": "White spruce",
+    "category": "Trees",
+    "description": "Picea glauca \u00b7 Alberta native evergreen with soft drooping tiers. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      5.334,
+      4.959,
+      14.175
+    ],
+    "url": "/park-kits/prairie-foliage-v1/white-spruce.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.029933,
+      -0.0,
+      0.061525
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer",
+    "sha256": "3d83701d9ee87a0a7969f8d113187692476bff81df706c717d99ae5f835ff4f9",
+    "triangles": 13296,
+    "meshes": 2,
+    "bytes": 1517768
+  },
+  {
+    "id": "detail-prairie-colorado-blue-spruce",
+    "label": "Colorado blue spruce",
+    "category": "Trees",
+    "description": "Picea pungens \u00b7 stiff silver-blue tiers; the classic Calgary yard evergreen. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.959,
+      4.773,
+      10.65
+    ],
+    "url": "/park-kits/prairie-foliage-v1/colorado-blue-spruce.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.014312,
+      -0.0,
+      -0.016731
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer",
+    "sha256": "a8d5e91945c654ac2ca1613d95fe54953d9ae1ac0df03bf8377a463144009f80",
+    "triangles": 11946,
+    "meshes": 2,
+    "bytes": 1363900
+  },
+  {
+    "id": "detail-prairie-lodgepole-pine",
+    "label": "Lodgepole pine",
+    "category": "Trees",
+    "description": "Pinus contorta \u00b7 Alberta's provincial tree: tall clean trunk, narrow high crown. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      5.531,
+      5.451,
+      15.188
+    ],
+    "url": "/park-kits/prairie-foliage-v1/lodgepole-pine.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.132042,
+      -0.0,
+      0.104604
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer",
+    "sha256": "33dd6af3cdfe9b7fe2277a717cc3c6e047060c6f2b5dfa72475d44a355a58716",
+    "triangles": 11582,
+    "meshes": 2,
+    "bytes": 1322360
+  },
+  {
+    "id": "detail-prairie-siberian-larch",
+    "label": "Siberian larch",
+    "category": "Trees",
+    "description": "Larix sibirica \u00b7 soft open conifer, bright green in spring and gold in autumn. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.526,
+      4.561,
+      13.165
+    ],
+    "url": "/park-kits/prairie-foliage-v1/siberian-larch.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      -0.123529,
+      -0.0,
+      -0.032447
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer",
+    "sha256": "2cc624898382e3c205b2f1b8dfe8a5ab65c0de59d6d13179e0a82871446b676c",
+    "triangles": 10832,
+    "meshes": 2,
+    "bytes": 1236880
+  },
+  {
+    "id": "detail-prairie-saskatoon",
+    "label": "Saskatoon berry",
+    "category": "Planting",
+    "description": "Amelanchier alnifolia \u00b7 upright native shrub with round leaves and purple berries. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.32,
+      2.176,
+      2.627
+    ],
+    "url": "/park-kits/prairie-foliage-v1/saskatoon.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.12149,
+      -0.006046,
+      0.010975
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "08f09457021f3fb055a94a164f47e0e367d6953c87e2d2baae59c1f6218be559",
+    "triangles": 3288,
+    "meshes": 2,
+    "bytes": 376844
+  },
+  {
+    "id": "detail-prairie-wolf-willow",
+    "label": "Wolf willow",
+    "category": "Planting",
+    "description": "Elaeagnus commutata \u00b7 silverberry; suckering prairie native with silver-grey leaves. Place in beds and soft landscape edges.",
+    "dimensions": [
+      1.771,
+      1.729,
+      2.119
+    ],
+    "url": "/park-kits/prairie-foliage-v1/wolf-willow.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.003576,
+      -0.005694,
+      0.034682
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "2d3735eef77217a42acabc75eb4352420362cf5df1f22de9e3c58b29f25cfddf",
+    "triangles": 3690,
+    "meshes": 2,
+    "bytes": 422680
+  },
+  {
+    "id": "detail-prairie-common-lilac",
+    "label": "Common lilac",
+    "category": "Planting",
+    "description": "Syringa vulgaris \u00b7 heart-leaved hedge shrub with fragrant purple panicles in June. Place in beds and soft landscape edges.",
+    "dimensions": [
+      3.135,
+      2.694,
+      3.291
+    ],
+    "url": "/park-kits/prairie-foliage-v1/common-lilac.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0107,
+      -0.00426,
+      0.190935
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "ed807491ada9ce15902fb504fd751c06bad0f264e52f81aae1de0ec8b52c838a",
+    "triangles": 5544,
+    "meshes": 2,
+    "bytes": 634048
+  },
+  {
+    "id": "detail-prairie-caragana-hedge",
+    "label": "Caragana hedge",
+    "category": "Planting",
+    "description": "Caragana arborescens \u00b7 2 m section of informal shelterbelt hedge with yellow pea flowers. Repeat along an edge.",
+    "dimensions": [
+      2.966,
+      1.245,
+      2.031
+    ],
+    "url": "/park-kits/prairie-foliage-v1/caragana-hedge.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.025052,
+      -0.007782,
+      -0.029195
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:hedge_row",
+    "sha256": "615e9e391d034bfdc887916cefdf6bd71ec11d609a0f141d2d92ce8ce70dc038",
+    "triangles": 4836,
+    "meshes": 2,
+    "bytes": 553340
+  },
+  {
+    "id": "detail-prairie-cotoneaster-hedge",
+    "label": "Cotoneaster hedge",
+    "category": "Planting",
+    "description": "Cotoneaster lucidus \u00b7 2 m section of clipped Calgary boulevard hedge, 1.1 m tall. Repeat along an edge.",
+    "dimensions": [
+      2.178,
+      0.859,
+      1.215
+    ],
+    "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.007095,
+      0.009076,
+      0.003377
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:clipped_hedge",
+    "sha256": "6b050c1be830686fa3df2d797194c2491c12322fd1e0a32f4261b04dbe281628",
+    "triangles": 2945,
+    "meshes": 2,
+    "bytes": 337768
+  },
+  {
+    "id": "detail-prairie-prickly-wild-rose",
+    "label": "Prickly wild rose",
+    "category": "Planting",
+    "description": "Rosa acicularis \u00b7 Alberta's provincial flower; low arching native with pink blooms. Place in beds and soft landscape edges.",
+    "dimensions": [
+      1.594,
+      1.484,
+      1.038
+    ],
+    "url": "/park-kits/prairie-foliage-v1/prickly-wild-rose.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.094812,
+      -0.007688,
+      -0.069459
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "e3855fdf88876b6fd2001ef1ad491b44d1122bab6c34a054cf5097db28acdd48",
+    "triangles": 3740,
+    "meshes": 2,
+    "bytes": 428400
+  },
+  {
+    "id": "detail-prairie-snowberry",
+    "label": "Common snowberry",
+    "category": "Planting",
+    "description": "Symphoricarpos albus \u00b7 twiggy native thicket shrub with white berries into winter. Place in beds and soft landscape edges.",
+    "dimensions": [
+      1.593,
+      1.561,
+      1.037
+    ],
+    "url": "/park-kits/prairie-foliage-v1/snowberry.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.047867,
+      -0.007113,
+      -0.043783
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "312babfb897777a116b5667d16334caab65a4940e69cc5f56a33c7ba0010dd7e",
+    "triangles": 4500,
+    "meshes": 2,
+    "bytes": 515016
+  },
+  {
+    "id": "detail-prairie-shrubby-cinquefoil",
+    "label": "Shrubby cinquefoil",
+    "category": "Planting",
+    "description": "Dasiphora fruticosa \u00b7 potentilla; tough mounding native with yellow summer flowers. Place in beds and soft landscape edges.",
+    "dimensions": [
+      1.436,
+      1.172,
+      0.828
+    ],
+    "url": "/park-kits/prairie-foliage-v1/shrubby-cinquefoil.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.017524,
+      -0.007794,
+      0.102581
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "cbdad927de0c9e8df2f819aae2fce47cafbb17f777d43f034ab682407aecc897",
+    "triangles": 5188,
+    "meshes": 2,
+    "bytes": 593488
+  },
+  {
+    "id": "detail-prairie-buffaloberry",
+    "label": "Canada buffaloberry",
+    "category": "Planting",
+    "description": "Shepherdia canadensis \u00b7 grey-green native shrub with bright red berries. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.119,
+      1.872,
+      1.768
+    ],
+    "url": "/park-kits/prairie-foliage-v1/buffaloberry.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.079948,
+      -0.005378,
+      -0.081185
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "5564b98060a59358cd8959f8f909dea91c51081b38890f5797aa048471e20b85",
+    "triangles": 4076,
+    "meshes": 2,
+    "bytes": 466692
+  },
+  {
+    "id": "detail-prairie-highbush-cranberry",
+    "label": "Highbush cranberry",
+    "category": "Planting",
+    "description": "Viburnum trilobum \u00b7 tall native with lobed leaves and red berry clusters. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.754,
+      2.609,
+      2.824
+    ],
+    "url": "/park-kits/prairie-foliage-v1/highbush-cranberry.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.077752,
+      -0.005772,
+      0.044673
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "d2e3d29c753913fbdee9e0c57d28d71696a2f68e50b77ccd4a4011a4e1f71173",
+    "triangles": 3936,
+    "meshes": 2,
+    "bytes": 450752
+  },
+  {
+    "id": "detail-prairie-diabolo-ninebark",
+    "label": "Diabolo ninebark",
+    "category": "Planting",
+    "description": "Physocarpus opulifolius Diabolo \u00b7 arching shrub with dark purple foliage and pale flower heads. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.33,
+      2.335,
+      1.852
+    ],
+    "url": "/park-kits/prairie-foliage-v1/diabolo-ninebark.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.169819,
+      -0.006606,
+      -0.119071
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "489410b87b1deb28cce62b06296c4cd1ea70822d548e9eb34ef137f541078965",
+    "triangles": 3920,
+    "meshes": 2,
+    "bytes": 448924
+  },
+  {
+    "id": "detail-prairie-mugo-pine",
+    "label": "Mugo pine",
+    "category": "Planting",
+    "description": "Pinus mugo \u00b7 mounding dwarf pine; evergreen mass for beds and slopes. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.402,
+      2.42,
+      1.281
+    ],
+    "url": "/park-kits/prairie-foliage-v1/mugo-pine.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.013139,
+      0.001749,
+      -0.064032
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:mound_conifer",
+    "sha256": "acaf1b099cb37bfd2c57a7685d7320c7a261470160d8bbb743d18169ef801de0",
+    "triangles": 2992,
+    "meshes": 2,
+    "bytes": 343096
+  },
+  {
+    "id": "detail-prairie-creeping-juniper",
+    "label": "Creeping juniper",
+    "category": "Planting",
+    "description": "Juniperus horizontalis \u00b7 low spreading native evergreen ground cover. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.131,
+      2.122,
+      0.405
+    ],
+    "url": "/park-kits/prairie-foliage-v1/creeping-juniper.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.000135,
+      -0.011313,
+      -0.042002
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:ground_cover",
+    "sha256": "c20c840b8034b2f06e748ecabb94e41d80f6e0602bc2bdaf86ef76f784ce873c",
+    "triangles": 3168,
+    "meshes": 2,
+    "bytes": 363196
+  },
+  {
+    "id": "detail-prairie-feather-reed-grass",
+    "label": "Feather reed grass",
+    "category": "Planting",
+    "description": "Calamagrostis Karl Foerster \u00b7 upright ornamental grass with tan plumes; Calgary's go-to clump grass.",
+    "dimensions": [
+      1.024,
+      1.005,
+      1.395
+    ],
+    "url": "/park-kits/prairie-foliage-v1/feather-reed-grass.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      -0.01189,
+      0.000492,
+      -0.025372
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:grass",
+    "sha256": "ee76c55ac8a7bfda4ce21f536d498608703f29f62fbbd1f947f8d412ce975400",
+    "triangles": 1530,
+    "meshes": 2,
+    "bytes": 176444
+  },
+  {
+    "id": "detail-prairie-rough-fescue-drift",
+    "label": "Rough fescue drift",
+    "category": "Planting",
+    "description": "Festuca hallii \u00b7 native foothills fescue; a low blue-green drift for naturalized edges.",
+    "dimensions": [
+      1.501,
+      1.498,
+      0.67
+    ],
+    "url": "/park-kits/prairie-foliage-v1/rough-fescue-drift.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.001143,
+      0.001443,
+      -0.019895
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:grass",
+    "sha256": "02a1ad7de8eb74a48335840437d8f67b933b8eac239aec48685f5b33133a4398",
+    "triangles": 972,
+    "meshes": 2,
+    "bytes": 112828
   }
 ]
