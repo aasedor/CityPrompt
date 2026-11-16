@@ -6666,5 +6666,993 @@
     "meshes": 1,
     "bytes": 118840,
     "thumbnailUrl": "/park-kits/calgary-details-v1/mule-deer.webp"
+  },
+  {
+    "id": "detail-yyc-dumpster",
+    "label": "Lane dumpster",
+    "category": "Street furniture",
+    "description": "Green front-load bin with black lids for the lane behind shops and apartments.",
+    "dimensions": [
+      2.11,
+      1.775,
+      1.545
+    ],
+    "url": "/park-kits/calgary-details-v1/dumpster.glb",
+    "color": "#2f5d3a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:dumpster",
+    "sha256": "51e669388d09905b1dbb9a0e6a7ca7be27f1da4ede280b69182e6c351f769ccc",
+    "triangles": 252,
+    "meshes": 1,
+    "bytes": 29888,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/dumpster.webp"
+  },
+  {
+    "id": "detail-yyc-deep-collection-bins",
+    "label": "Deep-collection bins",
+    "category": "Street furniture",
+    "description": "Pair of slat-clad semi-underground garbage and recycling bins for parks and townhouse sites.",
+    "dimensions": [
+      2.94,
+      1.38,
+      1.39
+    ],
+    "url": "/park-kits/calgary-details-v1/deep-collection-bins.glb",
+    "color": "#8a7d6c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:deep_collection_bins",
+    "sha256": "520e9eea58a5f7c9b5408f40f548660f7b904bcde8dad039607c5808294e718e",
+    "triangles": 912,
+    "meshes": 1,
+    "bytes": 105160,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/deep-collection-bins.webp"
+  },
+  {
+    "id": "detail-yyc-wildlife-proof-bin",
+    "label": "Wildlife-proof park bin",
+    "category": "Street furniture",
+    "description": "Brown steel twin bin with latched chutes, as used along river parks and foothills trails.",
+    "dimensions": [
+      1.55,
+      0.95,
+      1.22
+    ],
+    "url": "/park-kits/calgary-details-v1/wildlife-proof-bin.glb",
+    "color": "#5b4636",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:wildlife_proof_bin",
+    "sha256": "70bfb1413decb1b67405555d0cff71eb5a605079a7315ba9fe5538b66d5d26b8",
+    "triangles": 196,
+    "meshes": 1,
+    "bytes": 23524,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/wildlife-proof-bin.webp"
+  },
+  {
+    "id": "detail-yyc-yard-waste-bags",
+    "label": "Yard waste paper bags",
+    "category": "Street furniture",
+    "description": "Three tall kraft bags of leaves set out at the curb in autumn.",
+    "dimensions": [
+      1.367,
+      0.468,
+      1.066
+    ],
+    "url": "/park-kits/calgary-details-v1/yard-waste-bags.glb",
+    "color": "#b08a5a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:yard_waste_bags",
+    "sha256": "2637414bbb6c4d6d0ae1502f6fe8699b95f0b800f053c12617d460cb7d9429bf",
+    "triangles": 471,
+    "meshes": 1,
+    "bytes": 54876,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/yard-waste-bags.webp"
+  },
+  {
+    "id": "detail-yyc-donation-box",
+    "label": "Donation drop box",
+    "category": "Street furniture",
+    "description": "Steel clothing donation bin with a pull-down chute for plaza and community hall lots.",
+    "dimensions": [
+      1.3,
+      1.322,
+      2.19
+    ],
+    "url": "/park-kits/calgary-details-v1/donation-box.glb",
+    "color": "#1f7a8c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:donation_box",
+    "sha256": "eb8445942b539007e599c0d02441e9b4c416d6aedd37bc19c27ded4247a51c2d",
+    "triangles": 134,
+    "meshes": 1,
+    "bytes": 16440,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/donation-box.webp"
+  },
+  {
+    "id": "detail-yyc-padmount-transformer",
+    "label": "Green utility box",
+    "category": "Street furniture",
+    "description": "Pad-mounted power transformer, the green box found on boulevards and front lawns.",
+    "dimensions": [
+      1.45,
+      1.3,
+      1.04
+    ],
+    "url": "/park-kits/calgary-details-v1/padmount-transformer.glb",
+    "color": "#3c6b4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:padmount_transformer",
+    "sha256": "5f87b4674b1aec9908f2395e8e0ce5ac24b51715110df1298337d76b43063bf1",
+    "triangles": 190,
+    "meshes": 1,
+    "bytes": 22844,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/padmount-transformer.webp"
+  },
+  {
+    "id": "detail-yyc-signal-cabinet",
+    "label": "Signal control cabinet",
+    "category": "Street furniture",
+    "description": "Grey controller cabinet that stands at the corner of a signalled intersection.",
+    "dimensions": [
+      0.95,
+      0.7,
+      1.64
+    ],
+    "url": "/park-kits/calgary-details-v1/signal-cabinet.glb",
+    "color": "#aeb5b9",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:signal_cabinet",
+    "sha256": "6dbf257a4d5523660986bf73d9b1a5e9d0782f4d077bb144fa4d141e8786a516",
+    "triangles": 240,
+    "meshes": 1,
+    "bytes": 28532,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/signal-cabinet.webp"
+  },
+  {
+    "id": "detail-yyc-street-letter-box",
+    "label": "Street letter box",
+    "category": "Street furniture",
+    "description": "Red barrel-topped post box for mailing letters on a neighbourhood main street.",
+    "dimensions": [
+      0.64,
+      0.605,
+      1.3
+    ],
+    "url": "/park-kits/calgary-details-v1/street-letter-box.glb",
+    "color": "#c2332b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:street_letter_box",
+    "sha256": "473f38bde29cc921b990248ef52f2a5d6d82b6df41c4f5dacdaec8283dd79f2c",
+    "triangles": 180,
+    "meshes": 1,
+    "bytes": 21700,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-letter-box.webp"
+  },
+  {
+    "id": "detail-yyc-newspaper-boxes",
+    "label": "Newspaper boxes",
+    "category": "Street furniture",
+    "description": "Row of three coin-box newspaper stands for a transit stop or main street corner.",
+    "dimensions": [
+      1.577,
+      0.44,
+      1.29
+    ],
+    "url": "/park-kits/calgary-details-v1/newspaper-boxes.glb",
+    "color": "#2f5fa8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:newspaper_boxes",
+    "sha256": "8cf87db3563898a6ac3e88448944fb12045d8af57eafa5139c2b59354476bee4",
+    "triangles": 252,
+    "meshes": 2,
+    "bytes": 30836,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/newspaper-boxes.webp"
+  },
+  {
+    "id": "detail-yyc-parking-pay-station",
+    "label": "Parking pay station",
+    "category": "Street furniture",
+    "description": "Solar pay machine with a screen and keypad for on-street and lot parking.",
+    "dimensions": [
+      0.54,
+      0.411,
+      2.231
+    ],
+    "url": "/park-kits/calgary-details-v1/parking-pay-station.glb",
+    "color": "#2f5fa8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:parking_pay_station",
+    "sha256": "2b557f7ff4c7e6e8078354b38f01712ca8c3d22e711412049da2d17bf72d5552",
+    "triangles": 308,
+    "meshes": 2,
+    "bytes": 37220,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/parking-pay-station.webp"
+  },
+  {
+    "id": "detail-yyc-bus-bench",
+    "label": "Bus stop bench",
+    "category": "Seating",
+    "description": "Slatted bench on concrete ends with a blank poster back, for an unsheltered stop.",
+    "dimensions": [
+      1.9,
+      0.56,
+      1.01
+    ],
+    "url": "/park-kits/calgary-details-v1/bus-bench.glb",
+    "color": "#8a6a4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:bus_bench",
+    "sha256": "b3a389756343e10f458e795f1de557e241ee57654601dc8d0620b9a9d569a352",
+    "triangles": 144,
+    "meshes": 1,
+    "bytes": 17576,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/bus-bench.webp"
+  },
+  {
+    "id": "detail-yyc-sandwich-board",
+    "label": "Sandwich board sign",
+    "category": "Street furniture",
+    "description": "Folding chalkboard sign for a cafe door or market stall. No wording.",
+    "dimensions": [
+      0.62,
+      0.489,
+      0.944
+    ],
+    "url": "/park-kits/calgary-details-v1/sandwich-board.glb",
+    "color": "#8a6a4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.003566,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:sandwich_board",
+    "sha256": "e03ef93cca26a3c966c7f0ed998bf06b51c24f05862e470f8fb9fde4cffd7c56",
+    "triangles": 228,
+    "meshes": 1,
+    "bytes": 27184,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sandwich-board.webp"
+  },
+  {
+    "id": "detail-yyc-shopping-cart",
+    "label": "Shopping cart",
+    "category": "Street furniture",
+    "description": "Wire grocery cart, for a store entrance or left behind at a bus stop.",
+    "dimensions": [
+      0.563,
+      1.075,
+      1.053
+    ],
+    "url": "/park-kits/calgary-details-v1/shopping-cart.glb",
+    "color": "#b9c0c4",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.002937,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:shopping_cart",
+    "sha256": "6e2803652311a60d8dd164d52031464b3eccabfa0d2033e932b7d7c343514e91",
+    "triangles": 830,
+    "meshes": 1,
+    "bytes": 95816,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/shopping-cart.webp"
+  },
+  {
+    "id": "detail-yyc-portable-toilet",
+    "label": "Portable toilet",
+    "category": "Street furniture",
+    "description": "Blue job-site and festival toilet cabin with vent stack.",
+    "dimensions": [
+      1.2,
+      1.28,
+      2.6
+    ],
+    "url": "/park-kits/calgary-details-v1/portable-toilet.glb",
+    "color": "#2a66a8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:portable_toilet",
+    "sha256": "4eb227f6ec7bb702aaa60a5f1de266fa465a222ebfdaca28c594a8b3923bc3c1",
+    "triangles": 336,
+    "meshes": 2,
+    "bytes": 40424,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/portable-toilet.webp"
+  },
+  {
+    "id": "detail-yyc-patio-heater",
+    "label": "Patio heater",
+    "category": "Street furniture",
+    "description": "Propane mushroom heater that stretches patio season into the shoulder months.",
+    "dimensions": [
+      0.88,
+      0.88,
+      2.2
+    ],
+    "url": "/park-kits/calgary-details-v1/patio-heater.glb",
+    "color": "#b4bbbf",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:patio_heater",
+    "sha256": "66fc9dc6c42dbd7b834345bbff51b3159f169499079fed2d751f61f38e1b64a8",
+    "triangles": 808,
+    "meshes": 1,
+    "bytes": 93288,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/patio-heater.webp"
+  },
+  {
+    "id": "detail-yyc-park-grill",
+    "label": "Park charcoal grill",
+    "category": "Street furniture",
+    "description": "Pedestal barbecue with an adjustable grate on a concrete pad at a picnic site.",
+    "dimensions": [
+      1.03,
+      1.0,
+      1.06
+    ],
+    "url": "/park-kits/calgary-details-v1/park-grill.glb",
+    "color": "#1f2124",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:park_grill",
+    "sha256": "20561b440d670a43dd9be8a913c5f73ced869d3a3ed058efd43de288f5310727",
+    "triangles": 204,
+    "meshes": 1,
+    "bytes": 24372,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/park-grill.webp"
+  },
+  {
+    "id": "detail-yyc-backyard-barbecue",
+    "label": "Backyard barbecue",
+    "category": "Garden & growing",
+    "description": "Gas grill on a cart with side shelves and a propane tank, for decks and patios.",
+    "dimensions": [
+      1.44,
+      0.566,
+      1.233
+    ],
+    "url": "/park-kits/calgary-details-v1/backyard-barbecue.glb",
+    "color": "#1f2124",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:barbecue",
+    "sha256": "4f9e28ff4c0918f91ed5f5862599654a937c247a4fb316d9eda0b7d6959d2fcb",
+    "triangles": 628,
+    "meshes": 1,
+    "bytes": 72764,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/backyard-barbecue.webp"
+  },
+  {
+    "id": "detail-yyc-adirondack-chairs",
+    "label": "Adirondack chairs",
+    "category": "Seating",
+    "description": "Pair of slatted lawn chairs with a small table between them.",
+    "dimensions": [
+      2.274,
+      1.133,
+      1.036
+    ],
+    "url": "/park-kits/calgary-details-v1/adirondack-chairs.glb",
+    "color": "#b23a34",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:adirondack_chairs",
+    "sha256": "9741a03106da600317ae546427f6509b737fa6739fcae219a8e2a538c4b38185",
+    "triangles": 616,
+    "meshes": 1,
+    "bytes": 71408,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/adirondack-chairs.webp"
+  },
+  {
+    "id": "detail-yyc-rotary-clothesline",
+    "label": "Rotary clothesline",
+    "category": "Garden & growing",
+    "description": "Umbrella clothesline with laundry out to dry in a prairie backyard.",
+    "dimensions": [
+      1.855,
+      1.855,
+      2.091
+    ],
+    "url": "/park-kits/calgary-details-v1/rotary-clothesline.glb",
+    "color": "#9aa3a7",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:rotary_clothesline",
+    "sha256": "04ec1495179fda8d80a2319fc470821868e71216986fdb44686a102741b01f22",
+    "triangles": 260,
+    "meshes": 1,
+    "bytes": 30820,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/rotary-clothesline.webp"
+  },
+  {
+    "id": "detail-yyc-wheelbarrow",
+    "label": "Wheelbarrow",
+    "category": "Garden & growing",
+    "description": "Garden wheelbarrow loaded with soil and a spade.",
+    "dimensions": [
+      0.66,
+      1.854,
+      1.296
+    ],
+    "url": "/park-kits/calgary-details-v1/wheelbarrow.glb",
+    "color": "#3f7d3a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.002527,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:wheelbarrow",
+    "sha256": "66b11caa4226f393858b8ac96ca173220091351655c066181b10d55ca33ece15",
+    "triangles": 342,
+    "meshes": 1,
+    "bytes": 40180,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/wheelbarrow.webp"
+  },
+  {
+    "id": "detail-yyc-barrel-planter",
+    "label": "Half-barrel planter",
+    "category": "Garden & growing",
+    "description": "Oak half barrel planted with red geraniums and trailing greens.",
+    "dimensions": [
+      0.792,
+      0.79,
+      0.728
+    ],
+    "url": "/park-kits/calgary-details-v1/barrel-planter.glb",
+    "color": "#7a5a3c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:barrel_planter",
+    "sha256": "4f78266952e1b7a612a85c79f064f0b676564f7d959f97a8024d28e4840101fe",
+    "triangles": 1131,
+    "meshes": 1,
+    "bytes": 130120,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/barrel-planter.webp"
+  },
+  {
+    "id": "detail-yyc-parked-bicycle",
+    "label": "Parked bicycle",
+    "category": "Vehicles",
+    "description": "Adult bicycle leaning on its kickstand.",
+    "dimensions": [
+      0.579,
+      1.749,
+      1.034
+    ],
+    "url": "/park-kits/calgary-details-v1/parked-bicycle.glb",
+    "color": "#1f7a8c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.003,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:parked_bicycle",
+    "sha256": "0db999ea114f569adac0abb0db4245c57364c08bb08236ddbc8ebcc4f3859025",
+    "triangles": 1388,
+    "meshes": 1,
+    "bytes": 159432,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/parked-bicycle.webp"
+  },
+  {
+    "id": "detail-yyc-kids-bikes",
+    "label": "Kids' bikes on the lawn",
+    "category": "Play",
+    "description": "Two small bikes dropped on the grass with a helmet beside them.",
+    "dimensions": [
+      1.729,
+      1.54,
+      0.355
+    ],
+    "url": "/park-kits/calgary-details-v1/kids-bikes.glb",
+    "color": "#c2332b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:kids_bikes",
+    "sha256": "9460495e96a75d429835fe300f5b0ff36eb330eb8961c10dfb43bb9e81758f98",
+    "triangles": 2826,
+    "meshes": 1,
+    "bytes": 323344,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/kids-bikes.webp"
+  },
+  {
+    "id": "detail-yyc-portable-hoop",
+    "label": "Driveway basketball hoop",
+    "category": "Play",
+    "description": "Portable hoop on a weighted wheeled base, set at regulation rim height.",
+    "dimensions": [
+      1.15,
+      1.697,
+      3.645
+    ],
+    "url": "/park-kits/calgary-details-v1/portable-hoop.glb",
+    "color": "#e2742b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:portable_hoop",
+    "sha256": "c26726a5b45fccd8ab72fd86a71b191faed7d3ece8eece987e7d82490bee6858",
+    "triangles": 824,
+    "meshes": 2,
+    "bytes": 96040,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/portable-hoop.webp"
+  },
+  {
+    "id": "detail-yyc-sandbox",
+    "label": "Backyard sandbox",
+    "category": "Play",
+    "description": "Timber sandbox with corner seats, a pail, a spade, a toy truck and a ball.",
+    "dimensions": [
+      1.8,
+      1.8,
+      0.461
+    ],
+    "url": "/park-kits/calgary-details-v1/sandbox.glb",
+    "color": "#d9c79a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:sandbox",
+    "sha256": "2c7bc5133fadf5d6116064160b6ddd15a21b6a451be5ed325238a42e1c0bb2b5",
+    "triangles": 644,
+    "meshes": 1,
+    "bytes": 74580,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sandbox.webp"
+  },
+  {
+    "id": "detail-yyc-camping-trailer",
+    "label": "Camping trailer",
+    "category": "Vehicles",
+    "description": "Small travel trailer parked on its jack with twin propane tanks, as seen beside many garages.",
+    "dimensions": [
+      2.546,
+      5.58,
+      2.75
+    ],
+    "url": "/park-kits/calgary-details-v1/camping-trailer.glb",
+    "color": "#eceef0",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:camping_trailer",
+    "sha256": "7b3e659395cfb130da027a31eaf67a3844f161b855c959547b1e02793787de8f",
+    "triangles": 1256,
+    "meshes": 2,
+    "bytes": 145304,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/camping-trailer.webp"
+  },
+  {
+    "id": "detail-yyc-disc-golf-basket",
+    "label": "Disc golf basket",
+    "category": "Sport & exercise",
+    "description": "Chain basket target for a park disc golf course.",
+    "dimensions": [
+      0.676,
+      0.666,
+      1.55
+    ],
+    "url": "/park-kits/calgary-details-v1/disc-golf-basket.glb",
+    "color": "#e0b63a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:disc_golf_basket",
+    "sha256": "6531d7ef7fb41ee4f3fb0ff4ed64e32eb8748bb09a088400ade82814b8da7c69",
+    "triangles": 804,
+    "meshes": 1,
+    "bytes": 92844,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/disc-golf-basket.webp"
+  },
+  {
+    "id": "detail-yyc-traffic-barrel",
+    "label": "Construction barrel",
+    "category": "Traffic & safety",
+    "description": "Orange and white striped drum for road and infill construction zones.",
+    "dimensions": [
+      0.68,
+      0.68,
+      1.045
+    ],
+    "url": "/park-kits/calgary-details-v1/traffic-barrel.glb",
+    "color": "#e2742b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:traffic_barrel",
+    "sha256": "5ee278d03dff8f8b2e3ad34e375beafc0e3e43b612b07b83cb97480df298de03",
+    "triangles": 276,
+    "meshes": 1,
+    "bytes": 32636,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/traffic-barrel.webp"
+  },
+  {
+    "id": "detail-yyc-construction-fence",
+    "label": "Construction fence panel",
+    "category": "Traffic & safety",
+    "description": "Repeatable 2.9 m temporary mesh panel on block feet around a building site.",
+    "dimensions": [
+      3.14,
+      0.72,
+      1.865
+    ],
+    "url": "/park-kits/calgary-details-v1/construction-fence.glb",
+    "color": "#9aa3a7",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:construction_fence",
+    "sha256": "2bdfa49e888c4de7485856953d3998efcb282cb477a6f86ef77c389073c184e7",
+    "triangles": 226,
+    "meshes": 1,
+    "bytes": 26944,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/construction-fence.webp"
+  },
+  {
+    "id": "detail-yyc-snowman",
+    "label": "Snowman",
+    "category": "Winter city",
+    "description": "Front-yard snowman with a carrot nose, stick arms, scarf and toque.",
+    "dimensions": [
+      1.649,
+      0.929,
+      1.888
+    ],
+    "url": "/park-kits/calgary-details-v1/snowman.glb",
+    "color": "#f4f7fa",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.001966,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:snowman",
+    "sha256": "45dc516cd97a48e05c186766af326e7b8e1c95698e6fe1935cf8e9cc256110d0",
+    "triangles": 1184,
+    "meshes": 1,
+    "bytes": 136160,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/snowman.webp"
+  },
+  {
+    "id": "detail-yyc-toboggan-and-sled",
+    "label": "Toboggan and saucer",
+    "category": "Winter city",
+    "description": "Wooden toboggan and a red saucer sled left at the bottom of the hill.",
+    "dimensions": [
+      1.444,
+      1.78,
+      0.484
+    ],
+    "url": "/park-kits/calgary-details-v1/toboggan-and-sled.glb",
+    "color": "#b8894f",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:toboggan_and_sled",
+    "sha256": "f1022c1cddca2328b99b59ed7b202b5dda1b4ae3f328812e659d88189a9a14fd",
+    "triangles": 486,
+    "meshes": 1,
+    "bytes": 56592,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/toboggan-and-sled.webp"
+  },
+  {
+    "id": "detail-yyc-bike-with-trailer",
+    "label": "Bicycle with child trailer",
+    "category": "Vehicles",
+    "description": "Parked bicycle towing a two-wheel child trailer with a safety flag.",
+    "dimensions": [
+      0.87,
+      3.36,
+      1.72
+    ],
+    "url": "/park-kits/calgary-details-v1/bike-with-trailer.glb",
+    "color": "#e7b93a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:bike_with_trailer",
+    "sha256": "f6d510f69bd04b77f234ec5b5dc584ae12c038399037583d8ca49f04713aba8c",
+    "triangles": 2419,
+    "meshes": 2,
+    "bytes": 277892,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/bike-with-trailer.webp"
+  },
+  {
+    "id": "detail-yyc-bird-feeder",
+    "label": "Bird feeder with chickadees",
+    "category": "Garden & growing",
+    "description": "Pole-mounted seed feeders with two black-capped chickadees, year-round Calgary residents. Static model.",
+    "dimensions": [
+      0.741,
+      0.432,
+      2.116
+    ],
+    "url": "/park-kits/calgary-details-v1/bird-feeder.glb",
+    "color": "#3f5d4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:bird_feeder",
+    "sha256": "b779bcbd0aa5f6d7e11048d017a4ee73f9496d5379eb88f272f35a0a49822da5",
+    "triangles": 738,
+    "meshes": 2,
+    "bytes": 86236,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/bird-feeder.webp"
+  },
+  {
+    "id": "detail-yyc-telecom-pedestals",
+    "label": "Telecom pedestals",
+    "category": "Street furniture",
+    "description": "Pair of small phone and cable boxes, one square and one round, found along lot lines.",
+    "dimensions": [
+      0.824,
+      0.38,
+      0.88
+    ],
+    "url": "/park-kits/calgary-details-v1/telecom-pedestals.glb",
+    "color": "#8f9a8c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:telecom_pedestals",
+    "sha256": "7a98aa843da31a621df31e935d2646f726212f6f69081548603211ca419f642a",
+    "triangles": 240,
+    "meshes": 1,
+    "bytes": 28540,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/telecom-pedestals.webp"
+  },
+  {
+    "id": "detail-yyc-firewood-stack",
+    "label": "Firewood stack",
+    "category": "Garden & growing",
+    "description": "Split logs racked between posts, with a chopping block and axe.",
+    "dimensions": [
+      3.198,
+      1.061,
+      1.244
+    ],
+    "url": "/park-kits/calgary-details-v1/firewood-stack.glb",
+    "color": "#7a6652",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.004,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:firewood_stack",
+    "sha256": "664c579525dfc690f1418b340366f57533e277d4dd55f6046ba4cae6a1469c7f",
+    "triangles": 1696,
+    "meshes": 1,
+    "bytes": 194544,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/firewood-stack.webp"
+  },
+  {
+    "id": "detail-yyc-snow-shovel",
+    "label": "Snow shovel in a snowbank",
+    "category": "Winter city",
+    "description": "Shovel stuck in a shovelled pile beside a pail of ice melt.",
+    "dimensions": [
+      1.825,
+      1.269,
+      1.537
+    ],
+    "url": "/park-kits/calgary-details-v1/snow-shovel.glb",
+    "color": "#c2332b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:snow_shovel",
+    "sha256": "ed9c7b455f5218813bd1f0c2d12ee1fa84bb08291386e977bcf5f06d995a5c9d",
+    "triangles": 430,
+    "meshes": 1,
+    "bytes": 50192,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-shovel.webp"
+  },
+  {
+    "id": "detail-yyc-lawn-mower",
+    "label": "Lawn mower",
+    "category": "Garden & growing",
+    "description": "Gas push mower with a rear grass bag.",
+    "dimensions": [
+      0.628,
+      1.324,
+      0.988
+    ],
+    "url": "/park-kits/calgary-details-v1/lawn-mower.glb",
+    "color": "#c2332b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.004405,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:lawn_mower",
+    "sha256": "fed5f4ee1f99e8d3697381820c74707c41243f66d4ceee5f69457d3558adbf79",
+    "triangles": 548,
+    "meshes": 1,
+    "bytes": 63660,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lawn-mower.webp"
+  },
+  {
+    "id": "detail-yyc-propane-cage",
+    "label": "Propane exchange cage",
+    "category": "Street furniture",
+    "description": "Locked mesh cabinet of white barbecue tanks, as found outside gas stations and hardware stores.",
+    "dimensions": [
+      1.5,
+      0.74,
+      2.08
+    ],
+    "url": "/park-kits/calgary-details-v1/propane-cage.glb",
+    "color": "#e6e8ea",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:propane_cage",
+    "sha256": "a845643c2fcc4eae3dfef7b0967f821be6dbc1ca3efa8e8aa8956d19e067f2d3",
+    "triangles": 1220,
+    "meshes": 1,
+    "bytes": 140232,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/propane-cage.webp"
   }
 ]

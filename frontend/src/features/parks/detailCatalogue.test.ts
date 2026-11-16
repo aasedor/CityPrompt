@@ -32,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(273 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(311 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -104,8 +104,8 @@ describe("standalone detail catalogue", () => {
   });
   it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
     const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
-    expect(site).toHaveLength(38);
-    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(4_000_000);
+    expect(site).toHaveLength(76);
+    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(7_000_000);
     for (const model of site) {
       expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
       expect(model.kind).toBe("object");
@@ -123,7 +123,7 @@ describe("standalone detail catalogue", () => {
     }
     // People spans two columns, so an even number of other tiles keeps the grid full.
     expect((DETAIL_CATEGORIES.length - 1) % 2).toBe(0);
-    expect(searchDetails("", "Winter city")).toHaveLength(9);
+    expect(searchDetails("", "Winter city")).toHaveLength(12);
     expect(searchDetails("", "Wildlife").map((m) => m.label)).toEqual([
       "White-tailed jackrabbit",
       "Black-billed magpies",
@@ -135,6 +135,19 @@ describe("standalone detail catalogue", () => {
       "detail-yyc-waste-cart-blue",
       "detail-yyc-waste-cart-green",
       "detail-yyc-waste-cart-trio",
+      "detail-yyc-shopping-cart",
+    ]);
+    // Everyday street, lane and yard objects are found by the plain words a student would type.
+    expect(searchDetails("dumpster").map((m) => m.id)).toEqual(["detail-yyc-dumpster"]);
+    expect(searchDetails("bicycle", "Vehicles").map((m) => m.id)).toEqual([
+      "detail-yyc-parked-bicycle",
+      "detail-yyc-bike-with-trailer",
+    ]);
+    expect(searchDetails("snow", "Winter city").map((m) => m.label)).toEqual([
+      "Snow fence",
+      "Snow windrow",
+      "Snowman",
+      "Snow shovel in a snowbank",
     ]);
     expect(searchDetails("rink", "Winter city").map((m) => m.id)).toEqual([
       "detail-yyc-outdoor-rink",

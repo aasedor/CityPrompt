@@ -1,5 +1,12 @@
 # Calgary site details for Add details: 38 local objects and two new categories
 
+> **Update, same day.** The kit grew to 76 objects in a
+> [second batch of everyday street, lane and yard items](CALGARY_EVERYDAY_DETAILS_2026-11-16.md).
+> The 38 models below are byte-identical and pinned by digest in the tools test.
+> Winter city now has 12 items. That write-up also records a release-tooling
+> defect in how picker card hashes were read, present on this branch until then,
+> and the current bundle-budget position.
+
 ## Scope
 
 Add 38 fixed-size objects that make a scene read as Calgary: a winter city set,

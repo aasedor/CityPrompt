@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 3941,
+    "explicitReferenceCount": 4017,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5725,
-    "requiredLogicalBytes": 13045339262,
+    "requiredFileCount": 5801,
+    "requiredLogicalBytes": 13051673546,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -25748,6 +25748,111 @@
       "lfsOid": "d87f224052b24759109f3ddb026209063c077561ebcb42dfe17f29d881bc60d0"
     },
     {
+      "url": "/park-kits/calgary-details-v1/adirondack-chairs.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 71408,
+      "lfsOid": "9741a03106da600317ae546427f6509b737fa6739fcae219a8e2a538c4b38185"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/adirondack-chairs.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5346
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/backyard-barbecue.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 72764,
+      "lfsOid": "4f9e28ff4c0918f91ed5f5862599654a937c247a4fb316d9eda0b7d6959d2fcb"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/backyard-barbecue.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3908
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/barrel-planter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 130120,
+      "lfsOid": "4f78266952e1b7a612a85c79f064f0b676564f7d959f97a8024d28e4840101fe"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/barrel-planter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5844
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/bike-with-trailer.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 277892,
+      "lfsOid": "f6d510f69bd04b77f234ec5b5dc584ae12c038399037583d8ca49f04713aba8c"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/bike-with-trailer.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5238
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/bird-feeder.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 86236,
+      "lfsOid": "b779bcbd0aa5f6d7e11048d017a4ee73f9496d5379eb88f272f35a0a49822da5"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/bird-feeder.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 2744
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/bus-bench.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 17576,
+      "lfsOid": "b3a389756343e10f458e795f1de557e241ee57654601dc8d0620b9a9d569a352"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/bus-bench.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4024
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/camping-trailer.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 145304,
+      "lfsOid": "7b3e659395cfb130da027a31eaf67a3844f161b855c959547b1e02793787de8f"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/camping-trailer.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4468
+    },
+    {
       "url": "/park-kits/calgary-details-v1/canada-geese.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25778,6 +25883,81 @@
       "logicalBytes": 7508
     },
     {
+      "url": "/park-kits/calgary-details-v1/construction-fence.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 26944,
+      "lfsOid": "2bdfa49e888c4de7485856953d3998efcb282cb477a6f86ef77c389073c184e7"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/construction-fence.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4134
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/deep-collection-bins.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 105160,
+      "lfsOid": "520e9eea58a5f7c9b5408f40f548660f7b904bcde8dad039607c5808294e718e"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/deep-collection-bins.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4400
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/disc-golf-basket.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 92844,
+      "lfsOid": "6531d7ef7fb41ee4f3fb0ff4ed64e32eb8748bb09a088400ade82814b8da7c69"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/disc-golf-basket.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3842
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/donation-box.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 16440,
+      "lfsOid": "eb8445942b539007e599c0d02441e9b4c416d6aedd37bc19c27ded4247a51c2d"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/donation-box.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4392
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/dumpster.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 29888,
+      "lfsOid": "51e669388d09905b1dbb9a0e6a7ca7be27f1da4ede280b69182e6c351f769ccc"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/dumpster.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3770
+    },
+    {
       "url": "/park-kits/calgary-details-v1/fire-pit-circle.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25791,6 +25971,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 3226
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/firewood-stack.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 194544,
+      "lfsOid": "664c579525dfc690f1418b340366f57533e277d4dd55f6046ba4cae6a1469c7f"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/firewood-stack.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6470
     },
     {
       "url": "/park-kits/calgary-details-v1/garden-shed.glb",
@@ -25868,6 +26063,36 @@
       "logicalBytes": 5122
     },
     {
+      "url": "/park-kits/calgary-details-v1/kids-bikes.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 323344,
+      "lfsOid": "9460495e96a75d429835fe300f5b0ff36eb330eb8961c10dfb43bb9e81758f98"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/kids-bikes.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4714
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/lawn-mower.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 63660,
+      "lfsOid": "fed5f4ee1f99e8d3697381820c74707c41243f66d4ceee5f69457d3558adbf79"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/lawn-mower.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4680
+    },
+    {
       "url": "/park-kits/calgary-details-v1/little-free-library.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25943,6 +26168,21 @@
       "logicalBytes": 3540
     },
     {
+      "url": "/park-kits/calgary-details-v1/newspaper-boxes.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 30836,
+      "lfsOid": "8cf87db3563898a6ac3e88448944fb12045d8af57eafa5139c2b59354476bee4"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/newspaper-boxes.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5520
+    },
+    {
       "url": "/park-kits/calgary-details-v1/outdoor-rink.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25956,6 +26196,66 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 5274
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/padmount-transformer.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 22844,
+      "lfsOid": "5f87b4674b1aec9908f2395e8e0ce5ac24b51715110df1298337d76b43063bf1"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/padmount-transformer.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3392
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/park-grill.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 24372,
+      "lfsOid": "20561b440d670a43dd9be8a913c5f73ced869d3a3ed058efd43de288f5310727"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/park-grill.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3294
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/parked-bicycle.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 159432,
+      "lfsOid": "0db999ea114f569adac0abb0db4245c57364c08bb08236ddbc8ebcc4f3859025"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/parked-bicycle.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5950
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/parking-pay-station.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 37220,
+      "lfsOid": "2b557f7ff4c7e6e8078354b38f01712ca8c3d22e711412049da2d17bf72d5552"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/parking-pay-station.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3136
     },
     {
       "url": "/park-kits/calgary-details-v1/pathway-marker.glb",
@@ -25973,6 +26273,21 @@
       "logicalBytes": 2710
     },
     {
+      "url": "/park-kits/calgary-details-v1/patio-heater.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 93288,
+      "lfsOid": "66fc9dc6c42dbd7b834345bbff51b3159f169499079fed2d751f61f38e1b64a8"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/patio-heater.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 2210
+    },
+    {
       "url": "/park-kits/calgary-details-v1/plug-in-posts.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25988,6 +26303,36 @@
       "logicalBytes": 3854
     },
     {
+      "url": "/park-kits/calgary-details-v1/portable-hoop.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 96040,
+      "lfsOid": "c26726a5b45fccd8ab72fd86a71b191faed7d3ece8eece987e7d82490bee6858"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/portable-hoop.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3354
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/portable-toilet.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 40424,
+      "lfsOid": "4eb227f6ec7bb702aaa60a5f1de266fa465a222ebfdaca28c594a8b3923bc3c1"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/portable-toilet.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3950
+    },
+    {
       "url": "/park-kits/calgary-details-v1/privacy-fence.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26001,6 +26346,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 2292
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/propane-cage.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 140232,
+      "lfsOid": "a845643c2fcc4eae3dfef7b0967f821be6dbc1ca3efa8e8aa8956d19e067f2d3"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/propane-cage.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7126
     },
     {
       "url": "/park-kits/calgary-details-v1/ranch-gate.glb",
@@ -26063,6 +26423,21 @@
       "logicalBytes": 3934
     },
     {
+      "url": "/park-kits/calgary-details-v1/rotary-clothesline.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 30820,
+      "lfsOid": "04ec1495179fda8d80a2319fc470821868e71216986fdb44686a102741b01f22"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/rotary-clothesline.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3984
+    },
+    {
       "url": "/park-kits/calgary-details-v1/round-hay-bale.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26091,6 +26466,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 3526
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/sandbox.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 74580,
+      "lfsOid": "2c7bc5133fadf5d6116064160b6ddd15a21b6a451be5ed325238a42e1c0bb2b5"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/sandbox.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4978
     },
     {
       "url": "/park-kits/calgary-details-v1/sandstone-blocks.glb",
@@ -26123,6 +26513,21 @@
       "logicalBytes": 2358
     },
     {
+      "url": "/park-kits/calgary-details-v1/sandwich-board.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 27184,
+      "lfsOid": "e03ef93cca26a3c966c7f0ed998bf06b51c24f05862e470f8fb9fde4cffd7c56"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/sandwich-board.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5290
+    },
+    {
       "url": "/park-kits/calgary-details-v1/scooter-corral.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26136,6 +26541,36 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 4738
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/shopping-cart.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 95816,
+      "lfsOid": "6e2803652311a60d8dd164d52031464b3eccabfa0d2033e932b7d7c343514e91"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/shopping-cart.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8554
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/signal-cabinet.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 28532,
+      "lfsOid": "6dbf257a4d5523660986bf73d9b1a5e9d0782f4d077bb144fa4d141e8786a516"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/signal-cabinet.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3492
     },
     {
       "url": "/park-kits/calgary-details-v1/snow-fence.glb",
@@ -26153,6 +26588,21 @@
       "logicalBytes": 6722
     },
     {
+      "url": "/park-kits/calgary-details-v1/snow-shovel.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 50192,
+      "lfsOid": "ed9c7b455f5218813bd1f0c2d12ee1fa84bb08291386e977bcf5f06d995a5c9d"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/snow-shovel.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 2808
+    },
+    {
       "url": "/park-kits/calgary-details-v1/snow-windrow.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26168,6 +26618,21 @@
       "logicalBytes": 1752
     },
     {
+      "url": "/park-kits/calgary-details-v1/snowman.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 136160,
+      "lfsOid": "45dc516cd97a48e05c186766af326e7b8e1c95698e6fe1935cf8e9cc256110d0"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/snowman.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3920
+    },
+    {
       "url": "/park-kits/calgary-details-v1/street-hockey-net.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26181,6 +26646,66 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 2538
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/street-letter-box.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 21700,
+      "lfsOid": "473f38bde29cc921b990248ef52f2a5d6d82b6df41c4f5dacdaec8283dd79f2c"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/street-letter-box.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4328
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/telecom-pedestals.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 28540,
+      "lfsOid": "7a98aa843da31a621df31e935d2646f726212f6f69081548603211ca419f642a"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/telecom-pedestals.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 2626
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/toboggan-and-sled.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 56592,
+      "lfsOid": "f1022c1cddca2328b99b59ed7b202b5dda1b4ae3f328812e659d88189a9a14fd"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/toboggan-and-sled.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4888
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/traffic-barrel.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 32636,
+      "lfsOid": "5ee278d03dff8f8b2e3ad34e375beafc0e3e43b612b07b83cb97480df298de03"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/traffic-barrel.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4184
     },
     {
       "url": "/park-kits/calgary-details-v1/trampoline.glb",
@@ -26303,6 +26828,21 @@
       "logicalBytes": 3956
     },
     {
+      "url": "/park-kits/calgary-details-v1/wheelbarrow.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 40180,
+      "lfsOid": "66b11caa4226f393858b8ac96ca173220091351655c066181b10d55ca33ece15"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/wheelbarrow.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4226
+    },
+    {
       "url": "/park-kits/calgary-details-v1/white-tailed-jackrabbit.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26316,6 +26856,36 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 3190
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/wildlife-proof-bin.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 23524,
+      "lfsOid": "70bfb1413decb1b67405555d0cff71eb5a605079a7315ba9fe5538b66d5d26b8"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/wildlife-proof-bin.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3830
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/yard-waste-bags.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 54876,
+      "lfsOid": "2637414bbb6c4d6d0ae1502f6fe8699b95f0b800f053c12617d460cb7d9429bf"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/yard-waste-bags.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3984
     },
     {
       "url": "/park-kits/claude-20261023/1b888e08c7c12b1ef0c559998fb419479f7d2212bc5f54e786b87336059960e7.png",
@@ -34436,9 +35006,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 719,
-      "logicalBytes": 500781434,
-      "pathDigest": "832c000128e4a019fd9b6795754733aad0e300ed912494a504ba71f53550437c"
+      "fileCount": 795,
+      "logicalBytes": 503948576,
+      "pathDigest": "3cc1399d6dd7213fb5d68ea88621b4f04a39b0877d4d0e2003b0213f4fa99b9d"
     },
     {
       "name": "public-realm-skins",

@@ -29,6 +29,8 @@ def parse_glb(payload):
     length = struct.unpack_from('<I', payload, 12)[0]
     return json.loads(payload[20:20 + length])
 
+# SHA-256 over the 38 first-batch model hashes in catalogue order.
+FIRST_BATCH_DIGEST = '5f33a018c6467c550a18bf7c1c0a4bed06823fbfc2a276cc7638a81ff43edb59'
 
 class CalgaryDetailsContract(unittest.TestCase):
     @classmethod
@@ -38,18 +40,24 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_thirty_eight_unique_items_in_five_groups(self):
+    def test_seventy_six_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 38)
-        self.assertEqual(len({s['slug'] for s in specs}), 38)
-        self.assertEqual(len({s['label'] for s in specs}), 38)
+        self.assertEqual(len(specs), 76)
+        self.assertEqual(len({s['slug'] for s in specs}), 76)
+        self.assertEqual(len({s['label'] for s in specs}), 76)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
             counts[s['category']] = counts.get(s['category'], 0) + 1
-        self.assertEqual(counts['Winter city'], 9)
+        self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 4)
-        self.assertEqual(sum(counts.values()), 38)
+        self.assertEqual(sum(counts.values()), 76)
+
+    def test_first_batch_models_are_pinned(self):
+        # The first 38 shipped before the everyday batch shared new helpers with them.
+        first = [self.built[item['slug']][1]['sha256'] for item in self.module.SPECS[:38]]
+        self.assertEqual(self.module.SPECS[37]['slug'], 'mule-deer')
+        self.assertEqual(hashlib.sha256(''.join(first).encode()).hexdigest(), FIRST_BATCH_DIGEST)
 
     def test_registry_rows_are_exactly_the_deterministic_builder_output(self):
         self.assertEqual(list(self.by_slug), [s['slug'] for s in self.module.SPECS])
@@ -110,7 +118,7 @@ class CalgaryDetailsContract(unittest.TestCase):
                 self.assertEqual((row['offset'][0], row['offset'][2]), (0.0, 0.0))
                 self.assertTrue(lo[0] < 0 < hi[0] and lo[2] < 0 < hi[2])
             total += row['bytes']
-        self.assertLess(total, 4_000_000)
+        self.assertLess(total, 7_000_000)
 
     def test_line_carriers_are_centred_on_their_pole_for_chaining(self):
         for slug, span in (('utility-pole-lines', 30.0), ('lrt-catenary-pole', 40.0)):
@@ -143,7 +151,7 @@ class CalgaryDetailsContract(unittest.TestCase):
             self.assertLess(len(row['description']), 140, row['id'])
             for banned in ('calgary transit', 'ctrain', 'city of calgary', 'peace bridge', 'stampede'):
                 self.assertNotIn(banned, text, row['id'])
-        for slug in ('white-tailed-jackrabbit', 'magpies', 'canada-geese', 'mule-deer'):
+        for slug in ('white-tailed-jackrabbit', 'magpies', 'canada-geese', 'mule-deer', 'bird-feeder'):
             self.assertIn('static model', self.by_slug[slug]['description'].lower())
 
 
