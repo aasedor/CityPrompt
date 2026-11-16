@@ -32,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(311 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(355 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -87,8 +87,8 @@ describe("standalone detail catalogue", () => {
   });
   it("offers the local prairie plants with trunk-anchored placement and seasonal forms", () => {
     const plants = extras.filter((m) => m.sourceKit === "prairie-foliage-v1");
-    expect(plants).toHaveLength(70);
-    expect(plants.filter((m) => m.kind === "tree")).toHaveLength(44);
+    expect(plants).toHaveLength(85);
+    expect(plants.filter((m) => m.kind === "tree")).toHaveLength(50);
     for (const model of plants) {
       expect(model.category).toBe(model.kind === "tree" ? "Trees" : "Planting");
       expect([model.offset[0], model.offset[2]]).toEqual([0, 0]);
@@ -101,11 +101,26 @@ describe("standalone detail catalogue", () => {
       "detail-prairie-colorado-blue-spruce-snow",
     ]);
     expect(searchDetails("crocus").map((m) => m.id)).toEqual(["detail-prairie-prairie-crocus"]);
+    // Shrubs and hedges have seasonal forms too, so a winter or fall scene is consistent.
+    expect(searchDetails("autumn", "Trees").filter((m) => m.label.endsWith("· autumn"))).toHaveLength(8);
+    expect(searchDetails("winter", "Planting").map((m) => m.label).filter((label) => label.endsWith("· winter"))).toEqual([
+      "Common lilac · winter",
+      "Caragana hedge · winter",
+      "Cotoneaster hedge · winter",
+      "Saskatoon berry · winter",
+      "Highbush cranberry · winter",
+      "Prickly wild rose · winter",
+      "Red-osier dogwood · winter",
+    ]);
+    expect(searchDetails("autumn", "Planting").map((m) => m.id).filter((id) => id.endsWith("-autumn"))).toEqual([
+      "detail-prairie-cotoneaster-hedge-autumn",
+      "detail-prairie-saskatoon-autumn",
+    ]);
   });
   it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
     const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
-    expect(site).toHaveLength(76);
-    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(7_000_000);
+    expect(site).toHaveLength(105);
+    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(10_500_000);
     for (const model of site) {
       expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
       expect(model.kind).toBe("object");
@@ -129,7 +144,16 @@ describe("standalone detail catalogue", () => {
       "Black-billed magpies",
       "Canada geese",
       "Mule deer",
+      "Richardson's ground squirrels",
+      "Coyote",
+      "Mallards",
+      "American white pelicans",
+      "Osprey nesting platform",
     ]);
+    // Transit vehicles join the existing cars and trucks; ranch animals sit with the hay bale.
+    expect(searchDetails("bus", "Vehicles").map((m) => m.label)).toEqual(["City bus", "School bus"]);
+    expect(searchDetails("ranch", "Landscape").map((m) => m.label)).toEqual(expect.arrayContaining(["Horses", "Cattle"]));
+    expect(searchDetails("excavator").map((m) => m.id)).toEqual(["detail-yyc-excavator"]);
     expect(searchDetails("cart", "Street furniture").map((m) => m.id)).toEqual([
       "detail-yyc-waste-cart-black",
       "detail-yyc-waste-cart-blue",

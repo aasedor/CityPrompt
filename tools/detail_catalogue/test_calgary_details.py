@@ -40,18 +40,21 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_seventy_six_unique_items(self):
+    def test_one_hundred_and_five_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 76)
-        self.assertEqual(len({s['slug'] for s in specs}), 76)
-        self.assertEqual(len({s['label'] for s in specs}), 76)
+        self.assertEqual(len(specs), 105)
+        self.assertEqual(len({s['slug'] for s in specs}), 105)
+        self.assertEqual(len({s['label'] for s in specs}), 105)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
             counts[s['category']] = counts.get(s['category'], 0) + 1
         self.assertEqual(counts['Winter city'], 12)
-        self.assertEqual(counts['Wildlife'], 4)
-        self.assertEqual(sum(counts.values()), 76)
+        self.assertEqual(counts['Wildlife'], 9)
+        self.assertEqual(counts['Vehicles'], 7)
+        self.assertEqual(sum(counts.values()), 105)
+        # each batch was appended, so earlier items keep their catalogue order
+        self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
     def test_first_batch_models_are_pinned(self):
         # The first 38 shipped before the everyday batch shared new helpers with them.
@@ -118,7 +121,7 @@ class CalgaryDetailsContract(unittest.TestCase):
                 self.assertEqual((row['offset'][0], row['offset'][2]), (0.0, 0.0))
                 self.assertTrue(lo[0] < 0 < hi[0] and lo[2] < 0 < hi[2])
             total += row['bytes']
-        self.assertLess(total, 7_000_000)
+        self.assertLess(total, 10_500_000)
 
     def test_line_carriers_are_centred_on_their_pole_for_chaining(self):
         for slug, span in (('utility-pole-lines', 30.0), ('lrt-catenary-pole', 40.0)):
@@ -151,7 +154,8 @@ class CalgaryDetailsContract(unittest.TestCase):
             self.assertLess(len(row['description']), 140, row['id'])
             for banned in ('calgary transit', 'ctrain', 'city of calgary', 'peace bridge', 'stampede'):
                 self.assertNotIn(banned, text, row['id'])
-        for slug in ('white-tailed-jackrabbit', 'magpies', 'canada-geese', 'mule-deer', 'bird-feeder'):
+        for slug in ('white-tailed-jackrabbit', 'magpies', 'canada-geese', 'mule-deer', 'bird-feeder', 'ground-squirrels', 'coyote', 'mallards', 'pelicans',
+                     'osprey-platform', 'horses', 'cattle'):
             self.assertIn('static model', self.by_slug[slug]['description'].lower())
 
 

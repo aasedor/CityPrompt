@@ -1,5 +1,9 @@
 # Local prairie foliage, second batch: 40 more plants and seasonal forms
 
+> **Update, same day.** A [third batch](LOCAL_DETAILS_BATCH3_2026-11-16.md) added 15 more
+> seasonal forms, including winter and autumn shrubs, taking the kit to 85 plants.
+> The 70 models described here are byte-identical.
+
 ## Scope
 
 Extend the first 30 Calgary and Alberta plants in **Add details**

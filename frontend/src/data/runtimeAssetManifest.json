@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4017,
+    "explicitReferenceCount": 4105,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5801,
-    "requiredLogicalBytes": 13051673546,
+    "requiredFileCount": 5889,
+    "requiredLogicalBytes": 13081703526,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -25793,6 +25793,21 @@
       "logicalBytes": 5844
     },
     {
+      "url": "/park-kits/calgary-details-v1/basket-lamp-post.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 170812,
+      "lfsOid": "106b3f04e44e657d93c60ea4719de6d04b2ca13c495d71b97721510c5def2420"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/basket-lamp-post.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 2912
+    },
+    {
       "url": "/park-kits/calgary-details-v1/bike-with-trailer.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25868,6 +25883,51 @@
       "logicalBytes": 3268
     },
     {
+      "url": "/park-kits/calgary-details-v1/canoe.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 47444,
+      "lfsOid": "782510220afa4104cf170be22a2de24554de00aa75262ed6a137442551b66c9f"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/canoe.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3530
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/carport.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 49272,
+      "lfsOid": "6078a73bc46c88d29fd435f6aa1b4d0de6c543fee518879c71c2b59fe4cd9e2a"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/carport.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4280
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/cattle.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 199984,
+      "lfsOid": "5b7aa3d3581e549cf20fb0524ac75c3428c23d4f88df9f4b610027f1a20cbb56"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/cattle.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4150
+    },
+    {
       "url": "/park-kits/calgary-details-v1/chain-link-fence.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25883,6 +25943,36 @@
       "logicalBytes": 7508
     },
     {
+      "url": "/park-kits/calgary-details-v1/city-bus.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 133884,
+      "lfsOid": "fb57bbe2444a3da41728b97c860a01f93b155912b3b21e85890336d8e9517e3a"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/city-bus.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4724
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/concrete-barrier.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 10288,
+      "lfsOid": "e9d28eeab80b18faa4b405c1d81b4e5d7dc24a0420d6dfca9c2aa82e0508412e"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/concrete-barrier.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 2000
+    },
+    {
       "url": "/park-kits/calgary-details-v1/construction-fence.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25896,6 +25986,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 4134
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/coyote.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 112432,
+      "lfsOid": "ae03de0003113ecfbbaa5d5fbc9a14893c9ae4a038b62eb139fb1eeb12526433"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/coyote.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3354
     },
     {
       "url": "/park-kits/calgary-details-v1/deep-collection-bins.glb",
@@ -25943,6 +26048,21 @@
       "logicalBytes": 4392
     },
     {
+      "url": "/park-kits/calgary-details-v1/drift-boat.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 37404,
+      "lfsOid": "f4bf38dedcef84226285f2de2eec8d6e930496052298bd085e79186e87274b55"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/drift-boat.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3464
+    },
+    {
       "url": "/park-kits/calgary-details-v1/dumpster.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25956,6 +26076,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 3770
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/excavator.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 90556,
+      "lfsOid": "20d38f66d8dde49e1f4eaa47044244d32db2b31f8495ab61c01e02002c1daaa0"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/excavator.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3782
     },
     {
       "url": "/park-kits/calgary-details-v1/fire-pit-circle.glb",
@@ -25988,6 +26123,21 @@
       "logicalBytes": 6470
     },
     {
+      "url": "/park-kits/calgary-details-v1/flagpole.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 21680,
+      "lfsOid": "fa4b4240359fd55005a655f17ab186a9a3e94e3ee8238e9621ac077c191c59f5"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/flagpole.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1466
+    },
+    {
       "url": "/park-kits/calgary-details-v1/garden-shed.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26018,6 +26168,21 @@
       "logicalBytes": 2044
     },
     {
+      "url": "/park-kits/calgary-details-v1/grain-bins.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 212732,
+      "lfsOid": "9dc70d20bfd7c23efd260057fdb8fca614c44b1ee6247af04dbe1a42ec01c3c4"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/grain-bins.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3590
+    },
+    {
       "url": "/park-kits/calgary-details-v1/grit-box.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26031,6 +26196,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 4630
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/ground-squirrels.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 112224,
+      "lfsOid": "bd1ef7dd3198593fd961506bbf2bfedaa0efbb0ad8a55f02e773ac162140073d"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/ground-squirrels.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3132
     },
     {
       "url": "/park-kits/calgary-details-v1/heated-bus-shelter.glb",
@@ -26063,6 +26243,36 @@
       "logicalBytes": 5122
     },
     {
+      "url": "/park-kits/calgary-details-v1/horses.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 221868,
+      "lfsOid": "62ece24c1aaf0c198f50ba06bf80f0243084a2f7bde0256de0825866c40021fe"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/horses.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4468
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/inflatable-raft.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 129084,
+      "lfsOid": "fb2f8a700b339961f6e735e20ec43140722193093252016abd69f9886988efc3"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/inflatable-raft.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4970
+    },
+    {
       "url": "/park-kits/calgary-details-v1/kids-bikes.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26078,6 +26288,21 @@
       "logicalBytes": 4714
     },
     {
+      "url": "/park-kits/calgary-details-v1/lane-garage.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 67716,
+      "lfsOid": "b08f72feff4d8075982230716117ac46e4db63e50549b5f4c883e00837c72b36"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/lane-garage.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3950
+    },
+    {
       "url": "/park-kits/calgary-details-v1/lawn-mower.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26091,6 +26316,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 4680
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/light-rail-car.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 161716,
+      "lfsOid": "62c97dcd5ffc106a498b1ee16b240c9b0e2b9d3309c37e05db13207a768ce464"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/light-rail-car.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4040
     },
     {
       "url": "/park-kits/calgary-details-v1/little-free-library.glb",
@@ -26138,6 +26378,21 @@
       "logicalBytes": 6706
     },
     {
+      "url": "/park-kits/calgary-details-v1/lumber-stacks.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 262468,
+      "lfsOid": "f0e72d1763a44e298c8c8abc77150cf287453a53dca453fa8b09a6cdcabe4ea9"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/lumber-stacks.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6460
+    },
+    {
       "url": "/park-kits/calgary-details-v1/magpies.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26151,6 +26406,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 2714
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/mallards.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 73460,
+      "lfsOid": "d41b902479976d8f46c1af9564e332e6ee97d4192f8f28791af4bbc6ebccf475"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/mallards.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3434
     },
     {
       "url": "/park-kits/calgary-details-v1/mule-deer.glb",
@@ -26181,6 +26451,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 5520
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/osprey-platform.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 97624,
+      "lfsOid": "8aaf62392b895a8b146544daf4c86c77748519df4eee7cf9d917b023cc51e1aa"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/osprey-platform.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1664
     },
     {
       "url": "/park-kits/calgary-details-v1/outdoor-rink.glb",
@@ -26288,6 +26573,36 @@
       "logicalBytes": 2210
     },
     {
+      "url": "/park-kits/calgary-details-v1/pelicans.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 79388,
+      "lfsOid": "1a5e94d4d18badb97e54546e72baade809282a4f7ea322eb02ba38e983f06b5c"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/pelicans.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3424
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/plow-truck.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 170376,
+      "lfsOid": "1fed503241ffa6ae440eaae5313ba507c360b77335163ada057181141155f745"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/plow-truck.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5310
+    },
+    {
       "url": "/park-kits/calgary-details-v1/plug-in-posts.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26363,6 +26678,21 @@
       "logicalBytes": 7126
     },
     {
+      "url": "/park-kits/calgary-details-v1/pumpjack.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 71844,
+      "lfsOid": "dbe8d6a4bfee11fc737ea17a33383475ebae9ff8bda018370dd9565ea5568703"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/pumpjack.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5924
+    },
+    {
       "url": "/park-kits/calgary-details-v1/ranch-gate.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26421,6 +26751,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 3934
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/roll-off-bin.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 82568,
+      "lfsOid": "91582a13edcc4bbff26350b4998cc54646382543b630e5902bc9b50adfa8995f"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/roll-off-bin.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4976
     },
     {
       "url": "/park-kits/calgary-details-v1/rotary-clothesline.glb",
@@ -26528,6 +26873,21 @@
       "logicalBytes": 5290
     },
     {
+      "url": "/park-kits/calgary-details-v1/school-bus.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 150768,
+      "lfsOid": "8426823b2c92a2372c28f2f774fdf0fdb777e46f82cf5a2435b704a4fbdc8442"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/school-bus.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7004
+    },
+    {
       "url": "/park-kits/calgary-details-v1/scooter-corral.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26571,6 +26931,36 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 3492
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/site-office-trailer.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 94940,
+      "lfsOid": "02c27e119a745ee1876e88ac858ba41848ecb4bcfeea191188aa424f7fd02bb6"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/site-office-trailer.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4262
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/skid-steer.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 72332,
+      "lfsOid": "9f8ff9d4ce7a72cce2d3647f0c5c27b1921bd445b0d38722cc97562d20634343"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/skid-steer.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5594
     },
     {
       "url": "/park-kits/calgary-details-v1/snow-fence.glb",
@@ -26633,6 +27023,21 @@
       "logicalBytes": 3920
     },
     {
+      "url": "/park-kits/calgary-details-v1/solar-array.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 79172,
+      "lfsOid": "6552fe2ddcea4a6e9a8e00067c4ac79e49460b1ecb335ffe6bd0342e17ee4d7f"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/solar-array.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4620
+    },
+    {
       "url": "/park-kits/calgary-details-v1/street-hockey-net.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26661,6 +27066,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 4328
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/street-light.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 24440,
+      "lfsOid": "9c5da512416f1cf6e4ae2612cb317b9c7311e97916384d3b3a1a68d48133459b"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/street-light.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1276
     },
     {
       "url": "/park-kits/calgary-details-v1/telecom-pedestals.glb",
@@ -26871,6 +27291,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 3830
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/wind-turbine.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 69564,
+      "lfsOid": "1a5b29ec0a1f7fc94ffaa2b01561e3cc718d3d104501533c0f7e37389822f06b"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/wind-turbine.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1392
     },
     {
       "url": "/park-kits/calgary-details-v1/yard-waste-bags.glb",
@@ -27400,6 +27835,21 @@
       "logicalBytes": 7258
     },
     {
+      "url": "/park-kits/prairie-foliage-v1/bur-oak-autumn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1422716,
+      "lfsOid": "0ae141e39a0a9f0c39fe2eb986f85e5b84653f4ee0bbb09e878acefc6f5aa3f8"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/bur-oak-autumn.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7980
+    },
+    {
       "url": "/park-kits/prairie-foliage-v1/bur-oak-winter.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27428,6 +27878,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 7134
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/caragana-hedge-winter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 368184,
+      "lfsOid": "2efff2f1cc9bebb769e5f5ebabba1470dad2b6462c5fcc4bbb43f578067abce7"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/caragana-hedge-winter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 10074
     },
     {
       "url": "/park-kits/prairie-foliage-v1/caragana-hedge.glb",
@@ -27475,6 +27940,21 @@
       "logicalBytes": 7608
     },
     {
+      "url": "/park-kits/prairie-foliage-v1/common-lilac-winter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 315168,
+      "lfsOid": "f07e8956eb12680cb560e8a4411bb5fc0f5104a9f80f8bd37be780607bd29834"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/common-lilac-winter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6864
+    },
+    {
       "url": "/park-kits/prairie-foliage-v1/common-lilac.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27488,6 +27968,36 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 7272
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-autumn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 337796,
+      "lfsOid": "ecb1640f5a981ef2f2684249f5da02d3620860e55cab8b906f4cf0ab12f29d13"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-autumn.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 13308
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-winter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 95988,
+      "lfsOid": "d34a61d4a5aca442e75ea4ca26c90e667f4ee6ae7f3082c9b3f260794edf23c6"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-winter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5312
     },
     {
       "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge.glb",
@@ -27625,6 +28135,21 @@
       "logicalBytes": 7870
     },
     {
+      "url": "/park-kits/prairie-foliage-v1/green-ash-autumn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1512324,
+      "lfsOid": "fa2111a8f346ce69068a29e8d0b7d9401f2e8fdb03e9464c09bc86a4321bdb51"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/green-ash-autumn.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6356
+    },
+    {
       "url": "/park-kits/prairie-foliage-v1/green-ash-winter.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27653,6 +28178,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 5816
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/highbush-cranberry-winter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 323552,
+      "lfsOid": "d6566363d8f1f14bfbeefc35e29bc4226d42ae27c3599d89d24de598d8dc4488"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/highbush-cranberry-winter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8408
     },
     {
       "url": "/park-kits/prairie-foliage-v1/highbush-cranberry.glb",
@@ -27805,6 +28345,21 @@
       "logicalBytes": 5658
     },
     {
+      "url": "/park-kits/prairie-foliage-v1/manitoba-maple-autumn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1588956,
+      "lfsOid": "45791b4e2258703a77657274931277062244601265d9b543637a1dcce8af580f"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/manitoba-maple-autumn.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7756
+    },
+    {
       "url": "/park-kits/prairie-foliage-v1/manitoba-maple-winter.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27850,6 +28405,21 @@
       "logicalBytes": 6410
     },
     {
+      "url": "/park-kits/prairie-foliage-v1/paper-birch-autumn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1573896,
+      "lfsOid": "8688da3f3f86e59ad8346c754b638074fe1ebca292b2638724127b54a11a2b0d"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/paper-birch-autumn.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6148
+    },
+    {
       "url": "/park-kits/prairie-foliage-v1/paper-birch-winter.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27893,6 +28463,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 5822
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/plains-cottonwood-autumn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1439164,
+      "lfsOid": "830b3b1a51ea7e5ec815baf6b4106c99b75047697befd8e939bedc5b231467a1"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/plains-cottonwood-autumn.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7466
     },
     {
       "url": "/park-kits/prairie-foliage-v1/plains-cottonwood-winter.glb",
@@ -27955,6 +28540,21 @@
       "logicalBytes": 6104
     },
     {
+      "url": "/park-kits/prairie-foliage-v1/prickly-wild-rose-winter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 283184,
+      "lfsOid": "b66d46b099ec6e36d604d21ff0768f30fc9e0959779dcadea9cdf1522883e24b"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/prickly-wild-rose-winter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7654
+    },
+    {
       "url": "/park-kits/prairie-foliage-v1/prickly-wild-rose.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27970,6 +28570,21 @@
       "logicalBytes": 7218
     },
     {
+      "url": "/park-kits/prairie-foliage-v1/red-osier-dogwood-winter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 411628,
+      "lfsOid": "5a1593f45d568e7183f89f59f8c82199b27147eaef84c0a9135cc6114b2d286e"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/red-osier-dogwood-winter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 10754
+    },
+    {
       "url": "/park-kits/prairie-foliage-v1/rough-fescue-drift.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27983,6 +28598,36 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 5896
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/saskatoon-autumn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 376872,
+      "lfsOid": "88dc7c32671d96ad03fc1b21a0d026bd02c3359ddb1c099bbb283d22547645e0"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/saskatoon-autumn.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8392
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/saskatoon-winter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 228292,
+      "lfsOid": "064d3b17e04e98364934326a476f519952e8b5062bbc7ae907b14d93c6281530"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/saskatoon-winter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7186
     },
     {
       "url": "/park-kits/prairie-foliage-v1/saskatoon.glb",
@@ -28043,6 +28688,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 6190
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/showy-mountain-ash-autumn.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 1394944,
+      "lfsOid": "dfa902e9b6f525ee2c2dbaa48986295713586d56bee68b4de04e116702397df9"
+    },
+    {
+      "url": "/park-kits/prairie-foliage-v1/showy-mountain-ash-autumn.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7476
     },
     {
       "url": "/park-kits/prairie-foliage-v1/showy-mountain-ash-winter.glb",
@@ -35006,9 +35666,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 795,
-      "logicalBytes": 503948576,
-      "pathDigest": "3cc1399d6dd7213fb5d68ea88621b4f04a39b0877d4d0e2003b0213f4fa99b9d"
+      "fileCount": 883,
+      "logicalBytes": 518963566,
+      "pathDigest": "9e731841c3709b901ca3a26b6a21423483695515c97b2ccdd28d610f86668ad0"
     },
     {
       "name": "public-realm-skins",

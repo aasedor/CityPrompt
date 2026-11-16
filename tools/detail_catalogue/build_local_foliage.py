@@ -453,6 +453,7 @@ def conifer(plant, p):
 # Shrubs, hedges, ground cover and grasses
 # ---------------------------------------------------------------------------
 def shrub(plant, p, origin=(0, 0), scale=1.0):
+    plant.twig_colour = p.get('twig', plant.twig_colour)
     height = p['height'] * scale
     spread = p['spread'] * scale
     arch = p.get('arch', .4)
@@ -1028,13 +1029,13 @@ SPECIES = [
 ]
 
 
-def _variant(base_slug, suffix, label_suffix, note, season=None, **overrides):
+def _variant(base_slug, suffix, label_suffix, note, season=None, tail=TREE_NOTE, **overrides):
     """A seasonal form shares its base species' seed, so the skeleton is the same tree."""
     base = next(s for s in SPECIES if s['slug'] == base_slug)
     latin = base['description'].split(' · ')[0]
     return dict(slug=f'{base_slug}-{suffix}', label=f'{base["label"]} · {label_suffix}', category=base['category'], kind=base['kind'], color=base['color'],
                 seed=base['seed'], builder=base['builder'], season=season, params={**base['params'], **overrides},
-                description=f'{latin} · {note} {TREE_NOTE}')
+                description=f'{latin} · {note} {tail}')
 
 
 WINTER_BASES = ['trembling-aspen', 'swedish-columnar-aspen', 'balsam-poplar', 'paper-birch', 'green-ash', 'bur-oak', 'manitoba-maple', 'laurel-leaf-willow',
@@ -1049,6 +1050,48 @@ SEASONAL = [
 ]
 _anchor = next(i for i, s in enumerate(SPECIES) if s['slug'] == 'limber-pine') + 1
 SPECIES[_anchor:_anchor] = SEASONAL
+
+# Third batch: more autumn trees, and winter and autumn forms for shrubs and hedges
+# so a winter scene no longer shows bare trees over summer-green planting. These go
+# at the end so the first seventy keep their catalogue order.
+AUTUMN_ORANGE = ['#c9562c', '#d9772e', '#b5432a', '#e0943a', '#a8742c']
+AUTUMN_RUSSET = ['#a8672c', '#b97a34', '#96592a', '#c48a3e', '#8a5226']
+AUTUMN_RED = ['#b5432a', '#c2462b', '#a33a2a', '#d2702e', '#8f2f26']
+HEDGE_NOTE = 'Repeat along an edge.'
+
+
+def _with_winter(base_slug, colour, size=None):
+    """The base accent with a colour that persists in winter; same kind, so the same random draws."""
+    base = next(s for s in SPECIES if s['slug'] == base_slug)
+    accent = {**base['params']['accent'], 'winter': colour}
+    return {**accent, 'size': size} if size else accent
+
+
+SEASONAL_SHRUBS = [
+    _variant('green-ash', 'autumn', 'autumn', 'the same tree in clear yellow fall leaf.', greens=AUTUMN_GOLD),
+    _variant('manitoba-maple', 'autumn', 'autumn', 'the same tree in yellow fall leaf.', greens=AUTUMN_GOLD),
+    _variant('paper-birch', 'autumn', 'autumn', 'the same tree in gold fall leaf.', greens=AUTUMN_GOLD),
+    _variant('plains-cottonwood', 'autumn', 'autumn', 'the same tree in river-valley gold.', greens=AUTUMN_GOLD),
+    _variant('showy-mountain-ash', 'autumn', 'autumn', 'the same tree in orange-red leaf with its berries.', greens=AUTUMN_ORANGE),
+    _variant('bur-oak', 'autumn', 'autumn', 'the same tree in russet fall leaf.', greens=AUTUMN_RUSSET),
+    _variant('common-lilac', 'winter', 'winter', 'the same shrub bare, for winter scenes.', season='winter', tail=SHRUB_NOTE),
+    _variant('caragana-hedge', 'winter', 'winter', 'the same 2 m hedge section bare, for winter scenes.', season='winter', tail=HEDGE_NOTE),
+    _variant('cotoneaster-hedge', 'winter', 'winter', 'the same clipped 2 m section as a dense bare twig box.', season='winter', tail=HEDGE_NOTE, core='#6b5d50',
+             tuft_size=.17),
+    _variant('saskatoon', 'winter', 'winter', 'the same shrub bare, for winter scenes.', season='winter', tail=SHRUB_NOTE),
+    _variant('highbush-cranberry', 'winter', 'winter', 'the same shrub bare, still holding red berries.', season='winter', tail=SHRUB_NOTE,
+             accent=_with_winter('highbush-cranberry', '#b8332a', size=.075)),
+    _variant('prickly-wild-rose', 'winter', 'winter', 'the same shrub bare, with red hips.', season='winter', tail=SHRUB_NOTE,
+             accent=_with_winter('prickly-wild-rose', '#b8332a', size=.06)),
+    _variant('cotoneaster-hedge', 'autumn', 'autumn', 'the same clipped 2 m section turned orange-red.', tail=HEDGE_NOTE, greens=AUTUMN_RED, core='#5a2a22'),
+    _variant('saskatoon', 'autumn', 'autumn', 'the same shrub in orange fall leaf.', tail=SHRUB_NOTE, greens=AUTUMN_ORANGE),
+    # No summer form here: the recovered red-osier dogwood already covers it.
+    dict(slug='red-osier-dogwood-winter', label='Red-osier dogwood · winter', **PLANT, seed=1320, builder=shrub, season='winter',
+         description=f'Cornus sericea · bare red stems that light up snowy river banks and rain gardens. {SHRUB_NOTE}',
+         params=dict(height=2.0, spread=1.15, stems=24, arch=.3, stem_radius=.012, leaf_size=.12, leaf_width=.5, leaves=6, greens=GREENS, bark='#a8262b', twig='#b8332a',
+                     spray_radius=.26, spray_height=.34, twigs=4, bare=.3)),
+]
+SPECIES.extend(SEASONAL_SHRUBS)
 
 
 # ---------------------------------------------------------------------------

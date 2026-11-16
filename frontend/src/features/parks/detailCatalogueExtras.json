@@ -5680,6 +5680,396 @@
     "thumbnailUrl": "/park-kits/prairie-foliage-v1/june-grass.webp"
   },
   {
+    "id": "detail-prairie-green-ash-autumn",
+    "label": "Green ash \u00b7 autumn",
+    "category": "Trees",
+    "description": "Fraxinus pennsylvanica \u00b7 the same tree in clear yellow fall leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.703,
+      8.759,
+      12.706
+    ],
+    "url": "/park-kits/prairie-foliage-v1/green-ash-autumn.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.003691,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "fa2111a8f346ce69068a29e8d0b7d9401f2e8fdb03e9464c09bc86a4321bdb51",
+    "triangles": 13248,
+    "meshes": 2,
+    "bytes": 1512324,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash-autumn.webp"
+  },
+  {
+    "id": "detail-prairie-manitoba-maple-autumn",
+    "label": "Manitoba maple \u00b7 autumn",
+    "category": "Trees",
+    "description": "Acer negundo \u00b7 the same tree in yellow fall leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.762,
+      7.681,
+      10.823
+    ],
+    "url": "/park-kits/prairie-foliage-v1/manitoba-maple-autumn.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.006512,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "45791b4e2258703a77657274931277062244601265d9b543637a1dcce8af580f",
+    "triangles": 13920,
+    "meshes": 2,
+    "bytes": 1588956,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple-autumn.webp"
+  },
+  {
+    "id": "detail-prairie-paper-birch-autumn",
+    "label": "Paper birch \u00b7 autumn",
+    "category": "Trees",
+    "description": "Betula papyrifera \u00b7 the same tree in gold fall leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.502,
+      4.693,
+      10.473
+    ],
+    "url": "/park-kits/prairie-foliage-v1/paper-birch-autumn.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.003998,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "8688da3f3f86e59ad8346c754b638074fe1ebca292b2638724127b54a11a2b0d",
+    "triangles": 13788,
+    "meshes": 2,
+    "bytes": 1573896,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch-autumn.webp"
+  },
+  {
+    "id": "detail-prairie-plains-cottonwood-autumn",
+    "label": "Plains cottonwood \u00b7 autumn",
+    "category": "Trees",
+    "description": "Populus deltoides \u00b7 the same tree in river-valley gold. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      12.406,
+      12.317,
+      20.37
+    ],
+    "url": "/park-kits/prairie-foliage-v1/plains-cottonwood-autumn.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.007886,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "830b3b1a51ea7e5ec815baf6b4106c99b75047697befd8e939bedc5b231467a1",
+    "triangles": 12606,
+    "meshes": 2,
+    "bytes": 1439164,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood-autumn.webp"
+  },
+  {
+    "id": "detail-prairie-showy-mountain-ash-autumn",
+    "label": "Showy mountain ash \u00b7 autumn",
+    "category": "Trees",
+    "description": "Sorbus decora \u00b7 the same tree in orange-red leaf with its berries. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.127,
+      4.148,
+      7.316
+    ],
+    "url": "/park-kits/prairie-foliage-v1/showy-mountain-ash-autumn.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002096,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "dfa902e9b6f525ee2c2dbaa48986295713586d56bee68b4de04e116702397df9",
+    "triangles": 12218,
+    "meshes": 2,
+    "bytes": 1394944,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash-autumn.webp"
+  },
+  {
+    "id": "detail-prairie-bur-oak-autumn",
+    "label": "Bur oak \u00b7 autumn",
+    "category": "Trees",
+    "description": "Quercus macrocarpa \u00b7 the same tree in russet fall leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      9.302,
+      9.384,
+      11.094
+    ],
+    "url": "/park-kits/prairie-foliage-v1/bur-oak-autumn.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.004482,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "0ae141e39a0a9f0c39fe2eb986f85e5b84653f4ee0bbb09e878acefc6f5aa3f8",
+    "triangles": 12462,
+    "meshes": 2,
+    "bytes": 1422716,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak-autumn.webp"
+  },
+  {
+    "id": "detail-prairie-common-lilac-winter",
+    "label": "Common lilac \u00b7 winter",
+    "category": "Planting",
+    "description": "Syringa vulgaris \u00b7 the same shrub bare, for winter scenes. Place in beds and soft landscape edges.",
+    "dimensions": [
+      3.116,
+      2.731,
+      3.289
+    ],
+    "url": "/park-kits/prairie-foliage-v1/common-lilac-winter.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.00426,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub:winter",
+    "sha256": "f07e8956eb12680cb560e8a4411bb5fc0f5104a9f80f8bd37be780607bd29834",
+    "triangles": 2754,
+    "meshes": 1,
+    "bytes": 315168,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/common-lilac-winter.webp"
+  },
+  {
+    "id": "detail-prairie-caragana-hedge-winter",
+    "label": "Caragana hedge \u00b7 winter",
+    "category": "Planting",
+    "description": "Caragana arborescens \u00b7 the same 2 m hedge section bare, for winter scenes. Repeat along an edge.",
+    "dimensions": [
+      2.98,
+      1.276,
+      2.028
+    ],
+    "url": "/park-kits/prairie-foliage-v1/caragana-hedge-winter.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.007782,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:hedge_row:winter",
+    "sha256": "2efff2f1cc9bebb769e5f5ebabba1470dad2b6462c5fcc4bbb43f578067abce7",
+    "triangles": 3219,
+    "meshes": 1,
+    "bytes": 368184,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/caragana-hedge-winter.webp"
+  },
+  {
+    "id": "detail-prairie-cotoneaster-hedge-winter",
+    "label": "Cotoneaster hedge \u00b7 winter",
+    "category": "Planting",
+    "description": "Cotoneaster lucidus \u00b7 the same clipped 2 m section as a dense bare twig box. Repeat along an edge.",
+    "dimensions": [
+      2.278,
+      0.942,
+      1.277
+    ],
+    "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-winter.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.009076,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:clipped_hedge:winter",
+    "sha256": "d34a61d4a5aca442e75ea4ca26c90e667f4ee6ae7f3082c9b3f260794edf23c6",
+    "triangles": 824,
+    "meshes": 2,
+    "bytes": 95988,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-winter.webp"
+  },
+  {
+    "id": "detail-prairie-saskatoon-winter",
+    "label": "Saskatoon berry \u00b7 winter",
+    "category": "Planting",
+    "description": "Amelanchier alnifolia \u00b7 the same shrub bare, for winter scenes. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.354,
+      2.201,
+      2.638
+    ],
+    "url": "/park-kits/prairie-foliage-v1/saskatoon-winter.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.006046,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub:winter",
+    "sha256": "064d3b17e04e98364934326a476f519952e8b5062bbc7ae907b14d93c6281530",
+    "triangles": 1992,
+    "meshes": 1,
+    "bytes": 228292,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon-winter.webp"
+  },
+  {
+    "id": "detail-prairie-highbush-cranberry-winter",
+    "label": "Highbush cranberry \u00b7 winter",
+    "category": "Planting",
+    "description": "Viburnum trilobum \u00b7 the same shrub bare, still holding red berries. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.765,
+      2.634,
+      2.822
+    ],
+    "url": "/park-kits/prairie-foliage-v1/highbush-cranberry-winter.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.005772,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub:winter",
+    "sha256": "d6566363d8f1f14bfbeefc35e29bc4226d42ae27c3599d89d24de598d8dc4488",
+    "triangles": 2820,
+    "meshes": 2,
+    "bytes": 323552,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/highbush-cranberry-winter.webp"
+  },
+  {
+    "id": "detail-prairie-prickly-wild-rose-winter",
+    "label": "Prickly wild rose \u00b7 winter",
+    "category": "Planting",
+    "description": "Rosa acicularis \u00b7 the same shrub bare, with red hips. Place in beds and soft landscape edges.",
+    "dimensions": [
+      1.618,
+      1.51,
+      1.04
+    ],
+    "url": "/park-kits/prairie-foliage-v1/prickly-wild-rose-winter.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.007688,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub:winter",
+    "sha256": "b66d46b099ec6e36d604d21ff0768f30fc9e0959779dcadea9cdf1522883e24b",
+    "triangles": 2466,
+    "meshes": 2,
+    "bytes": 283184,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prickly-wild-rose-winter.webp"
+  },
+  {
+    "id": "detail-prairie-cotoneaster-hedge-autumn",
+    "label": "Cotoneaster hedge \u00b7 autumn",
+    "category": "Planting",
+    "description": "Cotoneaster lucidus \u00b7 the same clipped 2 m section turned orange-red. Repeat along an edge.",
+    "dimensions": [
+      2.178,
+      0.859,
+      1.215
+    ],
+    "url": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-autumn.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.009076,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:clipped_hedge",
+    "sha256": "ecb1640f5a981ef2f2684249f5da02d3620860e55cab8b906f4cf0ab12f29d13",
+    "triangles": 2945,
+    "meshes": 2,
+    "bytes": 337796,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-autumn.webp"
+  },
+  {
+    "id": "detail-prairie-saskatoon-autumn",
+    "label": "Saskatoon berry \u00b7 autumn",
+    "category": "Planting",
+    "description": "Amelanchier alnifolia \u00b7 the same shrub in orange fall leaf. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.32,
+      2.176,
+      2.627
+    ],
+    "url": "/park-kits/prairie-foliage-v1/saskatoon-autumn.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.006046,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub",
+    "sha256": "88dc7c32671d96ad03fc1b21a0d026bd02c3359ddb1c099bbb283d22547645e0",
+    "triangles": 3288,
+    "meshes": 2,
+    "bytes": 376872,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon-autumn.webp"
+  },
+  {
+    "id": "detail-prairie-red-osier-dogwood-winter",
+    "label": "Red-osier dogwood \u00b7 winter",
+    "category": "Planting",
+    "description": "Cornus sericea \u00b7 bare red stems that light up snowy river banks and rain gardens. Place in beds and soft landscape edges.",
+    "dimensions": [
+      2.311,
+      2.597,
+      2.093
+    ],
+    "url": "/park-kits/prairie-foliage-v1/red-osier-dogwood-winter.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.005873,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:shrub:winter",
+    "sha256": "5a1593f45d568e7183f89f59f8c82199b27147eaef84c0a9135cc6114b2d286e",
+    "triangles": 3600,
+    "meshes": 1,
+    "bytes": 411628,
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/red-osier-dogwood-winter.webp"
+  },
+  {
     "id": "detail-yyc-outdoor-rink",
     "label": "Community outdoor rink",
     "category": "Winter city",
@@ -7654,5 +8044,759 @@
     "meshes": 1,
     "bytes": 140232,
     "thumbnailUrl": "/park-kits/calgary-details-v1/propane-cage.webp"
+  },
+  {
+    "id": "detail-yyc-city-bus",
+    "label": "City bus",
+    "category": "Vehicles",
+    "description": "Twelve-metre low-floor transit bus with two curb-side doors and a folded front bike rack.",
+    "dimensions": [
+      3.09,
+      12.561,
+      3.26
+    ],
+    "url": "/park-kits/calgary-details-v1/city-bus.glb",
+    "color": "#1f4f85",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:city_bus",
+    "sha256": "fb57bbe2444a3da41728b97c860a01f93b155912b3b21e85890336d8e9517e3a",
+    "triangles": 1156,
+    "meshes": 2,
+    "bytes": 133884,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/city-bus.webp"
+  },
+  {
+    "id": "detail-yyc-light-rail-car",
+    "label": "Light-rail car",
+    "category": "Vehicles",
+    "description": "Low-floor articulated light-rail vehicle, 25 m long, with a pantograph for a 5.5 m contact wire.",
+    "dimensions": [
+      2.714,
+      25.54,
+      5.5
+    ],
+    "url": "/park-kits/calgary-details-v1/light-rail-car.glb",
+    "color": "#1f7a8c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:light_rail_car",
+    "sha256": "62c97dcd5ffc106a498b1ee16b240c9b0e2b9d3309c37e05db13207a768ce464",
+    "triangles": 1400,
+    "meshes": 2,
+    "bytes": 161716,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/light-rail-car.webp"
+  },
+  {
+    "id": "detail-yyc-school-bus",
+    "label": "School bus",
+    "category": "Vehicles",
+    "description": "Yellow conventional school bus with a folded stop arm, for school sites and pick-up loops.",
+    "dimensions": [
+      2.733,
+      11.4,
+      3.077
+    ],
+    "url": "/park-kits/calgary-details-v1/school-bus.glb",
+    "color": "#f2b01e",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:school_bus",
+    "sha256": "8426823b2c92a2372c28f2f774fdf0fdb777e46f82cf5a2435b704a4fbdc8442",
+    "triangles": 1304,
+    "meshes": 2,
+    "bytes": 150768,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/school-bus.webp"
+  },
+  {
+    "id": "detail-yyc-plow-truck",
+    "label": "Snow plow truck",
+    "category": "Vehicles",
+    "description": "Tandem sanding truck with an angled front plow and rear spreader, for winter street scenes.",
+    "dimensions": [
+      3.433,
+      11.813,
+      3.3
+    ],
+    "url": "/park-kits/calgary-details-v1/plow-truck.glb",
+    "color": "#f2c230",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:plow_truck",
+    "sha256": "1fed503241ffa6ae440eaae5313ba507c360b77335163ada057181141155f745",
+    "triangles": 1476,
+    "meshes": 2,
+    "bytes": 170376,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/plow-truck.webp"
+  },
+  {
+    "id": "detail-yyc-roll-off-bin",
+    "label": "Roll-off construction bin",
+    "category": "Traffic & safety",
+    "description": "Thirty-yard steel bin loaded with demolition debris, as parked beside infill sites.",
+    "dimensions": [
+      6.764,
+      2.807,
+      2.007
+    ],
+    "url": "/park-kits/calgary-details-v1/roll-off-bin.glb",
+    "color": "#2f6f8f",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:roll_off_bin",
+    "sha256": "91582a13edcc4bbff26350b4998cc54646382543b630e5902bc9b50adfa8995f",
+    "triangles": 714,
+    "meshes": 1,
+    "bytes": 82568,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/roll-off-bin.webp"
+  },
+  {
+    "id": "detail-yyc-site-office-trailer",
+    "label": "Site office trailer",
+    "category": "Traffic & safety",
+    "description": "Portable job-site office on blocks with timber steps and a blank sign panel.",
+    "dimensions": [
+      8.839,
+      4.25,
+      3.67
+    ],
+    "url": "/park-kits/calgary-details-v1/site-office-trailer.glb",
+    "color": "#d8d2c2",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:site_office_trailer",
+    "sha256": "02c27e119a745ee1876e88ac858ba41848ecb4bcfeea191188aa424f7fd02bb6",
+    "triangles": 814,
+    "meshes": 2,
+    "bytes": 94940,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/site-office-trailer.webp"
+  },
+  {
+    "id": "detail-yyc-excavator",
+    "label": "Excavator",
+    "category": "Traffic & safety",
+    "description": "Tracked hydraulic excavator with its boom reaching forward to the ground.",
+    "dimensions": [
+      5.369,
+      8.931,
+      4.858
+    ],
+    "url": "/park-kits/calgary-details-v1/excavator.glb",
+    "color": "#f0b323",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:excavator",
+    "sha256": "20d38f66d8dde49e1f4eaa47044244d32db2b31f8495ab61c01e02002c1daaa0",
+    "triangles": 776,
+    "meshes": 2,
+    "bytes": 90556,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/excavator.webp"
+  },
+  {
+    "id": "detail-yyc-skid-steer",
+    "label": "Skid-steer loader",
+    "category": "Traffic & safety",
+    "description": "Compact wheeled loader with its bucket resting on the ground.",
+    "dimensions": [
+      1.78,
+      3.61,
+      2.06
+    ],
+    "url": "/park-kits/calgary-details-v1/skid-steer.glb",
+    "color": "#e2742b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:skid_steer",
+    "sha256": "9f8ff9d4ce7a72cce2d3647f0c5c27b1921bd445b0d38722cc97562d20634343",
+    "triangles": 616,
+    "meshes": 2,
+    "bytes": 72332,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/skid-steer.webp"
+  },
+  {
+    "id": "detail-yyc-lumber-stacks",
+    "label": "Lumber and sheet goods",
+    "category": "Traffic & safety",
+    "description": "Two strapped bundles of framing lumber and a pallet of plywood on a building site.",
+    "dimensions": [
+      2.852,
+      5.629,
+      1.304
+    ],
+    "url": "/park-kits/calgary-details-v1/lumber-stacks.glb",
+    "color": "#d9b98a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:lumber_stacks",
+    "sha256": "f0e72d1763a44e298c8c8abc77150cf287453a53dca453fa8b09a6cdcabe4ea9",
+    "triangles": 2292,
+    "meshes": 1,
+    "bytes": 262468,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lumber-stacks.webp"
+  },
+  {
+    "id": "detail-yyc-concrete-barrier",
+    "label": "Concrete barrier",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m precast safety-shape barrier section for work zones and road edges.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/concrete-barrier.glb",
+    "color": "#b9b6ae",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:concrete_barrier",
+    "sha256": "e9d28eeab80b18faa4b405c1d81b4e5d7dc24a0420d6dfca9c2aa82e0508412e",
+    "triangles": 80,
+    "meshes": 1,
+    "bytes": 10288,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/concrete-barrier.webp"
+  },
+  {
+    "id": "detail-yyc-inflatable-raft",
+    "label": "Inflatable raft",
+    "category": "Landscape",
+    "description": "Blue river raft pulled up on shore with paddles and a cooler, for a float down the Bow.",
+    "dimensions": [
+      1.95,
+      4.25,
+      0.72
+    ],
+    "url": "/park-kits/calgary-details-v1/inflatable-raft.glb",
+    "color": "#2a66a8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.002204,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:inflatable_raft",
+    "sha256": "fb2f8a700b339961f6e735e20ec43140722193093252016abd69f9886988efc3",
+    "triangles": 1122,
+    "meshes": 1,
+    "bytes": 129084,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/inflatable-raft.webp"
+  },
+  {
+    "id": "detail-yyc-canoe",
+    "label": "Canoe",
+    "category": "Landscape",
+    "description": "Red canoe resting on its side on the bank with a paddle inside.",
+    "dimensions": [
+      0.886,
+      4.9,
+      0.532
+    ],
+    "url": "/park-kits/calgary-details-v1/canoe.glb",
+    "color": "#b23a34",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:canoe",
+    "sha256": "782510220afa4104cf170be22a2de24554de00aa75262ed6a137442551b66c9f",
+    "triangles": 406,
+    "meshes": 1,
+    "bytes": 47444,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/canoe.webp"
+  },
+  {
+    "id": "detail-yyc-drift-boat",
+    "label": "Drift boat",
+    "category": "Landscape",
+    "description": "High-ended river fishing boat with oars shipped, as used by anglers on the Bow.",
+    "dimensions": [
+      4.332,
+      4.7,
+      1.08
+    ],
+    "url": "/park-kits/calgary-details-v1/drift-boat.glb",
+    "color": "#2f6f8f",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:drift_boat",
+    "sha256": "f4bf38dedcef84226285f2de2eec8d6e930496052298bd085e79186e87274b55",
+    "triangles": 318,
+    "meshes": 1,
+    "bytes": 37404,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/drift-boat.webp"
+  },
+  {
+    "id": "detail-yyc-pumpjack",
+    "label": "Pumpjack",
+    "category": "Landscape",
+    "description": "Beam pumping unit over an oil well, a familiar sight in fields at the edge of Alberta towns.",
+    "dimensions": [
+      1.79,
+      9.5,
+      5.336
+    ],
+    "url": "/park-kits/calgary-details-v1/pumpjack.glb",
+    "color": "#3f6b55",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:pumpjack",
+    "sha256": "dbe8d6a4bfee11fc737ea17a33383475ebae9ff8bda018370dd9565ea5568703",
+    "triangles": 620,
+    "meshes": 1,
+    "bytes": 71844,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/pumpjack.webp"
+  },
+  {
+    "id": "detail-yyc-grain-bins",
+    "label": "Grain bins",
+    "category": "Landscape",
+    "description": "Pair of corrugated steel farm bins with conical roofs and ladders.",
+    "dimensions": [
+      11.612,
+      6.1,
+      7.425
+    ],
+    "url": "/park-kits/calgary-details-v1/grain-bins.glb",
+    "color": "#b9c0c4",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:grain_bins",
+    "sha256": "9dc70d20bfd7c23efd260057fdb8fca614c44b1ee6247af04dbe1a42ec01c3c4",
+    "triangles": 1856,
+    "meshes": 1,
+    "bytes": 212732,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/grain-bins.webp"
+  },
+  {
+    "id": "detail-yyc-wind-turbine",
+    "label": "Wind turbine",
+    "category": "Landscape",
+    "description": "Utility-scale three-blade turbine with a 60 m hub, as seen across southern Alberta.",
+    "dimensions": [
+      42.43,
+      11.3,
+      84.465
+    ],
+    "url": "/park-kits/calgary-details-v1/wind-turbine.glb",
+    "color": "#e9ecee",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:wind_turbine",
+    "sha256": "1a5b29ec0a1f7fc94ffaa2b01561e3cc718d3d104501533c0f7e37389822f06b",
+    "triangles": 600,
+    "meshes": 1,
+    "bytes": 69564,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/wind-turbine.webp"
+  },
+  {
+    "id": "detail-yyc-street-light",
+    "label": "Roadway street light",
+    "category": "Lighting",
+    "description": "Nine-metre davit pole with a flat roadway luminaire reaching over the curb.",
+    "dimensions": [
+      0.56,
+      2.99,
+      9.143
+    ],
+    "url": "/park-kits/calgary-details-v1/street-light.glb",
+    "color": "#9aa3a8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:street_light",
+    "sha256": "9c5da512416f1cf6e4ae2612cb317b9c7311e97916384d3b3a1a68d48133459b",
+    "triangles": 196,
+    "meshes": 2,
+    "bytes": 24440,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-light.webp"
+  },
+  {
+    "id": "detail-yyc-basket-lamp-post",
+    "label": "Lamp post with flower baskets",
+    "category": "Lighting",
+    "description": "Black heritage-style post with a globe and two hanging summer flower baskets, for main streets.",
+    "dimensions": [
+      2.063,
+      0.575,
+      4.42
+    ],
+    "url": "/park-kits/calgary-details-v1/basket-lamp-post.glb",
+    "color": "#1d1f22",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:basket_lamp_post",
+    "sha256": "106b3f04e44e657d93c60ea4719de6d04b2ca13c495d71b97721510c5def2420",
+    "triangles": 1488,
+    "meshes": 1,
+    "bytes": 170812,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/basket-lamp-post.webp"
+  },
+  {
+    "id": "detail-yyc-flagpole",
+    "label": "Flagpole",
+    "category": "Street furniture",
+    "description": "Nine-metre aluminium pole flying a plain flag with no emblem.",
+    "dimensions": [
+      2.3,
+      0.9,
+      9.13
+    ],
+    "url": "/park-kits/calgary-details-v1/flagpole.glb",
+    "color": "#1f7a8c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:flagpole",
+    "sha256": "fa4b4240359fd55005a655f17ab186a9a3e94e3ee8238e9621ac077c191c59f5",
+    "triangles": 180,
+    "meshes": 1,
+    "bytes": 21680,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/flagpole.webp"
+  },
+  {
+    "id": "detail-yyc-lane-garage",
+    "label": "Lane garage",
+    "category": "Garden & growing",
+    "description": "Detached double garage with a sectional overhead door facing the back lane.",
+    "dimensions": [
+      7.5,
+      8.85,
+      4.465
+    ],
+    "url": "/park-kits/calgary-details-v1/lane-garage.glb",
+    "color": "#b8b2a4",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:lane_garage",
+    "sha256": "b08f72feff4d8075982230716117ac46e4db63e50549b5f4c883e00837c72b36",
+    "triangles": 576,
+    "meshes": 2,
+    "bytes": 67716,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lane-garage.webp"
+  },
+  {
+    "id": "detail-yyc-carport",
+    "label": "Carport",
+    "category": "Shelters & markets",
+    "description": "Two-stall steel carport with a low-slope roof and a slatted back screen.",
+    "dimensions": [
+      6.4,
+      6.2,
+      2.95
+    ],
+    "url": "/park-kits/calgary-details-v1/carport.glb",
+    "color": "#8f979b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:carport",
+    "sha256": "6078a73bc46c88d29fd435f6aa1b4d0de6c543fee518879c71c2b59fe4cd9e2a",
+    "triangles": 422,
+    "meshes": 1,
+    "bytes": 49272,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/carport.webp"
+  },
+  {
+    "id": "detail-yyc-solar-array",
+    "label": "Ground solar array",
+    "category": "Street furniture",
+    "description": "Sixteen-panel ground-mounted solar table tilted south on steel posts.",
+    "dimensions": [
+      8.64,
+      3.124,
+      2.616
+    ],
+    "url": "/park-kits/calgary-details-v1/solar-array.glb",
+    "color": "#1c2f4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:solar_array",
+    "sha256": "6552fe2ddcea4a6e9a8e00067c4ac79e49460b1ecb335ffe6bd0342e17ee4d7f",
+    "triangles": 676,
+    "meshes": 2,
+    "bytes": 79172,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/solar-array.webp"
+  },
+  {
+    "id": "detail-yyc-ground-squirrels",
+    "label": "Richardson's ground squirrels",
+    "category": "Wildlife",
+    "description": "Urocitellus richardsonii \u00b7 prairie gophers standing watch beside a burrow mound. Static model.",
+    "dimensions": [
+      1.026,
+      0.883,
+      0.308
+    ],
+    "url": "/park-kits/calgary-details-v1/ground-squirrels.glb",
+    "color": "#b39a6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:ground_squirrels",
+    "sha256": "bd1ef7dd3198593fd961506bbf2bfedaa0efbb0ad8a55f02e773ac162140073d",
+    "triangles": 974,
+    "meshes": 1,
+    "bytes": 112224,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/ground-squirrels.webp"
+  },
+  {
+    "id": "detail-yyc-coyote",
+    "label": "Coyote",
+    "category": "Wildlife",
+    "description": "Canis latrans \u00b7 alert and standing, as seen in river valleys and on park edges. Static model.",
+    "dimensions": [
+      0.26,
+      1.343,
+      1.053
+    ],
+    "url": "/park-kits/calgary-details-v1/coyote.glb",
+    "color": "#9a8a72",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:coyote",
+    "sha256": "ae03de0003113ecfbbaa5d5fbc9a14893c9ae4a038b62eb139fb1eeb12526433",
+    "triangles": 976,
+    "meshes": 1,
+    "bytes": 112432,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/coyote.webp"
+  },
+  {
+    "id": "detail-yyc-mallards",
+    "label": "Mallards",
+    "category": "Wildlife",
+    "description": "Anas platyrhynchos \u00b7 a drake and a hen on the bank of a pond or storm pond. Static model.",
+    "dimensions": [
+      0.651,
+      0.64,
+      0.37
+    ],
+    "url": "/park-kits/calgary-details-v1/mallards.glb",
+    "color": "#1f5a3a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.00035,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mallards",
+    "sha256": "d41b902479976d8f46c1af9564e332e6ee97d4192f8f28791af4bbc6ebccf475",
+    "triangles": 634,
+    "meshes": 1,
+    "bytes": 73460,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mallards.webp"
+  },
+  {
+    "id": "detail-yyc-pelicans",
+    "label": "American white pelicans",
+    "category": "Wildlife",
+    "description": "Pelecanus erythrorhynchos \u00b7 two summer visitors to the Bow, one with its bill tucked. Static model.",
+    "dimensions": [
+      1.371,
+      1.137,
+      1.083
+    ],
+    "url": "/park-kits/calgary-details-v1/pelicans.glb",
+    "color": "#f2a23a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000615,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:pelicans",
+    "sha256": "1a5e94d4d18badb97e54546e72baade809282a4f7ea322eb02ba38e983f06b5c",
+    "triangles": 686,
+    "meshes": 1,
+    "bytes": 79388,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/pelicans.webp"
+  },
+  {
+    "id": "detail-yyc-osprey-platform",
+    "label": "Osprey nesting platform",
+    "category": "Wildlife",
+    "description": "Pandion haliaetus \u00b7 tall pole with a stick nest and a perched osprey, as raised along the rivers. Static model.",
+    "dimensions": [
+      1.401,
+      1.566,
+      12.175
+    ],
+    "url": "/park-kits/calgary-details-v1/osprey-platform.glb",
+    "color": "#6e5a48",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:osprey_platform",
+    "sha256": "8aaf62392b895a8b146544daf4c86c77748519df4eee7cf9d917b023cc51e1aa",
+    "triangles": 846,
+    "meshes": 1,
+    "bytes": 97624,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/osprey-platform.webp"
+  },
+  {
+    "id": "detail-yyc-horses",
+    "label": "Horses",
+    "category": "Landscape",
+    "description": "Two ranch horses, a bay standing and a buckskin grazing, for acreages at the city edge. Static model.",
+    "dimensions": [
+      2.61,
+      2.778,
+      2.195
+    ],
+    "url": "/park-kits/calgary-details-v1/horses.glb",
+    "color": "#7a4a2c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:horses",
+    "sha256": "62ece24c1aaf0c198f50ba06bf80f0243084a2f7bde0256de0825866c40021fe",
+    "triangles": 1936,
+    "meshes": 1,
+    "bytes": 221868,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/horses.webp"
+  },
+  {
+    "id": "detail-yyc-cattle",
+    "label": "Cattle",
+    "category": "Landscape",
+    "description": "Two beef cattle, a white-faced red cow and a black cow grazing, for foothills ranchland. Static model.",
+    "dimensions": [
+      2.893,
+      2.734,
+      1.457
+    ],
+    "url": "/park-kits/calgary-details-v1/cattle.glb",
+    "color": "#7a3b22",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:cattle",
+    "sha256": "5b7aa3d3581e549cf20fb0524ac75c3428c23d4f88df9f4b610027f1a20cbb56",
+    "triangles": 1744,
+    "meshes": 1,
+    "bytes": 199984,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/cattle.webp"
   }
 ]

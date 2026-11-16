@@ -60,6 +60,8 @@ def parse_glb(payload):
     length = struct.unpack_from('<I', payload, 12)[0]
     return json.loads(payload[20:20 + length]), memoryview(payload)[28 + length:]
 
+# Seasonal forms whose summer plant is another catalogue's model, so there is no base here to compare.
+STANDALONE_SEASONAL = {'red-osier-dogwood-winter'}
 
 class PrairieFoliageContract(unittest.TestCase):
     @classmethod
@@ -73,18 +75,23 @@ class PrairieFoliageContract(unittest.TestCase):
             payload, lo, hi, triangles, meshes = cls.module.write_glb([plant.wood, plant.foliage], species['slug'])
             cls.built[species['slug']] = (species, cls.module.row(species, payload, lo, hi, triangles, meshes), payload, plant)
 
-    def test_seventy_unique_local_plants_split_between_trees_and_planting(self):
+    def test_eighty_five_unique_local_plants_split_between_trees_and_planting(self):
         species = self.module.SPECIES
-        self.assertEqual(len(species), 70)
-        self.assertEqual(len({s['slug'] for s in species}), 70)
-        self.assertEqual(len({s['label'] for s in species}), 70)
+        self.assertEqual(len(species), 85)
+        self.assertEqual(len({s['slug'] for s in species}), 85)
+        self.assertEqual(len({s['label'] for s in species}), 85)
         self.assertEqual({s['kind'] for s in species}, {'tree', 'object'})
         self.assertEqual({s['category'] for s in species if s['kind'] == 'tree'}, {'Trees'})
         self.assertEqual({s['category'] for s in species if s['kind'] == 'object'}, {'Planting'})
-        self.assertEqual(sum(1 for s in species if s['kind'] == 'tree'), 44)
+        self.assertEqual(sum(1 for s in species if s['kind'] == 'tree'), 50)
         seasons = [s.get('season') for s in species]
-        self.assertEqual((seasons.count('winter'), seasons.count('snow')), (17, 2))
-        self.assertEqual(sum(1 for s in species if s['slug'].endswith('-autumn')), 2)
+        self.assertEqual((seasons.count('winter'), seasons.count('snow')), (24, 2))
+        self.assertEqual(sum(1 for s in species if s['slug'].endswith('-autumn')), 10)
+        # seventeen winter trees, six winter shrubs and hedges, and the dogwood that has no summer form here
+        self.assertEqual(sum(1 for s in species if s.get('season') == 'winter' and s['kind'] == 'object'), 7)
+        # the third batch was appended, so the first seventy keep their catalogue order
+        self.assertEqual(species[69]['slug'], 'june-grass')
+        self.assertEqual(species[70]['slug'], 'green-ash-autumn')
 
     def test_registry_rows_are_exactly_the_deterministic_generator_output(self):
         self.assertEqual(list(self.by_slug), [s['slug'] for s in self.module.SPECIES])
@@ -106,6 +113,8 @@ class PrairieFoliageContract(unittest.TestCase):
         for slug, (species, row, _payload, plant) in self.built.items():
             season = species.get('season')
             if not season and not slug.endswith('-autumn'):
+                continue
+            if slug in STANDALONE_SEASONAL:
                 continue
             base_slug = slug.rsplit('-', 1)[0]
             base_species, base_row, _base_payload, base_plant = self.built[base_slug]
@@ -179,7 +188,8 @@ class PrairieFoliageContract(unittest.TestCase):
                 self.assertEqual((row['offset'][0], row['offset'][2]), (0.0, 0.0))
                 self.assertTrue(lo[0] < 0 < hi[0] and lo[2] < 0 < hi[2])
             total += row['bytes']
-        self.assertLess(total, 66_000_000)
+        # 62 MB for the first seventy plus 12 MB of seasonal forms; models load on placement only
+        self.assertLess(total, 78_000_000)
 
     def test_trunks_stand_on_the_placement_anchor(self):
         for slug, (species, _row, _payload, plant) in self.built.items():

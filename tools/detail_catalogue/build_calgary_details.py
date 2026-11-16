@@ -1912,6 +1912,682 @@ def propane_cage(s):
 
 
 # ---------------------------------------------------------------------------
+# Transit and service vehicles. Long axis along y with the front at -y, like the
+# existing vehicle details; the curb side for right-hand traffic is therefore -x.
+# Liveries are generic and carry no agency colours, numbers or wording.
+# ---------------------------------------------------------------------------
+def shell(s, stations, width, height, floor, colour, radius=.25, steps=3):
+    """Vehicle or cabin body: a rounded cross-section lofted along y. stations are
+    (y, width scale, height scale). The floor line stays level and the roof follows."""
+    section = rounded_rect(width, height, radius, steps)
+    s.loft([[(x * ws, y, floor + (z + height / 2) * hs) for x, z in section] for y, ws, hs in stations], colour)
+
+
+def glazing(s, width, y0, y1, z0, z1, pillars=(), frame='#1b1d1f', sides=(-1, 1), proud=.006):
+    """Dark window band on the flat part of a body side, split by pillars."""
+    for sx in sides:
+        x = sx * (width / 2 + proud)
+        s.box((x, (y0 + y1) / 2, (z0 + z1) / 2), (.012, y1 - y0, z1 - z0), GLASS_DARK, gloss=True)
+        for y in pillars:
+            s.box((x + sx * .004, y, (z0 + z1) / 2), (.012, .06, z1 - z0), frame)
+
+
+def road_wheels(s, y, track, radius, width, arch=None, body_width=None, hub='#8f979b'):
+    """One axle. With arch set, a dark wheel-well panel sits behind each tyre face."""
+    for sx in (-1, 1):
+        wheel(s, (sx * track / 2, y, radius), radius, width, sides=16, hub=hub)
+        if arch:
+            s.box((sx * (body_width / 2 + .004), y, arch / 2 + .16), (.012, radius * 2 + .3, arch), '#141618')
+
+
+def beam_yz(s, a, b, width, depth, colour, gloss=False):
+    """Box beam from a to b, which share an x. depth is measured in the yz-plane."""
+    dy, dz = b[1] - a[1], b[2] - a[2]
+    length = math.hypot(dy, dz)
+    with s.at(a[0], a[1], a[2], roll=math.atan2(-dy, dz)):
+        s.box((0, 0, length / 2), (width, depth, length), colour, gloss=gloss)
+
+
+def city_bus(s):
+    length, width, floor, height = 12.2, 2.55, .32, 2.72
+    white, skirt, dark = '#eef0f1', '#1f4f85', '#1b1d1f'
+    front, rear, roof = -length / 2, length / 2, floor + height
+    shell(s, [(front, .93, .97), (front + .35, 1, 1), (rear - .25, 1, 1), (rear, .96, .98)], width, height, floor, white, radius=.22)
+    for sx in (-1, 1):
+        x = sx * (width / 2 + .002)
+        s.box((x, 0, floor + .4), (.012, length - .8, .6), skirt)
+        s.box((x, 0, floor + .74), (.012, length - .8, .05), ORANGE)
+    glazing(s, width, front + .95, rear - .6, 1.42, 2.42, pillars=[front + .95 + k * 1.52 for k in range(1, 7)])
+    s.box((0, front - .004, 1.9), (width - .32, .012, 1.25), GLASS_DARK, gloss=True)
+    s.box((0, front - .008, 2.74), (width - .5, .012, .26), dark)
+    s.box((0, front - .014, 2.74), (1.5, .008, .13), '#e0a23a')
+    s.box((0, rear + .004, 2.1), (1.7, .012, .7), GLASS_DARK, gloss=True)
+    s.box((0, rear + .008, 1.1), (1.9, .012, .9), '#d9dde0')
+    for y, w in ((front + 1.5, 1.15), (.95, 1.3)):
+        x = -(width / 2 + .012)
+        s.box((x, y, floor + 1.12), (.012, w, 2.08), '#2a3640', gloss=True)
+        s.box((x - .006, y, floor + 1.12), (.008, .04, 2.08), dark)
+        s.box((x - .006, y, floor + 2.2), (.008, w + .08, .06), dark)
+    for y in (front + 2.75, rear - 3.3):
+        road_wheels(s, y, width - .26, .5, .3, arch=.92, body_width=width)
+    for y, sign in ((front - .06, -1), (rear + .06, 1)):
+        s.box((0, y, .47), (width - .08, .14, .28), dark)
+        for sx in (-1, 1):
+            s.box((sx * .95, y + sign * .075, .85 if sign < 0 else 1.0), (.3, .012, .14), '#f4f1e4' if sign < 0 else RED)
+    for sx in (-1, 1):
+        s.cyl((sx * (width / 2 - .05), front + .12, 2.45), (sx * (width / 2 + .22), front - .05, 2.3), .02, dark, sides=5)
+        s.box((sx * (width / 2 + .24), front - .06, 2.1), (.06, .16, .4), dark)
+    s.box((0, 1.4, roof + .11), (1.9, 2.6, .22), '#d9dde0')
+    s.box((0, -3.3, roof + .08), (1.6, 1.5, .16), '#d9dde0')
+    # folded bicycle rack on the front
+    s.tube([(-.95, front - .2, .62), (.95, front - .2, .62), (.95, front - .16, 1.3), (-.95, front - .16, 1.3), (-.95, front - .2, .62)], .02, dark, sides=5)
+    for x in (-.5, 0, .5):
+        s.cyl((x, front - .2, .62), (x, front - .16, 1.3), .012, dark, sides=4)
+
+
+def light_rail_car(s):
+    width, floor, height, half, gap = 2.65, .3, 3.15, 12.5, .45
+    white, teal, dark, roof = '#e6ebef', '#1f7a8c', '#1b1d1f', .3 + 3.15
+    for sign in (-1, 1):
+        cab = [(sign * half, .78, .9), (sign * (half - .4), .9, .97), (sign * (half - 1.3), 1, 1), (sign * gap, 1, 1)]
+        shell(s, cab if sign < 0 else list(reversed(cab)), width, height, floor, white, radius=.3)
+        y0, y1 = sorted((sign * (gap + .5), sign * (half - 1.5)))
+        glazing(s, width, y0, y1, 1.3, 2.5)
+        for sx in (-1, 1):
+            x = sx * (width / 2 + .002)
+            s.box((x, (y0 + y1) / 2, floor + .36), (.012, y1 - y0 + .6, .58), teal)
+            s.box((x, (y0 + y1) / 2, 2.72), (.012, y1 - y0 + .6, .1), teal)
+            for door in (sign * 3.4, sign * 8.2):
+                s.box((x + sx * .012, door, floor + 1.1), (.012, 1.36, 2.12), teal)
+                s.box((x + sx * .02, door, floor + 1.28), (.012, 1.1, 1.6), '#2a3640', gloss=True)
+                s.box((x + sx * .026, door, floor + 1.28), (.008, .03, 1.6), teal)
+        # sloped cab front: windshield, lights and coupler
+        s.box((0, sign * (half + .004), 2.05), (width * .78 - .25, .012, 1.25), GLASS_DARK, gloss=True)
+        for sx in (-1, 1):
+            s.box((sx * .7, sign * (half + .006), 1.0), (.3, .012, .12), '#f4f1e4')
+            s.box((sx * .7, sign * (half + .006), .84), (.3, .012, .08), RED)
+        s.box((0, sign * (half + .12), .5), (.3, .3, .18), dark)
+        s.box((0, sign * 6.4, roof + .14), (1.9, 3.6, .28), '#cfd5d9')
+        s.box((0, sign * 10.2, roof + .1), (1.6, 1.4, .2), '#cfd5d9')
+    # articulation bellows
+    s.box((0, 0, floor + height / 2 - .03), (width - .22, gap * 2 + .02, height - .2), '#3a3d40')
+    for k in range(5):
+        y = -gap + .09 + k * (gap * 2 - .18) / 4
+        s.box((0, y, floor + height / 2 - .03), (width - .14, .04, height - .14), '#2b2e31')
+    for y in (-8.7, 0, 8.7):
+        s.box((0, y, .3), (2.25, 2.3, .34), dark)
+        for dy in (-.85, .85):
+            s.cyl((-.8, y + dy, .33), (.8, y + dy, .33), .33, '#2b2e31', sides=12)
+    # pantograph reaching the 5.5 m contact wire
+    base = roof + .3
+    s.box((0, -3.6, base), (1.3, 1.7, .08), '#5e666a')
+    for sx in (-1, 1):
+        s.cyl((sx * .45, -4.3, base + .04), (sx * .3, -3.1, 4.55), .03, '#5e666a', sides=5)
+        s.cyl((sx * .3, -3.1, 4.55), (sx * .5, -4.1, 5.44), .025, '#5e666a', sides=5)
+    s.cyl((-.3, -3.1, 4.55), (.3, -3.1, 4.55), .025, '#5e666a', sides=5)
+    s.box((0, -4.1, 5.47), (1.5, .28, .06), '#3a3d40')
+
+
+def school_bus(s):
+    yellow, black, width = '#f2b01e', '#1b1d1f', 2.44
+    front, cab, rear, floor, height = -5.5, -3.7, 5.5, .8, 2.25
+    shell(s, [(cab, .97, .97), (cab + .3, 1, 1), (rear - .2, 1, 1), (rear, .97, .98)], width, height, floor, yellow, radius=.28)
+    s.box((0, (cab + rear) / 2 + .1, .62), (width - .1, rear - cab - .5, .4), yellow)
+    shell(s, [(front, .76, .8), (front + .3, .86, .96), (cab, .9, 1)], width, 1.0, .75, yellow, radius=.2)
+    s.box((0, front - .004, 1.2), (1.25, .012, .55), black)
+    for y in (front - .1, rear + .1):
+        s.box((0, y, .6), (width, .2, .26), black)
+    s.box((0, cab - .006, 2.3), (width - .36, .012, .95), GLASS_DARK, gloss=True)
+    glazing(s, width, cab + 1.15, rear - .45, 1.95, 2.62, pillars=[cab + 1.15 + k * .78 for k in range(1, 10)], frame=yellow)
+    for sx in (-1, 1):
+        for z in (1.02, 1.42, 1.8):
+            s.box((sx * (width / 2 + .004), (cab + rear) / 2 + .3, z), (.012, rear - cab - .8, .05), black)
+        s.box((sx * .8, front - .012, 1.05), (.26, .012, .16), '#f4f1e4')
+        s.box((sx * .95, rear + .006, 1.3), (.2, .012, .2), RED)
+        for y, tone in ((cab - .01, '#e0a23a'), (rear + .01, RED)):
+            s.box((sx * .78, y, 2.92), (.2, .02, .2), tone)
+        s.cyl((sx * .95, front + .3, 1.6), (sx * 1.28, front - .1, 2.15), .015, black, sides=4)
+        s.dome((sx * 1.28, front - .1, 2.15), (.1, .05, .12), black, nu=8, nv=3, full=True)
+    s.box((-(width / 2 + .012), cab + .55, 1.78), (.012, .78, 1.75), '#2a3640', gloss=True)
+    s.box((-(width / 2 + .018), cab + .55, 1.78), (.008, .035, 1.75), black)
+    s.box((0, rear + .006, 2.2), (1.5, .012, .6), GLASS_DARK, gloss=True)
+    s.box((0, rear + .008, 1.45), (.75, .012, .85), '#e0a218')
+    s.box((0, (cab + rear) / 2 + .2, floor + height + .012), (width - .6, rear - cab - 1.0, .03), '#f4f1e4')
+    road_wheels(s, cab - .55, width - .3, .5, .3, hub=yellow)
+    road_wheels(s, 3.0, width - .5, .5, .55, hub=yellow)
+    for sx in (-1, 1):
+        s.box((sx * (width / 2 - .12), cab - .55, 1.08), (.36, 1.3, .1), black)
+        s.box((sx * (width / 2 + .004), 3.0, .86), (.012, 1.3, .5), '#141618')
+    # folded stop arm on the driver side
+    s.box((width / 2 + .03, cab + 1.0, 1.6), (.03, .46, .46), RED)
+    s.box((width / 2 + .05, cab + 1.0, 1.6), (.008, .3, .08), WHITE)
+
+
+def plow_truck(s):
+    cab_c, box_c, dark, width = '#f2c230', '#6f777c', '#1b1d1f', 2.5
+    s.box((0, .6, .98), (1.0, 8.2, .3), dark)
+    shell(s, [(-3.9, .86, .86), (-3.6, .93, 1), (-2.4, 1, 1)], 2.3, 1.0, 1.08, cab_c, radius=.15)
+    shell(s, [(-2.4, .98, .96), (-2.2, 1, 1), (-.75, 1, 1)], 2.45, 1.75, 1.15, cab_c, radius=.18)
+    s.box((0, -2.406, 2.32), (2.05, .012, .85), GLASS_DARK, gloss=True)
+    for sx in (-1, 1):
+        s.box((sx * 1.231, -1.55, 2.3), (.012, 1.0, .75), GLASS_DARK, gloss=True)
+        s.box((sx * .78, -3.906, 1.9), (.26, .012, .14), '#f4f1e4')
+        s.cyl((sx * 1.2, -2.3, 2.5), (sx * 1.5, -2.5, 2.55), .02, dark, sides=4)
+        s.box((sx * 1.52, -2.52, 2.4), (.05, .14, .36), dark)
+        s.box((sx * 1.05, -3.0, 1.12), (.42, 1.25, .1), dark)
+    s.box((0, -3.906, 1.5), (1.4, .012, .66), dark)
+    s.box((0, -4.0, 1.0), (2.4, .26, .3), dark)
+    s.box((0, -1.5, 2.96), (1.3, .22, .1), ORANGE)
+    s.cyl((1.16, -.62, 1.2), (1.16, -.62, 3.3), .07, GALV, sides=8)
+    # dump box with a load of sanding grit, cab shield and rear spreader
+    wedge_body(s, width, [(-.55, 1.25), (5.0, 1.25), (5.15, 2.75), (-.55, 2.75)], box_c)
+    for sx in (-1, 1):
+        for y in (.4, 1.6, 2.8, 4.0):
+            s.box((sx * (width / 2 + .03), y, 2.0), (.06, .09, 1.5), '#5e666a')
+        s.box((sx * (width / 2 + .03), 2.25, 2.72), (.08, 5.6, .1), '#5e666a')
+    s.box((0, -1.2, 2.98), (width, 1.4, .08), box_c)
+    s.dome((0, 2.2, 2.74), (1.05, 2.5, .34), lambda j, i: s.pick(['#b5a58a', '#a8987c', '#c2b396'], .03), nu=10, nv=3, noise=.08)
+    s.box((0, 5.32, 1.25), (1.7, .4, .55), ORANGE)
+    s.cyl((0, 5.45, .55), (0, 5.45, .6), .32, dark, sides=12)
+    s.cyl((0, 5.45, .6), (0, 5.4, 1.0), .05, dark, sides=5)
+    for sx in (-1, 1):
+        s.box((sx * .95, 5.16, 1.5), (.2, .012, .3), RED)
+    road_wheels(s, -3.0, width - .32, .52, .32, hub=cab_c)
+    for y in (2.9, 4.2):
+        road_wheels(s, y, width - .56, .52, .56, hub=cab_c)
+    # angled front plow on a push frame
+    for sx in (-1, 1):
+        s.cyl((sx * .5, -4.1, .95), (sx * .7, -5.0, .55), .05, dark, sides=5)
+    s.cyl((0, -4.1, 1.5), (0, -5.0, 1.0), .04, GALV, sides=5)
+    profile = [(0, .05), (.14, .3), (.2, .58), (.16, .85), (.04, 1.05), (-.1, 1.15)]
+    with s.at(0, -5.25, 0, yaw=.4):
+        half = 1.8
+        for (y0, z0), (y1, z1) in zip(profile, profile[1:]):
+            s.quad((-half, y0, z0), (half, y0, z0), (half, y1, z1), (-half, y1, z1), s.c(ORANGE, .05))
+        s.box((0, .0, .08), (half * 2, .03, .16), '#3a3d40')
+        for x in (-1.2, 0, 1.2):
+            s.box((x, .28, .6), (.08, .18, .9), dark)
+        s.box((0, .34, .55), (2.9, .08, .1), dark)
+        for sx in (-1, 1):
+            s.cyl((sx * (half - .03), 0, 1.1), (sx * (half - .03), -.04, 1.95), .012, ORANGE, sides=4)
+            s.box((sx * (half - .03), -.04, 1.9), (.04, .012, .12), '#f4f1e4')
+
+
+# ---------------------------------------------------------------------------
+# Construction site kit, to go with the fence panel, barrel and portable toilet.
+# ---------------------------------------------------------------------------
+def roll_off_bin(s):
+    blue, dark, length, width = '#2f6f8f', '#245a75', 6.6, 2.4
+    x0, x1 = -length / 2, length / 2
+    s.loft([[(x0 + .35, -width / 2, .22), (x1, -width / 2, .22), (x1, width / 2, .22), (x0 + .35, width / 2, .22)],
+            [(x0, -width / 2, .75), (x1, -width / 2, .75), (x1, width / 2, .75), (x0, width / 2, .75)],
+            [(x0, -width / 2, 1.85), (x1, -width / 2, 1.85), (x1, width / 2, 1.85), (x0, width / 2, 1.85)]], blue, cap_end=False)
+    for sy in (-1, 1):
+        for k in range(10):
+            s.box((x0 + .5 + k * .62, sy * (width / 2 + .03), 1.3), (.07, .06, 1.1), dark)
+        s.box((0, sy * (width / 2 + .03), 1.88), (length, .1, .1), dark)
+        s.box((.15, sy * .75, .11), (length - .7, .14, .22), '#2b2e31')
+        for x in (x0 + .9, x1 - .5):
+            s.cyl((x, sy * .75 - .1, .13), (x, sy * .75 + .1, .13), .13, '#2b2e31', sides=10)
+    for x in (x0 - .03, x1 + .03):
+        s.box((x, 0, 1.88), (.1, width + .16, .1), dark)
+    # hook plate on the sloped front and latch bars on the rear doors
+    s.box((x0 + .1, 0, .62), (.1, .5, .5), dark)
+    s.cyl((x0 - .02, -.22, .78), (x0 - .02, .22, .78), .035, GALV, sides=6)
+    s.box((x1 + .03, 0, 1.3), (.04, .05, 1.1), dark)
+    for sy in (-1, 1):
+        s.cyl((x1 + .06, sy * .55, .35), (x1 + .06, sy * .55, 1.8), .025, GALV, sides=5)
+        s.box((x1 + .06, sy * .55, 1.0), (.03, .3, .05), GALV)
+    # a load of broken drywall, timber and soil showing over the rim
+    s.box((0, 0, 1.6), (length - .1, width - .1, .04), '#4a4338')
+    s.dome((-.6, .1, 1.6), (2.4, 1.0, .42), lambda j, i: s.pick(['#8a7d6c', '#a39683', '#6f6557', '#c9c2b4'], .04), nu=10, nv=3, noise=.14)
+    for x, y, yaw, pitch, length_m in ((1.6, -.4, .3, .5, 1.9), (2.2, .5, -.6, .7, 1.5), (-2.3, -.5, 1.1, .35, 2.1), (.8, .6, 2.0, .45, 1.4)):
+        with s.at(x, y, 1.62, yaw=yaw, pitch=pitch):
+            s.box((length_m / 2 - .3, 0, 0), (length_m, .09, .04), s.pick(WEATHERED, .06))
+
+
+def site_office_trailer(s):
+    length, width, wall, base = 7.3, 3.0, 2.55, .62
+    beige, trim, dark = '#d8d2c2', '#8f979b', '#2b2e31'
+    for x in (-2.9, -1.0, 1.0, 2.9):
+        for sy in (-1, 1):
+            s.box((x, sy * 1.1, base / 2 - .04), (.4, .4, base - .08), CONCRETE)
+    s.box((0, 0, base - .06), (length, width - .2, .12), dark)
+    s.banded_box((0, 0, base), (length, width, wall), 8, beige, jitter=.03, top='#c9cdd0')
+    s.box((0, 0, base + wall + .03), (length + .1, width + .1, .06), trim)
+    for along in (-2.3, 2.3):
+        framed_opening(s, 'S', length, width, along, base + 1.05, 1.1, .85, GLASS_DARK, trim=trim, gloss=True, mullion=True)
+    framed_opening(s, 'N', length, width, -1.5, base + 1.05, 1.1, .85, GLASS_DARK, trim=trim, gloss=True, mullion=True)
+    framed_opening(s, 'S', length, width, .2, base + .02, .9, 2.03, '#aeb5b9', trim=trim)
+    wall_panel(s, 'S', length, width, .2, base + 1.3, .5, .5, GLASS_DARK, proud=.03, gloss=True)
+    wall_panel(s, 'S', length, width, .52, base + .95, .05, .16, dark, proud=.05)
+    wall_panel(s, 'S', length, width, 1.35, base + 1.5, .8, .5, WHITE, proud=.03)
+    # landing, steps and rail
+    y = -width / 2
+    s.box((.2, y - .6, base - .05), (1.5, 1.2, .1), s.c(TIMBER, .05))
+    for k in range(3):
+        s.box((-.69 - k * .28, y - .6, base - (k + 1) * .155 - .025), (.28, 1.1, .05), s.c(TIMBER, .05))
+    for x in (-.55, .95):
+        for dy in (-.08, -1.15):
+            s.box((x, y + dy, base / 2 + .5), (.08, .08, base + 1.0), s.c(TIMBER, .05))
+    s.box((.2, y - 1.15, base + .95), (1.58, .06, .08), s.c(TIMBER, .05))
+    s.box((.95, y - .62, base + .95), (.06, 1.1, .08), s.c(TIMBER, .05))
+    # air conditioner on the end wall and a tow hitch at the other
+    s.box((length / 2 + .2, .3, base + 1.7), (.4, .7, .45), '#c9cdd0')
+    for k in range(4):
+        s.box((length / 2 + .405, .3, base + 1.56 + k * .09), (.01, .6, .03), dark)
+    for sy in (-1, 1):
+        s.cyl((-length / 2, sy * .8, base - .06), (-length / 2 - 1.1, 0, base - .1), .05, dark, sides=5)
+    s.cyl((-length / 2 - 1.0, 0, 0), (-length / 2 - 1.0, 0, base), .04, GALV, sides=6)
+    s.box((-length / 2 - 1.0, 0, .012), (.2, .2, .024), GALV)
+    s.cyl((2.6, .6, base + wall + .06), (2.6, .6, base + wall + .5), .06, GALV, sides=6)
+
+
+def excavator(s):
+    yellow, dark, glass = '#f0b323', '#2b2e31', GLASS_DARK
+    stadium = [(-2.05, .28), (-1.75, 0), (1.75, 0), (2.05, .28), (2.05, .58), (1.75, .86), (-1.75, .86), (-2.05, .58)]
+    for sx in (-1, 1):
+        with s.at(sx * 1.15, 0, 0):
+            wedge_body(s, .6, stadium, dark)
+            for y in (-1.75, 1.75):
+                s.cyl((0, y, .44), (sx * .32, y, .44), .26, '#8f979b', sides=10)
+            s.box((sx * .31, 0, .44), (.02, 3.0, .3), '#3a3d40')
+    s.box((0, 0, .6), (1.75, 2.4, .46), dark)
+    s.cyl((0, 0, .83), (0, 0, 1.05), .85, '#3a3d40', sides=14)
+    with s.at(0, 0, 1.05, yaw=.38):
+        wedge_body(s, 2.7, [(-1.0, 0), (2.15, 0), (2.15, .95), (1.75, 1.28), (-1.0, 1.28)], yellow)
+        s.box((0, 2.0, .55), (2.74, .36, .9), '#d39a1c')
+        for k in range(4):
+            s.box((1.356, .6 + k * .32, .78), (.012, .2, .5), dark)
+        # cab on the left
+        s.box((-.78, -.55, .28), (1.0, 1.5, .56), yellow)
+        s.box((-.78, -.55, 1.1), (.98, 1.48, 1.08), glass, gloss=True)
+        for dx in (-.49, .49):
+            for dy in (-.74, .74):
+                s.box((-.78 + dx, -.55 + dy, 1.1), (.07, .07, 1.1), dark)
+        s.box((-.78, -.55, 1.68), (1.06, 1.56, .08), dark)
+        # two-piece boom, stick and bucket reaching forward
+        x = .3
+        foot, knee, tip, toe = (x, -.9, .75), (x, -2.6, 2.6), (x, -4.6, 3.1), (x, -6.2, -.1)
+        beam_yz(s, foot, knee, .42, .5, yellow)
+        beam_yz(s, knee, tip, .42, .46, yellow)
+        beam_yz(s, tip, toe, .36, .4, yellow)
+        s.cyl((x - .28, knee[1], knee[2]), (x + .28, knee[1], knee[2]), .2, yellow, sides=8)
+        for a, b in (((x, -1.45, .7), (x, -2.3, 2.0)), ((x, -2.9, 3.0), (x, -4.4, 3.75)), ((x, -4.8, 3.2), (x, -5.75, 1.3))):
+            s.cyl(a, b, .075, '#5e666a', sides=6)
+            s.cyl(mix(a, b, .45), b, .045, '#d9dde0', sides=6)
+        beam_yz(s, (x, -4.4, 3.75), (x, -4.62, 3.15), .2, .2, yellow)
+        # bucket resting on the ground, one turntable height below this frame
+        with s.at(x, 0, 0):
+            wedge_body(s, 1.05, [(-5.9, .13), (-6.55, -.12), (-6.8, -.67), (-6.4, -1.0), (-6.05, -.67), (-6.1, -.27)], '#3a3d40')
+        for k in range(4):
+            s.box((x - .36 + k * .24, -6.47, -.99), (.08, .16, .1), '#8f979b')
+
+def skid_steer(s):
+    orange, dark = '#e2742b', '#1b1d1f'
+    for sx in (-1, 1):
+        for y in (-.62, .62):
+            wheel(s, (sx * .72, y, .42), .42, .3, sides=12, hub=orange)
+        s.box((sx * .72, 0, .82), (.34, 2.0, .06), dark)
+    wedge_body(s, 1.08, [(-1.0, .3), (1.25, .3), (1.25, 1.25), (.9, 1.35), (-1.0, 1.0)], orange)
+    s.box((0, 1.1, .85), (1.0, .34, .8), '#c9621f')
+    # cab cage
+    for sx in (-1, 1):
+        for y in (-.85, .55):
+            s.box((sx * .5, y, 1.5), (.07, .07, 1.0), dark)
+        s.box((sx * .5, -.15, 1.52), (.012, 1.3, .86), GLASS_DARK, gloss=True)
+    s.box((0, -.15, 2.02), (1.12, 1.55, .08), dark)
+    s.box((0, .56, 1.5), (.94, .012, .9), GLASS_DARK, gloss=True)
+    # lift arms from the rear towers to a bucket on the ground
+    for sx in (-1, 1):
+        s.box((sx * .66, 1.0, 1.25), (.14, .3, 1.2), orange)
+        beam_yz(s, (sx * .66, 1.0, 1.78), (sx * .66, -.95, 1.2), .12, .16, orange)
+        beam_yz(s, (sx * .66, -.95, 1.2), (sx * .66, -1.55, .3), .12, .16, orange)
+        s.cyl((sx * .66, .9, 1.0), (sx * .66, -.5, 1.35), .04, '#d9dde0', sides=5)
+    wedge_body(s, 1.78, [(-1.5, .04), (-2.2, .04), (-2.28, .12), (-1.75, .62), (-1.5, .62)], '#3a3d40')
+    s.box((0, 1.3, .55), (.5, .06, .3), '#f4f1e4')
+
+
+def lumber_stacks(s):
+    wood = ['#d9b98a', '#cfae7c', '#e2c597', '#c9a672']
+
+    def bundle(x, y, yaw, width, length, layers, per):
+        with s.at(x, y, 0, yaw=yaw):
+            for dy in (-length * .32, 0, length * .32):
+                s.box((0, dy, .045), (width + .1, .09, .09), s.pick(WEATHERED, .05))
+            board, thick = width / per, .084
+            for layer in range(layers):
+                z = .09 + layer * (thick + .002) + thick / 2
+                for k in range(per):
+                    if layer % 4 == 3 and k % 2:
+                        continue
+                    s.box((-width / 2 + board * (k + .5), (s.random() - .5) * .04, z), (board - .006, length, thick), s.pick(wood, .04))
+            top = .09 + layers * (thick + .002)
+            for dy in (-length * .3, length * .3):
+                s.box((0, dy, top / 2 + .05), (width + .02, .03, top - .08), '#2b2e31')
+                s.box((0, dy, top + .004), (width + .02, .03, .008), '#2b2e31')
+
+    bundle(-.9, 0, 0, 1.15, 4.8, 14, 8)
+    bundle(.55, -.6, .05, 1.15, 3.6, 9, 8)
+    # sheet goods on a pallet
+    with s.at(.6, 1.9, 0, yaw=-.08):
+        for dx in (-.5, 0, .5):
+            s.box((dx, 0, .06), (.1, 2.3, .12), s.pick(WEATHERED, .05))
+        for k in range(9):
+            s.box(((s.random() - .5) * .02, (s.random() - .5) * .02, .13 + k * .05 + .025), (1.22, 2.44, .048), s.pick(['#c9a877', '#bf9c68', '#d3b382'], .03))
+        s.box((0, 0, .59), (1.26, 2.48, .012), '#3f6f8f')
+
+
+def concrete_barrier(s):
+    profile = [(-.305, 0), (.305, 0), (.305, .08), (.2, .33), (.125, .81), (-.125, .81), (-.2, .33), (-.305, .08)]
+    wedge_body(s, 3.0, profile, '#b9b6ae')
+    for x in (-.9, .9):
+        s.box((x, 0, .05), (.3, .63, .1), '#55524c')
+    for sx in (-1, 1):
+        s.box((sx * 1.502, 0, .45), (.008, .1, .5), '#8f8c84')
+
+
+# ---------------------------------------------------------------------------
+# River and city edge.
+# ---------------------------------------------------------------------------
+def open_hull(s, rings, tones, split):
+    """Loft closed thin-shell sections so a boat stays open on top. Each ring lists the
+    outer skin, then the inner skin back again; `split` is the outer point count."""
+    outer, inner, trim = tones
+
+    def tone(r, i):
+        if i == split - 1 or i == 2 * split - 1:
+            return trim
+        return outer if i < split else inner
+
+    s.loft(rings, tone, cap_start=False, cap_end=False)
+
+
+def paddle(s, a, b, blade='#e0b63a', shaft='#2b2e31'):
+    s.cyl(a, b, .016, shaft, sides=5)
+    tip = add(b, mul(norm(sub(b, a)), .42))
+    s.ribbon(b, tip, .17, blade, normal=(0.0, 0.0, 1.0))
+    s.cyl(sub(a, (0, 0, .0)), add(a, mul(norm(sub(a, b)), .001)), .03, shaft, sides=5)
+
+
+def canoe(s):
+    red, tan, wood, half = '#b23a34', '#d8c39a', '#8a6a4a', 2.45
+
+    def draw():
+        rings = []
+        for k in range(11):
+            t = -1 + 2 * k / 10
+            beam = .44 * (1 - abs(t) ** 2.4) ** .55 + .012
+            keel, sheer, skin = .16 * abs(t) ** 3.5, .34 + .2 * abs(t) ** 3, .022
+            outer = [(beam * math.cos(math.pi + math.pi * j / 6), t * half, sheer + (sheer - keel) * math.sin(math.pi + math.pi * j / 6)) for j in range(7)]
+            inner = [((beam - skin) * math.cos(math.pi + math.pi * j / 6) if beam > skin * 1.5 else outer[j][0] * .5, t * half,
+                      sheer + (sheer - keel - skin) * math.sin(math.pi + math.pi * j / 6)) for j in range(7)]
+            rings.append(outer + list(reversed(inner)))
+        with s.at(pitch=.2):
+            open_hull(s, rings, (red, tan, wood), 7)
+            s.box((0, 0, .33), (.84, .07, .03), wood)
+            for y, w in ((-1.45, .56), (1.6, .42)):
+                s.box((0, y, .25), (w, .26, .03), '#d9c79a')
+                s.box((0, y - .14, .26), (w + .08, .03, .03), wood)
+                s.box((0, y + .14, .26), (w + .08, .03, .03), wood)
+            paddle(s, (-.12, -.9, .16), (.1, .35, .14))
+
+    rest_on_ground(s, draw)
+
+
+def inflatable_raft(s):
+    blue, grey = '#2a66a8', '#7b8387'
+    ring = [(x, y, .2475 + .24 * max(0.0, (abs(y) - 1.15) / .75) ** 2) for x, y in rounded_rect(1.42, 3.75, .62, 4)]
+    s.tube(ring + [ring[0]], .25, blue, sides=8)
+    for x, y, z in ring[::2]:
+        s.dome((x, y, z), (.25, .25, .25), blue, nu=8, nv=4, full=True)
+    s.prism(rounded_rect(1.3, 3.5, .55, 4), .05, .09, grey)
+    for y in (-.78, .78):
+        s.cyl((-.62, y, .3), (.62, y, .3), .19, grey, sides=8)
+    for sy in (-1, 1):
+        for sx in (-1, 1):
+            s.box((sx * .96, sy * .9, .34), (.03, .16, .05), ORANGE)
+    s.box((0, 0, .3), (.46, .68, .4), '#f4f1e4')
+    s.box((0, 0, .52), (.48, .7, .05), RED)
+    paddle(s, (-.5, -1.55, .5), (.45, -.4, .5))
+    paddle(s, (.5, 1.5, .5), (-.4, .35, .5), blade='#e0b63a')
+    paddle(s, (.3, -1.2, .52), (.55, .2, .5), blade=ORANGE)
+
+
+def drift_boat(s):
+    teal, tan, wood = '#2f6f8f', '#c9a877', '#8a6a4a'
+    rings, skin = [], .03
+    for k in range(11):
+        t = -1 + 2 * k / 10
+        shape = (1 - abs(t) ** 2.2) ** .6
+        top = .95 * shape + .02 if t < 0 else .34 + .61 * shape
+        y = t * (2.45 if t < 0 else 2.25)
+        keel = (.36 if t < 0 else .3) * abs(t) ** 2.2
+        sheer = keel + .56 + .16 * t * t
+        bottom = top * .62
+        rings.append([(-top, y, sheer), (-bottom, y, keel), (bottom, y, keel), (top, y, sheer),
+                      (max(top - skin, .004), y, sheer), (max(bottom - skin, .004), y, keel + skin), (-max(bottom - skin, .004), y, keel + skin), (-max(top - skin, .004), y, sheer)])
+    open_hull(s, rings, (teal, tan, wood), 4)
+    stern = rings[-1]
+    s.quad(stern[0], stern[1], stern[2], stern[3], teal)
+    for y, w, z in ((.1, 1.2, .4), (-1.15, .9, .52), (1.45, .74, .56)):
+        s.box((0, y, z), (w, .28, .04), wood)
+        s.box((0, y, z / 2 + .02), (.3, .2, z - .06), tan)
+    for sx in (-1, 1):
+        lock = (sx * .95, .2, .64)
+        s.cyl(lock, (lock[0], lock[1], lock[2] + .1), .02, GALV, sides=5)
+        handle, blade = (sx * .22, .32, .78), (sx * 2.15, .95, .36)
+        s.cyl(handle, blade, .022, s.c(wood, .05), sides=5)
+        s.ribbon(mix(handle, blade, .8), blade, .15, '#e9e6da', normal=(0.0, 1.0, 0.0))
+
+
+def pumpjack(s):
+    green, dark = '#3f6b55', '#2b2e31'
+    for sx in (-1, 1):
+        s.box((sx * .55, .6, .14), (.22, 8.4, .28), dark)
+    for y in (-3.2, -1.2, .8, 2.8, 4.5):
+        s.box((0, y, .2), (1.6, .18, .16), dark)
+    # Samson post and saddle bearing
+    for sx in (-1, 1):
+        for y in (-1.9, .7):
+            s.cyl((sx * .65, y, .28), (sx * .12, -.6, 4.3), .09, green, sides=6)
+        s.cyl((sx * .5, -1.4, 1.2), (sx * .5, .3, 1.2), .04, green, sides=4)
+    s.box((0, -.6, 4.38), (.6, .5, .28), dark)
+    # walking beam, horsehead and bridle down to the wellhead
+    front, rear = (0, -3.55, 4.02), (0, 2.45, 5.09)
+    beam_yz(s, front, rear, .3, .5, green)
+    wedge_body(s, .34, [(-3.45, 4.45), (-4.1, 4.72), (-4.48, 4.2), (-4.55, 3.4), (-4.3, 2.75), (-3.75, 3.0), (-3.45, 3.6)], green)
+    s.box((0, -4.56, 3.7), (.36, .02, 1.5), YELLOW)
+    for sx in (-1, 1):
+        s.cyl((sx * .09, -4.56, 3.1), (sx * .09, -4.56, 1.75), .012, GALV, sides=3)
+    s.box((0, -4.56, 1.72), (.3, .08, .08), dark)
+    s.cyl((0, -4.56, 1.7), (0, -4.56, 1.0), .018, '#d9dde0', sides=5)
+    s.cyl((0, -4.56, 0), (0, -4.56, .5), .14, dark, sides=10)
+    s.cyl((0, -4.56, .5), (0, -4.56, 1.0), .08, '#c2332b', sides=8)
+    s.cyl((0, -4.56, .62), (.9, -4.56, .62), .06, dark, sides=6)
+    s.box((.5, -4.56, .62), (.16, .16, .22), '#c2332b')
+    # gearbox, cranks with counterweights, pitman arms and motor
+    centre_y, centre_z = 2.3, 1.55
+    s.box((0, centre_y, 1.2), (1.0, 1.25, 1.1), green)
+    s.cyl((-.82, centre_y, centre_z), (.82, centre_y, centre_z), .09, dark, sides=8)
+    s.cyl((-.78, 2.42, 5.08), (.78, 2.42, 5.08), .07, dark, sides=6)
+    for sx in (-1, 1):
+        x = sx * .78
+        beam_yz(s, (x, centre_y - .12, centre_z + .16), (x, centre_y + .78, centre_z - 1.04), .14, .42, dark)
+        s.box((x, centre_y + .72, centre_z - .96), (.22, .86, .6), '#5e666a', yaw=0)
+        pin = (x, centre_y + .42, centre_z - .56)
+        s.cyl(pin, (x, 2.42, 5.08), .05, green, sides=5)
+    s.box((0, 4.2, .58), (.5, .75, .5), dark)
+    s.box((.72, 3.3, 1.0), (.12, 2.0, .9), YELLOW)
+
+
+def grain_bin(s, x, y, radius, wall, sides=20):
+    steel, seam = '#b9c0c4', '#98a1a6'
+    with s.at(x, y, 0):
+        s.cyl((0, 0, 0), (0, 0, .15), radius + .3, CONCRETE, sides=sides)
+        bands = round(wall / .7)
+        for k in range(bands):
+            z0, z1 = .15 + wall * k / bands, .15 + wall * (k + 1) / bands
+            s.cyl((0, 0, z0), (0, 0, z1), radius, s.c(steel, .03), sides=sides, cap0=False, cap1=False)
+            s.cyl((0, 0, z1 - .04), (0, 0, z1), radius + .02, seam, sides=sides, cap0=False, cap1=False)
+        eave = .15 + wall
+        s.cyl((0, 0, eave), (0, 0, eave + radius * .5), radius + .1, '#c9cfd3', r1=.4, sides=sides, cap0=False, cap1=False)
+        s.cyl((0, 0, eave + radius * .5), (0, 0, eave + radius * .5 + .3), .4, seam, r1=.28, sides=10)
+        s.box((0, -radius - .012, 1.15), (.72, .04, 1.4), seam)
+        s.box((.22, -radius - .04, 1.15), (.06, .03, .16), '#3a3d40')
+        # caged ladder up the wall and across the roof
+        for dx in (-.2, .2):
+            s.cyl((radius * .82 + dx * .55, -radius * .6 + dx * .75, .3), (radius * .82 + dx * .55, -radius * .6 + dx * .75, eave + .2), .02, seam, sides=4)
+        for k in range(int((eave - .3) / .35)):
+            z = .5 + k * .35
+            s.cyl((radius * .82 - .11, -radius * .6 - .15, z), (radius * .82 + .11, -radius * .6 + .15, z), .012, seam, sides=3)
+        s.ribbon((radius * .8, -radius * .58, eave + .06), (.3, -.22, eave + radius * .5 + .05), .34, seam)
+        for a in (1.2, 3.4):
+            s.box((math.cos(a) * radius * .55, math.sin(a) * radius * .55, eave + radius * .26), (.3, .3, .2), seam)
+
+
+def grain_bins(s):
+    grain_bin(s, -3.2, .3, 2.75, 5.6)
+    grain_bin(s, 2.9, -.2, 2.2, 4.2, sides=18)
+
+
+def wind_turbine(s):
+    white, grey, hub = '#d3dadf', '#aab3b9', 60.0  # a shade off white so it reads on the pale picker card
+    s.cyl((0, 0, 0), (0, 0, .5), 5.0, CONCRETE, sides=16)
+    for z0, z1, r0, r1 in ((.5, 20, 2.0, 1.72), (20, 40, 1.72, 1.44), (40, hub - 1.5, 1.44, 1.18)):
+        s.cyl((0, 0, z0), (0, 0, z1), r0, s.c(white, .015), r1=r1, sides=14, cap0=False, cap1=False)
+        s.cyl((0, 0, z1 - .12), (0, 0, z1), r1 + .05, grey, sides=14, cap0=False, cap1=False)
+    s.box((0, -1.99, 1.6), (.9, .08, 2.1), grey)
+    s.box((0, -2.5, .56), (1.4, 1.0, .12), '#8f979b')
+    shell(s, [(-2.9, .68, .8), (-2.1, 1, 1), (4.6, 1, 1), (6.1, .8, .86)], 3.4, 3.4, hub - 1.7, white, radius=.9)
+    s.box((0, 4.2, hub + 1.85), (.6, 1.2, .3), grey)
+    with s.at(0, -2.9, hub, roll=math.pi / 2):
+        s.dome((0, 0, 0), (1.55, 1.55, 2.3), white, nu=12, nv=4)
+    for angle in (20, 140, 260):
+        with s.at(0, -3.9, hub, pitch=math.radians(angle)):
+            rings = []
+            for z, chord, thick in ((.9, 1.5, 1.3), (5.0, 2.9, .75), (14.0, 1.75, .4), (22.0, 1.0, .2), (26.0, .32, .08)):
+                rings.append([(-.3 * chord, 0, z), (0, thick / 2, z), (.7 * chord, 0, z), (0, -thick / 2, z)])
+            s.loft(rings, white)
+
+
+# ---------------------------------------------------------------------------
+# Street and yard basics.
+# ---------------------------------------------------------------------------
+def street_light(s):
+    steel, dark = '#9aa3a8', '#7b8387'
+    s.cyl((0, 0, 0), (0, 0, .12), .28, CONCRETE, sides=12)
+    s.cyl((0, 0, .12), (0, 0, .18), .2, dark, sides=8)
+    s.cyl((0, 0, .18), (0, 0, 8.4), .11, steel, r1=.065, sides=8)
+    s.box((0, -.107, .9), (.1, .012, .22), dark)
+    s.tube([(0, 0, 8.4), (0, -.12, 8.75), (0, -.5, 9.0), (0, -1.2, 9.1), (0, -2.0, 9.08)], .05, steel, sides=6)
+    s.box((0, -2.32, 9.06), (.32, .78, .09), dark)
+    s.box((0, -2.32, 9.008), (.26, .62, .012), '#f4f1e4', gloss=True)
+
+
+def basket_lamp_post(s):
+    black = '#1d1f22'
+    s.cyl((0, 0, 0), (0, 0, .1), .26, black, sides=10)
+    s.cyl((0, 0, .1), (0, 0, .75), .16, black, r1=.1, sides=10)
+    s.cyl((0, 0, .75), (0, 0, .82), .13, black, sides=10)
+    s.cyl((0, 0, .82), (0, 0, 3.6), .07, black, r1=.055, sides=8)
+    s.cyl((0, 0, 3.6), (0, 0, 3.72), .11, black, sides=8)
+    s.dome((0, 0, 3.98), (.2, .2, .3), '#f4ecd2', nu=10, nv=5, full=True)
+    s.cyl((0, 0, 4.24), (0, 0, 4.42), .13, black, r1=.02, sides=8)
+    blooms = ['#d4493f', '#e86aa0', '#8a4fc2', '#f2c230', '#f4f1e4']
+    for sx in (-1, 1):
+        s.tube([(0, 0, 2.75), (sx * .3, 0, 2.95), (sx * .62, 0, 2.98), (sx * .72, 0, 2.9)], .018, black, sides=5)
+        s.tube([(0, 0, 2.55), (sx * .35, 0, 2.6), (sx * .6, 0, 2.8)], .012, black, sides=4)
+        cx, rim = sx * .72, 2.5
+        for k in range(3):
+            a = k * math.tau / 3 + .3
+            s.cyl((cx, 0, 2.9), (cx + math.cos(a) * .2, math.sin(a) * .2, rim), .004, black, sides=3, cap0=False, cap1=False)
+        with s.at(cx, 0, rim, pitch=math.pi):
+            s.dome((0, 0, 0), (.21, .21, .18), '#5a4636', nu=10, nv=3)
+        s.dome((cx, 0, rim), (.27, .27, .2), lambda j, i: s.pick(['#4f7a3f', '#5d8a4a', '#456c38'], .05), nu=10, nv=3, noise=.12)
+        for k in range(18):
+            a, r = k * 2.399963, .08 + .22 * ((k * 7) % 10) / 10
+            trailing = .26 if k % 3 == 0 else 0.0
+            s.dome((cx + math.cos(a) * r, math.sin(a) * r, rim + .17 - r * .45 - trailing), (.055, .055, .045), s.pick(blooms, .06), nu=6, nv=3, full=True)
+
+
+def flagpole(s):
+    alu, cloth = '#c9cdd0', '#1f7a8c'
+    s.box((0, 0, .04), (.9, .9, .08), CONCRETE)
+    s.cyl((0, 0, .08), (0, 0, .3), .12, alu, sides=10)
+    s.cyl((0, 0, .3), (0, 0, 9.0), .075, alu, r1=.04, sides=10)
+    s.dome((0, 0, 9.06), (.07, .07, .07), '#d6b24a', nu=8, nv=4, full=True)
+    s.cyl((.085, 0, 1.2), (.05, 0, 8.9), .004, WHITE, sides=3)
+    s.box((.09, 0, 1.2), (.03, .02, .1), alu)
+    steps, top = 8, 8.86
+    for k in range(steps):
+        x0, x1 = .05 + 1.8 * k / steps, .05 + 1.8 * (k + 1) / steps
+        y0, y1 = .13 * math.sin(k * 1.05) * k / steps, .13 * math.sin((k + 1) * 1.05) * (k + 1) / steps
+        d0, d1 = .28 * (k / steps) ** 2, .28 * ((k + 1) / steps) ** 2
+        s.quad((x0, y0, top - d0 - .9), (x1, y1, top - d1 - .9), (x1, y1, top - d1), (x0, y0, top - d0), s.c(cloth, .05))
+
+
+def lane_garage(s):
+    length, width, wall, ridge, base = 6.7, 6.7, 2.6, 4.25, .1
+    s.box((0, 0, base / 2), (length + .2, width + .2, base), CONCRETE)
+    s.box((0, -width / 2 - .9, .04), (5.5, 1.7, .08), '#b9b6ae')
+    gable_house(s, length, width, wall, ridge, '#b8b2a4', 12, '#4a4d50', overhang=.4, courses=8, trim=WHITE, base=base)
+    framed_opening(s, 'S', length, width, 0, base + .02, 4.9, 2.15, '#eceae0', trim=WHITE, bar=.1)
+    for k in range(1, 4):
+        wall_panel(s, 'S', length, width, 0, base + .02 + k * .54, 4.9, .02, '#b9b6ae', proud=.022)
+    for k in range(4):
+        wall_panel(s, 'S', length, width, -1.8 + k * 1.2, base + 1.74, .8, .3, GLASS_DARK, proud=.024, gloss=True)
+    wall_panel(s, 'S', length, width, 0, base + 2.32, .22, .12, '#2b2e31', proud=.08)
+    framed_opening(s, 'E', length, width, -1.9, base + .02, .9, 2.03, '#6f7a80', trim=WHITE)
+    wall_panel(s, 'E', length, width, -1.58, base + 1.0, .05, .14, '#2b2e31', proud=.05)
+    framed_opening(s, 'W', length, width, .3, base + 1.25, 1.2, .9, GLASS_DARK, trim=WHITE, gloss=True, mullion=True)
+    s.box((0, -width / 2 - .42, base + wall - .14), (length + .7, .1, .1), WHITE)
+    s.cyl((length / 2 + .08, -width / 2 - .08, base + wall - .2), (length / 2 + .08, -width / 2 - .08, .2), .04, WHITE, sides=5)
+
+
+def carport(s):
+    length, depth, steel = 6.0, 5.2, '#3a3d40'
+    s.box((0, 0, .02), (length + .3, depth + .6, .04), '#b9b6ae')
+    for x in (-length / 2 + .1, 0, length / 2 - .1):
+        for y, h in ((-depth / 2, 2.72), (depth / 2, 2.42)):
+            s.box((x, y, .05), (.3, .3, .1), CONCRETE)
+            s.box((x, y, h / 2), (.13, .13, h), steel)
+    for y, z in ((-depth / 2, 2.66), (depth / 2, 2.36)):
+        s.box((0, y, z), (length, .1, .2), steel)
+    for k in range(7):
+        x = -length / 2 + .1 + k * (length - .2) / 6
+        s.cyl((x, -depth / 2 - .35, 2.84), (x, depth / 2 + .35, 2.5), .045, steel, sides=4)
+    roof_slab(s, (-length / 2 - .2, -depth / 2 - .5, 2.9), (length / 2 + .2, -depth / 2 - .5, 2.9), (length / 2 + .2, depth / 2 + .5, 2.55),
+              (-length / 2 - .2, depth / 2 + .5, 2.55), .05, '#8f979b', 7, underside='#d3d7da', jitter=.03)
+    for k in range(9):
+        s.box((0, depth / 2, .28 + k * .17), (length - .2, .03, .12), s.pick(CEDAR, .05))
+
+
+def solar_array(s):
+    cols, rows, panel_w, panel_h, gap, low, tilt = 8, 2, 1.05, 1.75, .025, .8, math.radians(30)
+    width, slope = cols * (panel_w + gap), rows * (panel_h + gap)
+    y0 = -slope * math.cos(tilt) / 2
+    alu, cell = '#c9cdd0', '#1c2f4a'
+    with s.at(0, y0, low, roll=tilt):
+        s.box((0, slope / 2, 0), (width + .04, slope + .04, .03), alu)
+        for c in range(cols):
+            for r in range(rows):
+                x, y = -width / 2 + (c + .5) * (panel_w + gap), (r + .5) * (panel_h + gap)
+                s.box((x, y, .035), (panel_w, panel_h, .04), cell, gloss=True)
+                s.box((x, y, .058), (panel_w, .012, .008), '#4a5f7d')
+        for d in (slope * .2, slope * .8):
+            s.box((0, d, -.06), (width, .08, .1), '#8f979b')
+    for k in range(4):
+        x = -width / 2 + width * (k + .5) / 4
+        front = (x, y0 + slope * .2 * math.cos(tilt), low + slope * .2 * math.sin(tilt) - .1)
+        back = (x, y0 + slope * .8 * math.cos(tilt), low + slope * .8 * math.sin(tilt) - .1)
+        for foot in (front, back):
+            s.box((foot[0], foot[1], foot[2] / 2), (.1, .1, foot[2]), '#8f979b')
+            s.box((foot[0], foot[1], .03), (.28, .28, .06), CONCRETE)
+        s.cyl((x, front[1], .2), back, .025, '#8f979b', sides=4)
+
+
+# ---------------------------------------------------------------------------
 # Wildlife: static low-poly animals, lofted along a spine in the XZ plane
 # ---------------------------------------------------------------------------
 def spine_loft(s, stations, tone, n=8, cap_start=True, cap_end=True):
@@ -2048,6 +2724,243 @@ def canada_geese(s):
 
 
 # ---------------------------------------------------------------------------
+# Wildlife and ranch animals, round two. Same method as the first four: forms
+# lofted along a spine, modelled nose toward +x, then turned to face -y.
+# ---------------------------------------------------------------------------
+def crest_points(stations):
+    """Top-of-back point of each spine station, where a mane or ridge sits."""
+    out = []
+    for i, (x, z, _hw, hh) in enumerate(stations):
+        a, b = stations[max(0, i - 1)], stations[min(len(stations) - 1, i + 1)]
+        tx, tz = b[0] - a[0], b[1] - a[1]
+        size = math.hypot(tx, tz) or 1.0
+        out.append((x - tz / size * hh, 0.0, z + tx / size * hh))
+    return out
+
+
+def four_legs(s, front, hind, radii, colour, hoof, hoof_radius, lower=None):
+    """front and hind are (hip, knee, fetlock) triples of (x, half-width, z), mirrored left and right."""
+    for sy in (-1, 1):
+        for hip, knee, fetlock in (front, hind):
+            points = [(q[0], sy * q[1], q[2]) for q in (hip, knee, fetlock)]
+            limb(s, points[:2], radii[:2], colour)
+            limb(s, points[1:], radii[1:], lower or colour)
+            s.cyl(points[2], (fetlock[0], sy * fetlock[1], 0), hoof_radius * .85, hoof, r1=hoof_radius, sides=6)
+
+
+def horse(s, coat, points, grazing=False, blaze=False):
+    body = [(-1.02, 1.3, .04, .05), (-.95, 1.3, .2, .24), (-.7, 1.28, .3, .33), (-.25, 1.2, .31, .34), (.25, 1.2, .3, .35), (.6, 1.25, .27, .33),
+            (.8, 1.32, .2, .27), (.9, 1.38, .1, .15)]
+    spine_loft(s, body, coat)
+    if grazing:
+        neck = [(.74, 1.36, .17, .25), (1.02, 1.2, .12, .17), (1.25, .88, .1, .13), (1.38, .58, .09, .11)]
+        head = [(1.36, .56, .05, .06), (1.4, .48, .1, .11), (1.47, .32, .085, .1), (1.52, .16, .065, .075), (1.54, .07, .05, .05)]
+    else:
+        neck = [(.72, 1.4, .17, .26), (.93, 1.62, .13, .2), (1.07, 1.8, .105, .155), (1.15, 1.93, .09, .12)]
+        head = [(1.07, 2.0, .05, .06), (1.15, 2.02, .1, .12), (1.31, 1.95, .09, .11), (1.49, 1.84, .07, .085), (1.62, 1.75, .055, .065), (1.68, 1.71, .04, .045)]
+    spine_loft(s, neck, coat, cap_start=False)
+    spine_loft(s, head, (lambda r, i: '#f1ede4' if blaze and r >= 1 and i in (1, 2) else coat))
+    for x, _y, z in crest_points(neck):
+        s.dome((x - .02, 0, z - .02), (.11, .035, .09), points, nu=6, nv=3, full=True)
+    top = crest_points(head)[1]
+    for sy in (-1, 1):
+        s.dome((top[0] - .03, sy * .06, top[2] + .05), (.025, .03, .075), coat, nu=6, nv=3, full=True)
+        s.dome((-.72, sy * .2, 1.25), (.28, .13, .3), coat, nu=8, nv=4, full=True)
+        s.dome((.6, sy * .17, 1.2), (.2, .12, .28), coat, nu=8, nv=4, full=True)
+    s.dome((head[-1][0], 0, head[-1][1]), (.045, .05, .04), points, nu=6, nv=3, full=True)
+    limb(s, [(-1.0, 0, 1.36), (-1.13, 0, 1.12), (-1.15, 0, .55)], [.05, .075, .03], points)
+    four_legs(s, ((.62, .16, 1.05), (.66, .14, .58), (.64, .14, .12)), ((-.8, .17, 1.1), (-.95, .15, .6), (-.86, .15, .12)), [.11, .055, .04], coat, '#211a16', .052, lower=points)
+
+
+def horses(s):
+    with s.at(-.75, .1, 0, yaw=-math.pi / 2 - .25, scale=.97):
+        horse(s, '#7a4a2c', '#241c18', blaze=True)
+    with s.at(.85, -.5, 0, yaw=math.pi * .62, scale=.93):
+        horse(s, '#b79f7c', '#241c18', grazing=True)
+
+
+def cow(s, coat, face, grazing=False):
+    belly = face if face != coat else coat
+    body = [(-1.0, 1.12, .05, .08), (-.94, 1.12, .24, .3), (-.65, 1.08, .34, .38), (-.15, 1.02, .37, .42), (.35, 1.02, .35, .42), (.68, 1.08, .3, .38),
+            (.86, 1.12, .2, .3), (.94, 1.14, .1, .16)]
+    spine_loft(s, body, (lambda r, i: belly if i in (5, 6) and 2 <= r <= 5 else coat))
+    if grazing:
+        neck = [(.8, 1.1, .2, .3), (1.02, .9, .15, .2), (1.16, .62, .13, .16)]
+        head = [(1.14, .6, .06, .07), (1.18, .52, .14, .15), (1.24, .36, .12, .13), (1.3, .2, .1, .1), (1.32, .1, .085, .075)]
+    else:
+        neck = [(.8, 1.14, .2, .3), (1.0, 1.2, .15, .22), (1.12, 1.24, .13, .17)]
+        head = [(1.06, 1.3, .06, .07), (1.14, 1.3, .14, .15), (1.3, 1.22, .12, .13), (1.46, 1.12, .1, .1), (1.54, 1.07, .085, .075)]
+    spine_loft(s, neck, (lambda r, i: belly if i in (5, 6) else coat), cap_start=False)
+    spine_loft(s, head, face)
+    s.dome((head[-1][0], 0, head[-1][1]), (.07, .085, .06), '#d9a9a0', nu=6, nv=3, full=True)
+    top = crest_points(head)[1]
+    for sy in (-1, 1):
+        s.dome((top[0] - .04, sy * .17, top[2] - .05), (.04, .09, .035), coat, nu=6, nv=3, full=True)
+        s.dome((-.7, sy * .24, 1.05), (.3, .13, .32), coat, nu=8, nv=4, full=True)
+        s.dome((.62, sy * .22, 1.0), (.22, .12, .3), coat, nu=8, nv=4, full=True)
+    limb(s, [(-.98, 0, 1.3), (-1.07, 0, .9), (-1.06, 0, .5)], [.03, .025, .02], coat)
+    s.dome((-1.06, 0, .42), (.04, .04, .1), '#2a211c', nu=6, nv=3, full=True)
+    four_legs(s, ((.62, .2, .8), (.63, .18, .42), (.62, .18, .1)), ((-.78, .21, .82), (-.9, .19, .45), (-.84, .19, .1)), [.12, .07, .055], coat, '#211a16', .065,
+              lower=face if face != coat else None)
+
+
+def cattle(s):
+    with s.at(-.9, .2, 0, yaw=-math.pi / 2 + .3):
+        cow(s, '#7a3b22', '#f1ede4')
+    with s.at(.95, -.45, 0, yaw=math.pi * .55, scale=.96):
+        cow(s, '#1f1d1c', '#1f1d1c', grazing=True)
+
+
+def coyote(s):
+    coat, back, belly, legs, dark = '#9a8a72', '#6f6658', '#d9cdb8', '#a57a52', '#221d1a'
+    with s.at(yaw=-math.pi / 2):
+        body = [(-.42, .56, .02, .03), (-.38, .56, .08, .1), (-.25, .55, .11, .13), (0, .54, .115, .135), (.22, .56, .11, .14), (.34, .6, .085, .12), (.4, .64, .05, .08)]
+        spine_loft(s, body, lambda r, i: back if i in (1, 2) else (belly if i in (5, 6) else coat))
+        neck = [(.3, .62, .075, .1), (.4, .74, .06, .075), (.46, .84, .055, .06)]
+        spine_loft(s, neck, lambda r, i: belly if i in (5, 6) else coat, cap_start=False)
+        head = [(.42, .88, .03, .035), (.47, .89, .065, .06), (.55, .87, .055, .05), (.63, .845, .032, .03), (.69, .83, .02, .02)]
+        spine_loft(s, head, lambda r, i: belly if r >= 2 and i in (5, 6) else coat)
+        s.dome((.695, 0, .83), (.014, .016, .013), dark, nu=6, nv=3, full=True)
+        for sy in (-1, 1):
+            s.dome((.56, sy * .045, .9), (.011, .008, .011), dark, nu=6, nv=3, full=True)
+            with s.at(.44, sy * .045, .93, roll=-sy * .2):
+                s.dome((0, 0, .055), (.018, .032, .07), legs, nu=6, nv=4, full=True)
+                s.dome((.008, 0, .05), (.008, .02, .05), belly, nu=6, nv=3, full=True)
+            s.dome((-.28, sy * .08, .52), (.13, .05, .13), coat, nu=8, nv=4, full=True)
+            s.dome((.26, sy * .075, .54), (.09, .05, .13), coat, nu=8, nv=4, full=True)
+        limb(s, [(-.4, 0, .56), (-.53, 0, .38), (-.6, 0, .2)], [.04, .065, .03], coat)
+        s.dome((-.61, 0, .17), (.03, .03, .05), dark, nu=6, nv=3, full=True)
+        four_legs(s, ((.26, .07, .5), (.28, .06, .26), (.27, .06, .045)), ((-.3, .075, .5), (-.4, .07, .27), (-.34, .07, .045)), [.05, .028, .022], legs, legs, .026)
+
+
+def ground_squirrel(s, upright):
+    tan, pale, dark = '#b39a6b', '#d9c9a2', '#2a211c'
+    if upright:
+        s.dome((0, 0, .1), (.045, .045, .1), tan, nu=8, nv=5, full=True)
+        s.dome((.012, 0, .105), (.04, .035, .085), pale, nu=8, nv=4, full=True)
+        s.dome((.012, 0, .215), (.033, .03, .03), tan, nu=8, nv=4, full=True)
+        s.dome((.042, 0, .21), (.012, .012, .01), dark, nu=5, nv=3, full=True)
+        for sy in (-1, 1):
+            s.dome((.022, sy * .026, .222), (.007, .005, .007), dark, nu=5, nv=3, full=True)
+            s.dome((-.006, sy * .026, .24), (.008, .006, .008), tan, nu=5, nv=3, full=True)
+            s.cyl((.03, sy * .022, .15), (.05, sy * .012, .13), .008, tan, sides=4)
+            s.box((.02, sy * .03, .008), (.06, .022, .016), tan)
+        s.ribbon((-.03, 0, .01), (-.12, .02, .006), .022, tan)
+    else:
+        body = [(-.1, .04, .008, .008), (-.085, .045, .03, .03), (-.03, .05, .04, .042), (.04, .052, .038, .04), (.085, .058, .028, .03), (.11, .064, .016, .018)]
+        spine_loft(s, body, lambda r, i: pale if i in (5, 6) else tan)
+        s.dome((.125, 0, .075), (.03, .026, .025), tan, nu=8, nv=4, full=True)
+        s.dome((.153, 0, .07), (.01, .011, .009), dark, nu=5, nv=3, full=True)
+        for sy in (-1, 1):
+            s.dome((.135, sy * .022, .083), (.006, .005, .006), dark, nu=5, nv=3, full=True)
+            s.box((.06, sy * .03, .012), (.03, .016, .024), tan)
+            s.box((-.05, sy * .034, .012), (.045, .018, .024), tan)
+        s.ribbon((-.1, 0, .03), (-.18, -.02, .012), .02, tan)
+
+
+def ground_squirrels(s):
+    soil = ['#8a7558', '#7b684d', '#96815f']
+    s.dome((.05, .1, 0), (.42, .36, .08), lambda j, i: s.pick(soil, .04), nu=12, nv=3, noise=.12)
+    s.dome((.12, .02, .062), (.075, .065, .02), '#241c15', nu=8, nv=2)
+    with s.at(-.02, .22, .06, yaw=-1.9):
+        ground_squirrel(s, True)
+    with s.at(-.38, -.3, 0, yaw=-1.0):
+        ground_squirrel(s, True)
+    with s.at(.42, -.34, 0, yaw=2.6):
+        ground_squirrel(s, False)
+
+
+def duck(s, drake):
+    foot = '#e2742b'
+    if drake:
+        body_c, breast, head_c, bill, rump = '#b9b6ae', '#6b3f2c', '#1f5a3a', '#d9c23a', '#1d1d1f'
+    else:
+        body_c, breast, head_c, bill, rump = '#8a6f52', '#9a7d5c', '#7a6046', '#c9772c', '#6f5a44'
+    body = [(-.21, .17, .01, .012), (-.18, .165, .045, .04), (-.08, .15, .075, .07), (.03, .15, .08, .075), (.11, .17, .065, .065), (.15, .2, .04, .045)]
+    spine_loft(s, body, lambda r, i: rump if r == 0 else (breast if r >= 3 else body_c))
+    neck = [(.12, .21, .035, .04), (.15, .27, .028, .03), (.16, .32, .026, .027)]
+    spine_loft(s, neck, head_c if not drake else (lambda r, i: breast if r == 0 else head_c), n=6, cap_start=False)
+    if drake:
+        s.cyl((.15, 0, .262), (.152, 0, .274), .031, '#f1f0ea', sides=8, cap0=False, cap1=False)
+        s.ribbon((-.19, 0, .2), (-.24, 0, .23), .05, '#f1f0ea')
+    s.dome((.175, 0, .34), (.038, .03, .03), head_c, nu=8, nv=4, full=True)
+    s.box((.228, 0, .332), (.06, .03, .014), bill)
+    for sy in (-1, 1):
+        s.dome((.19, sy * .026, .348), (.006, .004, .006), '#1d1d1f', nu=5, nv=3, full=True)
+        s.dome((-.03, sy * .07, .17), (.1, .012, .04), '#5a4a3c' if not drake else '#8f8c84', nu=6, nv=3, full=True)
+        limb(s, [(.01, sy * .035, .1), (.015, sy * .035, .0)], [.008, .007], foot, sides=4)
+        s.tri((.015, sy * .035, .003), (.065, sy * .06, .003), (.065, sy * .01, .003), foot)
+
+
+def mallards(s):
+    with s.at(-.2, .05, 0, yaw=-math.pi / 2 - .3):
+        duck(s, True)
+    with s.at(.22, -.12, 0, yaw=-math.pi / 2 + .5):
+        duck(s, False)
+
+
+def pelican(s, tucked=False):
+    white, black, bill, pouch, foot = '#f4f3ee', '#1d1d1f', '#f2a23a', '#f0b84a', '#e88a2c'
+    body = [(-.44, .44, .02, .02), (-.4, .43, .1, .09), (-.2, .42, .19, .17), (.02, .42, .21, .2), (.2, .46, .17, .18), (.3, .52, .1, .12)]
+    spine_loft(s, body, lambda r, i: black if r == 0 and i in (0, 3, 4, 7) else white)
+    if tucked:
+        neck = [(.26, .55, .07, .08), (.24, .72, .055, .06), (.2, .84, .05, .05)]
+        head, tip = (.24, .88), (.42, .5)
+    else:
+        neck = [(.26, .55, .07, .08), (.3, .72, .05, .055), (.25, .88, .045, .048), (.27, 1.0, .045, .046)]
+        head, tip = (.32, 1.03), (.72, .84)
+    spine_loft(s, neck, white, n=6, cap_start=False)
+    s.dome((head[0], 0, head[1]), (.07, .05, .052), white, nu=8, nv=4, full=True)
+    s.cyl((head[0] + .04, 0, head[1]), (tip[0], 0, tip[1]), .032, bill, r1=.012, sides=6)
+    middle = mix((head[0] + .04, 0, head[1] - .03), (tip[0], 0, tip[1]), .45)
+    s.tri((head[0] + .05, 0, head[1] - .03), (tip[0], 0, tip[1] - .01), (middle[0] - .04, 0, middle[2] - .11), pouch)
+    for sy in (-1, 1):
+        s.dome((head[0] + .03, sy * .04, head[1] + .012), (.008, .005, .008), black, nu=5, nv=3, full=True)
+        s.dome((-.22, sy * .19, .46), (.2, .02, .09), black, nu=6, nv=3, full=True)
+        limb(s, [(0, sy * .08, .27), (.012, sy * .08, .0)], [.022, .016], foot)
+        s.tri((.012, sy * .08, .004), (.13, sy * .14, .004), (.13, sy * .02, .004), foot)
+
+
+def pelicans(s):
+    with s.at(-.42, .12, 0, yaw=-math.pi / 2 - .25):
+        pelican(s)
+    with s.at(.5, -.2, 0, yaw=-math.pi / 2 + .55, scale=.95):
+        pelican(s, tucked=True)
+
+
+def osprey_platform(s):
+    wood, top = '#6e5a48', 11.4
+    for i in range(4):
+        z0, z1 = top * i / 4, top * (i + 1) / 4
+        s.cyl((0, 0, z0), (0, 0, z1), .17 - .02 * i, s.c(wood, .05), r1=.17 - .02 * (i + 1), sides=8, cap0=i == 0, cap1=i == 3)
+    s.box((0, 0, top + .04), (1.3, 1.3, .08), s.c(TIMBER, .05))
+    for sx in (-1, 1):
+        s.box((sx * .62, 0, top + .16), (.06, 1.3, .16), s.c(TIMBER, .05))
+        s.box((0, sx * .62, top + .16), (1.3, .06, .16), s.c(TIMBER, .05))
+        s.cyl((sx * .12, 0, top - .9), (sx * .6, 0, top), .04, wood, sides=5)
+        s.cyl((0, sx * .12, top - .9), (0, sx * .6, top), .04, wood, sides=5)
+    sticks = ['#6b5a48', '#857059', '#5c4c3c', '#9a856a']
+    s.dome((0, 0, top + .08), (.62, .62, .34), lambda j, i: s.pick(sticks, .05), nu=12, nv=3, noise=.14)
+    for k in range(26):
+        a, r = k * 2.399963, .15 + .5 * ((k * 5) % 9) / 9
+        centre = (math.cos(a) * r, math.sin(a) * r, top + .2 + .22 * (1 - r / .7))
+        b = a + 1.3 + (k % 5) * .4
+        half = (math.cos(b) * .32, math.sin(b) * .32, ((k % 3) - 1) * .06)
+        s.cyl(sub(centre, half), add(centre, half), .013, s.pick(sticks, .05), sides=3)
+    # osprey standing on the nest rim
+    brown, white, dark = '#4a3b30', '#f1efe8', '#1d1d1f'
+    with s.at(.3, -.25, top + .36, yaw=-.9):
+        s.dome((0, 0, .17), (.085, .075, .17), white, nu=8, nv=5, full=True)
+        s.dome((-.025, 0, .17), (.08, .085, .175), brown, nu=8, nv=5, full=True)
+        s.dome((.02, 0, .37), (.05, .045, .045), white, nu=8, nv=4, full=True)
+        s.cyl((.055, 0, .365), (.095, 0, .345), .014, dark, r1=.002, sides=5)
+        for sy in (-1, 1):
+            s.box((.03, sy * .042, .375), (.06, .008, .018), brown)
+            limb(s, [(.02, sy * .03, .06), (.03, sy * .03, .0)], [.012, .01], '#c9c2b4', sides=4)
+        s.ribbon((-.07, 0, .1), (-.2, 0, .02), .09, brown)
+
+
+# ---------------------------------------------------------------------------
 # Catalogue
 # ---------------------------------------------------------------------------
 def spec(slug, label, category, description, builder, seed, color='#8b8f8a'):
@@ -2138,6 +3051,40 @@ SPECS = [
     spec('snow-shovel', 'Snow shovel in a snowbank', WINTER, 'Shovel stuck in a shovelled pile beside a pail of ice melt.', snow_shovel, 2636, '#c2332b'),
     spec('lawn-mower', 'Lawn mower', 'Garden & growing', 'Gas push mower with a rear grass bag.', lawn_mower, 2637, '#c2332b'),
     spec('propane-cage', 'Propane exchange cage', 'Street furniture', 'Locked mesh cabinet of white barbecue tanks, as found outside gas stations and hardware stores.', propane_cage, 2638, '#e6e8ea'),
+    # --- transit and service vehicles ---
+    spec('city-bus', 'City bus', 'Vehicles', 'Twelve-metre low-floor transit bus with two curb-side doors and a folded front bike rack.', city_bus, 2701, '#1f4f85'),
+    spec('light-rail-car', 'Light-rail car', 'Vehicles', 'Low-floor articulated light-rail vehicle, 25 m long, with a pantograph for a 5.5 m contact wire.', light_rail_car, 2702, '#1f7a8c'),
+    spec('school-bus', 'School bus', 'Vehicles', 'Yellow conventional school bus with a folded stop arm, for school sites and pick-up loops.', school_bus, 2703, '#f2b01e'),
+    spec('plow-truck', 'Snow plow truck', 'Vehicles', 'Tandem sanding truck with an angled front plow and rear spreader, for winter street scenes.', plow_truck, 2704, '#f2c230'),
+    # --- construction site kit ---
+    spec('roll-off-bin', 'Roll-off construction bin', 'Traffic & safety', 'Thirty-yard steel bin loaded with demolition debris, as parked beside infill sites.', roll_off_bin, 2711, '#2f6f8f'),
+    spec('site-office-trailer', 'Site office trailer', 'Traffic & safety', 'Portable job-site office on blocks with timber steps and a blank sign panel.', site_office_trailer, 2712, '#d8d2c2'),
+    spec('excavator', 'Excavator', 'Traffic & safety', 'Tracked hydraulic excavator with its boom reaching forward to the ground.', excavator, 2713, '#f0b323'),
+    spec('skid-steer', 'Skid-steer loader', 'Traffic & safety', 'Compact wheeled loader with its bucket resting on the ground.', skid_steer, 2714, '#e2742b'),
+    spec('lumber-stacks', 'Lumber and sheet goods', 'Traffic & safety', 'Two strapped bundles of framing lumber and a pallet of plywood on a building site.', lumber_stacks, 2715, '#d9b98a'),
+    spec('concrete-barrier', 'Concrete barrier', 'Traffic & safety', 'Repeatable 3 m precast safety-shape barrier section for work zones and road edges.', concrete_barrier, 2716, '#b9b6ae'),
+    # --- river and city edge ---
+    spec('inflatable-raft', 'Inflatable raft', 'Landscape', 'Blue river raft pulled up on shore with paddles and a cooler, for a float down the Bow.', inflatable_raft, 2721, '#2a66a8'),
+    spec('canoe', 'Canoe', 'Landscape', 'Red canoe resting on its side on the bank with a paddle inside.', canoe, 2722, '#b23a34'),
+    spec('drift-boat', 'Drift boat', 'Landscape', 'High-ended river fishing boat with oars shipped, as used by anglers on the Bow.', drift_boat, 2723, '#2f6f8f'),
+    spec('pumpjack', 'Pumpjack', 'Landscape', 'Beam pumping unit over an oil well, a familiar sight in fields at the edge of Alberta towns.', pumpjack, 2724, '#3f6b55'),
+    spec('grain-bins', 'Grain bins', 'Landscape', 'Pair of corrugated steel farm bins with conical roofs and ladders.', grain_bins, 2725, '#b9c0c4'),
+    spec('wind-turbine', 'Wind turbine', 'Landscape', 'Utility-scale three-blade turbine with a 60 m hub, as seen across southern Alberta.', wind_turbine, 2726, '#e9ecee'),
+    # --- street and yard basics ---
+    spec('street-light', 'Roadway street light', 'Lighting', 'Nine-metre davit pole with a flat roadway luminaire reaching over the curb.', street_light, 2731, '#9aa3a8'),
+    spec('basket-lamp-post', 'Lamp post with flower baskets', 'Lighting', 'Black heritage-style post with a globe and two hanging summer flower baskets, for main streets.', basket_lamp_post, 2732, '#1d1f22'),
+    spec('flagpole', 'Flagpole', 'Street furniture', 'Nine-metre aluminium pole flying a plain flag with no emblem.', flagpole, 2733, '#1f7a8c'),
+    spec('lane-garage', 'Lane garage', 'Garden & growing', 'Detached double garage with a sectional overhead door facing the back lane.', lane_garage, 2734, '#b8b2a4'),
+    spec('carport', 'Carport', 'Shelters & markets', 'Two-stall steel carport with a low-slope roof and a slatted back screen.', carport, 2735, '#8f979b'),
+    spec('solar-array', 'Ground solar array', 'Street furniture', 'Sixteen-panel ground-mounted solar table tilted south on steel posts.', solar_array, 2736, '#1c2f4a'),
+    # --- wildlife and ranch animals, round two ---
+    spec('ground-squirrels', "Richardson's ground squirrels", WILDLIFE, 'Urocitellus richardsonii · prairie gophers standing watch beside a burrow mound. Static model.', ground_squirrels, 2741, '#b39a6b'),
+    spec('coyote', 'Coyote', WILDLIFE, 'Canis latrans · alert and standing, as seen in river valleys and on park edges. Static model.', coyote, 2742, '#9a8a72'),
+    spec('mallards', 'Mallards', WILDLIFE, 'Anas platyrhynchos · a drake and a hen on the bank of a pond or storm pond. Static model.', mallards, 2743, '#1f5a3a'),
+    spec('pelicans', 'American white pelicans', WILDLIFE, 'Pelecanus erythrorhynchos · two summer visitors to the Bow, one with its bill tucked. Static model.', pelicans, 2744, '#f2a23a'),
+    spec('osprey-platform', 'Osprey nesting platform', WILDLIFE, 'Pandion haliaetus · tall pole with a stick nest and a perched osprey, as raised along the rivers. Static model.', osprey_platform, 2745, '#6e5a48'),
+    spec('horses', 'Horses', 'Landscape', 'Two ranch horses, a bay standing and a buckskin grazing, for acreages at the city edge. Static model.', horses, 2746, '#7a4a2c'),
+    spec('cattle', 'Cattle', 'Landscape', 'Two beef cattle, a white-faced red cow and a black cow grazing, for foothills ranchland. Static model.', cattle, 2747, '#7a3b22'),
 ]
 
 

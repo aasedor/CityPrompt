@@ -1,5 +1,9 @@
 # Everyday Calgary details for Add details: 38 street, lane and yard objects
 
+> **Update, same day.** A [third batch](LOCAL_DETAILS_BATCH3_2026-11-16.md) took the kit to 105
+> objects. The 76 models described up to here are byte-identical. The bundle-budget
+> note below was acted on there: the catalogues now share one decoder.
+
 ## Scope
 
 Add 38 humble, fixed-size objects that make a Calgary street, lane or yard read
