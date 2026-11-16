@@ -8,14 +8,17 @@ import ts from 'typescript';
 import { deflateSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
 import { minify } from 'terser';
-import { packCatalogue, packedCatalogue, productionStarter } from './packed-catalogue.mjs';
+import { packCatalogue, packedCatalogue, productionStarter, Z85_DECODER_MODULE } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
+// A module imported from a data: URL can only reach other modules by absolute URL.
+const runnable = code => code.replace('three/examples/jsm/libs/fflate.module.js', inflater)
+  .replace(JSON.stringify(Z85_DECODER_MODULE), JSON.stringify(pathToFileURL(Z85_DECODER_MODULE).href));
 
 for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['nativeStreetPilots.json', 4000], ['openSpaceArchetypes.json', 8000]]) {
   test(`${filename}: production transport recovers bridge headroom without changing catalogue values`, async () => {
     const path = resolve('src/data', filename), source = readFileSync(path, 'utf8');
-    const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = runnable(packedCatalogue().transform('', path).code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     const minified = await minify(module, { module: true, compress: { passes: 3 } });
@@ -33,19 +36,19 @@ for (const [relative, minimumSaving] of [['src/data/streetPathArchetypes.json', 
   ['src/data/nativeBridgePilots.json', 750], ['src/data/validationCatalogue.json', 700], ['src/data/classroomExpansion.json', 600]]) {
   test(`${relative}: denser transport pays for the local detail kits without changing a field or the bundle budget`, async () => {
     const path = resolve(relative), source = readFileSync(path, 'utf8');
-    const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = runnable(packedCatalogue().transform('', path).code);
     assert.ok(module.includes('Z85 v1 / RFC32'), 'expected the Z85 transport');
     const minified = await minify(module, { module: true, compress: { passes: 3 } });
     const runtime = await import(`data:text/javascript;base64,${Buffer.from(minified.code).toString('base64')}`);
     assert.deepEqual(runtime.default, JSON.parse(source));
-    const base64 = await minify(packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater), { module: true, compress: { passes: 3 } });
+    const base64 = await minify(runnable(packCatalogue(source)), { module: true, compress: { passes: 3 } });
     assert.ok(minified.code.length < base64.code.length - minimumSaving, `expected at least ${minimumSaving} bytes back, got ${base64.code.length - minified.code.length}`);
   });
 }
 
 test('detail registries keep every provenance lock through the production transport', async () => {
   const path = resolve('src/features/parks/detailCatalogueExtras.json'), source = JSON.parse(readFileSync(path, 'utf8'));
-  const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = runnable(packedCatalogue().transform('', path).code);
   const decoded = (await import(`data:text/javascript,${encodeURIComponent(module)}`)).default;
   assert.equal(decoded.length, source.length);
   for (const [index, row] of source.entries()) {
@@ -57,7 +60,7 @@ test('detail registries keep every provenance lock through the production transp
 test('denser transport retains UTF8, signed zero and short final binary blocks', async () => {
   for (let length = 0; length < 24; length++) {
     const source = JSON.stringify({ label: 'é — "quoted" '+ 'abcdefghijk'.slice(0, length % 11).repeat(length), offset: [-1, 0] }).replace('[-1,0]', '[-1,-0]');
-    const module = packCatalogue(source, { encoding: 'z85' }).replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = runnable(packCatalogue(source, { encoding: 'z85' }));
     const minified = await minify(module, { module: true, compress: { passes: 3 } });
     const decoded = await import(`data:text/javascript,${encodeURIComponent(minified.code)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
@@ -74,7 +77,7 @@ test('unused denser transport is eliminated with its decoding work', async () =>
 
 test('production minification removes only unused catalogue decoding and preserves used bridge values', async () => {
   const source = readFileSync(resolve('src/data/nativeBridgePilots.json'), 'utf8');
-  const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = runnable(packCatalogue(source));
   const options = { module: true, compress: { passes: 3 } };
   const used = await minify(module, options);
   const decoded = await import(`data:text/javascript;base64,${Buffer.from(used.code).toString('base64')}`);
@@ -110,7 +113,7 @@ for (const relative of [
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = runnable(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(relative === 'data/classroomStarter.json' ? productionStarter(source) : source));
     assert.ok(module.length < JSON.stringify(JSON.parse(source)).length);
@@ -145,7 +148,7 @@ test('fixed public-realm packing preserves exact review gates, variants and nati
   const source = readFileSync(path, 'utf8');
   const transformed = packedCatalogue().transform('', path);
   assert.notEqual(transformed, null);
-  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = runnable(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.default, JSON.parse(source));
   assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * .55);
@@ -158,7 +161,7 @@ test('generated building packing preserves all entries and the exact ready-only 
   const reference = await import(`data:text/javascript,${encodeURIComponent(referenceCode)}`);
   const transformed = packedCatalogue().transform('', path);
   assert.notEqual(transformed, null);
-  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = runnable(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.CATALOGUE_BUILDING_ASSETS, reference.CATALOGUE_BUILDING_ASSETS);
   assert.deepEqual(decoded.PUBLISHED_BUILDING_ASSETS, reference.PUBLISHED_BUILDING_ASSETS);
@@ -179,7 +182,7 @@ for (const filename of ['peopleCatalogue.json', 'inclusivePeopleCatalogue.json',
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = runnable(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
@@ -192,7 +195,7 @@ for (const filename of ['streetManual.json', 'nativeStreetModuleBounds.json', 'n
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = runnable(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
@@ -218,7 +221,7 @@ test('the production traffic-safety catalogue preserves all variants and placeme
   const source = readFileSync(filename, 'utf8');
   const transformed = packedCatalogue().transform('', filename);
   assert.notEqual(transformed, null);
-  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = runnable(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.default, JSON.parse(source));
   assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
@@ -226,7 +229,7 @@ test('the production traffic-safety catalogue preserves all variants and placeme
 for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', 'streetPathArchetypes.json', 'nativeParks.json', 'nativeStreetPilots.json', 'archetypeReferenceAvailability.json', 'legoFamilySignatures.json', 'validationCatalogue.json', 'buildingWalkDoors.json', 'cataloguePresentation.json', 'classroomExpansion.json', '../features/parks/detailCatalogueExtras.json', '../features/parks/recoveredDetails.json', '../features/zoningCatalogue/buildingPrograms.json', '../features/zoningCatalogue/parkPrograms.json', '../features/zoningCatalogue/districtRules.json']) {
   test(`${filename}: browser decoder preserves every catalogue field`, async () => {
     const source = readFileSync(resolve('src/data', filename), 'utf8');
-    const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = runnable(packCatalogue(source));
     const started = performance.now();
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
@@ -252,7 +255,7 @@ test('only explicitly registered catalogue modules are packed; other plugin data
 
 test('packing preserves signed zero, spaces and escaped quotes inside authored values', async () => {
   const source = JSON.stringify({ label: 'two words with "quoted" detail', offset: [-1, 0] }).replace('[-1,0]', '[-1,-0]');
-  const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = runnable(packCatalogue(source));
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.default, JSON.parse(source));
   assert.ok(Object.is(decoded.default.offset[1], -0));

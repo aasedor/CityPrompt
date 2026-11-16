@@ -152,6 +152,10 @@ export default defineConfig(({ command, mode }) => {
             || normalizedId.includes('/node_modules/three-stdlib/')
           ) return 'three';
           if (normalizedId.includes('/node_modules/mapbox-gl/')) return 'mapbox';
+          // The shared catalogue decoder travels with the inflater it feeds.
+          // Every packed catalogue already depends on that chunk, so no route
+          // gains a dependency on another catalogue's chunk to reach it.
+          if (normalizedId.endsWith('/scripts/z85-codec.mjs')) return 'three';
           return undefined;
         },
       },

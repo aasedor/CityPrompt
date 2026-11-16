@@ -1,15 +1,21 @@
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { deflateSync } from 'node:zlib';
-import { encodeZ85, decodeZ85, Z85_ALPHABET } from './z85-codec.mjs';
+import { encodeZ85 } from './z85-codec.mjs';
+
+/** The build codec has no Node dependency, so the browser imports the same file.
+ * Every Z85 catalogue shares this one decoder instead of carrying its own copy. */
+export const Z85_DECODER_MODULE = fileURLToPath(new URL('./z85-codec.mjs', import.meta.url)).replaceAll('\\', '/');
 
 const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|streetPathArchetypes|nativeParks|nativeStreetPilots|nativeBridgePilots|nativeBridgeRelease|archetypeReferenceAvailability|legoFamilySignatures|validationCatalogue|buildingWalkDoors|cataloguePresentation|classroomExpansion|streetManual|nativeStreetModuleBounds|publicRealmRelease20261023)\.json$/;
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|people\/(?:peopleCatalogue|inclusivePeopleCatalogue|peopleAppearancePreviews)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
 // Catalogues shipped in the denser Z85 transport. It is lossless like base64 but
-// costs 25% instead of 33%, which outweighs its inline decoder above roughly
-// 20 KiB packed. Moving a catalogue here is how headroom is recovered when the
-// catalogue grows, without relaxing the bundle budget or dropping a field.
+// costs 25% instead of 33%. The decoder is one shared module, so a catalogue
+// gains from the move at any size. Moving a catalogue here is how headroom is
+// recovered when the catalogue grows, without relaxing the bundle budget or
+// dropping a field.
 const DENSE_TRANSPORT = /\/src\/(?:data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes|streetPathArchetypes|nativeParks|cataloguePlanningHistory|catalogueTeaching|archetypeReferenceAvailability|nativeBridgeRelease|legoFamilySignatures|nativeBridgePilots|validationCatalogue|classroomExpansion)|features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails)|policyPlans\/data\/localPlanIndex))\.json$/;
 
 // Exact additional registries used by the combined student/catalogue handoff.
@@ -33,15 +39,16 @@ export function packCatalogue(source, { encoding = 'base64' } = {}) {
     .flatMap(memLevel => [0, 1].map(strategy => deflateSync(bytes, { level: 9, memLevel, strategy })))
     .reduce((a, b) => b.length < a.length ? b : a);
   let decoder = `const bytes = Uint8Array.from(atob(${JSON.stringify(packed.toString('base64'))}), character => character.charCodeAt(0));`;
+  let imports = '';
   if (encoding === 'z85') {
     const padded = new Uint8Array(Math.ceil(packed.length / 4) * 4);
     padded.set(packed);
+    imports = `\nimport { decodeZ85 } from ${JSON.stringify(Z85_DECODER_MODULE)};`;
     decoder = `// Z85 v1 / RFC32, with an exact unpadded deflate length.
-const Z85_ALPHABET = ${JSON.stringify(Z85_ALPHABET)};
-const bytes = (${decodeZ85.toString()})(${JSON.stringify(encodeZ85(padded))},${packed.length});`;
+const bytes = decodeZ85(${JSON.stringify(encodeZ85(padded))},${packed.length});`;
   }
   // Validated constant data: discard decoding only when its value is unused.
-  return `import { unzlibSync, strFromU8 } from 'three/examples/jsm/libs/fflate.module.js';
+  return `import { unzlibSync, strFromU8 } from 'three/examples/jsm/libs/fflate.module.js';${imports}
 export default /* @__PURE__ */ (() => {
 ${decoder}
 return JSON.parse(strFromU8(unzlibSync(bytes)));
