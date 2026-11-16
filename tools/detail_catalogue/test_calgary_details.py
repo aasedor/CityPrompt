@@ -1,0 +1,127 @@
+"""Blender-free checks: the committed Calgary detail registry matches the builder."""
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import struct
+import sys
+import unittest
+
+ROOT = Path(__file__).resolve().parents[2]
+EXTRAS = ROOT / 'frontend/src/features/parks/detailCatalogueExtras.json'
+ALLOWLIST = ROOT / 'backend/app/data/project_detail_models.json'
+TILES = ROOT / 'frontend/src/features/parks/DetailCategoryTiles.tsx'
+
+
+def load_module():
+    here = Path(__file__).resolve().parent
+    if str(here) not in sys.path:
+        sys.path.insert(0, str(here))
+    spec = importlib.util.spec_from_file_location('calgary_details', here / 'build_calgary_details.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def parse_glb(payload):
+    magic, version, size = struct.unpack_from('<4sII', payload)
+    assert (magic, version, size) == (b'glTF', 2, len(payload))
+    length = struct.unpack_from('<I', payload, 12)[0]
+    return json.loads(payload[20:20 + length])
+
+
+class CalgaryDetailsContract(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.module = load_module()
+        cls.registry = [row for row in json.loads(EXTRAS.read_text(encoding='utf-8')) if row.get('sourceKit') == cls.module.KIT]
+        cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
+        cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
+
+    def test_thirty_eight_unique_items_in_five_groups(self):
+        specs = self.module.SPECS
+        self.assertEqual(len(specs), 38)
+        self.assertEqual(len({s['slug'] for s in specs}), 38)
+        self.assertEqual(len({s['label'] for s in specs}), 38)
+        self.assertEqual({s['kind'] for s in specs}, {'object'})
+        counts = {}
+        for s in specs:
+            counts[s['category']] = counts.get(s['category'], 0) + 1
+        self.assertEqual(counts['Winter city'], 9)
+        self.assertEqual(counts['Wildlife'], 4)
+        self.assertEqual(sum(counts.values()), 38)
+
+    def test_registry_rows_are_exactly_the_deterministic_builder_output(self):
+        self.assertEqual(list(self.by_slug), [s['slug'] for s in self.module.SPECS])
+        for slug, (_item, row, payload) in self.built.items():
+            with self.subTest(slug=slug):
+                self.assertEqual(self.by_slug[slug], row)
+                self.assertEqual(hashlib.sha256(payload).hexdigest(), row['sha256'])
+                self.assertEqual(len(payload), row['bytes'])
+                self.assertEqual(row['url'], f'{self.module.URL_ROOT}/{slug}.glb')
+
+    def test_geometry_budgets_and_kit_convention(self):
+        total = 0
+        for slug, (_item, row, payload) in self.built.items():
+            with self.subTest(slug=slug):
+                self.assertLess(row['triangles'], 3500)
+                self.assertLessEqual(row['meshes'], 2)
+                self.assertLess(row['bytes'], 400_000)
+                gltf = parse_glb(payload)
+                self.assertEqual(gltf['asset']['generator'], self.module.GENERATOR)
+                self.assertEqual(gltf['materials'][0]['name'], 'kit_linear_vertex_colour')
+                self.assertLessEqual(len(gltf['materials']), 2)
+                if len(gltf['materials']) == 2:
+                    self.assertEqual(gltf['materials'][1]['name'], 'kit_linear_vertex_colour_gloss')
+                    self.assertNotIn('alphaMode', gltf['materials'][1])
+                self.assertNotIn('images', gltf)
+                self.assertNotIn('textures', gltf)
+                self.assertNotIn('extensionsRequired', gltf)
+                for node in gltf['nodes']:
+                    self.assertFalse(any(key in node for key in ('matrix', 'rotation', 'translation', 'scale')))
+                lo = [float('inf')] * 3
+                hi = [float('-inf')] * 3
+                for mesh in gltf['meshes']:
+                    for primitive in mesh['primitives']:
+                        self.assertEqual(set(primitive['attributes']), {'POSITION', 'NORMAL', 'COLOR_0'})
+                        accessor = gltf['accessors'][primitive['attributes']['POSITION']]
+                        lo = [min(a, b) for a, b in zip(lo, accessor['min'])]
+                        hi = [max(a, b) for a, b in zip(hi, accessor['max'])]
+                for actual, declared in zip((hi[0] - lo[0], hi[2] - lo[2], hi[1] - lo[1]), row['dimensions']):
+                    self.assertLessEqual(abs(actual - declared), .00051)
+                # authored on the ground about a placement anchor that the footprint surrounds;
+                # the offset only settles the last few millimetres of feet, wheels and tube ends
+                self.assertLess(abs(lo[1]), .008)
+                self.assertAlmostEqual(row['offset'][1], -lo[1], places=5)
+                self.assertEqual((row['offset'][0], row['offset'][2]), (0.0, 0.0))
+                self.assertTrue(lo[0] < 0 < hi[0] and lo[2] < 0 < hi[2])
+            total += row['bytes']
+        self.assertLess(total, 4_000_000)
+
+    def test_line_carriers_are_centred_on_their_pole_for_chaining(self):
+        for slug, span in (('utility-pole-lines', 30.0), ('lrt-catenary-pole', 40.0)):
+            row = self.by_slug[slug]
+            self.assertAlmostEqual(row['dimensions'][0], span, places=2)
+            self.assertIn(f'{int(span)} m', row['description'])
+
+    def test_backend_allowlist_and_category_tiles(self):
+        allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))
+        for row in self.registry:
+            self.assertIn(row['id'], allow['props'])
+            self.assertNotIn(row['id'], allow['trees'])
+        tiles = TILES.read_text(encoding='utf-8')
+        self.assertIn("'Winter city': () =>", tiles)
+        self.assertIn('Wildlife: () =>', tiles)
+
+    def test_generic_wording_without_branding(self):
+        for row in self.registry:
+            text = f"{row['label']} {row['description']}".lower()
+            self.assertLess(len(row['description']), 140, row['id'])
+            for banned in ('calgary transit', 'ctrain', 'city of calgary', 'peace bridge', 'stampede'):
+                self.assertNotIn(banned, text, row['id'])
+        for slug in ('white-tailed-jackrabbit', 'magpies', 'canada-geese', 'mule-deer'):
+            self.assertIn('static model', self.by_slug[slug]['description'].lower())
+
+
+if __name__ == '__main__':
+    unittest.main()

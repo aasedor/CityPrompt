@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   DETAIL_CATALOGUE,
+  DETAIL_CATEGORIES,
   DETAIL_PROP_MODELS,
   searchDetails,
 } from "./detailCatalogue";
@@ -31,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(235 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(273 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -82,6 +83,58 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails("dog", "Play").map((m) => m.id)).toEqual([
       "detail-dog-agility-hoop",
       "detail-dog-agility-tunnel",
+    ]);
+  });
+  it("offers the local prairie plants with trunk-anchored placement and seasonal forms", () => {
+    const plants = extras.filter((m) => m.sourceKit === "prairie-foliage-v1");
+    expect(plants).toHaveLength(70);
+    expect(plants.filter((m) => m.kind === "tree")).toHaveLength(44);
+    for (const model of plants) {
+      expect(model.category).toBe(model.kind === "tree" ? "Trees" : "Planting");
+      expect([model.offset[0], model.offset[2]]).toEqual([0, 0]);
+      expect(model.triangles).toBeLessThanOrEqual(model.kind === "tree" ? 14_000 : 6_000);
+      expect(model.meshes).toBeLessThanOrEqual(2);
+    }
+    expect(searchDetails("winter", "Trees")).toHaveLength(17);
+    expect(searchDetails("snow", "Trees").map((m) => m.id)).toEqual([
+      "detail-prairie-white-spruce-snow",
+      "detail-prairie-colorado-blue-spruce-snow",
+    ]);
+    expect(searchDetails("crocus").map((m) => m.id)).toEqual(["detail-prairie-prairie-crocus"]);
+  });
+  it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
+    const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
+    expect(site).toHaveLength(38);
+    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(4_000_000);
+    for (const model of site) {
+      expect(model.id).toMatch(/^detail-calgary-[a-z-]+$/);
+      expect(model.kind).toBe("object");
+      expect(model.triangles).toBeLessThan(3_500);
+      expect(model.meshes).toBeLessThanOrEqual(2);
+      expect([model.offset[0], model.offset[2]]).toEqual([0, 0]);
+    }
+    const start = DETAIL_CATEGORIES.indexOf("Winter city");
+    expect(DETAIL_CATEGORIES.slice(start, start + 2)).toEqual(["Winter city", "Wildlife"]);
+    // People spans two columns, so an even number of other tiles keeps the grid full.
+    expect((DETAIL_CATEGORIES.length - 1) % 2).toBe(0);
+    expect(searchDetails("", "Winter city")).toHaveLength(9);
+    expect(searchDetails("", "Wildlife").map((m) => m.label)).toEqual([
+      "White-tailed jackrabbit",
+      "Black-billed magpies",
+      "Canada geese",
+      "Mule deer",
+    ]);
+    expect(searchDetails("cart", "Street furniture").map((m) => m.id)).toEqual([
+      "detail-calgary-waste-cart-black",
+      "detail-calgary-waste-cart-blue",
+      "detail-calgary-waste-cart-green",
+      "detail-calgary-waste-cart-trio",
+    ]);
+    expect(searchDetails("rink", "Winter city").map((m) => m.id)).toEqual([
+      "detail-calgary-outdoor-rink",
+      "detail-calgary-rink-board-section",
+      "detail-calgary-hockey-net",
+      "detail-calgary-warming-hut",
     ]);
   });
 });

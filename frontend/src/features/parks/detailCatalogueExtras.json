@@ -5608,5 +5608,955 @@
     "triangles": 2583,
     "meshes": 2,
     "bytes": 296468
+  },
+  {
+    "id": "detail-calgary-outdoor-rink",
+    "label": "Community outdoor rink",
+    "category": "Winter city",
+    "description": "Boarded 30 x 15 m neighbourhood ice rink with lines, two nets, a gate and players' benches.",
+    "dimensions": [
+      31.555,
+      18.452,
+      1.29
+    ],
+    "url": "/park-kits/calgary-details-v1/outdoor-rink.glb",
+    "color": "#d9e7f1",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:outdoor_rink",
+    "sha256": "2e7802149fdcda479d5ee296982f42a22c94615da83926ab8754904dc3f0d5bb",
+    "triangles": 2900,
+    "meshes": 2,
+    "bytes": 332656
+  },
+  {
+    "id": "detail-calgary-rink-board-section",
+    "label": "Rink board section",
+    "category": "Winter city",
+    "description": "Repeatable 4 m length of braced rink boards for building a custom ice surface.",
+    "dimensions": [
+      4.09,
+      0.799,
+      1.115
+    ],
+    "url": "/park-kits/calgary-details-v1/rink-board-section.glb",
+    "color": "#eef0f1",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:rink_board_section",
+    "sha256": "fec9532783155561341d4d2b4df08011d594b4d427e13c808a582d430feb0a8a",
+    "triangles": 102,
+    "meshes": 1,
+    "bytes": 12808
+  },
+  {
+    "id": "detail-calgary-hockey-net",
+    "label": "Hockey net",
+    "category": "Winter city",
+    "description": "Regulation red steel hockey net with white mesh for rinks and ponds.",
+    "dimensions": [
+      1.89,
+      1.151,
+      1.25
+    ],
+    "url": "/park-kits/calgary-details-v1/hockey-net.glb",
+    "color": "#c23b33",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:regulation_hockey_net",
+    "sha256": "ed10ce84a755181c5a6ccb5fcfdfb09a433f7b9bd4e6293467777419b5861cb5",
+    "triangles": 454,
+    "meshes": 1,
+    "bytes": 52916
+  },
+  {
+    "id": "detail-calgary-warming-hut",
+    "label": "Skaters' warming hut",
+    "category": "Winter city",
+    "description": "Small cedar skate-change hut with a stove pipe, bench and firewood beside the rink.",
+    "dimensions": [
+      5.054,
+      4.75,
+      3.82
+    ],
+    "url": "/park-kits/calgary-details-v1/warming-hut.glb",
+    "color": "#9a6b45",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:warming_hut",
+    "sha256": "423836c92b6b103da3f27778726c0e3c9fd3327bf0fd06374cdd7cd1ec582c1f",
+    "triangles": 2796,
+    "meshes": 2,
+    "bytes": 320808
+  },
+  {
+    "id": "detail-calgary-fire-pit-circle",
+    "label": "Fire pit circle",
+    "category": "Winter city",
+    "description": "Steel fire ring on a gravel pad with four log benches and stacked firewood.",
+    "dimensions": [
+      5.4,
+      5.4,
+      0.68
+    ],
+    "url": "/park-kits/calgary-details-v1/fire-pit-circle.glb",
+    "color": "#8a6a4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:fire_pit_circle",
+    "sha256": "b94df0e1a7ea449d56fe55f7d0b633c31c3b307168b21ce15a922289c706b747",
+    "triangles": 1593,
+    "meshes": 1,
+    "bytes": 182784
+  },
+  {
+    "id": "detail-calgary-snow-fence",
+    "label": "Snow fence",
+    "category": "Winter city",
+    "description": "Repeatable 4.8 m run of wood-slat snow fence on steel posts to hold drifts off paths.",
+    "dimensions": [
+      4.84,
+      0.057,
+      1.5
+    ],
+    "url": "/park-kits/calgary-details-v1/snow-fence.glb",
+    "color": "#b85a34",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:snow_fence",
+    "sha256": "976f88fe0b11729871cb6a1cb3fdbb4fe0298dfa4e0cb07140363160ebe15471",
+    "triangles": 300,
+    "meshes": 1,
+    "bytes": 35356
+  },
+  {
+    "id": "detail-calgary-snow-windrow",
+    "label": "Snow windrow",
+    "category": "Winter city",
+    "description": "Ploughed 6 m snow bank with broken chunks; repeat along winter streets and lots.",
+    "dimensions": [
+      6.507,
+      2.675,
+      1.067
+    ],
+    "url": "/park-kits/calgary-details-v1/snow-windrow.glb",
+    "color": "#f4f7fa",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:snow_windrow",
+    "sha256": "33df7989c6ec7a64b6be86a60c8a4544675b08d2b4ba925c8c3824326fb48565",
+    "triangles": 648,
+    "meshes": 1,
+    "bytes": 75044
+  },
+  {
+    "id": "detail-calgary-grit-box",
+    "label": "Sanding grit box",
+    "category": "Winter city",
+    "description": "Roadside box of traction grit for icy hills, steps and pathway slopes.",
+    "dimensions": [
+      1.26,
+      0.935,
+      1.02
+    ],
+    "url": "/park-kits/calgary-details-v1/grit-box.glb",
+    "color": "#e0b63a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:grit_box",
+    "sha256": "f844a3b81c023de57b94bccdd65beaf72c00e0df837ca712f1f0a578d2ccf060",
+    "triangles": 116,
+    "meshes": 1,
+    "bytes": 14380
+  },
+  {
+    "id": "detail-calgary-plug-in-posts",
+    "label": "Parking plug-in posts",
+    "category": "Winter city",
+    "description": "Block-heater outlet posts with rail and wheel stops for two winter parking stalls.",
+    "dimensions": [
+      5.6,
+      1.21,
+      1.18
+    ],
+    "url": "/park-kits/calgary-details-v1/plug-in-posts.glb",
+    "color": "#9aa3a7",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:plug_in_posts",
+    "sha256": "3c6ed8118a40ba974e1cb1b2334106aad3198c13febd4663208137984895924d",
+    "triangles": 368,
+    "meshes": 1,
+    "bytes": 43128
+  },
+  {
+    "id": "detail-calgary-waste-cart-black",
+    "label": "Black garbage cart",
+    "category": "Street furniture",
+    "description": "Wheeled black cart for back lanes, side yards and collection day.",
+    "dimensions": [
+      0.67,
+      0.891,
+      1.09
+    ],
+    "url": "/park-kits/calgary-details-v1/waste-cart-black.glb",
+    "color": "#272b2f",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:waste_cart_black",
+    "sha256": "cc94af29549a860fe3e1c15dc077f3d8e6832c36fa116722f9af2fc83f5cc0e4",
+    "triangles": 432,
+    "meshes": 1,
+    "bytes": 50432
+  },
+  {
+    "id": "detail-calgary-waste-cart-blue",
+    "label": "Blue recycling cart",
+    "category": "Street furniture",
+    "description": "Wheeled blue recycling cart for back lanes and collection day.",
+    "dimensions": [
+      0.67,
+      0.891,
+      1.09
+    ],
+    "url": "/park-kits/calgary-details-v1/waste-cart-blue.glb",
+    "color": "#1f5fa8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:waste_cart_blue",
+    "sha256": "60c0237a0727465767930e120984fba4322d0c6f8b25a19cf1b932aca53854ec",
+    "triangles": 432,
+    "meshes": 1,
+    "bytes": 50432
+  },
+  {
+    "id": "detail-calgary-waste-cart-green",
+    "label": "Green compost cart",
+    "category": "Street furniture",
+    "description": "Wheeled green food and yard waste cart for back lanes and collection day.",
+    "dimensions": [
+      0.67,
+      0.891,
+      1.09
+    ],
+    "url": "/park-kits/calgary-details-v1/waste-cart-green.glb",
+    "color": "#3f7d3a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:waste_cart_green",
+    "sha256": "f17820bf9569cfe84c187e774b372475fcc2d4a8a5452b4ce29cf1ec23d47104",
+    "triangles": 432,
+    "meshes": 1,
+    "bytes": 50432
+  },
+  {
+    "id": "detail-calgary-waste-cart-trio",
+    "label": "Three-cart set",
+    "category": "Street furniture",
+    "description": "Black, blue and green carts lined up at the lane, as on a Calgary collection day.",
+    "dimensions": [
+      2.125,
+      0.91,
+      1.09
+    ],
+    "url": "/park-kits/calgary-details-v1/waste-cart-trio.glb",
+    "color": "#1f5fa8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:waste_cart_trio",
+    "sha256": "79b00a7da9115627ff37cfae7515ffbc6bb3fde42f89340ab649f6883d8cc530",
+    "triangles": 1296,
+    "meshes": 1,
+    "bytes": 148928
+  },
+  {
+    "id": "detail-calgary-utility-pole",
+    "label": "Wooden utility pole",
+    "category": "Street furniture",
+    "description": "Back-lane power pole with crossarm, transformer and lane light. Use alone or to end a line.",
+    "dimensions": [
+      0.615,
+      3.65,
+      10.4
+    ],
+    "url": "/park-kits/calgary-details-v1/utility-pole.glb",
+    "color": "#6e5a48",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:utility_pole_plain",
+    "sha256": "da84ac0117c58b536f7a04bfa014b163ad96d058caf00a2277453e6396315a05",
+    "triangles": 934,
+    "meshes": 2,
+    "bytes": 108588
+  },
+  {
+    "id": "detail-calgary-utility-pole-lines",
+    "label": "Utility pole with lines",
+    "category": "Street furniture",
+    "description": "Power pole carrying overhead lines 15 m each way. Place one every 30 m along a lane.",
+    "dimensions": [
+      30.002,
+      3.65,
+      10.4
+    ],
+    "url": "/park-kits/calgary-details-v1/utility-pole-lines.glb",
+    "color": "#6e5a48",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:utility_pole_lines",
+    "sha256": "e2a550461f65301280eb5d4c6f2896153b98e8ce62347385a345591e937383f7",
+    "triangles": 1366,
+    "meshes": 2,
+    "bytes": 157860
+  },
+  {
+    "id": "detail-calgary-privacy-fence",
+    "label": "Wood privacy fence",
+    "category": "Edges & gates",
+    "description": "Repeatable 2.4 m panel of 1.8 m cedar board fence for yards and lanes.",
+    "dimensions": [
+      2.56,
+      0.12,
+      1.99
+    ],
+    "url": "/park-kits/calgary-details-v1/privacy-fence.glb",
+    "color": "#9a6b45",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:privacy_fence",
+    "sha256": "2c7b55426337e417971d2d5b4842e56a0059239b6215e888440ede80a968934f",
+    "triangles": 288,
+    "meshes": 1,
+    "bytes": 34008
+  },
+  {
+    "id": "detail-calgary-chain-link-fence",
+    "label": "Chain-link fence",
+    "category": "Edges & gates",
+    "description": "Repeatable 3 m panel of 1.2 m galvanized chain-link for yards, schools and parks.",
+    "dimensions": [
+      3.068,
+      0.072,
+      1.34
+    ],
+    "url": "/park-kits/calgary-details-v1/chain-link-fence.glb",
+    "color": "#9aa3a7",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:chain_link_fence",
+    "sha256": "c8a49f44754625f9a72351ff89278b9753406eb4b9612772238dddb4acde2378",
+    "triangles": 396,
+    "meshes": 1,
+    "bytes": 46332
+  },
+  {
+    "id": "detail-calgary-garden-shed",
+    "label": "Garden shed",
+    "category": "Garden & growing",
+    "description": "Backyard 3 x 2.4 m gable shed with double doors, window and a small ramp.",
+    "dimensions": [
+      3.4,
+      3.3,
+      2.985
+    ],
+    "url": "/park-kits/calgary-details-v1/garden-shed.glb",
+    "color": "#7d8f96",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:garden_shed",
+    "sha256": "301157038db8ca656a17dafa763cc9dac33a3b7b88fe182863d05f3597c9b908",
+    "triangles": 504,
+    "meshes": 2,
+    "bytes": 59528
+  },
+  {
+    "id": "detail-calgary-trampoline",
+    "label": "Backyard trampoline",
+    "category": "Play",
+    "description": "Round 4.3 m trampoline with safety net enclosure; a familiar backyard sight.",
+    "dimensions": [
+      4.46,
+      4.698,
+      2.762
+    ],
+    "url": "/park-kits/calgary-details-v1/trampoline.glb",
+    "color": "#2f66b5",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.003905,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:trampoline",
+    "sha256": "87a1c61093bea7d95f79367b0a8a7687f94bee46410022261319cd064d61254e",
+    "triangles": 2588,
+    "meshes": 1,
+    "bytes": 296224
+  },
+  {
+    "id": "detail-calgary-little-free-library",
+    "label": "Little free library",
+    "category": "Street furniture",
+    "description": "Neighbourhood book-exchange box on a post for front yards and park entries.",
+    "dimensions": [
+      0.62,
+      0.48,
+      1.87
+    ],
+    "url": "/park-kits/calgary-details-v1/little-free-library.glb",
+    "color": "#2f8f8a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:little_free_library",
+    "sha256": "fc1ccf100bcdaefac911db0a80aad50a10a7986d9ad667f7d34473795212e6ca",
+    "triangles": 518,
+    "meshes": 1,
+    "bytes": 60244
+  },
+  {
+    "id": "detail-calgary-street-hockey-net",
+    "label": "Driveway hockey net",
+    "category": "Play",
+    "description": "Street hockey net with two sticks and a ball for driveways, lanes and cul-de-sacs.",
+    "dimensions": [
+      2.595,
+      1.989,
+      1.142
+    ],
+    "url": "/park-kits/calgary-details-v1/street-hockey-net.glb",
+    "color": "#eef0f1",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:street_hockey_net",
+    "sha256": "cdbea691f7e9b0dfbf120029de593d25e49640f17782370320053a067cd03148",
+    "triangles": 596,
+    "meshes": 1,
+    "bytes": 69128
+  },
+  {
+    "id": "detail-calgary-sandstone-blocks",
+    "label": "Sandstone block group",
+    "category": "Landscape",
+    "description": "Quarried buff sandstone blocks, the stone of Calgary's early buildings, as informal seating.",
+    "dimensions": [
+      3.023,
+      2.233,
+      0.9
+    ],
+    "url": "/park-kits/calgary-details-v1/sandstone-blocks.glb",
+    "color": "#c9ad84",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:sandstone_blocks",
+    "sha256": "2e43b599205a319607724298b9773f8e4d320a2a49491f2831f0652c02e230ea",
+    "triangles": 210,
+    "meshes": 1,
+    "bytes": 25116
+  },
+  {
+    "id": "detail-calgary-sandstone-seat-wall",
+    "label": "Sandstone seat wall",
+    "category": "Seating",
+    "description": "Repeatable 3.6 m seat wall of rough sandstone blocks with thick cap stones.",
+    "dimensions": [
+      3.628,
+      0.56,
+      0.47
+    ],
+    "url": "/park-kits/calgary-details-v1/sandstone-seat-wall.glb",
+    "color": "#c9ad84",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:sandstone_seat_wall",
+    "sha256": "ed99adb888b4ce4c699a956c6b5fc6acda7b2a7d6b66fe7a6a1c1d6dab109e20",
+    "triangles": 300,
+    "meshes": 1,
+    "bytes": 35384
+  },
+  {
+    "id": "detail-calgary-rundle-rock-wall",
+    "label": "Rundle rock wall",
+    "category": "Edges & gates",
+    "description": "Repeatable 3 m wall of dark ledge-laid Rundle stone from the Bow valley.",
+    "dimensions": [
+      3.05,
+      0.55,
+      0.896
+    ],
+    "url": "/park-kits/calgary-details-v1/rundle-rock-wall.glb",
+    "color": "#4a4a4c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:rundle_rock_wall",
+    "sha256": "0acf0678723893ad415524d4270af87cf0c72f3567090a0f5ff0febb3ce12609",
+    "triangles": 1104,
+    "meshes": 1,
+    "bytes": 127040
+  },
+  {
+    "id": "detail-calgary-glacial-erratic",
+    "label": "Glacial erratic",
+    "category": "Landscape",
+    "description": "House-sized quartzite boulder left by the ice, like those of the foothills erratics train.",
+    "dimensions": [
+      5.096,
+      3.878,
+      2.3
+    ],
+    "url": "/park-kits/calgary-details-v1/glacial-erratic.glb",
+    "color": "#b7b0a6",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:glacial_erratic",
+    "sha256": "9d93d555556a71c1d1c6b1e75530987e54b8c42ca58b208f4064b4aa7c778d74",
+    "triangles": 384,
+    "meshes": 1,
+    "bytes": 44952
+  },
+  {
+    "id": "detail-calgary-round-hay-bale",
+    "label": "Round hay bale",
+    "category": "Landscape",
+    "description": "Large round straw bale for field edges, event seating and harvest scenes.",
+    "dimensions": [
+      1.2,
+      1.52,
+      1.459
+    ],
+    "url": "/park-kits/calgary-details-v1/round-hay-bale.glb",
+    "color": "#c9a857",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:round_hay_bale",
+    "sha256": "d0b31716677089bdb51d07579eb3283ee1a424db1f3b4c44d676bdb4dbf88ffd",
+    "triangles": 528,
+    "meshes": 1,
+    "bytes": 61372
+  },
+  {
+    "id": "detail-calgary-ranch-rail-fence",
+    "label": "Ranch rail fence",
+    "category": "Edges & gates",
+    "description": "Repeatable 4.8 m run of weathered three-rail post fence.",
+    "dimensions": [
+      4.958,
+      0.18,
+      1.43
+    ],
+    "url": "/park-kits/calgary-details-v1/ranch-rail-fence.glb",
+    "color": "#8a7d6c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:ranch_rail_fence",
+    "sha256": "218b4b33abbce60facd8d0e0110083d988ddd9f4fa6972a6ac42701e83b5d153",
+    "triangles": 288,
+    "meshes": 1,
+    "bytes": 34012
+  },
+  {
+    "id": "detail-calgary-ranch-gate",
+    "label": "Ranch entry gate",
+    "category": "Edges & gates",
+    "description": "Tall log gateway with a blank hanging sign and a pair of steel farm gates.",
+    "dimensions": [
+      6.5,
+      1.476,
+      4.7
+    ],
+    "url": "/park-kits/calgary-details-v1/ranch-gate.glb",
+    "color": "#8a7d6c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:ranch_gate",
+    "sha256": "6c5ec7585bcfbc04ffb87b845a5ad3496af3a775d0119563ef8b0da51e192ab6",
+    "triangles": 732,
+    "meshes": 1,
+    "bytes": 84592
+  },
+  {
+    "id": "detail-calgary-pathway-marker",
+    "label": "River pathway marker",
+    "category": "Street furniture",
+    "description": "Shared pathway post with walking and cycling symbols and a coloured route band.",
+    "dimensions": [
+      0.44,
+      0.44,
+      1.43
+    ],
+    "url": "/park-kits/calgary-details-v1/pathway-marker.glb",
+    "color": "#1f8a8a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:pathway_marker",
+    "sha256": "cd83063665ba478f1d61773849955e0a8568288b821de106a40f9518a501800d",
+    "triangles": 206,
+    "meshes": 1,
+    "bytes": 24656
+  },
+  {
+    "id": "detail-calgary-river-safety-station",
+    "label": "River safety ring station",
+    "category": "Street furniture",
+    "description": "Life ring and throw rope on a marked post for river banks, ponds and boat launches.",
+    "dimensions": [
+      0.63,
+      0.375,
+      2.06
+    ],
+    "url": "/park-kits/calgary-details-v1/river-safety-station.glb",
+    "color": "#c23b33",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:river_safety_station",
+    "sha256": "157888fe37f382234a03ac1a0099dff14eb5e163c1131fd213f4901a98568eb4",
+    "triangles": 840,
+    "meshes": 1,
+    "bytes": 96952
+  },
+  {
+    "id": "detail-calgary-lrt-platform-shelter",
+    "label": "Light-rail platform shelter",
+    "category": "Shelters & markets",
+    "description": "Ten metre station canopy with wind screens, benches, blank pylon and platform edge strip.",
+    "dimensions": [
+      10.04,
+      4.245,
+      3.35
+    ],
+    "url": "/park-kits/calgary-details-v1/lrt-platform-shelter.glb",
+    "color": "#3d4348",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:lrt_platform_shelter",
+    "sha256": "38a8e977d14633c17272b56a76a5ea4d757adba47c6a37ab02fbc375d2ce70c4",
+    "triangles": 1052,
+    "meshes": 2,
+    "bytes": 122064
+  },
+  {
+    "id": "detail-calgary-lrt-catenary-pole",
+    "label": "Light-rail catenary pole",
+    "category": "Street furniture",
+    "description": "Overhead line pole with cantilever and wires 20 m each way. Place one every 40 m.",
+    "dimensions": [
+      40.001,
+      3.15,
+      7.76
+    ],
+    "url": "/park-kits/calgary-details-v1/lrt-catenary-pole.glb",
+    "color": "#8e969a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:lrt_catenary_pole",
+    "sha256": "ec2f5bf740e862d6d180885695ca1245adfe7e43c9b46756dbfad6a6ab691885",
+    "triangles": 720,
+    "meshes": 1,
+    "bytes": 83252
+  },
+  {
+    "id": "detail-calgary-heated-bus-shelter",
+    "label": "Heated bus shelter",
+    "category": "Shelters & markets",
+    "description": "Enclosed glazed shelter with radiant heaters, bench, blank ad panel and stop flag.",
+    "dimensions": [
+      7.11,
+      2.6,
+      2.7
+    ],
+    "url": "/park-kits/calgary-details-v1/heated-bus-shelter.glb",
+    "color": "#454c52",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:heated_bus_shelter",
+    "sha256": "578abd20ae84b3fe14b0073efdda71610ec9520ab2b012119941f5c941dc0d39",
+    "triangles": 620,
+    "meshes": 2,
+    "bytes": 72820
+  },
+  {
+    "id": "detail-calgary-scooter-corral",
+    "label": "E-scooter parking corral",
+    "category": "Street furniture",
+    "description": "Marked on-street bay with a rail, sign and four shared scooters.",
+    "dimensions": [
+      3.95,
+      1.7,
+      2.3
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral.glb",
+    "color": "#17a2a2",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral",
+    "sha256": "ae8e51cdd07b3fda4cedf8ed428344522abd5df863dc813ab34fdafcdad2c45f",
+    "triangles": 1410,
+    "meshes": 1,
+    "bytes": 161908
+  },
+  {
+    "id": "detail-calgary-white-tailed-jackrabbit",
+    "label": "White-tailed jackrabbit",
+    "category": "Wildlife",
+    "description": "Lepus townsendii \u00b7 Calgary's big prairie hare sitting alert on a lawn. Static model.",
+    "dimensions": [
+      0.255,
+      0.601,
+      0.568
+    ],
+    "url": "/park-kits/calgary-details-v1/white-tailed-jackrabbit.glb",
+    "color": "#8f8474",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.001228,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:jackrabbit",
+    "sha256": "17f9dcda12023a205f643eefb9017cd19c44b8bc0bb76144f414feee3ecd3ef3",
+    "triangles": 642,
+    "meshes": 1,
+    "bytes": 74408
+  },
+  {
+    "id": "detail-calgary-magpies",
+    "label": "Black-billed magpies",
+    "category": "Wildlife",
+    "description": "Pica hudsonia \u00b7 a pair of long-tailed black, white and blue magpies on the ground. Static model.",
+    "dimensions": [
+      0.773,
+      0.638,
+      0.23
+    ],
+    "url": "/park-kits/calgary-details-v1/magpies.glb",
+    "color": "#22478a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000497,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:magpies",
+    "sha256": "052eb326451feec3d4ba9b227ec64d8551f5111c67ad23600a83d0de341919c2",
+    "triangles": 640,
+    "meshes": 1,
+    "bytes": 74148
+  },
+  {
+    "id": "detail-calgary-canada-geese",
+    "label": "Canada geese",
+    "category": "Wildlife",
+    "description": "Branta canadensis \u00b7 a pair of geese, one alert and one grazing, for river banks and ponds. Static model.",
+    "dimensions": [
+      1.418,
+      1.078,
+      0.941
+    ],
+    "url": "/park-kits/calgary-details-v1/canada-geese.glb",
+    "color": "#77685a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000541,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:canada_geese",
+    "sha256": "bac7b378eb5317a41b7413f7713c4f4966a43cfb1e2cc3b6a04e1da4f11b0f7c",
+    "triangles": 648,
+    "meshes": 1,
+    "bytes": 75064
+  },
+  {
+    "id": "detail-calgary-mule-deer",
+    "label": "Mule deer",
+    "category": "Wildlife",
+    "description": "Odocoileus hemionus \u00b7 a doe standing alert with big ears and white rump. Static model.",
+    "dimensions": [
+      0.423,
+      1.606,
+      1.576
+    ],
+    "url": "/park-kits/calgary-details-v1/mule-deer.glb",
+    "color": "#8a7460",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.005319,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mule_deer",
+    "sha256": "b5ae3ec8b5a1d80a51b516ac857bc1de37e8eadd286900a84329f309ea29de6a",
+    "triangles": 1032,
+    "meshes": 1,
+    "bytes": 118840
   }
 ]
