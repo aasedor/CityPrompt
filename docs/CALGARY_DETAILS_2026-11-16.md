@@ -165,11 +165,29 @@ through the same instancing path:
 [summer aerial](calgary-details-v1/scene-summer-aerial.jpg). The utility lines
 join across three poles placed 30 m apart. The harness was not committed.
 
-This covers catalogue, card, loading, instancing and placement maths. It does
-not cover the globe, terrain picking, the React panel in a live project, saving
-or capture.
+### The real project page, with a mocked backend
 
-Not done here: a browser trial placing these objects in a project, Undo/reload,
-deterministic capture and AI render with them, low-end device performance and
-classroom novice use. The snow windrow is white on the pale card background and
-reads faintly as a picker card.
+The project's own browser tests start the real app against mocked APIs, so the
+same setup was used for a temporary trial of **Add details** in a real project
+page (the 13 existing browser tests also pass in this sandbox):
+
+- the category screen shows the new **Winter city** and **Wildlife** tiles with
+  their item counts ([screenshot](calgary-details-v1/app-category-tiles.jpg));
+- every card in [Winter city](calgary-details-v1/app-winter-city.jpg) (9) and
+  [Wildlife](calgary-details-v1/app-wildlife.jpg) (4), and all 26 local cards in
+  Planting and 44 in Trees, loads from its static image at 480 × 315;
+- browsing those four categories requested **zero** local model files;
+- searching `winter` finds 17 items inside Trees and 27 across all categories;
+- choosing the community rink [arms placement](calgary-details-v1/app-placing.jpg).
+
+The map area itself shows "Missing VITE_GOOGLE_MAPS_API_KEY" in this setup, so
+clicking the map to place, saving, Undo/reload and capture were not exercised.
+The one logged browser error was an older item's model that is not hydrated in
+the sandbox. The trial spec was not committed.
+
+After seeing the cards at true size, the rink ice and the snow windrow were
+re-toned slightly bluer so they read against the pale card.
+
+Not done here: placing these objects on the live map with a real map key,
+Undo/reload, deterministic capture and AI render with them, low-end device
+performance and classroom novice use.

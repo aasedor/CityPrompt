@@ -40,7 +40,7 @@ GENERATOR = 'CityPrompt Calgary details builder v1'
 # sRGB palette; converted to linear vertex colours by the kit.
 WHITE = '#eef0f1'
 SNOW = ['#f4f7fa', '#e9eff5', '#fbfcfd', '#dfe8f0']
-ICE = '#d9e7f1'
+ICE = '#c6dbec'
 RED = '#c23b33'
 BLUE = '#2f5fa8'
 YELLOW = '#e0b63a'
@@ -343,13 +343,14 @@ def snow_windrow(s):
 
     def tone(r, i):
         if i == 0 or i >= around - 2:
-            return s.pick(['#cfd4d6', '#bfc3c2', '#d9dde0'], .04)  # gritty base
-        return s.pick(SNOW, .02)
+            return s.pick(['#c3c9cc', '#b3b8b8', '#cdd2d6'], .04)  # gritty base
+        # ploughed snow is broken and blue in its shaded facets, which also keeps it legible on a pale card
+        return s.pick(['#f1f5f9', '#dbe5ef', '#c8d6e4', '#e6edf4', '#bccbdb'], .02)
 
     s.loft(profile, tone, cap_start=True, cap_end=True)
     for _ in range(9):
         x, y = (s.random() - .5) * length * .8, (.75 + s.random() * .45) * (1 if s.random() < .5 else -1)
-        s.rock((.25 + s.random() * .3, .2 + s.random() * .25, .12 + s.random() * .18), 4, SNOW, jitter=.02, origin=(x, y, 0), yaw=s.random() * 3)
+        s.rock((.25 + s.random() * .3, .2 + s.random() * .25, .12 + s.random() * .18), 4, ['#e6edf4', '#cfdbe8', '#f1f5f9'], jitter=.02, origin=(x, y, 0), yaw=s.random() * 3)
 
 
 def grit_box(s):

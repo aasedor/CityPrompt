@@ -684,7 +684,7 @@
     "explicitReferenceCount": 3941,
     "dynamicCollectionCount": 7,
     "requiredFileCount": 5725,
-    "requiredLogicalBytes": 13045338558,
+    "requiredLogicalBytes": 13045339262,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -25948,14 +25948,14 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 332656,
-      "lfsOid": "2e7802149fdcda479d5ee296982f42a22c94615da83926ab8754904dc3f0d5bb"
+      "lfsOid": "0c3b33df0e9871eeea77dcc04b58809b122ba4c827d7e883c40a3ea50f1f5e27"
     },
     {
       "url": "/park-kits/calgary-details-v1/outdoor-rink.webp",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 5324
+      "logicalBytes": 5274
     },
     {
       "url": "/park-kits/calgary-details-v1/pathway-marker.glb",
@@ -26158,14 +26158,14 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 75044,
-      "lfsOid": "33df7989c6ec7a64b6be86a60c8a4544675b08d2b4ba925c8c3824326fb48565"
+      "lfsOid": "b10f56cbe0d7a73f7bb65e73a7e02c883279da1267225c337010b1e9d381855c"
     },
     {
       "url": "/park-kits/calgary-details-v1/snow-windrow.webp",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 1350
+      "logicalBytes": 1752
     },
     {
       "url": "/park-kits/calgary-details-v1/street-hockey-net.glb",
@@ -34437,8 +34437,8 @@
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
       "fileCount": 719,
-      "logicalBytes": 500781082,
-      "pathDigest": "a57661933e59d7dad8f30fe98b2396f09efda74a1a3776007812b0c0a9c5ba32"
+      "logicalBytes": 500781434,
+      "pathDigest": "832c000128e4a019fd9b6795754733aad0e300ed912494a504ba71f53550437c"
     },
     {
       "name": "public-realm-skins",
