@@ -6,8 +6,10 @@ Add 38 fixed-size objects that make a scene read as Calgary: a winter city set,
 back-lane and yard items, foothills stone and ranch pieces, pathway and transit
 furniture, and four local animals. They come from a new Blender-free builder in
 the same kit convention as the [prairie foliage](LOCAL_FOLIAGE_SEASONS_2026-11-16.md).
-Catalogue IDs use the `detail-calgary-` prefix and the kit folder is
-`frontend/public/park-kits/calgary-details-v1/`.
+Catalogue IDs use the `detail-yyc-` prefix and the kit folder is
+`frontend/public/park-kits/calgary-details-v1/`. The plainer `detail-calgary-`
+prefix already belongs to the traffic-safety concept family, and IDs are saved
+in student projects, so the two families are kept distinct by prefix.
 
 Two categories are new and have their own tiles in the panel: **Winter city**
 (9 items) and **Wildlife** (4). The other 25 items join existing categories.
@@ -137,6 +139,35 @@ Add `zoom=3` to bring the camera in on the two long wire items.
 - Runtime asset manifest regenerated and checked: 5,617 required files (+38)
   at the model commit, then 5,725 once both local kits gained card images.
 - Production build and `check-budget` pass at 8,441.7 KB of 8,448 KB.
+
+### App code path, without the globe
+
+The full app could not be started in the build sandbox, which has no map key or
+database. Instead a temporary page served by the project's own Vite config
+imported the real `detailCatalogue.ts`, `detailThumbnail.ts` and
+`detailInstances.ts` and ran all 108 local models (both kits) through them in
+headless Chromium:
+
+- every model resolves by ID and by label search inside its category;
+- `detailThumbnail` returns the static card without loading a model, and each
+  card decodes at 480 × 315;
+- every GLB loads with the app's three.js loader and `buildDetailInstances`
+  yields the registered mesh count, vertex-coloured double-sided materials with
+  no textures or transparency, and one instance per placement;
+- after `detailPlacementMatrix`, every model's base sits on the 0.084 m detail
+  datum within 0.001 mm, its size matches the registry within 0.5 mm, the
+  anchor lies inside the footprint, and a quarter turn pivots on the anchor.
+
+108 of 108 passed with no page or console errors. Three composed scenes went
+through the same instancing path:
+[winter lane at eye level](calgary-details-v1/scene-winter-lane.jpg),
+[winter aerial](calgary-details-v1/scene-winter-aerial.jpg) and
+[summer aerial](calgary-details-v1/scene-summer-aerial.jpg). The utility lines
+join across three poles placed 30 m apart. The harness was not committed.
+
+This covers catalogue, card, loading, instancing and placement maths. It does
+not cover the globe, terrain picking, the React panel in a live project, saving
+or capture.
 
 Not done here: a browser trial placing these objects in a project, Undo/reload,
 deterministic capture and AI render with them, low-end device performance and

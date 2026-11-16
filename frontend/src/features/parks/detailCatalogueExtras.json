@@ -5680,7 +5680,7 @@
     "thumbnailUrl": "/park-kits/prairie-foliage-v1/june-grass.webp"
   },
   {
-    "id": "detail-calgary-outdoor-rink",
+    "id": "detail-yyc-outdoor-rink",
     "label": "Community outdoor rink",
     "category": "Winter city",
     "description": "Boarded 30 x 15 m neighbourhood ice rink with lines, two nets, a gate and players' benches.",
@@ -5706,7 +5706,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/outdoor-rink.webp"
   },
   {
-    "id": "detail-calgary-rink-board-section",
+    "id": "detail-yyc-rink-board-section",
     "label": "Rink board section",
     "category": "Winter city",
     "description": "Repeatable 4 m length of braced rink boards for building a custom ice surface.",
@@ -5732,7 +5732,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/rink-board-section.webp"
   },
   {
-    "id": "detail-calgary-hockey-net",
+    "id": "detail-yyc-hockey-net",
     "label": "Hockey net",
     "category": "Winter city",
     "description": "Regulation red steel hockey net with white mesh for rinks and ponds.",
@@ -5758,7 +5758,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/hockey-net.webp"
   },
   {
-    "id": "detail-calgary-warming-hut",
+    "id": "detail-yyc-warming-hut",
     "label": "Skaters' warming hut",
     "category": "Winter city",
     "description": "Small cedar skate-change hut with a stove pipe, bench and firewood beside the rink.",
@@ -5784,7 +5784,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/warming-hut.webp"
   },
   {
-    "id": "detail-calgary-fire-pit-circle",
+    "id": "detail-yyc-fire-pit-circle",
     "label": "Fire pit circle",
     "category": "Winter city",
     "description": "Steel fire ring on a gravel pad with four log benches and stacked firewood.",
@@ -5810,7 +5810,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/fire-pit-circle.webp"
   },
   {
-    "id": "detail-calgary-snow-fence",
+    "id": "detail-yyc-snow-fence",
     "label": "Snow fence",
     "category": "Winter city",
     "description": "Repeatable 4.8 m run of wood-slat snow fence on steel posts to hold drifts off paths.",
@@ -5836,7 +5836,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/snow-fence.webp"
   },
   {
-    "id": "detail-calgary-snow-windrow",
+    "id": "detail-yyc-snow-windrow",
     "label": "Snow windrow",
     "category": "Winter city",
     "description": "Ploughed 6 m snow bank with broken chunks; repeat along winter streets and lots.",
@@ -5862,7 +5862,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/snow-windrow.webp"
   },
   {
-    "id": "detail-calgary-grit-box",
+    "id": "detail-yyc-grit-box",
     "label": "Sanding grit box",
     "category": "Winter city",
     "description": "Roadside box of traction grit for icy hills, steps and pathway slopes.",
@@ -5888,7 +5888,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/grit-box.webp"
   },
   {
-    "id": "detail-calgary-plug-in-posts",
+    "id": "detail-yyc-plug-in-posts",
     "label": "Parking plug-in posts",
     "category": "Winter city",
     "description": "Block-heater outlet posts with rail and wheel stops for two winter parking stalls.",
@@ -5914,7 +5914,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/plug-in-posts.webp"
   },
   {
-    "id": "detail-calgary-waste-cart-black",
+    "id": "detail-yyc-waste-cart-black",
     "label": "Black garbage cart",
     "category": "Street furniture",
     "description": "Wheeled black cart for back lanes, side yards and collection day.",
@@ -5940,7 +5940,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-black.webp"
   },
   {
-    "id": "detail-calgary-waste-cart-blue",
+    "id": "detail-yyc-waste-cart-blue",
     "label": "Blue recycling cart",
     "category": "Street furniture",
     "description": "Wheeled blue recycling cart for back lanes and collection day.",
@@ -5966,7 +5966,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-blue.webp"
   },
   {
-    "id": "detail-calgary-waste-cart-green",
+    "id": "detail-yyc-waste-cart-green",
     "label": "Green compost cart",
     "category": "Street furniture",
     "description": "Wheeled green food and yard waste cart for back lanes and collection day.",
@@ -5992,7 +5992,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-green.webp"
   },
   {
-    "id": "detail-calgary-waste-cart-trio",
+    "id": "detail-yyc-waste-cart-trio",
     "label": "Three-cart set",
     "category": "Street furniture",
     "description": "Black, blue and green carts lined up at the lane, as on a Calgary collection day.",
@@ -6018,7 +6018,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-trio.webp"
   },
   {
-    "id": "detail-calgary-utility-pole",
+    "id": "detail-yyc-utility-pole",
     "label": "Wooden utility pole",
     "category": "Street furniture",
     "description": "Back-lane power pole with crossarm, transformer and lane light. Use alone or to end a line.",
@@ -6044,7 +6044,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole.webp"
   },
   {
-    "id": "detail-calgary-utility-pole-lines",
+    "id": "detail-yyc-utility-pole-lines",
     "label": "Utility pole with lines",
     "category": "Street furniture",
     "description": "Power pole carrying overhead lines 15 m each way. Place one every 30 m along a lane.",
@@ -6070,7 +6070,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole-lines.webp"
   },
   {
-    "id": "detail-calgary-privacy-fence",
+    "id": "detail-yyc-privacy-fence",
     "label": "Wood privacy fence",
     "category": "Edges & gates",
     "description": "Repeatable 2.4 m panel of 1.8 m cedar board fence for yards and lanes.",
@@ -6096,7 +6096,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/privacy-fence.webp"
   },
   {
-    "id": "detail-calgary-chain-link-fence",
+    "id": "detail-yyc-chain-link-fence",
     "label": "Chain-link fence",
     "category": "Edges & gates",
     "description": "Repeatable 3 m panel of 1.2 m galvanized chain-link for yards, schools and parks.",
@@ -6122,7 +6122,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/chain-link-fence.webp"
   },
   {
-    "id": "detail-calgary-garden-shed",
+    "id": "detail-yyc-garden-shed",
     "label": "Garden shed",
     "category": "Garden & growing",
     "description": "Backyard 3 x 2.4 m gable shed with double doors, window and a small ramp.",
@@ -6148,7 +6148,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/garden-shed.webp"
   },
   {
-    "id": "detail-calgary-trampoline",
+    "id": "detail-yyc-trampoline",
     "label": "Backyard trampoline",
     "category": "Play",
     "description": "Round 4.3 m trampoline with safety net enclosure; a familiar backyard sight.",
@@ -6174,7 +6174,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/trampoline.webp"
   },
   {
-    "id": "detail-calgary-little-free-library",
+    "id": "detail-yyc-little-free-library",
     "label": "Little free library",
     "category": "Street furniture",
     "description": "Neighbourhood book-exchange box on a post for front yards and park entries.",
@@ -6200,7 +6200,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/little-free-library.webp"
   },
   {
-    "id": "detail-calgary-street-hockey-net",
+    "id": "detail-yyc-street-hockey-net",
     "label": "Driveway hockey net",
     "category": "Play",
     "description": "Street hockey net with two sticks and a ball for driveways, lanes and cul-de-sacs.",
@@ -6226,7 +6226,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/street-hockey-net.webp"
   },
   {
-    "id": "detail-calgary-sandstone-blocks",
+    "id": "detail-yyc-sandstone-blocks",
     "label": "Sandstone block group",
     "category": "Landscape",
     "description": "Quarried buff sandstone blocks, the stone of Calgary's early buildings, as informal seating.",
@@ -6252,7 +6252,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-blocks.webp"
   },
   {
-    "id": "detail-calgary-sandstone-seat-wall",
+    "id": "detail-yyc-sandstone-seat-wall",
     "label": "Sandstone seat wall",
     "category": "Seating",
     "description": "Repeatable 3.6 m seat wall of rough sandstone blocks with thick cap stones.",
@@ -6278,7 +6278,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-seat-wall.webp"
   },
   {
-    "id": "detail-calgary-rundle-rock-wall",
+    "id": "detail-yyc-rundle-rock-wall",
     "label": "Rundle rock wall",
     "category": "Edges & gates",
     "description": "Repeatable 3 m wall of dark ledge-laid Rundle stone from the Bow valley.",
@@ -6304,7 +6304,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/rundle-rock-wall.webp"
   },
   {
-    "id": "detail-calgary-glacial-erratic",
+    "id": "detail-yyc-glacial-erratic",
     "label": "Glacial erratic",
     "category": "Landscape",
     "description": "House-sized quartzite boulder left by the ice, like those of the foothills erratics train.",
@@ -6330,7 +6330,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/glacial-erratic.webp"
   },
   {
-    "id": "detail-calgary-round-hay-bale",
+    "id": "detail-yyc-round-hay-bale",
     "label": "Round hay bale",
     "category": "Landscape",
     "description": "Large round straw bale for field edges, event seating and harvest scenes.",
@@ -6356,7 +6356,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/round-hay-bale.webp"
   },
   {
-    "id": "detail-calgary-ranch-rail-fence",
+    "id": "detail-yyc-ranch-rail-fence",
     "label": "Ranch rail fence",
     "category": "Edges & gates",
     "description": "Repeatable 4.8 m run of weathered three-rail post fence.",
@@ -6382,7 +6382,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-rail-fence.webp"
   },
   {
-    "id": "detail-calgary-ranch-gate",
+    "id": "detail-yyc-ranch-gate",
     "label": "Ranch entry gate",
     "category": "Edges & gates",
     "description": "Tall log gateway with a blank hanging sign and a pair of steel farm gates.",
@@ -6408,7 +6408,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-gate.webp"
   },
   {
-    "id": "detail-calgary-pathway-marker",
+    "id": "detail-yyc-pathway-marker",
     "label": "River pathway marker",
     "category": "Street furniture",
     "description": "Shared pathway post with walking and cycling symbols and a coloured route band.",
@@ -6434,7 +6434,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/pathway-marker.webp"
   },
   {
-    "id": "detail-calgary-river-safety-station",
+    "id": "detail-yyc-river-safety-station",
     "label": "River safety ring station",
     "category": "Street furniture",
     "description": "Life ring and throw rope on a marked post for river banks, ponds and boat launches.",
@@ -6460,7 +6460,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/river-safety-station.webp"
   },
   {
-    "id": "detail-calgary-lrt-platform-shelter",
+    "id": "detail-yyc-lrt-platform-shelter",
     "label": "Light-rail platform shelter",
     "category": "Shelters & markets",
     "description": "Ten metre station canopy with wind screens, benches, blank pylon and platform edge strip.",
@@ -6486,7 +6486,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-platform-shelter.webp"
   },
   {
-    "id": "detail-calgary-lrt-catenary-pole",
+    "id": "detail-yyc-lrt-catenary-pole",
     "label": "Light-rail catenary pole",
     "category": "Street furniture",
     "description": "Overhead line pole with cantilever and wires 20 m each way. Place one every 40 m.",
@@ -6512,7 +6512,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-catenary-pole.webp"
   },
   {
-    "id": "detail-calgary-heated-bus-shelter",
+    "id": "detail-yyc-heated-bus-shelter",
     "label": "Heated bus shelter",
     "category": "Shelters & markets",
     "description": "Enclosed glazed shelter with radiant heaters, bench, blank ad panel and stop flag.",
@@ -6538,7 +6538,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/heated-bus-shelter.webp"
   },
   {
-    "id": "detail-calgary-scooter-corral",
+    "id": "detail-yyc-scooter-corral",
     "label": "E-scooter parking corral",
     "category": "Street furniture",
     "description": "Marked on-street bay with a rail, sign and four shared scooters.",
@@ -6564,7 +6564,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral.webp"
   },
   {
-    "id": "detail-calgary-white-tailed-jackrabbit",
+    "id": "detail-yyc-white-tailed-jackrabbit",
     "label": "White-tailed jackrabbit",
     "category": "Wildlife",
     "description": "Lepus townsendii \u00b7 Calgary's big prairie hare sitting alert on a lawn. Static model.",
@@ -6590,7 +6590,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/white-tailed-jackrabbit.webp"
   },
   {
-    "id": "detail-calgary-magpies",
+    "id": "detail-yyc-magpies",
     "label": "Black-billed magpies",
     "category": "Wildlife",
     "description": "Pica hudsonia \u00b7 a pair of long-tailed black, white and blue magpies on the ground. Static model.",
@@ -6616,7 +6616,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/magpies.webp"
   },
   {
-    "id": "detail-calgary-canada-geese",
+    "id": "detail-yyc-canada-geese",
     "label": "Canada geese",
     "category": "Wildlife",
     "description": "Branta canadensis \u00b7 a pair of geese, one alert and one grazing, for river banks and ponds. Static model.",
@@ -6642,7 +6642,7 @@
     "thumbnailUrl": "/park-kits/calgary-details-v1/canada-geese.webp"
   },
   {
-    "id": "detail-calgary-mule-deer",
+    "id": "detail-yyc-mule-deer",
     "label": "Mule deer",
     "category": "Wildlife",
     "description": "Odocoileus hemionus \u00b7 a doe standing alert with big ears and white rump. Static model.",

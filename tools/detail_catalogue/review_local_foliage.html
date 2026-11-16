@@ -62,9 +62,9 @@ function scene(model, view, slug) {
   return { s, camera };
 }
 for (const row of rows) {
-  if (only && !only.includes(row.id.replace(/^detail-(prairie|calgary)-/, ''))) continue;
+  if (only && !only.includes(row.id.replace(/^detail-(prairie|yyc)-/, ''))) continue;
   const { scene: model } = await loader.loadAsync(`/${dir}/${row.url.split('/').pop()}`);
-  const slug = row.id.replace(/^detail-(prairie|calgary)-/, '');
+  const slug = row.id.replace(/^detail-(prairie|yyc)-/, '');
   const views = mode === 'mix' ? ['eye', 'oblique'] : [mode === 'thumb' ? 'card' : mode];
   for (const view of views) {
     const { s, camera } = scene(model.clone(), view, slug);

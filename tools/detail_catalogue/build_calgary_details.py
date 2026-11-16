@@ -29,7 +29,11 @@ import build_local_foliage as foliage  # noqa: E402
 from calgary_kit import Solid, add, mix, mul, norm, rounded_rect, sub  # noqa: E402
 
 KIT = 'calgary-details-v1'
-PREFIX = 'detail-calgary-'
+# YYC is Calgary's airport code and common local shorthand. The plainer
+# detail-calgary- prefix already belongs to the traffic-safety concept family
+# (calgarySafetyCatalogue.json), and IDs are saved in student projects, so the
+# two families must never be confusable by prefix.
+PREFIX = 'detail-yyc-'
 URL_ROOT = f'/park-kits/{KIT}'
 GENERATOR = 'CityPrompt Calgary details builder v1'
 

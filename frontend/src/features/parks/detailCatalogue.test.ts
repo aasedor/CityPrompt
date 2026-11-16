@@ -107,7 +107,7 @@ describe("standalone detail catalogue", () => {
     expect(site).toHaveLength(38);
     expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(4_000_000);
     for (const model of site) {
-      expect(model.id).toMatch(/^detail-calgary-[a-z-]+$/);
+      expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
       expect(model.kind).toBe("object");
       expect(model.triangles).toBeLessThan(3_500);
       expect(model.meshes).toBeLessThanOrEqual(2);
@@ -131,16 +131,16 @@ describe("standalone detail catalogue", () => {
       "Mule deer",
     ]);
     expect(searchDetails("cart", "Street furniture").map((m) => m.id)).toEqual([
-      "detail-calgary-waste-cart-black",
-      "detail-calgary-waste-cart-blue",
-      "detail-calgary-waste-cart-green",
-      "detail-calgary-waste-cart-trio",
+      "detail-yyc-waste-cart-black",
+      "detail-yyc-waste-cart-blue",
+      "detail-yyc-waste-cart-green",
+      "detail-yyc-waste-cart-trio",
     ]);
     expect(searchDetails("rink", "Winter city").map((m) => m.id)).toEqual([
-      "detail-calgary-outdoor-rink",
-      "detail-calgary-rink-board-section",
-      "detail-calgary-hockey-net",
-      "detail-calgary-warming-hut",
+      "detail-yyc-outdoor-rink",
+      "detail-yyc-rink-board-section",
+      "detail-yyc-hockey-net",
+      "detail-yyc-warming-hut",
     ]);
   });
 });

@@ -127,6 +127,16 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertIn("'Winter city': () =>", tiles)
         self.assertIn('Wildlife: () =>', tiles)
 
+    def test_ids_never_share_the_traffic_safety_family_prefix(self):
+        """IDs are saved in student projects. detail-calgary- belongs to the safety concepts."""
+        safety = json.loads((ROOT / 'frontend/src/features/parks/calgarySafetyCatalogue.json').read_text(encoding='utf-8'))
+        self.assertTrue(safety and all(row['id'].startswith('detail-calgary-') for row in safety))
+        self.assertEqual(self.module.PREFIX, 'detail-yyc-')
+        for row in self.registry:
+            self.assertTrue(row['id'].startswith('detail-yyc-'), row['id'])
+        every = [row['id'] for row in json.loads(EXTRAS.read_text(encoding='utf-8'))]
+        self.assertFalse([i for i in every if i.startswith('detail-calgary-')])
+
     def test_generic_wording_without_branding(self):
         for row in self.registry:
             text = f"{row['label']} {row['description']}".lower()
