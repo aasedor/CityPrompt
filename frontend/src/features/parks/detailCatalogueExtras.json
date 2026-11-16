@@ -3873,9 +3873,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.152689,
+      0.0,
       0.002632,
-      -0.068694
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -3898,9 +3898,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.023663,
+      0.0,
       0.001022,
-      -0.087165
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -3923,9 +3923,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.136157,
+      0.0,
       0.004542,
-      0.43926
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -3948,9 +3948,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      0.016131,
+      0.0,
       0.003998,
-      -0.182078
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -3973,9 +3973,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      0.124221,
+      0.0,
       0.003691,
-      0.042719
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -3998,9 +3998,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.282958,
+      0.0,
       0.004482,
-      0.164042
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -4023,9 +4023,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.165219,
+      0.0,
       0.006512,
-      -0.310526
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -4048,9 +4048,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      0.105124,
+      0.0,
       0.004826,
-      -0.095092
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -4073,9 +4073,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.089862,
+      0.0,
       0.002838,
-      -0.006578
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -4098,9 +4098,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.01865,
+      0.0,
       0.002096,
-      0.062185
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -4123,9 +4123,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      0.159235,
+      0.0,
       0.00425,
-      -0.256033
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:deciduous",
@@ -4133,6 +4133,131 @@
     "triangles": 13194,
     "meshes": 2,
     "bytes": 1506152
+  },
+  {
+    "id": "detail-prairie-plains-cottonwood",
+    "label": "Plains cottonwood",
+    "category": "Trees",
+    "description": "Populus deltoides \u00b7 massive river-flat native with furrowed bark and a broad crown. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      12.406,
+      12.317,
+      20.37
+    ],
+    "url": "/park-kits/prairie-foliage-v1/plains-cottonwood.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.007886,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "beee8e52338a15efb61bc56779e0743963d6175c9ebe468dd9e9fe99069f468f",
+    "triangles": 12606,
+    "meshes": 2,
+    "bytes": 1439136
+  },
+  {
+    "id": "detail-prairie-brandon-elm",
+    "label": "Brandon elm",
+    "category": "Trees",
+    "description": "Ulmus americana Brandon \u00b7 vase-shaped prairie elm that arches over Calgary boulevards. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      10.906,
+      8.942,
+      13.379
+    ],
+    "url": "/park-kits/prairie-foliage-v1/brandon-elm.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002839,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "c3d802c04d38a7aeac30406fcf706700b0a9f42b50ca6f670e72259fe987ade4",
+    "triangles": 12558,
+    "meshes": 2,
+    "bytes": 1433648
+  },
+  {
+    "id": "detail-prairie-littleleaf-linden",
+    "label": "Littleleaf linden",
+    "category": "Trees",
+    "description": "Tilia cordata \u00b7 dense, neatly pyramidal street tree with small heart-shaped leaves. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.113,
+      7.119,
+      11.771
+    ],
+    "url": "/park-kits/prairie-foliage-v1/littleleaf-linden.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.001487,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "05c6b4790743433d2536eb66a238190f564f5c73c9e4d9e45a76aeafeed58063",
+    "triangles": 11808,
+    "meshes": 2,
+    "bytes": 1348176
+  },
+  {
+    "id": "detail-prairie-flowering-crabapple",
+    "label": "Flowering crabapple",
+    "category": "Trees",
+    "description": "Malus \u00b7 small rounded yard tree covered in pink spring blossom. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      5.048,
+      5.044,
+      5.983
+    ],
+    "url": "/park-kits/prairie-foliage-v1/flowering-crabapple.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002684,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "19b5470569bfdac4a76b1acf9743f7d2ea17be6a38aca99be09d16e2ae3ac02d",
+    "triangles": 13048,
+    "meshes": 2,
+    "bytes": 1489536
+  },
+  {
+    "id": "detail-prairie-japanese-tree-lilac",
+    "label": "Japanese tree lilac",
+    "category": "Trees",
+    "description": "Syringa reticulata \u00b7 compact street tree with cherry-like bark and creamy June bloom. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      5.114,
+      5.336,
+      8.384
+    ],
+    "url": "/park-kits/prairie-foliage-v1/japanese-tree-lilac.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002271,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "e3743960327b4c0ffe3a12341be432f726b3d0c8f9ea7cecd87d23885ef41411",
+    "triangles": 12396,
+    "meshes": 2,
+    "bytes": 1415204
   },
   {
     "id": "detail-prairie-white-spruce",
@@ -4148,9 +4273,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      0.029933,
-      -0.0,
-      0.061525
+      0.0,
+      0.0,
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:conifer",
@@ -4173,9 +4298,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.014312,
-      -0.0,
-      -0.016731
+      0.0,
+      0.0,
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:conifer",
@@ -4198,9 +4323,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      0.132042,
-      -0.0,
-      0.104604
+      0.0,
+      0.0,
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:conifer",
@@ -4223,9 +4348,9 @@
     "color": "#76a65c",
     "kind": "tree",
     "offset": [
-      -0.123529,
-      -0.0,
-      -0.032447
+      0.0,
+      0.0,
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:conifer",
@@ -4233,6 +4358,606 @@
     "triangles": 10832,
     "meshes": 2,
     "bytes": 1236880
+  },
+  {
+    "id": "detail-prairie-scots-pine",
+    "label": "Scots pine",
+    "category": "Trees",
+    "description": "Pinus sylvestris \u00b7 orange-barked pine with an irregular blue-green crown held high. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      8.14,
+      8.173,
+      12.196
+    ],
+    "url": "/park-kits/prairie-foliage-v1/scots-pine.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer",
+    "sha256": "95ae0ee3bdcbe3c4ca5aa9066142cd66822e773e3ff409e503d1380d5c801f74",
+    "triangles": 10776,
+    "meshes": 2,
+    "bytes": 1230468
+  },
+  {
+    "id": "detail-prairie-douglas-fir",
+    "label": "Douglas fir",
+    "category": "Trees",
+    "description": "Pseudotsuga menziesii \u00b7 tall dark native of Bow valley slopes with furrowed bark. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.12,
+      6.715,
+      18.212
+    ],
+    "url": "/park-kits/prairie-foliage-v1/douglas-fir.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer",
+    "sha256": "ae71762461d15a2f79d2b88b4728420ead56604b1e8bc5b3e0c1b0c8c07fc232",
+    "triangles": 11946,
+    "meshes": 2,
+    "bytes": 1363856
+  },
+  {
+    "id": "detail-prairie-limber-pine",
+    "label": "Limber pine",
+    "category": "Trees",
+    "description": "Pinus flexilis \u00b7 gnarled, wind-shaped foothills pine of dry ridges and escarpments. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.954,
+      5.428,
+      6.846
+    ],
+    "url": "/park-kits/prairie-foliage-v1/limber-pine.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.033056,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:gnarled_pine",
+    "sha256": "df05c8637cd029b2e94b46996a80383fc4ba1bd3a56adb4e10a71777e8985c33",
+    "triangles": 9992,
+    "meshes": 2,
+    "bytes": 1141108
+  },
+  {
+    "id": "detail-prairie-trembling-aspen-autumn",
+    "label": "Trembling aspen \u00b7 autumn",
+    "category": "Trees",
+    "description": "Populus tremuloides \u00b7 the same tree in gold September leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.799,
+      4.759,
+      11.588
+    ],
+    "url": "/park-kits/prairie-foliage-v1/trembling-aspen-autumn.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002632,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous",
+    "sha256": "185fbd4fd85b6181ba7d1540fcdccb11811d44ebf38281bacf20ea0cdeeacfa2",
+    "triangles": 11236,
+    "meshes": 2,
+    "bytes": 1282980
+  },
+  {
+    "id": "detail-prairie-siberian-larch-autumn",
+    "label": "Siberian larch \u00b7 autumn",
+    "category": "Trees",
+    "description": "Larix sibirica \u00b7 the same tree with needles turned gold. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.526,
+      4.561,
+      13.165
+    ],
+    "url": "/park-kits/prairie-foliage-v1/siberian-larch-autumn.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer",
+    "sha256": "5604069d47fc121c782dd14e53a50c2887f5e16dec9831afa53d6a7ad3db28e5",
+    "triangles": 10832,
+    "meshes": 2,
+    "bytes": 1236908
+  },
+  {
+    "id": "detail-prairie-white-spruce-snow",
+    "label": "White spruce \u00b7 snow",
+    "category": "Trees",
+    "description": "Picea glauca \u00b7 the same tree carrying fresh snow. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      5.352,
+      5.0,
+      14.175
+    ],
+    "url": "/park-kits/prairie-foliage-v1/white-spruce-snow.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer:snow",
+    "sha256": "94988287f7a792fa5f14f67ab677bdf49f96f8ab23a974694c07e7fe4dadea79",
+    "triangles": 13296,
+    "meshes": 2,
+    "bytes": 1517788
+  },
+  {
+    "id": "detail-prairie-colorado-blue-spruce-snow",
+    "label": "Colorado blue spruce \u00b7 snow",
+    "category": "Trees",
+    "description": "Picea pungens \u00b7 the same tree carrying fresh snow. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.982,
+      4.761,
+      10.65
+    ],
+    "url": "/park-kits/prairie-foliage-v1/colorado-blue-spruce-snow.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer:snow",
+    "sha256": "f243d8e5a5fa0895425634f6507fb9043d80477dd95d18a762792de063bfbd7e",
+    "triangles": 11946,
+    "meshes": 2,
+    "bytes": 1363920
+  },
+  {
+    "id": "detail-prairie-trembling-aspen-winter",
+    "label": "Trembling aspen \u00b7 winter",
+    "category": "Trees",
+    "description": "Populus tremuloides \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.807,
+      4.777,
+      11.638
+    ],
+    "url": "/park-kits/prairie-foliage-v1/trembling-aspen-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002632,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "000b99680bf9e6745ba62576df4dc6a360c17b193b91d282978feae022cc0d09",
+    "triangles": 7276,
+    "meshes": 1,
+    "bytes": 830688
+  },
+  {
+    "id": "detail-prairie-swedish-columnar-aspen-winter",
+    "label": "Swedish columnar aspen \u00b7 winter",
+    "category": "Trees",
+    "description": "Populus tremula Erecta \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      2.453,
+      2.412,
+      10.73
+    ],
+    "url": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.001022,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "3284eef2e413fdb86da569a9af653ea3fe37254873dc8ba403dc849c08be7fa0",
+    "triangles": 6428,
+    "meshes": 1,
+    "bytes": 734032
+  },
+  {
+    "id": "detail-prairie-balsam-poplar-winter",
+    "label": "Balsam poplar \u00b7 winter",
+    "category": "Trees",
+    "description": "Populus balsamifera \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      9.417,
+      8.087,
+      17.336
+    ],
+    "url": "/park-kits/prairie-foliage-v1/balsam-poplar-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.004542,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "8cd1315dd48b3d66f640f46763ccf0e55073078e11bb64738db675edf31ed593",
+    "triangles": 8748,
+    "meshes": 1,
+    "bytes": 998488
+  },
+  {
+    "id": "detail-prairie-paper-birch-winter",
+    "label": "Paper birch \u00b7 winter",
+    "category": "Trees",
+    "description": "Betula papyrifera \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.561,
+      4.729,
+      10.458
+    ],
+    "url": "/park-kits/prairie-foliage-v1/paper-birch-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.003998,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "2627fff234c31d1a4d2d461e8b3118dfd391c403ec40eada25275473dfbba108",
+    "triangles": 9288,
+    "meshes": 1,
+    "bytes": 1060048
+  },
+  {
+    "id": "detail-prairie-green-ash-winter",
+    "label": "Green ash \u00b7 winter",
+    "category": "Trees",
+    "description": "Fraxinus pennsylvanica \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.794,
+      8.858,
+      12.719
+    ],
+    "url": "/park-kits/prairie-foliage-v1/green-ash-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.003691,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "af7254408bace3ba98af35ba8cfdcf3e6d56c2ebccb88ae16db7efd445132396",
+    "triangles": 8748,
+    "meshes": 1,
+    "bytes": 998480
+  },
+  {
+    "id": "detail-prairie-bur-oak-winter",
+    "label": "Bur oak \u00b7 winter",
+    "category": "Trees",
+    "description": "Quercus macrocarpa \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      9.303,
+      9.485,
+      11.117
+    ],
+    "url": "/park-kits/prairie-foliage-v1/bur-oak-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.004482,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "20df9eb820d2ac8427089c9cbe73076e7bcaa6fa22a13488a7522e41f246a539",
+    "triangles": 8232,
+    "meshes": 1,
+    "bytes": 939652
+  },
+  {
+    "id": "detail-prairie-manitoba-maple-winter",
+    "label": "Manitoba maple \u00b7 winter",
+    "category": "Trees",
+    "description": "Acer negundo \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.793,
+      7.782,
+      10.88
+    ],
+    "url": "/park-kits/prairie-foliage-v1/manitoba-maple-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.006512,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "f96e5174ef2fd049b19434af944c5204e52a7431e673533636a0ace7b43bf30d",
+    "triangles": 9240,
+    "meshes": 1,
+    "bytes": 1054584
+  },
+  {
+    "id": "detail-prairie-laurel-leaf-willow-winter",
+    "label": "Laurel leaf willow \u00b7 winter",
+    "category": "Trees",
+    "description": "Salix pentandra \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      10.372,
+      10.477,
+      12.854
+    ],
+    "url": "/park-kits/prairie-foliage-v1/laurel-leaf-willow-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.004826,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "ebfb15a4d665fb1a254d7f4cec8b4ca7476589a9a5e437338cacd9a46649bec0",
+    "triangles": 8748,
+    "meshes": 1,
+    "bytes": 998500
+  },
+  {
+    "id": "detail-prairie-schubert-chokecherry-winter",
+    "label": "Schubert chokecherry \u00b7 winter",
+    "category": "Trees",
+    "description": "Prunus virginiana Schubert \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.487,
+      4.088,
+      6.547
+    ],
+    "url": "/park-kits/prairie-foliage-v1/schubert-chokecherry-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002838,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "0ca42960a1c9acd62869601a35bca60cb80337f78fe888a40d791bbf818c8b52",
+    "triangles": 6708,
+    "meshes": 1,
+    "bytes": 765944
+  },
+  {
+    "id": "detail-prairie-showy-mountain-ash-winter",
+    "label": "Showy mountain ash \u00b7 winter",
+    "category": "Trees",
+    "description": "Sorbus decora \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.189,
+      4.209,
+      7.287
+    ],
+    "url": "/park-kits/prairie-foliage-v1/showy-mountain-ash-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002096,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "f2b220d296f640c2adecdb57ae2283f6e75e42a3a095f20f3dc90279ff696353",
+    "triangles": 8528,
+    "meshes": 2,
+    "bytes": 974276
+  },
+  {
+    "id": "detail-prairie-amur-cherry-winter",
+    "label": "Amur cherry \u00b7 winter",
+    "category": "Trees",
+    "description": "Prunus maackii \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      3.867,
+      3.929,
+      7.002
+    ],
+    "url": "/park-kits/prairie-foliage-v1/amur-cherry-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.00425,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "2ff30fa7823030ebf02e0c6e5ff042bdb5664a624bf902debb75004d49e5391d",
+    "triangles": 8604,
+    "meshes": 1,
+    "bytes": 982072
+  },
+  {
+    "id": "detail-prairie-plains-cottonwood-winter",
+    "label": "Plains cottonwood \u00b7 winter",
+    "category": "Trees",
+    "description": "Populus deltoides \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      12.224,
+      12.396,
+      20.36
+    ],
+    "url": "/park-kits/prairie-foliage-v1/plains-cottonwood-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.007886,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "3ed707bc47078ccd41cadefc4f0809bf334156e88ecc6ec4b8b04fc45b77e5de",
+    "triangles": 8376,
+    "meshes": 1,
+    "bytes": 956092
+  },
+  {
+    "id": "detail-prairie-brandon-elm-winter",
+    "label": "Brandon elm \u00b7 winter",
+    "category": "Trees",
+    "description": "Ulmus americana Brandon \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      10.939,
+      9.039,
+      13.368
+    ],
+    "url": "/park-kits/prairie-foliage-v1/brandon-elm-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002839,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "f6dc15c4d3047267ef45772ffa1a3acabdc325558b7810ee2802acda60121be3",
+    "triangles": 8328,
+    "meshes": 1,
+    "bytes": 950608
+  },
+  {
+    "id": "detail-prairie-littleleaf-linden-winter",
+    "label": "Littleleaf linden \u00b7 winter",
+    "category": "Trees",
+    "description": "Tilia cordata \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      7.079,
+      7.162,
+      11.749
+    ],
+    "url": "/park-kits/prairie-foliage-v1/littleleaf-linden-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.001487,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "759c50d63d0bc82ec701d76da441531ff0ca1f1a0975f6d344127ed7f175d376",
+    "triangles": 7833,
+    "meshes": 1,
+    "bytes": 894192
+  },
+  {
+    "id": "detail-prairie-flowering-crabapple-winter",
+    "label": "Flowering crabapple \u00b7 winter",
+    "category": "Trees",
+    "description": "Malus \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      5.048,
+      5.044,
+      5.983
+    ],
+    "url": "/park-kits/prairie-foliage-v1/flowering-crabapple-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002684,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "406f2d4fb0b72a6a3f5c8727eff84e61c2f086cbcfb1e5cca025330480162edc",
+    "triangles": 9973,
+    "meshes": 2,
+    "bytes": 1139020
+  },
+  {
+    "id": "detail-prairie-japanese-tree-lilac-winter",
+    "label": "Japanese tree lilac \u00b7 winter",
+    "category": "Trees",
+    "description": "Syringa reticulata \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      5.169,
+      5.396,
+      8.384
+    ],
+    "url": "/park-kits/prairie-foliage-v1/japanese-tree-lilac-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.002271,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:deciduous:winter",
+    "sha256": "864f29b7ee82c37d36b4bc6bb943e4fd9f0849dd4f1aa5fa6eff41fa28398c20",
+    "triangles": 9321,
+    "meshes": 2,
+    "bytes": 1064684
+  },
+  {
+    "id": "detail-prairie-siberian-larch-winter",
+    "label": "Siberian larch \u00b7 winter",
+    "category": "Trees",
+    "description": "Larix sibirica \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "dimensions": [
+      4.478,
+      4.476,
+      13.165
+    ],
+    "url": "/park-kits/prairie-foliage-v1/siberian-larch-winter.glb",
+    "color": "#76a65c",
+    "kind": "tree",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:conifer:winter",
+    "sha256": "afa4bc944b2301945cf02b9c9921c4e644b65820b8511796158f0e93b7768933",
+    "triangles": 6191,
+    "meshes": 1,
+    "bytes": 706980
   },
   {
     "id": "detail-prairie-saskatoon",
@@ -4248,9 +4973,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.12149,
+      0.0,
       -0.006046,
-      0.010975
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4273,9 +4998,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.003576,
+      0.0,
       -0.005694,
-      0.034682
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4298,9 +5023,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.0107,
+      0.0,
       -0.00426,
-      0.190935
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4323,9 +5048,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.025052,
+      0.0,
       -0.007782,
-      -0.029195
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:hedge_row",
@@ -4348,9 +5073,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      -0.007095,
+      0.0,
       0.009076,
-      0.003377
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:clipped_hedge",
@@ -4373,9 +5098,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      -0.094812,
+      0.0,
       -0.007688,
-      -0.069459
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4398,9 +5123,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.047867,
+      0.0,
       -0.007113,
-      -0.043783
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4423,9 +5148,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.017524,
+      0.0,
       -0.007794,
-      0.102581
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4448,9 +5173,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.079948,
+      0.0,
       -0.005378,
-      -0.081185
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4473,9 +5198,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.077752,
+      0.0,
       -0.005772,
-      0.044673
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4498,9 +5223,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      -0.169819,
+      0.0,
       -0.006606,
-      -0.119071
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:shrub",
@@ -4523,9 +5248,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      -0.013139,
+      0.0,
       0.001749,
-      -0.064032
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:mound_conifer",
@@ -4548,9 +5273,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.000135,
+      0.0,
       -0.011313,
-      -0.042002
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:ground_cover",
@@ -4558,6 +5283,231 @@
     "triangles": 3168,
     "meshes": 2,
     "bytes": 363196
+  },
+  {
+    "id": "detail-prairie-bearberry",
+    "label": "Bearberry",
+    "category": "Planting",
+    "description": "Arctostaphylos uva-ursi \u00b7 kinnikinnick; native evergreen mat with red berries for dry sunny slopes.",
+    "dimensions": [
+      1.249,
+      1.206,
+      0.113
+    ],
+    "url": "/park-kits/prairie-foliage-v1/bearberry.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      -0.014938,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:mat",
+    "sha256": "8f22bc2d7d64e9aaf00d5fd9cbf0064542fc6d2f8eeee2373fe7bdaae8890dc8",
+    "triangles": 4862,
+    "meshes": 2,
+    "bytes": 556288
+  },
+  {
+    "id": "detail-prairie-prairie-crocus",
+    "label": "Prairie crocus",
+    "category": "Planting",
+    "description": "Pulsatilla nuttalliana \u00b7 first flower of a Calgary spring; a drift of low mauve cups on fuzzy stems.",
+    "dimensions": [
+      0.933,
+      0.872,
+      0.236
+    ],
+    "url": "/park-kits/prairie-foliage-v1/prairie-crocus.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000209,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:forb_drift",
+    "sha256": "4a59cf5540fd6ec65de8899c8463e7916049425e4538d76d3cb0c98654a81b0f",
+    "triangles": 840,
+    "meshes": 2,
+    "bytes": 97788
+  },
+  {
+    "id": "detail-prairie-blanketflower",
+    "label": "Blanketflower",
+    "category": "Planting",
+    "description": "Gaillardia aristata \u00b7 native summer daisy; red-centred yellow flowers for dry sunny beds.",
+    "dimensions": [
+      1.094,
+      1.192,
+      0.663
+    ],
+    "url": "/park-kits/prairie-foliage-v1/blanketflower.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000706,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:forb_drift",
+    "sha256": "e8dadc1c8aa8a7e5a4686f4f0d0c8c5bf850a2419d260284ae75ee563147dd11",
+    "triangles": 1773,
+    "meshes": 2,
+    "bytes": 204144
+  },
+  {
+    "id": "detail-prairie-wild-bergamot",
+    "label": "Wild bergamot",
+    "category": "Planting",
+    "description": "Monarda fistulosa \u00b7 native bee balm; lavender pom-pom flowers that draw pollinators.",
+    "dimensions": [
+      0.959,
+      1.204,
+      1.033
+    ],
+    "url": "/park-kits/prairie-foliage-v1/wild-bergamot.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000506,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:forb_drift",
+    "sha256": "051cedd042883e519fc690a383cd57a006c36571cba99f342c8d36879ab9f259",
+    "triangles": 1336,
+    "meshes": 2,
+    "bytes": 154324
+  },
+  {
+    "id": "detail-prairie-fireweed",
+    "label": "Fireweed",
+    "category": "Planting",
+    "description": "Chamaenerion angustifolium \u00b7 tall magenta spires of late summer along paths and clearings.",
+    "dimensions": [
+      1.042,
+      1.165,
+      1.588
+    ],
+    "url": "/park-kits/prairie-foliage-v1/fireweed.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000424,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:forb_drift",
+    "sha256": "6aa724f754a7abbe1f50b671637dfc00cc844d9e14cbacb7a438a2eb1341d368",
+    "triangles": 1488,
+    "meshes": 2,
+    "bytes": 171628
+  },
+  {
+    "id": "detail-prairie-goldenrod",
+    "label": "Canada goldenrod",
+    "category": "Planting",
+    "description": "Solidago canadensis \u00b7 arching golden plumes of early autumn; a native meadow staple.",
+    "dimensions": [
+      1.087,
+      1.28,
+      1.063
+    ],
+    "url": "/park-kits/prairie-foliage-v1/goldenrod.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000532,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:forb_drift",
+    "sha256": "b6c717dbc97416325ed46725a0fb72356c3fe2076e773bdfee8df3366af3669e",
+    "triangles": 1920,
+    "meshes": 2,
+    "bytes": 220884
+  },
+  {
+    "id": "detail-prairie-prairie-smoke",
+    "label": "Prairie smoke",
+    "category": "Planting",
+    "description": "Geum triflorum \u00b7 three-flowered avens; nodding rose buds that open into feathery pink plumes.",
+    "dimensions": [
+      1.017,
+      0.914,
+      0.363
+    ],
+    "url": "/park-kits/prairie-foliage-v1/prairie-smoke.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000418,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:forb_drift",
+    "sha256": "7165c6ad967b50c5e6461a64fe4ad28c245e01019846d16b70e15fac41bc5ef1",
+    "triangles": 1582,
+    "meshes": 2,
+    "bytes": 182380
+  },
+  {
+    "id": "detail-prairie-wild-blue-flax",
+    "label": "Wild blue flax",
+    "category": "Planting",
+    "description": "Linum lewisii \u00b7 airy sky-blue flowers on wiry stems; a native of dry prairie slopes.",
+    "dimensions": [
+      1.132,
+      1.192,
+      0.657
+    ],
+    "url": "/park-kits/prairie-foliage-v1/wild-blue-flax.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000671,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:forb_drift",
+    "sha256": "bc11ed9911a260161f90e1fa40323b1b4f82f74f2ad07cff0d6a1a4694c8032a",
+    "triangles": 3264,
+    "meshes": 2,
+    "bytes": 374132
+  },
+  {
+    "id": "detail-prairie-pasture-sage",
+    "label": "Pasture sage",
+    "category": "Planting",
+    "description": "Artemisia frigida \u00b7 prairie sagewort; low silver feathery mats with slender flower stalks.",
+    "dimensions": [
+      0.862,
+      0.809,
+      0.399
+    ],
+    "url": "/park-kits/prairie-foliage-v1/pasture-sage.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000486,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:forb_drift",
+    "sha256": "ccdd74d588eed5de508eb538f498165c183ec374c18d1a4415a3bf6a34bfad56",
+    "triangles": 2985,
+    "meshes": 2,
+    "bytes": 342320
   },
   {
     "id": "detail-prairie-feather-reed-grass",
@@ -4573,9 +5523,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      -0.01189,
+      0.0,
       0.000492,
-      -0.025372
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:grass",
@@ -4598,9 +5548,9 @@
     "color": "#6c8072",
     "kind": "object",
     "offset": [
-      0.001143,
+      0.0,
       0.001443,
-      -0.019895
+      0.0
     ],
     "sourceKit": "prairie-foliage-v1",
     "sourceBuilder": "prairie:grass",
@@ -4608,5 +5558,55 @@
     "triangles": 972,
     "meshes": 2,
     "bytes": 112828
+  },
+  {
+    "id": "detail-prairie-blue-grama",
+    "label": "Blue grama",
+    "category": "Planting",
+    "description": "Bouteloua gracilis \u00b7 low native shortgrass with eyelash seed heads; a drift for dry prairie.",
+    "dimensions": [
+      1.155,
+      0.988,
+      0.456
+    ],
+    "url": "/park-kits/prairie-foliage-v1/blue-grama.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000797,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:grass_drift",
+    "sha256": "8c82d57766551d65d5d7eebdf12d5adc42c3c8ca1279f1a6faf581918e18ae6a",
+    "triangles": 1386,
+    "meshes": 2,
+    "bytes": 160004
+  },
+  {
+    "id": "detail-prairie-june-grass",
+    "label": "June grass",
+    "category": "Planting",
+    "description": "Koeleria macrantha \u00b7 fine native bunchgrass with pale narrow spikes in early summer.",
+    "dimensions": [
+      1.076,
+      1.031,
+      0.593
+    ],
+    "url": "/park-kits/prairie-foliage-v1/june-grass.glb",
+    "color": "#6c8072",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.000389,
+      0.0
+    ],
+    "sourceKit": "prairie-foliage-v1",
+    "sourceBuilder": "prairie:grass_drift",
+    "sha256": "33696dd428ff4741374a993e13041777149951d73ac4232bb18c97cda60f3be3",
+    "triangles": 2583,
+    "meshes": 2,
+    "bytes": 296468
   }
 ]

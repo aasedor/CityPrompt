@@ -1,5 +1,12 @@
 # Local prairie foliage for Add details: 30 Calgary and Alberta plants
 
+> **Update 2026-11-16.** The kit grew to 70 plants in a
+> [second batch](LOCAL_FOLIAGE_SEASONS_2026-11-16.md). The 30 models below are
+> byte-identical and their hashes are now pinned in the tools test. Two details
+> on this page changed: registry offsets no longer re-centre a model on its
+> bounding box, so the trunk lands on the clicked point, and `--register` writes
+> its backups as `.bak-detail-register`.
+
 ## Scope
 
 Add 30 fixed-size plants to the **Add details** catalogue so students can place

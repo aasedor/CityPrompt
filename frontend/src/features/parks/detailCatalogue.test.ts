@@ -31,7 +31,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(195 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(235 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),

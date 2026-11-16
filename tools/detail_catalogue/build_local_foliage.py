@@ -17,7 +17,7 @@ botanical specimens, growth models or planting advice.
     python tools/detail_catalogue/build_local_foliage.py --output <directory> --register
 
 --register splices the finished rows into the frontend extras catalogue and the
-backend allowlist by text-level insertion after writing .bak-prairie-foliage
+backend allowlist by text-level insertion after writing .bak-detail-register
 backups. It refuses IDs that already exist.
 """
 import argparse
@@ -51,6 +51,16 @@ LARCH = ['#93ad6a', '#a7bf78', '#7e9a5b', '#b3c88a']
 JUNIPER = ['#6e8a7a', '#5f7a6c', '#7f9a8c', '#8ea89a']
 GRASS_GREENS = ['#788452', '#99a06c', '#b0ab78', '#617344']
 FESCUE = ['#8c9a7a', '#a4ad84', '#7a8a6c', '#b7b78e']
+AUTUMN_GOLD = ['#d9b23c', '#e6c24d', '#c99a2e', '#edd070', '#b8872a']
+LARCH_GOLD = ['#d6a93a', '#e3bb4f', '#c4932c', '#eccc6c']
+SNOW = ['#f4f7fa', '#e6edf3', '#fbfcfd', '#dde6ee']
+PINE_BLUE = ['#5d7a6a', '#6b8a78', '#4f6b5c', '#7a9a88']
+FIR = ['#465f45', '#547052', '#3a5139', '#627f5c']
+LIMBER = ['#4d6a55', '#5a7a62', '#405a49', '#688a70']
+SAGE_SILVER = ['#97a391', '#a8b2a0', '#869482', '#b3bbab']
+BEARBERRY = ['#3e5b3a', '#4b6b45', '#345032', '#587a50']
+GRAMA = ['#8a9468', '#a1a878', '#77825a', '#b3b488']
+JUNE = ['#7f9068', '#93a37a', '#6d7f5a', '#a6b38b']
 
 
 def srgb_to_linear(hex_colour):
@@ -62,8 +72,14 @@ def srgb_to_linear(hex_colour):
     return tuple(out)
 
 
+GLOSS_MATERIAL = {'name': 'kit_linear_vertex_colour_gloss', 'doubleSided': True,
+                  'pbrMetallicRoughness': {'metallicFactor': 0, 'roughnessFactor': 0.35}}
+
+
 class Part:
     """Flat-shaded triangle soup with a linear colour per vertex."""
+
+    material = 0  # 1 selects the smoother glass/ice material used by hard-surface kits
 
     def __init__(self, name):
         self.name = name
@@ -104,8 +120,18 @@ def rotate(p, rx, ry, rz):
 
 
 class Plant:
-    def __init__(self, seed):
+    """season None is the leafy summer plant. 'winter' keeps the identical
+    skeleton and random sequence but drops leaves to twiglets and needles to
+    spurs; 'snow' swaps a share of needle tufts for snow. Seasonal choices draw
+    from a second random stream so the summer bytes never change."""
+
+    def __init__(self, seed, season=None):
         self.random = random.Random(seed).random
+        self.extra = random.Random(seed + 7919).random
+        self.season = season
+        self.twig_colour = '#5d5148'
+        self.persist = None
+        self.snow_rate = .5
         self.wood = Part('wood')
         self.foliage = Part('foliage')
         self._linear = {}
@@ -157,7 +183,19 @@ class Plant:
         self.wood.triangle(corners[0], corners[2], corners[3], c)
 
     # --- leafy primitives -------------------------------------------------
+    def twiglet(self, p, angle, length, lift):
+        """Winter stand-in for a leaf: one fine sliver, turned about its own axis."""
+        dx, dy = math.cos(angle), math.sin(angle)
+        tip = (p[0] + dx * length * 1.15, p[1] + dy * length * 1.15, p[2] + lift * .5 + length * .4)
+        turn = self.extra() * math.pi
+        w = .012
+        sx, sy, sz = -dy * math.cos(turn) * w, dx * math.cos(turn) * w, math.sin(turn) * w
+        self.wood.triangle((p[0] - sx, p[1] - sy, p[2] - sz), (p[0] + sx, p[1] + sy, p[2] + sz), tip, self.colour(self.twig_colour))
+
     def leaf(self, p, angle, length, width, lift, colour, part=None):
+        if self.season == 'winter' and part is None:
+            self.twiglet(p, angle, length, lift)
+            return
         part = part or self.foliage
         dx, dy = math.cos(angle), math.sin(angle)
         tip = (p[0] + dx * length, p[1] + dy * length, p[2] + lift)
@@ -169,6 +207,21 @@ class Plant:
     def tuft(self, centre, size, colour, stretch=1.0, rotation=None):
         """Six-point folded tuft, four triangles; the kit's needle/leaf cluster."""
         rx, ry, rz = rotation or (self.random() * math.pi, self.random() * math.pi, self.random() * math.tau)
+        if self.season == 'winter':
+            if self.persist is None:
+                # Needles and petals are gone; a short spur keeps the branch from reading as wire.
+                d = rotate((size * stretch * .5, 0, 0), rx, ry, rz)
+                w = .008
+                self.wood.triangle((centre[0], centre[1], centre[2] - w), (centre[0], centre[1], centre[2] + w),
+                                   (centre[0] + d[0], centre[1] + d[1], centre[2] + abs(d[2])), self.colour(self.twig_colour))
+                return
+            colour = self.colour(self.persist)
+        elif self.season == 'snow' and self.extra() < self.snow_rate:
+            # Snow settles as flat slabs on the upper side of the branch.
+            colour = self.colour(SNOW[int(self.extra() * len(SNOW))])
+            rx, ry = (self.extra() - .5) * 1.5, (self.extra() - .5) * 1.5
+            centre = (centre[0], centre[1], centre[2] + size * .22)
+            size, stretch = size * 1.2, min(stretch, 1.6)
         base = [(-.5, 0, 0), (-.24, -.34, 0), (.28, -.28, 0), (.5, 0, 0), (.24, .34, 0), (-.28, .28, .12)]
         points = []
         for x, y, z in base:
@@ -183,7 +236,7 @@ class Plant:
             angle = j * GOLDEN + self.random() * .5
             distance = radius * (.4 + self.random() * .6)
             tip = (base[0] + math.cos(angle) * distance, base[1] + math.sin(angle) * distance, base[2] + height * (.1 + self.random() * .9))
-            self.stem(base, tip, twig_radius, twig_radius * .22, bark, 4)
+            self.stem(base, tip, twig_radius, twig_radius * .22, self.twig_colour if self.season == 'winter' else bark, 4)
             for n in range(1, leaves + 1):
                 p = mix(base, tip, n / (leaves + 1))
                 for k in range(pairs):
@@ -194,8 +247,22 @@ class Plant:
                 self.accent(tip, accent)
 
     def accent(self, p, accent):
+        self.persist = accent.get('winter')
+        try:
+            self._accent(p, accent)
+        finally:
+            self.persist = None
+
+    def _accent(self, p, accent):
         kind, colour, size = accent['kind'], accent['colour'], accent.get('size', .05)
-        if kind == 'berry':
+        if kind == 'blossom':
+            alt = accent.get('alt', colour)
+            for k in range(accent.get('count', 4)):
+                a = k * GOLDEN + self.random() * math.tau
+                r = size * (.4 + self.random() * 1.6)
+                self.tuft((p[0] + math.cos(a) * r, p[1] + math.sin(a) * r, p[2] + (self.random() - .6) * size * 2.2), size * (.8 + self.random() * .5),
+                          self.colour(alt if k % 2 else colour))
+        elif kind == 'berry':
             for k in range(accent.get('count', 4)):
                 a = k * GOLDEN
                 self.tuft((p[0] + math.cos(a) * size * .8, p[1] + math.sin(a) * size * .8, p[2] - size * .5 - k * size * .25), size * .55, self.colour(colour))
@@ -235,6 +302,7 @@ PROFILES = {
 def deciduous(plant, p):
     height = p['height']
     scale = height / 7
+    plant.twig_colour = p.get('twig', plant.twig_colour)
     trunks = p.get('trunks', 1)
     spread = p.get('trunk_spread', 0)
     profile = PROFILES[p.get('profile', 'round')]
@@ -267,6 +335,10 @@ def deciduous(plant, p):
                 c = (centre[0] + normal[0] * r, centre[1] + normal[1] * r, centre[2])
                 if marks == 'birch':
                     plant.bark_mark(c, u, (0, 0, 1), .05 + plant.random() * .11, .012 + plant.random() * .012, '#3b3a35')
+                elif marks == 'furrow':
+                    plant.bark_mark(c, u, (0, 0, 1), .025 + r * .12 * plant.random(), .3 + plant.random() * .5, p.get('mark_colour', '#3f3a34'))
+                elif marks == 'lenticel':
+                    plant.bark_mark(c, u, (0, 0, 1), .04 + plant.random() * .07, .01 + plant.random() * .006, p.get('mark_colour', '#d6b48c'))
                 else:
                     plant.bark_mark(c, u, (0, 0, 1), .05 + plant.random() * .05, .09 + plant.random() * .09, '#4d4a42')
         branches = p['branches'] if trunks == 1 else max(5, p['branches'] // trunks)
@@ -305,7 +377,14 @@ def conifer(plant, p):
     radius = p['trunk_radius']
     segments = 10
     points = [(0, 0, height * i / segments) for i in range(segments + 1)]
-    plant.path(points, [radius * (1 - .96 * (i / segments) ** .9) for i in range(segments + 1)], bark, 7)
+    radii = [radius * (1 - .96 * (i / segments) ** .9) for i in range(segments + 1)]
+    if p.get('upper_bark'):
+        # Scots pine: plated grey-brown below, flaking orange above.
+        for i in range(segments):
+            plant.stem(points[i], points[i + 1], radii[i], radii[i + 1], bark if i < segments * p.get('upper_from', .45) else p['upper_bark'], 7)
+    else:
+        plant.path(points, radii, bark, 7)
+    plant.twig_colour = p.get('twig', bark)
     kind = p.get('kind', 'spruce')
     needles = p['needles']
     tuft_size = p['tuft_size']
@@ -327,8 +406,9 @@ def conifer(plant, p):
             mid = (math.cos(a) * reach * .6, math.sin(a) * reach * .6, start[2] + droop * reach * .7)
             tip = (math.cos(a) * reach, math.sin(a) * reach, start[2] + droop * reach * .55 + p.get('upturn', .08) * reach)
             limb = radius * .34 * (1 - t * .6)
-            plant.stem(start, mid, limb, limb * .5, bark)
-            plant.stem(mid, tip, limb * .5, limb * .15, bark)
+            limb_bark = p.get('limb_bark', bark)
+            plant.stem(start, mid, limb, limb * .5, limb_bark)
+            plant.stem(mid, tip, limb * .5, limb * .15, limb_bark)
             if kind == 'pine':
                 # Needle bundles brush outward from the end of each limb.
                 for cluster in range(p.get('clusters', 3)):
@@ -528,8 +608,212 @@ def grass(plant, p):
         top = p['plume_height'] * (.85 + plant.random() * .15)
         lean = p.get('plume_lean', .18)
         head = (base[0] + math.cos(a) * lean, base[1] + math.sin(a) * lean, top)
+        if p.get('head') == 'eyelash':
+            # Blue grama: one or two combs held sideways like eyelashes.
+            plant.stem(base, head, .003, .002, p['stem'], 3)
+            for k in range(1 + (i % 2)):
+                q = mix(base, head, 1 - k * .16)
+                b = a + 1.3 + k * 2.2
+                dx, dy, length = math.cos(b), math.sin(b), .034 + plant.random() * .014
+                colour = plant.colour(p['plume'])
+                plant.foliage.triangle(q, (q[0] + dx * length, q[1] + dy * length, q[2] + .006), (q[0] + dx * length, q[1] + dy * length, q[2] - .011), colour)
+                plant.foliage.triangle(q, (q[0] + dx * length, q[1] + dy * length, q[2] - .011), (q[0], q[1], q[2] - .009), colour)
+            continue
+        if p.get('head') == 'spike':
+            # June grass: a narrow dense spike at the top of the stem.
+            plant.stem(base, head, .003, .002, p['stem'], 3)
+            for k in range(6):
+                q = mix(base, head, .74 + .26 * k / 5)
+                plant.tuft(q, .022 * (1.1 - k * .08), plant.colour(p['plume']), stretch=1.2)
+            continue
         plant.stem(base, mix(base, head, .72), .005, .003, p['stem'], 3)
         plant.accent(mix(base, head, .72), {'kind': 'plume', 'colour': p['plume'], 'size': p.get('plume_size', .05), 'count': p.get('plume_rows', 9)})
+
+
+def scatter(plant, builder, params, placements):
+    """Run a builder once per placement (x, y, yaw, scale) and merge the copies."""
+    for x, y, yaw, scale in placements:
+        wood, foliage = plant.wood, plant.foliage
+        plant.wood, plant.foliage = Part('wood'), Part('foliage')
+        builder(plant, params)
+        c, sn = math.cos(yaw), math.sin(yaw)
+        for src, dst in ((plant.wood, wood), (plant.foliage, foliage)):
+            pos, nor = src.positions, src.normals
+            for i in range(0, len(pos), 3):
+                px, py = pos[i] * scale, pos[i + 1] * scale
+                dst.positions.extend((x + px * c - py * sn, y + px * sn + py * c, pos[i + 2] * scale))
+                dst.normals.extend((nor[i] * c - nor[i + 1] * sn, nor[i] * sn + nor[i + 1] * c, nor[i + 2]))
+            dst.colors.extend(src.colors)
+        plant.wood, plant.foliage = wood, foliage
+
+
+def grass_drift(plant, p):
+    """Several small bunchgrass clumps so one placement reads at site scale."""
+    placements = []
+    for i in range(p['clumps']):
+        a = i * GOLDEN + plant.random() * .5
+        r = p['drift_radius'] * math.sqrt((i + .35) / p['clumps'])
+        placements.append((math.cos(a) * r, math.sin(a) * r, plant.random() * math.tau, .8 + plant.random() * .4))
+    scatter(plant, grass, p, placements)
+
+
+def gnarled_pine(plant, p):
+    """Limber pine: short twisting trunks and long supple limbs swept leeward."""
+    height, bark, wind = p['height'], p['bark'], p.get('wind', 0.0)
+    for t in range(p['trunks']):
+        angle = t * math.tau / p['trunks'] + .9
+        top = height * (1 if t == 0 else .7 + plant.random() * .2)
+        lean = p['lean'] * (.5 if t == 0 else 1)
+        segs = 7
+        pts = []
+        for i in range(segs + 1):
+            f = i / segs
+            out = (.1 if t else 0) + lean * top * f ** 1.2
+            pts.append((math.cos(angle) * out + math.sin(f * 5 + t * 2) * .06 * top * f,
+                        math.sin(angle) * out + math.cos(f * 4 + t) * .06 * top * f, top * f))
+        r0 = p['trunk_radius'] * (1 if t == 0 else .7)
+        plant.path(pts, [r0 * (1 - .85 * (i / segs) ** .9) for i in range(segs + 1)], bark, 6)
+        limbs = p['limbs']
+        for i in range(limbs):
+            f = .3 + .7 * i / limbs
+            k = min(segs - 1, int(f * segs))
+            start = mix(pts[k], pts[k + 1], f * segs - k)
+            direction = i * GOLDEN + t * 1.3 + plant.random() * .5
+            reach = p['reach'] * (.55 + plant.random() * .45) * (1.15 - f * .5) * (1 + .45 * math.cos(direction - wind))
+            mid = (start[0] + math.cos(direction) * reach * .5, start[1] + math.sin(direction) * reach * .5, start[2] + reach * (.05 + plant.random() * .2))
+            tip = (start[0] + math.cos(direction) * reach, start[1] + math.sin(direction) * reach, start[2] + reach * (.2 + plant.random() * .35))
+            limb = r0 * .3 * (1.1 - f * .6)
+            plant.stem(start, mid, limb, limb * .6, bark)
+            plant.stem(mid, tip, limb * .6, limb * .22, bark)
+            clusters = p.get('clusters', 4)
+            for cluster in range(clusters):
+                centre = mix(mid, tip, .15 + cluster * (.95 / clusters))
+                for n in range(p.get('bundle', 8)):
+                    b = plant.random() * math.tau
+                    length = p['tuft_size'] * (1.5 + plant.random() * .7)
+                    c = (centre[0] + math.cos(b) * length * .4, centre[1] + math.sin(b) * length * .4, centre[2] + (plant.random() - .2) * length * .5)
+                    plant.tuft(c, p['tuft_size'], plant.pick(p['needles']), stretch=3.0, rotation=(plant.random() * 1.2 - .6, plant.random() * 1.2 - .6, b))
+        for n in range(p.get('bundle', 8) * 2):
+            b = plant.random() * math.tau
+            plant.tuft((pts[-1][0] + math.cos(b) * .2, pts[-1][1] + math.sin(b) * .2, top + plant.random() * .25), p['tuft_size'], plant.pick(p['needles']),
+                       stretch=3.0, rotation=(plant.random() * 1.2 - .6, plant.random() * 1.2 - .6, b))
+
+
+def mat(plant, p):
+    """Bearberry: trailing woody stems clothed in small evergreen leaves."""
+    segs = 5
+    for i in range(p['stems']):
+        a = i * GOLDEN + plant.random() * .4
+        reach = p['spread'] * (.25 + plant.random() * .75)
+        wander = plant.random() * 2.4 - 1.2
+        pts = [(0, 0, .02)]
+        for k in range(1, segs + 1):
+            f = k / segs
+            ang = a + wander * f
+            pts.append((math.cos(ang) * reach * f, math.sin(ang) * reach * f, p['height'] * (.25 + .5 * math.sin(f * math.pi)) * (.6 + plant.random() * .5)))
+        plant.path(pts, [.006 * (1 - .7 * k / segs) for k in range(segs + 1)], p['bark'], 3)
+        for k in range(segs):
+            count = p.get('leaves', 3)
+            for n in range(count):
+                q = mix(pts[k], pts[k + 1], (n + .5) / count)
+                for side in (-1, 1):
+                    plant.leaf(q, a + side * (1.0 + plant.random() * .6), p['leaf_size'] * (.8 + plant.random() * .4), p['leaf_size'] * .45,
+                               p['leaf_size'] * (.2 + plant.random() * .5), plant.pick(p['greens'], k + n))
+            if plant.random() < p.get('berry_rate', .3):
+                q = mix(pts[k], pts[k + 1], plant.random())
+                for _ in range(3):
+                    plant.tuft((q[0] + (plant.random() - .5) * .03, q[1] + (plant.random() - .5) * .03, q[2] + .012), .016, plant.colour(p['berry']))
+
+
+def forb_head(plant, p, base, top, bearing, s):
+    kind, size = p['head'], p.get('flower_size', .03) * s
+    petals = p.get('petals', [])
+    if kind == 'crocus':
+        for j in range(6):
+            plant.leaf(top, j * math.tau / 6 + bearing, size, size * .4, size * .95, plant.pick(petals, j))
+        plant.tuft((top[0], top[1], top[2] + size * .35), size * .4, plant.colour(p['centre']))
+    elif kind == 'daisy':
+        rays = p.get('rays', 9)
+        for j in range(rays):
+            a = j * math.tau / rays + bearing
+            plant.leaf(top, a, size, size * .3, size * .08, plant.colour(petals[0]))
+            plant.leaf((top[0], top[1], top[2] + size * .04), a + .12, size * .58, size * .3, size * .1, plant.colour(petals[1]))
+        plant.tuft((top[0], top[1], top[2] + size * .14), size * .5, plant.colour(p['centre']))
+        plant.tuft((top[0], top[1], top[2] + size * .1), size * .5, plant.colour(p['centre']), rotation=(0, 0, bearing))
+    elif kind == 'pom':
+        for j in range(8):
+            plant.leaf(top, j * math.tau / 8 + bearing, size, size * .2, size * (.15 + .6 * plant.random()), plant.pick(petals, j))
+        for j in range(3):
+            plant.tuft((top[0], top[1], top[2] + size * (.2 + j * .12)), size * .7, plant.pick(petals, j))
+    elif kind == 'spire':
+        rows = p.get('rows', 10)
+        for j in range(rows):
+            f = j / rows
+            q = mix(base, top, .52 + .48 * f)
+            bud = f > .75
+            for side in range(3 if not bud else 2):
+                a = j * GOLDEN + side * math.tau / 3
+                plant.leaf(q, a, size * (1 - .55 * f), size * (.5 if not bud else .25), size * .25, plant.colour(p['bud']) if bud else plant.pick(petals, j + side))
+    elif kind == 'plume':
+        for branch, spread in ((0, 1), (.95, .7), (-.95, .7)):
+            direction = bearing + branch
+            for j in range(p.get('rows', 7)):
+                f = j / p.get('rows', 7)
+                q = (top[0] + math.cos(direction) * f * size * 4.2 * spread, top[1] + math.sin(direction) * f * size * 4.2 * spread,
+                     top[2] + size * (.6 - 2.6 * f * f) * spread)
+                plant.tuft(q, size * (1 - .5 * f), plant.pick(petals), stretch=1.6)
+    elif kind == 'smoke':
+        for j in range(3):
+            a = bearing + j * math.tau / 3
+            bud = (top[0] + math.cos(a) * size * 1.3, top[1] + math.sin(a) * size * 1.3, top[2] - size * .5)
+            plant.stem(top, bud, .002, .0015, p['stem'], 3)
+            plant.tuft(bud, size * .8, plant.pick(petals, j))
+            if plant.random() < .55:
+                for w in range(5):
+                    plant.leaf(bud, a + w * 1.26, size * 1.5, size * .05, size * (.8 + plant.random() * .8), plant.colour(p['wisp']))
+    elif kind == 'flax':
+        fork = mix(base, top, .8)
+        for j in range(3):
+            a = bearing + j * math.tau / 3
+            end = (top[0] + math.cos(a) * size * 2.2, top[1] + math.sin(a) * size * 2.2, top[2] + (plant.random() - .3) * size * 2)
+            plant.stem(fork, end, .0018, .0012, p['stem'], 3)
+            for k in range(5):
+                plant.leaf(end, k * math.tau / 5 + a, size, size * .5, size * .18, plant.pick(petals, j + k))
+            plant.tuft((end[0], end[1], end[2] + size * .08), size * .3, plant.colour(p['centre']))
+    elif kind == 'sage':
+        for j in range(7):
+            q = mix(base, top, .45 + .55 * j / 6)
+            plant.tuft(q, size * (1 - j * .07), plant.colour(p['centre']))
+    else:
+        raise ValueError(kind)
+
+
+def forb_drift(plant, p):
+    """A drift of small flowering plants: basal leaves, leafy stems and a flower head each."""
+    count, radius = p['plants'], p['radius']
+    for i in range(count):
+        a = i * GOLDEN + plant.random() * .6
+        r = radius * math.sqrt((i + .5) / count) * (.85 + plant.random() * .3)
+        ox, oy = math.cos(a) * r, math.sin(a) * r
+        s = .75 + plant.random() * .5
+        for k in range(p.get('basal', 6)):
+            b = k * GOLDEN + plant.random()
+            length = p['basal_length'] * s * (.7 + plant.random() * .6)
+            plant.leaf((ox, oy, .004), b, length, length * p.get('basal_width', .22), length * p.get('basal_lift', .45), plant.pick(p['greens'], i + k))
+        for k in range(p.get('stems', 2)):
+            b = k * 2.1 + plant.random() * math.tau
+            h = p['height'] * s * (.75 + plant.random() * .35)
+            lean = p.get('lean', .15) * h
+            base = (ox + math.cos(b) * .012, oy + math.sin(b) * .012, 0)
+            top = (ox + math.cos(b) * lean, oy + math.sin(b) * lean, h)
+            radius_stem = p.get('stem_radius', .004)
+            plant.stem(base, top, radius_stem, radius_stem * .5, p['stem'], 3)
+            leaves = p.get('stem_leaves', 0)
+            for m in range(1, leaves + 1):
+                q = mix(base, top, m / (leaves + 1.5))
+                for side in (0, math.pi):
+                    plant.leaf(q, b + m * 1.9 + side, p['leaf_size'] * s, p['leaf_size'] * s * p.get('leaf_width', .25), p['leaf_size'] * s * .25, plant.pick(p['greens'], m))
+            forb_head(plant, p, base, top, b, s)
 
 
 # ---------------------------------------------------------------------------
@@ -580,11 +864,33 @@ SPECIES = [
          description=f'Sorbus decora · compact ornamental with orange-red berry clusters. {TREE_NOTE}',
          params=dict(height=6.5, trunk_radius=.12, lean=.2, bark='#776d62', branches=13, reach=1.9, crown_base=.38, profile='oval', rise=.55,
                      spray_radius=.62, spray_height=.65, twigs=5, leaf_size=.21, leaf_width=.28, greens=GREENS, limb_radius=.045, leaves=6,
-                     accent=dict(kind='berry', colour='#d4552c', size=.075, count=5, rate=.45))),
+                     accent=dict(kind='berry', colour='#d4552c', size=.075, count=5, rate=.45, winter='#b8442a'))),
     dict(slug='amur-cherry', label='Amur cherry', **TREE, seed=1111, builder=deciduous,
          description=f'Prunus maackii · multi-stem ornamental with glossy copper-amber bark. {TREE_NOTE}',
          params=dict(height=6.5, trunk_radius=.11, trunks=3, trunk_spread=.14, lean=.22, bark='#a26b3c', branches=15, reach=2.0, crown_base=.4, profile='round', rise=.5,
                      spray_radius=.65, spray_height=.6, twigs=5, leaf_size=.21, leaf_width=.45, greens=GREENS, limb_radius=.045, leaves=6)),
+    dict(slug='plains-cottonwood', label='Plains cottonwood', **TREE, seed=1112, builder=deciduous,
+         description=f'Populus deltoides · massive river-flat native with furrowed bark and a broad crown. {TREE_NOTE}',
+         params=dict(height=18, trunk_radius=.5, lean=.5, bark='#6a6257', bark_marks='furrow', branches=15, reach=6.0, crown_base=.3, profile='spreading', rise=.55,
+                     spray_radius=1.5, spray_height=1.2, twigs=6, leaf_size=.44, leaf_width=.55, greens=['#6f8a52', '#84a060', '#5c7745', '#97b06e'], limb_radius=.085, leaves=5)),
+    dict(slug='brandon-elm', label='Brandon elm', **TREE, seed=1113, builder=deciduous,
+         description=f'Ulmus americana Brandon · vase-shaped prairie elm that arches over Calgary boulevards. {TREE_NOTE}',
+         params=dict(height=12, trunk_radius=.3, lean=.2, bark='#5f574e', bark_marks='furrow', branches=15, reach=5.4, crown_base=.36, crown_top=.7, profile='vase', rise=1.35,
+                     droop=.5, spray_radius=1.2, spray_height=.9, twigs=6, leaf_size=.33, leaf_width=.4, greens=GREENS, limb_radius=.075, leaves=5)),
+    dict(slug='littleleaf-linden', label='Littleleaf linden', **TREE, seed=1114, builder=deciduous,
+         description=f'Tilia cordata · dense, neatly pyramidal street tree with small heart-shaped leaves. {TREE_NOTE}',
+         params=dict(height=11, trunk_radius=.24, lean=.12, bark='#6b665d', branches=17, reach=3.3, crown_base=.26, profile='oval', rise=.4,
+                     spray_radius=.95, spray_height=.8, twigs=5, leaf_size=.29, leaf_width=.55, greens=['#4f6e45', '#5f7f52', '#436239', '#6f8f5f'], limb_radius=.065, leaves=5)),
+    dict(slug='flowering-crabapple', label='Flowering crabapple', **TREE, seed=1115, builder=deciduous,
+         description=f'Malus · small rounded yard tree covered in pink spring blossom. {TREE_NOTE}',
+         params=dict(height=5.5, trunk_radius=.13, lean=.2, bark='#5b4c43', branches=13, reach=2.3, crown_base=.32, profile='round', rise=.35,
+                     spray_radius=.62, spray_height=.5, twigs=5, leaf_size=.19, leaf_width=.45, greens=['#566f47', '#6a8457', '#48613d', '#7b9566'], limb_radius=.05, leaves=5,
+                     accent=dict(kind='blossom', colour='#e58fae', alt='#f3c1d2', size=.13, count=5, rate=.9, winter='#7a2a26'))),
+    dict(slug='japanese-tree-lilac', label='Japanese tree lilac', **TREE, seed=1116, builder=deciduous,
+         description=f'Syringa reticulata · compact street tree with cherry-like bark and creamy June bloom. {TREE_NOTE}',
+         params=dict(height=7.5, trunk_radius=.15, lean=.2, bark='#6a4a3c', bark_marks='lenticel', branches=13, reach=2.4, crown_base=.34, profile='oval', rise=.5,
+                     spray_radius=.7, spray_height=.6, twigs=5, leaf_size=.23, leaf_width=.5, greens=DARK_GREENS, limb_radius=.05, leaves=5,
+                     accent=dict(kind='panicle', colour='#f4f0dc', size=.14, count=4, rate=.3, winter='#8a7355'))),
     # --- conifers -----------------------------------------------------------
     dict(slug='white-spruce', label='White spruce', **TREE, seed=1201, builder=conifer,
          description=f'Picea glauca · Alberta native evergreen with soft drooping tiers. {TREE_NOTE}',
@@ -602,6 +908,17 @@ SPECIES = [
          description=f'Larix sibirica · soft open conifer, bright green in spring and gold in autumn. {TREE_NOTE}',
          params=dict(kind='larch', height=13, trunk_radius=.22, crown_base=.12, whorl_spacing=.66, branches=5, reach=2.4, droop=-.12, upturn=.06,
                      tuft_size=.2, tufts=5, branchlet=.3, needles=LARCH, bark='#6d6052', stretch=1.2, density=2)),
+    dict(slug='scots-pine', label='Scots pine', **TREE, seed=1205, builder=conifer,
+         description=f'Pinus sylvestris · orange-barked pine with an irregular blue-green crown held high. {TREE_NOTE}',
+         params=dict(kind='pine', height=12, trunk_radius=.24, crown_base=.5, whorl_spacing=.7, branches=6, reach=2.7, droop=.3, upturn=.12,
+                     tuft_size=.23, clusters=5, bundle=12, needles=PINE_BLUE, bark='#6b5648', upper_bark='#b9774a', limb_bark='#8f6a4e', leader=6)),
+    dict(slug='douglas-fir', label='Douglas fir', **TREE, seed=1206, builder=conifer,
+         description=f'Pseudotsuga menziesii · tall dark native of Bow valley slopes with furrowed bark. {TREE_NOTE}',
+         params=dict(kind='spruce', height=18, trunk_radius=.38, crown_base=.22, whorl_spacing=.85, branches=6, reach=3.4, droop=-.3, upturn=.16,
+                     tuft_size=.3, tufts=4, branchlet=.36, needles=FIR, bark='#4f443b', stretch=1.5, density=2)),
+    dict(slug='limber-pine', label='Limber pine', **TREE, seed=1207, builder=gnarled_pine,
+         description=f'Pinus flexilis · gnarled, wind-shaped foothills pine of dry ridges and escarpments. {TREE_NOTE}',
+         params=dict(height=6.5, trunks=2, lean=.22, trunk_radius=.26, limbs=13, reach=2.6, clusters=6, bundle=14, tuft_size=.13, needles=LIMBER, bark='#5d554c', wind=.6)),
     # --- shrubs and hedges --------------------------------------------------
     dict(slug='saskatoon', label='Saskatoon berry', **PLANT, seed=1301, builder=shrub,
          description=f'Amelanchier alnifolia · upright native shrub with round leaves and purple berries. {SHRUB_NOTE}',
@@ -652,6 +969,45 @@ SPECIES = [
     dict(slug='creeping-juniper', label='Creeping juniper', **PLANT, seed=1313, builder=ground_cover,
          description=f'Juniperus horizontalis · low spreading native evergreen ground cover. {SHRUB_NOTE}',
          params=dict(height=.42, spread=1.1, stems=12, tuft_size=.09, needles=JUNIPER, bark='#6a5a4c')),
+    dict(slug='bearberry', label='Bearberry', **PLANT, seed=1314, builder=mat,
+         description='Arctostaphylos uva-ursi · kinnikinnick; native evergreen mat with red berries for dry sunny slopes.',
+         params=dict(stems=34, spread=.75, height=.13, leaf_size=.044, leaves=4, greens=BEARBERRY, bark='#7a4f3e', berry='#c0322b', berry_rate=.3)),
+    # --- native wildflowers -------------------------------------------------
+    dict(slug='prairie-crocus', label='Prairie crocus', **PLANT, seed=1501, builder=forb_drift,
+         description='Pulsatilla nuttalliana · first flower of a Calgary spring; a drift of low mauve cups on fuzzy stems.',
+         params=dict(plants=14, radius=.45, height=.14, stems=2, lean=.12, basal=5, basal_length=.07, basal_width=.14, basal_lift=.6, greens=['#8f9d84', '#a2ae96', '#7f8e76'],
+                     stem='#98a48e', stem_radius=.004, head='crocus', flower_size=.052, petals=['#b9a6d6', '#a892cc', '#cbbbe2'], centre='#e2c648')),
+    dict(slug='blanketflower', label='Blanketflower', **PLANT, seed=1502, builder=forb_drift,
+         description='Gaillardia aristata · native summer daisy; red-centred yellow flowers for dry sunny beds.',
+         params=dict(plants=9, radius=.55, height=.5, stems=3, lean=.2, basal=7, basal_length=.16, basal_width=.2, greens=['#72865a', '#869a68', '#62764d'],
+                     stem='#7d8c5e', stem_leaves=2, leaf_size=.09, leaf_width=.22, head='daisy', flower_size=.05, rays=9, petals=['#e8b930', '#b8382a'], centre='#6e2a22')),
+    dict(slug='wild-bergamot', label='Wild bergamot', **PLANT, seed=1503, builder=forb_drift,
+         description='Monarda fistulosa · native bee balm; lavender pom-pom flowers that draw pollinators.',
+         params=dict(plants=8, radius=.55, height=.8, stems=3, lean=.14, basal=4, basal_length=.1, basal_width=.3, greens=['#6f8560', '#82976f', '#5f7552'],
+                     stem='#6f7f5c', stem_leaves=4, leaf_size=.085, leaf_width=.32, head='pom', flower_size=.058, petals=['#b79ad6', '#a586c8', '#c9b2e2'])),
+    dict(slug='fireweed', label='Fireweed', **PLANT, seed=1504, builder=forb_drift,
+         description='Chamaenerion angustifolium · tall magenta spires of late summer along paths and clearings.',
+         params=dict(plants=8, radius=.55, height=1.3, stems=2, lean=.08, basal=0, basal_length=.1, greens=['#6c8458', '#7f9767', '#5b724a'],
+                     stem='#8a5a5c', stem_radius=.006, stem_leaves=7, leaf_size=.1, leaf_width=.15, head='spire', flower_size=.045, rows=10,
+                     petals=['#c84a9c', '#d766ad', '#b53a8a'], bud='#8e2f6d')),
+    dict(slug='goldenrod', label='Canada goldenrod', **PLANT, seed=1505, builder=forb_drift,
+         description='Solidago canadensis · arching golden plumes of early autumn; a native meadow staple.',
+         params=dict(plants=8, radius=.55, height=.9, stems=2, lean=.12, basal=3, basal_length=.12, basal_width=.2, greens=['#6f8556', '#829865', '#5e7448'],
+                     stem='#77875a', stem_radius=.005, stem_leaves=6, leaf_size=.09, leaf_width=.17, head='plume', flower_size=.036, rows=7,
+                     petals=['#e3c132', '#d4ae26', '#eed256'])),
+    dict(slug='prairie-smoke', label='Prairie smoke', **PLANT, seed=1506, builder=forb_drift,
+         description='Geum triflorum · three-flowered avens; nodding rose buds that open into feathery pink plumes.',
+         params=dict(plants=11, radius=.45, height=.28, stems=2, lean=.18, basal=8, basal_length=.11, basal_width=.2, basal_lift=.3, greens=['#6f8560', '#819670', '#5f7552'],
+                     stem='#9a5f62', stem_radius=.003, head='smoke', flower_size=.03, petals=['#b0566b', '#c06a7d'], wisp='#dbb0bf')),
+    dict(slug='wild-blue-flax', label='Wild blue flax', **PLANT, seed=1507, builder=forb_drift,
+         description='Linum lewisii · airy sky-blue flowers on wiry stems; a native of dry prairie slopes.',
+         params=dict(plants=8, radius=.5, height=.55, stems=4, lean=.3, basal=0, basal_length=.05, greens=['#7c8d6e', '#8e9e7e', '#6c7d60'],
+                     stem='#7c8d6e', stem_radius=.0025, stem_leaves=6, leaf_size=.032, leaf_width=.14, head='flax', flower_size=.024,
+                     petals=['#7fa6dc', '#6c95d2', '#93b6e4'], centre='#e8d470')),
+    dict(slug='pasture-sage', label='Pasture sage', **PLANT, seed=1508, builder=forb_drift,
+         description='Artemisia frigida · prairie sagewort; low silver feathery mats with slender flower stalks.',
+         params=dict(plants=15, radius=.42, height=.3, stems=3, lean=.2, basal=20, basal_length=.075, basal_width=.16, basal_lift=.75, greens=SAGE_SILVER,
+                     stem='#a5ab98', stem_radius=.003, stem_leaves=4, leaf_size=.032, leaf_width=.16, head='sage', flower_size=.016, centre='#b9b58a')),
     # --- grasses --------------------------------------------------------------
     dict(slug='feather-reed-grass', label='Feather reed grass', **PLANT, seed=1401, builder=grass,
          description='Calamagrostis Karl Foerster · upright ornamental grass with tan plumes; Calgary\'s go-to clump grass.',
@@ -659,7 +1015,38 @@ SPECIES = [
     dict(slug='rough-fescue-drift', label='Rough fescue drift', **PLANT, seed=1402, builder=grass,
          description='Festuca hallii · native foothills fescue; a low blue-green drift for naturalized edges.',
          params=dict(blades=170, radius=.45, height=.5, reach=.32, blade_width=.007, greens=FESCUE, plumes=14, plume_height=.8, plume_lean=.22, plume='#c6bd9c', stem='#a39b7e', plume_size=.03, plume_rows=6)),
+    dict(slug='blue-grama', label='Blue grama', **PLANT, seed=1403, builder=grass_drift,
+         description='Bouteloua gracilis · low native shortgrass with eyelash seed heads; a drift for dry prairie.',
+         params=dict(clumps=7, drift_radius=.45, blades=42, radius=.07, height=.22, reach=.17, blade_width=.005, greens=GRAMA, plumes=6, plume_height=.42, plume_lean=.1,
+                     head='eyelash', plume='#7d6a78', stem='#a39b7e')),
+    dict(slug='june-grass', label='June grass', **PLANT, seed=1404, builder=grass_drift,
+         description='Koeleria macrantha · fine native bunchgrass with pale narrow spikes in early summer.',
+         params=dict(clumps=7, drift_radius=.45, blades=46, radius=.06, height=.28, reach=.13, blade_width=.006, greens=JUNE, plumes=7, plume_height=.5, plume_lean=.05,
+                     head='spike', plume='#cfcdb0', stem='#a8a684')),
 ]
+
+
+def _variant(base_slug, suffix, label_suffix, note, season=None, **overrides):
+    """A seasonal form shares its base species' seed, so the skeleton is the same tree."""
+    base = next(s for s in SPECIES if s['slug'] == base_slug)
+    latin = base['description'].split(' · ')[0]
+    return dict(slug=f'{base_slug}-{suffix}', label=f'{base["label"]} · {label_suffix}', category=base['category'], kind=base['kind'], color=base['color'],
+                seed=base['seed'], builder=base['builder'], season=season, params={**base['params'], **overrides},
+                description=f'{latin} · {note} {TREE_NOTE}')
+
+
+WINTER_BASES = ['trembling-aspen', 'swedish-columnar-aspen', 'balsam-poplar', 'paper-birch', 'green-ash', 'bur-oak', 'manitoba-maple', 'laurel-leaf-willow',
+                'schubert-chokecherry', 'showy-mountain-ash', 'amur-cherry', 'plains-cottonwood', 'brandon-elm', 'littleleaf-linden', 'flowering-crabapple',
+                'japanese-tree-lilac', 'siberian-larch']
+SEASONAL = [
+    _variant('trembling-aspen', 'autumn', 'autumn', 'the same tree in gold September leaf.', greens=AUTUMN_GOLD),
+    _variant('siberian-larch', 'autumn', 'autumn', 'the same tree with needles turned gold.', needles=LARCH_GOLD),
+    _variant('white-spruce', 'snow', 'snow', 'the same tree carrying fresh snow.', season='snow'),
+    _variant('colorado-blue-spruce', 'snow', 'snow', 'the same tree carrying fresh snow.', season='snow'),
+    *[_variant(slug, 'winter', 'winter', 'the same tree bare, for winter scenes.', season='winter') for slug in WINTER_BASES],
+]
+_anchor = next(i for i, s in enumerate(SPECIES) if s['slug'] == 'limber-pine') + 1
+SPECIES[_anchor:_anchor] = SEASONAL
 
 
 # ---------------------------------------------------------------------------
@@ -674,9 +1061,9 @@ def to_y_up(array):
     return out
 
 
-def write_glb(parts, slug):
+def write_glb(parts, slug, generator='CityPrompt prairie foliage builder v1'):
     doc = {
-        'asset': {'generator': 'CityPrompt prairie foliage builder v1', 'version': '2.0'},
+        'asset': {'generator': generator, 'version': '2.0'},
         'scene': 0, 'scenes': [{'name': 'Scene', 'nodes': []}], 'nodes': [], 'meshes': [],
         'materials': [{'name': 'kit_linear_vertex_colour', 'doubleSided': True,
                        'pbrMetallicRoughness': {'metallicFactor': 0, 'roughnessFactor': 0.9}}],
@@ -693,6 +1080,8 @@ def write_glb(parts, slug):
     bounds_min = np.array([math.inf] * 3)
     bounds_max = np.array([-math.inf] * 3)
     triangles = 0
+    if any(part.material and part.positions for part in parts):
+        doc['materials'].append(GLOSS_MATERIAL)
     for part in parts:
         if not part.positions:
             continue
@@ -715,7 +1104,7 @@ def write_glb(parts, slug):
         doc['accessors'].append({'bufferView': view(indices.tobytes(), 34963), 'componentType': index_type, 'count': count, 'type': 'SCALAR'})
         name = f'{slug.replace("-", "_")}_{part.name}'
         doc['meshes'].append({'name': name, 'primitives': [{
-            'attributes': {'POSITION': first, 'NORMAL': first + 1, 'COLOR_0': first + 2}, 'indices': first + 3, 'material': 0}]})
+            'attributes': {'POSITION': first, 'NORMAL': first + 1, 'COLOR_0': first + 2}, 'indices': first + 3, 'material': part.material}]})
         doc['nodes'].append({'mesh': len(doc['meshes']) - 1, 'name': name})
         doc['scenes'][0]['nodes'].append(len(doc['nodes']) - 1)
         triangles += count // 3
@@ -730,14 +1119,13 @@ def write_glb(parts, slug):
 
 
 def build(species):
-    plant = Plant(species['seed'])
+    plant = Plant(species['seed'], species.get('season'))
     species['builder'](plant, species['params'])
     return plant
 
 
 def row(species, payload, lo, hi, triangles, meshes):
     size = hi - lo
-    centre = (lo + hi) / 2
     return {
         'id': PREFIX + species['slug'],
         'label': species['label'],
@@ -747,9 +1135,10 @@ def row(species, payload, lo, hi, triangles, meshes):
         'url': f'{URL_ROOT}/{species["slug"]}.glb',
         'color': species['color'],
         'kind': species['kind'],
-        'offset': [round(-float(centre[0]), 6), round(-float(lo[1]), 6), round(-float(centre[2]), 6)],
+        # The authored origin (trunk or clump centre) is the placement anchor; only ground the model.
+        'offset': [0.0, round(-float(lo[1]), 6) + 0.0, 0.0],
         'sourceKit': KIT,
-        'sourceBuilder': f'prairie:{species["builder"].__name__}',
+        'sourceBuilder': f'prairie:{species["builder"].__name__}' + (f':{species["season"]}' if species.get('season') else ''),
         'sha256': hashlib.sha256(payload).hexdigest(),
         'triangles': triangles,
         'meshes': meshes,
@@ -783,9 +1172,9 @@ def register(rows, frontend=ROOT / 'frontend/src/features/parks/detailCatalogueE
         raise ValueError(f'Catalogue already contains {sorted(clashes)}')
     allow = json.loads(backend.read_text(encoding='utf-8'))
     if {r['id'] for r in rows} & (set(allow['trees']) | set(allow['props'])):
-        raise ValueError('Backend allowlist already contains a prairie foliage ID')
-    frontend.with_name(frontend.name + '.bak-prairie-foliage').write_text(text, encoding='utf-8')
-    backend.with_name(backend.name + '.bak-prairie-foliage').write_text(json.dumps(allow, indent=2) + '\n', encoding='utf-8')
+        raise ValueError('Backend allowlist already contains one of these IDs')
+    frontend.with_name(frontend.name + '.bak-detail-register').write_text(text, encoding='utf-8')
+    backend.with_name(backend.name + '.bak-detail-register').write_text(json.dumps(allow, indent=2) + '\n', encoding='utf-8')
     head, bracket, tail = text.rstrip().rpartition(']')
     if not bracket or tail.strip():
         raise ValueError('Unexpected extras catalogue layout')
