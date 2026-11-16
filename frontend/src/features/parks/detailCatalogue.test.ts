@@ -115,6 +115,11 @@ describe("standalone detail catalogue", () => {
     }
     const start = DETAIL_CATEGORIES.indexOf("Winter city");
     expect(DETAIL_CATEGORIES.slice(start, start + 2)).toEqual(["Winter city", "Wildlife"]);
+    // Both local kits ship a static card image, so browsing never downloads a model.
+    for (const model of extras.filter((m) => m.sourceKit === "calgary-details-v1" || m.sourceKit === "prairie-foliage-v1")) {
+      expect(model.thumbnailUrl).toBe(model.url.replace(/\.glb$/, ".webp"));
+      expect(model.thumbnailSha256).toMatch(/^[a-f0-9]{64}$/);
+    }
     // People spans two columns, so an even number of other tiles keeps the grid full.
     expect((DETAIL_CATEGORIES.length - 1) % 2).toBe(0);
     expect(searchDetails("", "Winter city")).toHaveLength(9);

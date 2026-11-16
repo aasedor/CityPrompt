@@ -88,14 +88,31 @@ The 40 new GLBs total 35,071,428 bytes and 307,029 triangles; the whole kit is
 62,342,176 bytes. Budgets are unchanged (trees under 14,000 triangles, planting
 under 6,000, two meshes, no textures). Models still load only on placement.
 
+## Picker card images
+
+With 53 choices under Trees, drawing each card from its model would download
+about a megabyte per tile. Every plant in the kit, including the first 30, now
+has a static 480 × 315 WebP card (`<slug>.webp` beside the GLB, about 7 KB each,
+784 KB for both local kits together). The registry records it as `thumbnailUrl`
+with a `thumbnailSha256` lock, which the panel already prefers over a live
+render. `render_detail_thumbnails.cjs` draws the cards with the same lighting
+and orthographic framing as `detailThumbnail.ts`, so they look like the live
+preview they replace. Pixels depend on the renderer, so the cards are reviewed
+outputs locked by hash; tests verify the committed bytes and never re-render.
+
 ## Reproduction
 
 ```text
 python tools/detail_catalogue/build_local_foliage.py --dry-run
 python tools/detail_catalogue/build_local_foliage.py --output <fresh-directory> [--id fireweed ...]
+node tools/detail_catalogue/render_detail_thumbnails.cjs <directory>
+python tools/detail_catalogue/build_local_foliage.py --output <directory> --attach-thumbnails
 python tools/detail_catalogue/build_local_foliage.py --output <directory> --register
 python -m pytest tools/detail_catalogue/test_local_foliage.py -q
 ```
+
+The thumbnail step needs the repository root served on port 8765 and frontend
+dependencies installed, like the review page.
 
 `--register` is still a text-level splice before the closing bracket of
 `detailCatalogueExtras.json` and refuses IDs already present; backups are now
@@ -114,17 +131,18 @@ removed, with the remaining 155 rows verified byte-for-byte against
   [wildflowers and grasses](prairie-foliage-v1/second-batch-plants.jpg),
   [catalogue cards](prairie-foliage-v1/second-batch-cards.jpg). Agent review
   passed; independent human visual acceptance is open.
-- Tools pytest: 9 tests, 235 subtests. It rebuilds all 70 and requires
-  byte-identical registry rows, the 30 pinned first-batch hashes, identical
-  skeletons for every seasonal form, origin-anchored offsets and trunks standing
-  on the anchor.
+- Tools pytest: 10 tests. It rebuilds all 70 and requires byte-identical
+  registry rows, the 30 pinned first-batch hashes, identical skeletons for every
+  seasonal form, origin-anchored offsets, trunks standing on the anchor and a
+  hash-locked card image for every row.
 - `npx vitest run src/features/parks` plus the people catalogue test: 42 files,
   237 tests passed with archive-backed assets materialized as CI does.
   TypeScript and ESLint on the changed test pass.
 - Backend `tests/test_project_details.py`: 83 passed, including the mirror and
   round-trip of all 225 extras; the one failure is the pre-existing traffic-safety
   hash test that needs hydrated LFS models.
-- Runtime asset manifest regenerated and checked: 5,579 required files (+40).
+- Runtime asset manifest regenerated and checked: 5,579 required files (+40)
+  at the model commit, then 5,725 once both local kits gained card images.
 
 Not done here: a browser trial placing these plants in a project, Undo/reload,
 deterministic capture, low-end device performance and classroom novice use.

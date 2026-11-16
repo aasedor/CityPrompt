@@ -86,11 +86,22 @@ The 38 GLBs total 3,518,596 bytes and 30,415 triangles; the largest is the rink
 at 2,900 triangles and 332,656 bytes. Models load on placement only. The
 authored ground origin is the placement anchor, as with the plants.
 
+## Picker card images
+
+Every item ships a static 480 × 315 WebP card beside its GLB, recorded as
+`thumbnailUrl` with a `thumbnailSha256` lock, so browsing the panel never
+downloads a model. The cards use the same lighting and framing as the live
+preview. The two 30 m and 40 m line carriers would otherwise shrink to a hairline
+in a card, so their images frame the pole and the nearest few metres of wire.
+See the [foliage write-up](LOCAL_FOLIAGE_SEASONS_2026-11-16.md) for the method.
+
 ## Reproduction
 
 ```text
 python tools/detail_catalogue/build_calgary_details.py --dry-run
 python tools/detail_catalogue/build_calgary_details.py --output <fresh-directory> [--id outdoor-rink ...]
+node tools/detail_catalogue/render_detail_thumbnails.cjs <directory> utility-pole-lines:3.2,lrt-catenary-pole:4.2
+python tools/detail_catalogue/build_calgary_details.py --output <directory> --attach-thumbnails
 python tools/detail_catalogue/build_calgary_details.py --output <directory> --register
 python -m pytest tools/detail_catalogue/test_calgary_details.py -q
 ```
@@ -110,9 +121,10 @@ Add `zoom=3` to bring the camera in on the two long wire items.
   [oblique](calgary-details-v1/oblique.jpg),
   [catalogue cards](calgary-details-v1/catalogue-cards.jpg). Agent review passed;
   independent human visual acceptance is open.
-- Tools pytest for this kit: 6 tests rebuild all 38 and require byte-identical
+- Tools pytest for this kit: 7 tests rebuild all 38 and require byte-identical
   registry rows, budgets, the kit material convention, ground-datum and anchor
-  rules, chaining spans, backend allowlist, category tiles and unbranded wording.
+  rules, chaining spans, backend allowlist, category tiles, unbranded wording
+  and a hash-locked card image for every row.
 - `npx vitest run src/features/parks` plus the people catalogue test: 42 files,
   239 tests passed with archive-backed assets materialized as CI does. The
   panel test walks every category tile, including the two new ones. TypeScript,
@@ -121,7 +133,8 @@ Add `zoom=3` to bring the camera in on the two long wire items.
 - Backend `tests/test_project_details.py`: 83 passed, including the mirror and
   round-trip of all 263 extras; the one failure is the pre-existing
   traffic-safety hash test that needs hydrated LFS models.
-- Runtime asset manifest regenerated and checked: 5,617 required files (+38).
+- Runtime asset manifest regenerated and checked: 5,617 required files (+38)
+  at the model commit, then 5,725 once both local kits gained card images.
 
 Not done here: a browser trial placing these objects in a project, Undo/reload,
 deterministic capture and AI render with them, low-end device performance and

@@ -13,6 +13,8 @@ and are not construction, electrical, traffic or play-safety designs.
 
     python tools/detail_catalogue/build_calgary_details.py --dry-run
     python tools/detail_catalogue/build_calgary_details.py --output <fresh-directory> [--id <slug> ...]
+    node tools/detail_catalogue/render_detail_thumbnails.cjs <directory> utility-pole-lines:3.2,lrt-catenary-pole:4.2
+    python tools/detail_catalogue/build_calgary_details.py --output <directory> --attach-thumbnails
     python tools/detail_catalogue/build_calgary_details.py --output <directory> --register
 """
 import argparse
@@ -1233,6 +1235,7 @@ def main(argv=None):
     parser.add_argument('--id', action='append')
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--register', action='store_true', help='Splice finished rows into the frontend extras catalogue and backend allowlist.')
+    parser.add_argument('--attach-thumbnails', action='store_true', help='Record the reviewed <slug>.webp card images found beside the GLBs.')
     args = parser.parse_args(argv)
     chosen = [s for s in SPECS if not args.id or s['slug'] in args.id]
     unknown = set(args.id or []) - {s['slug'] for s in SPECS}
@@ -1243,6 +1246,12 @@ def main(argv=None):
         return
     if not args.output:
         parser.error('--output is required unless --dry-run')
+    if args.attach_thumbnails:
+        rows = json.loads((args.output / 'catalogue.json').read_text(encoding='utf-8'))
+        attached = foliage.attach_thumbnails(rows, args.output)
+        (args.output / 'catalogue.json').write_text(json.dumps(rows, indent=2) + '\n', encoding='utf-8')
+        print(json.dumps({'thumbnails': attached, 'rows': len(rows)}))
+        return
     if args.register:
         rows = json.loads((args.output / 'catalogue.json').read_text(encoding='utf-8'))
         foliage.register(rows)

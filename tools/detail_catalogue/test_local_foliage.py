@@ -90,7 +90,7 @@ class PrairieFoliageContract(unittest.TestCase):
         self.assertEqual(list(self.by_slug), [s['slug'] for s in self.module.SPECIES])
         for slug, (_species, row, payload, _plant) in self.built.items():
             with self.subTest(slug=slug):
-                self.assertEqual(self.by_slug[slug], row)
+                self.assertEqual({k: v for k, v in self.by_slug[slug].items() if not k.startswith('thumbnail')}, row)
                 self.assertEqual(hashlib.sha256(payload).hexdigest(), row['sha256'])
                 self.assertEqual(len(payload), row['bytes'])
                 self.assertEqual(row['url'], f'{self.module.URL_ROOT}/{slug}.glb')
@@ -125,6 +125,17 @@ class PrairieFoliageContract(unittest.TestCase):
                     self.assertNotEqual(plant.foliage.colors, base_plant.foliage.colors)
                 for actual, base in zip(row['dimensions'], base_row['dimensions']):
                     self.assertLess(abs(actual - base), .35)
+
+    def test_every_row_locks_a_reviewed_card_image(self):
+        """Static cards keep the panel from downloading each model just to draw its tile."""
+        kit = ROOT / 'frontend/public/park-kits/prairie-foliage-v1'
+        for row in self.registry:
+            with self.subTest(id=row['id']):
+                self.assertEqual(row['thumbnailUrl'], row['url'][:-len('.glb')] + '.webp')
+                data = (kit / Path(row['thumbnailUrl']).name).read_bytes()
+                self.assertEqual((data[:4], data[8:12]), (b'RIFF', b'WEBP'))
+                self.assertEqual(hashlib.sha256(data).hexdigest(), row['thumbnailSha256'])
+                self.assertLess(len(data), 40_000)
 
     def test_geometry_budgets_and_kit_convention(self):
         total = 0

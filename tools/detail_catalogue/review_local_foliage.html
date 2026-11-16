@@ -5,8 +5,11 @@
   (python -m http.server 8765 --bind 127.0.0.1) and open
   /tools/detail_catalogue/review_local_foliage.html?dir=artifacts/prairie-foliage-final&mode=eye
   mode: eye (1.7 m camera with a 1.8 m red post), oblique, card (the app's
-  catalogue-card lighting and orthographic framing) or mix. Review only; the
-  page never writes files and uses the frontend's installed three.js.
+  catalogue-card lighting and orthographic framing), mix, or thumb, which
+  renders the card view once per item and leaves WebP data URLs on
+  window.__thumbs for render_detail_thumbnails.cjs. focus=slug:half-width
+  frames only the middle of a long wire item. The page never writes files and
+  uses the frontend's installed three.js.
 -->
 <style>body{margin:0;background:#fff;font:12px system-ui}#grid{display:grid;grid-template-columns:repeat(var(--cols,5),1fr);gap:4px;padding:4px}
 .cell{border:1px solid #ccc;background:#f1f5f9}.cell canvas{display:block;width:100%}.cell p{margin:2px 4px;font-weight:600}</style>
@@ -21,18 +24,22 @@ const mode = params.get('mode') || 'eye';
 const cols = Number(params.get('cols') || 5);
 const only = params.get('only')?.split(',');
 const W = Number(params.get('w') || 360), H = Number(params.get('h') || 300);
+const focus = Object.fromEntries((params.get('focus') || '').split(',').filter(Boolean).map(pair => pair.split(':')));
+window.__thumbs = [];
 const zoom = Number(params.get('zoom') || 1); // above 1 moves the eye and oblique cameras closer, for long wire spans
 document.getElementById('grid').style.setProperty('--cols', cols);
 const rows = await (await fetch(`/${dir}/catalogue.json`)).json();
 const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
 renderer.setSize(W, H); renderer.setPixelRatio(1);
 const loader = new GLTFLoader();
-function scene(model, view) {
+function scene(model, view, slug) {
   const s = new THREE.Scene();
   if (view === 'card') { s.background = new THREE.Color('#f1f5f9'); s.add(new THREE.AmbientLight(0xffffff, 2)); const l = new THREE.DirectionalLight(0xffffff, 3); l.position.set(5, 10, 8); s.add(l); }
   else { s.background = new THREE.Color('#dfe7ee'); s.add(new THREE.HemisphereLight(0xdde8f5, 0x6b6a5a, 1.6)); const l = new THREE.DirectionalLight(0xfff3dd, 2.4); l.position.set(6, 12, 5); s.add(l); }
   s.add(model);
-  const box = new THREE.Box3().setFromObject(model); const size = box.getSize(new THREE.Vector3()); const centre = box.getCenter(new THREE.Vector3());
+  const box = new THREE.Box3().setFromObject(model);
+  if (view === 'card' && focus[slug]) { box.min.x = Math.max(box.min.x, -Number(focus[slug])); box.max.x = Math.min(box.max.x, Number(focus[slug])); }
+  const size = box.getSize(new THREE.Vector3()); const centre = box.getCenter(new THREE.Vector3());
   if (view !== 'card') {
     const ground = new THREE.Mesh(new THREE.CircleGeometry(Math.max(size.x, size.z) * 1.1 + 1, 48), new THREE.MeshStandardMaterial({ color: '#8d9a6e', roughness: 1 }));
     ground.rotation.x = -Math.PI / 2; ground.position.y = box.min.y - .002; s.add(ground);
@@ -57,10 +64,12 @@ function scene(model, view) {
 for (const row of rows) {
   if (only && !only.includes(row.id.replace(/^detail-(prairie|calgary)-/, ''))) continue;
   const { scene: model } = await loader.loadAsync(`/${dir}/${row.url.split('/').pop()}`);
-  const views = mode === 'mix' ? ['eye', 'oblique'] : [mode];
+  const slug = row.id.replace(/^detail-(prairie|calgary)-/, '');
+  const views = mode === 'mix' ? ['eye', 'oblique'] : [mode === 'thumb' ? 'card' : mode];
   for (const view of views) {
-    const { s, camera } = scene(model.clone(), view);
+    const { s, camera } = scene(model.clone(), view, slug);
     renderer.render(s, camera);
+    if (mode === 'thumb') { window.__thumbs.push({ slug, dataUrl: renderer.domElement.toDataURL('image/webp', Number(params.get('quality') || .82)) }); continue; }
     const cell = document.createElement('div'); cell.className = 'cell';
     const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
     canvas.getContext('2d').drawImage(renderer.domElement, 0, 0);

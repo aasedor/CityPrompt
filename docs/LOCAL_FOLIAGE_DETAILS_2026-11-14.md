@@ -5,7 +5,9 @@
 > byte-identical and their hashes are now pinned in the tools test. Two details
 > on this page changed: registry offsets no longer re-centre a model on its
 > bounding box, so the trunk lands on the clicked point, and `--register` writes
-> its backups as `.bak-detail-register`.
+> its backups as `.bak-detail-register`. All 70 plants also now ship a static
+> card image, so the note below about rendering cards from the GLB on demand no
+> longer applies to this kit.
 
 ## Scope
 
