@@ -17,6 +17,10 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 LFS = b"version https://git-lfs.github.com/spec/v1"
+# Picker captures of the generated local kits are locked here by row id. Their
+# catalogue rows ship inside the JavaScript bundle, where an image hash the app
+# never reads would only spend the bundle budget.
+DETAIL_CARD_LOCK = "tools/detail_catalogue/detail_card_images.lock.json"
 DETAIL_MANIFESTS = ("frontend/src/features/parks/detailCatalogueExtras.json",
                     "frontend/src/features/parks/recoveredDetails.json",
                     "frontend/src/features/parks/trafficSafetyCatalogue.json",
@@ -103,13 +107,22 @@ def public_requirements(report: dict) -> dict[str, dict]:
     return result
 
 
-def detail_requirements(rows: list[dict]) -> dict[str, dict]:
-    """Pin the complete active Add Details catalogue, including picker captures."""
+def detail_requirements(rows: list[dict], card_locks: dict[str, str] | None = None) -> dict[str, dict]:
+    """Pin the complete active Add Details catalogue, including picker captures.
+
+    A capture is locked by its row, or by row id in DETAIL_CARD_LOCK. One of the
+    two must give an exact SHA-256, and they may not disagree.
+    """
     checks = []
     for row in rows:
         checks.append({"url": row["url"], "sha256": row["sha256"], "bytes": row["bytes"]})
         if row.get("thumbnailUrl"):
-            checks.append({"url": row["thumbnailUrl"], "sha256": row["thumbnailSha256"]})
+            inline, locked = row.get("thumbnailSha256"), (card_locks or {}).get(row.get("id"))
+            if inline and locked and inline != locked:
+                raise ValueError(f"Conflicting capture locks for {row['id']}")
+            if not (inline or locked):
+                raise ValueError(f"Add Details capture has no SHA-256 lock: {row.get('id')}")
+            checks.append({"url": row["thumbnailUrl"], "sha256": inline or locked})
     if any(not re.fullmatch(r"[a-f0-9]{64}", item["sha256"]) for item in checks):
         raise ValueError("Add Details requires exact SHA-256 locks")
     return public_requirements({"choices": [{"checks": checks}]})
@@ -165,7 +178,7 @@ def browser_environment(source: dict, env_dir: Path, public: Path) -> dict:
 class RepositoryAssets:
     metadata_paths = {"seed/validation/manifest.json", "seed/validation/supplemental-2026-10-07/manifest.json",
                       "seed/model-library/rlasm-architectural-clay/library.json", "seed/claude-five-trial/library.json",
-                      "seed/recovered-details/manifest.json"}
+                      "seed/recovered-details/manifest.json", DETAIL_CARD_LOCK}
     def __init__(self, repo: Path, fetch_lfs: bool = False):
         self.repo, self.fetch_lfs = repo.resolve(), fetch_lfs
         self.tracked = set(subprocess.check_output(["git", "ls-files", "-z"], cwd=repo, text=True).split("\0"))
@@ -177,7 +190,8 @@ class RepositoryAssets:
         self.members = {row["path"]: row for row in self.seed["files"]}
         self.by_hash = {row["sha256"]: row["path"] for row in self.seed["files"]}
         self.supplement = {row["url"]: row for row in json.loads(self.read("seed/validation/supplemental-2026-10-07/manifest.json"))["assets"]}
-        self.details = detail_requirements([row for path in DETAIL_MANIFESTS for row in json.loads(self.read(path))])
+        self.details = detail_requirements([row for path in DETAIL_MANIFESTS for row in json.loads(self.read(path))],
+                                           json.loads(self.read(DETAIL_CARD_LOCK)))
         self.recovered = json.loads(self.read("seed/recovered-details/manifest.json"))
         self.recovered_sources = {row["url"]: row for row in self.recovered["files"]}
         self.recovered_archive = None
@@ -249,7 +263,7 @@ class RepositoryAssets:
 
     def read(self, relative: str) -> bytes:
         if relative not in self.tracked or not (relative.startswith(("frontend/public/", "frontend/src/data/", "seed/"))
-                or relative in DETAIL_MANIFESTS
+                or relative in DETAIL_MANIFESTS or relative == DETAIL_CARD_LOCK
                 or (relative.startswith(SOURCE_MEDIA_PREFIX) and PurePosixPath(relative).suffix.lower() in {".png", ".mp4"})):
             raise ValueError(f"Source is not a tracked runtime input: {relative}")
         path = (self.repo / relative).resolve()

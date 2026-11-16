@@ -9,7 +9,7 @@ import zipfile
 from unittest.mock import patch
 
 from scripts.hosted_assets import ROOT, RepositoryAssets, checked_payload, safe_target, public_requirements, write_asset, browser_environment, stamp_service_worker, validate_packet
-from scripts.hosted_assets import detail_requirements, hydrate_source_media
+from scripts.hosted_assets import DETAIL_CARD_LOCK, detail_requirements, hydrate_source_media
 from scripts.hosted_assets import DETAIL_MANIFESTS
 
 
@@ -149,15 +149,30 @@ class HostedAssetsTests(unittest.TestCase):
         rows = []
         for name in ("detailCatalogueExtras.json", "recoveredDetails.json"):
             rows.extend(json.loads((ROOT / "frontend/src/features/parks" / name).read_text()))
-        requirements = detail_requirements(rows)
-        self.assertEqual(len(requirements), 525)
+        # The generated local kits lock their picker captures by row id in a tracked
+        # sidecar, because their rows ship inside the JavaScript bundle.
+        self.assertIn(DETAIL_CARD_LOCK, RepositoryAssets.metadata_paths)
+        locks = json.loads((ROOT / DETAIL_CARD_LOCK).read_text())
+        local = [row for row in rows if row.get("sourceKit") in ("prairie-foliage-v1", "calgary-details-v1")]
+        self.assertEqual((len(local), len(locks)), (108, 108))
+        self.assertEqual({row["id"] for row in local}, set(locks))
+        requirements = detail_requirements(rows, locks)
+        self.assertEqual(len(requirements), 525 + 2 * len(local))
         for row in rows:
             self.assertEqual(requirements[row["url"]]["sha256"], row["sha256"])
             self.assertEqual(requirements[row["url"]]["bytes"], row["bytes"])
             if row.get("thumbnailUrl"):
-                self.assertEqual(requirements[row["thumbnailUrl"]]["sha256"], row["thumbnailSha256"])
+                self.assertEqual(requirements[row["thumbnailUrl"]]["sha256"], row.get("thumbnailSha256") or locks[row["id"]])
+        for row in local:
+            self.assertNotIn("thumbnailSha256", row)
+            payload = (ROOT / "frontend/public" / row["thumbnailUrl"].lstrip("/")).read_bytes()
+            self.assertEqual(hashlib.sha256(payload).hexdigest(), requirements[row["thumbnailUrl"]]["sha256"])
         with self.assertRaisesRegex(ValueError, "Conflicting"):
             detail_requirements([rows[0], {**rows[0], "sha256": "0" * 64}])
+        with self.assertRaisesRegex(ValueError, "no SHA-256 lock"):
+            detail_requirements([local[0]])
+        with self.assertRaisesRegex(ValueError, "Conflicting capture locks"):
+            detail_requirements([{**local[0], "thumbnailSha256": "0" * 64}], locks)
 
     def test_explicit_catalogue_profile_survives_sanitized_build_environment(self):
         source = {"VITE_GOOGLE_MAPS_API_KEY": "browser-key", "VITE_API_URL": "https://api.example.org",
