@@ -29,10 +29,13 @@ not warp, and do not rely on free draw.
   `regular` range, 55 the `careful` range and 2 the `wide` range.
 - **Each building has its own range.** Three named ranges live in the tuning
   file. A building is held to its own, on the server and in the browser.
-- **A size outside the range is refused.** The panel says so and Apply is
-  disabled. Fit building to plot stops at the range and says where it will
-  stop before it is pressed. A plot dragged too small squeezes the building
-  only as far as its range.
+- **A size simply stops at the range, with no message.** The width and depth
+  boxes cannot be taken past the largest size, a size left below the smallest
+  snaps up to it when the box is left, and Apply uses the stopped size. Fit
+  building to plot stops at the range. A plot dragged too small squeezes the
+  building only as far as its range. The range is stated once under the
+  boxes; nothing else is announced. The server still refuses a size outside
+  the range, but the browser never sends one.
 - **Free draw is a second switch, off by default.** With it off there is no
   Exact model or Shape freely choice and no automatic handover. A free-draw
   outline saved earlier is ignored, exactly as the whole pilot is while its
@@ -107,9 +110,12 @@ screen for obvious warping, not a pass.
   the same doors, a little wider or narrower. Before this round a stretch
   dropped the count; that would now make a small stretch erase dwellings from
   a student's report. A freely shaped building still claims none.
-- **A typed size outside the range is refused, not clamped.** Silently
-  changing a number a student typed seemed worse than saying no. Fit building
-  to plot does clamp, because its job is "as close as this building can get".
+- **No message at the limit.** I first refused an out-of-range size with a
+  message. You asked for it simply not to extend, so the boxes now stop at
+  the range silently and the notices are gone.
+- **The size boxes have no fixed upper cap in stretch only.** They used to
+  carry the free-draw limit of 120 m, which would have blocked the two listed
+  buildings that are wider than that. A test covers the 150 m warehouse.
 
 **Parks**
 
@@ -463,9 +469,9 @@ colours can be tuned without a database. It shows either building. See
   `stretch.squeeze_on_plot_resize` to `false` to switch that off.
 - Typing a larger building grows its plot. A plot is never shrunk by a
   building edit.
-- With free draw off, a typed size outside the building's range is refused
-  with a message and Apply is disabled. Fit building to plot stops at the
-  range, and a note under the button says where it will stop.
+- With free draw off, a size stops at the building's range without a
+  message: the boxes cannot pass the largest size, snap up from below the
+  smallest, and Fit building to plot stops at the range.
 
 ## Files changed
 
@@ -563,8 +569,8 @@ Run in the sandbox on this branch, after the stretch-only rollout.
 | `pytest tests/test_building_resize_trial.py tests/test_building_resize_trial_script.py` | 121 passed |
 | Full backend suite `pytest tests/` | 3,458 passed, 74 skipped, 15 failed, 16 errors. The 31 are pre-existing, see below |
 | `ruff check .` and `black --check --line-length=120 .` in `backend/` | Passed |
-| The pilot's frontend tests (9 files) | 117 passed |
-| Full frontend suite `npx vitest run` | 4,664 passed, 28 skipped, 6 failed. The 6 are pre-existing, see below. Fewer tests skip than before only because more model files were downloaded into the sandbox for rendering |
+| The pilot's frontend tests (9 files) | 119 passed |
+| Full frontend suite `npx vitest run` | 4,666 passed, 28 skipped, 6 failed. The 6 are pre-existing, see below. Fewer tests skip than before only because more model files were downloaded into the sandbox for rendering |
 | `npm run type-check` | Passed |
 | `npx eslint --max-warnings=0` on every changed frontend file | Passed |
 | `npm run check:dead-code` | Passed |
@@ -879,10 +885,10 @@ frontend. It then appears for Aspen Terrace Seniors Apartments and Brick
 Garden Courtyard only.
 
 Suggested first run, stretch only: place Aspen Terrace, set width 38 m and
-apply; type 52 m and read the refusal; drag a plot corner inward and watch the
-building squeeze; widen the plot to 90 m and read where Fit building to plot
-will stop, then press it; undo back to the start; reload. Then place a house
-and a shed and compare how far each may stretch.
+apply; type 52 m and watch the box stop at 45.3 m; drag a plot corner inward
+and watch the building squeeze; widen the plot to 90 m and press Fit building
+to plot, which stops at 140%; undo back to the start; reload. Then place a
+house and a shed and compare how far each may stretch.
 
 With free draw on as well: press Fit building to plot on a 60 m wide plot and
 read the handover label; switch to Shape freely, add an outline point and
@@ -957,3 +963,4 @@ To switch off, remove the variables and redeploy both sides.
 11. `docs(resize-pilot): record the second building`
 12. `feat(resize-pilot): stretch across the catalogue, each building in its own range`
 13. `docs(resize-pilot): record the stretch-only rollout and the parks assessment`
+14. `feat(resize-pilot): stop a stretch at its range without a message`

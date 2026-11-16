@@ -281,24 +281,47 @@ describe('stretch only: free draw off, the default once the pilot is on', () => 
     expect(screen.getByText(/This building stretches 22\.65–45\.3 m wide and 12\.59–25\.17 m deep \(70%–140%\), a range it can take without warping/)).toBeInTheDocument();
   });
 
-  it('refuses a typed size outside the range instead of warping the building', () => {
+  it('stops a typed size at the building’s range, with no message', async () => {
     const onSave = show();
+    // It cannot be typed past the largest size.
     type('Building width (m)', '52');
-    expect(screen.getByRole('alert')).toHaveTextContent('That size is outside this building’s range, so it is not applied.');
-    expect(screen.getByRole('button', { name: 'Apply building' })).toBeDisabled();
-    apply();
-    expect(onSave).not.toHaveBeenCalled();
-    expect(legoAssemblyApi.plan).not.toHaveBeenCalled();
-    // Back inside the range the size is accepted again.
-    type('Building width (m)', '40');
+    expect(screen.getByLabelText('Building width (m)')).toHaveValue(45.3);
+    expect(screen.getByText('140% of the model')).toBeInTheDocument();
+    // A size left below the smallest snaps up to it when the box is left.
+    type('Building depth (m)', '5');
+    expect(screen.getByLabelText('Building depth (m)')).toHaveValue(5);
+    fireEvent.blur(screen.getByLabelText('Building depth (m)'));
+    expect(screen.getByLabelText('Building depth (m)')).toHaveValue(12.59);
+    // Nothing is announced and nothing is refused.
     expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.queryByText(/outside/)).toBeNull();
     expect(screen.getByRole('button', { name: 'Apply building' })).toBeEnabled();
+    vi.mocked(legoAssemblyApi.plan).mockResolvedValue(stretched(1.4, 0.7));
+    apply();
+    await waitFor(() => expect(onSave).toHaveBeenCalledTimes(1));
+    const saved = onSave.mock.calls[0][0];
+    expect(saved.building_footprint_mode).toBe('exact_model');
+    expect(saved.building_footprint_width_scale).toBeCloseTo(1.4, 3);
+    expect(saved.building_footprint_depth_scale).toBeCloseTo(0.7, 3);
   });
 
-  it('stops Fit building to plot at the range on a plot the building cannot fill, and says so first', async () => {
+  it('still applies inside the range when a too-small size is applied without leaving the box', async () => {
+    const onSave = show();
+    type('Building depth (m)', '5');
+    vi.mocked(legoAssemblyApi.plan).mockResolvedValue(stretched(1, 0.7));
+    apply();
+    await waitFor(() => expect(onSave).toHaveBeenCalledTimes(1));
+    // The building stopped at its smallest depth, 70%, exactly.
+    expect(onSave.mock.calls[0][0]).toMatchObject({ building_footprint_width_scale: 1, building_footprint_depth_scale: 0.7 });
+    expect(vi.mocked(legoAssemblyApi.plan).mock.calls[0][0].target_depth_m).toBeCloseTo(NATIVE_D * 0.7, 6);
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  it('stops Fit building to plot at the range on a plot the building cannot fill, quietly', async () => {
     // A 90 m wide plot would need 266%; this building stops at 140%.
     const onSave = show(building(placementProperties(asset()), rectangleAt(centre, 90, 22, 15)));
-    expect(screen.getByText('Your plot is outside that range. Fit building to plot stops at 140% wide and 100% deep.')).toBeInTheDocument();
+    expect(screen.queryByText(/outside/)).toBeNull();
+    expect(screen.queryByRole('status')).toBeNull();
     vi.mocked(legoAssemblyApi.plan).mockResolvedValue(stretched(1.4, 1));
     fireEvent.click(screen.getByRole('button', { name: 'Fit building to plot' }));
     await waitFor(() => expect(onSave).toHaveBeenCalledTimes(1));
@@ -313,10 +336,21 @@ describe('stretch only: free draw off, the default once the pilot is on', () => 
     show(building(placementProperties(house), rectangleAt(centre, house.width, house.depth, 15)));
     expect(screen.getByText(/This building stretches 12\.04–14\.71 m wide and 17\.64–21\.56 m deep \(90%–110%\)/)).toBeInTheDocument();
     expect(screen.queryByRole('radiogroup', { name: 'Building shape' })).toBeNull();
-    // 16 m is 120%: fine for the apartment block, refused for the house.
+    // 16 m is 120%: fine for the apartment block, past the house's limit.
     type('Building width (m)', '16');
-    expect(screen.getByRole('alert')).toHaveTextContent('outside this building’s range');
-    expect(screen.getByRole('button', { name: 'Apply building' })).toBeDisabled();
+    expect(screen.getByLabelText('Building width (m)')).toHaveValue(14.71);
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.getByRole('button', { name: 'Apply building' })).toBeEnabled();
+  });
+
+  it('accepts the size of a building larger than any free-draw outline could be', () => {
+    // The logistics warehouse is 150 m wide; the box must not cap it at a smaller limit.
+    const warehouse = placeAsset('clay_warehouse_tilt_wall_mega');
+    show(building(placementProperties(warehouse), rectangleAt(centre, warehouse.width, warehouse.depth, 15)));
+    const width = screen.getByLabelText('Building width (m)');
+    expect(width).toHaveValue(150.32);
+    expect(width).not.toHaveAttribute('max');
+    expect(width).toBeValid();
   });
 
   it('does not act on a free-draw outline saved while free draw was on', () => {
