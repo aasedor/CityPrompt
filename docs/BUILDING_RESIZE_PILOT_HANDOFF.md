@@ -8,9 +8,130 @@ Written 2026-11-12 from a cloud sandbox. No 3D viewer, no database and no
 Updated the same day with a second, more complex building: see
 [Second building](#second-building-brick-garden-courtyard).
 
+Updated 2026-11-16 after your decision that stretching is the way to go and
+free draw is not: see [Stretch only, across the catalogue](#stretch-only-across-the-catalogue).
+That section is the current state. Where an older section disagrees with it,
+that section wins.
+
 Nothing here is published. No catalogue entry, reviewed GLB byte, seed row or
 deployment file changed. The pilot does not change the RLASM 6.1 method and
 grants no keeper or runtime acceptance.
+
+## Stretch only, across the catalogue
+
+Your direction: stretch the reviewed model, inside a set percentage so it does
+not warp, and do not rely on free draw.
+
+**What changed**
+
+- **76 buildings stretch.** The list is generated from the reviewed clay
+  library, each entry pinned by variant, candidate and sha256. 19 take the
+  `regular` range, 55 the `careful` range and 2 the `wide` range.
+- **Each building has its own range.** Three named ranges live in the tuning
+  file. A building is held to its own, on the server and in the browser.
+- **A size outside the range is refused.** The panel says so and Apply is
+  disabled. Fit building to plot stops at the range and says where it will
+  stop before it is pressed. A plot dragged too small squeezes the building
+  only as far as its range.
+- **Free draw is a second switch, off by default.** With it off there is no
+  Exact model or Shape freely choice and no automatic handover. A free-draw
+  outline saved earlier is ignored, exactly as the whole pilot is while its
+  flag is off. Only the two buildings with a facade kit can be shaped freely
+  even when it is on.
+
+**The three ranges** (`stretch.bands` in the tuning file)
+
+| Range | Per axis | Used for |
+| --- | --- | --- |
+| `wide` | 70%–140% | The two buildings piloted at your original numbers. Windows are visibly narrow at 70% and wide at 140% |
+| `regular` | 85%–120% | Orthogonal buildings made of repeating bays: apartments, low offices, shop strips, sheds, warehouses, townhouse rows |
+| `careful` | 90%–110% | Houses, one-off civic buildings, stations, parkades, anything nine storeys or taller, and any building with arches, vaults, domes, round parts or lettering |
+
+A building takes its range from `rollout.band_overrides`, else `careful` when
+it has nine storeys or more, else `rollout.band_by_group` for its picker
+group. Every building moved by name has its reason beside it in
+`rollout.band_override_reasons`; the script refuses an override without one.
+To change a building's range, edit `rollout` and run:
+
+```bash
+python scripts/building_resize_trial.py --sync-families
+```
+
+That rebuilds `families` and the server copy. Do not edit `families` by hand;
+the script refuses a list that differs from the rules.
+
+**Buildings left out** (`rollout.exclude`), each because another rule already
+resizes it or it is not in the app:
+
+| Building | Why |
+| --- | --- |
+| Post-war bungalow, Edwardian Foursquare | They have their own house resize programme |
+| Blue glass office tower, Twisting glass tower, Gilded Terracotta Tower, Brick Podium Condo Tower, Plus15 Glass Office Tower, Slab Balcony Tower | Towers with their own storey and footprint programme |
+| Vancouver balcony and podium tower | A tower with its own storey programme |
+| Sandstone civic hall, Classic courtyard motel, Beltline brick mixed-use mid-rise | Not offered in the app |
+
+A frontend test fails if a listed building ever gains a resize or storey
+programme of its own, so the two systems cannot end up fighting.
+
+**How I chose the ranges, and what I looked at**
+
+I rendered every listed building on the review page at the two most lopsided
+stretches its range allows, beside the model as authored, and looked through
+them. That is the review page's own lighting, not the app's globe. It is a
+screen for obvious warping, not a pass.
+
+- At `careful` a change is hard to see at all.
+- At `regular`, orthogonal buildings with repeating bays held up: sheds,
+  warehouses, shop strips, townhouse rows, small apartment blocks.
+- Round and curved parts are what give a stretch away. A dome, a chimney, an
+  arcade of arches and a barrel-vaulted roof all turned visibly oval at
+  `regular`, and so did shop lettering.
+- Some models carry their surroundings inside the model: parked vehicles, a
+  marked road, lawns, neighbouring blocks. Those stretch with the building,
+  and a stretched car is the plainest warp of all.
+- I moved 17 buildings from `regular` to `careful` for those reasons. Each is
+  named with its reason in `rollout.band_override_reasons`.
+- Two models would not render in the sandbox at all: the Mediterranean
+  Courtyard Hotel and The Overhang climbing centre. Both are held to
+  `careful` unseen. Look at them first.
+- I looked closely at every `regular` building and only sampled the `careful`
+  ones. At 90%–110% a dome still becomes slightly oval when seen from above.
+
+**Judgment calls in this round**
+
+- **The two piloted buildings keep 70%–140%.** That was your number. It does
+  warp windows at the ends. Move them to `regular` in `band_overrides` if
+  you want every building held to "no visible warp".
+- **A stretched building keeps its reviewed dwelling count.** Five housing
+  models with a reviewed count now stretch. They are the same homes behind
+  the same doors, a little wider or narrower. Before this round a stretch
+  dropped the count; that would now make a small stretch erase dwellings from
+  a student's report. A freely shaped building still claims none.
+- **A typed size outside the range is refused, not clamped.** Silently
+  changing a number a student typed seemed worse than saying no. Fit building
+  to plot does clamp, because its job is "as close as this building can get".
+
+**Parks**
+
+You mentioned parks. I did not change them, for two reasons.
+
+- **Three of the four kinds already avoid warping by design.** Flexible
+  parks, park trios and the neighbourhood park re-lay-out real-size objects
+  when resized. The panel already says "benches and trees keep their real
+  size" and "Equipment and courts keep their real size".
+- **The fourth kind is fixed on purpose.** A native 3D park is one baked
+  model, and 39 are listed in `frontend/src/data/nativeParks.json`. The
+  server refuses a parcel smaller than the layout with "Its objects cannot be
+  stretched", and `docs/ARCHETYPE_RUNTIME_INTEGRATION.md` rule C2 says a plot
+  resize "must not stretch a native house, regulation court, or fixed street
+  section", with P1 adding that "Rigid equipment and courts remain rigid".
+  Many of these parks contain regulation courts.
+
+Stretching a native park therefore means relaxing a written rule and a server
+check, which is your decision, not mine. If you want it, the safe shape is the
+same as for buildings: a small range such as 90%–110%, opted in per layout,
+never for a layout with a court, pitch or track, and paths, trees and
+furniture kept rigid the way planting already is on a stretched building.
 
 ## What the pilot does
 
@@ -31,20 +152,25 @@ says so, before applying and again after reload.
 
 ## Gate
 
-One flag pair, both default off.
+Two flag pairs, all default off. The first switches stretching on. The second
+adds free draw and does nothing without the first.
 
 | Side | Name | Where it is read |
 | --- | --- | --- |
 | Frontend | `VITE_ENABLE_BUILDING_RESIZE_TRIAL=true` | `buildingResizeTrialEnabled()` in `frontend/src/features/pickPlace/buildingResizeTrial.ts` |
 | Backend | `ENABLE_BUILDING_RESIZE_TRIAL=true` | `enable_building_resize_trial` in `backend/app/core/config.py` |
+| Frontend, free draw | `VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL=true` | `buildingShapeFreelyTrialEnabled()` in the same file |
+| Backend, free draw | `ENABLE_BUILDING_SHAPE_FREELY_TRIAL=true` | `enable_building_shape_freely_trial` in `backend/app/core/config.py` |
 
 With the flags off the pilot does not exist. The trial programme id is treated
 like any unknown programme, and saved trial properties are ignored by the
 planner, the editing tools and the viewer. Tests cover that state on both
 sides.
 
-Switch both flags together. One flag alone is a misconfiguration: a saved
-trial building then fails its 3D update with a recipe-mismatch error.
+Switch both flags of a pair together. One flag of a pair alone is a
+misconfiguration: a saved trial building then fails its 3D update with a
+recipe-mismatch error. For stretch only, set the first pair and leave the
+free-draw pair off.
 
 ## Assets chosen
 
@@ -132,7 +258,10 @@ The frontend exposes the same values as named constants in
 
 | JSON key | Value | Meaning |
 | --- | --- | --- |
-| `stretch.minimum_scale` / `maximum_scale` | 0.70 / 1.40 | Exact model band per axis |
+| `stretch.minimum_scale` / `maximum_scale` | 0.70 / 1.40 | The outer limits. No named range may reach past them |
+| `stretch.bands.<name>.minimum_scale` / `maximum_scale` | see above | The named ranges. Each building takes one |
+| `rollout.band_by_group`, `tall_from_storeys`, `tall_band`, `band_overrides`, `exclude` | see above | The rules `--sync-families` uses to build `families` |
+| `families[].band` | a range name | Generated. That building's own range |
 | `stretch.step` | 0.05 | Reserved for a slider; the inputs accept any size |
 | `stretch.fit_plot_margin_m` | `null` | Clear space kept each side by Fit building to plot. `null` keeps the model's own plot margin (about 2.0 m) |
 | `stretch.squeeze_on_plot_resize` | `true` | `true`: a plot made too small squeezes the exact model to fit. `false`: the model is left alone and the plot stops at the room it needs |
@@ -143,7 +272,7 @@ The frontend exposes the same values as named constants in
 | `shape_freely.maximum_size_m` | 120 | Largest outline extent |
 | `shape_freely.maximum_outline_points` | 24 | Corner limit |
 | `massing.style` | `archetype_kit` | How Shape freely is drawn. `floor_lines_and_windows` is the plain fallback |
-| `families[].massing_kit` | a kit name | Which kit under `massing.kits` draws that building in Shape freely |
+| `families[].massing_kit` | a kit name or `null` | Which kit under `massing.kits` draws that building in Shape freely. `null` means it only stretches |
 | `massing.kits.<name>.type` | `apartment_bar` or `courtyard_block` | The vocabulary the kit is drawn with. The script checks every key the type needs |
 
 Kit `aspen_terrace`, type `apartment_bar`. Keys are under `massing.kits.aspen_terrace`.
@@ -230,7 +359,9 @@ older code cannot mistake a trial building for a house-pilot one.
   variant, candidate and sha256 the file pins, and only when the request
   declares the programme. Every other call path is unchanged.
 - `_resize_trial_plan` emits `scale: [width, depth, 1.0]`, no quarter turn,
-  and refuses a target outside the band or outside the plot.
+  and refuses a target outside that building's own range or outside the plot.
+- A saved `shape_freely` state is ignored while the free-draw flag is off,
+  and fails closed for a building that names no facade kit.
 - Shape freely is certified in `_assert_resize_trial_shape_freely`: it must
   arrive without a recipe, and its outline minimum is measured on the server.
 
@@ -332,16 +463,19 @@ colours can be tuned without a database. It shows either building. See
   `stretch.squeeze_on_plot_resize` to `false` to switch that off.
 - Typing a larger building grows its plot. A plot is never shrunk by a
   building edit.
+- With free draw off, a typed size outside the building's range is refused
+  with a message and Apply is disabled. Fit building to plot stops at the
+  range, and a note under the button says where it will stop.
 
 ## Files changed
 
 Backend
 
-- `backend/app/core/config.py` — the setting.
+- `backend/app/core/config.py` — both settings: the pilot and its free-draw half.
 - `backend/app/services/building_flex_contract.py` — trial contract and validation.
 - `backend/app/services/lego_assembly.py` — explicit opt-out and the stretch plan.
 - `backend/app/api/v1/lego_assembly.py` — plan field, strict plan, Shape freely certification.
-- `backend/app/services/model_contract.py` — a freely shaped outline is a floor plate, not a plot.
+- `backend/app/services/model_contract.py` — a freely shaped outline is a floor plate, not a plot; a stretched building keeps its reviewed dwelling count.
 - `backend/app/services/building_placement_edges.py` — reshaped building keeps its whole polygon.
 - `backend/app/services/residual_landscape.py` — stretch joins the source fingerprint.
 - `backend/app/data/buildingResizeTrial.json` — server copy of the tuning file.
@@ -349,7 +483,7 @@ Backend
 
 Script
 
-- `scripts/building_resize_trial.py` — offline verification, dry-run by default.
+- `scripts/building_resize_trial.py` — offline verification, dry-run by default; `--sync-families` rebuilds the building list from the reviewed library and the rollout rules.
 
 Frontend
 
@@ -368,7 +502,7 @@ Frontend
 - `frontend/resize-pilot-review.html`, `frontend/src/review/resizePilotReview.tsx` — the review page.
 - `frontend/src/components/viewer/globe/GlobeEditMode.tsx` — plot corner handles for the exact model.
 - `frontend/src/features/projects/ProjectViewPage.tsx` — save path.
-- `frontend/scripts/public-env.mjs`, `public-env.test.mjs` — flag added to the browser env allowlist.
+- `frontend/scripts/public-env.mjs`, `public-env.test.mjs` — both flags added to the browser env allowlist.
 - `frontend/src/data/runtimeAssetManifest.json` — seven new source files registered.
 - Nine new or extended test files beside the code they cover.
 
@@ -416,23 +550,26 @@ passed.
 | The script accepts more than one building, each listed once | The second building. It still refuses any model outside the reviewed library | Trial file only |
 | One of this pilot's own tests was rewritten, not loosened | It said every model but Aspen Terrace stays select-and-place. It now says exactly the listed buildings are released and every other model is unchanged | `test_the_default_is_released_only_through_the_explicit_contract` |
 | A courtyard block's live floor area leaves out its courtyard | Counting open ground as floor would overstate FAR | Panel figures, Shape freely, courtyard kits |
+| 74 more buildings released from select-and-place | Your decision to stretch across the catalogue. Each is pinned by variant, candidate and sha256 and held to its own range | Flag on, declared programme, listed buildings only |
+| A stretched building keeps its reviewed dwelling count | The homes are the same homes. Dropping the count would erase dwellings from a report after a small stretch | Flag on, Exact model. Free draw still claims none |
+| Several of this pilot's own tests were rewritten for the new rules | They asserted the automatic handover and a single shared range. They now assert both states: stretch only, and stretch with free draw | The pilot's test files only. No test that existed before this branch was changed |
 
 ## Tests run
 
-Run in the sandbox on this branch, after the second building was added.
+Run in the sandbox on this branch, after the stretch-only rollout.
 
 | Check | Result |
 | --- | --- |
-| `pytest tests/test_building_resize_trial.py tests/test_building_resize_trial_script.py` | 99 passed |
-| Full backend suite `pytest tests/` | 3,436 passed, 74 skipped, 15 failed, 16 errors. The 31 are pre-existing, see below |
+| `pytest tests/test_building_resize_trial.py tests/test_building_resize_trial_script.py` | 121 passed |
+| Full backend suite `pytest tests/` | 3,458 passed, 74 skipped, 15 failed, 16 errors. The 31 are pre-existing, see below |
 | `ruff check .` and `black --check --line-length=120 .` in `backend/` | Passed |
-| The pilot's frontend tests (9 files) | 102 passed |
-| Full frontend suite `npx vitest run` | 4,630 passed, 47 skipped, 6 failed. The 6 are pre-existing, see below |
+| The pilot's frontend tests (9 files) | 117 passed |
+| Full frontend suite `npx vitest run` | 4,664 passed, 28 skipped, 6 failed. The 6 are pre-existing, see below. Fewer tests skip than before only because more model files were downloaded into the sandbox for rendering |
 | `npm run type-check` | Passed |
 | `npx eslint --max-warnings=0` on every changed frontend file | Passed |
 | `npm run check:dead-code` | Passed |
 | `node --test scripts/public-env.test.mjs` | 4 passed |
-| `python scripts/building_resize_trial.py` | Verified offline, both models' bytes matched their pins |
+| `python scripts/building_resize_trial.py` | Verified offline, all 76 models' bytes matched their pins |
 
 The failures are not from this branch. I ran the same files on an untouched
 `deployment-version` worktree and the failing sets were identical. They need a
@@ -489,6 +626,17 @@ None of these were run. Do not read any of them as passed.
   unit tested; the drag itself is not.
 - Direct 3D capture and any AI render of a trial building.
 - The student planning report with a Shape freely building.
+
+**For the catalogue rollout, in addition**
+
+- Any of the 74 newly listed buildings in the viewer, stretched or not.
+- `/api/v1/lego-assembly/plan` returning a stretch for any of them.
+- The reviewed entrance of each listed building after a stretch. Five listed
+  buildings have a reviewed entrance record; the rest use the ordinary rules.
+- Neighbour snapping for the listed buildings that have a reviewed
+  side-clearance row. A stretched building uses its whole plot as its
+  envelope, so a building meant to abut its neighbours no longer does.
+- The student planning report's dwelling count on a stretched housing model.
 
 **For the courtyard block, in addition**
 
@@ -582,6 +730,17 @@ For the second building, rendered the same way:
 9. **More rigid props.** Only planting is rigid. Furniture shares materials
    with facade parts, so it was left to stretch rather than risk gaps.
 
+For the catalogue rollout:
+
+- **The ranges themselves.** 85%–120% and 90%–110% are my numbers, chosen to
+  keep doors and windows plausible. Look at a few in the viewer and move the
+  numbers in `stretch.bands`.
+- **Which buildings are `regular`.** I moved every building with arches,
+  vaults, domes, round parts or lettering to `careful` after looking at the
+  renders. I may have missed some. `?view=limits&building=<id>` shows any one
+  building at its limits.
+- **The two `wide` buildings.** They keep 70%–140% and do warp at the ends.
+
 For the courtyard block:
 
 10. **Wing depth.** 5.4 m sits between the model's own wings. Real perimeter
@@ -633,6 +792,15 @@ For the courtyard block:
   it for a courtyard block.
 - A freely shaped courtyard block has no entrance connection. Its gateway is
   drawn but is not a snapped entrance.
+- Stretching fits a rectangle inside a range and nothing else. An L-shaped or
+  angled site, or a gap outside the range, needs a different building.
+- A stretched building with a reviewed side-clearance row loses that row and
+  uses its whole plot as its envelope. Three listed buildings are meant to
+  abut a neighbour; stretched, they keep their plot margin instead.
+- The band is one number pair for both axes. A building that tolerates more
+  stretch along its length than across it cannot say so yet.
+- Three library buildings are not offered in the app in this build and are
+  left out. If they are published later, remove them from `rollout.exclude`.
 - The front is the first drawn edge. A student cannot yet choose another
   wall as the front.
 - The viewer's foundation surface covers the whole outline, courtyard
@@ -701,14 +869,24 @@ For the courtyard block:
    stored bytes match. It never writes. If the row is missing, install the
    clay library the usual way; this pilot adds no rows of its own.
 
-6. On `localhost:5174`, place **Aspen Terrace Seniors Apartments** or
-   **Brick Garden Courtyard** and select it. The panel shows **Fit this
-   building to your space**.
+6. On `localhost:5174`, place any listed building and select it. The panel
+   shows **Fit this building to your space** with its width, depth and range.
+   `python scripts/building_resize_trial.py` prints the list.
 
-Suggested first run: set width 38 m and apply; drag a plot corner inward; press
-Fit building to plot on a 60 m wide plot and read the handover label; switch
-to Shape freely, add an outline point and drag it; undo back to the start;
-reload.
+To see free draw as well, also set `ENABLE_BUILDING_SHAPE_FREELY_TRIAL=true`
+on the backend and `VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL=true` on the
+frontend. It then appears for Aspen Terrace Seniors Apartments and Brick
+Garden Courtyard only.
+
+Suggested first run, stretch only: place Aspen Terrace, set width 38 m and
+apply; type 52 m and read the refusal; drag a plot corner inward and watch the
+building squeeze; widen the plot to 90 m and read where Fit building to plot
+will stop, then press it; undo back to the start; reload. Then place a house
+and a shed and compare how far each may stretch.
+
+With free draw on as well: press Fit building to plot on a 60 m wide plot and
+read the handover label; switch to Shape freely, add an outline point and
+drag it.
 
 For the courtyard block, also: switch to Shape freely and read the Courtyard
 row; drag the outline narrower than 18.8 m and watch the courtyard close and
@@ -728,14 +906,14 @@ Then open `http://localhost:5174/resize-pilot-review.html` with one of:
 
 | Address ending | Shows |
 | --- | --- |
-| `?view=compare&model=<GLB URL>` | Reference images, exact model and Shape freely side by side |
-| `?view=stretch&model=<GLB URL>` | The exact model at six stretches |
+| `?view=limits&model=<GLB URL>` | The model as authored beside the two most lopsided stretches its range allows |
+| `?view=stretch&model=<GLB URL>` | The exact model at six stretches of its own range |
 | `?view=model&model=<GLB URL>` | The exact model as authored, from four sides |
-| `?view=massing` | The facade kit on six outlines |
-| `?view=panel-exact`, `panel-stretched`, `panel-free-auto`, `panel-free-l` | The panel in each state |
+| `?view=panel-exact`, `panel-stretched`, `panel-wide-plot` | The panel in each stretch state |
+| `?view=compare&model=<GLB URL>`, `?view=massing`, `panel-free-auto`, `panel-free-l` | Free draw. Needs `VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL=true` and a building with a facade kit |
 
-Add `&building=final_courtyard_block` for the second building. Without it the
-page shows Aspen Terrace.
+Add `&building=<picker id>` for any listed building. Without it the page shows
+Aspen Terrace.
 
 `<GLB URL>` is any address your browser can load that building's GLB from,
 for example your local file API. Without it the massing and panel views still
@@ -758,7 +936,11 @@ Staging is defined in `render.staging.yaml`. That file is unchanged.
    site has auto-deploy off.
 5. Confirm the staging library holds the pinned model before inviting anyone.
 
-To switch off, remove both variables and redeploy both sides.
+Leave `ENABLE_BUILDING_SHAPE_FREELY_TRIAL` and
+`VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL` unset for stretch only. Set both, in
+the same places, only if you want free draw as well.
+
+To switch off, remove the variables and redeploy both sides.
 
 ## Commits on this branch
 
@@ -773,3 +955,5 @@ To switch off, remove both variables and redeploy both sides.
 9. `docs(resize-pilot): record the facade kit, rigid planting and review page`
 10. `feat(resize-pilot): add the Brick Garden Courtyard with its own courtyard kit`
 11. `docs(resize-pilot): record the second building`
+12. `feat(resize-pilot): stretch across the catalogue, each building in its own range`
+13. `docs(resize-pilot): record the stretch-only rollout and the parks assessment`
