@@ -129,12 +129,15 @@ class PrairieFoliageContract(unittest.TestCase):
     def test_every_row_locks_a_reviewed_card_image(self):
         """Static cards keep the panel from downloading each model just to draw its tile."""
         kit = ROOT / 'frontend/public/park-kits/prairie-foliage-v1'
+        locks = json.loads(Path(__file__).with_name('detail_card_images.lock.json').read_text(encoding='utf-8'))
         for row in self.registry:
             with self.subTest(id=row['id']):
                 self.assertEqual(row['thumbnailUrl'], row['url'][:-len('.glb')] + '.webp')
+                # the hash is locked beside the builder, not in the row that ships in the bundle
+                self.assertNotIn('thumbnailSha256', row)
                 data = (kit / Path(row['thumbnailUrl']).name).read_bytes()
                 self.assertEqual((data[:4], data[8:12]), (b'RIFF', b'WEBP'))
-                self.assertEqual(hashlib.sha256(data).hexdigest(), row['thumbnailSha256'])
+                self.assertEqual(hashlib.sha256(data).hexdigest(), locks[row['id']])
                 self.assertLess(len(data), 40_000)
 
     def test_geometry_budgets_and_kit_convention(self):

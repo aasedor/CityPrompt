@@ -118,7 +118,8 @@ describe("standalone detail catalogue", () => {
     // Both local kits ship a static card image, so browsing never downloads a model.
     for (const model of extras.filter((m) => m.sourceKit === "calgary-details-v1" || m.sourceKit === "prairie-foliage-v1")) {
       expect(model.thumbnailUrl).toBe(model.url.replace(/\.glb$/, ".webp"));
-      expect(model.thumbnailSha256).toMatch(/^[a-f0-9]{64}$/);
+      // The card hash is locked in tools/detail_catalogue, not shipped in the bundle.
+      expect("thumbnailSha256" in model).toBe(false);
     }
     // People spans two columns, so an even number of other tiles keeps the grid full.
     expect((DETAIL_CATEGORIES.length - 1) % 2).toBe(0);

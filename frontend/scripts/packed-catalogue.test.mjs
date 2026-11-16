@@ -25,6 +25,32 @@ for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['n
   });
 }
 
+for (const [relative, minimumSaving] of [['src/data/streetPathArchetypes.json', 7000], ['src/data/nativeParks.json', 2500],
+  ['src/data/cataloguePlanningHistory.json', 1800], ['src/data/catalogueTeaching.json', 900], ['src/data/archetypeReferenceAvailability.json', 500],
+  ['src/features/parks/detailCatalogueExtras.json', 1200], ['src/features/parks/recoveredDetails.json', 1200]]) {
+  test(`${relative}: denser transport pays for the local detail kits without changing a field or the bundle budget`, async () => {
+    const path = resolve(relative), source = readFileSync(path, 'utf8');
+    const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    assert.ok(module.includes('Z85 v1 / RFC32'), 'expected the Z85 transport');
+    const minified = await minify(module, { module: true, compress: { passes: 3 } });
+    const runtime = await import(`data:text/javascript;base64,${Buffer.from(minified.code).toString('base64')}`);
+    assert.deepEqual(runtime.default, JSON.parse(source));
+    const base64 = await minify(packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater), { module: true, compress: { passes: 3 } });
+    assert.ok(minified.code.length < base64.code.length - minimumSaving, `expected at least ${minimumSaving} bytes back, got ${base64.code.length - minified.code.length}`);
+  });
+}
+
+test('detail registries keep every provenance lock through the production transport', async () => {
+  const path = resolve('src/features/parks/detailCatalogueExtras.json'), source = JSON.parse(readFileSync(path, 'utf8'));
+  const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const decoded = (await import(`data:text/javascript,${encodeURIComponent(module)}`)).default;
+  assert.equal(decoded.length, source.length);
+  for (const [index, row] of source.entries()) {
+    assert.equal(decoded[index].sha256, row.sha256);
+    assert.ok(Object.is(decoded[index].offset[0], row.offset[0]), 'signed zero offsets survive');
+  }
+});
+
 test('denser transport retains UTF8, signed zero and short final binary blocks', async () => {
   for (let length = 0; length < 24; length++) {
     const source = JSON.stringify({ label: 'é — "quoted" '+ 'abcdefghijk'.slice(0, length % 11).repeat(length), offset: [-1, 0] }).replace('[-1,0]', '[-1,-0]');

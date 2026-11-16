@@ -89,11 +89,12 @@ authored ground origin is the placement anchor, as with the plants.
 ## Picker card images
 
 Every item ships a static 480 × 315 WebP card beside its GLB, recorded as
-`thumbnailUrl` with a `thumbnailSha256` lock, so browsing the panel never
-downloads a model. The cards use the same lighting and framing as the live
+`thumbnailUrl` and hash-locked in `tools/detail_catalogue/detail_card_images.lock.json`,
+so browsing the panel never downloads a model. The cards use the same lighting and framing as the live
 preview. The two 30 m and 40 m line carriers would otherwise shrink to a hairline
 in a card, so their images frame the pole and the nearest few metres of wire.
-See the [foliage write-up](LOCAL_FOLIAGE_SEASONS_2026-11-16.md) for the method.
+See the [foliage write-up](LOCAL_FOLIAGE_SEASONS_2026-11-16.md) for the method
+and for how the 108 new rows were fitted inside the JavaScript bundle budget.
 
 ## Reproduction
 
@@ -135,6 +136,7 @@ Add `zoom=3` to bring the camera in on the two long wire items.
   traffic-safety hash test that needs hydrated LFS models.
 - Runtime asset manifest regenerated and checked: 5,617 required files (+38)
   at the model commit, then 5,725 once both local kits gained card images.
+- Production build and `check-budget` pass at 8,441.7 KB of 8,448 KB.
 
 Not done here: a browser trial placing these objects in a project, Undo/reload,
 deterministic capture and AI render with them, low-end device performance and

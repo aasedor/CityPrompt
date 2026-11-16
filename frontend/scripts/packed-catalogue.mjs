@@ -6,6 +6,12 @@ const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|people\/(?:peopleCatalogue|inclusivePeopleCatalogue|peopleAppearancePreviews)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
+// Catalogues shipped in the denser Z85 transport. It is lossless like base64 but
+// costs 25% instead of 33%, which outweighs its inline decoder above roughly
+// 20 KiB packed. Moving a catalogue here is how headroom is recovered when the
+// catalogue grows, without relaxing the bundle budget or dropping a field.
+const DENSE_TRANSPORT = /\/src\/(?:data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes|streetPathArchetypes|nativeParks|cataloguePlanningHistory|catalogueTeaching|archetypeReferenceAvailability)|features\/parks\/(?:detailCatalogueExtras|recoveredDetails))\.json$/;
+
 // Exact additional registries used by the combined student/catalogue handoff.
 // Keep this allowlist explicit so unrelated JSON retains Vite's normal exports.
 const HANDOFF_CATALOGUES = /\/src\/(?:data\/(?:cataloguePlanningHistory|catalogueTeaching|localTeachingBuildings|classroomStarter|buildingPlacementEdges|catalogueHeroImages|claudeAssetLocalTrial)|features\/(?:legoAssembly\/buildingOnlyContracts|parks\/(?:curbBulbContracts|calgarySafetyCatalogue)|zoningCatalogue\/parkUseRules|pickPlace\/publicRealmOwnershipContracts)|components\/viewer\/globe\/publicRealmTrialAssets)\.json$/;
@@ -83,7 +89,7 @@ export function packedCatalogue() {
       if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename) && !STATIC_METADATA.test(filename)) return null;
       const source = readFileSync(id, 'utf8');
       return { code: packCatalogue(filename.endsWith('/src/data/classroomStarter.json')
-        ? productionStarter(source) : source, { encoding: /\/src\/data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes)\.json$/.test(filename) ? 'z85' : 'base64' }), map: null };
+        ? productionStarter(source) : source, { encoding: DENSE_TRANSPORT.test(filename) ? 'z85' : 'base64' }), map: null };
     },
   };
 }

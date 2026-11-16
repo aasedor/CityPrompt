@@ -3883,8 +3883,7 @@
     "triangles": 11236,
     "meshes": 2,
     "bytes": 1282952,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen.webp",
-    "thumbnailSha256": "26adacd046f7ee7c8dbc1cdd116cd26b1d722c14da06859f751284f2b2b5ff5b"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen.webp"
   },
   {
     "id": "detail-prairie-swedish-columnar-aspen",
@@ -3910,8 +3909,7 @@
     "triangles": 9740,
     "meshes": 2,
     "bytes": 1112440,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen.webp",
-    "thumbnailSha256": "381a9c93ce3807b8b09a6610e0a410d545adf36437f4f25a7aaedc5811a2cd74"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen.webp"
   },
   {
     "id": "detail-prairie-balsam-poplar",
@@ -3937,8 +3935,7 @@
     "triangles": 13248,
     "meshes": 2,
     "bytes": 1512312,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/balsam-poplar.webp",
-    "thumbnailSha256": "52d888211f96964e1e97955e5db505f6505cc1a43a934bdfb6396a1c0f200502"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/balsam-poplar.webp"
   },
   {
     "id": "detail-prairie-paper-birch",
@@ -3964,8 +3961,7 @@
     "triangles": 13788,
     "meshes": 2,
     "bytes": 1573868,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch.webp",
-    "thumbnailSha256": "d9b270b3de1b3b8e93ee9d258ea2ec73ca1e98938a03c774de37a3b8a3ba1d2d"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch.webp"
   },
   {
     "id": "detail-prairie-green-ash",
@@ -3991,8 +3987,7 @@
     "triangles": 13248,
     "meshes": 2,
     "bytes": 1512296,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash.webp",
-    "thumbnailSha256": "dfdeb0ecf59b76ecf0900275e5642245e2ec7ff8903aad81fec4483c592103b6"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash.webp"
   },
   {
     "id": "detail-prairie-bur-oak",
@@ -4018,8 +4013,7 @@
     "triangles": 12462,
     "meshes": 2,
     "bytes": 1422688,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak.webp",
-    "thumbnailSha256": "4d9735ff4a7a3977ce6e93deeee721c9161437c0b1869d56b31d7fb75aadc18d"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak.webp"
   },
   {
     "id": "detail-prairie-manitoba-maple",
@@ -4045,8 +4039,7 @@
     "triangles": 13920,
     "meshes": 2,
     "bytes": 1588928,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple.webp",
-    "thumbnailSha256": "53daf83a6b18ebe201a38aad55b58057efcc3b1553fa2a255a65323e5e103af4"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple.webp"
   },
   {
     "id": "detail-prairie-laurel-leaf-willow",
@@ -4072,8 +4065,7 @@
     "triangles": 13248,
     "meshes": 2,
     "bytes": 1512332,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/laurel-leaf-willow.webp",
-    "thumbnailSha256": "bf5f4b3d0a086d4f41e8a23b3db12047b95864c1bf97c2c5a01fa60eeb41cea8"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/laurel-leaf-willow.webp"
   },
   {
     "id": "detail-prairie-schubert-chokecherry",
@@ -4099,8 +4091,7 @@
     "triangles": 10398,
     "meshes": 2,
     "bytes": 1187440,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/schubert-chokecherry.webp",
-    "thumbnailSha256": "892e75ee68fa4d4028a473b55a035534ea345a4ec6331e2a97d66cefbbbfdbf6"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/schubert-chokecherry.webp"
   },
   {
     "id": "detail-prairie-showy-mountain-ash",
@@ -4126,8 +4117,7 @@
     "triangles": 12218,
     "meshes": 2,
     "bytes": 1394916,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash.webp",
-    "thumbnailSha256": "f3ba4dc168bfeec67e08b9ee6ed929ba484cc6b0da3725e6d51bdfafb3c1277f"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash.webp"
   },
   {
     "id": "detail-prairie-amur-cherry",
@@ -4153,8 +4143,7 @@
     "triangles": 13194,
     "meshes": 2,
     "bytes": 1506152,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/amur-cherry.webp",
-    "thumbnailSha256": "1c15d1211a752f28beb4c6e45b70fa79d62cfc8a2c6645997f67edbbd0980112"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/amur-cherry.webp"
   },
   {
     "id": "detail-prairie-plains-cottonwood",
@@ -4180,8 +4169,7 @@
     "triangles": 12606,
     "meshes": 2,
     "bytes": 1439136,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood.webp",
-    "thumbnailSha256": "ec9e69a55570daf5ecfd9d2cc826e8bcf1ddb08f2a10e3e52eb214fe530d2a0f"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood.webp"
   },
   {
     "id": "detail-prairie-brandon-elm",
@@ -4207,8 +4195,7 @@
     "triangles": 12558,
     "meshes": 2,
     "bytes": 1433648,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/brandon-elm.webp",
-    "thumbnailSha256": "2910ad0216a44372b8ca8be6f5a285d8807e2bacd3f51586c57c4ac5b2b8cdf7"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/brandon-elm.webp"
   },
   {
     "id": "detail-prairie-littleleaf-linden",
@@ -4234,8 +4221,7 @@
     "triangles": 11808,
     "meshes": 2,
     "bytes": 1348176,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/littleleaf-linden.webp",
-    "thumbnailSha256": "68760d33c9b4da700cf3bfc791622d06fb465ffe545b2760d6c618bb107db981"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/littleleaf-linden.webp"
   },
   {
     "id": "detail-prairie-flowering-crabapple",
@@ -4261,8 +4247,7 @@
     "triangles": 13048,
     "meshes": 2,
     "bytes": 1489536,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/flowering-crabapple.webp",
-    "thumbnailSha256": "ec431c52b0064657dfaa7b6234a8f587057005790270a6ac2817739f0a48562f"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/flowering-crabapple.webp"
   },
   {
     "id": "detail-prairie-japanese-tree-lilac",
@@ -4288,8 +4273,7 @@
     "triangles": 12396,
     "meshes": 2,
     "bytes": 1415204,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/japanese-tree-lilac.webp",
-    "thumbnailSha256": "9104093592366a835d8be3ab98fea4fe17d5bf357ece219b7e2ed909aefd03b3"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/japanese-tree-lilac.webp"
   },
   {
     "id": "detail-prairie-white-spruce",
@@ -4315,8 +4299,7 @@
     "triangles": 13296,
     "meshes": 2,
     "bytes": 1517768,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/white-spruce.webp",
-    "thumbnailSha256": "a5e188aeb91c60f9fb39740b5cef57d8e20a4fb403e8c33e50b454df473db6ef"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/white-spruce.webp"
   },
   {
     "id": "detail-prairie-colorado-blue-spruce",
@@ -4342,8 +4325,7 @@
     "triangles": 11946,
     "meshes": 2,
     "bytes": 1363900,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/colorado-blue-spruce.webp",
-    "thumbnailSha256": "65ba1787a95721a572d6c23176f615ca522666f60d857be527110c3e849d745b"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/colorado-blue-spruce.webp"
   },
   {
     "id": "detail-prairie-lodgepole-pine",
@@ -4369,8 +4351,7 @@
     "triangles": 11582,
     "meshes": 2,
     "bytes": 1322360,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/lodgepole-pine.webp",
-    "thumbnailSha256": "cf5334841183695d290d32ed4cae4669e12bcb9738529ca9efe542df17909e15"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/lodgepole-pine.webp"
   },
   {
     "id": "detail-prairie-siberian-larch",
@@ -4396,8 +4377,7 @@
     "triangles": 10832,
     "meshes": 2,
     "bytes": 1236880,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch.webp",
-    "thumbnailSha256": "c018c819d2fe4ea2eca906e8a3a487cec2795a3ec4ec423d77412a88a069f71e"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch.webp"
   },
   {
     "id": "detail-prairie-scots-pine",
@@ -4423,8 +4403,7 @@
     "triangles": 10776,
     "meshes": 2,
     "bytes": 1230468,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/scots-pine.webp",
-    "thumbnailSha256": "f4569e559ddcdba29b7d83f9de05a180110e8fa8c7a59adbfede76236ed56c14"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/scots-pine.webp"
   },
   {
     "id": "detail-prairie-douglas-fir",
@@ -4450,8 +4429,7 @@
     "triangles": 11946,
     "meshes": 2,
     "bytes": 1363856,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/douglas-fir.webp",
-    "thumbnailSha256": "39226ef4a2c6bc2ef560a9aee20a08b647cdbc5a3645f5d6b0a280ac75c3001c"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/douglas-fir.webp"
   },
   {
     "id": "detail-prairie-limber-pine",
@@ -4477,8 +4455,7 @@
     "triangles": 9992,
     "meshes": 2,
     "bytes": 1141108,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/limber-pine.webp",
-    "thumbnailSha256": "748797cc0aebac44e4b78333173a630eef59467ff6fe1f3a7d8665f31d1814f4"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/limber-pine.webp"
   },
   {
     "id": "detail-prairie-trembling-aspen-autumn",
@@ -4504,8 +4481,7 @@
     "triangles": 11236,
     "meshes": 2,
     "bytes": 1282980,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen-autumn.webp",
-    "thumbnailSha256": "8183a3614defbe6639a09c59e103ebf9193d458a3ccd66bd3f9f958f47380592"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen-autumn.webp"
   },
   {
     "id": "detail-prairie-siberian-larch-autumn",
@@ -4531,8 +4507,7 @@
     "triangles": 10832,
     "meshes": 2,
     "bytes": 1236908,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch-autumn.webp",
-    "thumbnailSha256": "cf684131fa9375acd64d90ce9b10f5b57e62c45acaa0392d9fd8c47dcb57fa4b"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch-autumn.webp"
   },
   {
     "id": "detail-prairie-white-spruce-snow",
@@ -4558,8 +4533,7 @@
     "triangles": 13296,
     "meshes": 2,
     "bytes": 1517788,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/white-spruce-snow.webp",
-    "thumbnailSha256": "9f1250c7c880c952ebcc0c3f966d389499de76679ea5aceaaed05004290c13af"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/white-spruce-snow.webp"
   },
   {
     "id": "detail-prairie-colorado-blue-spruce-snow",
@@ -4585,8 +4559,7 @@
     "triangles": 11946,
     "meshes": 2,
     "bytes": 1363920,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/colorado-blue-spruce-snow.webp",
-    "thumbnailSha256": "f75d27ccd251c0c6a18c2688e018ca8866a1093cb6f12fb2e0b19313b2917a6d"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/colorado-blue-spruce-snow.webp"
   },
   {
     "id": "detail-prairie-trembling-aspen-winter",
@@ -4612,8 +4585,7 @@
     "triangles": 7276,
     "meshes": 1,
     "bytes": 830688,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen-winter.webp",
-    "thumbnailSha256": "95347b4befcfce21b8a3ac5afff2314933549ce29c00d6be0e65e1fb8df348d0"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen-winter.webp"
   },
   {
     "id": "detail-prairie-swedish-columnar-aspen-winter",
@@ -4639,8 +4611,7 @@
     "triangles": 6428,
     "meshes": 1,
     "bytes": 734032,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen-winter.webp",
-    "thumbnailSha256": "123a5590626e6f7aec3097432e7c24a643476a00c87f565d211fd675c105aa21"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen-winter.webp"
   },
   {
     "id": "detail-prairie-balsam-poplar-winter",
@@ -4666,8 +4637,7 @@
     "triangles": 8748,
     "meshes": 1,
     "bytes": 998488,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/balsam-poplar-winter.webp",
-    "thumbnailSha256": "79949484f37204aa47f8596de9de5b376f2ea6c5ebec029506071a184d676639"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/balsam-poplar-winter.webp"
   },
   {
     "id": "detail-prairie-paper-birch-winter",
@@ -4693,8 +4663,7 @@
     "triangles": 9288,
     "meshes": 1,
     "bytes": 1060048,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch-winter.webp",
-    "thumbnailSha256": "ae3ff8df8056f28ef1a8362e3b762e19400695ee515c41cd2d00c3013a809186"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch-winter.webp"
   },
   {
     "id": "detail-prairie-green-ash-winter",
@@ -4720,8 +4689,7 @@
     "triangles": 8748,
     "meshes": 1,
     "bytes": 998480,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash-winter.webp",
-    "thumbnailSha256": "ded08992cd2a28ce987aa933462e35e29f478e6e707fda2c391b9aa9c58d432b"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash-winter.webp"
   },
   {
     "id": "detail-prairie-bur-oak-winter",
@@ -4747,8 +4715,7 @@
     "triangles": 8232,
     "meshes": 1,
     "bytes": 939652,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak-winter.webp",
-    "thumbnailSha256": "4b2f66c8827df9cf5a8b747ee24a4fe3ec6b83ef71d14349b697add51984eae1"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak-winter.webp"
   },
   {
     "id": "detail-prairie-manitoba-maple-winter",
@@ -4774,8 +4741,7 @@
     "triangles": 9240,
     "meshes": 1,
     "bytes": 1054584,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple-winter.webp",
-    "thumbnailSha256": "2a9e50dec27768e8fcb4af07338c14f971f0ab7224ce98c56c9cd212eebce999"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple-winter.webp"
   },
   {
     "id": "detail-prairie-laurel-leaf-willow-winter",
@@ -4801,8 +4767,7 @@
     "triangles": 8748,
     "meshes": 1,
     "bytes": 998500,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/laurel-leaf-willow-winter.webp",
-    "thumbnailSha256": "fd3b61b003d85f5e9b445ef0bfb7da77ecd1d1bd05c06b3d7d61062a9e28def8"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/laurel-leaf-willow-winter.webp"
   },
   {
     "id": "detail-prairie-schubert-chokecherry-winter",
@@ -4828,8 +4793,7 @@
     "triangles": 6708,
     "meshes": 1,
     "bytes": 765944,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/schubert-chokecherry-winter.webp",
-    "thumbnailSha256": "6b34ad07138935b66da9a7735efab660a57f1eb6ff3bd3db2332af7ab29d5972"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/schubert-chokecherry-winter.webp"
   },
   {
     "id": "detail-prairie-showy-mountain-ash-winter",
@@ -4855,8 +4819,7 @@
     "triangles": 8528,
     "meshes": 2,
     "bytes": 974276,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash-winter.webp",
-    "thumbnailSha256": "e3e78b8187d11f463f4a8d73b209e8d15bc5adb26ca9721fb556c8e33a7c5b9e"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash-winter.webp"
   },
   {
     "id": "detail-prairie-amur-cherry-winter",
@@ -4882,8 +4845,7 @@
     "triangles": 8604,
     "meshes": 1,
     "bytes": 982072,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/amur-cherry-winter.webp",
-    "thumbnailSha256": "f6da93496df68667cff2b571a7651d8a0cece3f00c6c8298000c8340e811a89f"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/amur-cherry-winter.webp"
   },
   {
     "id": "detail-prairie-plains-cottonwood-winter",
@@ -4909,8 +4871,7 @@
     "triangles": 8376,
     "meshes": 1,
     "bytes": 956092,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood-winter.webp",
-    "thumbnailSha256": "0b6ddccfa8c263f0a5b8bb99b942ebe5f30fd999c344646bf672078700ea5edd"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood-winter.webp"
   },
   {
     "id": "detail-prairie-brandon-elm-winter",
@@ -4936,8 +4897,7 @@
     "triangles": 8328,
     "meshes": 1,
     "bytes": 950608,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/brandon-elm-winter.webp",
-    "thumbnailSha256": "a1cfc404d080afa4484a8fcd0722c55b42275bc3258588579b938878fd51687e"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/brandon-elm-winter.webp"
   },
   {
     "id": "detail-prairie-littleleaf-linden-winter",
@@ -4963,8 +4923,7 @@
     "triangles": 7833,
     "meshes": 1,
     "bytes": 894192,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/littleleaf-linden-winter.webp",
-    "thumbnailSha256": "de5e5f5679969c3c810277cede819b4ba7beaf3b33ee7623911c4b73d7d9d9a5"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/littleleaf-linden-winter.webp"
   },
   {
     "id": "detail-prairie-flowering-crabapple-winter",
@@ -4990,8 +4949,7 @@
     "triangles": 9973,
     "meshes": 2,
     "bytes": 1139020,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/flowering-crabapple-winter.webp",
-    "thumbnailSha256": "0903b03e49f62f11936b27bab991bac31180b8d0280da4b90a76d7deba3911f0"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/flowering-crabapple-winter.webp"
   },
   {
     "id": "detail-prairie-japanese-tree-lilac-winter",
@@ -5017,8 +4975,7 @@
     "triangles": 9321,
     "meshes": 2,
     "bytes": 1064684,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/japanese-tree-lilac-winter.webp",
-    "thumbnailSha256": "aca82665f8392886b1695e582add0f88ed993a0220eb7d06e4bf6fa97587cba0"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/japanese-tree-lilac-winter.webp"
   },
   {
     "id": "detail-prairie-siberian-larch-winter",
@@ -5044,8 +5001,7 @@
     "triangles": 6191,
     "meshes": 1,
     "bytes": 706980,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch-winter.webp",
-    "thumbnailSha256": "cffc50b5e7a13ff2065a561fb9cccfb281bfe36776f09334b86da438726c2077"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch-winter.webp"
   },
   {
     "id": "detail-prairie-saskatoon",
@@ -5071,8 +5027,7 @@
     "triangles": 3288,
     "meshes": 2,
     "bytes": 376844,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon.webp",
-    "thumbnailSha256": "a14dd0842e632d5933407943db645505987a8724d5f8539630a6f9f6ec64467d"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon.webp"
   },
   {
     "id": "detail-prairie-wolf-willow",
@@ -5098,8 +5053,7 @@
     "triangles": 3690,
     "meshes": 2,
     "bytes": 422680,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wolf-willow.webp",
-    "thumbnailSha256": "c4ce15fcf015972ab38e90a2d81a79c0d0dcfc575d6f253262f57090802517f4"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wolf-willow.webp"
   },
   {
     "id": "detail-prairie-common-lilac",
@@ -5125,8 +5079,7 @@
     "triangles": 5544,
     "meshes": 2,
     "bytes": 634048,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/common-lilac.webp",
-    "thumbnailSha256": "2bb3b738a3b2453c6101141a81bc3f6d18656657952de04dd453b9523df79d38"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/common-lilac.webp"
   },
   {
     "id": "detail-prairie-caragana-hedge",
@@ -5152,8 +5105,7 @@
     "triangles": 4836,
     "meshes": 2,
     "bytes": 553340,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/caragana-hedge.webp",
-    "thumbnailSha256": "322e70e23d55a6e316932f02fbd2541a22864d0643a2ba004d44c0b4dc8410e7"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/caragana-hedge.webp"
   },
   {
     "id": "detail-prairie-cotoneaster-hedge",
@@ -5179,8 +5131,7 @@
     "triangles": 2945,
     "meshes": 2,
     "bytes": 337768,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge.webp",
-    "thumbnailSha256": "1f87dc4c792f3f361a5b5937fb86b3d4006ace4599bca791d9015579ff07b549"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge.webp"
   },
   {
     "id": "detail-prairie-prickly-wild-rose",
@@ -5206,8 +5157,7 @@
     "triangles": 3740,
     "meshes": 2,
     "bytes": 428400,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prickly-wild-rose.webp",
-    "thumbnailSha256": "043947db6e066e1d79a4fff1a802a3e9672e235660cd122e83fd11a3033e2b09"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prickly-wild-rose.webp"
   },
   {
     "id": "detail-prairie-snowberry",
@@ -5233,8 +5183,7 @@
     "triangles": 4500,
     "meshes": 2,
     "bytes": 515016,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/snowberry.webp",
-    "thumbnailSha256": "f8b674e9fddabdee6a1622b62745d19809ddc320a334de3d0597964a7f98b959"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/snowberry.webp"
   },
   {
     "id": "detail-prairie-shrubby-cinquefoil",
@@ -5260,8 +5209,7 @@
     "triangles": 5188,
     "meshes": 2,
     "bytes": 593488,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/shrubby-cinquefoil.webp",
-    "thumbnailSha256": "ff764002e3342d82e9eab16b82ea3b368c771bbc132c9227fb7f7ecebac9d272"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/shrubby-cinquefoil.webp"
   },
   {
     "id": "detail-prairie-buffaloberry",
@@ -5287,8 +5235,7 @@
     "triangles": 4076,
     "meshes": 2,
     "bytes": 466692,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/buffaloberry.webp",
-    "thumbnailSha256": "638201b7093c7224c97e99ec93c78fe649c70ef3db59df3390fc0247605774e5"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/buffaloberry.webp"
   },
   {
     "id": "detail-prairie-highbush-cranberry",
@@ -5314,8 +5261,7 @@
     "triangles": 3936,
     "meshes": 2,
     "bytes": 450752,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/highbush-cranberry.webp",
-    "thumbnailSha256": "976fdf54e540dc696a2e7247f73d290a98a2b61a9f74733464ff4df9c540a061"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/highbush-cranberry.webp"
   },
   {
     "id": "detail-prairie-diabolo-ninebark",
@@ -5341,8 +5287,7 @@
     "triangles": 3920,
     "meshes": 2,
     "bytes": 448924,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/diabolo-ninebark.webp",
-    "thumbnailSha256": "3cb990c6546b0249e9b505c3704da18977e27eb162afab834baf433155bec72a"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/diabolo-ninebark.webp"
   },
   {
     "id": "detail-prairie-mugo-pine",
@@ -5368,8 +5313,7 @@
     "triangles": 2992,
     "meshes": 2,
     "bytes": 343096,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/mugo-pine.webp",
-    "thumbnailSha256": "379a1df147607a2eef6d924a595745baea78bb7fe5457bc85d096a2cc6d8195d"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/mugo-pine.webp"
   },
   {
     "id": "detail-prairie-creeping-juniper",
@@ -5395,8 +5339,7 @@
     "triangles": 3168,
     "meshes": 2,
     "bytes": 363196,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/creeping-juniper.webp",
-    "thumbnailSha256": "4025ddf4a7da8b7cda61e7ea72c36b8b53f3333bd4341c1a3580b178f956f44f"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/creeping-juniper.webp"
   },
   {
     "id": "detail-prairie-bearberry",
@@ -5422,8 +5365,7 @@
     "triangles": 4862,
     "meshes": 2,
     "bytes": 556288,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bearberry.webp",
-    "thumbnailSha256": "510c95fbcefac8466cef06d2ed06220d0def01d070fce48dc50beccc1b70aff9"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bearberry.webp"
   },
   {
     "id": "detail-prairie-prairie-crocus",
@@ -5449,8 +5391,7 @@
     "triangles": 840,
     "meshes": 2,
     "bytes": 97788,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prairie-crocus.webp",
-    "thumbnailSha256": "ecdf32b8c69340508582f7967c066bf1daaf6f1207a58e8da3cdbe96cbef8987"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prairie-crocus.webp"
   },
   {
     "id": "detail-prairie-blanketflower",
@@ -5476,8 +5417,7 @@
     "triangles": 1773,
     "meshes": 2,
     "bytes": 204144,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/blanketflower.webp",
-    "thumbnailSha256": "d5ae2052addf06d4fae3fe221a3909ecdbb1b665e49ca0f42cf3b3bc3385b87c"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/blanketflower.webp"
   },
   {
     "id": "detail-prairie-wild-bergamot",
@@ -5503,8 +5443,7 @@
     "triangles": 1336,
     "meshes": 2,
     "bytes": 154324,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wild-bergamot.webp",
-    "thumbnailSha256": "47890e5ace8a963e3d432233135c80b9d93e42593d9b6c4e5c3728667f728041"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wild-bergamot.webp"
   },
   {
     "id": "detail-prairie-fireweed",
@@ -5530,8 +5469,7 @@
     "triangles": 1488,
     "meshes": 2,
     "bytes": 171628,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/fireweed.webp",
-    "thumbnailSha256": "9d3711816a88956dab05a9aea9e26d88c1d32eb7068c971c2efa20981f02b2ba"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/fireweed.webp"
   },
   {
     "id": "detail-prairie-goldenrod",
@@ -5557,8 +5495,7 @@
     "triangles": 1920,
     "meshes": 2,
     "bytes": 220884,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/goldenrod.webp",
-    "thumbnailSha256": "47db937ddb4108d2e7b4fa48c21ea7123edb91a9f6394da683d6ec2ce02e3ba9"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/goldenrod.webp"
   },
   {
     "id": "detail-prairie-prairie-smoke",
@@ -5584,8 +5521,7 @@
     "triangles": 1582,
     "meshes": 2,
     "bytes": 182380,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prairie-smoke.webp",
-    "thumbnailSha256": "1020a150160b5adc8fee389cdb33db3b95d4fde40305a82959340a2797c29538"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prairie-smoke.webp"
   },
   {
     "id": "detail-prairie-wild-blue-flax",
@@ -5611,8 +5547,7 @@
     "triangles": 3264,
     "meshes": 2,
     "bytes": 374132,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wild-blue-flax.webp",
-    "thumbnailSha256": "6c65fe490d40f6dab9de98d3d1fda17e7c36c6a060edfb5f1086cd448b43ce89"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wild-blue-flax.webp"
   },
   {
     "id": "detail-prairie-pasture-sage",
@@ -5638,8 +5573,7 @@
     "triangles": 2985,
     "meshes": 2,
     "bytes": 342320,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/pasture-sage.webp",
-    "thumbnailSha256": "a1fa9e0cfb0206ebd1703d33609bc98e22db916d720a889dbf987e8205a95dee"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/pasture-sage.webp"
   },
   {
     "id": "detail-prairie-feather-reed-grass",
@@ -5665,8 +5599,7 @@
     "triangles": 1530,
     "meshes": 2,
     "bytes": 176444,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/feather-reed-grass.webp",
-    "thumbnailSha256": "4f9d9ffe423dd33eed355fc690854cd544053f0c2cec22fc5fedda5a150cc292"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/feather-reed-grass.webp"
   },
   {
     "id": "detail-prairie-rough-fescue-drift",
@@ -5692,8 +5625,7 @@
     "triangles": 972,
     "meshes": 2,
     "bytes": 112828,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/rough-fescue-drift.webp",
-    "thumbnailSha256": "750eb373dd28836690bf9635a076cd13f29d30699fbe030f34889825411ed875"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/rough-fescue-drift.webp"
   },
   {
     "id": "detail-prairie-blue-grama",
@@ -5719,8 +5651,7 @@
     "triangles": 1386,
     "meshes": 2,
     "bytes": 160004,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/blue-grama.webp",
-    "thumbnailSha256": "4e962e6d8fe752ff2e33982aceeb00d9de708bbb3ee997b7ec9ffff0ef662998"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/blue-grama.webp"
   },
   {
     "id": "detail-prairie-june-grass",
@@ -5746,8 +5677,7 @@
     "triangles": 2583,
     "meshes": 2,
     "bytes": 296468,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/june-grass.webp",
-    "thumbnailSha256": "6e04fcb15ad86567bedd0181c6d392fecb59bbb7166b5328d9e0c2bfa859b7df"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/june-grass.webp"
   },
   {
     "id": "detail-calgary-outdoor-rink",
@@ -5773,8 +5703,7 @@
     "triangles": 2900,
     "meshes": 2,
     "bytes": 332656,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/outdoor-rink.webp",
-    "thumbnailSha256": "ffea2932b3d1b9cdbaee4c3bc4e702f3f0f55dbcfb44875fe4056ddb25d61ea7"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/outdoor-rink.webp"
   },
   {
     "id": "detail-calgary-rink-board-section",
@@ -5800,8 +5729,7 @@
     "triangles": 102,
     "meshes": 1,
     "bytes": 12808,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/rink-board-section.webp",
-    "thumbnailSha256": "6db3abd5cf678bbc1dd2bb11f2e8a0c7a2885062961b8fa86b7471f3d43e70ed"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/rink-board-section.webp"
   },
   {
     "id": "detail-calgary-hockey-net",
@@ -5827,8 +5755,7 @@
     "triangles": 454,
     "meshes": 1,
     "bytes": 52916,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/hockey-net.webp",
-    "thumbnailSha256": "eec7c3b591d28c6e199f1aaf4f71634cb799035691a48be9020a98662ac88663"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/hockey-net.webp"
   },
   {
     "id": "detail-calgary-warming-hut",
@@ -5854,8 +5781,7 @@
     "triangles": 2796,
     "meshes": 2,
     "bytes": 320808,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/warming-hut.webp",
-    "thumbnailSha256": "64ea6e018f7ce3aea5d2ba5d3e611c484121e8a6ebe3f87119802ec531722d0d"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/warming-hut.webp"
   },
   {
     "id": "detail-calgary-fire-pit-circle",
@@ -5881,8 +5807,7 @@
     "triangles": 1593,
     "meshes": 1,
     "bytes": 182784,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/fire-pit-circle.webp",
-    "thumbnailSha256": "4d243924a2135ce9d63bf9a7f8546e80059cfd85e6120d0ae5b2fdec4ae4dd82"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/fire-pit-circle.webp"
   },
   {
     "id": "detail-calgary-snow-fence",
@@ -5908,8 +5833,7 @@
     "triangles": 300,
     "meshes": 1,
     "bytes": 35356,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-fence.webp",
-    "thumbnailSha256": "e13499c64315d5b26be79816422cecac55c5198466f375a6a90040c9c8819ff7"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-fence.webp"
   },
   {
     "id": "detail-calgary-snow-windrow",
@@ -5935,8 +5859,7 @@
     "triangles": 648,
     "meshes": 1,
     "bytes": 75044,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-windrow.webp",
-    "thumbnailSha256": "ba1f44bd4a4b18ac9675de13eb0e3a4be5d7111eb310906c36cef87aba463ad3"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-windrow.webp"
   },
   {
     "id": "detail-calgary-grit-box",
@@ -5962,8 +5885,7 @@
     "triangles": 116,
     "meshes": 1,
     "bytes": 14380,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/grit-box.webp",
-    "thumbnailSha256": "921ffc892b014cc167a152ad981b9e4577fe6ff2593ebd012e170814639ccce3"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/grit-box.webp"
   },
   {
     "id": "detail-calgary-plug-in-posts",
@@ -5989,8 +5911,7 @@
     "triangles": 368,
     "meshes": 1,
     "bytes": 43128,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/plug-in-posts.webp",
-    "thumbnailSha256": "a864355bc87e25446acd690d42e01d03765ef07c7986ed227e3f19f95505fa2e"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/plug-in-posts.webp"
   },
   {
     "id": "detail-calgary-waste-cart-black",
@@ -6016,8 +5937,7 @@
     "triangles": 432,
     "meshes": 1,
     "bytes": 50432,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-black.webp",
-    "thumbnailSha256": "f882a05299c2a972e2a95bae699f34e09adb1d2bf1b231d57cb4c64a341d8b26"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-black.webp"
   },
   {
     "id": "detail-calgary-waste-cart-blue",
@@ -6043,8 +5963,7 @@
     "triangles": 432,
     "meshes": 1,
     "bytes": 50432,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-blue.webp",
-    "thumbnailSha256": "7ef655ac11e5cbc9a6ccdde236d4e51caa4ecea94c97ce3438b98ac96307d9ae"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-blue.webp"
   },
   {
     "id": "detail-calgary-waste-cart-green",
@@ -6070,8 +5989,7 @@
     "triangles": 432,
     "meshes": 1,
     "bytes": 50432,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-green.webp",
-    "thumbnailSha256": "72b53089e336926697b64050a25792ab51417580cd2bae142cc8a3648cb7012b"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-green.webp"
   },
   {
     "id": "detail-calgary-waste-cart-trio",
@@ -6097,8 +6015,7 @@
     "triangles": 1296,
     "meshes": 1,
     "bytes": 148928,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-trio.webp",
-    "thumbnailSha256": "3b474e9beab4dbc97c818f22e2ceacb62b1c98d80f749485b206311d60a25d50"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-trio.webp"
   },
   {
     "id": "detail-calgary-utility-pole",
@@ -6124,8 +6041,7 @@
     "triangles": 934,
     "meshes": 2,
     "bytes": 108588,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole.webp",
-    "thumbnailSha256": "d525f1c1b9dcb213bce59e2f11d53acc5129b3076c7adf3759afbf90d5413fac"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole.webp"
   },
   {
     "id": "detail-calgary-utility-pole-lines",
@@ -6151,8 +6067,7 @@
     "triangles": 1366,
     "meshes": 2,
     "bytes": 157860,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole-lines.webp",
-    "thumbnailSha256": "8ec664e77a81026b48f106d0e69f3c602a18ed5e764d3178f5bcaf88054ea2ba"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole-lines.webp"
   },
   {
     "id": "detail-calgary-privacy-fence",
@@ -6178,8 +6093,7 @@
     "triangles": 288,
     "meshes": 1,
     "bytes": 34008,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/privacy-fence.webp",
-    "thumbnailSha256": "0f1f13423b97b820b04ae4f0a96af04217f7a675dbd808621be63aff72af0b36"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/privacy-fence.webp"
   },
   {
     "id": "detail-calgary-chain-link-fence",
@@ -6205,8 +6119,7 @@
     "triangles": 396,
     "meshes": 1,
     "bytes": 46332,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/chain-link-fence.webp",
-    "thumbnailSha256": "7ab6acaf66697a7c7f5f186daea26f14ee12cb9a2f623d82fef4b26f4b308ed2"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/chain-link-fence.webp"
   },
   {
     "id": "detail-calgary-garden-shed",
@@ -6232,8 +6145,7 @@
     "triangles": 504,
     "meshes": 2,
     "bytes": 59528,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/garden-shed.webp",
-    "thumbnailSha256": "f75c18407286400da9f97d36f32651a8d91bf7602206e7444a7095197655cca2"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/garden-shed.webp"
   },
   {
     "id": "detail-calgary-trampoline",
@@ -6259,8 +6171,7 @@
     "triangles": 2588,
     "meshes": 1,
     "bytes": 296224,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/trampoline.webp",
-    "thumbnailSha256": "d187dfe14bb084342d80364707cc069e3a949d2e231e97066e381d0832e76069"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/trampoline.webp"
   },
   {
     "id": "detail-calgary-little-free-library",
@@ -6286,8 +6197,7 @@
     "triangles": 518,
     "meshes": 1,
     "bytes": 60244,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/little-free-library.webp",
-    "thumbnailSha256": "73195d9da4188ba7dc08f62c2329960e3e6bf0b11b1f9fb315137c50e9df647c"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/little-free-library.webp"
   },
   {
     "id": "detail-calgary-street-hockey-net",
@@ -6313,8 +6223,7 @@
     "triangles": 596,
     "meshes": 1,
     "bytes": 69128,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/street-hockey-net.webp",
-    "thumbnailSha256": "3c9c2ca9e088109a9af851cbd7685eaf55e3caccf5a781f2c04cb9af52c8e271"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-hockey-net.webp"
   },
   {
     "id": "detail-calgary-sandstone-blocks",
@@ -6340,8 +6249,7 @@
     "triangles": 210,
     "meshes": 1,
     "bytes": 25116,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-blocks.webp",
-    "thumbnailSha256": "c6426eec9662a92fef09057b3b5236d5b58ac2b337b51c1f83013d647c5d1f4e"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-blocks.webp"
   },
   {
     "id": "detail-calgary-sandstone-seat-wall",
@@ -6367,8 +6275,7 @@
     "triangles": 300,
     "meshes": 1,
     "bytes": 35384,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-seat-wall.webp",
-    "thumbnailSha256": "4b232b6f99b6a0178e3eeb18ead1080ad09e4e0cda289571eb0fa5ea1afab741"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-seat-wall.webp"
   },
   {
     "id": "detail-calgary-rundle-rock-wall",
@@ -6394,8 +6301,7 @@
     "triangles": 1104,
     "meshes": 1,
     "bytes": 127040,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/rundle-rock-wall.webp",
-    "thumbnailSha256": "dfc3f049f32cddbfae9bd41e49fdeb9b074bef46cf5074fe5a5cd9e7f741e65a"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/rundle-rock-wall.webp"
   },
   {
     "id": "detail-calgary-glacial-erratic",
@@ -6421,8 +6327,7 @@
     "triangles": 384,
     "meshes": 1,
     "bytes": 44952,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/glacial-erratic.webp",
-    "thumbnailSha256": "dd978836bafe5938da323a2fe8f5e0f3936a1d6d1494f30a2fe0b589c4f08896"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/glacial-erratic.webp"
   },
   {
     "id": "detail-calgary-round-hay-bale",
@@ -6448,8 +6353,7 @@
     "triangles": 528,
     "meshes": 1,
     "bytes": 61372,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/round-hay-bale.webp",
-    "thumbnailSha256": "f84c3c1b58f5e4b4bc6a5b02c4927d8cc4ed4faf0177ef7b9bdcab771ff61371"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/round-hay-bale.webp"
   },
   {
     "id": "detail-calgary-ranch-rail-fence",
@@ -6475,8 +6379,7 @@
     "triangles": 288,
     "meshes": 1,
     "bytes": 34012,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-rail-fence.webp",
-    "thumbnailSha256": "aa8dbafb74c28e06ac9c93fae42b8a5a62914acfdce30fcd6ed21f5af8d5da21"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-rail-fence.webp"
   },
   {
     "id": "detail-calgary-ranch-gate",
@@ -6502,8 +6405,7 @@
     "triangles": 732,
     "meshes": 1,
     "bytes": 84592,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-gate.webp",
-    "thumbnailSha256": "c7ddcc9f799800a27d56573d9873beeb831ac2829d224c25a549e3ba21095894"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-gate.webp"
   },
   {
     "id": "detail-calgary-pathway-marker",
@@ -6529,8 +6431,7 @@
     "triangles": 206,
     "meshes": 1,
     "bytes": 24656,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/pathway-marker.webp",
-    "thumbnailSha256": "c28ab8be36bd479ebec75453c1eeeef4c00db641257b6f1f748e72b7c0218610"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/pathway-marker.webp"
   },
   {
     "id": "detail-calgary-river-safety-station",
@@ -6556,8 +6457,7 @@
     "triangles": 840,
     "meshes": 1,
     "bytes": 96952,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/river-safety-station.webp",
-    "thumbnailSha256": "dc3975440355e2bc33f55697b73eb0132894ca2d43de87a52317ea03c6d5232b"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/river-safety-station.webp"
   },
   {
     "id": "detail-calgary-lrt-platform-shelter",
@@ -6583,8 +6483,7 @@
     "triangles": 1052,
     "meshes": 2,
     "bytes": 122064,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-platform-shelter.webp",
-    "thumbnailSha256": "5feb4044bab06fafe3b8d6107aeda1c3f6f0ea223167f84ea9aee838b843dd65"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-platform-shelter.webp"
   },
   {
     "id": "detail-calgary-lrt-catenary-pole",
@@ -6610,8 +6509,7 @@
     "triangles": 720,
     "meshes": 1,
     "bytes": 83252,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-catenary-pole.webp",
-    "thumbnailSha256": "450b751b74b1c260217e9a9ba440cba6f75ccc4c2eff402085868e97a90f1cee"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-catenary-pole.webp"
   },
   {
     "id": "detail-calgary-heated-bus-shelter",
@@ -6637,8 +6535,7 @@
     "triangles": 620,
     "meshes": 2,
     "bytes": 72820,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/heated-bus-shelter.webp",
-    "thumbnailSha256": "2e3f5eb6356e524a22ae477e0f12766d31064b68af10b760dacf563f38580e50"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/heated-bus-shelter.webp"
   },
   {
     "id": "detail-calgary-scooter-corral",
@@ -6664,8 +6561,7 @@
     "triangles": 1410,
     "meshes": 1,
     "bytes": 161908,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral.webp",
-    "thumbnailSha256": "0d41e0c73681ebfc82038a5da88c78806089f490b531d70c20d99237f1fe6dbf"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral.webp"
   },
   {
     "id": "detail-calgary-white-tailed-jackrabbit",
@@ -6691,8 +6587,7 @@
     "triangles": 642,
     "meshes": 1,
     "bytes": 74408,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/white-tailed-jackrabbit.webp",
-    "thumbnailSha256": "585364e1eadd35281320e4f570ae26c2cf3df38bb513428774386b4cdc8e590a"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/white-tailed-jackrabbit.webp"
   },
   {
     "id": "detail-calgary-magpies",
@@ -6718,8 +6613,7 @@
     "triangles": 640,
     "meshes": 1,
     "bytes": 74148,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/magpies.webp",
-    "thumbnailSha256": "aaf2fea63b79130c8169363c0f3bcf99862733f84e3c459e4ad1dcebfa638973"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/magpies.webp"
   },
   {
     "id": "detail-calgary-canada-geese",
@@ -6745,8 +6639,7 @@
     "triangles": 648,
     "meshes": 1,
     "bytes": 75064,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/canada-geese.webp",
-    "thumbnailSha256": "33e9422153709dec355b2dfdf455c040d9a312a82ca155a358f2f737ce3cb4ce"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/canada-geese.webp"
   },
   {
     "id": "detail-calgary-mule-deer",
@@ -6772,7 +6665,6 @@
     "triangles": 1032,
     "meshes": 1,
     "bytes": 118840,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mule-deer.webp",
-    "thumbnailSha256": "d253b981eb4246617055a1b3ebbf159e1b35b05b48dc7b2c7415a77a84d4866e"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mule-deer.webp"
   }
 ]

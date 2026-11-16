@@ -1164,23 +1164,32 @@ def export(species, output):
     return row(species, payload, lo, hi, triangles, meshes)
 
 
-def attach_thumbnails(rows, directory):
-    """Lock each reviewed card image rendered beside its GLB (render_detail_thumbnails.cjs).
+CARD_LOCK = Path(__file__).with_name('detail_card_images.lock.json')
+
+
+def attach_thumbnails(rows, directory, lock=CARD_LOCK):
+    """Record each reviewed card image rendered beside its GLB (render_detail_thumbnails.cjs).
 
     Static cards spare the panel from downloading a megabyte-size model per
-    tile just to draw a preview. They are reviewed renders, never rebuilt here."""
+    tile just to draw a preview. They are reviewed renders, never rebuilt here.
+    The row gains only thumbnailUrl. The image hash goes to a lock file beside
+    this builder instead: the running app never reads it, and every catalogue
+    row ships inside the JavaScript bundle, whose budget is nearly spent."""
+    locks = json.loads(lock.read_text(encoding='utf-8')) if lock.is_file() else {}
     attached = 0
     for record in rows:
         image = Path(directory) / (Path(record['url']).stem + '.webp')
         record.pop('thumbnailUrl', None)
         record.pop('thumbnailSha256', None)
+        locks.pop(record['id'], None)
         if image.is_file():
             data = image.read_bytes()
             if data[:4] != b'RIFF' or data[8:12] != b'WEBP':
                 raise ValueError(f'{image.name} is not a WebP image')
             record['thumbnailUrl'] = record['url'][:-len('.glb')] + '.webp'
-            record['thumbnailSha256'] = hashlib.sha256(data).hexdigest()
+            locks[record['id']] = hashlib.sha256(data).hexdigest()
             attached += 1
+    lock.write_text(json.dumps(dict(sorted(locks.items())), indent=2) + '\n', encoding='utf-8')
     return attached
 
 

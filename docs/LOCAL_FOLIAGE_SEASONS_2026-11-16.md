@@ -93,12 +93,32 @@ under 6,000, two meshes, no textures). Models still load only on placement.
 With 53 choices under Trees, drawing each card from its model would download
 about a megabyte per tile. Every plant in the kit, including the first 30, now
 has a static 480 × 315 WebP card (`<slug>.webp` beside the GLB, about 7 KB each,
-784 KB for both local kits together). The registry records it as `thumbnailUrl`
-with a `thumbnailSha256` lock, which the panel already prefers over a live
-render. `render_detail_thumbnails.cjs` draws the cards with the same lighting
-and orthographic framing as `detailThumbnail.ts`, so they look like the live
-preview they replace. Pixels depend on the renderer, so the cards are reviewed
-outputs locked by hash; tests verify the committed bytes and never re-render.
+784 KB for both local kits together). The registry records it as `thumbnailUrl`,
+which the panel already prefers over a live render.
+`render_detail_thumbnails.cjs` draws the cards with the same lighting and
+orthographic framing as `detailThumbnail.ts`, so they look like the live preview
+they replace. Pixels depend on the renderer, so the cards are reviewed outputs
+locked by hash; tests verify the committed bytes and never re-render. The
+hashes live in `tools/detail_catalogue/detail_card_images.lock.json`, not in the
+registry rows, because every row ships inside the JavaScript bundle and the
+running app never reads an image hash.
+
+## Bundle budget
+
+Catalogue rows are compressed into the production bundle, and CI holds total
+JavaScript to 8,448 KB. The branch base had under 5 KB to spare, so the 108 new
+rows put the first build 21.5 KB over. This was caught by running the production
+build and `check-budget` locally; it would have failed CI.
+
+The budget was not raised and no catalogue field was dropped. Following the
+repository's existing practice, seven catalogues moved from base64 to the
+denser Z85 transport the packing plugin already supports for the three largest:
+`detailCatalogueExtras`, `recoveredDetails`, `streetPathArchetypes`,
+`nativeParks`, `cataloguePlanningHistory`, `catalogueTeaching` and
+`archetypeReferenceAvailability`. Z85 is lossless; the plugin tests decode each
+one after minification and require it to equal the source exactly, including
+signed-zero offsets. Together with keeping card hashes out of the rows, total
+JavaScript is 8,441.7 KB, which leaves slightly more headroom than before.
 
 ## Reproduction
 
@@ -143,6 +163,9 @@ removed, with the remaining 155 rows verified byte-for-byte against
   hash test that needs hydrated LFS models.
 - Runtime asset manifest regenerated and checked: 5,579 required files (+40)
   at the model commit, then 5,725 once both local kits gained card images.
+- Production build and `check-budget` pass at 8,441.7 KB of 8,448 KB total
+  JavaScript. The 128 catalogue delivery guard tests pass, including eight new
+  ones for the denser transport.
 
 Not done here: a browser trial placing these plants in a project, Undo/reload,
 deterministic capture, low-end device performance and classroom novice use.
