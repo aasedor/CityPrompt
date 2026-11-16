@@ -11,8 +11,8 @@ import { withStoreyMetadata, type PlaceAsset } from './assetRegistry';
 import { storeyProgramHeight, storeyProgramSupports } from './buildingStoreyProgram';
 import { footprintProgramSupports } from './buildingFootprintProgram';
 import {
-  RESIZE_TRIAL_SETTINGS, decideResizeTrialStretch, exactModelProperties, fitResizeTrialScalesToPlot,
-  readResizeTrialState, resizeTrialBuildingSize, resizeTrialOutlineFrame, resizeTrialOutlineProblem,
+  RESIZE_TRIAL_SETTINGS, clampResizeTrialScale, decideResizeTrialStretch, exactModelProperties, fitResizeTrialScalesToPlot,
+  readResizeTrialState, resizeTrialBuildingSize, resizeTrialOffersShapeFreely, resizeTrialOutlineFrame, resizeTrialOutlineProblem,
   resizeTrialPlotFor, resizeTrialRectangle, shapeFreelyProperties, type ResizeTrialMode,
 } from './buildingResizeTrial';
 
@@ -82,7 +82,9 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
     ? readResizeTrialState(savedProperties) : null;
   const footprintProgram = selectedFootprintProgram?.mode === 'independent_horizontal_scale' ? undefined : selectedFootprintProgram;
   const outline = trial && zone.coordinates.length >= 3 ? resizeTrialOutlineFrame(zone.coordinates) : null;
-  const clampScale = (value: number) => Math.max(RESIZE_TRIAL_SETTINGS.scaleMin, Math.min(RESIZE_TRIAL_SETTINGS.scaleMax, value));
+  const clampScale = (value: number) => trial ? clampResizeTrialScale(value, trial.family) : value;
+  // Free draw is a second switch. Without it the building only stretches.
+  const offersShapeFreely = Boolean(trial && (resizeTrialOffersShapeFreely(trial.family) || trial.mode === 'shape_freely'));
   // Returning from Shape freely starts from the nearest size the exact model can take.
   const trialStart = !trial || !outline ? null : trial.mode === 'exact_model'
     ? resizeTrialBuildingSize(trial.family, trial.widthScale, trial.depthScale)
@@ -98,7 +100,15 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
   // A size beyond the band becomes a freely shaped rectangle, which has limits of its own.
   const trialHandoverProblem = trial && outline && trialDecision?.kind === 'shape_freely'
     ? resizeTrialOutlineProblem(resizeTrialRectangle(outline.center, trialDecision.widthM, trialDecision.depthM, outline.degrees)) : null;
-  const trialValid = !trial || trialMode === 'shape_freely' || Boolean(outline && trialDecision && !trialHandoverProblem);
+  // Outside its range and with no free draw to hand over to, the size is refused.
+  const trialOutOfRange = trialDecision?.kind === 'out_of_range';
+  const trialValid = !trial || trialMode === 'shape_freely' || Boolean(outline && trialDecision && !trialHandoverProblem && !trialOutOfRange);
+  // What Fit building to plot would do on this plot, shown before it is pressed.
+  const fitScales = trial && outline && trial.mode === 'exact_model' ? fitResizeTrialScalesToPlot(trial.family, outline.widthM, outline.depthM) : null;
+  const fitStops = trial && fitScales && !offersShapeFreely
+    ? { widthScale: clampScale(fitScales.widthScale), depthScale: clampScale(fitScales.depthScale) } : null;
+  const fitStopsShort = Boolean(fitStops && fitScales
+    && (Math.abs(fitStops.widthScale - fitScales.widthScale) > 1e-4 || Math.abs(fitStops.depthScale - fitScales.depthScale) > 1e-4));
   const filtered = choices.filter(c => c.id === choiceId || `${c.option.label} ${c.option.description}`.toLowerCase().includes(query.toLowerCase()));
   const floorCountValid = Number.isInteger(Number(floors))
     && Number(floors) >= (storeyProgram?.minStoreys ?? 1)
@@ -144,7 +154,11 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
     const fit = fitToPlot ? fitResizeTrialScalesToPlot(family, outline.widthM, outline.depthM) : null;
     const requested = fit ? resizeTrialBuildingSize(family, fit.widthScale, fit.depthScale)
       : { widthM: Number(trialWidth), depthM: Number(trialDepth) };
-    const decision = decideResizeTrialStretch(family, requested.widthM, requested.depthM);
+    const decision = decideResizeTrialStretch(family, requested.widthM, requested.depthM, offersShapeFreely);
+    // A typed size outside the range is refused. A fit stops at the range.
+    if (decision.kind === 'out_of_range' && !fitToPlot) {
+      return { properties: base, problem: 'That size is outside this building’s stretch range.' };
+    }
     if (decision.kind === 'shape_freely') {
       // Outside the band: hand over to Shape freely at the size asked for.
       const coordinates = rectangle(decision.widthM, decision.depthM);
@@ -265,16 +279,16 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
     </label>}
     {trial && outline && <fieldset className="min-w-0 rounded-lg border border-slate-400 bg-white p-2">
       <legend className="px-1 text-xs font-semibold">Fit this building to your space</legend>
-      <div role="radiogroup" aria-label="Building shape" className="grid grid-cols-2 gap-2">
+      {offersShapeFreely && <div role="radiogroup" aria-label="Building shape" className="grid grid-cols-2 gap-2">
         {(['exact_model', 'shape_freely'] as const).map(mode => <label key={mode}
           className={`flex min-h-11 cursor-pointer items-center justify-center rounded-lg border px-2 text-sm font-semibold ${trialMode === mode ? 'border-slate-900 bg-lime-200' : 'border-slate-400 bg-white'}`}>
           <input type="radio" name={`building-shape-${zone.id}`} className="sr-only" checked={trialMode === mode}
             onChange={() => setTrialMode(mode)} />
           {mode === 'exact_model' ? 'Exact model' : 'Shape freely'}</label>)}
-      </div>
+      </div>}
       {trial.mode === 'shape_freely' && <p role="status" className="mt-2 rounded bg-amber-50 p-2 text-xs text-slate-900">
         <span className="font-semibold">{trial.reason === 'stretch_out_of_band'
-          ? `Switched to Shape freely automatically. The size you asked for is outside the exact model’s ${percent(RESIZE_TRIAL_SETTINGS.scaleMin)}–${percent(RESIZE_TRIAL_SETTINGS.scaleMax)} range.`
+          ? `Switched to Shape freely automatically. The size you asked for is outside the exact model’s ${percent(trial.family.scaleMin)}–${percent(trial.family.scaleMax)} range.`
           : 'This building is shaped freely.'}</span>{' '}
         It is drawn on your outline with this building’s own window and balcony bays, which repeat and never stretch. It is not the detailed model. Choose Exact model to return to it.</p>}
       {trialMode === 'exact_model' ? <>
@@ -290,7 +304,9 @@ export function BuildingDesignControls({ zone, disabled, onSave, requireExplicit
         </div>
         {trial.mode === 'exact_model' && <button type="button" disabled={disabled || checking || !baseValid} onClick={() => { void apply(true); }}
           className="mt-2 min-h-11 w-full rounded-lg border border-slate-700 bg-white text-sm font-semibold disabled:opacity-40">Fit building to plot</button>}
-        <p className="mt-2 text-xs text-slate-600">The exact model stretches {metres(trial.family.nativeWidthM * RESIZE_TRIAL_SETTINGS.scaleMin)}–{metres(trial.family.nativeWidthM * RESIZE_TRIAL_SETTINGS.scaleMax)} m wide and {metres(trial.family.nativeDepthM * RESIZE_TRIAL_SETTINGS.scaleMin)}–{metres(trial.family.nativeDepthM * RESIZE_TRIAL_SETTINGS.scaleMax)} m deep ({percent(RESIZE_TRIAL_SETTINGS.scaleMin)}–{percent(RESIZE_TRIAL_SETTINGS.scaleMax)}). Height and storeys never change.</p>
+        <p className="mt-2 text-xs text-slate-600">This building stretches {metres(trial.family.nativeWidthM * trial.family.scaleMin)}–{metres(trial.family.nativeWidthM * trial.family.scaleMax)} m wide and {metres(trial.family.nativeDepthM * trial.family.scaleMin)}–{metres(trial.family.nativeDepthM * trial.family.scaleMax)} m deep ({percent(trial.family.scaleMin)}–{percent(trial.family.scaleMax)}), a range it can take without warping. Height and storeys never change.</p>
+        {fitStopsShort && fitStops && <p role="status" className="mt-1 text-xs text-slate-900">Your plot is outside that range. Fit building to plot stops at {percent(fitStops.widthScale)} wide and {percent(fitStops.depthScale)} deep.</p>}
+        {trialOutOfRange && <p role="alert" className="mt-1 text-xs font-semibold text-red-700">That size is outside this building’s range, so it is not applied. Choose a size inside the range, or a different building.</p>}
         {trialDecision?.kind === 'shape_freely' && !trialHandoverProblem && <p role="status" className="mt-1 text-xs font-semibold text-amber-900">This size is outside the exact model’s range. Applying switches this building to Shape freely.</p>}
         {trialHandoverProblem && <p role="alert" className="mt-1 text-xs text-red-700">{trialHandoverProblem}</p>}
       </> : trial.mode === 'exact_model' && <p className="mt-2 text-xs text-slate-600">Applying replaces the detailed model with an outline you can reshape: drag its corners or add points. Storeys and floor heights stay the same. Window and balcony bays repeat at a fixed width; they never stretch.</p>}

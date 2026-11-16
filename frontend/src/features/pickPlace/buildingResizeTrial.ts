@@ -11,14 +11,18 @@ import { parkOutlineDimensions } from './parkOutline';
  * fitted in two ways:
  *
  *  - Exact model: the reviewed GLB stretched independently in width and depth
- *    inside a bounded band. Height is never scaled.
+ *    inside that building's own range, set so it does not visibly warp.
+ *    Height is never scaled. This is the main feature.
  *  - Shape freely: the student draws the outline; the building compiles to
  *    planned massing drawn with that building's own facade kit, whose bays
- *    repeat and never stretch.
+ *    repeat and never stretch. Only for a building that names a kit, and only
+ *    behind a second flag.
  *
  * Everything is behind VITE_ENABLE_BUILDING_RESIZE_TRIAL (default off). With
  * the flag off every function here reports "no trial" and callers keep their
- * existing behaviour. The server validates every saved state again.
+ * existing behaviour. Shape freely also needs
+ * VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL (default off); without it a stretch
+ * stops at the range. The server validates every saved state again.
  */
 export const RESIZE_TRIAL_PROGRAM_ID = contract.id;
 
@@ -112,9 +116,12 @@ function kitSettings(kit: KitRow): KitSettings {
  * (run `python scripts/building_resize_trial.py --write-mirror` after editing).
  */
 export const RESIZE_TRIAL_SETTINGS = {
-  /** Exact model: smallest and largest stretch per axis (0.70 = 70%). */
+  /** Exact model: the outer limits. No building's own range reaches past them. */
   scaleMin: contract.stretch.minimum_scale,
   scaleMax: contract.stretch.maximum_scale,
+  /** Exact model: the named ranges (0.85 = 85%). Each building takes one. */
+  bands: Object.fromEntries(Object.entries(contract.stretch.bands).map(([name, band]) =>
+    [name, { scaleMin: band.minimum_scale, scaleMax: band.maximum_scale }])) as Readonly<Record<string, { scaleMin: number; scaleMax: number }>>,
   /** Exact model: step of the width/depth controls, as a fraction. */
   scaleStep: contract.stretch.step,
   /** Fit building to plot: clear space kept on each side, in metres.
@@ -176,8 +183,13 @@ export interface ResizeTrialFamily {
   /** The catalogue's placement plot around the unscaled model. */
   plotWidthM: number;
   plotDepthM: number;
-  /** The facade kit this building is drawn with in Shape freely. */
-  massingKit: string;
+  /** This building's own stretch range per axis, and the name of that range. */
+  scaleMin: number;
+  scaleMax: number;
+  band: string;
+  /** The facade kit this building is drawn with in Shape freely. null for a
+   *  building that only stretches. */
+  massingKit: string | null;
 }
 
 const FAMILIES: ResizeTrialFamily[] = contract.families.map(row => ({
@@ -185,12 +197,26 @@ const FAMILIES: ResizeTrialFamily[] = contract.families.map(row => ({
   variantId: row.variant_id, candidate: row.candidate,
   nativeWidthM: row.native_dimensions_m[0], nativeDepthM: row.native_dimensions_m[1],
   nativeHeightM: row.native_dimensions_m[2], nativeStoreys: row.native_storeys,
-  plotWidthM: row.placement_plot_m[0], plotDepthM: row.placement_plot_m[1], massingKit: row.massing_kit,
+  plotWidthM: row.placement_plot_m[0], plotDepthM: row.placement_plot_m[1],
+  scaleMin: RESIZE_TRIAL_SETTINGS.bands[row.band].scaleMin, scaleMax: RESIZE_TRIAL_SETTINGS.bands[row.band].scaleMax,
+  band: row.band, massingKit: row.massing_kit,
 }));
 
 /** Read at call time so a test can switch the flag without reloading modules. */
 export function buildingResizeTrialEnabled(): boolean {
   return import.meta.env.VITE_ENABLE_BUILDING_RESIZE_TRIAL === 'true';
+}
+
+/** The free-draw half of the pilot: on only when both flags are on. */
+export function buildingShapeFreelyTrialEnabled(): boolean {
+  return buildingResizeTrialEnabled() && import.meta.env.VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL === 'true';
+}
+
+/** True when this building may be shaped freely: free draw is switched on
+ *  and the building names a facade kit to be drawn with. */
+export function resizeTrialOffersShapeFreely(family: ResizeTrialFamily | undefined,
+  enabled = buildingShapeFreelyTrialEnabled()): boolean {
+  return enabled && family?.massingKit != null && family.massingKit in RESIZE_TRIAL_SETTINGS.kits;
 }
 
 /** The exact asset, variant and revision the pilot covers. Nothing else. */
@@ -226,10 +252,16 @@ export interface ResizeTrialState {
 
 export const roundResizeTrialScale = (scale: number) => Math.round(scale * 10000) / 10000;
 
-export function resizeTrialScaleInBand(scale: unknown): boolean {
+/** True for a stretch inside this building's own range. */
+export function resizeTrialScaleInBand(scale: unknown, family: Pick<ResizeTrialFamily, 'scaleMin' | 'scaleMax'>): boolean {
   const value = Number(scale);
   return typeof scale !== 'boolean' && scale != null && scale !== '' && Number.isFinite(value)
-    && value >= RESIZE_TRIAL_SETTINGS.scaleMin - 1e-9 && value <= RESIZE_TRIAL_SETTINGS.scaleMax + 1e-9;
+    && value >= family.scaleMin - 1e-9 && value <= family.scaleMax + 1e-9;
+}
+
+/** The nearest stretch this building's range allows. */
+export function clampResizeTrialScale(scale: number, family: Pick<ResizeTrialFamily, 'scaleMin' | 'scaleMax'>): number {
+  return Math.max(family.scaleMin, Math.min(family.scaleMax, scale));
 }
 
 /** The saved trial state of a building, or null when the pilot does not apply. */
@@ -243,14 +275,17 @@ export function readResizeTrialState(
     return { family, mode: 'exact_model', widthScale: 1, depthScale: 1, declared: false };
   }
   if (properties.building_footprint_mode === 'shape_freely') {
+    // With free draw switched off a saved outline is ignored, exactly as the
+    // whole programme is while the pilot flag is off.
+    if (!resizeTrialOffersShapeFreely(family, enabled && buildingShapeFreelyTrialEnabled())) return null;
     return { family, mode: 'shape_freely', widthScale: 1, depthScale: 1, declared: true,
       ...(properties.building_footprint_mode_reason === 'stretch_out_of_band'
         ? { reason: 'stretch_out_of_band' as const } : {}) };
   }
   const width = properties.building_footprint_width_scale, depth = properties.building_footprint_depth_scale;
   return { family, mode: 'exact_model', declared: true,
-    widthScale: resizeTrialScaleInBand(width) ? Number(width) : 1,
-    depthScale: resizeTrialScaleInBand(depth) ? Number(depth) : 1 };
+    widthScale: resizeTrialScaleInBand(width, family) ? Number(width) : 1,
+    depthScale: resizeTrialScaleInBand(depth, family) ? Number(depth) : 1 };
 }
 
 /** True when the saved building is an explicit freely shaped massing. */
@@ -317,17 +352,23 @@ export function fitResizeTrialScalesToPlot(family: ResizeTrialFamily, plotWidthM
 
 export type ResizeTrialStretchDecision =
   | { kind: 'exact_model'; widthScale: number; depthScale: number }
+  /** Outside the range, free draw off: the nearest stretch the building allows. */
+  | { kind: 'out_of_range'; widthScale: number; depthScale: number }
   | { kind: 'shape_freely'; widthM: number; depthM: number; reason: ResizeTrialReason };
 
-/** Inside the band the exact model stretches. Outside it the building hands
- *  over to Shape freely at the requested size, and says why. */
-export function decideResizeTrialStretch(family: ResizeTrialFamily, widthM: number, depthM: number): ResizeTrialStretchDecision {
+/** Inside its range the exact model stretches. Outside it the building stops
+ *  at the range, so it never warps. Only where free draw is offered does it
+ *  hand over to Shape freely at the requested size instead, and say why. */
+export function decideResizeTrialStretch(family: ResizeTrialFamily, widthM: number, depthM: number,
+  shapeFreely = resizeTrialOffersShapeFreely(family)): ResizeTrialStretchDecision {
   const widthScale = roundResizeTrialScale(widthM / family.nativeWidthM);
   const depthScale = roundResizeTrialScale(depthM / family.nativeDepthM);
-  if (resizeTrialScaleInBand(widthScale) && resizeTrialScaleInBand(depthScale)) {
+  if (resizeTrialScaleInBand(widthScale, family) && resizeTrialScaleInBand(depthScale, family)) {
     return { kind: 'exact_model', widthScale, depthScale };
   }
-  return { kind: 'shape_freely', widthM, depthM, reason: 'stretch_out_of_band' };
+  if (shapeFreely) return { kind: 'shape_freely', widthM, depthM, reason: 'stretch_out_of_band' };
+  return { kind: 'out_of_range', widthScale: clampResizeTrialScale(widthScale, family),
+    depthScale: clampResizeTrialScale(depthScale, family) };
 }
 
 /** Same rectangle maths as geometry.rectangleAt, kept local to avoid a cycle. */
@@ -455,13 +496,13 @@ export interface ResizeTrialFigures {
  *  courtyard: two wings and the minimum clear width. null for a building
  *  whose facade kit has no courtyard. */
 export function resizeTrialCourtyardNeedM(family: ResizeTrialFamily | undefined): number | null {
-  const kit = family && RESIZE_TRIAL_SETTINGS.massingStyle === 'archetype_kit' ? RESIZE_TRIAL_SETTINGS.kits[family.massingKit] : undefined;
+  const kit = family?.massingKit && RESIZE_TRIAL_SETTINGS.massingStyle === 'archetype_kit' ? RESIZE_TRIAL_SETTINGS.kits[family.massingKit] : undefined;
   return kit?.type === 'courtyard_block' ? 2 * kit.wingDepthM + kit.courtyardMinClearM : null;
 }
 
 /** Courtyard a freely shaped building of this family leaves open, in m². */
 function resizeTrialCourtyardAreaM2(coordinates: number[][], family: ResizeTrialFamily | undefined): number {
-  const kit = family && RESIZE_TRIAL_SETTINGS.massingStyle === 'archetype_kit' ? RESIZE_TRIAL_SETTINGS.kits[family.massingKit] : undefined;
+  const kit = family?.massingKit && RESIZE_TRIAL_SETTINGS.massingStyle === 'archetype_kit' ? RESIZE_TRIAL_SETTINGS.kits[family.massingKit] : undefined;
   return kit?.type === 'courtyard_block' ? kitCourtyardAreaM2(coordinates, kit.wingDepthM, kit.courtyardMinClearM) : 0;
 }
 
@@ -496,13 +537,13 @@ export function withResizeTrial(asset: PlaceAsset, properties: SiteZonePropertie
   // would make the browser refuse round sizes such as 30 m.
   const tenth = (value: number) => Math.ceil(value * 10 - 1e-6) / 10;
   // With squeezing off, the plot stops at the room the model needs right now.
-  const least = squeeze ? resizeTrialPlotFor(family, settings.scaleMin, settings.scaleMin)
+  const least = squeeze ? resizeTrialPlotFor(family, family.scaleMin, family.scaleMin)
     : resizeTrialPlotFor(family, state.widthScale, state.depthScale);
   const smallest = { widthM: tenth(least.widthM), depthM: tenth(least.depthM) };
   return { ...asset,
     footprintProgram: { id: RESIZE_TRIAL_PROGRAM_ID, mode: 'independent_horizontal_scale',
       nativeWidthM: family.nativeWidthM, nativeDepthM: family.nativeDepthM,
-      minScale: settings.scaleMin, maxScale: settings.scaleMax, defaultScale: 1, step: settings.scaleStep },
+      minScale: family.scaleMin, maxScale: family.scaleMax, defaultScale: 1, step: settings.scaleStep },
     // Squeezing on: the plot may shrink until the model reaches its smallest
     // stretch. Squeezing off: it stops at the room this stretch needs.
     minWidth: squeeze ? Math.min(asset.minWidth, smallest.widthM) : smallest.widthM,
@@ -523,7 +564,7 @@ export function resizeTrialPlotReshape(zone: { coordinates: number[][]; properti
   const plot = resizeTrialOutlineFrame(coordinates);
   const needed = resizeTrialPlotFor(state.family, state.widthScale, state.depthScale);
   const fit = fitResizeTrialScalesToPlot(state.family, plot.widthM, plot.depthM);
-  const clamp = (value: number) => Math.max(RESIZE_TRIAL_SETTINGS.scaleMin, Math.min(RESIZE_TRIAL_SETTINGS.scaleMax, value));
+  const clamp = (value: number) => clampResizeTrialScale(value, state.family);
   // Moving or turning a plot must never nudge the building; only a plot that
   // is genuinely too small squeezes that axis.
   const widthScale = plot.widthM + PLOT_FIT_TOLERANCE_M >= needed.widthM ? state.widthScale : clamp(fit.widthScale);
@@ -544,7 +585,7 @@ export function resizeTrialMassingDressing(
   const saved = Number(properties?.floor_count ?? properties?.floors);
   const settings = RESIZE_TRIAL_SETTINGS;
   const storeys = Number.isInteger(saved) && saved > 0 ? saved : state.family.nativeStoreys;
-  const kit = settings.kits[state.family.massingKit];
+  const kit = state.family.massingKit ? settings.kits[state.family.massingKit] : undefined;
   if (style === 'archetype_kit' && kit) {
     return { kind: 'kit' as const, kit: { ...kit, storeys,
       floorLineHeightM: settings.floorLineHeightM, surfaceOffsetM: settings.surfaceOffsetM } as LegoMassingKit };

@@ -21,6 +21,7 @@ const centre = [-114, 51];
 describe('building resize pilot: undo, redo and reload', () => {
   beforeEach(() => {
     vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true');
+    vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL', 'true');
     vi.mocked(siteZonesApi.update).mockReset();
   });
   afterEach(() => vi.unstubAllEnvs());

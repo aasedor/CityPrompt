@@ -41,9 +41,20 @@ it('keeps the mid-rise without corner handles while the pilot flag is off',()=>{
 
 it('offers plot corners for the exact model and every outline corner for Shape freely',()=>{
   vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL','true');
+  vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL','true');
   expect(corners(placementProperties(asset()),plot)).toBe(4);
   expect(corners(shapeFreelyProperties(placementProperties(asset())),lShape)).toBe(6);
-  // Another fixed native building gains nothing from the pilot.
-  const other=placeAsset('autumn_timber');
+  // A building the rollout leaves out gains nothing from the pilot.
+  const other=placeAsset('showcase_tower');
   expect(corners(placementProperties(other),rectangleAt([-114,51],other.width,other.depth))).toBe(0);
+});
+
+it('with free draw off, every listed building gets plot corners and a saved outline gets none',()=>{
+  vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL','true');
+  expect(corners(placementProperties(asset()),plot)).toBe(4);
+  // A building that only stretches is resizable too.
+  const timber=placeAsset('autumn_timber');
+  expect(corners(placementProperties(timber),rectangleAt([-114,51],timber.width,timber.depth))).toBe(4);
+  // A free-draw outline saved earlier is ignored: the building is fixed again.
+  expect(corners(shapeFreelyProperties(placementProperties(asset())),lShape)).toBe(0);
 });

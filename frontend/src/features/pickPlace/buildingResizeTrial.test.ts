@@ -9,7 +9,7 @@ import { buildPlanRequestForItem, deriveItems } from '@/features/legoAssembly/co
 import { isNativeClayPlan, isResizeTrialPlan } from '@/features/legoAssembly/nativeClayPlacement';
 import type { LegoAssemblyPlan } from '@/features/legoAssembly/legoAssemblyApi';
 import { bufferLineToPolygon } from '@/utils/roadGeometry';
-import { assetForZone, placeAsset, placementProperties } from './catalogue';
+import { PLACE_ASSETS, assetForZone, placeAsset, placementProperties } from './catalogue';
 import { hasFixedBuildingFootprint } from './buildingFootprintProgram';
 import { buildingEdgeContract, buildingPlacementEnvelope } from './buildingPlacementEdges';
 import { rectangleAt, rectangleDimensions } from './geometry';
@@ -21,6 +21,7 @@ import edges from '@/data/buildingPlacementEdges.json';
 import {
   RESIZE_TRIAL_PROGRAM_ID, RESIZE_TRIAL_SETTINGS, buildingResizeTrialEnabled, decideResizeTrialStretch,
   exactModelProperties, fitResizeTrialScalesToPlot, isResizeTrialShapeFreely, readResizeTrialState,
+  buildingShapeFreelyTrialEnabled, clampResizeTrialScale, resizeTrialOffersShapeFreely, resizeTrialScaleInBand,
   resizeTrialChangesEnvelope, resizeTrialCourtyardNeedM, resizeTrialFamilyForAsset, resizeTrialFigures, resizeTrialMassingDressing,
   resizeTrialOutlineProblem, resizeTrialPlotFor, resizeTrialPlotMargins, resizeTrialPlotReshape,
   resizeTrialRectangle, resizeTrialStretch, shapeFreelyProperties, withResizeTrial,
@@ -35,7 +36,10 @@ const placed = (properties: SiteZoneProperties = placementProperties(asset()),
   id: 'midrise', project_id: 'project', zone_type: 'building', coordinates, properties,
   name: 'Mid-rise', color: '#fff', sort_order: 0, created_at: 'now', updated_at: 'now',
 } as SiteZone);
-const on = () => vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true');
+/** Both halves of the pilot: stretching and free draw. */
+const on = () => { vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true'); vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL', 'true'); };
+/** The default once the pilot is switched on: stretching only. */
+const stretchOnly = () => vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true');
 afterEach(() => vi.unstubAllEnvs());
 
 describe('flag off (the default)', () => {
@@ -72,7 +76,7 @@ describe('flag off (the default)', () => {
   });
 });
 
-describe('flag on', () => {
+describe('both flags on: stretch and free draw', () => {
   beforeEach(on);
   const family = () => resizeTrialFamilyForAsset(asset())!;
 
@@ -87,7 +91,17 @@ describe('flag on', () => {
     });
     expect(contract.stretch.vertical_scale).toBe(1);
     // Every building names a facade kit that the file defines.
-    expect(contract.families.map(row => row.massing_kit)).toEqual(['aspen_terrace', 'brick_garden_courtyard']);
+    expect(contract.families.map(row => row.massing_kit).filter(Boolean)).toEqual(['aspen_terrace', 'brick_garden_courtyard']);
+    // Every building names a stretch range the file defines, inside the outer range.
+    expect(Object.keys(RESIZE_TRIAL_SETTINGS.bands)).toEqual(['wide', 'regular', 'careful']);
+    expect(RESIZE_TRIAL_SETTINGS.bands).toMatchObject({ wide: { scaleMin: 0.7, scaleMax: 1.4 },
+      regular: { scaleMin: 0.85, scaleMax: 1.2 }, careful: { scaleMin: 0.9, scaleMax: 1.1 } });
+    for (const row of contract.families) {
+      const band = RESIZE_TRIAL_SETTINGS.bands[row.band];
+      expect(band.scaleMin).toBeGreaterThanOrEqual(RESIZE_TRIAL_SETTINGS.scaleMin);
+      expect(band.scaleMax).toBeLessThanOrEqual(RESIZE_TRIAL_SETTINGS.scaleMax);
+      expect(band.scaleMin <= 1 && band.scaleMax >= 1).toBe(true);
+    }
     expect(Object.keys(RESIZE_TRIAL_SETTINGS.kits)).toEqual(Object.keys(contract.massing.kits));
     expect(Object.values(RESIZE_TRIAL_SETTINGS.kits).map(kit => kit.type)).toEqual(['apartment_bar', 'courtyard_block']);
   });
@@ -98,8 +112,9 @@ describe('flag on', () => {
       nativeStoreys: 5, plotWidthM: trial.width, plotDepthM: trial.depth });
     expect([family().nativeWidthM, family().nativeDepthM, family().nativeHeightM]).toEqual(trial.nativeDimensions);
     expect(resizeTrialFamilyForAsset({ ...trial, model: { ...trial.model, revision: 'final-seniors-apartments-clay-v004' } })).toBeUndefined();
-    expect(resizeTrialFamilyForAsset(placeAsset('autumn_timber'))).toBeUndefined();
-    expect(readResizeTrialState(placementProperties(placeAsset('autumn_timber')))).toBeNull();
+    // A building the rollout leaves out is not covered.
+    expect(resizeTrialFamilyForAsset(placeAsset('showcase_tower'))).toBeUndefined();
+    expect(readResizeTrialState(placementProperties(placeAsset('showcase_tower')))).toBeNull();
     expect(readResizeTrialState({ ...placementProperties(trial), pick_place_model_revision: 'another' })).toBeNull();
   });
 
@@ -474,5 +489,108 @@ describe('a second, more complex building: the courtyard block', () => {
   it('keeps the same minimum outline as every freely shaped building', () => {
     expect(resizeTrialOutlineProblem(rectangleAt(ll(0, 0), 30, 24.4, 0))).toBeNull();
     expect(resizeTrialOutlineProblem(rectangleAt(ll(0, 0), 8, 24, 0))).toMatch(/at least 9 m wide/);
+  });
+});
+
+describe('stretch only: free draw off, the default once the pilot is on', () => {
+  beforeEach(stretchOnly);
+  const family = () => resizeTrialFamilyForAsset(asset())!;
+  const base = () => placementProperties(asset());
+
+  it('needs its own flag as well as the pilot flag', () => {
+    expect(buildingResizeTrialEnabled()).toBe(true);
+    expect(buildingShapeFreelyTrialEnabled()).toBe(false);
+    expect(resizeTrialOffersShapeFreely(family())).toBe(false);
+    vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL', 'true');
+    expect(resizeTrialOffersShapeFreely(family())).toBe(true);
+    // A building with no facade kit only ever stretches.
+    expect(resizeTrialOffersShapeFreely(resizeTrialFamilyForAsset(placeAsset('autumn_timber')))).toBe(false);
+    // The free-draw flag alone does nothing.
+    vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'false');
+    expect(buildingShapeFreelyTrialEnabled()).toBe(false);
+  });
+
+  it('stops a stretch at the building’s range instead of handing over', () => {
+    expect(decideResizeTrialStretch(family(), NATIVE_W * 1.2, NATIVE_D * 0.9)).toEqual({ kind: 'exact_model', widthScale: 1.2, depthScale: 0.9 });
+    expect(decideResizeTrialStretch(family(), NATIVE_W * 1.6, NATIVE_D * 0.9)).toEqual({ kind: 'out_of_range', widthScale: 1.4, depthScale: 0.9 });
+    expect(decideResizeTrialStretch(family(), NATIVE_W * 0.5, NATIVE_D * 2)).toEqual({ kind: 'out_of_range', widthScale: 0.7, depthScale: 1.4 });
+    // Free draw offered: the same size hands over, as before.
+    expect(decideResizeTrialStretch(family(), NATIVE_W * 1.6, NATIVE_D * 0.9, true).kind).toBe('shape_freely');
+  });
+
+  it('ignores a free-draw outline saved earlier, exactly as with the pilot off', () => {
+    const freely = shapeFreelyProperties(base());
+    expect(readResizeTrialState(freely)).toBeNull();
+    expect(isResizeTrialShapeFreely(freely)).toBe(false);
+    expect(resizeTrialMassingDressing(freely)).toBeNull();
+    expect(resizeTrialStretch(freely)).toBeNull();
+    expect(assetForZone(placed(freely))).toBe(asset());
+    // A saved stretch is honoured as before.
+    const stretched = exactModelProperties(base(), family(), 1.2, 0.9, asset());
+    expect(readResizeTrialState(stretched)).toMatchObject({ mode: 'exact_model', widthScale: 1.2, depthScale: 0.9, declared: true });
+    expect(resizeTrialStretch(stretched)).toMatchObject({ widthScale: 1.2, depthScale: 0.9 });
+  });
+});
+
+describe('every building has its own stretch range', () => {
+  beforeEach(stretchOnly);
+  const office = () => placeAsset('clay_admin_faculty_brick_bronze_fins');
+  const house = () => placeAsset('clay_rammed_earth_infill');
+
+  it('holds a building of repeating bays to the regular range and a house to the careful one', () => {
+    const regular = resizeTrialFamilyForAsset(office())!, careful = resizeTrialFamilyForAsset(house())!;
+    expect([regular.band, regular.scaleMin, regular.scaleMax, regular.massingKit]).toEqual(['regular', 0.85, 1.2, null]);
+    expect([careful.band, careful.scaleMin, careful.scaleMax, careful.massingKit]).toEqual(['careful', 0.9, 1.1, null]);
+    // Inside the widest range is not enough: it must be inside the building's own.
+    expect(resizeTrialScaleInBand(1.3, resizeTrialFamilyForAsset(asset())!)).toBe(true);
+    expect(resizeTrialScaleInBand(1.3, regular)).toBe(false);
+    expect(resizeTrialScaleInBand(1.2, regular)).toBe(true);
+    expect(resizeTrialScaleInBand(1.15, careful)).toBe(false);
+    expect(clampResizeTrialScale(1.3, regular)).toBe(1.2);
+    expect(clampResizeTrialScale(0.5, careful)).toBe(0.9);
+    expect(decideResizeTrialStretch(careful, careful.nativeWidthM * 1.25, careful.nativeDepthM))
+      .toEqual({ kind: 'out_of_range', widthScale: 1.1, depthScale: 1 });
+  });
+
+  it('offers each building its own programme, plot minimum and squeeze limit', () => {
+    const family = resizeTrialFamilyForAsset(office())!;
+    const zone = placed(placementProperties(office()), rectangleAt(ll(0, 0), family.plotWidthM, family.plotDepthM, 0));
+    const resolved = assetForZone(zone)!;
+    expect(resolved.footprintProgram).toMatchObject({ id: RESIZE_TRIAL_PROGRAM_ID, mode: 'independent_horizontal_scale', minScale: 0.85, maxScale: 1.2 });
+    const smallest = resizeTrialPlotFor(family, 0.85, 0.85);
+    expect(resolved.minWidth).toBeCloseTo(Math.ceil(smallest.widthM * 10 - 1e-6) / 10, 6);
+    // A plot dragged far too small squeezes the building to 85%, never further.
+    const squeezed = resizeTrialPlotReshape(zone, rectangleAt(ll(0, 0), 10, 10, 0), office())!;
+    expect([squeezed.building_footprint_width_scale, squeezed.building_footprint_depth_scale]).toEqual([0.85, 0.85]);
+    // A saved stretch outside the building's own range is read as unstretched.
+    const forged = { ...exactModelProperties(placementProperties(office()), family, 1.2, 1, office()), building_footprint_width_scale: 1.35 };
+    expect(readResizeTrialState(forged)).toMatchObject({ widthScale: 1, depthScale: 1 });
+    // It only stretches: no facade kit, so no massing dressing even with free draw on.
+    vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL', 'true');
+    expect(readResizeTrialState(shapeFreelyProperties(placementProperties(office())))).toBeNull();
+  });
+
+  it('covers the catalogue’s plain fixed models and leaves out buildings with rules of their own', () => {
+    expect(contract.families.length).toBeGreaterThanOrEqual(70);
+    expect(new Set(contract.families.map(row => row.asset_id)).size).toBe(contract.families.length);
+    const assets = new Map(PLACE_ASSETS.map(candidate => [candidate.id as string, candidate]));
+    let offered = 0;
+    for (const row of contract.families) {
+      const listed = assets.get(row.asset_id);
+      if (!listed || listed.model.revision !== row.candidate) continue;
+      offered += 1;
+      // A listed building must have no resize or storey programme of its own to fight with.
+      expect([row.asset_id, listed.footprintProgram?.mode ?? null]).toEqual([row.asset_id, null]);
+      expect([row.asset_id, listed.storeyProgram?.mode ?? 'fixed_authored_assembly']).toEqual([row.asset_id, 'fixed_authored_assembly']);
+      expect([row.asset_id, listed.reshapeMode]).toEqual([row.asset_id, 'fixed_native']);
+      expect(resizeTrialFamilyForAsset(listed)).toMatchObject({ assetId: row.asset_id, band: row.band });
+    }
+    expect(offered).toBeGreaterThanOrEqual(70);
+    // Each building left out is either absent from the app or has such a programme.
+    for (const id of Object.keys(contract.rollout.exclude)) {
+      const left = assets.get(id);
+      expect(resizeTrialFamilyForAsset(left)).toBeUndefined();
+      if (left) expect([id, Boolean(left.footprintProgram) || (left.storeyProgram?.mode ?? 'fixed_authored_assembly') !== 'fixed_authored_assembly']).toEqual([id, true]);
+    }
   });
 });

@@ -38,8 +38,8 @@ it('keeps the mid-rise a fixed native footprint while the flag is off', () => {
   expect(screen.queryByRole('button', { name: 'Add outline point' })).not.toBeInTheDocument();
 });
 
-describe('flag on', () => {
-  beforeEach(() => vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true'));
+describe('both flags on: stretch and free draw', () => {
+  beforeEach(() => { vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true'); vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL', 'true'); });
 
   it('lets the exact model’s plot be resized down to its smallest stretch', () => {
     const { onReshape } = show(building(placementProperties(asset()), rectangleAt(ll(0, 0), 36.4, 22, 20)));
@@ -181,5 +181,36 @@ describe('flag on', () => {
     const [properties, coordinates] = onUpdateDesign.mock.calls[0];
     expect(properties.building_footprint_mode).toBe('shape_freely');
     expect(rectangleDimensions(coordinates).width).toBeCloseTo(32.36000061035156 * 1.2, 5);
+  });
+});
+
+describe('stretch only: free draw off, the default once the pilot is on', () => {
+  beforeEach(() => vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true'));
+
+  it('gives a listed building a resizable plot and stretch controls, with no free draw', () => {
+    const timber = placeAsset('autumn_timber');
+    show(building(placementProperties(timber), rectangleAt(ll(0, 0), timber.width, timber.depth)));
+    expect(screen.getByLabelText('Plot width (m)')).toBeEnabled();
+    expect(screen.getByLabelText('Building width (m)')).toHaveValue(20.35);
+    expect(screen.getByRole('button', { name: 'Fit building to plot' })).toBeInTheDocument();
+    expect(screen.queryByRole('radiogroup', { name: 'Building shape' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('status', { name: 'Building figures' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Add outline point' })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Shape freely/)).not.toBeInTheDocument();
+  });
+
+  it('treats a free-draw outline saved earlier as an ordinary fixed building', () => {
+    const outline = [ll(-25, -15), ll(25, -15), ll(25, 0), ll(0, 0), ll(0, 15), ll(-25, 15)];
+    show(building(shapeFreelyProperties(placementProperties(asset())), outline));
+    expect(screen.getByText('Fixed native footprint: move and rotate only.')).toBeInTheDocument();
+    expect(screen.queryByRole('status', { name: 'Building figures' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Add outline point' })).not.toBeInTheDocument();
+  });
+
+  it('leaves a building the rollout left out exactly as it was', () => {
+    const tower = placeAsset('clay_vancouver_balcony_podium_tower');
+    show(building(placementProperties(tower), rectangleAt(ll(0, 0), tower.width, tower.depth)));
+    expect(screen.queryByLabelText('Building width (m)')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Fit building to plot' })).not.toBeInTheDocument();
   });
 });

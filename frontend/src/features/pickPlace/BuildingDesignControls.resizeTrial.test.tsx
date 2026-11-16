@@ -62,8 +62,8 @@ describe('flag off (the default)', () => {
   });
 });
 
-describe('flag on', () => {
-  beforeEach(() => vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true'));
+describe('both flags on: stretch and free draw', () => {
+  beforeEach(() => { vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true'); vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL', 'true'); });
   const family = () => resizeTrialFamilyForAsset(asset())!;
 
   it('offers width, depth, Fit building to plot and the two shapes for the pilot building only', () => {
@@ -265,5 +265,66 @@ describe('flag on', () => {
       'building_footprint_depth_scale', 'building_footprint_mode_reason']) {
       expect(properties[key]).toBeUndefined();
     }
+  });
+});
+
+describe('stretch only: free draw off, the default once the pilot is on', () => {
+  beforeEach(() => vi.stubEnv('VITE_ENABLE_BUILDING_RESIZE_TRIAL', 'true'));
+
+  it('offers width, depth and Fit building to plot, and no choice of shape', () => {
+    show();
+    expect(screen.getByLabelText('Building width (m)')).toHaveValue(32.36);
+    expect(screen.getByLabelText('Building depth (m)')).toHaveValue(17.98);
+    expect(screen.getByRole('button', { name: 'Fit building to plot' })).toBeEnabled();
+    expect(screen.queryByRole('radiogroup', { name: 'Building shape' })).toBeNull();
+    expect(screen.queryByText(/Shape freely/)).toBeNull();
+    expect(screen.getByText(/This building stretches 22\.65–45\.3 m wide and 12\.59–25\.17 m deep \(70%–140%\), a range it can take without warping/)).toBeInTheDocument();
+  });
+
+  it('refuses a typed size outside the range instead of warping the building', () => {
+    const onSave = show();
+    type('Building width (m)', '52');
+    expect(screen.getByRole('alert')).toHaveTextContent('That size is outside this building’s range, so it is not applied.');
+    expect(screen.getByRole('button', { name: 'Apply building' })).toBeDisabled();
+    apply();
+    expect(onSave).not.toHaveBeenCalled();
+    expect(legoAssemblyApi.plan).not.toHaveBeenCalled();
+    // Back inside the range the size is accepted again.
+    type('Building width (m)', '40');
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(screen.getByRole('button', { name: 'Apply building' })).toBeEnabled();
+  });
+
+  it('stops Fit building to plot at the range on a plot the building cannot fill, and says so first', async () => {
+    // A 90 m wide plot would need 266%; this building stops at 140%.
+    const onSave = show(building(placementProperties(asset()), rectangleAt(centre, 90, 22, 15)));
+    expect(screen.getByText('Your plot is outside that range. Fit building to plot stops at 140% wide and 100% deep.')).toBeInTheDocument();
+    vi.mocked(legoAssemblyApi.plan).mockResolvedValue(stretched(1.4, 1));
+    fireEvent.click(screen.getByRole('button', { name: 'Fit building to plot' }));
+    await waitFor(() => expect(onSave).toHaveBeenCalledTimes(1));
+    const [properties, coordinates] = onSave.mock.calls[0];
+    expect(properties).toMatchObject({ building_footprint_mode: 'exact_model', building_footprint_width_scale: 1.4, building_footprint_depth_scale: 1 });
+    // The plot the student drew is kept; only the building changed.
+    expect(coordinates).toBeUndefined();
+  });
+
+  it('holds each building to its own range: a house takes far less than an apartment block', () => {
+    const house = placeAsset('clay_rammed_earth_infill');
+    show(building(placementProperties(house), rectangleAt(centre, house.width, house.depth, 15)));
+    expect(screen.getByText(/This building stretches 12\.04–14\.71 m wide and 17\.64–21\.56 m deep \(90%–110%\)/)).toBeInTheDocument();
+    expect(screen.queryByRole('radiogroup', { name: 'Building shape' })).toBeNull();
+    // 16 m is 120%: fine for the apartment block, refused for the house.
+    type('Building width (m)', '16');
+    expect(screen.getByRole('alert')).toHaveTextContent('outside this building’s range');
+    expect(screen.getByRole('button', { name: 'Apply building' })).toBeDisabled();
+  });
+
+  it('does not act on a free-draw outline saved while free draw was on', () => {
+    vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL', 'true');
+    const saved = shapeFreelyProperties(placementProperties(asset()));
+    vi.stubEnv('VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL', 'false');
+    show(building(saved, rectangleAt(centre, 50, 18, 15)));
+    expect(screen.queryByLabelText('Building width (m)')).toBeNull();
+    expect(screen.queryByText(/Shape freely/)).toBeNull();
   });
 });

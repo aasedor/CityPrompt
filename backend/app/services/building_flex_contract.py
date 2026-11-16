@@ -183,6 +183,19 @@ class ResizeTrialFamily:
     native_depth_m: float
     native_height_m: float
     native_storeys: int
+    # This building's own stretch range per axis. Never wider than the contract's.
+    minimum_scale: float
+    maximum_scale: float
+    # True when the building names a facade kit, so it may be shaped freely.
+    shape_freely: bool
+
+    def scale_in_band(self, scale: float) -> bool:
+        return (
+            math.isfinite(scale)
+            and self.minimum_scale - _RESIZE_TRIAL_SCALE_TOLERANCE
+            <= scale
+            <= self.maximum_scale + _RESIZE_TRIAL_SCALE_TOLERANCE
+        )
 
 
 @dataclass(frozen=True)
@@ -227,14 +240,6 @@ class ResizeTrialContract:
                 return family
         return None
 
-    def scale_in_band(self, scale: float) -> bool:
-        return (
-            math.isfinite(scale)
-            and self.minimum_scale - _RESIZE_TRIAL_SCALE_TOLERANCE
-            <= scale
-            <= self.maximum_scale + _RESIZE_TRIAL_SCALE_TOLERANCE
-        )
-
 
 @dataclass(frozen=True)
 class ResizeTrialState:
@@ -252,6 +257,14 @@ def building_resize_trial_enabled() -> bool:
     return bool(get_settings().enable_building_resize_trial)
 
 
+def building_shape_freely_trial_enabled() -> bool:
+    """The free-draw half of the pilot. Off unless both server flags are on."""
+
+    from app.core.config import get_settings
+
+    return building_resize_trial_enabled() and bool(get_settings().enable_building_shape_freely_trial)
+
+
 @lru_cache(maxsize=1)
 def _resize_trial_manifest() -> ResizeTrialContract:
     payload = json.loads(RESIZE_TRIAL_MANIFEST.read_text(encoding="utf-8"))
@@ -264,6 +277,14 @@ def _resize_trial_manifest() -> ResizeTrialContract:
     maximum = float(stretch["maximum_scale"])
     if not (RESIZE_TRIAL_SCALE_FLOOR <= minimum <= 1.0 <= maximum <= RESIZE_TRIAL_SCALE_CEILING):
         raise ValueError("The resize trial band is outside the bounded runtime range")
+    # Named ranges. Each building takes one; none may reach past the outer range.
+    bands: dict[str, tuple[float, float]] = {}
+    for name, band in stretch["bands"].items():
+        low, high = float(band["minimum_scale"]), float(band["maximum_scale"])
+        if not (minimum - 1e-9 <= low <= 1.0 <= high <= maximum + 1e-9):
+            raise ValueError(f"The resize trial range is outside the outer range: {name}")
+        bands[str(name)] = (low, high)
+    kits = payload["massing"]["kits"]
     shape = payload["shape_freely"]
     minimum_width = float(shape["minimum_width_m"])
     minimum_depth = float(shape["minimum_depth_m"])
@@ -287,6 +308,8 @@ def _resize_trial_manifest() -> ResizeTrialContract:
             or any(character not in "0123456789abcdef" for character in sha256)
             or any(not math.isfinite(value) or value <= 0 for value in (width, depth, height))
             or storeys < 1
+            or row.get("band") not in bands
+            or (row.get("massing_kit") is not None and row["massing_kit"] not in kits)
         ):
             raise ValueError(f"Invalid resize trial family: {row.get('variant_id')}")
         families.append(
@@ -300,6 +323,9 @@ def _resize_trial_manifest() -> ResizeTrialContract:
                 native_depth_m=depth,
                 native_height_m=height,
                 native_storeys=storeys,
+                minimum_scale=bands[row["band"]][0],
+                maximum_scale=bands[row["band"]][1],
+                shape_freely=row.get("massing_kit") is not None,
             )
         )
     if not families or len({family.asset_id for family in families}) != len(families):
@@ -344,6 +370,12 @@ def resize_trial_state(properties: dict[str, Any] | None) -> ResizeTrialState | 
         raise ValueError("The selected building revision is not part of the resize trial")
     mode = properties.get("building_footprint_mode")
     if mode == RESIZE_TRIAL_SHAPE_FREELY:
+        # With free draw switched off the saved state is ignored, exactly as
+        # the whole programme is while the pilot flag is off.
+        if not building_shape_freely_trial_enabled():
+            return None
+        if not family.shape_freely:
+            raise ValueError("This building has no facade kit and cannot be shaped freely")
         return ResizeTrialState(family, RESIZE_TRIAL_SHAPE_FREELY, 1.0, 1.0)
     if mode != RESIZE_TRIAL_EXACT_MODEL:
         raise ValueError("The building resize mode is missing or invalid")
@@ -356,8 +388,8 @@ def resize_trial_state(properties: dict[str, Any] | None) -> ResizeTrialState | 
         properties["building_footprint_depth_scale"], bool
     ):
         raise ValueError("The building width or depth scale is missing or invalid")
-    if not contract.scale_in_band(width_scale) or not contract.scale_in_band(depth_scale):
-        raise ValueError("The building width or depth scale is outside the trial range")
+    if not family.scale_in_band(width_scale) or not family.scale_in_band(depth_scale):
+        raise ValueError("The building width or depth scale is outside this building's stretch range")
     return ResizeTrialState(family, RESIZE_TRIAL_EXACT_MODEL, width_scale, depth_scale)
 
 
@@ -399,7 +431,7 @@ def resize_trial_outline_problem(ring: list[tuple[float, float]] | None) -> str 
     """
 
     contract = resize_trial_contract()
-    if contract is None:
+    if contract is None or not building_shape_freely_trial_enabled():
         return None
     points = [(float(point[0]), float(point[1])) for point in (ring or [])]
     if len(points) > 3 and math.dist(points[0], points[-1]) < 1e-9:

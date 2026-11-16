@@ -840,14 +840,15 @@ def _resize_trial_plan(
     scale_x = request.target_width_m / assembled.width_m
     scale_y = request.target_depth_m / assembled.depth_m
     tolerance = 1e-6
-    if not all(
-        contract.minimum_scale - tolerance <= scale <= contract.maximum_scale + tolerance
-        for scale in (scale_x, scale_y)
+    # Each building has its own range, set so that it does not visibly warp.
+    pinned = contract.family_for_module(assembled)
+    if pinned is None or not all(
+        pinned.minimum_scale - tolerance <= scale <= pinned.maximum_scale + tolerance for scale in (scale_x, scale_y)
     ):
+        band = f"{pinned.minimum_scale:.0%}–{pinned.maximum_scale:.0%} " if pinned else ""
         raise AssemblyPlanningError(
-            "This size is outside the exact model's "
-            f"{contract.minimum_scale:.0%}–{contract.maximum_scale:.0%} stretch range. "
-            "Use Shape freely for a larger change.",
+            f"This size is outside this building's {band}stretch range. "
+            "Choose a size inside the range, or a different building.",
             requested=_requested_target_metadata(request),
         )
     if request.footprint_local_m is not None:
@@ -925,9 +926,9 @@ def _resize_trial_plan(
                 "vertical_scale": 1.0,
             },
             "scale_band": {
-                "min": contract.minimum_scale,
-                "max": contract.maximum_scale,
-                "max_axis_ratio": round(contract.maximum_scale / contract.minimum_scale, 5),
+                "min": pinned.minimum_scale,
+                "max": pinned.maximum_scale,
+                "max_axis_ratio": round(pinned.maximum_scale / pinned.minimum_scale, 5),
             },
         },
         "footprint_segments": [

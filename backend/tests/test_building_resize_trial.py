@@ -53,7 +53,14 @@ NATIVE_H = 18.989999771118164
 
 @pytest.fixture
 def trial_on(monkeypatch):
+    """The pilot flag on, free draw off: the default once the pilot is switched on."""
     monkeypatch.setattr(contracts, "building_resize_trial_enabled", lambda: True)
+
+
+@pytest.fixture
+def free_draw_on(trial_on, monkeypatch):
+    """Both flags on: the pilot and its free-draw half."""
+    monkeypatch.setattr(contracts, "building_shape_freely_trial_enabled", lambda: True)
 
 
 def library_entries():
@@ -139,11 +146,39 @@ def test_the_backend_contract_mirrors_the_frontend_tuning_file_byte_for_byte():
     assert contracts.RESIZE_TRIAL_MANIFEST.read_bytes() == FRONTEND_CONTRACT.read_bytes()
 
 
-@pytest.mark.parametrize(("index", "candidate"), [(0, CANDIDATE), (1, "final-courtyard-block-clay-v006")])
-def test_the_trial_pins_the_exact_reviewed_library_entry(index, candidate):
+def test_every_listed_building_is_pinned_to_its_reviewed_library_entry():
+    payload = json.loads(LIBRARY.read_text(encoding="utf-8"))
+    entries = {row["candidate"]: row for row in payload["entries"]}
+    manifest = contracts._resize_trial_manifest()
+    raw = json.loads(FRONTEND_CONTRACT.read_text(encoding="utf-8"))
+    assert len(manifest.families) == len(raw["families"]) >= 70
+    for family, row in zip(manifest.families, raw["families"], strict=True):
+        entry = entries[family.candidate]
+        assert (family.asset_id, family.variant_id, family.sha256) == (
+            entry["picker"]["id"],
+            entry["variant_id"],
+            entry["model"]["sha256"],
+        )
+        assert entry["review"]["status"] == "PASS_INDEPENDENT_ARCHITECTURAL_CLAY"
+        # Its own range, taken by name, always holds 100% and never passes the outer range.
+        band = raw["stretch"]["bands"][row["band"]]
+        assert (family.minimum_scale, family.maximum_scale) == (band["minimum_scale"], band["maximum_scale"])
+        assert manifest.minimum_scale <= family.minimum_scale <= 1.0 <= family.maximum_scale <= manifest.maximum_scale
+        assert family.shape_freely is (row["massing_kit"] is not None)
+    # Only the two buildings with a facade kit can ever be shaped freely.
+    assert {family.asset_id for family in manifest.families if family.shape_freely} == {ASSET, "final_courtyard_block"}
+
+
+@pytest.mark.parametrize("candidate", [CANDIDATE, "final-courtyard-block-clay-v006"])
+def test_the_trial_pins_the_exact_reviewed_library_entry(candidate):
     payload = json.loads(LIBRARY.read_text(encoding="utf-8"))
     entry = next(row for row in payload["entries"] if row["candidate"] == candidate)
-    family = contracts._resize_trial_manifest().families[index]
+    family = next(row for row in contracts._resize_trial_manifest().families if row.candidate == candidate)
+    index = next(
+        i
+        for i, row in enumerate(json.loads(FRONTEND_CONTRACT.read_text())["families"])
+        if row["candidate"] == candidate
+    )
     assert (family.asset_id, family.variant_id, family.archetype_id) == (
         entry["picker"]["id"],
         entry["variant_id"],
@@ -163,7 +198,7 @@ def test_the_trial_pins_the_exact_reviewed_library_entry(index, candidate):
     assert raw["stretch"]["vertical_scale"] == 1.0
     assert (raw["stretch"]["minimum_scale"], raw["stretch"]["maximum_scale"]) == (0.7, 1.4)
     assert raw["families"][index]["bytes"] == entry["model"]["bytes"]
-    assert len(contracts._resize_trial_manifest().families) == len(raw["families"]) == 2
+    assert (family.minimum_scale, family.maximum_scale) == (0.7, 1.4)
 
 
 def test_a_band_beyond_the_hard_ceiling_is_refused(monkeypatch, tmp_path):
@@ -258,7 +293,7 @@ def test_unrelated_buildings_never_open_the_trial_manifest(trial_on, monkeypatch
     assert contracts.resize_trial_is_shape_freely({}) is False
 
 
-def test_shape_freely_keeps_the_drawn_polygon_as_its_target(trial_on):
+def test_shape_freely_keeps_the_drawn_polygon_as_its_target(free_draw_on):
     freely = properties(mode="shape_freely")
     assert contracts.trusted_building_footprint_target(freely) is None
     assert contracts.resize_trial_stretch_program_id(freely) is None
@@ -268,9 +303,18 @@ def test_shape_freely_keeps_the_drawn_polygon_as_its_target(trial_on):
     assert uses_placement_plot(properties(width=1.2)) is True
 
 
-def test_a_reshaped_building_claims_no_reviewed_dwelling_programme(trial_on):
-    assert catalogue_housing_programme(properties(width=1.2)) is None
-    assert catalogue_housing_programme(properties(mode="shape_freely")) is None
+def test_a_stretched_building_keeps_its_reviewed_homes_and_a_freely_shaped_one_claims_none(free_draw_on, monkeypatch):
+    # Aspen Walk has a reviewed dwelling programme and only stretches.
+    walk = listed("clay_affordable_aspen_original")
+    native = listed_properties(walk)
+    del native["building_footprint_program_id"]
+    reviewed = catalogue_housing_programme(native)
+    assert reviewed and reviewed["dwellings"] > 0
+    # The same homes behind the same doors, a little wider or narrower.
+    assert catalogue_housing_programme(listed_properties(walk, 1.15, 0.9)) == reviewed
+    # A freely shaped building is new massing and claims nothing reviewed.
+    monkeypatch.setattr(contracts, "resize_trial_is_shape_freely", lambda _properties: True)
+    assert catalogue_housing_programme(native) is None
 
 
 # --- Flag on: planner -------------------------------------------------------
@@ -335,9 +379,14 @@ def test_the_default_is_released_only_through_the_explicit_contract(trial_on):
         if not _fixed_landmark_is_select_and_place(module, resize_trial=contract)
         and _fixed_landmark_is_select_and_place(module)
     }
-    assert released == {family.variant_id for family in contract.families} == {VARIANT, "final-courtyard-block-v1"}
-    others = [module for module in descriptors() if module.source_variant_id not in released]
-    assert len(others) > 20
+    listed = {family.variant_id for family in contract.families}
+    assert {VARIANT, "final-courtyard-block-v1"} <= released <= listed
+    # Buildings the rollout leaves out keep their own rules: towers with storey
+    # programmes, the house pilot, and anything not offered in the app.
+    others = [module for module in descriptors() if module.source_variant_id not in listed]
+    assert {"vancouverism_classic", "sandstone_romanesque_revival", "beltline_brick_modern"} <= {
+        module.source_variant_id for module in others
+    }
     assert all(
         _fixed_landmark_is_select_and_place(module, resize_trial=contract)
         == _fixed_landmark_is_select_and_place(module)
@@ -372,7 +421,8 @@ def test_different_bytes_under_the_same_variant_are_not_released(trial_on):
 
 
 def test_another_clay_building_cannot_borrow_the_programme(trial_on):
-    other = next(module for module in descriptors() if module.source_variant_id == "nordic_timber_mass_timber")
+    # A reviewed model the rollout leaves out.
+    other = next(module for module in descriptors() if module.source_variant_id == "beltline_brick_modern")
     request = AssemblyRequest(
         other.width_m * 1.2,
         other.depth_m * 1.2,
@@ -460,7 +510,7 @@ async def test_a_stretch_without_its_recipe_cannot_slip_through_as_massing(trial
 
 
 @pytest.mark.anyio
-async def test_shape_freely_is_certified_as_explicit_massing_without_a_recipe(trial_on):
+async def test_shape_freely_is_certified_as_explicit_massing_without_a_recipe(free_draw_on):
     entries = library_entries()
     l_shape = [(-25, -15), (25, -15), (25, 0), (0, 0), (0, 15), (-25, 15)]
     placed = zone(properties(mode="shape_freely"), l_shape)
@@ -472,7 +522,7 @@ async def test_shape_freely_is_certified_as_explicit_massing_without_a_recipe(tr
 
 
 @pytest.mark.anyio
-async def test_shape_freely_refuses_a_detailed_recipe_and_an_undersized_outline(trial_on):
+async def test_shape_freely_refuses_a_detailed_recipe_and_an_undersized_outline(free_draw_on):
     entries = library_entries()
     plot = (60.0, 40.0)
     placed = zone(properties(mode="shape_freely"), rectangle(*plot))
@@ -505,11 +555,11 @@ async def test_shape_freely_refuses_a_detailed_recipe_and_an_undersized_outline(
         ([(0, 0), (20, 0)], "at least three"),
     ],
 )
-def test_outline_limits_are_measured_on_the_server(trial_on, ring, message):
+def test_outline_limits_are_measured_on_the_server(free_draw_on, ring, message):
     assert message in contracts.resize_trial_outline_problem(ring)
 
 
-def test_a_sensible_outline_passes_including_a_rotated_one(trial_on):
+def test_a_sensible_outline_passes_including_a_rotated_one(free_draw_on):
     assert contracts.resize_trial_outline_problem(rectangle(9, 12)) is None
     angle = math.radians(37)
     rotated = [
@@ -632,7 +682,7 @@ def courtyard_request(width, depth, plot=(60.0, 50.0)):
     )
 
 
-def test_the_courtyard_block_is_validated_on_its_own_dimensions(trial_on):
+def test_the_courtyard_block_is_validated_on_its_own_dimensions(free_draw_on):
     assert contracts.trusted_building_footprint_target(courtyard_properties()) == pytest.approx(
         (COURTYARD_W, COURTYARD_D)
     )
@@ -641,7 +691,7 @@ def test_the_courtyard_block_is_validated_on_its_own_dimensions(trial_on):
     )
     state = contracts.resize_trial_state(courtyard_properties(width=1.2, depth=0.9))
     assert (state.family.asset_id, state.family.native_storeys) == (COURTYARD_ASSET, 4)
-    with pytest.raises(ValueError, match="outside the trial range"):
+    with pytest.raises(ValueError, match="outside this building's stretch range"):
         contracts.resize_trial_state(courtyard_properties(width=1.41))
     # One building's identity never borrows the other's revision.
     with pytest.raises(ValueError, match="not part of the resize trial"):
@@ -691,3 +741,141 @@ def test_the_courtyard_block_is_refused_outside_the_band_or_its_plot(trial_on):
 def test_the_courtyard_block_target_is_the_stretched_model_not_its_plot(trial_on):
     placed = zone(courtyard_properties(width=1.2, depth=0.9), rectangle(45, 32))
     assert _locked_building_target(placed)[:2] == pytest.approx((COURTYARD_W * 1.2, COURTYARD_D * 0.9))
+
+
+# --- Stretch only: free draw is a second switch, off by default --------------
+
+
+def test_the_free_draw_flag_defaults_off_and_needs_the_pilot_flag(monkeypatch):
+    monkeypatch.delenv("ENABLE_BUILDING_SHAPE_FREELY_TRIAL", raising=False)
+    assert Settings(_env_file=None).enable_building_shape_freely_trial is False
+    monkeypatch.setenv("ENABLE_BUILDING_SHAPE_FREELY_TRIAL", "true")
+    assert Settings(_env_file=None).enable_building_shape_freely_trial is True
+    # On its own it does nothing: the pilot flag is still off.
+    from app.core import config
+
+    monkeypatch.setattr(
+        config,
+        "get_settings",
+        lambda: SimpleNamespace(enable_building_resize_trial=False, enable_building_shape_freely_trial=True),
+    )
+    assert contracts.building_shape_freely_trial_enabled() is False
+    monkeypatch.setattr(
+        config,
+        "get_settings",
+        lambda: SimpleNamespace(enable_building_resize_trial=True, enable_building_shape_freely_trial=True),
+    )
+    assert contracts.building_shape_freely_trial_enabled() is True
+
+
+@pytest.mark.anyio
+async def test_with_free_draw_off_a_saved_outline_is_ignored_like_an_unknown_programme(trial_on):
+    freely = properties(mode="shape_freely")
+    assert contracts.resize_trial_state(freely) is None
+    assert contracts.resize_trial_is_shape_freely(freely) is False
+    assert contracts.trusted_building_footprint_target(freely) is None
+    assert contracts.resize_trial_stretch_program_id(freely) is None
+    assert contracts.resize_trial_outline_problem(rectangle(1, 1)) is None
+    assert uses_placement_plot(freely) is True
+    # Its saved polygon is measured as an ordinary plot again.
+    assert _locked_building_target(zone(freely, rectangle(40, 30)))[:2] == (40.0, 30.0)
+    # Stretching is untouched by the switch.
+    assert contracts.trusted_building_footprint_target(properties(width=1.2, depth=0.9)) == pytest.approx(
+        (NATIVE_W * 1.2, NATIVE_D * 0.9)
+    )
+
+
+def test_a_building_without_a_facade_kit_can_never_be_shaped_freely(free_draw_on):
+    family = next(row for row in contracts.resize_trial_contract().families if not row.shape_freely)
+    declared = properties(
+        mode="shape_freely",
+        pick_place_asset=family.asset_id,
+        development_selected_variant_id=family.variant_id,
+        pick_place_model_revision=family.candidate,
+    )
+    with pytest.raises(ValueError, match="no facade kit"):
+        contracts.resize_trial_state(declared)
+    assert contracts.resize_trial_is_shape_freely(declared) is False
+
+
+# --- Each building has its own range ----------------------------------------
+
+
+def listed(asset_id):
+    return next(row for row in contracts._resize_trial_manifest().families if row.asset_id == asset_id)
+
+
+def listed_properties(family, width=1.0, depth=1.0):
+    return properties(
+        "exact_model",
+        width,
+        depth,
+        pick_place_asset=family.asset_id,
+        development_selected_variant_id=family.variant_id,
+        pick_place_model_revision=family.candidate,
+        floors=family.native_storeys,
+        floor_count=family.native_storeys,
+    )
+
+
+def listed_request(family, width, depth):
+    return AssemblyRequest(
+        family.native_width_m * width,
+        family.native_depth_m * depth,
+        family.native_storeys,
+        archetype_id=family.variant_id,
+        reuse_keys=_building_reuse_keys(listed_properties(family)),
+        footprint_local_m=tuple(rectangle(200.0, 200.0)),
+        model_revision=family.candidate,
+        footprint_program_id=PROGRAM,
+    )
+
+
+@pytest.mark.parametrize(
+    ("asset_id", "low", "high"),
+    [("clay_admin_faculty_brick_bronze_fins", 0.85, 1.2), ("clay_rammed_earth_infill", 0.9, 1.1)],
+)
+def test_a_building_is_held_to_its_own_range_not_the_widest_one(trial_on, asset_id, low, high):
+    family = listed(asset_id)
+    assert (family.minimum_scale, family.maximum_scale) == (low, high)
+    for width, depth in [(low, high), (high, low), (1.0, 1.0)]:
+        assert contracts.trusted_building_footprint_target(listed_properties(family, width, depth)) == pytest.approx(
+            (family.native_width_m * width, family.native_depth_m * depth)
+        )
+        plan = plan_vertical_assembly(descriptors(), listed_request(family, width, depth), allow_forced_fit=False)
+        assert plan["instances"][0]["scale"] == [width, depth, 1.0]
+        assert plan["fit"]["scale_band"] == {"min": low, "max": high, "max_axis_ratio": round(high / low, 5)}
+    # Inside the widest range, outside this building's own: refused on both paths.
+    for width, depth in [(high + 0.02, 1.0), (1.0, low - 0.02), (1.3, 1.0), (0.75, 0.75)]:
+        with pytest.raises(ValueError, match="outside this building's stretch range"):
+            contracts.resize_trial_state(listed_properties(family, width, depth))
+        with pytest.raises(AssemblyPlanningError, match="stretch range"):
+            plan_vertical_assembly(descriptors(), listed_request(family, width, depth), allow_forced_fit=False)
+
+
+def test_a_range_wider_than_the_outer_range_is_refused(monkeypatch, tmp_path):
+    payload = json.loads(FRONTEND_CONTRACT.read_text(encoding="utf-8"))
+    payload["stretch"]["bands"]["regular"]["maximum_scale"] = 1.5
+    widened = tmp_path / "buildingResizeTrial.json"
+    widened.write_text(json.dumps(payload), encoding="utf-8")
+    monkeypatch.setattr(contracts, "RESIZE_TRIAL_MANIFEST", widened)
+    contracts._resize_trial_manifest.cache_clear()
+    try:
+        with pytest.raises(ValueError, match="outside the outer range"):
+            contracts._resize_trial_manifest()
+    finally:
+        contracts._resize_trial_manifest.cache_clear()
+
+
+def test_a_building_naming_no_known_range_is_refused(monkeypatch, tmp_path):
+    payload = json.loads(FRONTEND_CONTRACT.read_text(encoding="utf-8"))
+    payload["families"][3]["band"] = "elastic"
+    broken = tmp_path / "buildingResizeTrial.json"
+    broken.write_text(json.dumps(payload), encoding="utf-8")
+    monkeypatch.setattr(contracts, "RESIZE_TRIAL_MANIFEST", broken)
+    contracts._resize_trial_manifest.cache_clear()
+    try:
+        with pytest.raises(ValueError, match="Invalid resize trial family"):
+            contracts._resize_trial_manifest()
+    finally:
+        contracts._resize_trial_manifest.cache_clear()

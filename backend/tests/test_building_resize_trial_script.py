@@ -46,15 +46,71 @@ def test_the_repository_contract_verifies_offline():
         contracts.RESIZE_TRIAL_SCALE_FLOOR,
         contracts.RESIZE_TRIAL_SCALE_CEILING,
     )
-    assert [row["asset_id"] for row in rows] == ["final_seniors_apartments", "final_courtyard_block"]
-    assert [row["massing_kit"] for row in rows] == ["aspen_terrace", "brick_garden_courtyard"]
-    assert rows[1]["stretch_width_m"] == [21.27, 42.53]
-    assert rows[1]["stretch_depth_m"] == [18.41, 36.82]
-    assert (rows[1]["storeys"], rows[1]["height_scale"]) == (4, 1.0)
-    assert rows[0]["model"] in {"verified", "lfs_pointer"}
-    assert rows[0]["height_scale"] == 1.0
-    assert rows[0]["stretch_width_m"] == [22.65, 45.3]
-    assert rows[0]["stretch_depth_m"] == [12.59, 25.17]
+    by_id = {row["asset_id"]: row for row in rows}
+    assert len(rows) == len(by_id) == len(manifest["families"]) >= 70
+    assert all(row["model"] in {"verified", "lfs_pointer"} and row["height_scale"] == 1.0 for row in rows)
+    # The two piloted buildings keep the widest range and their facade kits.
+    seniors, courtyard = by_id["final_seniors_apartments"], by_id["final_courtyard_block"]
+    assert (seniors["band"], seniors["massing_kit"]) == ("wide", "aspen_terrace")
+    assert (seniors["stretch_width_m"], seniors["stretch_depth_m"]) == ([22.65, 45.3], [12.59, 25.17])
+    assert (courtyard["band"], courtyard["massing_kit"]) == ("wide", "brick_garden_courtyard")
+    assert (courtyard["stretch_width_m"], courtyard["stretch_depth_m"]) == ([21.27, 42.53], [18.41, 36.82])
+    # Every other building takes a narrower range by type and has no free draw.
+    office, house = by_id["clay_admin_faculty_brick_bronze_fins"], by_id["clay_rammed_earth_infill"]
+    assert (office["band"], office["stretch_width_m"], office["massing_kit"]) == ("regular", [29.25, 41.29], None)
+    assert (house["band"], house["stretch_width_m"], house["massing_kit"]) == ("careful", [12.04, 14.71], None)
+    assert {row["band"] for row in rows} == set(manifest["stretch"]["bands"])
+
+
+def test_the_committed_building_list_matches_the_library_and_the_rollout_rules():
+    manifest = json.loads((ROOT / trial.TUNING_FILE).read_text(encoding="utf-8"))
+    library = json.loads((ROOT / trial.CLAY_ROOT / "library.json").read_text(encoding="utf-8"))
+    families, skipped = trial.expected_families(manifest, library)
+    assert families == manifest["families"]
+    assert len(families) + len(skipped) == len(library["entries"])
+    left_out = {row["asset_id"]: row["reason"] for row in skipped}
+    # Buildings with rules of their own are left out, each with its reason.
+    assert left_out == manifest["rollout"]["exclude"]
+    assert "its own storey programme" in left_out["clay_vancouver_balcony_podium_tower"]
+    assert "house resize programme" in left_out["trial_postwar_bungalow"]
+    # Anything nine storeys or taller is held to the careful range whatever its group.
+    tall = [row for row in families if row["native_storeys"] >= 9]
+    assert tall and all(row["band"] == "careful" for row in tall)
+
+
+def test_syncing_rebuilds_the_list_from_the_rules_and_keeps_the_server_copy_identical(tmp_path):
+    copy_contract(tmp_path)
+    before = (tmp_path / trial.TUNING_FILE).read_bytes()
+    trial.sync_families(tmp_path)
+    # Already in sync: nothing changes, byte for byte.
+    assert (tmp_path / trial.TUNING_FILE).read_bytes() == before == (tmp_path / trial.SERVER_COPY).read_bytes()
+
+    def retune(payload):
+        payload["rollout"]["band_by_group"]["civic"] = "regular"
+        payload["rollout"]["exclude"]["autumn_timber"] = "left out for this test"
+
+    path = tmp_path / trial.TUNING_FILE
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    retune(payload)
+    path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="--sync-families"):
+        trial.load_trial(tmp_path, require_mirror=False)
+    families, skipped = trial.sync_families(tmp_path)
+    assert "autumn_timber" not in {row["asset_id"] for row in families}
+    assert {
+        "asset_id": "autumn_timber",
+        "label": "Nordic Roof-Garden Apartments",
+        "reason": "left out for this test",
+    } in skipped
+    civic = [row for row in families if row["asset_id"] == "final_health_centre"]
+    assert civic and civic[0]["band"] == "regular"
+    # Facade kits survive a rebuild, and the result verifies with its mirror.
+    assert {row["asset_id"]: row["massing_kit"] for row in families if row["massing_kit"]} == {
+        "final_seniors_apartments": "aspen_terrace",
+        "final_courtyard_block": "brick_garden_courtyard",
+    }
+    assert (tmp_path / trial.TUNING_FILE).read_bytes() == (tmp_path / trial.SERVER_COPY).read_bytes()
+    trial.load_trial(tmp_path)
 
 
 def test_the_default_run_is_a_dry_run_that_never_reaches_a_database(monkeypatch, capsys):
@@ -101,6 +157,18 @@ def test_a_matching_lfs_pointer_or_the_exact_bytes_verify(tmp_path):
         (lambda p: p["families"].append(dict(p["families"][0])), "more than once"),
         (lambda p: p["families"].clear(), "at least one building"),
         (lambda p: p["families"][1].update(massing_kit="unknown_kit"), "no known facade kit"),
+        (lambda p: p["families"][0].update(band="elastic"), "no known stretch range"),
+        (lambda p: p["families"][0].update(band="wide"), "--sync-families"),
+        (lambda p: p["families"].pop(), "--sync-families"),
+        (lambda p: p["stretch"]["bands"]["regular"].update(maximum_scale=1.5), "stretch ranges are invalid"),
+        (lambda p: p["stretch"]["bands"]["careful"].update(minimum_scale=1.05), "stretch ranges are invalid"),
+        (lambda p: p["stretch"].update(bands={}), "stretch ranges are invalid"),
+        (lambda p: p["rollout"]["exclude"].update(not_a_building="a reason"), "not in the reviewed library"),
+        (lambda p: p["rollout"]["band_by_group"].pop("civic"), "no stretch range for the group"),
+        (lambda p: p["rollout"].update(tall_band="elastic"), "rollout rules are invalid"),
+        (lambda p: p["rollout"]["exclude"].update(autumn_timber=""), "rollout rules are invalid"),
+        (lambda p: p["rollout"]["band_overrides"].update(autumn_timber="careful"), "rollout rules are invalid"),
+        (lambda p: p["rollout"]["band_override_reasons"].pop("showcase_market"), "rollout rules are invalid"),
         (lambda p: p["families"][1].update(sha256="0" * 64), "drifted from the reviewed library"),
         (lambda p: p["massing"].update(window_width_m=4.0), "massing dressing"),
         (lambda p: p["stretch"].update(squeeze_on_plot_resize="yes"), "squeeze_on_plot_resize"),

@@ -1,7 +1,9 @@
 // Building resize pilot · eye-tuning page. A development tool, not part of the app.
 //
 //   npm run dev, then open /resize-pilot-review.html?view=compare
-//   views: compare | stretch | massing | model | panel-exact | panel-stretched | panel-free-auto | panel-free-l
+//   views for every trial building: limits | stretch | model | panel-exact | panel-stretched
+//   views for a building with a facade kit, with VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL=true:
+//     compare | massing | panel-free-auto | panel-free-l
 //   &building=<picker id of a trial building>, default final_seniors_apartments
 //   &model=<URL of that building's GLB> shows the exact model.
 //
@@ -21,7 +23,7 @@ import { placeAsset, placementProperties } from '@/features/pickPlace/catalogue'
 import { rectangleAt } from '@/features/pickPlace/geometry';
 import {
   buildingResizeTrialEnabled, exactModelProperties, resizeTrialFamilyForAsset, resizeTrialMassingDressing,
-  resizeTrialPlotFor, shapeFreelyProperties,
+  resizeTrialOffersShapeFreely, resizeTrialPlotFor, shapeFreelyProperties,
 } from '@/features/pickPlace/buildingResizeTrial';
 import { centreNativeClayClone } from '@/features/legoAssembly/nativeClayPlacement';
 import { keepPropsRigidUnderStretch } from '@/features/legoAssembly/resizeTrialRigidProps';
@@ -36,7 +38,7 @@ import { METERS_PER_DEG_LAT, metersPerDegLon } from '@/components/viewer/mapEngi
 
 declare global { interface Window { __ready?: boolean; __error?: string } }
 const query = new URLSearchParams(location.search);
-const view = query.get('view') ?? 'compare';
+const view = query.get('view') ?? 'limits';
 const modelUrl = query.get('model');
 const asset = placeAsset(query.get('building') ?? 'final_seniors_apartments');
 const family = resizeTrialFamilyForAsset(asset, true)!;
@@ -93,7 +95,9 @@ const REVIEWS: Record<string, Review> = {
     ],
   },
 };
-const review = REVIEWS[asset?.id ?? ''] ?? REVIEWS.final_seniors_apartments;
+/** Only the buildings with a facade kit have a side-by-side review set up. */
+const review: Review | undefined = REVIEWS[asset?.id ?? ''];
+const freeDraw = Boolean(review && resizeTrialOffersShapeFreely(family));
 
 // Pages render several canvases; the page is ready when every one has drawn.
 let pending = 0;
@@ -119,11 +123,17 @@ function Panel({ properties, coordinates }: { properties: SiteZoneProperties; co
 }
 const PANELS: Record<string, () => { properties: SiteZoneProperties; coordinates: number[][] }> = {
   'panel-exact': () => ({ properties: placementProperties(asset), coordinates: rectangleAt(centre, family.plotWidthM, family.plotDepthM, 15) }),
-  'panel-stretched': () => ({ properties: exactModelProperties(placementProperties(asset), family, 1.2, 0.9, asset),
-    coordinates: rectangleAt(centre, resizeTrialPlotFor(family, 1.2, 0.9).widthM, family.plotDepthM, 15) }),
-  'panel-free-auto': () => ({ properties: shapeFreelyProperties(placementProperties(asset), 'stretch_out_of_band'),
-    coordinates: rectangleAt(centre, ...review.handover, 15) }),
-  'panel-free-l': () => ({ properties: shapeFreelyProperties(placementProperties(asset)), coordinates: review.lOutline }),
+  // Stretched to the widest and the shallowest this building's own range allows.
+  'panel-stretched': () => ({ properties: exactModelProperties(placementProperties(asset), family, family.scaleMax, family.scaleMin, asset),
+    coordinates: rectangleAt(centre, resizeTrialPlotFor(family, family.scaleMax, family.scaleMin).widthM, family.plotDepthM, 15) }),
+  // A plot far wider than the range, to show where Fit building to plot stops.
+  'panel-wide-plot': () => ({ properties: placementProperties(asset),
+    coordinates: rectangleAt(centre, family.plotWidthM * 2, family.plotDepthM, 15) }),
+  ...(freeDraw && review ? {
+    'panel-free-auto': () => ({ properties: shapeFreelyProperties(placementProperties(asset), 'stretch_out_of_band'),
+      coordinates: rectangleAt(centre, ...review.handover, 15) }),
+    'panel-free-l': () => ({ properties: shapeFreelyProperties(placementProperties(asset)), coordinates: review.lOutline }),
+  } : {}),
 };
 
 // ------------------------------------------------------------------ 3D stage
@@ -197,7 +207,7 @@ async function addExactModel(scene: THREE.Scene, widthScale: number, depthScale:
   model.position.set(...transform.position); model.scale.set(...transform.scale); model.rotation.y = transform.rotationYRad;
   // 'block' puts the model's main block in front of the camera, where its box
   // centre is off to one side, to compare like with like.
-  if (centreOn === 'block') model.position.x += review.blockOffsetM * widthScale;
+  if (centreOn === 'block') model.position.x += (review?.blockOffsetM ?? 0) * widthScale;
   model.userData.frame = true; shadows(model); scene.add(model);
 }
 
@@ -252,32 +262,47 @@ function Reference({ file }: { file: string }) {
     style={{ width: 560, height: 380, objectFit: 'cover', display: 'block', borderRadius: 8 }} />;
 }
 const NOTE = 'Review page: real model, real placement and massing code, this page’s own lighting. Not the app’s globe.';
-const STRETCHES = [[0.7, 1], [1, 1], [1.4, 1], [1, 0.7], [1, 1.4], [0.7, 1.4]];
-const block = `${review.block[0]} × ${review.block[1]} m`;
+const percentage = (scale: number) => `${Math.round(scale * 100)}%`;
 
 function App() {
   if (!buildingResizeTrialEnabled()) return <p style={{ padding: 20 }}>Start the dev server with VITE_ENABLE_BUILDING_RESIZE_TRIAL=true.</p>;
-  if (PANELS[view]) return <Panel {...PANELS[view]()} />;
   if (!family) return <p style={{ padding: 20 }}>That building is not part of the resize pilot.</p>;
-  if (view === 'compare') return <Sheet columns={3} title={`${family.label} · reference, exact model, Shape freely`} note={NOTE}>
-    <Figure title="Archetype reference" note="front"><Reference file="front.png" /></Figure>
-    <Figure title="Exact model, 100%"><Canvas3D shot={review.front} build={scene => addExactModel(scene, 1, 1)} /></Figure>
-    <Figure title={`Shape freely, same ${block} block`}><Canvas3D shot={review.front} build={scene => { addMassing(scene, rectangle(...review.block)); }} /></Figure>
-    <Figure title="Archetype reference" note="oblique"><Reference file="oblique.png" /></Figure>
-    <Figure title="Exact model, 100%"><Canvas3D shot={review.oblique} build={scene => addExactModel(scene, 1, 1)} /></Figure>
-    <Figure title={`Shape freely, same ${block} block`}><Canvas3D shot={review.oblique} build={scene => { addMassing(scene, rectangle(...review.block)); }} /></Figure>
-  </Sheet>;
-  if (view === 'stretch') return <Sheet title={`${family.label} · exact model stretched in width and depth`}
-    note={`${NOTE} Trees and shrubs keep their real proportions. Green line: the plot each stretch needs. 5 m grid.`}>
-    {STRETCHES.map(([width, depth]) => <Figure key={`${width}-${depth}`} title={`Width ${Math.round(width * 100)}% · Depth ${Math.round(depth * 100)}%`}
-      note={`${(family.nativeWidthM * width).toFixed(1)} × ${(family.nativeDepthM * depth).toFixed(1)} m, height unchanged`}>
-      <Canvas3D grid shot={review.stretch} build={async scene => {
+  if (PANELS[view]) return <Panel {...PANELS[view]()} />;
+  const low = family.scaleMin, high = family.scaleMax;
+  const range = `${family.label} · range “${family.band}”, ${percentage(low)}–${percentage(high)} per axis`;
+  // The two most lopsided stretches the range allows, beside the model as authored.
+  if (view === 'limits') return <Sheet columns={3} title={range} note={`${NOTE} Green line: the plot each stretch needs. 5 m grid.`}>
+    {([[1, 1], [high, low], [low, high]] as [number, number][]).map(([width, depth]) => <Figure key={`${width}-${depth}`}
+      title={width === 1 && depth === 1 ? 'As authored' : `Width ${percentage(width)} · Depth ${percentage(depth)}`}
+      note={`${(family.nativeWidthM * width).toFixed(1)} × ${(family.nativeDepthM * depth).toFixed(1)} m`}>
+      <Canvas3D grid shot={framed(32, 24)} build={async scene => {
         await addExactModel(scene, width, depth, 'model');
         const plot = resizeTrialPlotFor(family, width, depth);
         plotOutline(scene, plot.widthM, plot.depthM);
       }} /></Figure>)}
   </Sheet>;
-  if (view === 'massing') return <Sheet title={`${family.label} · Shape freely on any outline`}
+  if (view === 'stretch') return <Sheet title={`${range} · exact model stretched`}
+    note={`${NOTE} Trees and shrubs keep their real proportions. Green line: the plot each stretch needs. 5 m grid.`}>
+    {[[low, 1], [1, 1], [high, 1], [1, low], [1, high], [low, high]].map(([width, depth]) => <Figure key={`${width}-${depth}`} title={`Width ${percentage(width)} · Depth ${percentage(depth)}`}
+      note={`${(family.nativeWidthM * width).toFixed(1)} × ${(family.nativeDepthM * depth).toFixed(1)} m, height unchanged`}>
+      <Canvas3D grid shot={review?.stretch ?? framed(30, 26)} build={async scene => {
+        await addExactModel(scene, width, depth, 'model');
+        const plot = resizeTrialPlotFor(family, width, depth);
+        plotOutline(scene, plot.widthM, plot.depthM);
+      }} /></Figure>)}
+  </Sheet>;
+  if ((view === 'compare' || view === 'massing') && !(freeDraw && review)) return <p style={{ padding: 20 }}>
+    Free draw is switched off, or this building has no facade kit. Start the dev server with
+    VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL=true to see this view for a building that has one.</p>;
+  if (view === 'compare' && review) return <Sheet columns={3} title={`${family.label} · reference, exact model, Shape freely`} note={NOTE}>
+    <Figure title="Archetype reference" note="front"><Reference file="front.png" /></Figure>
+    <Figure title="Exact model, 100%"><Canvas3D shot={review.front} build={scene => addExactModel(scene, 1, 1)} /></Figure>
+    <Figure title={`Shape freely, same ${review.block[0]} × ${review.block[1]} m block`}><Canvas3D shot={review.front} build={scene => { addMassing(scene, rectangle(...review.block)); }} /></Figure>
+    <Figure title="Archetype reference" note="oblique"><Reference file="oblique.png" /></Figure>
+    <Figure title="Exact model, 100%"><Canvas3D shot={review.oblique} build={scene => addExactModel(scene, 1, 1)} /></Figure>
+    <Figure title={`Shape freely, same ${review.block[0]} × ${review.block[1]} m block`}><Canvas3D shot={review.oblique} build={scene => { addMassing(scene, rectangle(...review.block)); }} /></Figure>
+  </Sheet>;
+  if (view === 'massing' && review) return <Sheet title={`${family.label} · Shape freely on any outline`}
     note={`${NOTE} W = window bay, B = balcony bay, per wall from the front. Bays repeat on fixed modules. 5 m grid.`}>
     {review.outlines.map(([title, ring, shot]) => <MassingFigure key={title} title={title} ring={ring}
       shot={shot.distance ? { ...shot, lookAt: [0, 7, 0] } : shot} />)}
@@ -287,7 +312,7 @@ function App() {
       .map(([title, azimuth, elevation]) => <Figure key={title} title={title}>
         <Canvas3D grid shot={{ azimuth, elevation, distance: 0 }} build={scene => addExactModel(scene, 1, 1, 'model')} /></Figure>)}
   </Sheet>;
-  return <p style={{ padding: 20 }}>Unknown view. Try ?view=compare, stretch, massing, model or panel-exact.</p>;
+  return <p style={{ padding: 20 }}>Unknown view. Try ?view=limits, stretch, model or panel-exact.</p>;
 }
 function MassingFigure({ title, ring, shot }: { title: string; ring: number[][]; shot: Shot }) {
   const caption = useRef<HTMLSpanElement>(null);

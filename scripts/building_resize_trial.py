@@ -12,8 +12,14 @@ the server copy, the pin against the reviewed clay library, and the model
 bytes (or their Git LFS pointer). It opens no network or database connection.
 
     python scripts/building_resize_trial.py
+    python scripts/building_resize_trial.py --sync-families
     python scripts/building_resize_trial.py --write-mirror
     python scripts/building_resize_trial.py --check-database
+
+``--sync-families`` rebuilds the building list in the tuning file from the
+reviewed clay library and the file's own ``rollout`` rules (a stretch range
+per building type, and the buildings left out). It rewrites the tuning file
+and the server copy, and nothing else.
 
 ``--write-mirror`` rewrites the server copy from the tuning file. It touches
 one repository file and nothing else.
@@ -207,6 +213,7 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
     for name, kit in kits.items():
         _check_kit(name, kit)
 
+    bands = _check_bands(stretch, minimum, maximum)
     library = json.loads((root / CLAY_ROOT / "library.json").read_text(encoding="utf-8"))
     entries = {entry["candidate"]: entry for entry in library["entries"]}
     rows: list[dict] = []
@@ -240,8 +247,12 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
         plot_width, plot_depth = family["placement_plot_m"]
         if plot_width < width or plot_depth < depth:
             raise ValueError(f"The placement plot is smaller than the model: {family['candidate']}")
-        if family.get("massing_kit") not in kits:
+        # A building without a kit stretches only; it cannot be shaped freely.
+        if family.get("massing_kit") is not None and family["massing_kit"] not in kits:
             raise ValueError(f"The trial building names no known facade kit: {family['candidate']}")
+        if family.get("band") not in bands:
+            raise ValueError(f"The trial building names no known stretch range: {family['candidate']}")
+        low, high = bands[family["band"]]
         state = model_state(root / CLAY_ROOT / family["path"], family["sha256"], family["bytes"])
         rows.append(
             {
@@ -251,8 +262,9 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
                 "sha256": family["sha256"],
                 "model": state,
                 "native_m": [round(width, 3), round(depth, 3), round(height, 3)],
-                "stretch_width_m": [round(width * minimum, 2), round(width * maximum, 2)],
-                "stretch_depth_m": [round(depth * minimum, 2), round(depth * maximum, 2)],
+                "band": family["band"],
+                "stretch_width_m": [round(width * low, 2), round(width * high, 2)],
+                "stretch_depth_m": [round(depth * low, 2), round(depth * high, 2)],
                 "storeys": family["native_storeys"],
                 "height_scale": 1.0,
                 "massing_kit": family["massing_kit"],
@@ -262,7 +274,127 @@ def load_trial(root: Path = ROOT, *, require_mirror: bool = True) -> tuple[dict,
         raise ValueError("The pilot needs at least one building")
     if len({row["asset_id"] for row in rows}) != len(rows):
         raise ValueError("The pilot lists a building more than once")
+    expected, _ = expected_families(manifest, library)
+    listed = [{key: value for key, value in family.items() if key != "massing_kit"} for family in manifest["families"]]
+    if listed != [{key: value for key, value in family.items() if key != "massing_kit"} for family in expected]:
+        raise ValueError(
+            "The building list differs from the reviewed library and the rollout rules. Run with --sync-families."
+        )
     return manifest, rows
+
+
+def _check_bands(stretch: dict, minimum: float, maximum: float) -> dict[str, tuple[float, float]]:
+    """Named stretch ranges. Each holds 100% and none reaches past the outer range."""
+
+    raw = stretch.get("bands")
+    if not isinstance(raw, dict) or not raw:
+        raise ValueError("The stretch ranges are invalid: none are named")
+    bands: dict[str, tuple[float, float]] = {}
+    for name, band in raw.items():
+        low, high = band.get("minimum_scale"), band.get("maximum_scale")
+        if (
+            any(isinstance(value, bool) or not isinstance(value, (int, float)) for value in (low, high))
+            or not minimum - 1e-9 <= low <= 1.0 <= high <= maximum + 1e-9
+        ):
+            raise ValueError(f"The stretch ranges are invalid: {name}")
+        bands[name] = (float(low), float(high))
+    return bands
+
+
+def expected_families(manifest: dict, library: dict) -> tuple[list[dict], list[dict]]:
+    """The building list the rollout rules give for the reviewed library.
+
+    Returns the families in library order and the buildings left out with the
+    reason for each. A building keeps the facade kit it already names.
+    """
+
+    rollout = manifest.get("rollout")
+    bands = manifest["stretch"].get("bands", {})
+    if (
+        not isinstance(rollout, dict)
+        or not isinstance(rollout.get("band_by_group"), dict)
+        or not isinstance(rollout.get("band_overrides"), dict)
+        or not isinstance(rollout.get("exclude"), dict)
+        or isinstance(rollout.get("tall_from_storeys"), bool)
+        or not isinstance(rollout.get("tall_from_storeys"), int)
+        or rollout["tall_from_storeys"] < 2
+        or any(
+            name not in bands
+            for name in [
+                *rollout["band_by_group"].values(),
+                *rollout["band_overrides"].values(),
+                rollout.get("tall_band"),
+            ]
+        )
+        or any(not isinstance(reason, str) or not reason for reason in rollout["exclude"].values())
+        # Every building moved by name says why, so the list stays reviewable.
+        or set(rollout.get("band_override_reasons") or {}) != set(rollout["band_overrides"])
+    ):
+        raise ValueError("The rollout rules are invalid")
+    known = {entry["picker"]["id"] for entry in library["entries"]}
+    stray = sorted((set(rollout["exclude"]) | set(rollout["band_overrides"])) - known)
+    if stray:
+        raise ValueError(f"The rollout rules name a building that is not in the reviewed library: {stray[0]}")
+    kits = {family["asset_id"]: family.get("massing_kit") for family in manifest.get("families", [])}
+    families: list[dict] = []
+    skipped: list[dict] = []
+    for entry in library["entries"]:
+        picker, model, review = entry["picker"], entry["model"], entry["review"]
+        asset_id, native = picker["id"], model["native_dimensions_m"]
+        reason = rollout["exclude"].get(asset_id)
+        if reason is None and (
+            entry.get("runtime_enabled") is not True
+            or review.get("status") != APPROVED_REVIEW
+            or review.get("unresolved_p0") != 0
+            or review.get("unresolved_p1") != 0
+        ):
+            reason = "no clean independent review"
+        if reason is None and picker.get("reshape_mode") != "fixed_native":
+            reason = "its plot already repeats or reshapes the model"
+        if reason is None and (picker["width"] < native["width"] or picker["depth"] < native["depth"]):
+            reason = "its catalogue plot is smaller than the model"
+        if reason is not None:
+            skipped.append({"asset_id": asset_id, "label": entry["variant_label"], "reason": reason})
+            continue
+        band = rollout["band_overrides"].get(asset_id)
+        if band is None and int(entry["native_floors"]) >= rollout["tall_from_storeys"]:
+            band = rollout["tall_band"]
+        if band is None:
+            band = rollout["band_by_group"].get(picker["group_id"])
+        if band is None:
+            raise ValueError(f"The rollout rules give no stretch range for the group: {picker['group_id']}")
+        families.append(
+            {
+                "asset_id": asset_id,
+                "label": entry["variant_label"],
+                "family": entry["family"],
+                "archetype_id": entry["archetype_id"],
+                "variant_id": entry["variant_id"],
+                "candidate": entry["candidate"],
+                "path": model["path"],
+                "bytes": model["bytes"],
+                "sha256": model["sha256"],
+                "native_dimensions_m": [native["width"], native["depth"], native["height"]],
+                "native_storeys": int(entry["native_floors"]),
+                "placement_plot_m": [picker["width"], picker["depth"]],
+                "band": band,
+                "massing_kit": kits.get(asset_id),
+            }
+        )
+    return families, skipped
+
+
+def sync_families(root: Path = ROOT) -> tuple[list[dict], list[dict]]:
+    """Rewrite the building list from the library and the rollout rules, then the server copy."""
+
+    tuning_path = root / TUNING_FILE
+    manifest = json.loads(tuning_path.read_text(encoding="utf-8"))
+    library = json.loads((root / CLAY_ROOT / "library.json").read_text(encoding="utf-8"))
+    families, skipped = expected_families(manifest, library)
+    manifest["families"] = families
+    tuning_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_mirror(root)
+    return families, skipped
 
 
 def write_mirror(root: Path = ROOT) -> bool:
@@ -348,6 +480,9 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--write-mirror", action="store_true", help="rewrite the server copy from the tuning file")
+    mode.add_argument(
+        "--sync-families", action="store_true", help="rebuild the building list from the reviewed library and rules"
+    )
     mode.add_argument("--check-database", action="store_true", help="read-only readback of the installed row")
     args = parser.parse_args(argv)
     if args.write_mirror:
@@ -358,9 +493,22 @@ def main(argv: list[str] | None = None) -> int:
         report = check_database()
         print(json.dumps(report, indent=2))
         return int(any(row["binding"] != "verified" or row["object"] != "verified" for row in report))
+    if args.sync_families:
+        families, skipped = sync_families()
+        print(f"Building list rebuilt: {len(families)} buildings stretch, {len(skipped)} are left out.")
+        for row in skipped:
+            print(f"  left out  {row['asset_id']}: {row['reason']}")
+        return 0
     manifest, rows = load_trial()
     print(f"Dry run. Verified {manifest['id']} offline; nothing was installed or changed.")
-    print(json.dumps(rows, indent=2))
+    print(f"{len(rows)} buildings. Width and depth stretch independently; height never changes.")
+    for row in rows:
+        kit = f"  free draw: {row['massing_kit']}" if row["massing_kit"] else ""
+        print(
+            f"  {row['asset_id']:<44} {row['band']:<8} "
+            f"width {row['stretch_width_m'][0]:>6.2f}–{row['stretch_width_m'][1]:<6.2f} "
+            f"depth {row['stretch_depth_m'][0]:>6.2f}–{row['stretch_depth_m'][1]:<6.2f} m  model {row['model']}{kit}"
+        )
     return 0
 
 

@@ -368,6 +368,12 @@ class Settings(BaseSettings):
     # programme id is treated like any unknown programme: ignored. Pair it with
     # the frontend's VITE_ENABLE_BUILDING_RESIZE_TRIAL; never switch only one.
     enable_building_resize_trial: bool = False
+    # ENABLE_BUILDING_SHAPE_FREELY_TRIAL. Off by default. The free-draw half of
+    # the pilot, only meaningful while the flag above is on. With it off a
+    # building stretches inside its own range and nothing else; a saved
+    # "shape_freely" state is ignored. Pair it with the frontend's
+    # VITE_ENABLE_BUILDING_SHAPE_FREELY_TRIAL.
+    enable_building_shape_freely_trial: bool = False
 
     @property
     def max_upload_size_bytes(self) -> int:
