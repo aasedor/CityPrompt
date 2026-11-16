@@ -10,7 +10,7 @@ const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|
 // costs 25% instead of 33%, which outweighs its inline decoder above roughly
 // 20 KiB packed. Moving a catalogue here is how headroom is recovered when the
 // catalogue grows, without relaxing the bundle budget or dropping a field.
-const DENSE_TRANSPORT = /\/src\/(?:data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes|streetPathArchetypes|nativeParks|cataloguePlanningHistory|catalogueTeaching|archetypeReferenceAvailability)|features\/parks\/(?:detailCatalogueExtras|recoveredDetails))\.json$/;
+const DENSE_TRANSPORT = /\/src\/(?:data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes|streetPathArchetypes|nativeParks|cataloguePlanningHistory|catalogueTeaching|archetypeReferenceAvailability|nativeBridgeRelease|legoFamilySignatures|nativeBridgePilots|validationCatalogue|classroomExpansion)|features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails)|policyPlans\/data\/localPlanIndex))\.json$/;
 
 // Exact additional registries used by the combined student/catalogue handoff.
 // Keep this allowlist explicit so unrelated JSON retains Vite's normal exports.

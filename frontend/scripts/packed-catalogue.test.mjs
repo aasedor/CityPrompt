@@ -27,7 +27,10 @@ for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['n
 
 for (const [relative, minimumSaving] of [['src/data/streetPathArchetypes.json', 7000], ['src/data/nativeParks.json', 2500],
   ['src/data/cataloguePlanningHistory.json', 1800], ['src/data/catalogueTeaching.json', 900], ['src/data/archetypeReferenceAvailability.json', 500],
-  ['src/features/parks/detailCatalogueExtras.json', 1200], ['src/features/parks/recoveredDetails.json', 1200]]) {
+  ['src/features/parks/detailCatalogueExtras.json', 1200], ['src/features/parks/recoveredDetails.json', 1200],
+  // Moved for the everyday Calgary batch. Each is above the roughly 20 KiB packed size where the inline decoder pays for itself.
+  ['src/data/nativeBridgeRelease.json', 1500], ['src/features/policyPlans/data/localPlanIndex.json', 1100], ['src/data/legoFamilySignatures.json', 850],
+  ['src/data/nativeBridgePilots.json', 750], ['src/data/validationCatalogue.json', 700], ['src/data/classroomExpansion.json', 600]]) {
   test(`${relative}: denser transport pays for the local detail kits without changing a field or the bundle budget`, async () => {
     const path = resolve(relative), source = readFileSync(path, 'utf8');
     const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
