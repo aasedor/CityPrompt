@@ -1,6 +1,6 @@
 {
   "status": "PASS_DELIVERY_CHECKS",
-  "candidate": "plus15-brutalist-concrete-office-clay-v002",
+  "candidate": "plus15-brutalist-concrete-office-clay-v005",
   "checks": {
     "source front": true,
     "source oblique": true,
@@ -78,8 +78,8 @@
     "phone-roof.png": true,
     "phone-construction.png": true
   },
-  "model_sha256": "c9f6889621d77e2de51db76adca67bada368ce1c961537d32adc0fef182999a0",
-  "model_bytes": 2107968,
+  "model_sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
+  "model_bytes": 2373968,
   "delivered_bounds_gltf_m": [
     [
       -22.5,
@@ -88,15 +88,15 @@
     ],
     [
       31.5,
-      28.75,
+      28.25,
       20.25
     ]
   ],
-  "triangles": 36612,
+  "triangles": 41206,
   "script_sha256": {
-    "clay_kit.py": "f7bed18565b2e0ec0eaa4b13909d7c09b1997d42e036b44991e8a05312bae8d9",
-    "build.py": "362d7f148e78ddb9654b60056b6e69ce4593a94b23122b7e274b78baa96b99f4",
-    "cameras.json": "c3e2d3dd4b549e8cea742eeb12e42caaf4cd6350ec03eb8c7e6a78e263c5f837",
+    "clay_kit.py": "6237cadfb42ecbabc4c849a5305416e8a7657d71387ce2c7baa18bc7b1b71dcd",
+    "build.py": "12c71d454dd692e91c86c8915d7b3a87091d0d3e1637718cfc2e2c573bfa5fce",
+    "cameras.json": "3e1504b44d122670b99010539e7643b1d56cff7de88ba9bcf85b7a8d9b23f230",
     "review.html": "8127906c7e78fc6525fae162c9f2c672e392d34f7deba9d0f5398d33e63c47c1",
     "render.cjs": "01ad675b95a71403db475eed3412e1cb2318f605f3a08febde6f5b2f36a6bbf6"
   },

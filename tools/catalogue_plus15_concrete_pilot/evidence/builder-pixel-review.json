@@ -1,6 +1,6 @@
 {
-  "candidate": "plus15-brutalist-concrete-office-clay-v002",
-  "model_sha256": "c9f6889621d77e2de51db76adca67bada368ce1c961537d32adc0fef182999a0",
+  "candidate": "plus15-brutalist-concrete-office-clay-v005",
+  "model_sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
   "independent_approval": false,
@@ -30,24 +30,23 @@
     "renders/west_ground.png"
   ],
   "boards_inspected": [
-    "boards/phone-street.png",
-    "boards/phone-oblique.png"
+    "boards/phone-street.png"
   ],
   "findings": [
     "Five storeys: a ground storey and four ribbon and band pairs on all four sides, as both perspective references show.",
-    "Each band reads as a main face under a projecting cap strip with a shadow line; an earlier sloped-sill profile and an earlier set-back strip were both rejected against enlarged crops of the references.",
+    "Each band reads as a main face under a projecting cap strip with a dark reveal line; the first band carries a lower moulding.",
+    "Ribbons read as continuous dark strips; columns stand 1.7 m back and corner rooms stop sight lines running through the corners.",
+    "The walkway mouth is closed by solid jambs; its section is a flat crown and belly with eased edges and a glazed band close to half its height.",
     "Roof plan matches the reference in footprint ratio, penthouse position, the rear east well, the walkway position and the roof items.",
-    "Ribbon glazing is a recessed bronze frame and glass with floors, ceilings, columns, rooms and desks behind; no pane is a flat card.",
     "The entrance is a pair of glazed doors in the second bay from the east corner with a glazed draught lobby behind; the threshold is 35 mm above grade.",
     "West flank and rear are complete service elevations with real openings; both are inferred and recorded as such.",
-    "Nothing floats: every roof item, the cooling unit and the door landing rest on a surface. Nothing sits below grade."
+    "Nothing floats and nothing sits below grade. Every swept piece faces outward, which a test now checks piece by piece."
   ],
+  "changes_since_v002": "Every finding of the independent review of v002 was acted on; see evidence/independent-review-v002.json. Two faults the builder found itself were also fixed: band faces wound inside out, and a cap triangle wound backwards.",
   "open_notes": [
-    "The street reference shows far more penthouse above the parapet than the roof plan and oblique allow. Recorded as a source conflict; roof plan governs.",
+    "The street reference shows far more penthouse above the parapet than the roof plan and oblique allow, so the model's street skyline is flatter. Recorded as a source conflict; roof plan governs.",
     "The walkway is a 9 m length with a glazed end and no support at the free end; the references run it to a neighbouring building.",
     "Both perspective references place the walkway at the third storey, not the second where a +15 normally sits. Built as drawn.",
-    "Joints 30 mm wide break up into dashes in distant views; a renderer sampling effect, not a gap in the geometry.",
-    "Shadow edges under the soffit are stepped in close views: shadow-map resolution in the review renderer.",
-    "The walkway crown rises 70 mm into the cap strip of the band above it; to be made flush in the next candidate."
+    "Joints 30 mm wide break up into dashes in distant views, and shadow edges under the soffit are stepped in close views. Both come from the review renderer, not the geometry."
   ]
 }

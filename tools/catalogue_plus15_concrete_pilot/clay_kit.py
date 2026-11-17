@@ -53,33 +53,40 @@ def srgb_to_linear(hex_colour):
 
 
 def earclip(points2d):
-    """Triangulate a simple polygon given as (u, v) pairs. Returns index triples, CCW."""
+    """Triangulate a simple polygon given as (u, v) pairs. Returns index triples, all
+    wound anticlockwise. A corner is cut as an ear only when no reflex corner lies in
+    it or on its edge, so the cut never crosses the outline, and a corner on a straight
+    run is dropped without a triangle."""
     count = len(points2d)
     area = sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(points2d, points2d[1:] + points2d[:1]))
     order = list(range(count)) if area > 0 else list(range(count - 1, -1, -1))
+    tiny = 1e-12
 
     def turn(i, j, k):
         a, b, c = points2d[i], points2d[j], points2d[k]
         return (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])
 
-    def inside(p, i, j, k):
-        return turn(i, j, p) > 1e-12 and turn(j, k, p) > 1e-12 and turn(k, i, p) > 1e-12
-
-    out, guard = [], 0
-    while len(order) > 3 and guard < 10000:
-        guard += 1
-        for at in range(len(order)):
-            i, j, k = order[at - 1], order[at], order[(at + 1) % len(order)]
-            if turn(i, j, k) <= 1e-12:
+    out = []
+    while len(order) > 3:
+        size = len(order)
+        reflex = [order[at] for at in range(size) if turn(order[at - 1], order[at], order[(at + 1) % size]) < -tiny]
+        for at in range(size):
+            i, j, k = order[at - 1], order[at], order[(at + 1) % size]
+            bend = turn(i, j, k)
+            if abs(bend) <= tiny:           # on a straight run: nothing to cut
+                del order[at]
+                break
+            if bend < 0:
                 continue
-            if any(inside(p, i, j, k) for p in order if p not in (i, j, k)):
+            corners = (points2d[i], points2d[j], points2d[k])
+            if any(points2d[p] not in corners and turn(i, j, p) >= -tiny and turn(j, k, p) >= -tiny and turn(k, i, p) >= -tiny for p in reflex):
                 continue
             out.append((i, j, k))
             del order[at]
             break
-        else:  # only slivers remain
-            break
-    if len(order) == 3:
+        else:
+            raise ValueError('outline is not a simple polygon')
+    if abs(turn(*order)) > tiny:
         out.append(tuple(order))
     return out
 
@@ -126,11 +133,13 @@ class Clay:
     def _count(self, role):
         self.components[role] = self.components.get(role, 0) + 1
 
-    def _emit(self, role, a, b, c):
+    def _emit(self, role, a, b, c, normals=None):
+        """Store one triangle. `normals` gives a normal per corner for a rounded surface;
+        without it the triangle is flat."""
         normal = cross(sub(b, a), sub(c, a))
         if dot(normal, normal) < 1e-16:
             return
-        self.triangles.setdefault(role, []).append((a, b, c))
+        self.triangles.setdefault(role, []).append((a, b, c) if normals is None else (a, b, c, *normals))
 
     def tri(self, role, a, b, c, facing=None):
         if facing is not None and dot(cross(sub(b, a), sub(c, a)), facing) < 0:
@@ -166,20 +175,23 @@ class Clay:
             self._emit(role, p[i], p[j], p[k])
             self._emit(role, p[i], p[k], p[m])
 
-    def loft(self, role, rings, loop=False, caps=(True, True)):
+    def loft(self, role, rings, loop=False, caps=(True, True), smooth=None):
         """Skin consecutive closed rings of equal length; faces are made to point outward.
 
         `loop` joins the last ring back to the first (a closed band, no caps). Otherwise
-        `caps` says whether to close the first and last ring with planar faces.
+        `caps` says whether to close the first and last ring with planar faces. `smooth`
+        is a crease angle in degrees: where two neighbouring faces of the section meet
+        at less than that, they share a normal, so an arc shades as a curve.
         """
         self._count(role)
         count = len(rings[0])
-        sides = []
+        sides, quads = [], []
         for a, b in list(zip(rings, rings[1:])) + ([(rings[-1], rings[0])] if loop else []):
             for i in range(count):
                 j = (i + 1) % count
                 sides.append((a[i], a[j], b[j]))
                 sides.append((a[i], b[j], b[i]))
+                quads.append((a, b, i, j))
         ends = []
         if not loop:
             for ring, other in ((rings[0], rings[1]), (rings[-1], rings[-2])):
@@ -188,9 +200,30 @@ class Clay:
                 for a, b, c in self._cap(ring):
                     faces.append((a, c, b) if dot(cross(sub(b, a), sub(c, a)), away) < 0 else (a, b, c))
                 ends.append(faces)
-        volume = sum(dot(a, cross(b, c)) for a, b, c in sides + [face for faces in ends for face in faces])
-        for a, b, c in sides:
-            self._emit(role, *((a, c, b) if volume < 0 else (a, b, c)))
+        # Signed volume about the loft's own centre. The caps already face outward, and seen
+        # from the centre they always count as positive, so the sum is positive exactly when
+        # the side faces point outward too. Measured from a distant origin it is not.
+        middle = centroid([p for ring in rings for p in ring])
+        volume = sum(dot(sub(a, middle), cross(sub(b, middle), sub(c, middle)))
+                     for a, b, c in sides + [face for faces in ends for face in faces])
+        flip = -1.0 if volume < 0 else 1.0
+        if smooth is None:
+            for a, b, c in sides:
+                self._emit(role, *((a, c, b) if volume < 0 else (a, b, c)))
+        else:
+            limit = math.cos(math.radians(smooth))
+            flat = [mul(unit(newell([a[i], a[j], b[j], b[i]])), flip) for a, b, i, j in quads]
+            for at, (a, b, i, j) in enumerate(quads):
+                base = at - i                                  # first quad of this ring pair
+                before, after = flat[base + (i - 1) % count], flat[base + j]
+                here = flat[at]
+                ni = unit(add(here, before)) if dot(here, before) > limit else here
+                nj = unit(add(here, after)) if dot(here, after) > limit else here
+                first, second = ((a[i], b[j], a[j]), (ni, nj, nj)), ((a[i], b[i], b[j]), (ni, ni, nj))
+                if volume >= 0:
+                    first, second = ((a[i], a[j], b[j]), (ni, nj, nj)), ((a[i], b[j], b[i]), (ni, nj, ni))
+                for corners, normals in (first, second):
+                    self._emit(role, *corners, normals)
         for faces, wanted in zip(ends, caps):
             if wanted:
                 for face in faces:
@@ -208,7 +241,7 @@ class Clay:
         lo, hi = [math.inf] * 3, [-math.inf] * 3
         for faces in self.triangles.values():
             for face in faces:
-                for p in face:
+                for p in face[:3]:
                     for k in range(3):
                         lo[k] = min(lo[k], p[k])
                         hi[k] = max(hi[k], p[k])
@@ -236,10 +269,11 @@ class Clay:
                 continue
             index, positions, normals, indices = {}, array('f'), array('f'), array('I')
             lo, hi = [math.inf] * 3, [-math.inf] * 3
-            for a, b, c in faces:
+            for face in faces:
+                a, b, c = face[:3]
                 n = unit(cross(sub(b, a), sub(c, a)))
-                normal = (n[0], n[2], -n[1])
-                for p in (a, b, c):
+                for p, n in zip((a, b, c), face[3:] or (n, n, n)):
+                    normal = (n[0], n[2], -n[1])
                     q = (p[0], p[2], -p[1])
                     key = (round(q[0], 5), round(q[1], 5), round(q[2], 5), round(normal[0], 4), round(normal[1], 4), round(normal[2], 4))
                     at = index.get(key)

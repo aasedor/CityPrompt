@@ -1,11 +1,11 @@
 {
-  "candidate": "plus15-brutalist-concrete-office-clay-v002",
+  "candidate": "plus15-brutalist-concrete-office-clay-v005",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/plus15-brutalist-concrete-office/v002 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "c9f6889621d77e2de51db76adca67bada368ce1c961537d32adc0fef182999a0",
-  "model_bytes": 2107968,
+  "external_directory": "artifacts/plus15-brutalist-concrete-office/v005 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
+  "model_bytes": 2373968,
   "delivered_bounds_gltf_m": [
     [
       -22.5,
@@ -14,25 +14,25 @@
     ],
     [
       31.5,
-      28.75,
+      28.25,
       20.25
     ]
   ],
   "native_dimensions_m": {
     "width": 54.0,
     "depth": 40.5,
-    "height": 28.75
+    "height": 28.25
   },
   "storeys": 5,
   "runtime": {
-    "path": "plus15-brutalist-concrete-office-clay-v002.glb",
-    "bytes": 2107968,
-    "sha256": "c9f6889621d77e2de51db76adca67bada368ce1c961537d32adc0fef182999a0",
-    "meshes": 18,
-    "materials": 18,
+    "path": "plus15-brutalist-concrete-office-clay-v005.glb",
+    "bytes": 2373968,
+    "sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
+    "meshes": 19,
+    "materials": 19,
     "textures": 0,
     "images": 0,
-    "triangles": 36612
+    "triangles": 41206
   },
   "entrances": [
     {
@@ -54,5 +54,11 @@
       ],
       "frame": "authoring Z-up, x east, front faces -y, grade z = 0, building body centred on the origin"
     }
-  ]
+  ],
+  "superseded": {
+    "plus15-brutalist-concrete-office-clay-v001": "first full package; replaced when joints were widened and the review lighting gained a fill light",
+    "plus15-brutalist-concrete-office-clay-v002": "independent review: rework required, 2 P1 and 6 P2",
+    "plus15-brutalist-concrete-office-clay-v003": "withdrawn before review: some band faces were wound inside out",
+    "plus15-brutalist-concrete-office-clay-v004": "withdrawn before review: one cap triangle of the first band was wound backwards, which hid the same fault"
+  }
 }
