@@ -14,6 +14,23 @@ import people from '../people/peopleCatalogue.json';
 import inclusivePeople from '../people/inclusivePeopleCatalogue.json';
 
 describe("standalone detail catalogue", () => {
+  it.each([
+    ["calgary-details-v1", 155],
+    ["prairie-foliage-v1", 85],
+  ])("offers every imported %s model with its source thumbnail", (sourceKit, count) => {
+    const models = extras.filter(model => model.sourceKit === sourceKit);
+    expect(models).toHaveLength(count);
+    for (const model of models) {
+      expect(DETAIL_CATALOGUE.find(asset => asset.id === model.id)?.kind).toBe(model.kind);
+      expect(model.thumbnailUrl).toBe(model.url.replace(/\.glb$/, ".webp"));
+      expect(DETAIL_PROP_MODELS.some(asset => asset.id === model.id)).toBe(model.kind === "object");
+    }
+  });
+  it("finds Calgary props and prairie trees through the existing picker search", () => {
+    expect(searchDetails("city ghost pink").map(asset => asset.id)).toContain("detail-yyc-city-ghost-barrier-pink");
+    expect(searchDetails("trembling aspen", "Trees").map(asset => asset.id)).toContain("detail-prairie-trembling-aspen");
+    expect(searchDetails("swedish columnar aspen", "Trees").map(asset => asset.id)).toContain("detail-prairie-swedish-columnar-aspen");
+  });
   it('finds People by the clothing styles shown on their appearance cards', () => {
     expect(searchDetails('summer dress', 'People').map(asset => asset.id)).toContain('people-pilot-creative');
     expect(searchDetails('linen jumpsuit', 'People').map(asset => asset.id)).toContain('people-community-elena');
@@ -31,7 +48,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(165 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(405 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
