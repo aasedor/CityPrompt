@@ -55,7 +55,14 @@
       "frame": "authoring Z-up, x east, front faces -y, grade z = 0, building body centred on the origin"
     }
   ],
-  "independent_review": "pending for this candidate",
+  "independent_review": {
+    "file": "evidence/independent-review-v006.json",
+    "sha256": "6b301282566a59cbe36626951e91afa974d4dfffb7e7c853a9327467bc16ee3b",
+    "decision": "architectural_clay_pass",
+    "unresolved_p0": 0,
+    "unresolved_p1": 0,
+    "unresolved_p2": 7
+  },
   "superseded": {
     "plus15-brutalist-concrete-office-clay-v001": "first full package; replaced when joints were widened and the review lighting gained a fill light",
     "plus15-brutalist-concrete-office-clay-v002": "independent review: rework required, 2 P1 and 6 P2",
@@ -74,5 +81,6 @@
       },
       "source_commit": "237780e33"
     }
-  }
+  },
+  "prework_manifest_note": "prework-manifest.json was corrected after the review (parapet height, the corner blinds, the oblique fit). The model bytes are unchanged."
 }

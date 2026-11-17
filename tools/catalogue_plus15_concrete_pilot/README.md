@@ -14,8 +14,8 @@ Status of candidate **plus15-brutalist-concrete-office-clay-v006**:
 |---|---|
 | Deterministic delivery checks | Pass, 75 checks. `evidence/delivery-verification.json` |
 | Builder pixel review | Pass, with open notes. `evidence/builder-pixel-review.json` |
-| Independent architectural-clay review | v006 is under review, no result yet. v005 passed |
-| Runtime integration | NOT REVIEWED. No part of it has been run |
+| Independent architectural-clay review | **Pass**, zero P0 and zero P1, seven P2 notes. `evidence/independent-review-v006.json`. An AI reviewer with no builder context, not a person |
+| Runtime integration | NOT REVIEWED. No part of it has been run. `integration/runtime-review.md` |
 | Publication or activation | Not authorized |
 
 Earlier candidates: v002 went to independent review and came back **rework
@@ -24,7 +24,8 @@ Every one was acted on. v003 and v004 were withdrawn before review, because the
 tests caught band faces wound inside out and then a cap triangle wound backwards.
 v005 **passed** independent review with zero P0, zero P1 and nine P2 notes
 (`evidence/independent-review-v005.json`); it rebuilds from commit `237780e33`.
-v006 acts on eight of those nine notes.
+v006 acts on eight of those nine notes and **passed** in turn. The reviewer judged it better
+than v005 on balance.
 
 ## What the building is
 
@@ -84,6 +85,24 @@ a 54 m wide site.
 which belong to the site and not the model; surface texture such as exposed
 aggregate and the tie holes in the board-formed concrete.
 
+## Open notes from the passing review
+
+All seven are P2, which does not block a clay pass. A person should accept the
+first two knowingly.
+
+- **Flat skyline.** The street image shows about 60 px of penthouse above the
+  parapet; the model shows about 10. See the source disagreements above.
+- **Walkway stub.** Nine metres, unsupported at the free end.
+- The walkway's glazed band reads about 10 px shorter than the reference from
+  both fitted cameras.
+- The top band is still about 7 px taller than the reference in the street view.
+- The dark line under each cap strip is thinner and paler than the reference on
+  the lower bands.
+- The corner blinds read flatter than the glass beside them, and one sight line
+  still crosses the building through glass beside each core corner.
+- Some ceiling lights overlap the core face by 0.1 m, and thin joints break into
+  dots in distant views.
+
 ## Files
 
 | File | Purpose |
@@ -95,7 +114,8 @@ aggregate and the tie holes in the board-formed concrete.
 | `verify.py` | Delivery checks; writes `delivery-verification.json` |
 | `test_build.py` | 18 tests, including that the generator still produces the recorded bytes, that every swept piece faces outward, and that fittings clear walls and columns |
 | `prework-manifest.json`, `candidate.json` | The measured contract and the candidate's hashes |
-| `evidence/` | Builder review, delivery verification and independent reviews |
+| `evidence/` | Builder review, delivery verification and the three independent reviews |
+| `integration/runtime-review.md` | The runtime review template, filled in honestly: nothing was run |
 
 The GLB, renders and boards are review material and stay outside Git, under the
 ignored `artifacts/` directory. **The GLB is reproducible:** the generator is
@@ -125,8 +145,8 @@ scripts refuse to replace a file: RLASM never overwrites a candidate.
 2. Local install and student trial, as `docs/BUILDING_CATALOGUE_WORKFLOW.md`
    describes. This needs the local database and storage, which the session that
    built the model did not have.
-3. The runtime review from `docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md`, row by
-   row, in the running app.
+3. The runtime review in `integration/runtime-review.md`, row by row, in the
+   running app.
 4. A recorded human approval, then `python -m tools.catalogue_promotion prepare`.
 
 Each of those is a separate decision. Passing one does not grant the next.
