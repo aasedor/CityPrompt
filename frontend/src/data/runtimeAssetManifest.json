@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4201,
+    "explicitReferenceCount": 4205,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5985,
-    "requiredLogicalBytes": 13095820226,
+    "requiredFileCount": 5989,
+    "requiredLogicalBytes": 13097180654,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -26228,6 +26228,36 @@
       "logicalBytes": 4724
     },
     {
+      "url": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 337504,
+      "lfsOid": "7b13271559ce2762d63bcdf5e5201170c6b9f5956e427e7f1dee96874a04fd26"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3480
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/city-ghost-barrier.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 336124,
+      "lfsOid": "d0e1a1020d9e72c629699a65becd1ac24d039b5631035fb3d19496403b97e18d"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/city-ghost-barrier.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3106
+    },
+    {
       "url": "/park-kits/calgary-details-v1/concrete-barrier.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -36386,9 +36416,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 979,
-      "logicalBytes": 526021916,
-      "pathDigest": "c33f5d1b24f0c1cfb59ebe5e2db2ae0577b0fc1d14692792ceb73d64c04c81bd"
+      "fileCount": 983,
+      "logicalBytes": 526702130,
+      "pathDigest": "71ed1246c831b72b992b23889fef46b3a36fb43027bada91875906bd66d2d5db"
     },
     {
       "name": "public-realm-skins",

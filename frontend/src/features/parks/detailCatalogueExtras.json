@@ -10046,5 +10046,57 @@
     "meshes": 1,
     "bytes": 95160,
     "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave-single.webp"
+  },
+  {
+    "id": "detail-yyc-city-ghost-barrier",
+    "label": "City Ghost on a barrier",
+    "category": "Water & landmarks",
+    "description": "Blue ghost sculpture in a cowboy hat, just under 2 m tall, astride a 3 m concrete road barrier. The artwork belongs to its artist.",
+    "dimensions": [
+      3.012,
+      0.683,
+      2.069
+    ],
+    "url": "/park-kits/calgary-details-v1/city-ghost-barrier.glb",
+    "color": "#27a8d2",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:city_ghost_barrier",
+    "sha256": "d0e1a1020d9e72c629699a65becd1ac24d039b5631035fb3d19496403b97e18d",
+    "triangles": 2938,
+    "meshes": 1,
+    "bytes": 336124,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier.webp"
+  },
+  {
+    "id": "detail-yyc-city-ghost-barrier-pink",
+    "label": "City Ghost on a pink barrier",
+    "category": "Water & landmarks",
+    "description": "Blue ghost sculpture in a cowboy hat, just under 2 m tall, astride a 3 m road barrier painted pink. The artwork belongs to its artist.",
+    "dimensions": [
+      3.012,
+      0.683,
+      2.069
+    ],
+    "url": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.glb",
+    "color": "#ee8f8c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:city_ghost_barrier_pink",
+    "sha256": "7b13271559ce2762d63bcdf5e5201170c6b9f5956e427e7f1dee96874a04fd26",
+    "triangles": 2950,
+    "meshes": 1,
+    "bytes": 337504,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.webp"
   }
 ]

@@ -32,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(403 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(405 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -119,7 +119,7 @@ describe("standalone detail catalogue", () => {
   });
   it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
     const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
-    expect(site).toHaveLength(153);
+    expect(site).toHaveLength(155);
     expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(18_000_000);
     for (const model of site) {
       expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
@@ -183,6 +183,14 @@ describe("standalone detail catalogue", () => {
     for (const district of districts) {
       expect(district.dimensions).toEqual(extras.find((m) => m.id === "detail-yyc-concrete-barrier")!.dimensions);
       expect(district.description).toContain("belongs to its business association");
+    }
+    // The ghost sculpture sits with the other public art, on a plain or a pink barrier.
+    const ghosts = searchDetails("ghost", "Water & landmarks");
+    expect(ghosts.map((m) => m.label)).toEqual(["City Ghost on a barrier", "City Ghost on a pink barrier"]);
+    for (const ghost of ghosts) {
+      expect(ghost.dimensions[0]).toBe(extras.find((m) => m.id === "detail-yyc-concrete-barrier")!.dimensions[0]);
+      expect(ghost.dimensions[2]).toBeGreaterThan(2);
+      expect(ghost.description).toContain("belongs to its artist");
     }
     // Planters for the road edge of a patio sit with the other planters and stay under 1.2 m.
     const planters = searchDetails("planter", "Planting").filter((m) => m.id.startsWith("detail-yyc-"));

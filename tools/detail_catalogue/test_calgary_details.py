@@ -41,11 +41,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_fifty_three_unique_items(self):
+    def test_one_hundred_and_fifty_five_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 153)
-        self.assertEqual(len({s['slug'] for s in specs}), 153)
-        self.assertEqual(len({s['label'] for s in specs}), 153)
+        self.assertEqual(len(specs), 155)
+        self.assertEqual(len({s['slug'] for s in specs}), 155)
+        self.assertEqual(len({s['label'] for s in specs}), 155)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -53,7 +53,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 153)
+        self.assertEqual(sum(counts.values()), 155)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -227,6 +227,36 @@ class CalgaryDetailsContract(unittest.TestCase):
                 # and most of the height: little bare ground is left for anyone to write on
                 self.assertGreater(length, .9, district)
                 self.assertGreater(height, .75, district)
+
+    def test_city_ghost_sits_astride_a_barrier_at_just_under_two_metres(self):
+        module = self.module
+        plain = self.by_slug['concrete-barrier']
+        ghost, pink = self.by_slug['city-ghost-barrier'], self.by_slug['city-ghost-barrier-pink']
+        # the same sculpture on two barriers
+        self.assertEqual(ghost['dimensions'], pink['dimensions'])
+        self.assertNotEqual(ghost['sha256'], pink['sha256'])
+        for row in (ghost, pink):
+            # the barrier underneath is the standard 3 m section
+            self.assertEqual(row['dimensions'][0], plain['dimensions'][0])
+            self.assertEqual(row['category'], 'Water & landmarks')
+            self.assertIn('belongs to its artist', row['description'])
+            # the head tops out just under 2 m; the hat adds a little
+            self.assertTrue(2.0 < row['dimensions'][2] < 2.12)
+        self.assertTrue(1.9 < module.GHOST_TOP < 2.0)
+        # the skirt hangs below the top of the barrier on both sides, so the ghost sits astride it
+        self.assertLess(module.GHOST_SKIRT - module.GHOST_DROP, .81 - .25)
+        self.assertGreater(module.GHOST_B, .2)
+        # every cusp between two lobes of the skirt falls on a column of the skin
+        self.assertEqual(module.GHOST_COLUMNS % module.GHOST_LOBES, 0)
+        section = module.ghost_section(module.GHOST_COLUMNS)
+        self.assertEqual(section[0], (0.0, -1.0))
+        for i in range(1, module.GHOST_COLUMNS // 2):
+            self.assertEqual(section[module.GHOST_COLUMNS - i], (-section[i][0], section[i][1]))
+        # each eye lies on the front of the head, clear of its middle and of its edge
+        eye_x, eye_z, eye_rx, eye_rz = module.GHOST_EYE
+        self.assertGreater(eye_x - eye_rx, .02)
+        self.assertLess(eye_x + eye_rx, module.GHOST_A * .7)
+        self.assertLess(eye_z + eye_rz, module.GHOST_TOP)
 
     def test_backend_allowlist_and_category_tiles(self):
         allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))

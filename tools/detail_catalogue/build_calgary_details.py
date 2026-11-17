@@ -2603,6 +2603,199 @@ def district_barrier_seventeenth_ave_single(s):
 
 
 # ---------------------------------------------------------------------------
+# City Ghost: a public sculpture made to sit astride these barriers, modelled
+# from photographs and its concept sheet. A blue ghost just under 2 m tall with
+# two tall eye cups, a small smile, stubby arms and a cowboy hat. The sculpture
+# is its artist's work; see docs/CITY_GHOST_BARRIER_2026-11-17.md.
+#
+# The ghost faces -y. Its body is one skin over rings of a rounded section: a
+# scalloped skirt that hangs either side of the barrier, straight sides and a
+# rounded head. Each eye is a block of that skin rebuilt around an oval, so the
+# cup has a clean edge and is truly set into the head.
+# ---------------------------------------------------------------------------
+GHOST_BLUE, GHOST_CUP, GHOST_UNDER = '#27a8d2', '#1b8db6', '#187a9f'
+GHOST_HAT, GHOST_HAT_BAND = '#b98f52', '#8a683a'
+GHOST_A, GHOST_B = .435, .33              # half width and half depth of the body
+GHOST_SKIRT, GHOST_SHOULDER, GHOST_TOP = .585, 1.44, 1.94
+GHOST_COLUMNS, GHOST_LOBES, GHOST_DROP = 48, 8, .125   # six columns to a lobe, so every cusp falls on one
+GHOST_EYE = (.155, 1.545, .115, .335)     # centre x, centre z, half width and half height of an eye
+
+
+def ghost_scale(z):
+    """Width of the body at height z as a share of its full width: a slight flare toward
+    the skirt, and a rounded head above the shoulder."""
+    if z <= GHOST_SHOULDER:
+        return 1 + .035 * (GHOST_SHOULDER - z) / (GHOST_SHOULDER - GHOST_SKIRT)
+    t = min(1.0, (z - GHOST_SHOULDER) / (GHOST_TOP - GHOST_SHOULDER))
+    return max(0.0, 1 - t ** 3.2) ** (1 / 3.2)
+
+
+def ghost_front(x, z):
+    """y of the front of the body at (x, z)."""
+    scale = ghost_scale(z)
+    return -GHOST_B * scale * max(0.0, 1 - abs(x / (GHOST_A * scale)) ** 2.6) ** (1 / 2.6)
+
+
+def ghost_section(count):
+    """count points round the body's section, evenly spaced along it, from the middle of
+    the front toward +x, in units of the half width and half depth."""
+    fine = 1440
+    points = []
+    for k in range(fine + 1):
+        angle = -math.pi / 2 + math.tau * k / fine
+        c, w = math.cos(angle), math.sin(angle)
+        points.append((math.copysign(abs(c) ** (2 / 2.6), c), math.copysign(abs(w) ** (2 / 2.6), w)))
+    lengths = [0.0]
+    for k in range(fine):
+        lengths.append(lengths[-1] + math.hypot((points[k + 1][0] - points[k][0]) * GHOST_A, (points[k + 1][1] - points[k][1]) * GHOST_B))
+    out, k = [(0.0, -1.0)], 0
+    for i in range(1, count):
+        target = lengths[-1] * i / count
+        while lengths[k + 1] < target:
+            k += 1
+        t = (target - lengths[k]) / (lengths[k + 1] - lengths[k])
+        out.append((points[k][0] + (points[k + 1][0] - points[k][0]) * t, points[k][1] + (points[k + 1][1] - points[k][1]) * t))
+    # the body is the same left and right: mirror the first half exactly
+    for i in range(1, count // 2):
+        out[count - i] = (-out[i][0], out[i][1])
+    return out
+
+
+def ghost_eye(s, grid, columns, rows, side):
+    """Rebuild a block of the skin around one eye: a rim from the block's edge to the oval,
+    then the cup set into the head. columns and rows are the first and last grid lines of
+    the block; side is +1 for the eye at +x."""
+    ex, ez, rx, rz = side * GHOST_EYE[0], GHOST_EYE[1], GHOST_EYE[2], GHOST_EYE[3]
+    count = len(grid[0])
+    (i0, i1), (j0, j1) = columns, rows
+    border = [(j0, i) for i in range(i0, i1)] + [(j, i1) for j in range(j0, j1)] + [(j1, i) for i in range(i1, i0, -1)] + [(j, i0) for j in range(j1, j0, -1)]
+    edge, oval = [], []
+    for j, i in border:
+        x, y, z = grid[j][i % count]
+        reach = math.hypot((x - ex) / rx, (z - ez) / rz)
+        assert reach > 1.04, 'the eye must sit inside its block'
+        edge.append((x, y, z))
+        oval.append((ex + (x - ex) / reach, ez + (z - ez) / reach))
+
+    def ring(share):
+        """The oval shrunk toward its centre and pushed into the head: flush at the rim, deepest in the middle."""
+        out = []
+        for x, z in oval:
+            px, pz = ex + (x - ex) * share, ez + (z - ez) * share
+            out.append((px, ghost_front(px, pz) + .045 * (1 - share * share) ** .55, pz))
+        return out
+
+    rings = [edge, ring(1.0), ring(.72), ring(.4)]
+    total = len(border)
+    for r in range(3):
+        for k in range(total):
+            n = (k + 1) % total
+            s.quad(rings[r][k], rings[r][n], rings[r + 1][n], rings[r + 1][k], GHOST_BLUE if r == 0 else GHOST_CUP)
+    centre = (ex, ghost_front(ex, ez) + .045, ez)
+    for k in range(total):
+        s.tri(rings[3][k], rings[3][(k + 1) % total], centre, GHOST_CUP)
+
+
+def ghost_blob(s, radii, taper, rings=7, sides=10):
+    """An egg: an ellipsoid whose rings narrow toward the top by the taper."""
+    loops = []
+    for r in range(1, rings):
+        latitude = -math.pi / 2 + math.pi * r / rings
+        shrink = math.cos(latitude) * (1 - taper * (math.sin(latitude) + 1) / 2)
+        loops.append([(radii[0] * shrink * math.cos(math.tau * k / sides), radii[1] * shrink * math.sin(math.tau * k / sides), radii[2] * math.sin(latitude)) for k in range(sides)])
+    s.loft(loops, GHOST_BLUE, cap_start=False, cap_end=False)
+    for k in range(sides):
+        s.tri((0, 0, -radii[2]), loops[0][(k + 1) % sides], loops[0][k], GHOST_BLUE)
+        s.tri((0, 0, radii[2] * (1 - taper * .2)), loops[-1][k], loops[-1][(k + 1) % sides], GHOST_BLUE)
+
+
+def ghost_hat(s):
+    """Cowboy hat: a creased crown with a band, and a brim that curls up at both sides."""
+    sides = 20
+
+    def oval(rx, ry, z, lift=0.0):
+        return [(rx * math.cos(math.tau * k / sides), ry * math.sin(math.tau * k / sides), z + lift * math.cos(math.tau * k / sides) ** 2) for k in range(sides)]
+    s.loft([oval(.118, .098, 0), oval(.19, .14, .004, .014), oval(.255, .178, .0, .05), oval(.295, .2, .012, .085)], GHOST_HAT, cap_start=False, cap_end=False)
+    s.loft([oval(.12, .1, .0), oval(.121, .101, .03)], GHOST_HAT_BAND, cap_start=False, cap_end=False)
+    crown = [oval(.118, .098, .03), oval(.112, .092, .085), oval(.098, .078, .118), oval(.06, .045, .104)]
+    s.loft(crown, GHOST_HAT, cap_start=False, cap_end=False)
+    for k in range(sides):
+        s.tri((0, 0, .094), crown[-1][k], crown[-1][(k + 1) % sides], GHOST_HAT)
+
+
+def city_ghost(s):
+    """The ghost astride a barrier that runs along x, centred on it."""
+    count = GHOST_COLUMNS
+    section = ghost_section(count)
+    # rings: few on the straight sides below the eyes, closer where the eyes and the head need them
+    heights = [GHOST_SKIRT + (1.15 - GHOST_SKIRT) * k / 4 for k in range(4)] + [1.15 + (GHOST_SHOULDER - 1.15) * k / 5 for k in range(6)]
+    heights.append(GHOST_SHOULDER + .08)
+    for k in range(1, 10):
+        heights.append(GHOST_SHOULDER + (GHOST_TOP - GHOST_SHOULDER) * math.sin(math.pi / 2 * k / 10) ** (2 / 3.2))
+    grid = [[(x * GHOST_A * ghost_scale(z), y * GHOST_B * ghost_scale(z), z) for x, y in section] for z in heights]
+
+    # the two eye blocks, each a run of whole grid cells from the middle of the face outward
+    eye_x, eye_z, eye_rx, eye_rz = GHOST_EYE
+    reach = next(i for i in range(1, count // 4) if section[i][0] * GHOST_A >= eye_x + eye_rx + .025)
+    low = max(j for j, z in enumerate(heights) if z <= eye_z - eye_rz - .035)
+    high = min(j for j, z in enumerate(heights) if z >= eye_z + eye_rz + .018)
+    for j in range(len(heights) - 1):
+        for i in range(count):
+            if low <= j < high and (i < reach or i >= count - reach):
+                continue
+            n = (i + 1) % count
+            s.quad(grid[j][i], grid[j][n], grid[j + 1][n], grid[j + 1][i], GHOST_BLUE)
+    ghost_eye(s, grid, (0, reach), (low, high), 1)
+    ghost_eye(s, grid, (count - reach, count), (low, high), -1)
+    for i in range(count):
+        s.tri(grid[-1][i], grid[-1][(i + 1) % count], (0, 0, GHOST_TOP), GHOST_BLUE)
+
+    # the skirt: eight rounded lobes that hang below the body, tucked under at their tips
+    def lobes(share, tuck):
+        ring = []
+        for i, (x, y) in enumerate(section):
+            across = 2 * ((i / count * GHOST_LOBES + .5) % 1) - 1
+            drop = GHOST_DROP * math.sqrt(max(0.0, 1 - across * across))
+            scale = ghost_scale(GHOST_SKIRT) * (1 - tuck * drop / GHOST_DROP)
+            ring.append((x * GHOST_A * scale, y * GHOST_B * scale, GHOST_SKIRT - drop * share))
+        return ring
+    hem = [grid[0], lobes(.7, .0), lobes(1.0, .16)]
+    s.loft(hem, GHOST_BLUE, cap_start=False, cap_end=False)
+    for i in range(count):
+        s.tri(hem[2][(i + 1) % count], hem[2][i], (0, 0, GHOST_SKIRT - .03), GHOST_UNDER)
+
+    # a small smile, painted a shade darker just proud of the skin
+    steps, half = 10, .12
+
+    def lip(k, lower):
+        x = -half + 2 * half * k / steps
+        z = 1.116 + .016 * (x / half) ** 2 - (.034 * (1 - (x / half) ** 2) if lower else 0.0)
+        return (x, ghost_front(x, z) - .004, z)
+    for k in range(steps):
+        s.quad(lip(k, True), lip(k + 1, True), lip(k + 1, False), lip(k, False), GHOST_CUP)
+
+    for side in (-1, 1):
+        with s.at(side * (GHOST_A * ghost_scale(1.13) - .012), -.02, 1.13, pitch=-side * .2):
+            ghost_blob(s, (.088, .115, .185), .45)
+    with s.at(.015, .01, GHOST_TOP + .006, yaw=.2, pitch=.045, roll=-.03):
+        ghost_hat(s)
+
+
+GHOST_PINK = '#ee8f8c'
+
+
+def city_ghost_barrier(s):
+    concrete_barrier(s)
+    city_ghost(s)
+
+
+def city_ghost_barrier_pink(s):
+    mural_barrier(s, GHOST_PINK)
+    paint(s, [(0, 0), (MURAL_LENGTH, 0), (MURAL_LENGTH, MURAL_HEIGHT), (0, MURAL_HEIGHT)], GHOST_PINK)
+    city_ghost(s)
+
+
+# ---------------------------------------------------------------------------
 # Seasonal patios: boardwalk sections, on-street patios, parklets and a sidewalk
 # patio. Dimensions follow the City of Calgary's published "Guidelines for
 # Seasonal Patios located on public property": a platform level with the
@@ -4048,6 +4241,8 @@ SPECS = [
     spec('district-barrier-fourth-street-green', 'District barrier · Fourth Street · green', 'Traffic & safety', 'Teal 3 m road barrier with the Fourth Street name between two 4s, in white and green. The logo belongs to its business association.', district_barrier_fourth_street_green, 2964, '#23997c'),
     spec('district-barrier-seventeenth-ave', 'District barrier · 17th Ave', 'Traffic & safety', 'Red 3 m road barrier with the 17th Ave logo four times in white. The logo belongs to its business association.', district_barrier_seventeenth_ave, 2965, '#e21a2d'),
     spec('district-barrier-seventeenth-ave-single', 'District barrier · 17th Ave · single logo', 'Traffic & safety', 'Red 3 m road barrier with one large 17th Ave logo in white at its centre. The logo belongs to its business association.', district_barrier_seventeenth_ave_single, 2966, '#e21a2d'),
+    spec('city-ghost-barrier', 'City Ghost on a barrier', 'Water & landmarks', 'Blue ghost sculpture in a cowboy hat, just under 2 m tall, astride a 3 m concrete road barrier. The artwork belongs to its artist.', city_ghost_barrier, 2971, '#27a8d2'),
+    spec('city-ghost-barrier-pink', 'City Ghost on a pink barrier', 'Water & landmarks', 'Blue ghost sculpture in a cowboy hat, just under 2 m tall, astride a 3 m road barrier painted pink. The artwork belongs to its artist.', city_ghost_barrier_pink, 2972, '#ee8f8c'),
 ]
 
 
