@@ -1,0 +1,28 @@
+{
+  "frame": "authoring: x east, y north (the street front faces -y), z up, metres",
+  "views": {
+    "front": {"pos": [3.75, -170, 13.5], "target": [3.75, 0, 13.5], "fov": 20},
+    "front_corner": {"pos": [50, -66, 1.7], "target": [6, -6, 11.5], "fov": 40},
+    "aerial": {"pos": [64, -68, 60], "target": [3, -2, 9], "fov": 33},
+    "top": {"pos": [3.75, 0, 300], "target": [3.75, 0, 0], "up": [0, 1, 0], "ortho": 34},
+    "left_side": {"pos": [-170, 0, 13.5], "target": [0, 0, 13.5], "fov": 20, "sun": [-0.6, 0.35, 0.6]},
+    "right_side": {"pos": [180, 0, 13.5], "target": [0, 0, 13.5], "fov": 20, "sun": [0.6, -0.45, 0.6]},
+    "rear": {"pos": [3.75, 170, 13.5], "target": [3.75, 0, 13.5], "fov": 20, "sun": [0.45, 0.6, 0.6]},
+    "rear_side": {"pos": [-62, 66, 34], "target": [0, 0, 10], "fov": 34, "sun": [-0.6, 0.45, 0.6]},
+    "facade_close": {"pos": [36, -42, 8], "target": [17, -20.25, 12], "fov": 32},
+    "architecture_close": {"pos": [8, -38, 2.6], "target": [9, -20, 3.4], "fov": 36},
+    "glass_close": {"pos": [3.5, -27.5, 10.3], "target": [1, -20.25, 10.5], "fov": 36},
+    "roof_contact": {"pos": [34, -34, 46], "target": [3, 2, 22], "fov": 36},
+    "bridge_contact": {"pos": [46, -32, 3.2], "target": [26, -9, 10.5], "fov": 36},
+    "entrance_contact": {"pos": [11.8, -25.5, 1.6], "target": [9, -19.3, 1.5], "fov": 46},
+    "rear_ground": {"pos": [34, 46, 1.7], "target": [4, 20, 6], "fov": 44, "sun": [0.45, 0.6, 0.6]},
+    "west_ground": {"pos": [-48, -30, 1.7], "target": [-22, 0, 7], "fov": 44, "sun": [-0.6, -0.35, 0.6]},
+    "match_front": {"pos": [41.78, -53.21, 2.38], "target": [-7.35, 9.94, 2.38], "fov": 40.38, "w": 1024, "h": 768, "shift": 0.5638},
+    "match_oblique": {"pos": [47.91, -64.95, 44.07], "target": [5.13, -7.63, 8.25], "fov": 38.95, "w": 1195, "h": 896},
+    "match_top": {"pos": [-0.5, -3.05, 300], "target": [-0.5, -3.05, 0], "up": [0, 1, 0], "ortho": 40.1, "w": 1195, "h": 896},
+    "bridge_junction": {"pos": [31, 6, 5.5], "target": [23.5, -8, 10.6], "fov": 40, "sun": [0.5, 0.55, 0.6]},
+    "bridge_end": {"pos": [47, -11.5, 11.3], "target": [31, -9, 10.8], "fov": 28, "sun": [0.6, -0.5, 0.55]},
+    "corner_close": {"pos": [31, -29, 15.2], "target": [22.3, -20.1, 15.9], "fov": 30},
+    "service_close": {"pos": [3.5, 31, 2.4], "target": [8.5, 20, 2.4], "fov": 44, "sun": [0.25, 0.75, 0.55]}
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "candidate": "plus15-brutalist-concrete-office-clay-v002",
+  "title": "Brutalist Concrete Office Slab",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "calgary_15_connected_tower",
+  "variant_id": "brutalist_concrete_slab",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "sources": [
+    {
+      "role": "front",
+      "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
+      "bytes": 1098329,
+      "sha256": "ea6a28363104886398ba75294af97682bb0666485c73a48a2a0c7f363bfbb8ff"
+    },
+    {
+      "role": "oblique",
+      "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0_angle_60.jpg",
+      "bytes": 874856,
+      "sha256": "49ec51c36c9f789d0883a159665f77905ee17842587ce78aa425c4a0105395c5"
+    },
+    {
+      "role": "top",
+      "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0_angle_90.jpg",
+      "bytes": 844896,
+      "sha256": "695c6c3d93783def1343596b6cc9a537fd741db4e3674a4fcc3c107b6e4cf7a8"
+    }
+  ],
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 45.0,
+      "depth": 40.5,
+      "parapet": 21.9,
+      "penthouse_top": 28.1,
+      "walkway_projection": 9.0
+    },
+    "storeys": 5,
+    "storey_policy": "fixed_authored_assembly",
+    "source_measurements": {
+      "front": [
+        "A two-point street view from the south-east corner with upright verticals. A fitted camera (2.4 m eye height, 40 degree lens, vertical shift) puts six measured corners within 10 px on the 1024 px image.",
+        "Down the south-east corner edge: 230 px of clear ground storey, four pairs of 108 px ribbon and 107 px band, and a 115 px top band. At the variant's 3.9 m storey this gives a 4.1 m clear ground storey, 1.95 m ribbons and bands, and a parapet at 21.9 m.",
+        "Ground storey plus four office storeys: five. The catalogue text says six; the selected-variant images govern.",
+        "Five structural bays across the street front, marked by band joints and granite piers about 1.3 m wide, with six window modules to a bay.",
+        "Each band carries a cap strip about 0.5 m tall that projects beyond the main face and throws a shadow line. The glass sits about 0.5 m behind the cap.",
+        "One pair of glazed entrance doors in the second bay from the east corner, with a transom at door-head height. Timber panelling shows through the corner bay.",
+        "East flank at street level: the glazing returns a short way, then blank granite between piers, with a service door at the far end.",
+        "The walkway leaves the east flank at the third storey, its glazing level with that storey's ribbon, under a rounded concrete crown and over a rounded belly."
+      ],
+      "oblique": [
+        "A fitted camera (44 m up to the south-east, 39 degree lens) puts seven measured corners within 16 px on the 1195 px image.",
+        "Four ribbon storeys over the ground storey on both visible sides, with band joints at the structural lines.",
+        "Penthouse about 7.3 m tall in board-formed panels roughly 2.25 m wide with one horizontal joint; a door and a louvre on its east face; an open well in its rear east corner.",
+        "Flat gravel roof inside a concrete parapet with a bronze flashing on its inner edge."
+      ],
+      "top": [
+        "Footprint 670 px by 615 px, a ratio of 1.09. Built 45.0 m by 40.5 m, a ratio of 1.11.",
+        "Penthouse 337 px by 343 px, centred, about 9 m from every parapet. Built 22.5 m square, centred.",
+        "Open well about 8 m square in the penthouse's rear east corner holding one square unit.",
+        "Walkway 4.4 m wide on the east flank, centred about 29 percent of the depth back from the street corner. Built 4.5 m wide on the window module, centred 11.25 m back.",
+        "Roof items: one hatch south of the penthouse, one vent to its east, one unit and two conduit runs on its roof."
+      ]
+    },
+    "source_conflicts": [
+      "Walkway level. The archetype text places +15 walkways at the second storey; both perspective sources show this one at the third. Built as drawn, floor 9.1 m above grade.",
+      "Penthouse from the street. The street view shows about 6 m of penthouse above the parapet line. The roof plan and the oblique, which agree with each other, cannot produce that from the fitted street camera; about 1 m shows. Roof plan and oblique govern.",
+      "Storey count. The catalogue description says six storeys; both perspective sources show five."
+    ],
+    "hidden_assumptions": [
+      "The west flank and the rear are not shown. The west flank mirrors the east at street level, with plant louvres and an exit door. The rear is a service side with high windows, a loading door and a staff exit. The ribbon bands repeat on all four sides above.",
+      "Interior layout, floor levels behind the bands and the structural grid are inferred from the facade rhythm.",
+      "The walkway runs on to a neighbouring building in the sources. It is delivered as a 9 m length with a glazed end, no neighbour and no support at the free end.",
+      "The penthouse's rear and west faces are plain board-formed panels."
+    ]
+  },
+  "roof_contract": {
+    "form": "flat ballasted roof inside a 1.1 m parapet",
+    "penthouse": "centred concrete plant room with an open well",
+    "weathering": "closed deck, parapet and penthouse walls; no floating plant"
+  },
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false,
+    "roles": {
+      "foundation": "#5f5a52",
+      "granite": "#948e85",
+      "concrete": "#c8b89e",
+      "joint": "#75695a",
+      "boardconcrete": "#b8b1a2",
+      "bridge": "#b5afa3",
+      "frame": "#5d4833",
+      "coping": "#5c4a38",
+      "gravel": "#8d867a",
+      "membrane": "#a8a297",
+      "hardware": "#565859",
+      "floor": "#6f6a61",
+      "interior": "#a8a092",
+      "light": "#f6f0dd",
+      "timber": "#a8662f",
+      "furniture": "#77736c",
+      "shopglass": "#b9c4c2",
+      "glass": "#2e231a"
+    }
+  },
+  "identity_contract": [
+    "five storeys",
+    "four ribbon and band pairs on every side",
+    "projecting cap strip on every band",
+    "granite piers at 9 m",
+    "one street entrance in the second bay from the east corner",
+    "third-storey walkway on the east flank",
+    "centred penthouse with a rear east well"
+  ],
+  "programme_contract": {
+    "ground": "three shop units and an office lobby to the street; service rooms to the flank and rear",
+    "upper": "open office around a core of enclosed rooms, four storeys",
+    "public_entrances": 1
+  },
+  "contact_contract": {
+    "base_datum_m": 0.0,
+    "lowest_geometry_m": 0.0,
+    "threshold_rise_m": 0.035,
+    "ground": "a 20 mm apron inside the footprint only; no display slab, street or planting in the model"
+  },
+  "camera_roster": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "roof_contact",
+    "bridge_contact",
+    "entrance_contact",
+    "rear_ground",
+    "west_ground",
+    "bridge_junction",
+    "bridge_end",
+    "corner_close",
+    "service_close",
+    "match_front",
+    "match_oblique",
+    "match_top"
+  ],
+  "mandatory_review_views": [
+    "front.png",
+    "front_corner.png",
+    "aerial.png",
+    "left_side.png",
+    "right_side.png",
+    "rear.png",
+    "rear_side.png",
+    "facade_close.png",
+    "architecture_close.png",
+    "glass_close.png",
+    "roof_contact.png",
+    "bridge_contact.png",
+    "entrance_contact.png"
+  ]
+}

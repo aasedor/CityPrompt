@@ -1,0 +1,58 @@
+{
+  "candidate": "plus15-brutalist-concrete-office-clay-v002",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local pilot only",
+  "canonical_promotion_approved": false,
+  "external_directory": "artifacts/plus15-brutalist-concrete-office/v002 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "c9f6889621d77e2de51db76adca67bada368ce1c961537d32adc0fef182999a0",
+  "model_bytes": 2107968,
+  "delivered_bounds_gltf_m": [
+    [
+      -22.5,
+      0.0,
+      -20.25
+    ],
+    [
+      31.5,
+      28.75,
+      20.25
+    ]
+  ],
+  "native_dimensions_m": {
+    "width": 54.0,
+    "depth": 40.5,
+    "height": 28.75
+  },
+  "storeys": 5,
+  "runtime": {
+    "path": "plus15-brutalist-concrete-office-clay-v002.glb",
+    "bytes": 2107968,
+    "sha256": "c9f6889621d77e2de51db76adca67bada368ce1c961537d32adc0fef182999a0",
+    "meshes": 18,
+    "materials": 18,
+    "textures": 0,
+    "images": 0,
+    "triangles": 36612
+  },
+  "entrances": [
+    {
+      "kind": "public",
+      "storey": 1,
+      "facade": "front",
+      "centre_xy_m": [
+        9.0,
+        -19.29
+      ],
+      "clear_width_m": 2.327,
+      "door_height_m": 2.43,
+      "threshold_top_m": 0.035,
+      "outer_step_foot_m": 0.0,
+      "rise_m": 0.035,
+      "route_direction": [
+        0,
+        -1
+      ],
+      "frame": "authoring Z-up, x east, front faces -y, grade z = 0, building body centred on the origin"
+    }
+  ]
+}
