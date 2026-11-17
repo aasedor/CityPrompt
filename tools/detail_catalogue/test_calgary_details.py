@@ -90,9 +90,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         total = 0
         for slug, (_item, row, payload) in self.built.items():
             with self.subTest(slug=slug):
-                self.assertLess(row['triangles'], 3500)
+                # one item is allowed more: the pink ghost barrier is a sculpture plus eighteen line drawings
+                triangles, size = {'city-ghost-barrier-pink': (4_800, 540_000)}.get(slug, (3_500, 400_000))
+                self.assertLess(row['triangles'], triangles)
                 self.assertLessEqual(row['meshes'], 2)
-                self.assertLess(row['bytes'], 400_000)
+                self.assertLess(row['bytes'], size)
                 gltf = parse_glb(payload)
                 self.assertEqual(gltf['asset']['generator'], self.module.GENERATOR)
                 self.assertEqual(gltf['materials'][0]['name'], 'kit_linear_vertex_colour')
@@ -265,6 +267,16 @@ class CalgaryDetailsContract(unittest.TestCase):
             self.assertLess(math.hypot((toward_nose + dx) / eye_rx, (up + dz) / eye_rz), .9)
         for row in (ghost, pink):
             self.assertIn('white eyes', row['description'])
+        # the pink barrier carries eighteen line characters: the same nine either side of the ghost
+        for side in (0, 1):
+            self.assertEqual(sorted(name for row in module.DOODLE_ROWS for name in row[side]), sorted(module.DOODLES))
+        # they stand clear of the ghost, one row sits on the lower slope, and the plain barrier has none
+        self.assertLess(max(module.DOODLE_COLUMNS[0]) + module.DOODLE_SIZE * .6, module.MURAL_LENGTH / 2 - module.GHOST_A)
+        self.assertGreater(min(module.DOODLE_COLUMNS[1]) - module.DOODLE_SIZE * .6, module.MURAL_LENGTH / 2 + module.GHOST_A)
+        self.assertEqual([height > module.MURAL_LOWER for height in module.DOODLE_HEIGHTS], [True, True, False])
+        self.assertGreater(pink['triangles'], ghost['triangles'] + 1000)
+        self.assertIn('white doodles', pink['description'])
+        self.assertNotIn('doodles', ghost['description'])
 
     def test_backend_allowlist_and_category_tiles(self):
         allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))

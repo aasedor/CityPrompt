@@ -684,7 +684,7 @@
     "explicitReferenceCount": 4205,
     "dynamicCollectionCount": 7,
     "requiredFileCount": 5989,
-    "requiredLogicalBytes": 13097305346,
+    "requiredLogicalBytes": 13097567210,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -26232,15 +26232,15 @@
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 368056,
-      "lfsOid": "6ff62449a1517bf02de2f6cd7ae37f53453ac05cab7f00a151810440f7ba3bb1"
+      "logicalBytes": 497564,
+      "lfsOid": "fea8513bb3082efef98a8c33deabebde0c94b17174647876d7fe23cfcccd661d"
     },
     {
       "url": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.webp",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 4100
+      "logicalBytes": 5524
     },
     {
       "url": "/park-kits/calgary-details-v1/city-ghost-barrier.glb",
@@ -36417,8 +36417,8 @@
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
       "fileCount": 983,
-      "logicalBytes": 526764476,
-      "pathDigest": "0a92694e17bec34840516023ee24b2a43f520bfad1e2943fd373965dab0450b0"
+      "logicalBytes": 526895408,
+      "pathDigest": "2b047c768d6b26bbdfbbe22251e9dc63543f6e3e54a7dd17da034b997df48303"
     },
     {
       "name": "public-realm-skins",

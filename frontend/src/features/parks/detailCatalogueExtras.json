@@ -10077,7 +10077,7 @@
     "id": "detail-yyc-city-ghost-barrier-pink",
     "label": "City Ghost on a pink barrier",
     "category": "Water & landmarks",
-    "description": "Blue ghost sculpture with big white eyes and a cowboy hat, just under 2 m tall, astride a pink barrier. The artwork belongs to its artist.",
+    "description": "Blue ghost sculpture with big white eyes and a cowboy hat, astride a pink barrier of white doodles. The artwork belongs to its artist.",
     "dimensions": [
       3.012,
       0.683,
@@ -10093,10 +10093,10 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:city_ghost_barrier_pink",
-    "sha256": "6ff62449a1517bf02de2f6cd7ae37f53453ac05cab7f00a151810440f7ba3bb1",
-    "triangles": 3218,
+    "sha256": "fea8513bb3082efef98a8c33deabebde0c94b17174647876d7fe23cfcccd661d",
+    "triangles": 4354,
     "meshes": 1,
-    "bytes": 368056,
+    "bytes": 497564,
     "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.webp"
   }
 ]

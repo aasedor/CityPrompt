@@ -2807,10 +2807,107 @@ def city_ghost_barrier(s):
     city_ghost(s)
 
 
+# White line characters for the pink barrier under the ghost. The real barrier carries
+# its artist's hand-drawn characters. These are simple ones of our own in the same
+# spirit, not tracings: marker strokes 4 mm proud of the paint, three rows of three
+# either side of the ghost. Each character is drawn in a unit square, x right and y up,
+# as open or closed strokes plus dots for eyes.
+GHOST_INK = '#fbf7f3'
+DOODLE_SIZE, DOODLE_STROKE, DOODLE_DOT = .2, .011, .014
+
+
+def doodle_arc(cx, cy, rx, ry, start, finish, steps):
+    """Points along an arc of an oval, in degrees. A full turn leaves off its last point, ready to be closed."""
+    count = steps if finish - start >= 360 else steps + 1
+    return [(cx + rx * math.cos(math.radians(start + (finish - start) * k / steps)), cy + ry * math.sin(math.radians(start + (finish - start) * k / steps))) for k in range(count)]
+
+
+def doodle(closed=(), lines=(), dots=()):
+    return {'closed': list(closed), 'lines': list(lines), 'dots': list(dots)}
+
+
+DOODLES = {
+    'ghost': doodle(closed=[[(.14, .06), *doodle_arc(.5, .56, .36, .38, 180, 0, 6), (.86, .06), (.68, .17), (.5, .06), (.32, .17)]],
+                    lines=[[(.4, .42), (.5, .37), (.6, .42)]], dots=[(.37, .6), (.63, .6)]),
+    'robot': doodle(closed=[[(.2, .1), (.8, .1), (.88, .18), (.88, .66), (.8, .74), (.2, .74), (.12, .66), (.12, .18)]],
+                    lines=[[(.36, .74), (.3, .93)], [(.64, .74), (.7, .93)], [(.3, .32), (.4, .22), (.5, .32), (.6, .22), (.7, .32)]],
+                    dots=[(.36, .54), (.64, .54), (.3, .95), (.7, .95)]),
+    'slice': doodle(closed=[[(.5, .92), (.92, .1), (.08, .1)]],
+                    lines=[[(.34, .8), (.5, 1.0), (.66, .8)], [(.44, .28), (.51, .23), (.58, .28)], [(.3, .1), (.26, 0)], [(.7, .1), (.74, 0)]],
+                    dots=[(.42, .44), (.6, .44)]),
+    'blob': doodle(closed=[doodle_arc(.5, .5, .4, .4, 0, 360, 10), doodle_arc(.36, .58, .11, .13, 0, 360, 6), doodle_arc(.64, .58, .11, .13, 0, 360, 6)],
+                   lines=[[(.42, .29), (.5, .25), (.58, .29)]], dots=[(.38, .56), (.62, .56)]),
+    'mound': doodle(closed=[doodle_arc(.5, .1, .42, .72, 180, 0, 7)],
+                    lines=[[(.34, .31), (.42, .25), (.5, .31), (.58, .25), (.66, .31)]], dots=[(.38, .5), (.62, .5)]),
+    'berry': doodle(closed=[[(.14, .66), (.5, .78), (.86, .66), (.8, .38), (.5, .06), (.2, .38)]],
+                    lines=[[(.3, .78), (.4, .96), (.5, .8), (.6, .96), (.7, .78)], [(.43, .4), (.5, .36), (.57, .4)]], dots=[(.4, .54), (.6, .54)]),
+    'capsule': doodle(closed=[[(.3, .08), (.7, .08), (.78, .18), (.78, .7), (.66, .86), (.34, .86), (.22, .7), (.22, .18)]],
+                      lines=[[(.2, .72), (.96, .72)], [(.42, .36), (.58, .36)], [(.38, .08), (.36, 0)], [(.62, .08), (.64, 0)]], dots=[(.4, .54), (.6, .54)]),
+    'king': doodle(closed=[[(.2, .06), (.8, .06), (.74, .6), (.26, .6)]],
+                   lines=[[(.26, .6), (.22, .92), (.38, .74), (.5, .96), (.62, .74), (.78, .92), (.74, .6)], [(.42, .27), (.5, .21), (.58, .27)]], dots=[(.4, .42), (.6, .42)]),
+    'fish': doodle(closed=[doodle_arc(.44, .5, .34, .26, 0, 360, 8), [(.78, .5), (.98, .72), (.98, .28)]],
+                   lines=[[(.14, .44), (.24, .42)], [(.44, .76), (.52, .9), (.6, .74)]], dots=[(.3, .56)]),
+}
+# rows from the top of the barrier down, left of the ghost and then right of it; the right-hand ones face the other way
+DOODLE_ROWS = ((('king', 'robot', 'blob'), ('robot', 'ghost', 'mound')),
+               (('berry', 'ghost', 'mound'), ('blob', 'slice', 'capsule')),
+               (('slice', 'fish', 'capsule'), ('fish', 'king', 'berry')))
+DOODLE_COLUMNS = ((.19, .47, .75), (2.25, 2.53, 2.81))
+DOODLE_HEIGHTS = (.633, .397, .137)        # centre of each row up the painted face; the lowest row sits on the lower slope
+
+
+def doodle_quad(s, corners, upper):
+    """One flat piece of a stroke on both long faces, in (u, v) metres."""
+    ink = s.c(GHOST_INK)
+    for side in (-1, 1):
+        p, q, r, t = (mural_point(u, v, side, upper, .004) for u, v in corners)
+        if ((q[2] - p[2]) * (r[0] - p[0]) - (q[0] - p[0]) * (r[2] - p[2])) * side > 0:
+            s.tri(p, q, r, ink)
+            s.tri(p, r, t, ink)
+        else:
+            s.tri(p, r, q, ink)
+            s.tri(p, t, r, ink)
+
+
+def doodle_character(s, name, u, v, upper, mirror):
+    """Draw one character centred at (u, v), with the small wobble, turn and change of size of a hand at work."""
+    turn, size = (s.random() - .5) * .2, DOODLE_SIZE * (.92 + s.random() * .12)
+    low, high = (MURAL_LOWER, MURAL_HEIGHT) if upper else (0.0, MURAL_LOWER)
+
+    def place(point):
+        x, y = point[0] + (s.random() - .5) * .024 - .5, point[1] + (s.random() - .5) * .024 - .5
+        if mirror:
+            x = -x
+        pu, pv = u + (x * math.cos(turn) - y * math.sin(turn)) * size, v + (x * math.sin(turn) + y * math.cos(turn)) * size
+        assert low + .012 < pv < high - .012, f'{name} must stay on one slope of the barrier'
+        return (pu, pv)
+
+    def stroke(a, b):
+        length = math.hypot(b[0] - a[0], b[1] - a[1])
+        if length < 1e-6:
+            return
+        du, dv = (b[0] - a[0]) / length * DOODLE_STROKE / 2, (b[1] - a[1]) / length * DOODLE_STROKE / 2
+        # square ends, half a stroke long, so that strokes close up where they meet
+        doodle_quad(s, [(a[0] - du - dv, a[1] - dv + du), (b[0] + du - dv, b[1] + dv + du), (b[0] + du + dv, b[1] + dv - du), (a[0] - du + dv, a[1] - dv - du)], upper)
+
+    shape = DOODLES[name]
+    for points, closed in [(points, True) for points in shape['closed']] + [(points, False) for points in shape['lines']]:
+        placed = [place(point) for point in points]
+        for k in range(len(placed) if closed else len(placed) - 1):
+            stroke(placed[k], placed[(k + 1) % len(placed)])
+    for point in shape['dots']:
+        cu, cv = place(point)
+        doodle_quad(s, [(cu - DOODLE_DOT, cv), (cu, cv - DOODLE_DOT), (cu + DOODLE_DOT, cv), (cu, cv + DOODLE_DOT)], upper)
+
+
 def city_ghost_barrier_pink(s):
     mural_barrier(s, GHOST_PINK)
     paint(s, [(0, 0), (MURAL_LENGTH, 0), (MURAL_LENGTH, MURAL_HEIGHT), (0, MURAL_HEIGHT)], GHOST_PINK)
     city_ghost(s)
+    for (left, right), v in zip(DOODLE_ROWS, DOODLE_HEIGHTS):
+        for names, columns, mirror in ((left, DOODLE_COLUMNS[0], False), (right, DOODLE_COLUMNS[1], True)):
+            for name, u in zip(names, columns):
+                doodle_character(s, name, u, v, v > MURAL_LOWER, mirror)
 
 
 # ---------------------------------------------------------------------------
@@ -4260,7 +4357,7 @@ SPECS = [
     spec('district-barrier-seventeenth-ave', 'District barrier · 17th Ave', 'Traffic & safety', 'Red 3 m road barrier with the 17th Ave logo four times in white. The logo belongs to its business association.', district_barrier_seventeenth_ave, 2965, '#e21a2d'),
     spec('district-barrier-seventeenth-ave-single', 'District barrier · 17th Ave · single logo', 'Traffic & safety', 'Red 3 m road barrier with one large 17th Ave logo in white at its centre. The logo belongs to its business association.', district_barrier_seventeenth_ave_single, 2966, '#e21a2d'),
     spec('city-ghost-barrier', 'City Ghost on a barrier', 'Water & landmarks', 'Blue ghost sculpture with big white eyes and a cowboy hat, just under 2 m tall, astride a 3 m barrier. The artwork belongs to its artist.', city_ghost_barrier, 2971, '#27a8d2'),
-    spec('city-ghost-barrier-pink', 'City Ghost on a pink barrier', 'Water & landmarks', 'Blue ghost sculpture with big white eyes and a cowboy hat, just under 2 m tall, astride a pink barrier. The artwork belongs to its artist.', city_ghost_barrier_pink, 2972, '#ee8f8c'),
+    spec('city-ghost-barrier-pink', 'City Ghost on a pink barrier', 'Water & landmarks', 'Blue ghost sculpture with big white eyes and a cowboy hat, astride a pink barrier of white doodles. The artwork belongs to its artist.', city_ghost_barrier_pink, 2972, '#ee8f8c'),
 ]
 
 

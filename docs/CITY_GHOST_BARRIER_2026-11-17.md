@@ -4,14 +4,14 @@
 
 Add two models of the City Ghost sculpture sitting astride a 3 m road barrier:
 one on a plain concrete barrier, as on its concept sheet, and one on a barrier
-painted pink, as it was installed. They extend `calgary-details-v1` (now 155
+painted pink and covered in white line characters, as it was installed. They extend `calgary-details-v1` (now 155
 objects, IDs prefixed `detail-yyc-`) and sit in **Water & landmarks** beside the
 existing public art sculpture. Searching `ghost` lists them.
 
 | Item | W × D × H (m) | Triangles |
 |---|---:|---:|
 | City Ghost on a barrier | 3.0 × 0.7 × 2.1 | 3,206 |
-| City Ghost on a pink barrier | 3.0 × 0.7 × 2.1 | 3,218 |
+| City Ghost on a pink barrier | 3.0 × 0.7 × 2.1 | 4,354 |
 
 ## The artwork belongs to its artist
 
@@ -28,9 +28,16 @@ drops them.
 
 Like the [district barriers](DISTRICT_LOGO_BARRIERS_2026-11-17.md), this is a
 deliberate exception to the kit's rule against reproducing real artworks. The
-rule still holds for the murals, which remain original designs. The pink barrier
-in the photograph carries the artist's hand-drawn characters in white; those
-were not copied, so the pink barrier here is plain.
+rule still holds for the murals, which remain original designs.
+
+**The characters on the pink barrier are stand-ins, not the artist's drawings.**
+The real barrier carries the artist's hand-drawn characters in white. The
+photographs are too small to trace them, so the model carries eighteen simple
+line characters made for this catalogue in the same spirit: a ghost, a robot, a
+slice, a round blob with big eyes, a mound, a berry, a capsule in a cap, a king
+and a fish, once each on either side of the ghost. Showing the artist's own
+drawings would need a flat photograph of each face or the artwork itself, and
+the artist's agreement.
 
 ## What it was modelled from
 
@@ -63,6 +70,7 @@ they are estimates.
 | Hat | A tan cowboy hat, brim about 0.6 m wide and curled up at the sides, slightly askew | The same, turned and tilted a little |
 | Colour | Blue, for the Blue Sky City branding | `#27a8d2` |
 | Fit | A slot in the base drops over the top of the barrier | The body passes through the barrier, which gives the same look |
+| Pink barrier | Pink all over, with white line characters about 0.2 m tall in three rows of three on each side of the ghost: two rows on the upper slope and one on the lower | The same arrangement, on both long faces. Each character is about 0.2 m, drawn with an 11 mm line |
 
 The depth of the body, the back, and the exact shape of the arms come from the
 one photograph from behind, so they are the least certain. The sculpture's smile is
@@ -87,8 +95,19 @@ convention: linear vertex colours, flat normals, one matte mesh, no textures.
   skin. The arms are egg shapes set into the sides. The hat is a brim that
   curls up at both sides, a band and a creased crown.
 
+- **Line characters.** Each is a few open and closed strokes and some dots in
+  a unit square. A stroke is a row of flat pieces 4 mm proud of the pink paint,
+  with square ends so the pieces close up where they meet. Every character gets
+  a small turn, change of size and wobble, the same on every build, so the rows
+  look drawn by hand. Each stays on one slope of the barrier, so no stroke
+  crosses the bend.
+
 The sculpture has a satin finish; the model is matte like the rest of the kit.
-The two models total 734,732 bytes and 6,424 triangles. The 153 earlier models
+The two models total 864,240 bytes and 7,560 triangles. The pink one, at 4,354
+triangles and 498 KB, is over the kit's usual limit of 3,500 triangles and
+400 KB for one item, because it is a sculpture plus eighteen drawings. The tests
+allow that one item up to 4,800 triangles and 540 KB and hold every other item
+to the usual limit. The 153 earlier models
 and their card images are byte-identical.
 
 ## Verification
@@ -100,7 +119,10 @@ and their card images are byte-identical.
   raised so the head no longer showed through its brim. Changed after the
   daylight photograph arrived: the empty eye cups became white eyes with pupils
   and highlights, and the eyes, mouth and arms were each moved down a few
-  centimetres to match the clearer view. Agent review passed;
+  centimetres to match the clearer view. Added on request after that: the line
+  characters on the pink barrier
+  ([close view](calgary-details-v1/city-ghost-pink-close.jpg)). Agent review
+  passed;
   independent human visual acceptance, and the artist's own review, are open.
 - Placed on the test street through the app's own placement code
   ([on a pink barrier](calgary-details-v1/scene-city-ghost-pink.jpg),
@@ -109,7 +131,8 @@ and their card images are byte-identical.
 - A tools test requires the head to top out between 1.9 m and 2.0 m, the skirt
   to hang below the top of the barrier, the body to be the same left and right,
   each eye to lie on the front of the head, each pupil to lie wholly on the
-  white of its eye, and each description to say the artwork belongs to its
+  white of its eye, the same nine characters to stand either side of the ghost
+  clear of its body, and each description to say the artwork belongs to its
   artist. A frontend test checks the two names.
 - In the real project page with a mocked backend, in a temporary browser trial
   that was not committed: both are found by searching `ghost`, load from their
@@ -121,7 +144,7 @@ and their card images are byte-identical.
   runtime files; tools, hosted-asset and backend detail tests with 240 local
   rows and 395 extras; and the browser tests, 13 passed plus the startup test,
   run one at a time as CI runs them.
-- Production build with CI settings, then `check-budget`: 8,433.4 KB of
+- Production build with CI settings, then `check-budget`: 8,433.5 KB of
   8,448 KB.
 
 Not done here: placing them on the live map, which needs a real map key, and
