@@ -9297,14 +9297,14 @@
     "id": "detail-yyc-boardwalk-module-nine-foot",
     "label": "Boardwalk module \u00b7 6 \u00d7 9 ft",
     "category": "Access & levels",
-    "description": "Repeatable 6 ft by 9 ft timber boardwalk module, level with the sidewalk, with guards on both long sides and open ends.",
+    "description": "Repeatable 6 ft by 9 ft boardwalk module with grey decking, level with the sidewalk. Red steel railings on both long sides, open ends.",
     "dimensions": [
       2.743,
       1.829,
-      1.188
+      1.15
     ],
     "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot.glb",
-    "color": "#b99a6b",
+    "color": "#cf1f2b",
     "kind": "object",
     "offset": [
       0.0,
@@ -9313,24 +9313,24 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:boardwalk_module_nine_foot",
-    "sha256": "9ee98001df9f6181aab2324dd6ed1e1a3c8bff6856450fc1249799e44b5606bb",
-    "triangles": 250,
+    "sha256": "cc3a5b3010dab57ab015bf57abe6a4ddac966f6b00bfa21c551c60e1f0f52df0",
+    "triangles": 302,
     "meshes": 1,
-    "bytes": 29696,
+    "bytes": 35628,
     "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot.webp"
   },
   {
     "id": "detail-yyc-boardwalk-module-twelve-foot",
     "label": "Boardwalk module \u00b7 6 \u00d7 12 ft",
     "category": "Access & levels",
-    "description": "Repeatable 6 ft by 12 ft timber boardwalk module, level with the sidewalk, with guards on both long sides and open ends.",
+    "description": "Repeatable 6 ft by 12 ft boardwalk module with grey decking, level with the sidewalk. Red steel railings on both long sides, open ends.",
     "dimensions": [
       3.658,
       1.829,
-      1.188
+      1.15
     ],
     "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot.glb",
-    "color": "#b99a6b",
+    "color": "#cf1f2b",
     "kind": "object",
     "offset": [
       0.0,
@@ -9339,24 +9339,24 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:boardwalk_module_twelve_foot",
-    "sha256": "272cd63ef3be3f1b04f9c55045edbb7f67ab798fb0e64f67c1d8a714e27d1870",
-    "triangles": 288,
+    "sha256": "edbf596cd6873c7c8c33d6170df183acf22a6df5c8bf2863d534c75c3f3d1745",
+    "triangles": 398,
     "meshes": 1,
-    "bytes": 34036,
+    "bytes": 46580,
     "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot.webp"
   },
   {
     "id": "detail-yyc-boardwalk-corner",
     "label": "Boardwalk corner \u00b7 6 \u00d7 6 ft",
     "category": "Access & levels",
-    "description": "Six-foot-square boardwalk corner with guards on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.",
+    "description": "Six-foot-square boardwalk corner with red steel railings on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.",
     "dimensions": [
       1.829,
       1.829,
-      1.19
+      1.15
     ],
     "url": "/park-kits/calgary-details-v1/boardwalk-corner.glb",
-    "color": "#b99a6b",
+    "color": "#cf1f2b",
     "kind": "object",
     "offset": [
       0.0,
@@ -9365,21 +9365,21 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:boardwalk_corner",
-    "sha256": "2ef9aa0f2bcb0c2280b7f9dbae6e13fa0736142c95982614a70c3791a01750d8",
-    "triangles": 226,
+    "sha256": "c54a45b6b1b75a2d932188365910b0ea70656c9ac29489d644df03cd6a26d851",
+    "triangles": 266,
     "meshes": 1,
-    "bytes": 26940,
+    "bytes": 31500,
     "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner.webp"
   },
   {
     "id": "detail-yyc-boardwalk-corner-approach",
     "label": "Boardwalk corner \u00b7 approach",
     "category": "Access & levels",
-    "description": "Six-foot-square boardwalk corner with guards on two outer sides and a hazard marker facing approaching traffic.",
+    "description": "Six-foot-square boardwalk corner with red steel railings on two outer sides and a hazard marker facing approaching traffic.",
     "dimensions": [
       1.829,
       1.829,
-      1.19
+      1.15
     ],
     "url": "/park-kits/calgary-details-v1/boardwalk-corner-approach.glb",
     "color": "#f2c230",
@@ -9391,10 +9391,62 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:boardwalk_corner_approach",
-    "sha256": "2b8d479c06539acd6dee14e90928b2e1833d00742de7c68110b70223a1f5f3c6",
-    "triangles": 258,
+    "sha256": "10b79382f758231271930050f492e455f1f1fe12e0f35b061d9a280e77230a3b",
+    "triangles": 286,
     "meshes": 1,
-    "bytes": 30604,
+    "bytes": 33800,
     "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner-approach.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-module-nine-foot-road-rail",
+    "label": "Boardwalk module \u00b7 6 \u00d7 9 ft \u00b7 road-side rail",
+    "category": "Access & levels",
+    "description": "Repeatable 6 ft by 9 ft boardwalk module with grey decking and a red steel railing on the road side only. Open to the sidewalk.",
+    "dimensions": [
+      2.743,
+      1.829,
+      1.15
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail.glb",
+    "color": "#cf1f2b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_module_nine_foot_road_rail",
+    "sha256": "6e8344876b2680f8061446b576be07fe425546923e69e7579910efcea3c8b61f",
+    "triangles": 182,
+    "meshes": 1,
+    "bytes": 21964,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-module-twelve-foot-road-rail",
+    "label": "Boardwalk module \u00b7 6 \u00d7 12 ft \u00b7 road-side rail",
+    "category": "Access & levels",
+    "description": "Repeatable 6 ft by 12 ft boardwalk module with grey decking and a red steel railing on the road side only. Open to the sidewalk.",
+    "dimensions": [
+      3.658,
+      1.829,
+      1.15
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail.glb",
+    "color": "#cf1f2b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_module_twelve_foot_road_rail",
+    "sha256": "c1fcca07a7400fe855424fea1f12280996d2d0e98b39eb497a6fd1a3bdd1522a",
+    "triangles": 230,
+    "meshes": 1,
+    "bytes": 27440,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail.webp"
   }
 ]

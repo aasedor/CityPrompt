@@ -2563,30 +2563,19 @@ def deck(s, x0, x1, y0, y1, top=DECK, plank=.143):
         s.quad((xa, y0, top), (xb, y0, top), (xb, y1, top), (xa, y1, top), s.pick(DECK_TONES, .03))
 
 
-def guard_posts(length, ends):
-    """Post stations along a guard. By default posts sit about every metre and never at
-    the ends, so runs butt together. ends asks for a post just inside the start, the
-    finish or both, for a module that has to stand on its own."""
-    if not any(ends):
-        count = max(1, round(length / 1.0))
-        return [length * (k + .5) / count for k in range(count)]
-    first = .045 if ends[0] else 0.0
-    last = length - .045 if ends[1] else length
-    spans = max(1, round((last - first) / 1.0))
-    stations = [first + (last - first) * k / spans for k in range(spans + 1)]
-    return stations[0 if ends[0] else 1:len(stations) if ends[1] else -1]
-
-
-def guard_run(s, a, b, base=DECK, road=0, feet=0, colour=GUARD_TIMBER, ends=(False, False)):
-    """Patio guard from a to b: posts, a handrail, two boards and a cane-detection rail.
-    road is +1 or -1 for the side of the run, left or right of a to b, that carries
-    reflective tape. feet is +1 or -1 for the side the weighted feet reach toward, which
-    must be the patio side: supports may not project into the walkway."""
+def guard_run(s, a, b, base=DECK, road=0, feet=0, colour=GUARD_TIMBER):
+    """Patio guard from a to b: posts about every metre and never at the ends, so runs butt
+    together; a handrail, two boards and a cane-detection rail. road is +1 or -1 for the
+    side of the run, left or right of a to b, that carries reflective tape. feet is +1 or
+    -1 for the side the weighted feet reach toward, which must be the patio side: supports
+    may not project into the walkway."""
     length = math.hypot(b[0] - a[0], b[1] - a[1])
     if length < .05:
         return
     with s.at(a[0], a[1], base, yaw=math.atan2(b[1] - a[1], b[0] - a[0])):
-        for x in guard_posts(length, ends):
+        count = max(1, round(length / 1.0))
+        for k in range(count):
+            x = length * (k + .5) / count
             s.box((x, 0, GUARD / 2), (.09, .09, GUARD), s.c(colour, .04))
             if feet:
                 s.box((x, feet * .19, .012), (.34, .48, .024), '#5e666a')
@@ -2697,14 +2686,77 @@ def boardwalk_section(s):
 # the sidewalk. The handrail's outer face sits on the deck edge, which keeps the footprint
 # exact and the walkway as wide as the module allows.
 FOOT = .3048
-RAIL_INSET = .055
+RAIL_RED = '#cf1f2b'
+RAIL_TUBE = .05
+DECK_GREY = ['#84817d', '#7c7975', '#8a8782', '#807d79']
+DECK_METAL = '#b3b8bc'
 
 
-def boardwalk_module(s, length_ft, width_ft=6):
+def composite_deck(s, x0, x1, y0, y1, top=DECK, board=.14, trim=.03):
+    """Grey decking on a metal frame at sidewalk grade. Boards run along the path of
+    travel and stop at a metal edge strip at each end, which shows as a seam where two
+    modules meet."""
+    for a, b in (((x0, y0), (x1, y0)), ((x1, y0), (x1, y1)), ((x1, y1), (x0, y1)), ((x0, y1), (x0, y0))):
+        s.quad((a[0], a[1], 0), (b[0], b[1], 0), (b[0], b[1], top), (a[0], a[1], top), DECK_METAL)
+    for xa, xb in ((x0, x0 + trim), (x1 - trim, x1)):
+        s.quad((xa, y0, top), (xb, y0, top), (xb, y1, top), (xa, y1, top), DECK_METAL)
+    count = max(1, round((y1 - y0) / board))
+    for k in range(count):
+        ya, yb = y0 + (y1 - y0) * k / count, y0 + (y1 - y0) * (k + 1) / count
+        s.quad((x0 + trim, ya, top), (x1 - trim, ya, top), (x1 - trim, yb, top), (x0 + trim, yb, top), s.pick(DECK_GREY, .02))
+
+
+def steel_rail_bays(length):
+    """Stile stations of a welded railing panel: one just inside each end, and enough
+    between them that no bay is longer than six feet."""
+    first, last = RAIL_TUBE / 2, length - RAIL_TUBE / 2
+    bays = max(1, math.ceil((last - first) / (6 * FOOT) - 1e-6))
+    return [first + (last - first) * k / bays for k in range(bays + 1)]
+
+
+def steel_rail(s, a, b, base=DECK, colour=RAIL_RED):
+    """Red welded steel railing from a to b: a square top rail, a square stile at each end
+    and at most six feet apart, thin upright bars about a foot apart, and a solid kick
+    band along the bottom that a cane can find. The top is 1.0 m above the deck."""
+    length = math.hypot(b[0] - a[0], b[1] - a[1])
+    with s.at(a[0], a[1], base, yaw=math.atan2(b[1] - a[1], b[0] - a[0])):
+        s.box((length / 2, 0, GUARD - RAIL_TUBE / 2), (length, RAIL_TUBE, RAIL_TUBE), colour)
+        s.box((length / 2, 0, .08), (length, .02, .12), colour)
+        stations = steel_rail_bays(length)
+        for x in stations:
+            s.box((x, 0, (GUARD - RAIL_TUBE) / 2), (RAIL_TUBE, RAIL_TUBE, GUARD - RAIL_TUBE), colour)
+        for k in range(len(stations) - 1):
+            x0, x1 = stations[k], stations[k + 1]
+            gaps = max(1, round((x1 - x0) / FOOT))
+            for j in range(1, gaps):
+                s.box((x0 + (x1 - x0) * j / gaps, 0, (.14 + GUARD - RAIL_TUBE) / 2), (.016, .016, GUARD - RAIL_TUBE - .14), colour)
+
+
+def curb_strip(s, x0, x1, y):
+    """Metal threshold along the open sidewalk edge of a deck."""
+    s.box(((x0 + x1) / 2, y - .05, DECK + .003), (x1 - x0, .1, .006), '#c3c8cc')
+
+
+def rail_marker(s, x, y):
+    """Yellow and black hazard marker on the outside of an end railing, facing vehicles
+    that approach from +x. Its stripes fall toward the road at -y."""
+    s.box((x - .005, y, .55), (.008, .3, .78), '#f2c230')
+    for k in range(4):
+        low = .2 + k * .19
+        s.quad((x, y + .15, low + .15), (x, y - .15, low), (x, y - .15, low + .09), (x, y + .15, low + .24), '#16181a')
+
+
+def boardwalk_module(s, length_ft, width_ft=6, both_sides=True):
+    """Road at -y. Open at both ends; a railing on the road side, and on the sidewalk side too
+    unless that side is left open to the curb."""
     half, edge = length_ft * FOOT / 2, width_ft * FOOT / 2
-    deck(s, -half, half, -edge, edge)
-    guard_run(s, (-half, -edge + RAIL_INSET), (half, -edge + RAIL_INSET), road=-1, ends=(True, True))
-    guard_run(s, (-half, edge - RAIL_INSET), (half, edge - RAIL_INSET), ends=(True, True))
+    line = edge - RAIL_TUBE / 2
+    composite_deck(s, -half, half, -edge, edge)
+    steel_rail(s, (-half, -line), (half, -line))
+    if both_sides:
+        steel_rail(s, (-half, line), (half, line))
+    else:
+        curb_strip(s, -half + .03, half - .03, edge)
 
 
 def boardwalk_module_nine_foot(s):
@@ -2715,17 +2767,24 @@ def boardwalk_module_twelve_foot(s):
     boardwalk_module(s, 12)
 
 
+def boardwalk_module_nine_foot_road_rail(s):
+    boardwalk_module(s, 9, both_sides=False)
+
+
+def boardwalk_module_twelve_foot_road_rail(s):
+    boardwalk_module(s, 12, both_sides=False)
+
+
 def boardwalk_corner_piece(s, marker=False, size_ft=6):
-    """Guards on the road side (-y) and the outer end (+x); open toward the run (-x) and the sidewalk (+y)."""
+    """Railings on the road side (-y) and across the outer end (+x); open toward the run (-x) and the sidewalk (+y)."""
     edge = size_ft * FOOT / 2
-    outer = edge - RAIL_INSET
-    deck(s, -edge, edge, -edge, edge)
-    s.box((-.03, edge - .04, DECK + .003), (edge * 2 - .2, .08, .006), '#aab1b6')
-    guard_run(s, (-edge, -outer), (outer, -outer), road=-1, ends=(True, False))
-    guard_run(s, (outer, -outer), (outer, edge), road=-1, ends=(False, True))
-    corner_post(s, outer, -outer)
+    line = edge - RAIL_TUBE / 2
+    composite_deck(s, -edge, edge, -edge, edge)
+    curb_strip(s, -edge + .03, edge - RAIL_TUBE - .01, edge)
+    steel_rail(s, (-edge, -line), (edge, -line))
+    steel_rail(s, (line, -edge + RAIL_TUBE), (line, edge))
     if marker:
-        object_marker(s, edge - .1, -edge + .28, 1, -1)
+        rail_marker(s, edge, -edge + .3)
 
 
 def boardwalk_corner(s):
@@ -3683,10 +3742,12 @@ SPECS = [
     spec('patio-fence-panel', 'Patio guard panel', 'Edges & gates', 'Repeatable 2.4 m free-standing timber patio guard with a cane-detection rail. Its weighted feet go on the patio side.', patio_fence_panel, 2910, '#8a6a4a'),
     spec('low-profile-barrier', 'Low-profile barrier', 'Traffic & safety', 'Repeatable 3 m low concrete traffic barrier, half a metre tall, for the road end of a patio or boardwalk.', low_profile_barrier, 2911, '#b9b6ae'),
     # --- boardwalk modules in feet, with guards on both long sides and open ends ---
-    spec('boardwalk-module-nine-foot', 'Boardwalk module · 6 × 9 ft', 'Access & levels', 'Repeatable 6 ft by 9 ft timber boardwalk module, level with the sidewalk, with guards on both long sides and open ends.', boardwalk_module_nine_foot, 2921, '#b99a6b'),
-    spec('boardwalk-module-twelve-foot', 'Boardwalk module · 6 × 12 ft', 'Access & levels', 'Repeatable 6 ft by 12 ft timber boardwalk module, level with the sidewalk, with guards on both long sides and open ends.', boardwalk_module_twelve_foot, 2922, '#b99a6b'),
-    spec('boardwalk-corner', 'Boardwalk corner · 6 × 6 ft', 'Access & levels', 'Six-foot-square boardwalk corner with guards on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.', boardwalk_corner, 2923, '#b99a6b'),
-    spec('boardwalk-corner-approach', 'Boardwalk corner · approach', 'Access & levels', 'Six-foot-square boardwalk corner with guards on two outer sides and a hazard marker facing approaching traffic.', boardwalk_corner_approach, 2924, '#f2c230'),
+    spec('boardwalk-module-nine-foot', 'Boardwalk module · 6 × 9 ft', 'Access & levels', 'Repeatable 6 ft by 9 ft boardwalk module with grey decking, level with the sidewalk. Red steel railings on both long sides, open ends.', boardwalk_module_nine_foot, 2921, '#cf1f2b'),
+    spec('boardwalk-module-twelve-foot', 'Boardwalk module · 6 × 12 ft', 'Access & levels', 'Repeatable 6 ft by 12 ft boardwalk module with grey decking, level with the sidewalk. Red steel railings on both long sides, open ends.', boardwalk_module_twelve_foot, 2922, '#cf1f2b'),
+    spec('boardwalk-corner', 'Boardwalk corner · 6 × 6 ft', 'Access & levels', 'Six-foot-square boardwalk corner with red steel railings on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.', boardwalk_corner, 2923, '#cf1f2b'),
+    spec('boardwalk-corner-approach', 'Boardwalk corner · approach', 'Access & levels', 'Six-foot-square boardwalk corner with red steel railings on two outer sides and a hazard marker facing approaching traffic.', boardwalk_corner_approach, 2924, '#f2c230'),
+    spec('boardwalk-module-nine-foot-road-rail', 'Boardwalk module · 6 × 9 ft · road-side rail', 'Access & levels', 'Repeatable 6 ft by 9 ft boardwalk module with grey decking and a red steel railing on the road side only. Open to the sidewalk.', boardwalk_module_nine_foot_road_rail, 2925, '#cf1f2b'),
+    spec('boardwalk-module-twelve-foot-road-rail', 'Boardwalk module · 6 × 12 ft · road-side rail', 'Access & levels', 'Repeatable 6 ft by 12 ft boardwalk module with grey decking and a red steel railing on the road side only. Open to the sidewalk.', boardwalk_module_twelve_foot_road_rail, 2926, '#cf1f2b'),
 ]
 
 

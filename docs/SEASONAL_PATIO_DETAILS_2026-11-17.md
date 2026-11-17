@@ -98,77 +98,101 @@ The files follow the kit convention: linear vertex colours, flat normals, one
 matte mesh, no textures. The eleven total 1,157,768 bytes and 10,046 triangles.
 The 113 earlier models are byte-identical.
 
-## Added later the same day: boardwalk modules in feet
+## Added later the same day: boardwalk modules in feet, with red steel railings
 
-Four more pieces, built to requested module sizes in feet:
+Six more pieces, built to requested module sizes in feet:
 
-| Item | Size | W × D × H (m) | Triangles |
-|---|---|---:|---:|
-| Boardwalk module · 6 × 9 ft | 6 ft wide, 9 ft long | 2.743 × 1.829 × 1.19 | 250 |
-| Boardwalk module · 6 × 12 ft | 6 ft wide, 12 ft long | 3.658 × 1.829 × 1.19 | 288 |
-| Boardwalk corner · 6 × 6 ft | 6 ft square | 1.829 × 1.829 × 1.19 | 226 |
-| Boardwalk corner · approach | 6 ft square, with hazard marker | 1.829 × 1.829 × 1.19 | 258 |
+| Item | Size | Railings | W × D × H (m) | Triangles |
+|---|---|---|---:|---:|
+| Boardwalk module · 6 × 9 ft | 6 ft wide, 9 ft long | both long sides | 2.743 × 1.829 × 1.15 | 302 |
+| Boardwalk module · 6 × 12 ft | 6 ft wide, 12 ft long | both long sides | 3.658 × 1.829 × 1.15 | 398 |
+| Boardwalk corner · 6 × 6 ft | 6 ft square | two outer sides | 1.829 × 1.829 × 1.15 | 266 |
+| Boardwalk corner · approach | 6 ft square | two outer sides, with hazard marker | 1.829 × 1.829 × 1.15 | 286 |
+| Boardwalk module · 6 × 9 ft · road-side rail | 6 ft wide, 9 ft long | road side only | 2.743 × 1.829 × 1.15 | 182 |
+| Boardwalk module · 6 × 12 ft · road-side rail | 6 ft wide, 12 ft long | road side only | 3.658 × 1.829 × 1.15 | 230 |
 
-- **Straight modules** have a railing on both long sides and are open at both
-  ends, so they run on from one to the next. The side with the yellow strip
-  faces the road.
-- **Corner pieces** have railings on their two outer sides and are open on the
-  other two: one toward the run and one toward the sidewalk. One corner serves
-  every position, because it is square: turn it a quarter to suit. The approach
-  version adds the hazard marker and goes at the end traffic reaches first.
-- **Exact footprints.** Sizes are exact conversions (1 ft = 0.3048 m) and the
-  handrail's outer face sits on the deck edge, so a run does not drift.
-- **Each module stands on its own.** Unlike the metric sections, whose posts
-  stay off the joints, every module in feet has a post just inside each end of
-  each railing, with posts no more than 0.9 m apart between them. Joined modules
-  therefore show a pair of posts at each joint, as separate units do. This was
-  changed after the first review, where the railings overhung their last posts
-  by 18 in and a single module looked unfinished.
-- The deck, the 1.0 m guard, the cane-detection rail and the 150 mm height are
-  the same as the metric sections above.
+### Railing and deck
 
-**Clear width to check.** A 6 ft module is 1.83 m wide and has about 1.61 m
-clear between its handrails. The published guidance asks for a 2 m pedestrian
-detour, so these modules are narrower than that figure. They are modelled to the
-requested size; the 2.5 m metric section above remains for a 2 m clear walkway.
+The railing and deck follow the boardwalk photographed on page 16 of the
+guidelines, the one with red railings. What was taken from those photographs:
+
+| In the photographs | In these models |
+|---|---|
+| Red welded steel panels with a square top rail and square end posts | 50 mm square top rail and stiles, top 1.0 m above the deck |
+| Thin upright bars about a foot apart; five in the panel across the 6 ft end | Uprights at about 1 ft; five in a 6 ft panel |
+| A solid band along the bottom of each panel | A 120 mm kick band 20 mm above the deck, which is also the cane-detectable edge |
+| Two posts side by side where panels meet | A stile just inside each end, so joined modules and corners show paired stiles |
+| Grey decking laid along the path of travel, with a metal seam at each joint | Grey boards laid lengthwise, a metal edge strip at each end and a metal frame below |
+| Railing on the road side and across the end; the sidewalk side is open, with a metal threshold | The road-side-rail modules and the corner pieces, with a metal strip on the open edge |
+
+The railing is a generic welded panel. It carries no lettering, logo or sign,
+and the bicycle racks in the photographs were not copied.
+
+### How they go together
+
+- **Straight modules** are open at both ends, so they run on from one to the
+  next. The standard module has a railing on both long sides. The road-side-rail
+  module has one railing and is open to the sidewalk, as in the photographs,
+  for a boardwalk that runs beside a patio fence.
+- **Corner pieces** have railings on the road side and across the outer end,
+  and are open toward the run and toward the sidewalk. One corner serves either
+  end, because it is square: turn it a quarter to suit. The approach version
+  adds a hazard marker on the end railing and goes at the end traffic reaches
+  first.
+- **Exact footprints.** Sizes are exact conversions (1 ft = 0.3048 m) and
+  nothing overhangs the deck, so a run does not drift.
+- The deck is 150 mm high, level with the sidewalk, and the top of the railing
+  is 1.15 m above the street.
+
+The first version of these modules, earlier the same day, had timber guards
+like the metric sections above. It was replaced by this one on request. The
+metric sections, patios and parklets keep their timber guards.
+
+**Clear width to check.** A 6 ft module is 1.83 m wide. With railings on both
+sides it has about 1.73 m clear between them; with a railing on the road side
+only it has about 1.78 m to the open edge. The published guidance asks for a
+2 m pedestrian detour, so these modules are narrower than that figure. They are
+modelled to the requested size; the 2.5 m metric section above remains for a
+2 m clear walkway.
 
 Checked the same way as the rest:
 
 - rendered at eye level, oblique and card size and reviewed
   ([sheet](calgary-details-v1/boardwalk-feet-review.jpg));
 - placed on the test street through the app's own placement code. A 45 ft run
-  of an approach corner, two 12 ft modules, one 9 ft module and a turned far
-  corner sits beside a sidewalk patio
+  of an approach corner, two 12 ft and one 9 ft road-side-rail modules and a
+  turned far corner sits beside a sidewalk patio
   ([run](calgary-details-v1/scene-boardwalk-feet-run.jpg),
-  [corner entrance](calgary-details-v1/scene-boardwalk-feet-corner.jpg)), and a
-  short run of two corners and one 9 ft module stands alone
-  ([short run](calgary-details-v1/scene-boardwalk-feet-short.jpg)). All 213
+  [corner entrance](calgary-details-v1/scene-boardwalk-feet-corner.jpg),
+  [walking along it](calgary-details-v1/scene-boardwalk-feet-walk.jpg)), and a
+  second run with railings on both sides stands alone
+  ([two-sided run](calgary-details-v1/scene-boardwalk-feet-short.jpg)). All 215
   local models passed the datum, size and anchor checks;
-- a tools test requires the four footprints to be exact conversions and the
-  end posts to sit inside the footprint, and a frontend test checks the
-  catalogue order and the sizes in feet;
+- a tools test requires the six footprints to be exact conversions, the
+  height to be 1.15 m, a stile inside each end and no bay longer than 6 ft, and
+  a frontend test checks the catalogue order and the sizes in feet;
 - in the real project page with a mocked backend, in a temporary browser trial
   that was not committed: searching `boardwalk` in **Access & levels** lists all
-  eight boardwalk pieces, the four new ones load from their static card images
-  without requesting a model file, and choosing the 12 ft module arms placement
-  ([screenshot](calgary-details-v1/app-boardwalk-feet.jpg)).
+  ten boardwalk pieces, the six new ones load from their static card images
+  without requesting a model file, and choosing a road-side-rail module arms
+  placement ([screenshot](calgary-details-v1/app-boardwalk-feet.jpg)).
 
-The kit is now 128 objects and the 124 earlier models, and their card images,
+The kit is now 130 objects and the 124 earlier models, and their card images,
 are byte-identical. The whole CI list was run again locally: lint with zero
 warnings, dead-code and type checks; `npx vitest run` with 512 files and 4,542
 tests passed; the 135 catalogue delivery tests; the asset and manifest checks,
-with 5,935 required runtime files; tools, hosted-asset and backend detail tests
-with 213 local rows and 368 extras; and the browser tests, 13 passed plus the
+with 5,939 required runtime files; tools, hosted-asset and backend detail tests
+with 215 local rows and 370 extras; and the browser tests, 13 passed plus the
 startup test. Not done here: placing these on the live map, which needs a real
 map key, and the full backend suite, which needs a database.
 
 ## Bundle budget after this work
 
 The eleven patio pieces left 5.3 KB of the 8,448 KB JavaScript budget. Before
-adding these four, every packed catalogue was moved to the shared-decoder
-transport, in its own commit, which freed 13.2 KB. A test now walks the source
-tree and requires every packed catalogue to decode to its exact source. With
-the four new rows the total is 8,430.1 KB, leaving 17.9 KB.
+adding the modules in feet, every packed catalogue was moved to the
+shared-decoder transport, in its own commit, which freed 13.2 KB. A test now
+walks the source tree and requires every packed catalogue to decode to its
+exact source. With the six new rows the total is 8,430.3 KB, leaving 17.7 KB.
 
 ## Verification of the first eleven pieces
 
