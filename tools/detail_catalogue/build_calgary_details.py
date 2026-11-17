@@ -2545,6 +2545,56 @@ def mural_confetti(s):
 
 
 # ---------------------------------------------------------------------------
+# District barriers: the 3 m road barrier in the colours of a business district,
+# carrying its logo on both long faces. The artwork is baked from each district's
+# own logo files by bake_district_logos.py into triangles that tile the face in
+# (u, v) metres, already split at the bend, so nothing here lies on top of
+# anything else. The logos belong to their business improvement areas.
+# ---------------------------------------------------------------------------
+DISTRICT_SHAPES = Path(__file__).with_name('district_logo_shapes.json')
+_district_art = {}
+
+
+def district_art(district):
+    if not _district_art:
+        baked = json.loads(DISTRICT_SHAPES.read_text(encoding='utf-8'))
+        face = baked['face']
+        assert abs(face['length'] - MURAL_LENGTH) < 1e-6 and abs(face['bend'] - MURAL_LOWER) < 1e-5 and abs(face['height'] - MURAL_HEIGHT) < 1e-5
+        _district_art.update(baked['districts'])
+    return _district_art[district]
+
+
+def district_barrier(s, district):
+    art = district_art(district)
+    mural_barrier(s, art['top'])
+    tones = [s.c(colour) for colour in art['colours']]
+    for a, b, c, tone in art['triangles']:
+        corners = [art['vertices'][index] for index in (a, b, c)]
+        upper = sum(v for _, v in corners) / 3 > MURAL_LOWER
+        for side in (-1, 1):
+            p, q, r = (mural_point(u, MURAL_LOWER if abs(v - MURAL_LOWER) < 1e-4 else v, side, upper, 0.0) for u, v in corners)
+            # keep each face's triangles wound to face outward
+            outward = ((q[2] - p[2]) * (r[0] - p[0]) - (q[0] - p[0]) * (r[2] - p[2])) * side > 0
+            s.tri(p, q, r, tones[tone]) if outward else s.tri(p, r, q, tones[tone])
+
+
+def district_barrier_kensington(s):
+    district_barrier(s, 'kensington')
+
+
+def district_barrier_inglewood(s):
+    district_barrier(s, 'inglewood')
+
+
+def district_barrier_fourth_street_purple(s):
+    district_barrier(s, 'fourth-street-purple')
+
+
+def district_barrier_fourth_street_green(s):
+    district_barrier(s, 'fourth-street-green')
+
+
+# ---------------------------------------------------------------------------
 # Seasonal patios: boardwalk sections, on-street patios, parklets and a sidewalk
 # patio. Dimensions follow the City of Calgary's published "Guidelines for
 # Seasonal Patios located on public property": a platform level with the
@@ -3984,6 +4034,10 @@ SPECS = [
     spec('barrier-planter-pink', 'Barrier planter · pink petunias', 'Planting', 'Black moulded 4 ft planter with forklift pockets and reflective tape on its ends, full of pink petunias and trailing lime vine.', barrier_planter_pink, 2951, '#e8559a'),
     spec('barrier-planter-purple', 'Barrier planter · purple petunias', 'Planting', 'Black moulded 4 ft planter with forklift pockets and reflective tape on its ends, full of purple petunias and trailing lime vine.', barrier_planter_purple, 2952, '#7b3fc4'),
     spec('long-planter', 'Long black planter', 'Planting', 'Black panelled 6 ft planter box on low feet, full of mixed summer annuals and trailing lime vine, for the road edge of a patio.', long_planter, 2953, '#c22a9a'),
+    spec('district-barrier-kensington', 'District barrier · Kensington', 'Traffic & safety', 'Repeatable 3 m road barrier with the Kensington district logo in burgundy on off-white. The logo belongs to its business association.', district_barrier_kensington, 2961, '#42031a'),
+    spec('district-barrier-inglewood', 'District barrier · Inglewood', 'Traffic & safety', 'Repeatable 3 m road barrier with the Inglewood district wordmark in yellow on red. The logo belongs to its business association.', district_barrier_inglewood, 2962, '#d84d2c'),
+    spec('district-barrier-fourth-street-purple', 'District barrier · Fourth Street · purple', 'Traffic & safety', 'Repeatable 3 m road barrier with the Fourth Street district logo in purple on white. The logo belongs to its business association.', district_barrier_fourth_street_purple, 2963, '#6c3991'),
+    spec('district-barrier-fourth-street-green', 'District barrier · Fourth Street · green', 'Traffic & safety', 'Repeatable 3 m road barrier with the Fourth Street district logo in green on white. The logo belongs to its business association.', district_barrier_fourth_street_green, 2964, '#23997c'),
 ]
 
 

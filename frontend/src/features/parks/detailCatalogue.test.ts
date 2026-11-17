@@ -32,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(397 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(401 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -119,8 +119,8 @@ describe("standalone detail catalogue", () => {
   });
   it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
     const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
-    expect(site).toHaveLength(147);
-    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(16_000_000);
+    expect(site).toHaveLength(151);
+    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(18_000_000);
     for (const model of site) {
       expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
       expect(model.kind).toBe("object");
@@ -170,6 +170,18 @@ describe("standalone detail catalogue", () => {
       }
     }
     expect(searchDetails("low-profile").map((m) => m.label)[0]).toBe("Low-profile barrier");
+    // District barriers carry a business district's logo; each says whose logo it is.
+    const districts = searchDetails("district barrier", "Traffic & safety");
+    expect(districts.map((m) => m.label)).toEqual([
+      "District barrier · Kensington",
+      "District barrier · Inglewood",
+      "District barrier · Fourth Street · purple",
+      "District barrier · Fourth Street · green",
+    ]);
+    for (const district of districts) {
+      expect(district.dimensions).toEqual(extras.find((m) => m.id === "detail-yyc-concrete-barrier")!.dimensions);
+      expect(district.description).toContain("belongs to its business association");
+    }
     // Planters for the road edge of a patio sit with the other planters and stay under 1.2 m.
     const planters = searchDetails("planter", "Planting").filter((m) => m.id.startsWith("detail-yyc-"));
     expect(planters.map((m) => m.label)).toEqual(["Barrier planter · pink petunias", "Barrier planter · purple petunias", "Long black planter"]);

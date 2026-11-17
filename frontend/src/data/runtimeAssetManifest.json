@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4189,
+    "explicitReferenceCount": 4197,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5973,
-    "requiredLogicalBytes": 13092853694,
+    "requiredFileCount": 5981,
+    "requiredLogicalBytes": 13094628490,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -26303,6 +26303,66 @@
       "logicalBytes": 3842
     },
     {
+      "url": "/park-kits/calgary-details-v1/district-barrier-fourth-street-green.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 264792,
+      "lfsOid": "3ab9b064b40419ba9a3e4093c421cbe42a5c7c1a5a9d5829a8e6d171cc4dda6d"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/district-barrier-fourth-street-green.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5048
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/district-barrier-fourth-street-purple.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 264792,
+      "lfsOid": "a8fba45a1930093021fc13019212f42f90cc48647d6c0bb93b34826f3ca42d97"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/district-barrier-fourth-street-purple.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5066
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/district-barrier-inglewood.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 99012,
+      "lfsOid": "a0ff1b22b840fd30081495d8f453e99fb8733a997f9c86774aaf783fe47917f4"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/district-barrier-inglewood.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5134
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/district-barrier-kensington.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 237412,
+      "lfsOid": "1827c6d4a936817850231bea4d675af97585fc5e34c8ebe3fa780d0ce35769bb"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/district-barrier-kensington.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6142
+    },
+    {
       "url": "/park-kits/calgary-details-v1/donation-box.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -36296,9 +36356,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 967,
-      "logicalBytes": 524538650,
-      "pathDigest": "c77e02ac39abec2813ee78053e6e803e1baf6bd0e6a39ac95196574d08f746e2"
+      "fileCount": 975,
+      "logicalBytes": 525426048,
+      "pathDigest": "bffb62772ad9140e7d0aa51588fd72ebbbb8602a050f42faa3e56198b3c11751"
     },
     {
       "name": "public-realm-skins",

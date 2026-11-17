@@ -41,11 +41,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_forty_seven_unique_items(self):
+    def test_one_hundred_and_fifty_one_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 147)
-        self.assertEqual(len({s['slug'] for s in specs}), 147)
-        self.assertEqual(len({s['label'] for s in specs}), 147)
+        self.assertEqual(len(specs), 151)
+        self.assertEqual(len({s['slug'] for s in specs}), 151)
+        self.assertEqual(len({s['label'] for s in specs}), 151)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -53,7 +53,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 147)
+        self.assertEqual(sum(counts.values()), 151)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -122,7 +122,7 @@ class CalgaryDetailsContract(unittest.TestCase):
                 self.assertEqual((row['offset'][0], row['offset'][2]), (0.0, 0.0))
                 self.assertTrue(lo[0] < 0 < hi[0] and lo[2] < 0 < hi[2])
             total += row['bytes']
-        self.assertLess(total, 16_000_000)
+        self.assertLess(total, 18_000_000)
 
     def test_line_carriers_are_centred_on_their_pole_for_chaining(self):
         for slug, span in (('utility-pole-lines', 30.0), ('lrt-catenary-pole', 40.0)):
@@ -179,6 +179,36 @@ class CalgaryDetailsContract(unittest.TestCase):
             # the plants spill a little past the box, never by more than 10 cm at either end
             self.assertTrue(length <= row['dimensions'][0] < length + .2, slug)
             self.assertEqual(row['category'], 'Planting')
+
+    def test_district_barriers_carry_baked_logo_artwork_that_tiles_the_face(self):
+        baked = json.loads((ROOT / 'tools/detail_catalogue/district_logo_shapes.json').read_text(encoding='utf-8'))
+        face = baked['face']
+        self.assertAlmostEqual(face['length'], self.module.MURAL_LENGTH)
+        self.assertAlmostEqual(face['bend'], self.module.MURAL_LOWER, places=5)
+        self.assertAlmostEqual(face['height'], self.module.MURAL_HEIGHT, places=5)
+        # every source file is recorded by hash, since the files themselves are not kept here
+        self.assertEqual(len(baked['sources']), 5)
+        for digest in baked['sources'].values():
+            self.assertRegex(digest, r'^[0-9a-f]{64}$')
+        plain = self.by_slug['concrete-barrier']
+        for district, slug in (('kensington', 'district-barrier-kensington'), ('inglewood', 'district-barrier-inglewood'),
+                               ('fourth-street-purple', 'district-barrier-fourth-street-purple'), ('fourth-street-green', 'district-barrier-fourth-street-green')):
+            art, row = baked['districts'][district], self.by_slug[slug]
+            area = 0.0
+            for a, b, c, tone in art['triangles']:
+                (ax, ay), (bx, by), (cx, cy) = (art['vertices'][i] for i in (a, b, c))
+                area += abs((bx - ax) * (cy - ay) - (cx - ax) * (by - ay)) / 2
+                self.assertLess(tone, len(art['colours']))
+                # no triangle straddles the bend, so each folds onto one slope
+                self.assertFalse(min(ay, by, cy) < face['bend'] - 1e-4 and max(ay, by, cy) > face['bend'] + 1e-4)
+            # the triangles cover the painted face exactly once: no gaps and nothing on top of anything else
+            self.assertAlmostEqual(area, face['length'] * face['height'], places=3, msg=district)
+            for u, v in art['vertices']:
+                self.assertTrue(-1e-6 <= u <= face['length'] + 1e-6 and -1e-6 <= v <= face['height'] + 1e-6)
+            # two painted faces, plus the bare barrier
+            self.assertGreater(row['triangles'], 2 * len(art['triangles']))
+            self.assertEqual(row['dimensions'], plain['dimensions'], slug)
+            self.assertIn('belongs to its business association', row['description'])
 
     def test_backend_allowlist_and_category_tiles(self):
         allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))
