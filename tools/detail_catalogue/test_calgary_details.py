@@ -187,7 +187,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertAlmostEqual(face['bend'], self.module.MURAL_LOWER, places=5)
         self.assertAlmostEqual(face['height'], self.module.MURAL_HEIGHT, places=5)
         # every source file is recorded by hash, since the files themselves are not kept here
-        self.assertEqual(len(baked['sources']), 4)
+        self.assertEqual(len(baked['sources']), 3)
         for digest in baked['sources'].values():
             self.assertRegex(digest, r'^[0-9a-f]{64}$')
         plain = self.by_slug['concrete-barrier']
@@ -209,6 +209,17 @@ class CalgaryDetailsContract(unittest.TestCase):
             self.assertGreater(row['triangles'], 2 * len(art['triangles']))
             self.assertEqual(row['dimensions'], plain['dimensions'], slug)
             self.assertIn('belongs to its business association', row['description'])
+            # paintable for real: a ground coat and at most two stencilled colours, flat, no gradients
+            self.assertLessEqual(len(art['colours']), 3, district)
+            painted = [art['vertices'][i] for a, b, c, tone in art['triangles'] if tone != len(art['colours']) - 1 for i in (a, b, c)]
+            length = (max(u for u, _ in painted) - min(u for u, _ in painted)) / face['length']
+            height = (max(v for _, v in painted) - min(v for _, v in painted)) / face['height']
+            # the artwork runs most of the length, so the ends are not left bare
+            self.assertGreater(length, .85, district)
+            if district != 'inglewood':
+                # and most of the height: little bare ground is left for anyone to write on
+                self.assertGreater(length, .9, district)
+                self.assertGreater(height, .75, district)
 
     def test_backend_allowlist_and_category_tiles(self):
         allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))

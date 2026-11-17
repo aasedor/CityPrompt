@@ -7,15 +7,38 @@ Calgary business improvement area on both long faces. They extend
 `calgary-details-v1` (now 151 objects, IDs prefixed `detail-yyc-`) and sit in
 **Traffic & safety**. Searching `district barrier` lists them.
 
-| Item | Artwork | Triangles |
-|---|---|---:|
-| District barrier · Kensington | Off-white wordmark on burgundy, with the roundel in an orange, blue and green gradient | 2,526 |
-| District barrier · Inglewood | Yellow wordmark on red | 858 |
-| District barrier · Fourth Street · purple | White 4 and wordmark on a ground that runs from indigo to pink | 2,734 |
-| District barrier · Fourth Street · green | White 4 and wordmark on a ground that runs from teal to green | 2,734 |
+| Item | Colours | Artwork | Triangles |
+|---|---|---|---:|
+| District barrier · Kensington | Burgundy, off-white, orange | Off-white wordmark and orange roundel on burgundy | 2,156 |
+| District barrier · Inglewood | Red, yellow | Yellow wordmark on red | 858 |
+| District barrier · Fourth Street · purple | Purple, white, pink | The name in two lines between two 4s, on purple | 2,868 |
+| District barrier · Fourth Street · green | Teal, white, green | The name in two lines between two 4s, on teal | 2,868 |
 
 Every one is 3.0 × 0.6 × 0.8 m, the footprint of the plain barrier and of the
 [painted barriers](MURAL_BARRIERS_2026-11-17.md), so they mix in one row.
+
+## Design brief
+
+These are meant to be painted on real barriers, so each design follows three
+rules, set after the first two versions were reviewed:
+
+1. **Two or three flat colours.** A ground coat, then one or two more colours.
+   No gradients and no shading.
+2. **Stencil-ready.** Every shape is a solid area of one colour with a clean
+   edge, so the logo can go on through a stencil.
+3. **Large, with little bare ground.** Bare surface invites graffiti, so the
+   artwork runs most of the length and height of the face.
+
+| Barrier | Colours | Artwork spans, of the face's length | Of its height |
+|---|---:|---:|---:|
+| Kensington | 3 | 95% | 76% |
+| Inglewood | 2 | 87% | 37% |
+| Fourth Street, both colourways | 3 | 91% | 90% |
+
+The Inglewood barrier was approved as it is and was not changed. Its wordmark is
+as wide as the barrier allows, but it is one line of low, wide letters, so it
+leaves more bare ground above and below than the other two. Two rows of the
+wordmark would close that if it matters on the street.
 
 ## Permission is needed before these ship
 
@@ -54,10 +77,10 @@ the K cut out.
 
 ### Source files
 
-The files are not kept in the repository. The four the tool reads are recorded
-by hash in `tools/detail_catalogue/district_logo_shapes.json` and here. The last
-two only supplied the colours of Fourth Street's two gradients, which are now
-written into the tool.
+The files are not kept in the repository. The three the tool reads are recorded
+by hash in `tools/detail_catalogue/district_logo_shapes.json` and here. The
+other three only supplied colours: Kensington's site icon, and the two files
+that show Fourth Street's 4 in green and in purple.
 
 | File name used by the tool | Where it came from | SHA-256 |
 |---|---|---|
@@ -76,16 +99,15 @@ this once, and writes `district_logo_shapes.json`, which the builder reads. The
 builder needs none of the tool's dependencies, and rebuilds are deterministic.
 
 - **Kensington** is read from the vector file, so its outlines are exact. The
-  roundel is sliced into 24 bands across the direction of the site icon's
-  gradient, which is measured from the icon, and each band takes the icon's
-  colour there. The K is a hole in the roundel, so the burgundy shows through.
+  roundel is orange and the wordmark off-white. The K is a hole in the roundel,
+  so the burgundy ground shows through.
 - **Inglewood** is traced from the 3,600 px wide image.
 - **Fourth Street's 4** is rebuilt from its geometry, which the artwork makes
   plain: an upright bar and a level bar with round ends, and the wedge joining
-  their tips. The artwork is white with soft tints that set the three parts
-  apart; here each part keeps its lightness and takes its tint from the ground
-  behind it. The wordmark is traced. The ground runs through the gradient in 24
-  bands along the barrier.
+  their tips. The association's artwork shades these with gradients. Here the
+  upright and wedge are white and the level bar, which lies over them, takes
+  the second colour, so the 4 still reads as two bars crossing. The name is
+  traced and split into its two words.
 - The background is cut around the logo, everything is split along the bend in
   the barrier's profile, and the pieces are triangulated so that neighbours
   share their edges point for point. The triangles cover the face exactly once.
@@ -95,42 +117,46 @@ builder needs none of the tool's dependencies, and rebuilds are deterministic.
   concrete.
 
 **Layout choices that are mine, not the associations'.** Each barrier is painted
-in a ground colour from its district, with the logo large across it. Kensington
-and Inglewood are shown whole and centred. Fourth Street's 4 and wordmark are
-set side by side, with the wordmark larger than in the association's own lockup,
-because at the lockup's proportions the wordmark would be about 4 cm tall on a
-barrier. Placing Kensington's gradient roundel beside the off-white wordmark,
-and running Fourth Street's gradient along the whole barrier, are my
-arrangements of each district's own colours.
+in a ground colour from its district. Kensington's logo is shown whole, 2.86 m
+wide, with the roundel in the district's orange instead of the gradient of its
+site icon. Fourth Street's name is stacked in two lines between a 4 at each end,
+which is not a lockup the association publishes; it is arranged that way so the
+artwork fills the face. The single flat colours stand in for each district's
+gradients: purple `#5a3491` and pink `#d08ab4`, or teal `#0f6166` and green
+`#3cc494`. The pink and green are lighter than in the artwork so the level bar
+stands clear of both the ground and the white.
 
-**Redesigned after feedback.** The first version set the Kensington and Fourth
-Street logos in their own colours on off-white and white barriers, which read
-as signs on plain concrete beside the Inglewood barrier. Both were redone the
-way the Inglewood one works: a full ground of district colour with the logo
-large and light on it. The Inglewood barrier is unchanged.
+**Redesigned twice after feedback.** The first version set the Kensington and
+Fourth Street logos in their own colours on off-white and white barriers, which
+read as signs on plain concrete. The second gave both a full ground of colour,
+with a gradient roundel for Kensington and a gradient ground for Fourth Street;
+that could not be painted with stencils and left bare ground around a small
+logo. This third version follows the design brief above. The Inglewood barrier
+is unchanged throughout.
 
 ## Verification
 
 - Every barrier was rendered at eye level, oblique and card size and reviewed
   ([sheet](calgary-details-v1/district-barriers-review.jpg)). The baked artwork
-  was also drawn flat and compared with the source logos. Changed after review:
-  the parts of the 4 were made to share their edges exactly, which removed a
-  hairline gap, and the gradients were given 24 bands in place of 14 and 16 so
-  the steps between colours are small. Agent review passed; independent human visual acceptance, and
-  the associations' own review of their logos, are open.
+  was also drawn flat and compared with the source logos. Agent review passed;
+  independent human visual acceptance, and the associations' own review of
+  their logos, are open.
 - Placed on the test street through the app's own placement code
   ([scene](calgary-details-v1/scene-district-barriers.jpg)). All 236 local
   models passed the datum, size and anchor checks.
 - A tools test requires the baked triangles to cover the face exactly, none to
   cross the bend, each barrier to share the plain barrier's dimensions and each
-  description to say whose logo it is. A frontend test checks the four names.
+  description to say whose logo it is. It also holds every design to the brief:
+  no more than three colours, and for Kensington and Fourth Street artwork that
+  spans over 90% of the length and 75% of the height. A frontend test checks
+  the four names.
 - In the real project page with a mocked backend, in a temporary browser trial
   that was not committed: the four are found by searching `district barrier`,
   load from their static card images without requesting a model file, and
   choosing one arms placement
   ([screenshot](calgary-details-v1/app-district-barriers.jpg)).
 - The 147 earlier models and their card images are byte-identical, and so is the
-  Inglewood barrier after the redesign of the other three.
+  Inglewood barrier after both redesigns of the other three.
 - The whole CI list was run locally: lint with zero warnings, dead-code and type
   checks; `npx vitest run` with 512 files and 4,542 tests passed; the 135
   catalogue delivery tests; the asset and manifest checks, with 5,981 required

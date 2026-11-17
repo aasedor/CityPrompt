@@ -684,7 +684,7 @@
     "explicitReferenceCount": 4197,
     "dynamicCollectionCount": 7,
     "requiredFileCount": 5981,
-    "requiredLogicalBytes": 13094924394,
+    "requiredLogicalBytes": 13094906770,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -26307,30 +26307,30 @@
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 312900,
-      "lfsOid": "ef7d73be8ff9a13a5eb55b320136d92a88b5c7bc6198bce76b9d76fd185f5556"
+      "logicalBytes": 328180,
+      "lfsOid": "e1c79d5cc2ca2490c4e544735c30132e2ad3330b14c36b337e276c97ef395272"
     },
     {
       "url": "/park-kits/calgary-details-v1/district-barrier-fourth-street-green.webp",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 5080
+      "logicalBytes": 6458
     },
     {
       "url": "/park-kits/calgary-details-v1/district-barrier-fourth-street-purple.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 312900,
-      "lfsOid": "9be9882d30ae3396a0c520833f9b77c38b864a949d428e384c6961457742554a"
+      "logicalBytes": 328180,
+      "lfsOid": "51bb8ca41e04c68d7e804e80c998ef4de38fa165524032d5e3c239222ee16562"
     },
     {
       "url": "/park-kits/calgary-details-v1/district-barrier-fourth-street-purple.webp",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 5104
+      "logicalBytes": 6426
     },
     {
       "url": "/park-kits/calgary-details-v1/district-barrier-inglewood.glb",
@@ -26352,15 +26352,15 @@
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 289168,
-      "lfsOid": "dbb00a2bf409026f0074a8937c8c7ec35d54420af50a3e5dc7538448b78b2d09"
+      "logicalBytes": 246988,
+      "lfsOid": "d87a7b2ea9126f04b15b3c6f36a9b25c4393eadf5b5bf62839dcd13dbebcd50f"
     },
     {
       "url": "/park-kits/calgary-details-v1/district-barrier-kensington.webp",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 6052
+      "logicalBytes": 6160
     },
     {
       "url": "/park-kits/calgary-details-v1/donation-box.glb",
@@ -36357,8 +36357,8 @@
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
       "fileCount": 975,
-      "logicalBytes": 525574000,
-      "pathDigest": "40e6cc98e96623ff0f7e53b4a9ebb62ef46e4aa9a8c193c76083ae512e0fb832"
+      "logicalBytes": 525565188,
+      "pathDigest": "781f94f75f15e3c3a03cf2d4f8e80c85f4154aa0ffc7b53d7e6bea39e372a034"
     },
     {
       "name": "public-realm-skins",
