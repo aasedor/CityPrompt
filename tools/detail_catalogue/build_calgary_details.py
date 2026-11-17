@@ -2288,6 +2288,252 @@ def concrete_barrier(s):
 
 
 # ---------------------------------------------------------------------------
+# Painted road barriers. The same 3 m precast section as the plain concrete
+# barrier, with an original mural on both long faces. The designs are our own
+# flat-colour compositions on local themes; none reproduces a real mural or
+# carries a program name, logo or wording.
+#
+# A mural is drawn in (u, v) metres: u runs 0 to 3 along the barrier and v runs
+# up the face from the top of the unpainted toe. Shapes are convex polygons that
+# tile the face without overlapping, then are folded over the bend in the
+# barrier's profile, so no painted surface ever lies on top of another.
+# ---------------------------------------------------------------------------
+MURAL_LENGTH = 3.0
+MURAL_LOWER = math.hypot(.305 - .2, .33 - .08)
+MURAL_UPPER = math.hypot(.2 - .125, .81 - .33)
+MURAL_HEIGHT = MURAL_LOWER + MURAL_UPPER
+BARRIER_CONCRETE = '#b9b6ae'
+
+
+def clip(polygon, a, b, c):
+    """The part of a convex (u, v) polygon where a*u + b*v >= c."""
+    out = []
+    for i, p in enumerate(polygon):
+        q = polygon[(i + 1) % len(polygon)]
+        dp, dq = a * p[0] + b * p[1] - c, a * q[0] + b * q[1] - c
+        if dp >= 0:
+            out.append(p)
+        if (dp > 0 > dq) or (dp < 0 < dq):
+            t = dp / (dp - dq)
+            out.append((p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t))
+    return out
+
+
+def polygon_area(polygon):
+    return abs(sum(p[0] * q[1] - q[0] * p[1] for p, q in zip(polygon, polygon[1:] + polygon[:1]))) / 2
+
+
+def mural_point(u, v, side, upper, proud):
+    """Map mural coordinates onto one long face. Each side reads left to right when faced."""
+    x = (MURAL_LENGTH / 2 - u) * side
+    if upper:
+        t = (v - MURAL_LOWER) / MURAL_UPPER
+        y, z, ny, nz = .2 - .075 * t, .33 + .48 * t, .48 / MURAL_UPPER, .075 / MURAL_UPPER
+    else:
+        t = v / MURAL_LOWER
+        y, z, ny, nz = .305 - .105 * t, .08 + .25 * t, .25 / MURAL_LOWER, .105 / MURAL_LOWER
+    return (x, side * (y + ny * proud), z + nz * proud)
+
+
+def paint(s, polygon, colour, proud=0.0):
+    """One convex mural shape on both faces. Only a few accents sit proud, above the tiled field."""
+    polygon = clip(clip(polygon, 1, 0, 0), -1, 0, -MURAL_LENGTH)
+    for upper, low, high in ((False, 0.0, MURAL_LOWER), (True, MURAL_LOWER, MURAL_HEIGHT)):
+        piece = clip(clip(polygon, 0, 1, low), 0, -1, -high)
+        if len(piece) < 3 or polygon_area(piece) < 2e-6:
+            continue
+        for side in (-1, 1):
+            s.poly([mural_point(u, v, side, upper, proud) for u, v in piece], colour)
+
+
+def paint_bands(s, curves, colours, columns=36):
+    """Stacked colour bands split by curves v = f(u), bottom to top. One more colour than curves."""
+    assert len(colours) == len(curves) + 1
+
+    def levels(u):
+        out, floor = [-.1], -.1
+        for curve in curves:
+            floor = max(floor, curve(u))
+            out.append(floor)
+        return out + [MURAL_HEIGHT + .1]
+
+    for k in range(columns):
+        u0, u1 = MURAL_LENGTH * k / columns, MURAL_LENGTH * (k + 1) / columns
+        a, b = levels(u0), levels(u1)
+        for i, colour in enumerate(colours):
+            paint(s, [(u0, a[i]), (u1, b[i]), (u1, b[i + 1]), (u0, a[i + 1])], colour)
+
+
+def paint_above(s, polygon, colour, curve, columns=36, proud=.004):
+    """An accent shown only above a band curve, such as a sun rising behind a skyline."""
+    for k in range(columns):
+        u0, u1 = MURAL_LENGTH * k / columns, MURAL_LENGTH * (k + 1) / columns
+        v0, v1 = curve(u0), curve(u1)
+        piece = clip(clip(polygon, 1, 0, u0), -1, 0, -u1)
+        # keep the side of the line through (u0, v0) and (u1, v1) that lies above it
+        piece = clip(piece, -(v1 - v0), u1 - u0, -(v1 - v0) * u0 + (u1 - u0) * v0)
+        if len(piece) >= 3:
+            paint(s, piece, colour, proud)
+
+
+def disc(u, v, radius, sides=16):
+    return [(u + math.cos(k * math.tau / sides) * radius, v + math.sin(k * math.tau / sides) * radius) for k in range(sides)]
+
+
+def zigzag(x):
+    """Triangle wave between 0 and 1 with period 1."""
+    return 2 * abs(x - math.floor(x) - .5)
+
+
+def wave(u, cycles, phase=0.0):
+    """Sine that repeats every barrier length, so adjoining sections join cleanly."""
+    return math.sin(math.tau * (u / MURAL_LENGTH * cycles) + phase)
+
+
+def mural_barrier(s, top):
+    """The barrier without its two painted faces: ends, toe, top, underside and lifting slots."""
+    half = MURAL_LENGTH / 2
+    for sx in (-1, 1):
+        x = sx * half
+        s.poly([(x, y, z) for y, z in ((-.305, 0), (.305, 0), (.305, .08), (.2, .33), (-.2, .33), (-.305, .08))], BARRIER_CONCRETE)
+        s.poly([(x, y, z) for y, z in ((-.2, .33), (.2, .33), (.125, .81), (-.125, .81))], BARRIER_CONCRETE)
+        s.box((sx * (half + .002), 0, .45), (.008, .1, .5), '#8f8c84')
+    for sy in (-1, 1):
+        s.quad((-half, sy * .305, 0), (half, sy * .305, 0), (half, sy * .305, .08), (-half, sy * .305, .08), '#a5a29a')
+    s.quad((-half, -.125, .81), (half, -.125, .81), (half, .125, .81), (-half, .125, .81), top)
+    s.quad((-half, -.305, 0), (half, -.305, 0), (half, .305, 0), (-half, .305, 0), BARRIER_CONCRETE)
+    for x in (-.9, .9):
+        s.box((x, 0, .05), (.3, .63, .1), '#55524c')
+
+
+def mural_foothills(s):
+    mural_barrier(s, '#3a4a6b')
+    def prairie(u):
+        return .09 + .02 * wave(u, 2)
+    def foothills(u):
+        return .24 + .045 * wave(u, 2, 1.0) + .025 * wave(u, 5, .5)
+    def peaks(u):
+        return .39 + .17 * zigzag(u / MURAL_LENGTH * 3 + .1) + .07 * zigzag(u / MURAL_LENGTH * 7 + .4)
+    def snow(u):
+        return min(peaks(u), max(peaks(u) - .055, .5))
+    paint_bands(s, [prairie, foothills, snow, peaks, lambda u: .655, lambda u: .71],
+                ['#d8b24a', '#4f7a5a', '#3a4a6b', '#f1f0ea', '#f6c15b', '#f08a5d', '#7a5a9a'], columns=42)
+    paint_above(s, disc(2.32, .56, .1), '#fff1b8', peaks, columns=42)
+
+
+def mural_chinook(s):
+    mural_barrier(s, '#5b3a78')
+    def horizon(u):
+        return .085 + .012 * wave(u, 3)
+    def range_line(u):
+        return .15 + .035 * zigzag(u / MURAL_LENGTH * 4 + .3) + .02 * zigzag(u / MURAL_LENGTH * 9)
+    def arch(u):
+        return .3 + .3 * math.sin(math.pi * u / MURAL_LENGTH) ** .8
+    paint_bands(s, [horizon, range_line, lambda u: arch(u) - .11, arch, lambda u: arch(u) + .07, lambda u: arch(u) + .15],
+                ['#c99a3c', '#2f3a4f', '#fbd27a', '#f7e3a1', '#e7733c', '#b8456b', '#5b3a78'], columns=36)
+    paint_above(s, disc(1.5, .16, .1), '#fff7d6', range_line)
+
+
+def mural_river(s):
+    mural_barrier(s, '#0f4c75')
+    count = 7
+    curves = [(lambda u, i=i: MURAL_HEIGHT * i / count + .035 * wave(u, 2, i * .9) + .018 * wave(u, 3, i * 1.7)) for i in range(1, count)]
+    paint_bands(s, curves, ['#0f4c75', '#1b6ca8', '#3fa7d6', '#9bd4e4', '#f1f0ea', '#59c3a3', '#1f7a6c'], columns=30)
+
+
+def mural_mosaic(s):
+    mural_barrier(s, '#073b4c')
+    palette = ['#ef476f', '#ffd166', '#06d6a0', '#118ab2', '#073b4c', '#f78c6b', '#f1f0ea']
+    cols, rows = 12, 5
+    grid = {}
+    for i in range(cols + 1):
+        for j in range(rows + 1):
+            du = 0 if i in (0, cols) else (s.random() - .5) * .11
+            dv = 0 if j in (0, rows) else (s.random() - .5) * .07
+            grid[i, j] = (MURAL_LENGTH * i / cols + du, MURAL_HEIGHT * j / rows + dv)
+    for i in range(cols):
+        for j in range(rows):
+            a, b, c, d = grid[i, j], grid[i + 1, j], grid[i + 1, j + 1], grid[i, j + 1]
+            first, second = ((a, b, c), (a, c, d)) if (i + j) % 2 else ((a, b, d), (b, c, d))
+            last = None
+            for triangle in (first, second):
+                tone = palette[int(s.random() * len(palette))]
+                while tone == last:
+                    tone = palette[int(s.random() * len(palette))]
+                last = tone
+                paint(s, list(triangle), tone)
+
+
+def mural_chevron(s):
+    mural_barrier(s, '#111827')
+    pitch, tones = .15, ['#111827', '#f1f0ea', '#ef476f', '#ffd166']
+    curves = [(lambda u, i=i: i * pitch - .2 + .22 * zigzag(u / MURAL_LENGTH * 6)) for i in range(1, 8)]
+    paint_bands(s, curves, [tones[i % len(tones)] for i in range(8)], columns=12)
+
+
+def mural_quilt(s):
+    mural_barrier(s, '#2f4b6e')
+    palette = ['#9b2d30', '#d9a441', '#f1e9d2', '#2f4b6e', '#7a8f6a']
+    cols, rows = 12, 3
+    w, h = MURAL_LENGTH / cols, MURAL_HEIGHT / rows
+    for i in range(cols):
+        for j in range(rows):
+            u, v = i * w, j * h
+            a, b, c, d, m = (u, v), (u + w, v), (u + w, v + h), (u, v + h), (u + w / 2, v + h / 2)
+            first = palette[int(s.random() * len(palette))]
+            second = palette[(palette.index(first) + 1 + int(s.random() * (len(palette) - 1))) % len(palette)]
+            kind = int(s.random() * 3)
+            if kind == 0:
+                pieces = [((a, b, c), first), ((a, c, d), second)]
+            elif kind == 1:
+                pieces = [((a, b, d), first), ((b, c, d), second)]
+            else:
+                pieces = [((a, b, m), first), ((b, c, m), second), ((c, d, m), first), ((d, a, m), second)]
+            for points, tone in pieces:
+                paint(s, list(points), tone)
+
+
+def mural_aspen(s):
+    mural_barrier(s, '#e6b93a')
+    trunks = [(.16, .1), (.47, .13), (.83, .09), (1.12, .12), (1.5, .14), (1.86, .1), (2.14, .12), (2.52, .13), (2.82, .09)]
+    edges = [0.0] + [e for centre, width in trunks for e in (centre - width / 2, centre + width / 2)] + [MURAL_LENGTH]
+    def canopy(u):
+        return .47 + .05 * wave(u, 4) + .03 * wave(u, 9, 1.0)
+    def ground(u):
+        return .085 + .018 * wave(u, 3, .5)
+    for k, (u0, u1) in enumerate(zip(edges, edges[1:])):
+        if k % 2:
+            paint(s, [(u0, -.1), (u1, -.1), (u1, MURAL_HEIGHT + .1), (u0, MURAL_HEIGHT + .1)], '#f1eee4')
+            centre = (u0 + u1) / 2
+            for _ in range(4):
+                v = .06 + s.random() * (MURAL_HEIGHT - .12)
+                half = (u1 - u0) * (.18 + s.random() * .2)
+                side = -1 if s.random() < .5 else 1
+                paint(s, [(centre + side * (u1 - u0) * .12 - half, v), (centre + side * (u1 - u0) * .12 + half, v + .006), (centre + side * (u1 - u0) * .12, v + .03)], '#2a2623', proud=.004)
+            continue
+        steps = max(1, round((u1 - u0) / .09))
+        for n in range(steps):
+            a, b = u0 + (u1 - u0) * n / steps, u0 + (u1 - u0) * (n + 1) / steps
+            levels = [(-.1, -.1), (ground(a), ground(b)), (canopy(a), canopy(b)), (MURAL_HEIGHT + .1, MURAL_HEIGHT + .1)]
+            for (low, high), tone in zip(zip(levels, levels[1:]), ('#6f8a3c', '#8ec3d6', '#e6b93a')):
+                paint(s, [(a, low[0]), (b, low[1]), (b, high[1]), (a, high[0])], tone)
+
+
+def mural_confetti(s):
+    mural_barrier(s, '#1f5f6b')
+    paint(s, [(0, -.1), (MURAL_LENGTH, -.1), (MURAL_LENGTH, MURAL_HEIGHT + .1), (0, MURAL_HEIGHT + .1)], '#1f5f6b')
+    tones, placed = ['#ffd166', '#ef476f', '#f1f0ea', '#06d6a0', '#f78c6b'], []
+    for _ in range(400):
+        radius = .035 + s.random() * .075
+        u, v = radius + s.random() * (MURAL_LENGTH - 2 * radius), radius + .01 + s.random() * (MURAL_HEIGHT - 2 * radius - .02)
+        if all(math.hypot(u - pu, v - pv) > radius + pr + .02 for pu, pv, pr in placed):
+            placed.append((u, v, radius))
+            paint(s, disc(u, v, radius, 14), tones[len(placed) % len(tones)], proud=.004)
+        if len(placed) >= 46:
+            break
+
+
+# ---------------------------------------------------------------------------
 # River and city edge.
 # ---------------------------------------------------------------------------
 def open_hull(s, rings, tones, split):
@@ -3085,6 +3331,15 @@ SPECS = [
     spec('osprey-platform', 'Osprey nesting platform', WILDLIFE, 'Pandion haliaetus · tall pole with a stick nest and a perched osprey, as raised along the rivers. Static model.', osprey_platform, 2745, '#6e5a48'),
     spec('horses', 'Horses', 'Landscape', 'Two ranch horses, a bay standing and a buckskin grazing, for acreages at the city edge. Static model.', horses, 2746, '#7a4a2c'),
     spec('cattle', 'Cattle', 'Landscape', 'Two beef cattle, a white-faced red cow and a black cow grazing, for foothills ranchland. Static model.', cattle, 2747, '#7a3b22'),
+    # --- painted road barriers: original murals on the 3 m concrete barrier ---
+    spec('mural-barrier-foothills', 'Mural barrier · Foothills sunrise', 'Traffic & safety', 'Repeatable 3 m road barrier painted with a sunrise over peaks, foothills and prairie. Original design.', mural_foothills, 2801, '#f08a5d'),
+    spec('mural-barrier-chinook', 'Mural barrier · Chinook arch', 'Traffic & safety', 'Repeatable 3 m road barrier painted with a chinook arch of sunset cloud over the range. Original design.', mural_chinook, 2802, '#b8456b'),
+    spec('mural-barrier-river', 'Mural barrier · River ribbons', 'Traffic & safety', 'Repeatable 3 m road barrier painted with flowing bands of river blue and green. Original design.', mural_river, 2803, '#1b6ca8'),
+    spec('mural-barrier-mosaic', 'Mural barrier · Triangle mosaic', 'Traffic & safety', 'Repeatable 3 m road barrier painted with a bright mosaic of irregular triangles. Original design.', mural_mosaic, 2804, '#06d6a0'),
+    spec('mural-barrier-chevron', 'Mural barrier · Chevrons', 'Traffic & safety', 'Repeatable 3 m road barrier painted with bold zigzag chevrons. Original design.', mural_chevron, 2805, '#ef476f'),
+    spec('mural-barrier-quilt', 'Mural barrier · Prairie quilt', 'Traffic & safety', 'Repeatable 3 m road barrier painted as patchwork quilt blocks in barn red, mustard and denim. Original design.', mural_quilt, 2806, '#9b2d30'),
+    spec('mural-barrier-aspen', 'Mural barrier · Aspen grove', 'Traffic & safety', 'Repeatable 3 m road barrier painted with white aspen trunks under a gold canopy. Original design.', mural_aspen, 2807, '#e6b93a'),
+    spec('mural-barrier-confetti', 'Mural barrier · Confetti', 'Traffic & safety', 'Repeatable 3 m road barrier painted with bright dots on deep teal. Original design.', mural_confetti, 2808, '#1f5f6b'),
 ]
 
 

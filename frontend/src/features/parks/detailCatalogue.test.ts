@@ -32,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(355 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(363 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -119,8 +119,8 @@ describe("standalone detail catalogue", () => {
   });
   it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
     const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
-    expect(site).toHaveLength(105);
-    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(10_500_000);
+    expect(site).toHaveLength(113);
+    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(12_000_000);
     for (const model of site) {
       expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
       expect(model.kind).toBe("object");
@@ -154,6 +154,14 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails("bus", "Vehicles").map((m) => m.label)).toEqual(["City bus", "School bus"]);
     expect(searchDetails("ranch", "Landscape").map((m) => m.label)).toEqual(expect.arrayContaining(["Horses", "Cattle"]));
     expect(searchDetails("excavator").map((m) => m.id)).toEqual(["detail-yyc-excavator"]);
+    // Painted road barriers share the plain barrier's footprint, so one can replace another in a row.
+    const murals = searchDetails("mural barrier", "Traffic & safety");
+    expect(murals).toHaveLength(8);
+    const plain = extras.find((m) => m.id === "detail-yyc-concrete-barrier")!;
+    for (const mural of murals) {
+      expect(mural.dimensions).toEqual(plain.dimensions);
+      expect(mural.description).toContain("Original design.");
+    }
     expect(searchDetails("cart", "Street furniture").map((m) => m.id)).toEqual([
       "detail-yyc-waste-cart-black",
       "detail-yyc-waste-cart-blue",

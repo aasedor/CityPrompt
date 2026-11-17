@@ -8798,5 +8798,213 @@
     "meshes": 1,
     "bytes": 199984,
     "thumbnailUrl": "/park-kits/calgary-details-v1/cattle.webp"
+  },
+  {
+    "id": "detail-yyc-mural-barrier-foothills",
+    "label": "Mural barrier \u00b7 Foothills sunrise",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m road barrier painted with a sunrise over peaks, foothills and prairie. Original design.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/mural-barrier-foothills.glb",
+    "color": "#f08a5d",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mural_foothills",
+    "sha256": "13fc8b662e6e839a4492b61524b7bfd051edde22bc9f341a198a5758dbeed262",
+    "triangles": 2730,
+    "meshes": 1,
+    "bytes": 312416,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-foothills.webp"
+  },
+  {
+    "id": "detail-yyc-mural-barrier-chinook",
+    "label": "Mural barrier \u00b7 Chinook arch",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m road barrier painted with a chinook arch of sunset cloud over the range. Original design.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/mural-barrier-chinook.glb",
+    "color": "#b8456b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mural_chinook",
+    "sha256": "5fa3b4925701b8b8867b7683d9acd30fb9603ef9d86d148e6196b2cbff268abb",
+    "triangles": 2436,
+    "meshes": 1,
+    "bytes": 278896,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-chinook.webp"
+  },
+  {
+    "id": "detail-yyc-mural-barrier-river",
+    "label": "Mural barrier \u00b7 River ribbons",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m road barrier painted with flowing bands of river blue and green. Original design.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/mural-barrier-river.glb",
+    "color": "#1b6ca8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mural_river",
+    "sha256": "f47cd258154d1edd98d63cd99f3478a7fe8350e6c299cac6e3e5ae50a6c4aff7",
+    "triangles": 1996,
+    "meshes": 1,
+    "bytes": 228732,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-river.webp"
+  },
+  {
+    "id": "detail-yyc-mural-barrier-mosaic",
+    "label": "Mural barrier \u00b7 Triangle mosaic",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m road barrier painted with a bright mosaic of irregular triangles. Original design.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/mural-barrier-mosaic.glb",
+    "color": "#06d6a0",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mural_mosaic",
+    "sha256": "ac09b9435c50349484fafe9758dac171244de8e8387013be95cbd0cb10a5d2cd",
+    "triangles": 1000,
+    "meshes": 1,
+    "bytes": 115188,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-mosaic.webp"
+  },
+  {
+    "id": "detail-yyc-mural-barrier-chevron",
+    "label": "Mural barrier \u00b7 Chevrons",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m road barrier painted with bold zigzag chevrons. Original design.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/mural-barrier-chevron.glb",
+    "color": "#ef476f",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mural_chevron",
+    "sha256": "129986f4873e21ce119a497e2f2b086000bd962364cfaa557a47ed1b9e3d59e2",
+    "triangles": 1036,
+    "meshes": 1,
+    "bytes": 119296,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-chevron.webp"
+  },
+  {
+    "id": "detail-yyc-mural-barrier-quilt",
+    "label": "Mural barrier \u00b7 Prairie quilt",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m road barrier painted as patchwork quilt blocks in barn red, mustard and denim. Original design.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/mural-barrier-quilt.glb",
+    "color": "#9b2d30",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mural_quilt",
+    "sha256": "741cb06da83475ae78a7929eefb57df2f7d0982656abeb26fb1a4b8904f4cd5d",
+    "triangles": 900,
+    "meshes": 1,
+    "bytes": 103788,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-quilt.webp"
+  },
+  {
+    "id": "detail-yyc-mural-barrier-aspen",
+    "label": "Mural barrier \u00b7 Aspen grove",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m road barrier painted with white aspen trunks under a gold canopy. Original design.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/mural-barrier-aspen.glb",
+    "color": "#e6b93a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mural_aspen",
+    "sha256": "6844efea880f8be6dbef077cb1112ae3e3e5f3a05c8a2b5706724e738256d0fc",
+    "triangles": 1182,
+    "meshes": 1,
+    "bytes": 135936,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-aspen.webp"
+  },
+  {
+    "id": "detail-yyc-mural-barrier-confetti",
+    "label": "Mural barrier \u00b7 Confetti",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m road barrier painted with bright dots on deep teal. Original design.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/mural-barrier-confetti.glb",
+    "color": "#1f5f6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:mural_confetti",
+    "sha256": "1d24db381e843a5944361cc2e2fd7345bac6b223f830ff047e0a9a0d936bbffd",
+    "triangles": 1460,
+    "meshes": 1,
+    "bytes": 167636,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-confetti.webp"
   }
 ]
