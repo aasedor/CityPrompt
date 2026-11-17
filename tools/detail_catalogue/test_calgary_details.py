@@ -2,6 +2,7 @@
 import hashlib
 import importlib.util
 import json
+import math
 from pathlib import Path
 import struct
 import sys
@@ -40,11 +41,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_thirty_six_unique_items(self):
+    def test_one_hundred_and_forty_seven_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 136)
-        self.assertEqual(len({s['slug'] for s in specs}), 136)
-        self.assertEqual(len({s['label'] for s in specs}), 136)
+        self.assertEqual(len(specs), 147)
+        self.assertEqual(len({s['slug'] for s in specs}), 147)
+        self.assertEqual(len({s['label'] for s in specs}), 147)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -52,7 +53,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 136)
+        self.assertEqual(sum(counts.values()), 147)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -121,7 +122,7 @@ class CalgaryDetailsContract(unittest.TestCase):
                 self.assertEqual((row['offset'][0], row['offset'][2]), (0.0, 0.0))
                 self.assertTrue(lo[0] < 0 < hi[0] and lo[2] < 0 < hi[2])
             total += row['bytes']
-        self.assertLess(total, 13_500_000)
+        self.assertLess(total, 16_000_000)
 
     def test_line_carriers_are_centred_on_their_pole_for_chaining(self):
         for slug, span in (('utility-pole-lines', 30.0), ('lrt-catenary-pole', 40.0)):
@@ -154,6 +155,30 @@ class CalgaryDetailsContract(unittest.TestCase):
             self.assertNotEqual(black['sha256'], red['sha256'], slug)
             self.assertIn('black steel', black['description'].lower())
             self.assertIn('red steel', red['description'].lower())
+
+    def test_low_profile_barriers_and_planters_for_the_road_edge_of_a_patio(self):
+        plain = self.by_slug['low-profile-barrier']
+        self.assertEqual(plain['dimensions'], [3.0, 0.62, 0.5])
+        designs = ('foothills', 'chinook', 'river', 'mosaic', 'chevron', 'quilt', 'aspen', 'confetti')
+        for design in designs:
+            low, tall = self.by_slug[f'low-profile-mural-{design}'], self.by_slug[f'mural-barrier-{design}']
+            # painted and plain sections share a footprint, so they mix in one row
+            self.assertEqual(low['dimensions'], plain['dimensions'], design)
+            self.assertIn('Original design.', low['description'])
+            # each low-profile mural carries the same design as the tall barrier of that name
+            self.assertEqual(low['label'].split(' · ')[1], tall['label'].split(' · ')[1])
+            self.assertEqual(low['color'], tall['color'])
+        # the sloped face is half the height of the tall barrier's painted face, so murals fit at half scale
+        self.assertAlmostEqual(self.module.LOW_FACE, self.module.MURAL_HEIGHT / 2)
+        self.assertAlmostEqual(math.hypot(self.module.LOW_RUN, self.module.LOW_RISE), self.module.LOW_FACE)
+        for slug, length in (('barrier-planter-pink', 1.22), ('barrier-planter-purple', 1.22), ('long-planter', 1.83)):
+            row = self.by_slug[slug]
+            # planter and plants together stay under 1.2 m above the street
+            self.assertLess(row['dimensions'][2], 1.2, slug)
+            self.assertGreater(row['dimensions'][2], .85, slug)
+            # the plants spill a little past the box, never by more than 10 cm at either end
+            self.assertTrue(length <= row['dimensions'][0] < length + .2, slug)
+            self.assertEqual(row['category'], 'Planting')
 
     def test_backend_allowlist_and_category_tiles(self):
         allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))

@@ -9273,9 +9273,9 @@
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low concrete traffic barrier, half a metre tall, for the road end of a patio or boardwalk.",
     "dimensions": [
-      3.01,
+      3.0,
       0.62,
-      0.516
+      0.5
     ],
     "url": "/park-kits/calgary-details-v1/low-profile-barrier.glb",
     "color": "#b9b6ae",
@@ -9287,10 +9287,10 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:low_profile_barrier",
-    "sha256": "54ce91a61f5f6e9d705c52ba817c9f9675f2700f3d76f56f54211a75308be8e8",
-    "triangles": 120,
+    "sha256": "8e31640c4dc1a803650bde8ab23938b07d52f2d0dfa7dddb250904a49dca2aa3",
+    "triangles": 56,
     "meshes": 1,
-    "bytes": 14860,
+    "bytes": 7516,
     "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-barrier.webp"
   },
   {
@@ -9604,5 +9604,291 @@
     "meshes": 1,
     "bytes": 27452,
     "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail-black.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-mural-foothills",
+    "label": "Low-profile mural barrier \u00b7 Foothills sunrise",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low-profile barrier painted with a sunrise over peaks, foothills and prairie. Original design.",
+    "dimensions": [
+      3.0,
+      0.62,
+      0.5
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-mural-foothills.glb",
+    "color": "#f08a5d",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_mural_foothills",
+    "sha256": "2bbbea1a7c770c2ec3baf9e73ebc16ca60ea25d7add3d12dd6a374f914a6aad7",
+    "triangles": 2322,
+    "meshes": 1,
+    "bytes": 265872,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-foothills.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-mural-chinook",
+    "label": "Low-profile mural barrier \u00b7 Chinook arch",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low-profile barrier painted with a chinook arch of sunset cloud over the range. Original design.",
+    "dimensions": [
+      3.0,
+      0.62,
+      0.5
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-mural-chinook.glb",
+    "color": "#b8456b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_mural_chinook",
+    "sha256": "563f1778cc9dec28acfe704086dd695303e3dc4085a3dbd115d07009a0135919",
+    "triangles": 2108,
+    "meshes": 1,
+    "bytes": 241472,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-chinook.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-mural-river",
+    "label": "Low-profile mural barrier \u00b7 River ribbons",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low-profile barrier painted with flowing bands of river blue and green. Original design.",
+    "dimensions": [
+      3.0,
+      0.62,
+      0.5
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-mural-river.glb",
+    "color": "#1b6ca8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_mural_river",
+    "sha256": "227c33f57d915c958ce8b0e9d7a07514ff7b6e9beb57dc0ffb7a04daa6440777",
+    "triangles": 1732,
+    "meshes": 1,
+    "bytes": 198604,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-river.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-mural-mosaic",
+    "label": "Low-profile mural barrier \u00b7 Triangle mosaic",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low-profile barrier painted with a bright mosaic of irregular triangles. Original design.",
+    "dimensions": [
+      3.0,
+      0.62,
+      0.5
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-mural-mosaic.glb",
+    "color": "#06d6a0",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_mural_mosaic",
+    "sha256": "33171add401125e6bda97bc21e4f086e529fcf1041f34b1a98778df6284666b2",
+    "triangles": 1492,
+    "meshes": 1,
+    "bytes": 171244,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-mosaic.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-mural-chevron",
+    "label": "Low-profile mural barrier \u00b7 Chevrons",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low-profile barrier painted with bold zigzag chevrons. Original design.",
+    "dimensions": [
+      3.0,
+      0.62,
+      0.5
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-mural-chevron.glb",
+    "color": "#ef476f",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_mural_chevron",
+    "sha256": "f613c2b704232637d9db0d40b0316296557392df17e4ee290d8182daa85ea140",
+    "triangles": 1396,
+    "meshes": 1,
+    "bytes": 160304,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-chevron.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-mural-quilt",
+    "label": "Low-profile mural barrier \u00b7 Prairie quilt",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low-profile barrier painted as patchwork quilt blocks in barn red, mustard and denim. Original design.",
+    "dimensions": [
+      3.0,
+      0.62,
+      0.5
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-mural-quilt.glb",
+    "color": "#9b2d30",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_mural_quilt",
+    "sha256": "43ec093577264517f7a5e35fa1c12fb2134f142667d4481816b113fa290255d0",
+    "triangles": 1156,
+    "meshes": 1,
+    "bytes": 132940,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-quilt.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-mural-aspen",
+    "label": "Low-profile mural barrier \u00b7 Aspen grove",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low-profile barrier painted with white aspen trunks under a gold canopy. Original design.",
+    "dimensions": [
+      3.0,
+      0.62,
+      0.5
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-mural-aspen.glb",
+    "color": "#e6b93a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_mural_aspen",
+    "sha256": "672e4466dc25bcff45f6602d70950eaf8dce27f786cd12f5701142c8dc0d5c32",
+    "triangles": 1732,
+    "meshes": 1,
+    "bytes": 198604,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-aspen.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-mural-confetti",
+    "label": "Low-profile mural barrier \u00b7 Confetti",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low-profile barrier painted with bright dots on deep teal. Original design.",
+    "dimensions": [
+      3.0,
+      0.62,
+      0.5
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-mural-confetti.glb",
+    "color": "#1f5f6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_mural_confetti",
+    "sha256": "a49d4c8036c970784b38c5d68517ae10b7c5d4bcfed2d7622c9721662f1de15c",
+    "triangles": 2644,
+    "meshes": 1,
+    "bytes": 302580,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-confetti.webp"
+  },
+  {
+    "id": "detail-yyc-barrier-planter-pink",
+    "label": "Barrier planter \u00b7 pink petunias",
+    "category": "Planting",
+    "description": "Black moulded 4 ft planter with forklift pockets and reflective tape on its ends, full of pink petunias and trailing lime vine.",
+    "dimensions": [
+      1.312,
+      0.781,
+      0.966
+    ],
+    "url": "/park-kits/calgary-details-v1/barrier-planter-pink.glb",
+    "color": "#e8559a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:barrier_planter_pink",
+    "sha256": "06400db7e43f422981f5241c55f84ac0e331150a512a4d526fe113931dd8216d",
+    "triangles": 1559,
+    "meshes": 1,
+    "bytes": 178924,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/barrier-planter-pink.webp"
+  },
+  {
+    "id": "detail-yyc-barrier-planter-purple",
+    "label": "Barrier planter \u00b7 purple petunias",
+    "category": "Planting",
+    "description": "Black moulded 4 ft planter with forklift pockets and reflective tape on its ends, full of purple petunias and trailing lime vine.",
+    "dimensions": [
+      1.321,
+      0.78,
+      0.976
+    ],
+    "url": "/park-kits/calgary-details-v1/barrier-planter-purple.glb",
+    "color": "#7b3fc4",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:barrier_planter_purple",
+    "sha256": "9adf62d41090aca4f6779fd5631df43dbe690e302829343be95850da240ac71c",
+    "triangles": 1549,
+    "meshes": 1,
+    "bytes": 177788,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/barrier-planter-purple.webp"
+  },
+  {
+    "id": "detail-yyc-long-planter",
+    "label": "Long black planter",
+    "category": "Planting",
+    "description": "Black panelled 6 ft planter box on low feet, full of mixed summer annuals and trailing lime vine, for the road edge of a patio.",
+    "dimensions": [
+      1.898,
+      0.781,
+      0.958
+    ],
+    "url": "/park-kits/calgary-details-v1/long-planter.glb",
+    "color": "#c22a9a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:long_planter",
+    "sha256": "1dc7d7ea3b48271c36be241fa2cfa0eb3f92cbd427554c263ff88abf365eab01",
+    "triangles": 2464,
+    "meshes": 1,
+    "bytes": 282076,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/long-planter.webp"
   }
 ]

@@ -2,6 +2,8 @@
 
 > **Update, same day.** The [seasonal patio pieces](SEASONAL_PATIO_DETAILS_2026-11-17.md) show
 > these barriers in use across the parking lane at the ends of patios and a boardwalk.
+> The same eight designs were later painted on the low-profile barrier; see
+> "Planters and low-profile barriers for the road edge" in that document.
 
 ## Scope
 

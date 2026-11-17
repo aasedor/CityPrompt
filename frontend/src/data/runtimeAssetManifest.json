@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4167,
+    "explicitReferenceCount": 4189,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5951,
-    "requiredLogicalBytes": 13088106090,
+    "requiredFileCount": 5973,
+    "requiredLogicalBytes": 13092853694,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -25793,6 +25793,36 @@
       "logicalBytes": 5844
     },
     {
+      "url": "/park-kits/calgary-details-v1/barrier-planter-pink.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 178924,
+      "lfsOid": "06400db7e43f422981f5241c55f84ac0e331150a512a4d526fe113931dd8216d"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/barrier-planter-pink.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8388
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/barrier-planter-purple.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 177788,
+      "lfsOid": "9adf62d41090aca4f6779fd5631df43dbe690e302829343be95850da240ac71c"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/barrier-planter-purple.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8292
+    },
+    {
       "url": "/park-kits/calgary-details-v1/basket-lamp-post.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26588,19 +26618,154 @@
       "logicalBytes": 3990
     },
     {
+      "url": "/park-kits/calgary-details-v1/long-planter.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 282076,
+      "lfsOid": "1dc7d7ea3b48271c36be241fa2cfa0eb3f92cbd427554c263ff88abf365eab01"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/long-planter.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7820
+    },
+    {
       "url": "/park-kits/calgary-details-v1/low-profile-barrier.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 14860,
-      "lfsOid": "54ce91a61f5f6e9d705c52ba817c9f9675f2700f3d76f56f54211a75308be8e8"
+      "logicalBytes": 7516,
+      "lfsOid": "8e31640c4dc1a803650bde8ab23938b07d52f2d0dfa7dddb250904a49dca2aa3"
     },
     {
       "url": "/park-kits/calgary-details-v1/low-profile-barrier.webp",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
       ],
-      "logicalBytes": 2162
+      "logicalBytes": 2036
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-aspen.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 198604,
+      "lfsOid": "672e4466dc25bcff45f6602d70950eaf8dce27f786cd12f5701142c8dc0d5c32"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-aspen.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5456
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-chevron.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 160304,
+      "lfsOid": "f613c2b704232637d9db0d40b0316296557392df17e4ee290d8182daa85ea140"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-chevron.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6870
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-chinook.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 241472,
+      "lfsOid": "563f1778cc9dec28acfe704086dd695303e3dc4085a3dbd115d07009a0135919"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-chinook.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4794
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-confetti.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 302580,
+      "lfsOid": "a49d4c8036c970784b38c5d68517ae10b7c5d4bcfed2d7622c9721662f1de15c"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-confetti.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6442
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-foothills.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 265872,
+      "lfsOid": "2bbbea1a7c770c2ec3baf9e73ebc16ca60ea25d7add3d12dd6a374f914a6aad7"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-foothills.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4700
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-mosaic.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 171244,
+      "lfsOid": "33171add401125e6bda97bc21e4f086e529fcf1041f34b1a98778df6284666b2"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-mosaic.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7168
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-quilt.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 132940,
+      "lfsOid": "43ec093577264517f7a5e35fa1c12fb2134f142667d4481816b113fa290255d0"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-quilt.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6458
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-river.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 198604,
+      "lfsOid": "227c33f57d915c958ce8b0e9d7a07514ff7b6e9beb57dc0ffb7a04daa6440777"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-mural-river.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4476
     },
     {
       "url": "/park-kits/calgary-details-v1/lrt-catenary-pole.glb",
@@ -36131,9 +36296,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 945,
-      "logicalBytes": 522164848,
-      "pathDigest": "0ea32b09de5412a641a6e100379695809aada25cb9182104e1edd9f08a0158c8"
+      "fileCount": 967,
+      "logicalBytes": 524538650,
+      "pathDigest": "c77e02ac39abec2813ee78053e6e803e1baf6bd0e6a39ac95196574d08f746e2"
     },
     {
       "name": "public-realm-skins",

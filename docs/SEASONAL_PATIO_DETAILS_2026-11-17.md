@@ -211,13 +211,104 @@ with 221 local rows and 376 extras; and the browser tests, 13 passed plus the
 startup test. Not done here: placing these on the live map, which needs a real
 map key, and the full backend suite, which needs a database.
 
+## Planters and low-profile barriers for the road edge
+
+Eleven more pieces, and one reshaped, for the line of planters and painted
+barriers that stands between a patio or boardwalk and the travel lane. They
+follow the photographs on pages 1, 16 and 18 of the guidelines.
+
+| Item | Category | W × D × H (m) | Triangles |
+|---|---|---:|---:|
+| Low-profile barrier (reshaped) | Traffic & safety | 3.0 × 0.6 × 0.5 | 56 |
+| Low-profile mural barrier · Foothills sunrise | Traffic & safety | 3.0 × 0.6 × 0.5 | 2,322 |
+| Low-profile mural barrier · Chinook arch | Traffic & safety | 3.0 × 0.6 × 0.5 | 2,108 |
+| Low-profile mural barrier · River ribbons | Traffic & safety | 3.0 × 0.6 × 0.5 | 1,732 |
+| Low-profile mural barrier · Triangle mosaic | Traffic & safety | 3.0 × 0.6 × 0.5 | 1,492 |
+| Low-profile mural barrier · Chevrons | Traffic & safety | 3.0 × 0.6 × 0.5 | 1,396 |
+| Low-profile mural barrier · Prairie quilt | Traffic & safety | 3.0 × 0.6 × 0.5 | 1,156 |
+| Low-profile mural barrier · Aspen grove | Traffic & safety | 3.0 × 0.6 × 0.5 | 1,732 |
+| Low-profile mural barrier · Confetti | Traffic & safety | 3.0 × 0.6 × 0.5 | 2,644 |
+| Barrier planter · pink petunias | Planting | 1.3 × 0.8 × 1.0 | 1,559 |
+| Barrier planter · purple petunias | Planting | 1.3 × 0.8 × 1.0 | 1,549 |
+| Long black planter | Planting | 1.9 × 0.8 × 1.0 | 2,464 |
+
+**Duplicate scan.** The catalogue already had five planters: a street planter
+box, a flower-filled planter, a faceted corten planter, a rounded stone planter
+and a half-barrel. None is the black planter used at the road edge of a patio,
+so these three were added. It had one low-profile barrier, the plain one from
+earlier the same day, and no painted version.
+
+### Low-profile barrier
+
+- **Shape.** The plain barrier was reshaped after the photographs: a short
+  vertical toe, a sloped face on each side and a narrow rounded top, with two
+  lifting slots. It is now exactly 3.0 m long, so sections butt in a row; the
+  earlier version had end markers that made it 3.01 m. It no longer carries
+  reflectors.
+- **Murals.** The same eight original designs as the
+  [painted road barriers](MURAL_BARRIERS_2026-11-17.md) are painted on both
+  sloped faces. The toe and the top stay bare concrete, as in the photographs.
+  None reproduces a real mural or an artist's work.
+- **Scale.** The sloped face is half the height of the tall barrier's painted
+  face. Scenes are stretched along the 3 m, so one sunrise or one chinook arch
+  fills a section: Foothills sunrise, Chinook arch and River ribbons. Patterns
+  are shown twice at half size so their shapes keep their proportions:
+  Triangle mosaic, Chevrons, Prairie quilt, Aspen grove and Confetti.
+- Painted and plain sections share one footprint, so they mix in a row.
+
+### Planters
+
+- **Barrier planter.** A black moulded planter, 4 ft by 2 ft and 0.62 m tall,
+  slightly wider at the rim than the base. It stands on three feet a side,
+  which leaves forklift pockets, and has red and white reflective tape on each
+  end. It is full of petunias with lime vine trailing over the sides, in a pink
+  mix or a purple mix.
+- **Long black planter.** A black panelled box, 6 ft by 2 ft and 0.6 m tall, on
+  low feet, with mixed annuals and trailing vine.
+- With their plants all three are under 1.0 m tall, inside the 1.2 m the
+  guidance allows above the street. The plants spill up to 10 cm past the box.
+
+Checked the same way as the rest:
+
+- rendered at eye level and card size and reviewed
+  ([sheet](calgary-details-v1/patio-edge-review.jpg)). Changed after the first
+  review: the planters were made fuller, with more than twice the blooms lying on
+  the foliage and the vine trailing down the sides in place of single lumps;
+- placed on the test street through the app's own placement code, as a line of
+  paired planters and painted barriers on the road side of both boardwalk runs
+  ([from the road](calgary-details-v1/scene-patio-edge-roadside.jpg),
+  [side on](calgary-details-v1/scene-patio-edge-planters.jpg),
+  [red run](calgary-details-v1/scene-patio-edge-run.jpg),
+  [black run](calgary-details-v1/scene-patio-edge-black.jpg)). All 232 local
+  models passed the datum, size and anchor checks;
+- a tools test requires every low-profile mural to share the plain barrier's
+  footprint and to carry the same design name as its tall counterpart, and the
+  planters to stay under 1.2 m; a frontend test checks both mural sets and the
+  planter names;
+- in the real project page with a mocked backend, in a temporary browser trial
+  that was not committed: the eight low-profile murals and the three planters
+  are found by search, load from their static card images without requesting a
+  model file, and choosing a planter arms placement
+  ([screenshot](calgary-details-v1/app-patio-edge.jpg)).
+
+The kit is now 147 objects and 14.9 MB. Of the 136 earlier models, 135 and
+their card images are byte-identical; the plain low-profile barrier is the one
+that changed. The whole CI list was run again locally: lint with zero warnings,
+dead-code and type checks; `npx vitest run` with 512 files and 4,542 tests
+passed; the 135 catalogue delivery tests; the asset and manifest checks, with
+5,973 required runtime files; tools, hosted-asset and backend detail tests with
+232 local rows and 387 extras; and the browser tests, 13 passed plus the
+startup test. Not done here: placing these on the live map, which needs a real
+map key, and the full backend suite, which needs a database.
+
 ## Bundle budget after this work
 
 The eleven patio pieces left 5.3 KB of the 8,448 KB JavaScript budget. Before
 adding the modules in feet, every packed catalogue was moved to the
 shared-decoder transport, in its own commit, which freed 13.2 KB. A test now
 walks the source tree and requires every packed catalogue to decode to its
-exact source. With the twelve new rows the total is 8,430.9 KB, leaving 17.1 KB.
+exact source. With the twelve boardwalk rows the total was 8,430.9 KB. The
+planters and low-profile murals bring it to 8,432.2 KB, leaving 15.8 KB.
 
 ## Verification of the first eleven pieces
 

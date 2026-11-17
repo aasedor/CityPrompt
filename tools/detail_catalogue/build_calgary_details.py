@@ -2338,6 +2338,14 @@ def mural_point(u, v, side, upper, proud):
 def paint(s, polygon, colour, proud=0.0):
     """One convex mural shape on both faces. Only a few accents sit proud, above the tiled field."""
     polygon = clip(clip(polygon, 1, 0, 0), -1, 0, -MURAL_LENGTH)
+    repeats = getattr(s, 'low_profile', 0)
+    if repeats:
+        piece = clip(clip(polygon, 0, 1, 0.0), 0, -1, -MURAL_HEIGHT)
+        if len(piece) >= 3 and polygon_area(piece) >= 2e-6:
+            for k in range(repeats):
+                for side in (-1, 1):
+                    s.poly([low_profile_point((u + k * MURAL_LENGTH) / repeats, v / 2, side, proud) for u, v in piece], colour)
+        return
     for upper, low, high in ((False, 0.0, MURAL_LOWER), (True, MURAL_LOWER, MURAL_HEIGHT)):
         piece = clip(clip(polygon, 0, 1, low), 0, -1, -high)
         if len(piece) < 3 or polygon_area(piece) < 2e-6:
@@ -2392,6 +2400,9 @@ def wave(u, cycles, phase=0.0):
 
 def mural_barrier(s, top):
     """The barrier without its two painted faces: ends, toe, top, underside and lifting slots."""
+    if getattr(s, 'low_profile', 0):
+        low_profile_body(s, faces=False)
+        return
     half = MURAL_LENGTH / 2
     for sx in (-1, 1):
         x = sx * half
@@ -2937,14 +2948,197 @@ def patio_fence_panel(s):
     guard_run(s, (-1.2, 0), (1.2, 0), base=0, feet=1)
 
 
-def low_profile_barrier(s):
-    wedge_body(s, 3.0, [(-.3, 0), (.3, 0), (.3, .1), (.2, .5), (-.2, .5), (-.3, .1)], '#b9b6ae')
-    for x in (-.9, .9):
-        s.box((x, 0, .04), (.28, .62, .08), '#55524c')
-    for x in (-1.2, -.4, .4, 1.2):
-        s.box((x, 0, .508), (.1, .06, .016), '#f2a23a')
+# The low-profile barrier is 3.0 m long, 0.6 m wide and 0.5 m tall: a short vertical toe, a
+# sloped face on each side and a narrow rounded top. The sloped face is exactly half the
+# height of a road barrier's painted face, so the same murals fit it at half scale.
+LOW_HALF, LOW_TOE, LOW_RUN = .3, .09, .165
+LOW_FACE = MURAL_HEIGHT / 2
+LOW_RISE = math.sqrt(LOW_FACE ** 2 - LOW_RUN ** 2)
+LOW_SHOULDER = (LOW_HALF - LOW_RUN, LOW_TOE + LOW_RISE)
+LOW_TOP = (.09, .5)
+
+
+def low_profile_point(u, v, side, proud):
+    """Map (u, v) metres onto one sloped face. Each side reads left to right when faced."""
+    t = v / LOW_FACE
+    return ((MURAL_LENGTH / 2 - u) * side, side * (LOW_HALF - LOW_RUN * t + LOW_RISE / LOW_FACE * proud), LOW_TOE + LOW_RISE * t + LOW_RUN / LOW_FACE * proud)
+
+
+def low_profile_body(s, faces=True):
+    """Ends, toe, shoulders, top, underside and lifting slots; the two sloped faces too unless a mural replaces them."""
+    half = MURAL_LENGTH / 2
+    (sy, sz), (ty, tz) = LOW_SHOULDER, LOW_TOP
+    profile = [(-LOW_HALF, 0), (LOW_HALF, 0), (LOW_HALF, LOW_TOE), (sy, sz), (ty, tz), (-ty, tz), (-sy, sz), (-LOW_HALF, LOW_TOE)]
     for sx in (-1, 1):
-        s.box((sx * 1.502, 0, .3), (.006, .3, .2), '#f2c230')
+        s.poly([(sx * half, y, z) for y, z in profile], BARRIER_CONCRETE)
+    for side in (-1, 1):
+        s.quad((-half, side * LOW_HALF, 0), (half, side * LOW_HALF, 0), (half, side * LOW_HALF, LOW_TOE), (-half, side * LOW_HALF, LOW_TOE), '#a5a29a')
+        s.quad((-half, side * sy, sz), (half, side * sy, sz), (half, side * ty, tz), (-half, side * ty, tz), '#c4c1b9')
+        if faces:
+            s.quad((-half, side * LOW_HALF, LOW_TOE), (half, side * LOW_HALF, LOW_TOE), (half, side * sy, sz), (-half, side * sy, sz), BARRIER_CONCRETE)
+    s.quad((-half, -ty, tz), (half, -ty, tz), (half, ty, tz), (-half, ty, tz), '#c9c6be')
+    s.quad((-half, -LOW_HALF, 0), (half, -LOW_HALF, 0), (half, LOW_HALF, 0), (-half, LOW_HALF, 0), BARRIER_CONCRETE)
+    for x in (-.9, .9):
+        s.box((x, 0, .035), (.3, .62, .07), '#55524c')
+
+
+def low_profile_barrier(s):
+    low_profile_body(s)
+
+
+def low_profile_mural(s, design, repeats):
+    """A road-barrier mural on the low-profile barrier's sloped faces. repeats is 1 to stretch
+    one scene along the 3 m, or 2 to show a pattern twice at true proportions."""
+    s.low_profile = repeats
+    design(s)
+
+
+def low_profile_mural_foothills(s):
+    low_profile_mural(s, mural_foothills, 1)
+
+
+def low_profile_mural_chinook(s):
+    low_profile_mural(s, mural_chinook, 1)
+
+
+def low_profile_mural_river(s):
+    low_profile_mural(s, mural_river, 1)
+
+
+def low_profile_mural_mosaic(s):
+    low_profile_mural(s, mural_mosaic, 2)
+
+
+def low_profile_mural_chevron(s):
+    low_profile_mural(s, mural_chevron, 2)
+
+
+def low_profile_mural_quilt(s):
+    low_profile_mural(s, mural_quilt, 2)
+
+
+def low_profile_mural_aspen(s):
+    low_profile_mural(s, mural_aspen, 2)
+
+
+def low_profile_mural_confetti(s):
+    low_profile_mural(s, mural_confetti, 2)
+
+
+# ---------------------------------------------------------------------------
+# Planters that stand between a patio and the road. Black planters filled with
+# summer annuals; with their plants they stay under 1.2 m above the street.
+# ---------------------------------------------------------------------------
+PLANTER_BLACK = '#1f2123'
+PLANTER_TRIM = '#2c2f32'
+BLOOMS_PINK = ['#e8559a', '#f07ab0', '#d93d87', '#c22a9a', '#f4a3c4', '#d4303a']
+BLOOMS_PURPLE = ['#7b3fc4', '#9a5cd6', '#5e2ea6', '#f1eef5', '#c9a6ea', '#e8559a']
+BLOOMS_MIXED = ['#c22a9a', '#d4303a', '#e8559a', '#7b3fc4', '#f07ab0', '#d93d87']
+VINE_LIME = ['#b9d63a', '#a6c930', '#c8e04e']
+ANNUAL_GREENS = ['#4f7a3f', '#5d8a4a', '#456c38']
+
+
+def halton(index, base):
+    value, fraction = 0.0, 1.0
+    while index > 0:
+        fraction /= base
+        value += fraction * (index % base)
+        index //= base
+    return value
+
+
+def annuals(s, length, width, z, blooms, count, trailing):
+    """A planter overflowing with summer annuals above soil at height z: leafy mounds that
+    spread a little past the rim, a dense scatter of blooms lying on them, and lime vine
+    trailing down the sides at the listed (x, side) spots."""
+    mounds = []
+    for k in range(max(2, round(length / .4))):
+        span = length / max(2, round(length / .4))
+        mound = (-length / 2 + span * (k + .5), (s.random() - .5) * .05, span * .74, width * .6, .27 + s.random() * .07)
+        mounds.append(mound)
+        s.dome((mound[0], mound[1], z - .02), mound[2:], lambda j, i: s.pick(ANNUAL_GREENS, .06), nu=9, nv=3, noise=.1)
+
+    def surface(x, y):
+        return max(rz * math.sqrt(max(0.0, 1 - ((x - cx) / rx) ** 2 - ((y - cy) / ry) ** 2)) for cx, cy, rx, ry, rz in mounds)
+
+    for k in range(count):
+        x = (halton(k + 1, 2) - .5) * (length + .04)
+        y = (halton(k + 1, 3) - .5) * width * 1.02
+        lift = surface(x, y)
+        if lift < .05:
+            continue
+        size = .05 + s.random() * .022
+        s.dome((x, y, z - .012 + lift), (size, size, size * .62), s.pick(blooms, .05), nu=5, nv=2, full=True)
+    for x, side in trailing:
+        y = side * width / 2
+        s.dome((x, y - side * .02, z - .02), (.15, .11, .1), lambda j, i: s.pick(VINE_LIME, .06), nu=7, nv=2, noise=.14)
+        for n in range(4):
+            s.dome((x + (s.random() - .5) * .13, y + side * (.05 + .01 * n), z - .06 - .075 * n), (.12 - .02 * n, .045, .08 - .01 * n),
+                   s.pick(VINE_LIME, .07), nu=6, nv=2, noise=.2, full=True)
+
+
+def barrier_planter(s, blooms):
+    """Black moulded planter, 4 ft by 2 ft, wider at the rim than the base. It stands on three
+    feet a side, which leaves forklift pockets, and carries red and white reflective tape on
+    each end."""
+    length, width, height, foot = 1.22, .61, .62, .1
+    base_l, base_w, rim = length - .1, width - .1, .05
+
+    def ring(z, l, w):
+        return [(-l / 2, -w / 2, z), (l / 2, -w / 2, z), (l / 2, w / 2, z), (-l / 2, w / 2, z)]
+
+    s.loft([ring(foot, base_l, base_w), ring(height - rim, length - .02, width - .02)], PLANTER_BLACK, cap_start=True, cap_end=False)
+    s.box((0, 0, height - rim / 2), (length, width, rim), PLANTER_TRIM)
+    for x in (-(base_l / 2 - .09), 0, base_l / 2 - .09):
+        s.box((x, 0, foot / 2), (.18, base_w, foot), PLANTER_BLACK)
+    s.quad((-length / 2 + .04, -width / 2 + .04, height + .002), (length / 2 - .04, -width / 2 + .04, height + .002),
+           (length / 2 - .04, width / 2 - .04, height + .002), (-length / 2 + .04, width / 2 - .04, height + .002), '#3d3027')
+
+    def end(sx, across, z):
+        """A point on a tapered end face, 3 mm proud; across runs -1 to 1 over its width."""
+        t = (z - foot) / (height - rim - foot)
+        return (sx * (base_l / 2 + (length - .02 - base_l) / 2 * t + .003), across * (base_w / 2 + (width - .02 - base_w) / 2 * t), z)
+
+    for sx in (-1, 1):
+        for a0, a1, z0, z1, tone in ((-.92, -.3, .43, .5, '#f1f0ea'), (-.3, .3, .43, .5, '#c8202c'), (.3, .92, .43, .5, '#f1f0ea'), (-.92, .92, .27, .33, '#c8202c')):
+            s.quad(end(sx, a0, z0), end(sx, a1, z0), end(sx, a1, z1), end(sx, a0, z1), tone)
+    annuals(s, length - .1, width - .08, height, blooms, 110, [(-.36, -1), (.3, -1), (.42, 1), (-.22, 1)])
+
+
+def barrier_planter_pink(s):
+    barrier_planter(s, BLOOMS_PINK)
+
+
+def barrier_planter_purple(s):
+    barrier_planter(s, BLOOMS_PURPLE)
+
+
+def long_planter(s):
+    """Black panelled planter box, 6 ft by 2 ft, on four low feet."""
+    length, width, height, gap = 1.83, .61, .6, .04
+    body_l, body_w = length - .03, width - .03
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            s.box((sx * (length / 2 - .13), sy * (width / 2 - .1), gap / 2), (.14, .1, gap), '#0f1011')
+    s.box((0, 0, gap + (height - gap) / 2), (body_l, body_w, height - gap), PLANTER_BLACK)
+    s.box((0, 0, height - .03), (length, width, .06), PLANTER_TRIM)
+    low, high = gap + .03, height - .09
+    for sy in (-1, 1):
+        y = sy * body_w / 2
+        for z in (low + .035, high - .035):
+            s.box((0, y, z), (body_l - .04, .014, .07), PLANTER_TRIM)
+        for sx in (-1, 1):
+            s.box((sx * (body_l / 2 - .065), y, (low + high) / 2), (.09, .014, high - low), PLANTER_TRIM)
+        s.box((0, y, (low + high) / 2), (body_l - .5, .009, high - low - .28), PLANTER_TRIM)
+    for sx in (-1, 1):
+        x = sx * body_l / 2
+        for z in (low + .035, high - .035):
+            s.box((x, 0, z), (.014, body_w - .04, .07), PLANTER_TRIM)
+        for sy in (-1, 1):
+            s.box((x, sy * (body_w / 2 - .065), (low + high) / 2), (.014, .09, high - low), PLANTER_TRIM)
+    s.quad((-length / 2 + .05, -width / 2 + .05, height + .002), (length / 2 - .05, -width / 2 + .05, height + .002),
+           (length / 2 - .05, width / 2 - .05, height + .002), (-length / 2 + .05, width / 2 - .05, height + .002), '#3d3027')
+    annuals(s, length - .12, width - .08, height, BLOOMS_MIXED, 160, [(-.62, -1), (-.1, -1), (.55, -1), (.2, 1), (-.45, 1), (.72, 1)])
 
 
 # ---------------------------------------------------------------------------
@@ -3779,6 +3973,17 @@ SPECS = [
     spec('boardwalk-corner-approach-black', 'Boardwalk corner · approach · black', 'Access & levels', 'Six-foot-square boardwalk corner with black steel railings on two outer sides and a hazard marker facing approaching traffic.', boardwalk_corner_approach_black, 2930, '#f2c230'),
     spec('boardwalk-module-nine-foot-road-rail-black', 'Boardwalk module · 6 × 9 ft · road-side rail · black', 'Access & levels', 'Repeatable 6 ft by 9 ft boardwalk module with grey decking and a black steel railing on the road side only. Open to the sidewalk.', boardwalk_module_nine_foot_road_rail_black, 2931, '#232527'),
     spec('boardwalk-module-twelve-foot-road-rail-black', 'Boardwalk module · 6 × 12 ft · road-side rail · black', 'Access & levels', 'Repeatable 6 ft by 12 ft boardwalk module with grey decking and a black steel railing on the road side only. Open to the sidewalk.', boardwalk_module_twelve_foot_road_rail_black, 2932, '#232527'),
+    spec('low-profile-mural-foothills', 'Low-profile mural barrier · Foothills sunrise', 'Traffic & safety', 'Repeatable 3 m low-profile barrier painted with a sunrise over peaks, foothills and prairie. Original design.', low_profile_mural_foothills, 2941, '#f08a5d'),
+    spec('low-profile-mural-chinook', 'Low-profile mural barrier · Chinook arch', 'Traffic & safety', 'Repeatable 3 m low-profile barrier painted with a chinook arch of sunset cloud over the range. Original design.', low_profile_mural_chinook, 2942, '#b8456b'),
+    spec('low-profile-mural-river', 'Low-profile mural barrier · River ribbons', 'Traffic & safety', 'Repeatable 3 m low-profile barrier painted with flowing bands of river blue and green. Original design.', low_profile_mural_river, 2943, '#1b6ca8'),
+    spec('low-profile-mural-mosaic', 'Low-profile mural barrier · Triangle mosaic', 'Traffic & safety', 'Repeatable 3 m low-profile barrier painted with a bright mosaic of irregular triangles. Original design.', low_profile_mural_mosaic, 2944, '#06d6a0'),
+    spec('low-profile-mural-chevron', 'Low-profile mural barrier · Chevrons', 'Traffic & safety', 'Repeatable 3 m low-profile barrier painted with bold zigzag chevrons. Original design.', low_profile_mural_chevron, 2945, '#ef476f'),
+    spec('low-profile-mural-quilt', 'Low-profile mural barrier · Prairie quilt', 'Traffic & safety', 'Repeatable 3 m low-profile barrier painted as patchwork quilt blocks in barn red, mustard and denim. Original design.', low_profile_mural_quilt, 2946, '#9b2d30'),
+    spec('low-profile-mural-aspen', 'Low-profile mural barrier · Aspen grove', 'Traffic & safety', 'Repeatable 3 m low-profile barrier painted with white aspen trunks under a gold canopy. Original design.', low_profile_mural_aspen, 2947, '#e6b93a'),
+    spec('low-profile-mural-confetti', 'Low-profile mural barrier · Confetti', 'Traffic & safety', 'Repeatable 3 m low-profile barrier painted with bright dots on deep teal. Original design.', low_profile_mural_confetti, 2948, '#1f5f6b'),
+    spec('barrier-planter-pink', 'Barrier planter · pink petunias', 'Planting', 'Black moulded 4 ft planter with forklift pockets and reflective tape on its ends, full of pink petunias and trailing lime vine.', barrier_planter_pink, 2951, '#e8559a'),
+    spec('barrier-planter-purple', 'Barrier planter · purple petunias', 'Planting', 'Black moulded 4 ft planter with forklift pockets and reflective tape on its ends, full of purple petunias and trailing lime vine.', barrier_planter_purple, 2952, '#7b3fc4'),
+    spec('long-planter', 'Long black planter', 'Planting', 'Black panelled 6 ft planter box on low feet, full of mixed summer annuals and trailing lime vine, for the road edge of a patio.', long_planter, 2953, '#c22a9a'),
 ]
 
 

@@ -32,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(386 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(397 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -119,8 +119,8 @@ describe("standalone detail catalogue", () => {
   });
   it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
     const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
-    expect(site).toHaveLength(136);
-    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(13_500_000);
+    expect(site).toHaveLength(147);
+    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(16_000_000);
     for (const model of site) {
       expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
       expect(model.kind).toBe("object");
@@ -155,13 +155,25 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails("ranch", "Landscape").map((m) => m.label)).toEqual(expect.arrayContaining(["Horses", "Cattle"]));
     expect(searchDetails("excavator").map((m) => m.id)).toEqual(["detail-yyc-excavator"]);
     // Painted road barriers share the plain barrier's footprint, so one can replace another in a row.
-    const murals = searchDetails("mural barrier", "Traffic & safety");
-    expect(murals).toHaveLength(8);
-    const plain = extras.find((m) => m.id === "detail-yyc-concrete-barrier")!;
-    for (const mural of murals) {
-      expect(mural.dimensions).toEqual(plain.dimensions);
-      expect(mural.description).toContain("Original design.");
+    // The same eight designs are painted on the low-profile barrier, which has its own footprint.
+    const everyMural = searchDetails("mural barrier", "Traffic & safety");
+    expect(everyMural).toHaveLength(16);
+    for (const [murals, plainId] of [
+      [everyMural.filter((m) => m.id.startsWith("detail-yyc-mural-barrier-")), "detail-yyc-concrete-barrier"],
+      [everyMural.filter((m) => m.id.startsWith("detail-yyc-low-profile-mural-")), "detail-yyc-low-profile-barrier"],
+    ] as const) {
+      expect(murals).toHaveLength(8);
+      const plain = extras.find((m) => m.id === plainId)!;
+      for (const mural of murals) {
+        expect(mural.dimensions).toEqual(plain.dimensions);
+        expect(mural.description).toContain("Original design.");
+      }
     }
+    expect(searchDetails("low-profile").map((m) => m.label)[0]).toBe("Low-profile barrier");
+    // Planters for the road edge of a patio sit with the other planters and stay under 1.2 m.
+    const planters = searchDetails("planter", "Planting").filter((m) => m.id.startsWith("detail-yyc-"));
+    expect(planters.map((m) => m.label)).toEqual(["Barrier planter · pink petunias", "Barrier planter · purple petunias", "Long black planter"]);
+    for (const planter of planters) expect(planter.dimensions[2]).toBeLessThan(1.2);
     // Seasonal patio pieces: boardwalk sections butt end to end at one width, every platform
     // stays under 1.2 m of guard above the street, and whole patios fit parking stalls.
     const everyBoardwalk = searchDetails("boardwalk", "Access & levels");
