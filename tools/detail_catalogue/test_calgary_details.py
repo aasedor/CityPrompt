@@ -41,11 +41,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_fifty_one_unique_items(self):
+    def test_one_hundred_and_fifty_two_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 151)
-        self.assertEqual(len({s['slug'] for s in specs}), 151)
-        self.assertEqual(len({s['label'] for s in specs}), 151)
+        self.assertEqual(len(specs), 152)
+        self.assertEqual(len({s['slug'] for s in specs}), 152)
+        self.assertEqual(len({s['label'] for s in specs}), 152)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -53,7 +53,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 151)
+        self.assertEqual(sum(counts.values()), 152)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -187,12 +187,13 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertAlmostEqual(face['bend'], self.module.MURAL_LOWER, places=5)
         self.assertAlmostEqual(face['height'], self.module.MURAL_HEIGHT, places=5)
         # every source file is recorded by hash, since the files themselves are not kept here
-        self.assertEqual(len(baked['sources']), 3)
+        self.assertEqual(len(baked['sources']), 4)
         for digest in baked['sources'].values():
             self.assertRegex(digest, r'^[0-9a-f]{64}$')
         plain = self.by_slug['concrete-barrier']
         for district, slug in (('kensington', 'district-barrier-kensington'), ('inglewood', 'district-barrier-inglewood'),
-                               ('fourth-street-purple', 'district-barrier-fourth-street-purple'), ('fourth-street-green', 'district-barrier-fourth-street-green')):
+                               ('fourth-street-purple', 'district-barrier-fourth-street-purple'), ('fourth-street-green', 'district-barrier-fourth-street-green'),
+                               ('seventeenth-ave', 'district-barrier-seventeenth-ave')):
             art, row = baked['districts'][district], self.by_slug[slug]
             area = 0.0
             for a, b, c, tone in art['triangles']:

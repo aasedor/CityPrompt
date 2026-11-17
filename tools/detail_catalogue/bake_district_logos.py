@@ -46,7 +46,7 @@ LOWER = math.hypot(.305 - .2, .33 - .08)
 HEIGHT = LOWER + math.hypot(.2 - .125, .81 - .33)
 DETAIL = .0012  # metres: outlines are simplified to this tolerance
 
-SOURCES = ('kensington-2026.svg', 'inglewood-2026-horizontal.jpg', 'fourth-street-header.png')
+SOURCES = ('kensington-2026.svg', 'inglewood-2026-horizontal.jpg', 'fourth-street-header.png', 'seventeenth-ave-2022.svg')
 
 
 def trace(mask: np.ndarray) -> Polygon | MultiPolygon:
@@ -67,9 +67,9 @@ def trace(mask: np.ndarray) -> Polygon | MultiPolygon:
 
 
 def outline(svg: str):
-    """Filled area of every path in an SVG, as geometry in its own units with y up.
-    Subpaths are combined by the even-odd rule, which suits a logo whose only overlaps
-    are counters cut out of letters."""
+    """Filled area of every path and polygon in an SVG, as geometry in its own units
+    with y up. Subpaths are combined by the even-odd rule, which suits a logo whose only
+    overlaps are counters cut out of letters."""
     def flatten(p0, p1, p2, p3, steps=14):
         return [tuple((1 - t) ** 3 * a + 3 * (1 - t) ** 2 * t * b + 3 * (1 - t) * t ** 2 * c + t ** 3 * d for a, b, c, d in zip(p0, p1, p2, p3))
                 for t in (k / steps for k in range(1, steps + 1))]
@@ -92,7 +92,21 @@ def outline(svg: str):
             elif command in ('closePath', 'endPath') and len(ring) >= 3:
                 shape = shape.symmetric_difference(Polygon(ring).buffer(0))
                 ring = []
+    for points in re.findall(r'<polygon[^>]*\spoints="([^"]+)"', svg):
+        numbers = [float(value) for value in re.split(r'[\s,]+', points.strip())]
+        if len(numbers) >= 6:
+            shape = shape.symmetric_difference(Polygon(list(zip(numbers[0::2], numbers[1::2]))).buffer(0))
     return affinity.scale(shape, 1, -1, origin=(0, 0))
+
+
+def solid(shape, smallest: float):
+    """A shape without its specks: drops every piece and every hole smaller than an area.
+    A logo drawn with a worn, stamped texture has to lose it to be cut as a stencil."""
+    kept = []
+    for part in polygons(shape):
+        if part.area >= smallest:
+            kept.append(Polygon(part.exterior, [ring for ring in part.interiors if Polygon(ring).area >= smallest]))
+    return unary_union(kept)
 
 
 def fit(shape, width: float, centre: tuple[float, float]):
@@ -181,11 +195,31 @@ def fourth_street(sources: Path, colourway: str):
     return {'field': ground, 'top': ground, 'layers': layers}
 
 
+def seventeenth_logo(sources: Path):
+    """The 17th Ave logo in the units of its file, about a millimetre each on a barrier,
+    without the worn texture it is drawn with: no specks, and its rough edges evened out
+    to within 3 units."""
+    return solid(outline((sources / 'seventeenth-ave-2022.svg').read_text(encoding='utf-8')), 200.0).simplify(3.0)
+
+
+def seventeenth(sources: Path):
+    """Red ground and the logo four times in white, as the district's own barriers are
+    painted, but with the logo at the full height of the face and repeated along it. One
+    stencil, used four times."""
+    logo = seventeenth_logo(sources)
+    x0, y0, x1, y1 = logo.bounds
+    tall, count = .68, 4
+    wide = tall * (x1 - x0) / (y1 - y0)
+    gap = (LENGTH - count * wide) / (count + 1)
+    return {'field': '#e21a2d', 'top': '#e21a2d', 'layers': [('#ffffff', fit(logo, wide, (gap + wide / 2 + k * (wide + gap), HEIGHT / 2))) for k in range(count)]}
+
+
 DISTRICTS = {
     'kensington': kensington,
     'inglewood': inglewood,
     'fourth-street-purple': lambda sources: fourth_street(sources, 'purple'),
     'fourth-street-green': lambda sources: fourth_street(sources, 'green'),
+    'seventeenth-ave': seventeenth,
 }
 
 
