@@ -41,11 +41,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_fifty_two_unique_items(self):
+    def test_one_hundred_and_fifty_three_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 152)
-        self.assertEqual(len({s['slug'] for s in specs}), 152)
-        self.assertEqual(len({s['label'] for s in specs}), 152)
+        self.assertEqual(len(specs), 153)
+        self.assertEqual(len({s['slug'] for s in specs}), 153)
+        self.assertEqual(len({s['label'] for s in specs}), 153)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -53,7 +53,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 152)
+        self.assertEqual(sum(counts.values()), 153)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -193,7 +193,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         plain = self.by_slug['concrete-barrier']
         for district, slug in (('kensington', 'district-barrier-kensington'), ('inglewood', 'district-barrier-inglewood'),
                                ('fourth-street-purple', 'district-barrier-fourth-street-purple'), ('fourth-street-green', 'district-barrier-fourth-street-green'),
-                               ('seventeenth-ave', 'district-barrier-seventeenth-ave')):
+                               ('seventeenth-ave', 'district-barrier-seventeenth-ave'), ('seventeenth-ave-single', 'district-barrier-seventeenth-ave-single')):
             art, row = baked['districts'][district], self.by_slug[slug]
             area = 0.0
             for a, b, c, tone in art['triangles']:
@@ -215,6 +215,12 @@ class CalgaryDetailsContract(unittest.TestCase):
             painted = [art['vertices'][i] for a, b, c, tone in art['triangles'] if tone != len(art['colours']) - 1 for i in (a, b, c)]
             length = (max(u for u, _ in painted) - min(u for u, _ in painted)) / face['length']
             height = (max(v for _, v in painted) - min(v for _, v in painted)) / face['height']
+            if district == 'seventeenth-ave-single':
+                # asked for as one logo alone at the centre: it fills the height, not the length
+                self.assertGreater(height, .85, district)
+                self.assertAlmostEqual((max(u for u, _ in painted) + min(u for u, _ in painted)) / 2, face['length'] / 2, places=3)
+                self.assertEqual(len(art['colours']), 2)
+                continue
             # the artwork runs most of the length, so the ends are not left bare
             self.assertGreater(length, .85, district)
             if district != 'inglewood':

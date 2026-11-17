@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4199,
+    "explicitReferenceCount": 4201,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5983,
-    "requiredLogicalBytes": 13095620514,
+    "requiredFileCount": 5985,
+    "requiredLogicalBytes": 13095820226,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -26363,6 +26363,21 @@
       "logicalBytes": 6160
     },
     {
+      "url": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave-single.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 95160,
+      "lfsOid": "6d9380ad2f01e65348075827bab5807aa28915589ea1381c7f82235e1b3a43f7"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave-single.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4696
+    },
+    {
       "url": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -36371,9 +36386,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 977,
-      "logicalBytes": 525922060,
-      "pathDigest": "bd995322d2c1d6d045467137cbec28838321db97ef573a06e6014a72d50ce794"
+      "fileCount": 979,
+      "logicalBytes": 526021916,
+      "pathDigest": "c33f5d1b24f0c1cfb59ebe5e2db2ae0577b0fc1d14692792ceb73d64c04c81bd"
     },
     {
       "name": "public-realm-skins",

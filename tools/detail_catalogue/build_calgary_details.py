@@ -2598,6 +2598,10 @@ def district_barrier_seventeenth_ave(s):
     district_barrier(s, 'seventeenth-ave')
 
 
+def district_barrier_seventeenth_ave_single(s):
+    district_barrier(s, 'seventeenth-ave-single')
+
+
 # ---------------------------------------------------------------------------
 # Seasonal patios: boardwalk sections, on-street patios, parklets and a sidewalk
 # patio. Dimensions follow the City of Calgary's published "Guidelines for
@@ -4043,6 +4047,7 @@ SPECS = [
     spec('district-barrier-fourth-street-purple', 'District barrier · Fourth Street · purple', 'Traffic & safety', 'Purple 3 m road barrier with the Fourth Street name between two 4s, in white and pink. The logo belongs to its business association.', district_barrier_fourth_street_purple, 2963, '#6c3991'),
     spec('district-barrier-fourth-street-green', 'District barrier · Fourth Street · green', 'Traffic & safety', 'Teal 3 m road barrier with the Fourth Street name between two 4s, in white and green. The logo belongs to its business association.', district_barrier_fourth_street_green, 2964, '#23997c'),
     spec('district-barrier-seventeenth-ave', 'District barrier · 17th Ave', 'Traffic & safety', 'Red 3 m road barrier with the 17th Ave logo four times in white. The logo belongs to its business association.', district_barrier_seventeenth_ave, 2965, '#e21a2d'),
+    spec('district-barrier-seventeenth-ave-single', 'District barrier · 17th Ave · single logo', 'Traffic & safety', 'Red 3 m road barrier with one large 17th Ave logo in white at its centre. The logo belongs to its business association.', district_barrier_seventeenth_ave_single, 2966, '#e21a2d'),
 ]
 
 

@@ -202,13 +202,13 @@ def seventeenth_logo(sources: Path):
     return solid(outline((sources / 'seventeenth-ave-2022.svg').read_text(encoding='utf-8')), 200.0).simplify(3.0)
 
 
-def seventeenth(sources: Path):
-    """Red ground and the logo four times in white, as the district's own barriers are
-    painted, but with the logo at the full height of the face and repeated along it. One
-    stencil, used four times."""
+def seventeenth(sources: Path, count: int = 4):
+    """Red ground and the logo in white, as the district's own barriers are painted, but
+    with the logo at the full height of the face. Four fill the face, from one stencil
+    used four times; one stands alone at the centre, from the same stencil."""
     logo = seventeenth_logo(sources)
     x0, y0, x1, y1 = logo.bounds
-    tall, count = .68, 4
+    tall = .68
     wide = tall * (x1 - x0) / (y1 - y0)
     gap = (LENGTH - count * wide) / (count + 1)
     return {'field': '#e21a2d', 'top': '#e21a2d', 'layers': [('#ffffff', fit(logo, wide, (gap + wide / 2 + k * (wide + gap), HEIGHT / 2))) for k in range(count)]}
@@ -220,6 +220,7 @@ DISTRICTS = {
     'fourth-street-purple': lambda sources: fourth_street(sources, 'purple'),
     'fourth-street-green': lambda sources: fourth_street(sources, 'green'),
     'seventeenth-ave': seventeenth,
+    'seventeenth-ave-single': lambda sources: seventeenth(sources, 1),
 }
 
 

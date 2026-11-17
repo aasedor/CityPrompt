@@ -111,7 +111,7 @@ describe('detail catalogue workflow', () => {
     expect(screen.queryAllByRole('article')).toHaveLength(0);
     for (const category of DETAIL_CATEGORIES) {
       fireEvent.click(screen.getByRole('button', { name: `Browse ${category}` }));
-      const safetyFamilies: Record<string,number> = {'Traffic & safety':69,'Curb bulbs':4};
+      const safetyFamilies: Record<string,number> = {'Traffic & safety':70,'Curb bulbs':4};
       expect(screen.getAllByRole('article')).toHaveLength(safetyFamilies[category] ?? searchDetails('', category).length);
       fireEvent.click(screen.getByRole('button', { name: 'All categories' }));
     }

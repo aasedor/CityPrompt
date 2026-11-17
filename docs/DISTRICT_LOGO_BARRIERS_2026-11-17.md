@@ -2,9 +2,9 @@
 
 ## Scope
 
-Add five versions of the 3 m concrete road barrier that carry the logo of a
+Add six versions of the 3 m concrete road barrier that carry the logo of a
 Calgary business improvement area on both long faces. They extend
-`calgary-details-v1` (now 152 objects, IDs prefixed `detail-yyc-`) and sit in
+`calgary-details-v1` (now 153 objects, IDs prefixed `detail-yyc-`) and sit in
 **Traffic & safety**. Searching `district barrier` lists them.
 
 | Item | Colours | Artwork | Triangles |
@@ -14,6 +14,7 @@ Calgary business improvement area on both long faces. They extend
 | District barrier · Fourth Street · purple | Purple, white, pink | The name in two lines between two 4s, on purple | 2,868 |
 | District barrier · Fourth Street · green | Teal, white, green | The name in two lines between two 4s, on teal | 2,868 |
 | District barrier · 17th Ave | Red, white | The logo four times in white on red | 3,044 |
+| District barrier · 17th Ave · single logo | Red, white | One large logo in white at the centre, on red | 824 |
 
 Every one is 3.0 × 0.6 × 0.8 m, the footprint of the plain barrier and of the
 [painted barriers](MURAL_BARRIERS_2026-11-17.md), so they mix in one row.
@@ -36,6 +37,14 @@ rules, set after the first two versions were reviewed:
 | Inglewood | 2 | 87% | 37% |
 | Fourth Street, both colourways | 3 | 91% | 90% |
 | 17th Ave | 2 | 93% | 90% |
+| 17th Ave · single logo | 2 | 20% | 90% |
+
+**The single-logo 17th Ave barrier is an exception to the third rule, made on
+request.** It carries one logo at the full height of the face and leaves the
+rest red: 94% of the face is one unbroken colour. It is closer to how the
+district paints its barriers today, with the logo about twice the height,
+judging from the photograph.
+The four-logo version remains for where bare surface is a concern.
 
 The Inglewood barrier was approved as it is and was not changed. Its wordmark is
 as wide as the barrier allows, but it is one line of low, wide letters, so it
@@ -48,8 +57,8 @@ wordmark would close that if it matters on the street.
 reproduced here on request, for scenes that show barriers in those districts.
 Nothing in this repository grants a right to use them. Before this catalogue is
 published or merged for general use, each association should agree to its logo
-appearing in the product. Until then the five items are easy to leave out:
-removing their five entries from `SPECS` in
+appearing in the product. Until then the six items are easy to leave out:
+removing their six entries from `SPECS` in
 `tools/detail_catalogue/build_calgary_details.py` and re-registering drops them.
 
 This departs from the earlier rule for this kit, which kept all branding and
@@ -124,8 +133,9 @@ builder needs none of the tool's dependencies, and rebuilds are deterministic.
   stamped texture: about a thousand specks and rough edges. A stencil cannot hold
   those, so every speck and speck-sized hole is removed and the edges are
   evened out to within 3 mm at this size. The numerals, flag, script and frame
-  are otherwise unchanged. The logo is 0.68 m tall and is set four times along
-  the face, 11 cm apart, which is one stencil used four times.
+  are otherwise unchanged. The logo is 0.68 m tall and 0.61 m wide. One version
+  sets it four times along the face, 11 cm apart, which is one stencil used four
+  times; the other sets it once at the centre, from the same stencil.
 - The background is cut around the logo, everything is split along the bend in
   the barrier's profile, and the pieces are triangulated so that neighbours
   share their edges point for point. The triangles cover the face exactly once.
@@ -167,30 +177,32 @@ is unchanged throughout.
   independent human visual acceptance, and the associations' own review of
   their logos, are open.
 - Placed on the test street through the app's own placement code
-  ([scene](calgary-details-v1/scene-district-barriers.jpg)). All 237 local
-  models passed the datum, size and anchor checks.
+  ([scene](calgary-details-v1/scene-district-barriers.jpg),
+  [the two 17th Ave barriers](calgary-details-v1/scene-seventeenth-ave-barriers.jpg)).
+  All 238 local models passed the datum, size and anchor checks.
 - A tools test requires the baked triangles to cover the face exactly, none to
   cross the bend, each barrier to share the plain barrier's dimensions and each
   description to say whose logo it is. It also holds every design to the brief:
   no more than three colours, and for Kensington, Fourth Street and 17th Ave
-  artwork that spans over 90% of the length and 75% of the height. A frontend
-  test checks the five names.
+  artwork that spans over 90% of the length and 75% of the height. The
+  single-logo barrier is held to two colours, a logo centred on the face and
+  over 85% of its height. A frontend test checks the six names.
 - In the real project page with a mocked backend, in a temporary browser trial
-  that was not committed: the five are found by searching `district barrier`,
+  that was not committed: the six are found by searching `district barrier`,
   load from their static card images without requesting a model file, and
   choosing one arms placement
   ([screenshot](calgary-details-v1/app-district-barriers.jpg)).
 - The 147 models from before the district barriers, and their card images, are
   byte-identical. So is the Inglewood barrier after both redesigns of the
-  others, and so are all four earlier district barriers after 17th Ave was
-  added.
+  others, and so are the earlier district barriers after each 17th Ave barrier
+  was added.
 - The whole CI list was run locally: lint with zero warnings, dead-code and type
   checks; `npx vitest run` with 512 files and 4,542 tests passed; the 135
-  catalogue delivery tests; the asset and manifest checks, with 5,983 required
-  runtime files; tools, hosted-asset and backend detail tests with 237 local
-  rows and 392 extras; and the browser tests, 13 passed plus the startup test,
+  catalogue delivery tests; the asset and manifest checks, with 5,985 required
+  runtime files; tools, hosted-asset and backend detail tests with 238 local
+  rows and 393 extras; and the browser tests, 13 passed plus the startup test,
   run one at a time as CI runs them.
-- Production build with CI settings, then `check-budget`: 8,433.0 KB of
+- Production build with CI settings, then `check-budget`: 8,433.1 KB of
   8,448 KB.
 
 Not done here: placing them on the live map, which needs a real map key, and

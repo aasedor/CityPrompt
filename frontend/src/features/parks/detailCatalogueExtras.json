@@ -10020,5 +10020,31 @@
     "meshes": 1,
     "bytes": 348236,
     "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave.webp"
+  },
+  {
+    "id": "detail-yyc-district-barrier-seventeenth-ave-single",
+    "label": "District barrier \u00b7 17th Ave \u00b7 single logo",
+    "category": "Traffic & safety",
+    "description": "Red 3 m road barrier with one large 17th Ave logo in white at its centre. The logo belongs to its business association.",
+    "dimensions": [
+      3.012,
+      0.63,
+      0.81
+    ],
+    "url": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave-single.glb",
+    "color": "#e21a2d",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:district_barrier_seventeenth_ave_single",
+    "sha256": "6d9380ad2f01e65348075827bab5807aa28915589ea1381c7f82235e1b3a43f7",
+    "triangles": 824,
+    "meshes": 1,
+    "bytes": 95160,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave-single.webp"
   }
 ]
