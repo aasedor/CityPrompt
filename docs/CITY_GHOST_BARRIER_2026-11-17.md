@@ -10,8 +10,8 @@ existing public art sculpture. Searching `ghost` lists them.
 
 | Item | W × D × H (m) | Triangles |
 |---|---:|---:|
-| City Ghost on a barrier | 3.0 × 0.7 × 2.1 | 2,938 |
-| City Ghost on a pink barrier | 3.0 × 0.7 × 2.1 | 2,950 |
+| City Ghost on a barrier | 3.0 × 0.7 × 2.1 | 3,206 |
+| City Ghost on a pink barrier | 3.0 × 0.7 × 2.1 | 3,218 |
 
 ## The artwork belongs to its artist
 
@@ -34,10 +34,14 @@ were not copied, so the pink barrier here is plain.
 
 ## What it was modelled from
 
-Three images supplied by the program:
+Four images supplied by the program:
 
+- a photograph of the finished sculpture in daylight, from the front, on a pink
+  barrier. It shows the eyes: a white insert in each socket with a black pupil
+  and a white highlight. This arrived after the first version and is the
+  clearest view of the face;
 - a photograph of the installed sculpture at night, from the front, on a pink
-  barrier;
+  barrier, before the eyes were fitted;
 - the concept sheet, with renders of the ghost on a grey barrier, the hat
   fastening, the eye cups and the design process;
 - a photograph of the sculpture being lowered onto a barrier, from behind and
@@ -53,15 +57,16 @@ they are estimates.
 | Height | Head tops out just under 2 m; the hat sits above | Head at 1.94 m, hat to 2.07 m |
 | Body | About 0.87 m wide, straight sides, a rounded head | 0.87 m wide and 0.66 m deep, with a slight flare toward the skirt |
 | Skirt | Rounded lobes with sharp notches between, hanging about 0.3 m below the top of the barrier on both sides | Eight lobes, three across the front, down to 0.46 m above the ground |
-| Eyes | Two tall oval cups set into the head, about 0.23 m by 0.68 m, 8 cm apart | Two cups 0.23 m by 0.67 m, 8 cm apart, 4.5 cm deep, a shade darker inside |
-| Mouth | A small smile below the eyes | A crescent 0.24 m wide, a shade darker |
-| Arms | A stubby teardrop on each side at mid height | An egg shape on each side, tilted out at the bottom |
+| Eyes | Two tall oval sockets about 8 cm apart, each filled by a white insert that swells out a little, with a tall black pupil in its lower half and a small white highlight | Two sockets 0.24 m by 0.64 m, 7 cm apart. The white steps 12 mm in at the edge and swells 8 mm proud in the middle. Each pupil is 0.11 m by 0.26 m, set slightly toward the nose and below centre, with a highlight at its upper outer side |
+| Mouth | A small smile below the eyes, a little lopsided | A level crescent 0.24 m wide, a shade darker |
+| Arms | A stubby teardrop on each side, level with the mouth | An egg shape on each side, tilted out at the bottom |
 | Hat | A tan cowboy hat, brim about 0.6 m wide and curled up at the sides, slightly askew | The same, turned and tilted a little |
 | Colour | Blue, for the Blue Sky City branding | `#27a8d2` |
 | Fit | A slot in the base drops over the top of the barrier | The body passes through the barrier, which gives the same look |
 
 The depth of the body, the back, and the exact shape of the arms come from the
-one photograph from behind, so they are the least certain.
+one photograph from behind, so they are the least certain. The sculpture's smile is
+a little lopsided; the model's is level.
 
 ## Method
 
@@ -72,8 +77,10 @@ convention: linear vertex colours, flat normals, one matte mesh, no textures.
   Rings are few on the straight sides and close together over the head.
 - **Eyes.** A dent pressed into a regular grid has a ragged edge. So each eye
   is a block of the skin rebuilt around its oval: a rim from the block's edge to
-  the oval, then the cup inside it. The oval has a clean edge and the cup is
-  truly set into the head.
+  the oval, a shallow step down, then the white of the eye, which swells back
+  out. The oval has a clean edge and the white truly sits in its socket. The
+  pupil and its highlight are ovals that follow the curve of the white, a few
+  millimetres proud of it.
 - **Skirt.** Two more rings whose height follows eight lobes, tucked under at
   the tips. Each lobe is six columns wide, so every notch falls on a column.
 - **Smile, arms, hat.** The smile is a strip a few millimetres proud of the
@@ -81,16 +88,19 @@ convention: linear vertex colours, flat normals, one matte mesh, no textures.
   curls up at both sides, a band and a creased crown.
 
 The sculpture has a satin finish; the model is matte like the rest of the kit.
-The two models total 673,628 bytes and 5,888 triangles. The 153 earlier models
+The two models total 734,732 bytes and 6,424 triangles. The 153 earlier models
 and their card images are byte-identical.
 
 ## Verification
 
-- Rendered at eye level, oblique and card size, and compared with the three
+- Rendered at eye level, oblique and card size, and compared with the four
   images ([sheet](calgary-details-v1/city-ghost-review.jpg)). Changed after the
   first review: the skirt's notches were falling between columns and read as
   shallow waves, so the skin was given six columns to a lobe; the hat was
-  raised so the head no longer showed through its brim. Agent review passed;
+  raised so the head no longer showed through its brim. Changed after the
+  daylight photograph arrived: the empty eye cups became white eyes with pupils
+  and highlights, and the eyes, mouth and arms were each moved down a few
+  centimetres to match the clearer view. Agent review passed;
   independent human visual acceptance, and the artist's own review, are open.
 - Placed on the test street through the app's own placement code
   ([on a pink barrier](calgary-details-v1/scene-city-ghost-pink.jpg),
@@ -98,8 +108,9 @@ and their card images are byte-identical.
   All 240 local models passed the datum, size and anchor checks.
 - A tools test requires the head to top out between 1.9 m and 2.0 m, the skirt
   to hang below the top of the barrier, the body to be the same left and right,
-  each eye to lie on the front of the head, and each description to say the
-  artwork belongs to its artist. A frontend test checks the two names.
+  each eye to lie on the front of the head, each pupil to lie wholly on the
+  white of its eye, and each description to say the artwork belongs to its
+  artist. A frontend test checks the two names.
 - In the real project page with a mocked backend, in a temporary browser trial
   that was not committed: both are found by searching `ghost`, load from their
   static card images without requesting a model file, and choosing one arms

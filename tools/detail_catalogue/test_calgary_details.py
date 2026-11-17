@@ -257,6 +257,14 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertGreater(eye_x - eye_rx, .02)
         self.assertLess(eye_x + eye_rx, module.GHOST_A * .7)
         self.assertLess(eye_z + eye_rz, module.GHOST_TOP)
+        # each pupil lies wholly on the white of its eye, looking a little inward and down
+        toward_nose, up, pupil_rx, pupil_rz = module.GHOST_LOOK
+        self.assertGreater(toward_nose, 0)
+        self.assertLess(up, 0)
+        for dx, dz in ((pupil_rx, 0), (-pupil_rx, 0), (0, pupil_rz), (0, -pupil_rz)):
+            self.assertLess(math.hypot((toward_nose + dx) / eye_rx, (up + dz) / eye_rz), .9)
+        for row in (ghost, pink):
+            self.assertIn('white eyes', row['description'])
 
     def test_backend_allowlist_and_category_tiles(self):
         allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))

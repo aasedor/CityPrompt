@@ -2605,20 +2605,22 @@ def district_barrier_seventeenth_ave_single(s):
 # ---------------------------------------------------------------------------
 # City Ghost: a public sculpture made to sit astride these barriers, modelled
 # from photographs and its concept sheet. A blue ghost just under 2 m tall with
-# two tall eye cups, a small smile, stubby arms and a cowboy hat. The sculpture
-# is its artist's work; see docs/CITY_GHOST_BARRIER_2026-11-17.md.
+# two tall white eyes, a small smile, stubby arms and a cowboy hat. The
+# sculpture is its artist's work; see docs/CITY_GHOST_BARRIER_2026-11-17.md.
 #
 # The ghost faces -y. Its body is one skin over rings of a rounded section: a
 # scalloped skirt that hangs either side of the barrier, straight sides and a
 # rounded head. Each eye is a block of that skin rebuilt around an oval, so the
-# cup has a clean edge and is truly set into the head.
+# socket has a clean edge and the white of the eye truly sits in it.
 # ---------------------------------------------------------------------------
 GHOST_BLUE, GHOST_CUP, GHOST_UNDER = '#27a8d2', '#1b8db6', '#187a9f'
+GHOST_WHITE, GHOST_PUPIL, GHOST_GLINT = '#f5f5f2', '#16161a', '#ffffff'
 GHOST_HAT, GHOST_HAT_BAND = '#b98f52', '#8a683a'
 GHOST_A, GHOST_B = .435, .33              # half width and half depth of the body
 GHOST_SKIRT, GHOST_SHOULDER, GHOST_TOP = .585, 1.44, 1.94
 GHOST_COLUMNS, GHOST_LOBES, GHOST_DROP = 48, 8, .125   # six columns to a lobe, so every cusp falls on one
-GHOST_EYE = (.155, 1.545, .115, .335)     # centre x, centre z, half width and half height of an eye
+GHOST_EYE = (.155, 1.52, .118, .32)       # centre x, centre z, half width and half height of an eye
+GHOST_LOOK = (.014, -.03, .056, .13)      # a pupil: how far toward the nose and how far up from the eye's centre, half width, half height
 
 
 def ghost_scale(z):
@@ -2663,8 +2665,9 @@ def ghost_section(count):
 
 def ghost_eye(s, grid, columns, rows, side):
     """Rebuild a block of the skin around one eye: a rim from the block's edge to the oval,
-    then the cup set into the head. columns and rows are the first and last grid lines of
-    the block; side is +1 for the eye at +x."""
+    a shallow step down into the socket, then the white of the eye, which swells gently
+    back out. The black pupil and its glint are painted just proud of the white. columns
+    and rows are the first and last grid lines of the block; side is +1 for the eye at +x."""
     ex, ez, rx, rz = side * GHOST_EYE[0], GHOST_EYE[1], GHOST_EYE[2], GHOST_EYE[3]
     count = len(grid[0])
     (i0, i1), (j0, j1) = columns, rows
@@ -2677,23 +2680,38 @@ def ghost_eye(s, grid, columns, rows, side):
         edge.append((x, y, z))
         oval.append((ex + (x - ex) / reach, ez + (z - ez) / reach))
 
-    def ring(share):
-        """The oval shrunk toward its centre and pushed into the head: flush at the rim, deepest in the middle."""
-        out = []
-        for x, z in oval:
-            px, pz = ex + (x - ex) * share, ez + (z - ez) * share
-            out.append((px, ghost_front(px, pz) + .045 * (1 - share * share) ** .55, pz))
-        return out
+    def white(x, z, proud=0.0):
+        """A point on the white of the eye: 12 mm inside the skin at the socket's edge,
+        swelling to 8 mm outside it in the middle."""
+        share = min(1.0, math.hypot((x - ex) / rx, (z - ez) / rz))
+        return (x, ghost_front(x, z) + .012 * share * share - .008 * (1 - share * share) - proud, z)
 
-    rings = [edge, ring(1.0), ring(.72), ring(.4)]
+    def ring(share):
+        return [white(ex + (x - ex) * share, ez + (z - ez) * share) for x, z in oval]
+
+    rings = [edge, [(x, ghost_front(x, z), z) for x, z in oval], ring(1.0), ring(.72), ring(.4)]
+    tones = (GHOST_BLUE, GHOST_CUP, GHOST_WHITE, GHOST_WHITE)
     total = len(border)
-    for r in range(3):
+    for r, tone in enumerate(tones):
         for k in range(total):
             n = (k + 1) % total
-            s.quad(rings[r][k], rings[r][n], rings[r + 1][n], rings[r + 1][k], GHOST_BLUE if r == 0 else GHOST_CUP)
-    centre = (ex, ghost_front(ex, ez) + .045, ez)
+            s.quad(rings[r][k], rings[r][n], rings[r + 1][n], rings[r + 1][k], tone)
     for k in range(total):
-        s.tri(rings[3][k], rings[3][(k + 1) % total], centre, GHOST_CUP)
+        s.tri(rings[-1][k], rings[-1][(k + 1) % total], white(ex, ez), GHOST_WHITE)
+
+    def patch(cx, cz, hx, hz, colour, proud, segments, shares):
+        """An oval painted on the white of the eye, following its curve."""
+        loops = [[white(cx + hx * share * math.cos(math.tau * k / segments), cz + hz * share * math.sin(math.tau * k / segments), proud) for k in range(segments)] for share in shares]
+        for r in range(len(loops) - 1):
+            for k in range(segments):
+                n = (k + 1) % segments
+                s.quad(loops[r][k], loops[r][n], loops[r + 1][n], loops[r + 1][k], colour)
+        for k in range(segments):
+            s.tri(loops[-1][k], loops[-1][(k + 1) % segments], white(cx, cz, proud), colour)
+
+    px, pz = ex - side * GHOST_LOOK[0], ez + GHOST_LOOK[1]
+    patch(px, pz, GHOST_LOOK[2], GHOST_LOOK[3], GHOST_PUPIL, .004, 18, (1.0, .55))
+    patch(px - .02, pz + .056, .017, .019, GHOST_GLINT, .007, 10, (1.0,))
 
 
 def ghost_blob(s, radii, taper, rings=7, sides=10):
@@ -2769,13 +2787,13 @@ def city_ghost(s):
 
     def lip(k, lower):
         x = -half + 2 * half * k / steps
-        z = 1.116 + .016 * (x / half) ** 2 - (.034 * (1 - (x / half) ** 2) if lower else 0.0)
+        z = 1.095 + .016 * (x / half) ** 2 - (.034 * (1 - (x / half) ** 2) if lower else 0.0)
         return (x, ghost_front(x, z) - .004, z)
     for k in range(steps):
         s.quad(lip(k, True), lip(k + 1, True), lip(k + 1, False), lip(k, False), GHOST_CUP)
 
     for side in (-1, 1):
-        with s.at(side * (GHOST_A * ghost_scale(1.13) - .012), -.02, 1.13, pitch=-side * .2):
+        with s.at(side * (GHOST_A * ghost_scale(1.08) - .012), -.02, 1.08, pitch=-side * .2):
             ghost_blob(s, (.088, .115, .185), .45)
     with s.at(.015, .01, GHOST_TOP + .006, yaw=.2, pitch=.045, roll=-.03):
         ghost_hat(s)
@@ -4241,8 +4259,8 @@ SPECS = [
     spec('district-barrier-fourth-street-green', 'District barrier · Fourth Street · green', 'Traffic & safety', 'Teal 3 m road barrier with the Fourth Street name between two 4s, in white and green. The logo belongs to its business association.', district_barrier_fourth_street_green, 2964, '#23997c'),
     spec('district-barrier-seventeenth-ave', 'District barrier · 17th Ave', 'Traffic & safety', 'Red 3 m road barrier with the 17th Ave logo four times in white. The logo belongs to its business association.', district_barrier_seventeenth_ave, 2965, '#e21a2d'),
     spec('district-barrier-seventeenth-ave-single', 'District barrier · 17th Ave · single logo', 'Traffic & safety', 'Red 3 m road barrier with one large 17th Ave logo in white at its centre. The logo belongs to its business association.', district_barrier_seventeenth_ave_single, 2966, '#e21a2d'),
-    spec('city-ghost-barrier', 'City Ghost on a barrier', 'Water & landmarks', 'Blue ghost sculpture in a cowboy hat, just under 2 m tall, astride a 3 m concrete road barrier. The artwork belongs to its artist.', city_ghost_barrier, 2971, '#27a8d2'),
-    spec('city-ghost-barrier-pink', 'City Ghost on a pink barrier', 'Water & landmarks', 'Blue ghost sculpture in a cowboy hat, just under 2 m tall, astride a 3 m road barrier painted pink. The artwork belongs to its artist.', city_ghost_barrier_pink, 2972, '#ee8f8c'),
+    spec('city-ghost-barrier', 'City Ghost on a barrier', 'Water & landmarks', 'Blue ghost sculpture with big white eyes and a cowboy hat, just under 2 m tall, astride a 3 m barrier. The artwork belongs to its artist.', city_ghost_barrier, 2971, '#27a8d2'),
+    spec('city-ghost-barrier-pink', 'City Ghost on a pink barrier', 'Water & landmarks', 'Blue ghost sculpture with big white eyes and a cowboy hat, just under 2 m tall, astride a pink barrier. The artwork belongs to its artist.', city_ghost_barrier_pink, 2972, '#ee8f8c'),
 ]
 
 

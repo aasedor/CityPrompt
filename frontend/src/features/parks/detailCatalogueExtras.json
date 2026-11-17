@@ -10051,7 +10051,7 @@
     "id": "detail-yyc-city-ghost-barrier",
     "label": "City Ghost on a barrier",
     "category": "Water & landmarks",
-    "description": "Blue ghost sculpture in a cowboy hat, just under 2 m tall, astride a 3 m concrete road barrier. The artwork belongs to its artist.",
+    "description": "Blue ghost sculpture with big white eyes and a cowboy hat, just under 2 m tall, astride a 3 m barrier. The artwork belongs to its artist.",
     "dimensions": [
       3.012,
       0.683,
@@ -10067,17 +10067,17 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:city_ghost_barrier",
-    "sha256": "d0e1a1020d9e72c629699a65becd1ac24d039b5631035fb3d19496403b97e18d",
-    "triangles": 2938,
+    "sha256": "cfc087d62175f3452f892816d3c7456eae525d44eba70d0598ebc408d3d0c8b0",
+    "triangles": 3206,
     "meshes": 1,
-    "bytes": 336124,
+    "bytes": 366676,
     "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier.webp"
   },
   {
     "id": "detail-yyc-city-ghost-barrier-pink",
     "label": "City Ghost on a pink barrier",
     "category": "Water & landmarks",
-    "description": "Blue ghost sculpture in a cowboy hat, just under 2 m tall, astride a 3 m road barrier painted pink. The artwork belongs to its artist.",
+    "description": "Blue ghost sculpture with big white eyes and a cowboy hat, just under 2 m tall, astride a pink barrier. The artwork belongs to its artist.",
     "dimensions": [
       3.012,
       0.683,
@@ -10093,10 +10093,10 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:city_ghost_barrier_pink",
-    "sha256": "7b13271559ce2762d63bcdf5e5201170c6b9f5956e427e7f1dee96874a04fd26",
-    "triangles": 2950,
+    "sha256": "6ff62449a1517bf02de2f6cd7ae37f53453ac05cab7f00a151810440f7ba3bb1",
+    "triangles": 3218,
     "meshes": 1,
-    "bytes": 337504,
+    "bytes": 368056,
     "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.webp"
   }
 ]
