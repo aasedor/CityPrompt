@@ -426,13 +426,49 @@ def test_catalogue_rejects_unknown_models_bad_coordinates_and_colliding_ids():
         )
 
 
+@pytest.mark.asyncio
+async def test_claude_detail_packs_save_reload_and_preserve_legacy_details(monkeypatch):
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    choices = json.loads((root / "frontend/src/features/parks/detailCatalogueExtras.json").read_text(encoding="utf-8"))
+    choices = [c for c in choices if c.get("sourceKit") in {"calgary-details-v1", "prairie-foliage-v1"}]
+    assert len(choices) == 240
+    placements = {"trees": [], "props": []}
+    for choice in choices:
+        field = "trees" if choice["kind"] == "tree" else "props"
+        placements[field].append(
+            {"id": choice["id"], "lng": -114.1, "lat": 51.05, "angle": 45, "variant": choice["id"]}
+        )
+    assert len(placements["trees"]) == 50
+    assert len(placements["props"]) == 190
+    monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
+    db, row = session({"other": {"keep": True}})
+    project_id = uuid.uuid4()
+    bench = {"id": "existing-bench", "lng": -114.1, "lat": 51.05, "angle": 0}
+    await endpoint.save_details(
+        project_id, endpoint.DetailUpdate(expected_revision=0, benches=[bench], **placements), SimpleNamespace(), db
+    )
+    loaded = await endpoint.get_details(project_id, SimpleNamespace(), db)
+    assert loaded["trees"] == placements["trees"]
+    assert loaded["props"] == placements["props"]
+    assert loaded["benches"] == [bench]
+    assert row.metadata_["other"] == {"keep": True}
+    saved = await endpoint.save_details(
+        project_id, endpoint.DetailUpdate(expected_revision=1, benches=[bench]), SimpleNamespace(), db
+    )
+    assert saved["trees"] == placements["trees"]
+    assert saved["props"] == placements["props"]
+
+
 def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
     import json
     from pathlib import Path
 
     root = Path(__file__).resolve().parents[2]
     choices = json.loads((root / "frontend/src/features/parks/detailCatalogueExtras.json").read_text())
-    assert len(choices) == 155
+    assert len(choices) == 395
     choices += json.loads((root / "frontend/src/features/parks/recoveredDetails.json").read_text())
     choices += json.loads((root / "frontend/src/features/parks/trafficSafetyCatalogue.json").read_text())
     # Local preview IDs must round-trip before their public picker gate is lifted.
