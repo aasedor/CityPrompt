@@ -1,6 +1,6 @@
 {
-  "candidate": "plus15-brutalist-concrete-office-clay-v005",
-  "model_sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
+  "candidate": "plus15-brutalist-concrete-office-clay-v006",
+  "model_sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
   "independent_approval": false,
@@ -29,20 +29,18 @@
     "renders/top.png",
     "renders/west_ground.png"
   ],
-  "boards_inspected": [
-    "boards/phone-street.png"
-  ],
+  "boards_inspected": [],
   "findings": [
     "Five storeys: a ground storey and four ribbon and band pairs on all four sides, as both perspective references show.",
-    "Each band reads as a main face under a projecting cap strip with a dark reveal line; the first band carries a lower moulding.",
-    "Ribbons read as continuous dark strips; columns stand 1.7 m back and corner rooms stop sight lines running through the corners.",
-    "The walkway mouth is closed by solid jambs; its section is a flat crown and belly with eased edges and a glazed band close to half its height.",
+    "Each band reads as a main face under a projecting cap strip with a dark reveal line 0.16 m tall; the first band carries a lower moulding.",
+    "Ribbons read as continuous dark strips; columns stand 1.5 m back and corner rooms have their blinds drawn, so no sight line runs through a corner.",
+    "The walkway mouth is closed by solid jambs and full-height frame posts; its glass sits 0.11 m behind the tube face.",
     "Roof plan matches the reference in footprint ratio, penthouse position, the rear east well, the walkway position and the roof items.",
     "The entrance is a pair of glazed doors in the second bay from the east corner with a glazed draught lobby behind; the threshold is 35 mm above grade.",
     "West flank and rear are complete service elevations with real openings; both are inferred and recorded as such.",
     "Nothing floats and nothing sits below grade. Every swept piece faces outward, which a test now checks piece by piece."
   ],
-  "changes_since_v002": "Every finding of the independent review of v002 was acted on; see evidence/independent-review-v002.json. Two faults the builder found itself were also fixed: band faces wound inside out, and a cap triangle wound backwards.",
+  "changes_since_v002": "Every finding of the independent review of v002 was acted on in v005, which then passed independent review. v006 acts on eight of the nine P2 notes from that pass; see evidence/independent-review-v005.json.",
   "open_notes": [
     "The street reference shows far more penthouse above the parapet than the roof plan and oblique allow, so the model's street skyline is flatter. Recorded as a source conflict; roof plan governs.",
     "The walkway is a 9 m length with a glazed end and no support at the free end; the references run it to a neighbouring building.",

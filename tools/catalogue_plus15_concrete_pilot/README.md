@@ -8,13 +8,13 @@ not seeded, and not activated. Only a person can activate a clay delivery.
 No model of this variant existed before: not in the clay library, the textured
 families, the model library, the picker, or on any other branch.
 
-Status of candidate **plus15-brutalist-concrete-office-clay-v005**:
+Status of candidate **plus15-brutalist-concrete-office-clay-v006**:
 
 | Checkpoint | Status |
 |---|---|
 | Deterministic delivery checks | Pass, 75 checks. `evidence/delivery-verification.json` |
 | Builder pixel review | Pass, with open notes. `evidence/builder-pixel-review.json` |
-| Independent architectural-clay review | **Pass**, zero P0 and zero P1, nine P2 notes. `evidence/independent-review-v005.json`. An AI reviewer with no builder context, not a person |
+| Independent architectural-clay review | v006 is under review, no result yet. v005 passed |
 | Runtime integration | NOT REVIEWED. No part of it has been run |
 | Publication or activation | Not authorized |
 
@@ -22,25 +22,28 @@ Earlier candidates: v002 went to independent review and came back **rework
 required** with two P1 and six P2 findings (`evidence/independent-review-v002.json`).
 Every one was acted on. v003 and v004 were withdrawn before review, because the
 tests caught band faces wound inside out and then a cap triangle wound backwards.
+v005 **passed** independent review with zero P0, zero P1 and nine P2 notes
+(`evidence/independent-review-v005.json`); it rebuilds from commit `237780e33`.
+v006 acts on eight of those nine notes.
 
 ## What the building is
 
 A 1970s precast office block of the kind that carries Calgary's +15 network:
-five storeys, 45.0 m across the street front and 40.5 m deep, with a 21.9 m
+five storeys, 45.0 m across the street front and 40.5 m deep, with a 21.8 m
 parapet and a concrete plant penthouse to 27.6 m. A 4.5 m wide enclosed walkway
 leaves the east flank at the third storey and runs out 9 m.
 
 | Part | Built as |
 |---|---|
 | Storeys | Ground storey 5.2 m, four office storeys at 3.9 m |
-| Bands | Precast, 1.85 m tall on every side, split by a joint at each 9 m structural line. Each has a 0.52 m cap strip that projects 0.15 m over a recessed reveal. The first band also has a lower moulding |
+| Bands | Precast, 1.85 m tall on every side, split by a joint at each 9 m structural line. Each has a 0.52 m cap strip that projects 0.15 m over a recessed reveal 0.16 m tall. The first band also has a lower moulding |
 | Ribbon windows | 2.05 m tall, glass 0.3 m behind the cap strip, bronze frames at 1.5 m, bronze glass, a corner post at each corner |
 | Ground storey | Granite piers 1.3 m square at 9 m. Five glazed bays to the street, the entrance doors in the second bay from the east corner. Granite infill, a service door and plant louvres on the flanks and rear |
-| Roof | Ballasted deck inside a 1.1 m parapet with bronze flashing. Penthouse 22.5 m square and 6.8 m tall, centred, in board-formed panels, with a door and louvre on its east face and an open well in its rear east corner |
-| Walkway | Concrete tube 4.6 m tall with eased edges, a 2.2 m glazed band both sides, solid jambs where it meets the building, a glazed end |
-| Inside | Floors, ceilings with light fittings, columns, enclosed rooms, corner rooms, desks, a lobby with timber panelling, a draught lobby and lift doors, three shop units |
+| Roof | Ballasted deck inside a 1.0 m parapet with bronze flashing. Penthouse 22.5 m square and 6.8 m tall, centred, in board-formed panels eight to a face, with a door and louvre on its east face and an open well in its rear east corner |
+| Walkway | Concrete tube 4.6 m tall with eased edges, a 2.2 m glazed band both sides set 0.11 m back, solid jambs where it meets the building, a glazed end |
+| Inside | Floors, ceilings with light fittings, columns, enclosed rooms, corner rooms with blinds drawn, desks, a lobby with timber panelling, a draught lobby and lift doors, three shop units |
 
-The model is 41,206 triangles in 19 flat-coloured parts, with no textures or
+The model is 39,550 triangles in 19 flat-coloured parts, with no textures or
 images. Nothing sits below grade, and the entrance threshold is 35 mm above it.
 
 ## What it was measured from
@@ -90,7 +93,7 @@ aggregate and the tie holes in the board-formed concrete.
 | `cameras.json`, `review.html`, `render.cjs` | Review renders of the exact GLB in headless Chromium |
 | `boards.py` | Four 1080 x 1920 phone boards |
 | `verify.py` | Delivery checks; writes `delivery-verification.json` |
-| `test_build.py` | 16 tests, including that the generator still produces the reviewed bytes and that every swept piece faces outward |
+| `test_build.py` | 18 tests, including that the generator still produces the recorded bytes, that every swept piece faces outward, and that fittings clear walls and columns |
 | `prework-manifest.json`, `candidate.json` | The measured contract and the candidate's hashes |
 | `evidence/` | Builder review, delivery verification and independent reviews |
 

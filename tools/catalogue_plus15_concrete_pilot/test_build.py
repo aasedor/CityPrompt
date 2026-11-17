@@ -84,7 +84,8 @@ def test_bands_project_as_measured_and_face_outward():
     profile = build.spandrel_profile(4.15)
     top = 4.15 + build.SPANDREL
     assert min(d for d, _ in profile) == 0 and math.isclose(max(z for _, z in profile), top - .03)
-    assert (build.STEP, top - build.CAP - .10) in profile and (build.STEP + .08, top - build.CAP) in profile, 'main face and reveal sit behind the cap strip'
+    deep, tall = build.REVEAL
+    assert (build.STEP, top - build.CAP - tall) in profile and (build.STEP + deep, top - build.CAP) in profile, 'main face and reveal sit behind the cap strip'
     assert math.isclose(build.SPANDREL + build.HEAD - build.SILL, 3.9) and math.isclose(build.FLOORS[1] + build.SILL - build.SPANDREL, build.SOFFIT)
     for side in build.SIDES:                                    # every band's main face, on all four sides
         axis = 1 if side.name in ('front', 'rear') else 0
@@ -101,7 +102,8 @@ def test_walkway_sits_at_the_third_storey_on_the_east_flank():
     assert build.BRIDGE_STOREY == 3 and math.isclose(max(xs), build.HX + build.BRIDGE_LENGTH)
     assert floor - .65 < min(zs) < floor and floor + build.HEAD < max(zs) <= floor + build.HEAD + 1.5 + 1e-9
     centre = -build.HY + sum(build.BRIDGE_U) / 2
-    assert math.isclose(min(ys), centre - build.BRIDGE_HALF) and math.isclose(max(ys), centre + build.BRIDGE_HALF)
+    tube = [p[1] for p in points if p[0] > build.HX]            # beyond the building face: the tube alone
+    assert math.isclose(min(tube), centre - build.BRIDGE_HALF) and math.isclose(max(tube), centre + build.BRIDGE_HALF)
     panes = [p[2] for face in CLAY.triangles['glass'] for p in face[:3] if all(q[0] > build.HX - build.STEP - 1e-6 for q in face[:3])]
     assert .42 < (max(panes) - min(panes)) / (max(zs) - min(zs)) < .50, 'the glazed band is close to half the tube, as the street view shows'
 
@@ -212,3 +214,42 @@ def test_every_loft_in_the_building_faces_outward():
     finally:
         Clay.loft = original
     assert len(checked) > 150 and min(checked) > 0
+
+
+def boxes(role):
+    """Axis-aligned bounds of each 12-triangle box of one role, in build order."""
+    faces = CLAY.triangles[role]
+    return [tuple((min(p[k] for f in faces[at:at + 12] for p in f[:3]), max(p[k] for f in faces[at:at + 12] for p in f[:3])) for k in range(3))
+            for at in range(0, len(faces) - 11, 12)]
+
+
+def test_office_fittings_do_not_run_through_walls_or_columns():
+    """Light fittings and desks stand clear of the corner-room walls and the columns."""
+    def overlap(a, b):
+        return all(a[k][0] < b[k][1] - 1e-6 and b[k][0] < a[k][1] - 1e-6 for k in range(3))
+
+    def upper(box):
+        return box[2][0] >= build.FLOORS[1] - 1e-6
+
+    walls = [box for box in boxes('interior') if upper(box) and min(box[0][1] - box[0][0], box[1][1] - box[1][0]) < .11]
+    columns = [box for box in boxes('structure') if box[2][1] > build.FLOORS[2]]
+    assert len(walls) == 32 and len(columns) >= 20
+    for fitting in [box for box in boxes('light') if upper(box)] + [box for box in boxes('furniture') if upper(box)]:
+        assert not any(overlap(fitting, other) for other in walls + columns)
+
+
+def test_walkway_mouth_has_no_slit_into_the_office():
+    """Beside the walkway the gap between the cut band and the tube is backed by solid
+    concrete from the floor up, and by a full-height frame post above the window line."""
+    floor = build.FLOORS[build.BRIDGE_STOREY - 1]
+    line = floor + build.SILL - .03
+    for edge, inner in ((build.BRIDGE_U[0], build.BRIDGE_U[0] + .31), (build.BRIDGE_U[1], build.BRIDGE_U[1] - .31)):
+        lo, hi = sorted((edge, inner))
+        zone = [f for f in CLAY.triangles['bridge'] if all(build.HX - build.FRAME_IN - 1e-6 <= p[0] <= build.HX - build.STEP + 1e-6
+                                                             and lo - 1e-6 <= p[1] + build.HY <= hi + 1e-6 for p in f[:3])]
+        us = [p[1] + build.HY for f in zone for p in f[:3]]
+        assert math.isclose(min(us), lo) and math.isclose(max(us), hi), 'the jamb must reach the cut end of the band'
+        at_edge = [p[2] for f in zone for p in f[:3] if abs(p[1] + build.HY - edge) < 1e-6]
+        assert min(at_edge) <= floor + 1e-9 and max(at_edge) >= line - 1e-9
+        post = [p[2] for f in CLAY.triangles['frame'] for p in f[:3] if all(abs(q[1] + build.HY - edge) < .031 and q[0] > build.HX - build.FRAME_IN - 1e-6 for q in f[:3])]
+        assert min(post) <= line + 1e-9 and max(post) >= floor + build.HEAD - 1e-9

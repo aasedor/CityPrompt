@@ -32,11 +32,12 @@ HX, HY = W / 2, D / 2
 BAY, MODULE = 9.0, 1.5            # structural bay and window module
 STOREYS = 5
 FLOORS = (0.0, 5.2, 9.1, 13.0, 16.9)   # finished floor of storeys 1 to 5
-ROOF, PARAPET = 20.8, 21.9
+ROOF, PARAPET = 20.8, 21.8
 SILL, HEAD, SPANDREL = .80, 2.85, 1.85  # above a floor: window sill, window head; band height
 CEILING = 2.90
 FRAME_OUT, GLASS, FRAME_IN, RAIL = .24, .30, .36, .07   # ribbon glazing, inset from the cap strip's face
 CAP = .52                         # height of the cap strip at the top of each band
+REVEAL = (.10, .16)               # depth and height of the recess under each cap strip
 STEP = .15                        # each band's main face sits this far behind its projecting cap strip
 JOINT = .03
 BASE, GROUND_FLOOR, SOFFIT, GROUND_CEILING = .02, .04, 4.15, 4.05
@@ -126,15 +127,17 @@ def spandrel_profile(bottom, soffit=FRAME_IN, lip=False):
     top = bottom + SPANDREL
     foot = ([(soffit, bottom), (.06, bottom), (.04, bottom + .02), (.04, bottom + .26), (STEP, bottom + .30)] if lip
             else [(soffit, bottom), (STEP + .02, bottom), (STEP, bottom + .02)])
-    ring = foot + [(STEP, top - CAP - .10), (STEP + .08, top - CAP - .10), (STEP + .08, top - CAP), (.015, top - CAP),
+    deep, tall = REVEAL
+    ring = foot + [(STEP, top - CAP - tall), (STEP + deep, top - CAP - tall), (STEP + deep, top - CAP), (.015, top - CAP),
                    (0, top - CAP + .015), (0, top - .075), (.02, top - .06), (FRAME_OUT, top - .03), (FRAME_IN, top - .03)]
     return ring + ([(FRAME_IN, bottom + .30), (soffit, bottom + .30)] if soffit > FRAME_IN else [])
 
 
 def parapet_profile(bottom):
     """The top band: main face, reveal, then the same projecting cap strip, up to a concrete top."""
-    return [(FRAME_IN, bottom), (STEP + .02, bottom), (STEP, bottom + .02), (STEP, PARAPET - CAP - .10), (STEP + .08, PARAPET - CAP - .10),
-            (STEP + .08, PARAPET - CAP), (.015, PARAPET - CAP), (0, PARAPET - CAP + .015), (0, PARAPET - .02), (.02, PARAPET),
+    deep, tall = REVEAL
+    return [(FRAME_IN, bottom), (STEP + .02, bottom), (STEP, bottom + .02), (STEP, PARAPET - CAP - tall), (STEP + deep, PARAPET - CAP - tall),
+            (STEP + deep, PARAPET - CAP), (.015, PARAPET - CAP), (0, PARAPET - CAP + .015), (0, PARAPET - .02), (.02, PARAPET),
             (.45, PARAPET), (.45, ROOF - .10), (FRAME_IN, ROOF - .10)]
 
 
@@ -186,7 +189,8 @@ def ribbon(clay, side, floor, openings=()):
     for k in range(1, round(length / MODULE)):
         u = k * MODULE
         if not any(lo < u < hi for lo, hi in openings):
-            side.box(clay, 'frame', u - .03, u + .03, FRAME_OUT, FRAME_IN, z0 + RAIL, z1 - RAIL)
+            post = any(u in edge for edge in openings)      # the rails stop at an opening, so its edge posts run full height
+            side.box(clay, 'frame', u - .03, u + .03, FRAME_OUT, FRAME_IN, z0 if post else z0 + RAIL, z1 if post else z1 - RAIL)
 
 
 def envelope(clay):
@@ -429,7 +433,7 @@ def columns(clay):
                 clay.box('structure', x - .3, x + .3, y - .3, y + .3, GROUND_FLOOR, GROUND_CEILING)
             if not within(ROOMS, x, y):
                 clay.box('structure', x - .3, x + .3, y - .3, y + .3, FLOORS[1], ROOF - .2)
-    back = 1.7                              # perimeter columns stand well behind the glass, so the ribbons read unbroken
+    back = 1.5                              # perimeter columns stand well behind the glass and clear of the light fittings
     edge = [(x, sy * (HY - back)) for x in lines_x for sy in (-1, 1)] + [(sx * (HX - back), y) for y in lines_y for sx in (-1, 1)]
     edge += [(sx * (HX - back), sy * (HY - back)) for sx in (-1, 1) for sy in (-1, 1)]
     for x, y in edge:
@@ -445,10 +449,12 @@ def offices(clay):
         clay.box('interior', x0, x1, y0, y1, floor + CEILING, above - .35)
         ceiling_lights(clay, floor + CEILING - .04, ROOMS)
         for side in SIDES:
-            for u in (3.0, side.length - 3.0):          # corner rooms, so no sight line runs clean through a corner bay
-                side.box(clay, 'interior', u - .05, u + .05, FRAME_IN + .02, HY + ROOMS[2], floor, floor + CEILING)
-            u = 4.5
-            while u <= side.length - 4.5:
+            for wall, a, b in ((4.5, FRAME_IN + .02, 4.45), (side.length - 4.5, side.length - 4.45, side.length - FRAME_IN - .02)):
+                # corner rooms with their blinds drawn, so no sight line runs clean through a corner
+                side.box(clay, 'interior', wall - .05, wall + .05, FRAME_IN + .02, HY + ROOMS[2], floor, floor + CEILING)
+                side.box(clay, 'furniture', a, b, FRAME_IN + .07, FRAME_IN + .09, floor + SILL + .05, floor + HEAD - .08)
+            u = 7.5
+            while u <= side.length - 7.5:
                 at_bridge = side is EAST and storey == BRIDGE_STOREY and BRIDGE_U[0] - 1.2 < u < BRIDGE_U[1] + 1.2
                 if not at_bridge:
                     workstation(clay, side, u, floor)
@@ -498,7 +504,7 @@ def lobby(clay):
 # ---- roof ----------------------------------------------------------------------------
 def penthouse(clay):
     sides = [Side(name, PENT, PENT) for name in ('front', 'east', 'rear', 'west')]
-    us, mid = grid(0, 2 * PENT, 10), ROOF + 3.70
+    us, mid = grid(0, 2 * PENT, 8), ROOF + 3.70
     door, vent = (7.0, 8.0, ROOF + .10, ROOF + 2.25), (9.0, 13.5, ROOF + 1.00, mid)
     for side in sides:
         holes = [door, vent] if side.name == 'east' else []
@@ -560,11 +566,13 @@ def bridge(clay):
     # solid jambs close the mouth between the band face and the building's own glass line
     for a, b in ((BRIDGE_U[0] + .03, BRIDGE_U[0] + .31), (BRIDGE_U[1] - .31, BRIDGE_U[1] - .03)):
         EAST.box(clay, 'bridge', a, b, STEP, FRAME_IN, floor, head)
+    for a, b in ((BRIDGE_U[0], BRIDGE_U[0] + .03), (BRIDGE_U[1] - .03, BRIDGE_U[1])):      # under the edge posts of the office ribbon
+        EAST.box(clay, 'bridge', a, b, STEP, FRAME_IN, floor, floor + SILL - .03)
     clay.box('bridge', x1 - wall, x1, yc - half + wall, yc + half - wall, floor, sill)      # end upstand
     clay.box('floor', HX - FRAME_IN, x1 - wall, yc - half + wall, yc + half - wall, floor, floor + .02)
     clay.box('light', x0 + .5, x1 - .9, yc - .25, yc + .25, head - .04, head)
-    n0, n1, g = .19, .31, .25
-    for sign in (-1, 1):                    # ribbon glazing down both sides
+    n0, n1, g = .06, .16, .11
+    for sign in (-1, 1):                    # ribbon glazing down both sides, close to the face
         y0, y1, yg = yc + sign * (half - n0), yc + sign * (half - n1), yc + sign * (half - g)
         clay.box('frame', x0, x1 - n1, y0, y1, sill, sill + RAIL)
         clay.box('frame', x0, x1 - n1, y0, y1, head - RAIL, head)
@@ -631,18 +639,18 @@ def prework(candidate):
             'source_measurements': {
                 'front': [
                     'A two-point street view from the south-east corner with upright verticals. A fitted camera (2.4 m eye height, 40 degree lens, vertical shift) puts six measured corners within 10 px on the 1024 px image.',
-                    'Down the south-east corner edge: 230 px of clear ground storey, four pairs of 108 px ribbon and 107 px band, and a 115 px top band. At the variant\'s 3.9 m storey this gives a clear ground storey of about 4.1 m, ribbons and bands that each read 1.95 m, and a parapet at 21.9 m.',
+                    'Down the south-east corner edge: 230 px of clear ground storey, four pairs of 108 px ribbon and 107 px band, and a 115 px top band. At the variant\'s 3.9 m storey this gives a clear ground storey of about 4.1 m, ribbons and bands that each read 1.95 m, and a top band of about 2.0 to 2.1 m. The parapet is built at 21.8 m.',
                     'From the street each sill hides about 0.1 m of its window, and from above each band hides more. Both views agree when the openings are 2.05 m tall in 1.85 m bands with the glass 0.3 m behind the cap strip, so that is what is built.',
                     'Ground storey plus four office storeys: five. The catalogue text says six; the selected-variant images govern.',
                     'Five structural bays across the street front, marked by band joints and granite piers about 1.3 m wide, with six window modules to a bay.',
-                    'Each band carries a cap strip about 0.5 m tall that projects beyond the main face over a dark line about 0.2 m deep. Built as a 0.15 m projection over a recessed reveal. The first band also carries a lower moulding.',
+                    'Each band carries a cap strip about 0.5 m tall that projects beyond the main face over a dark line about 0.2 m deep. Built as a 0.15 m projection over a recessed reveal 0.16 m tall. The first band also carries a lower moulding.',
                     'One pair of glazed entrance doors in the second bay from the east corner, with a transom at door-head height. Timber panelling shows through the corner bay.',
                     'East flank at street level: the glazing returns a short way, then blank granite between piers, with a service door at the far end.',
                     'The walkway leaves the east flank at the third storey. Its glazed band is a little taller than the office ribbons and close to half the height of the tube, between a concrete crown and belly with rounded edges.'],
                 'oblique': [
                     'A fitted camera (37 m up to the south-east, 48 degree lens) puts eight measured points, including the corner pier\'s foot, within 18 px on the 1195 px image. It is a looser fit than the street view, so this image settles the roof layout and not facade heights.',
                     'Four ribbon storeys over the ground storey on both visible sides, with band joints at the structural lines.',
-                    'Penthouse about 6.8 m tall in board-formed panels roughly 2.25 m wide with one horizontal joint; a door and a louvre on its east face; an open well in its rear east corner.',
+                    'Penthouse about 6.8 m tall in board-formed panels, eight to a face, with one horizontal joint; a door and a louvre on its east face; an open well in its rear east corner.',
                     'Flat gravel roof inside a concrete parapet with a bronze flashing on its inner edge.'],
                 'top': [
                     'Footprint 670 px by 615 px, a ratio of 1.09. Built 45.0 m by 40.5 m, a ratio of 1.11.',
@@ -654,7 +662,7 @@ def prework(candidate):
             'source_conflicts': [
                 'Walkway level. The archetype text places +15 walkways at the second storey; both perspective sources show this one at the third. Built as drawn, floor 9.1 m above grade.',
                 'Penthouse from the street. The street view shows about 6 m of penthouse above the parapet line, so its skyline is stepped. The roof plan and the oblique cannot produce that from the fitted street camera; under 1 m shows and the skyline is nearly flat. Roof plan and oblique govern.',
-                'Penthouse width. The oblique shows the penthouse about 7 percent narrower than the roof plan does. The roof plan governs: 22.5 m square.',
+                'Penthouse size in the oblique. Fitted to the building\'s corners, the oblique shows the penthouse about 7 percent narrower than the roof plan does, and the model\'s penthouse renders somewhat larger than the reference there. The roof plan governs the plan, 22.5 m square; the height, 6.8 m, comes from the penthouse\'s own corner edge in the oblique.',
                 'Walkway roof. The street view shows a rounded crown; the oblique shows a flat roof with eased edges. Built flat with 0.35 m eased edges, which is consistent with both.',
                 'Storey count. The catalogue description says six storeys; both perspective sources show five.'],
             'hidden_assumptions': [

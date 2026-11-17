@@ -1,11 +1,11 @@
 {
-  "candidate": "plus15-brutalist-concrete-office-clay-v005",
+  "candidate": "plus15-brutalist-concrete-office-clay-v006",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/plus15-brutalist-concrete-office/v005 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
-  "model_bytes": 2373968,
+  "external_directory": "artifacts/plus15-brutalist-concrete-office/v006 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0",
+  "model_bytes": 2273324,
   "delivered_bounds_gltf_m": [
     [
       -22.5,
@@ -25,14 +25,14 @@
   },
   "storeys": 5,
   "runtime": {
-    "path": "plus15-brutalist-concrete-office-clay-v005.glb",
-    "bytes": 2373968,
-    "sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
+    "path": "plus15-brutalist-concrete-office-clay-v006.glb",
+    "bytes": 2273324,
+    "sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0",
     "meshes": 19,
     "materials": 19,
     "textures": 0,
     "images": 0,
-    "triangles": 41206
+    "triangles": 39550
   },
   "entrances": [
     {
@@ -55,18 +55,24 @@
       "frame": "authoring Z-up, x east, front faces -y, grade z = 0, building body centred on the origin"
     }
   ],
+  "independent_review": "pending for this candidate",
   "superseded": {
     "plus15-brutalist-concrete-office-clay-v001": "first full package; replaced when joints were widened and the review lighting gained a fill light",
     "plus15-brutalist-concrete-office-clay-v002": "independent review: rework required, 2 P1 and 6 P2",
     "plus15-brutalist-concrete-office-clay-v003": "withdrawn before review: some band faces were wound inside out",
-    "plus15-brutalist-concrete-office-clay-v004": "withdrawn before review: one cap triangle of the first band was wound backwards, which hid the same fault"
-  },
-  "independent_review": {
-    "file": "evidence/independent-review-v005.json",
-    "sha256": "68001736d5de325d352e3e5dc0f57997a801e7bbf39772ce061cc8236ea37ab7",
-    "decision": "architectural_clay_pass",
-    "unresolved_p0": 0,
-    "unresolved_p1": 0,
-    "unresolved_p2": 9
+    "plus15-brutalist-concrete-office-clay-v004": "withdrawn before review: one cap triangle of the first band was wound backwards, which hid the same fault",
+    "plus15-brutalist-concrete-office-clay-v005": {
+      "status": "independent review: pass, zero P0 and zero P1, nine P2 notes",
+      "model_sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
+      "review": {
+        "file": "evidence/independent-review-v005.json",
+        "sha256": "68001736d5de325d352e3e5dc0f57997a801e7bbf39772ce061cc8236ea37ab7",
+        "decision": "architectural_clay_pass",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0,
+        "unresolved_p2": 9
+      },
+      "source_commit": "237780e33"
+    }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "candidate": "plus15-brutalist-concrete-office-clay-v005",
+  "candidate": "plus15-brutalist-concrete-office-clay-v006",
   "title": "Brutalist Concrete Office Slab",
   "method": "RLASM v6.1 clay-first",
   "representation_kind": "architectural_clay",
@@ -32,7 +32,7 @@
     "dimensions_m": {
       "width": 45.0,
       "depth": 40.5,
-      "parapet": 21.9,
+      "parapet": 21.8,
       "penthouse_top": 27.6,
       "walkway_projection": 9.0
     },
@@ -41,11 +41,11 @@
     "source_measurements": {
       "front": [
         "A two-point street view from the south-east corner with upright verticals. A fitted camera (2.4 m eye height, 40 degree lens, vertical shift) puts six measured corners within 10 px on the 1024 px image.",
-        "Down the south-east corner edge: 230 px of clear ground storey, four pairs of 108 px ribbon and 107 px band, and a 115 px top band. At the variant's 3.9 m storey this gives a clear ground storey of about 4.1 m, ribbons and bands that each read 1.95 m, and a parapet at 21.9 m.",
+        "Down the south-east corner edge: 230 px of clear ground storey, four pairs of 108 px ribbon and 107 px band, and a 115 px top band. At the variant's 3.9 m storey this gives a clear ground storey of about 4.1 m, ribbons and bands that each read 1.95 m, and a top band of about 2.0 to 2.1 m. The parapet is built at 21.8 m.",
         "From the street each sill hides about 0.1 m of its window, and from above each band hides more. Both views agree when the openings are 2.05 m tall in 1.85 m bands with the glass 0.3 m behind the cap strip, so that is what is built.",
         "Ground storey plus four office storeys: five. The catalogue text says six; the selected-variant images govern.",
         "Five structural bays across the street front, marked by band joints and granite piers about 1.3 m wide, with six window modules to a bay.",
-        "Each band carries a cap strip about 0.5 m tall that projects beyond the main face over a dark line about 0.2 m deep. Built as a 0.15 m projection over a recessed reveal. The first band also carries a lower moulding.",
+        "Each band carries a cap strip about 0.5 m tall that projects beyond the main face over a dark line about 0.2 m deep. Built as a 0.15 m projection over a recessed reveal 0.16 m tall. The first band also carries a lower moulding.",
         "One pair of glazed entrance doors in the second bay from the east corner, with a transom at door-head height. Timber panelling shows through the corner bay.",
         "East flank at street level: the glazing returns a short way, then blank granite between piers, with a service door at the far end.",
         "The walkway leaves the east flank at the third storey. Its glazed band is a little taller than the office ribbons and close to half the height of the tube, between a concrete crown and belly with rounded edges."
@@ -53,7 +53,7 @@
       "oblique": [
         "A fitted camera (37 m up to the south-east, 48 degree lens) puts eight measured points, including the corner pier's foot, within 18 px on the 1195 px image. It is a looser fit than the street view, so this image settles the roof layout and not facade heights.",
         "Four ribbon storeys over the ground storey on both visible sides, with band joints at the structural lines.",
-        "Penthouse about 6.8 m tall in board-formed panels roughly 2.25 m wide with one horizontal joint; a door and a louvre on its east face; an open well in its rear east corner.",
+        "Penthouse about 6.8 m tall in board-formed panels, eight to a face, with one horizontal joint; a door and a louvre on its east face; an open well in its rear east corner.",
         "Flat gravel roof inside a concrete parapet with a bronze flashing on its inner edge."
       ],
       "top": [
@@ -67,7 +67,7 @@
     "source_conflicts": [
       "Walkway level. The archetype text places +15 walkways at the second storey; both perspective sources show this one at the third. Built as drawn, floor 9.1 m above grade.",
       "Penthouse from the street. The street view shows about 6 m of penthouse above the parapet line, so its skyline is stepped. The roof plan and the oblique cannot produce that from the fitted street camera; under 1 m shows and the skyline is nearly flat. Roof plan and oblique govern.",
-      "Penthouse width. The oblique shows the penthouse about 7 percent narrower than the roof plan does. The roof plan governs: 22.5 m square.",
+      "Penthouse size in the oblique. Fitted to the building's corners, the oblique shows the penthouse about 7 percent narrower than the roof plan does, and the model's penthouse renders somewhat larger than the reference there. The roof plan governs the plan, 22.5 m square; the height, 6.8 m, comes from the penthouse's own corner edge in the oblique.",
       "Walkway roof. The street view shows a rounded crown; the oblique shows a flat roof with eased edges. Built flat with 0.35 m eased edges, which is consistent with both.",
       "Storey count. The catalogue description says six storeys; both perspective sources show five."
     ],
