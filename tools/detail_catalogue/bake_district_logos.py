@@ -46,7 +46,7 @@ LOWER = math.hypot(.305 - .2, .33 - .08)
 HEIGHT = LOWER + math.hypot(.2 - .125, .81 - .33)
 DETAIL = .0012  # metres: outlines are simplified to this tolerance
 
-SOURCES = ('kensington-2026.svg', 'inglewood-2026-horizontal.jpg', 'fourth-street-header.png', 'fourth-favicon.ico', '4th-street-logo.png')
+SOURCES = ('kensington-2026.svg', 'kensington-webclip.png', 'inglewood-2026-horizontal.jpg', 'fourth-street-header.png')
 
 
 def trace(mask: np.ndarray) -> Polygon | MultiPolygon:
@@ -115,10 +115,45 @@ def hexcolour(rgb) -> str:
 
 # --- the three districts -----------------------------------------------------
 
+def blend(stops, t: float) -> str:
+    """Colour at t between 0 and 1 along evenly spaced stops."""
+    t = min(max(t, 0.0), 1.0) * (len(stops) - 1)
+    k = min(int(t), len(stops) - 2)
+    a, b = (tuple(int(stop[i:i + 2], 16) for i in (1, 3, 5)) for stop in (stops[k], stops[k + 1]))
+    return hexcolour([a[i] + (b[i] - a[i]) * (t - k) for i in range(3)])
+
+
 def kensington(sources: Path):
-    """Burgundy roundel and wordmark on the off-white of the district's website."""
-    logo = fit(outline((sources / 'kensington-2026.svg').read_text(encoding='utf-8')), 2.56, (LENGTH / 2, HEIGHT / 2))
-    return {'field': '#f8f8f8', 'top': '#42031a', 'layers': [('#42031a', logo)]}
+    """The district's site colours: a burgundy ground, the wordmark in off-white, and the
+    roundel in the orange, blue and green gradient of its site icon, with the K cut out
+    of it so the ground shows through."""
+    logo = fit(outline((sources / 'kensington-2026.svg').read_text(encoding='utf-8')), 2.72, (LENGTH / 2, HEIGHT / 2))
+    x0, y0, _, y1 = logo.bounds
+    diameter = y1 - y0
+    roundel = unary_union([part for part in polygons(logo) if part.bounds[2] < x0 + diameter + .01])
+    wordmark = unary_union([part for part in polygons(logo) if part.bounds[2] >= x0 + diameter + .01])
+
+    # The gradient of the site icon runs from orange at the lower left to green at the
+    # upper right. Find its direction, then slice the roundel across it into bands.
+    icon = np.array(Image.open(sources / 'kensington-webclip.png').convert('RGBA')).astype(float)
+    opaque = icon[:, :, 3] > 250
+    rows, cols = np.nonzero(opaque)
+    size = icon.shape[0]
+    warmth = icon[rows, cols, 1] - icon[rows, cols, 0]  # green minus red: low in the orange, high in the green
+    slope = np.linalg.lstsq(np.column_stack([cols - size / 2, size / 2 - rows, np.ones(len(rows))]), warmth, rcond=None)[0][:2]
+    axis = slope / np.linalg.norm(slope)
+    centre, radius, count = ((x0 + x0 + diameter) / 2, (y0 + y1) / 2), diameter / 2, 24
+    reach = 3 * radius
+    layers = []
+    for k in range(count):
+        a, b = -radius + diameter * k / count, -radius + diameter * (k + 1) / count
+        corners = [(centre[0] + axis[0] * s + -axis[1] * w, centre[1] + axis[1] * s + axis[0] * w) for s, w in ((a, -reach), (b, -reach), (b, reach), (a, reach))]
+        mid = (a + b) / 2 / radius * (size / 2) * .97
+        px, py = size / 2 + axis[0] * mid, size / 2 - axis[1] * mid
+        across = [(int(py - axis[0] * w), int(px - axis[1] * w)) for w in np.linspace(-size * .42, size * .42, 41)]
+        tones = [icon[r, c, :3] for r, c in across if 0 <= r < size and 0 <= c < size and opaque[r, c]]
+        layers.append((hexcolour(np.median(tones, axis=0)), roundel.intersection(Polygon(corners))))
+    return {'field': '#42031a', 'top': '#42031a', 'layers': [*layers, ('#f8f8f8', wordmark)]}
 
 
 def inglewood(sources: Path):
@@ -128,11 +163,20 @@ def inglewood(sources: Path):
     return {'field': '#d84d2c', 'top': '#d84d2c', 'layers': [('#fec93c', wordmark)]}
 
 
+FOURTH_GROUNDS = {
+    # left to right along the barrier, from the gradients of the district's own artwork
+    'purple': ['#353192', '#5a3491', '#7a4590', '#965390', '#ad5f90'],
+    'green': ['#0a4f5a', '#116468', '#1a7b73', '#23997c', '#27a87f'],
+}
+
+
 def fourth_street(sources: Path, colourway: str):
-    """The rounded 4 and the wordmark. The 4 is rebuilt from its geometry: an upright
-    bar and a level bar with round ends, and the wedge that joins their tips. Its
-    gradients become bands whose colours are sampled from the district's own artwork."""
-    lockup = np.array(Image.open(sources / 'fourth-street-header.png').convert('RGBA'))[:, :, 3]
+    """The rounded 4 and the wordmark in white on a ground that runs through the
+    district's gradient, as its site shows the 4 in white over colour. The 4 is rebuilt
+    from its geometry: an upright bar and a level bar with round ends, and the wedge that
+    joins their tips."""
+    art = np.array(Image.open(sources / 'fourth-street-header.png').convert('RGBA')).astype(float)
+    stops = FOURTH_GROUNDS[colourway]
     radius, size = 129.0, 954.0  # pixels of the lockup file, rows running down
 
     def disc(x, y):
@@ -141,36 +185,34 @@ def fourth_street(sources: Path, colourway: str):
     upright = box(433, radius, 691, size - radius).union(disc(562, radius)).union(disc(562, size - radius))
     level = box(radius, size - 691, 953 - radius, size - 433).union(disc(radius, 562)).union(disc(953 - radius, 562))
     wedge = disc(562, radius).union(disc(radius, 562)).convex_hull
+    x0, y0, _, y1 = unary_union([upright, level, wedge]).bounds
+    scale, origin_u, origin_v = .66 / (y1 - y0), .28, HEIGHT / 2 - .33
 
-    if colourway == 'green':
-        art = np.array(Image.open(sources / 'fourth-favicon.ico').convert('RGBA')).astype(float)
-        inked = art[:, :, 3] > 200
-    else:
-        art = np.array(Image.open(sources / '4th-street-logo.png').convert('RGBA')).astype(float)
-        inked = (art[:, :, :3].sum(axis=2) < 600)
-        inked[100:, :] = False  # the wordmark sits below the 4 in this file
-    rows, cols = np.nonzero(inked.any(axis=1))[0], np.nonzero(inked.any(axis=0))[0]
-    left, right, top, bottom = cols.min(), cols.max() + 1, rows.min(), rows.max() + 1
+    def place(shape):
+        return affinity.translate(affinity.scale(shape, scale, scale, origin=(0, 0)), origin_u - x0 * scale, origin_v - y0 * scale)
 
     def sample(x: float, y: float) -> str:
-        """Colour of the artwork at a point of the 4, in lockup pixels with rows running down."""
-        px, py = left + (right - left) * x / 953, top + (bottom - top) * y / size
-        span = max(1, round((right - left) / 80))
-        patch = art[int(py) - span:int(py) + span + 1, int(px) - span:int(px) + span + 1, :3]
-        keep = inked[int(py) - span:int(py) + span + 1, int(px) - span:int(px) + span + 1]
-        return hexcolour(np.median(patch[keep], axis=0))
+        """Tone of the 4 at a point, in lockup pixels with rows running down. The artwork
+        is white with soft tints that set its parts apart; here each part keeps its
+        lightness and takes its tint from the ground behind it, so the 4 suits either
+        colourway."""
+        patch = art[int(y) - 6:int(y) + 7, int(x) - 6:int(x) + 7].reshape(-1, 4)
+        red, green, blue, alpha = np.median(patch[patch[:, 3] > 20], axis=0)
+        white = min(red, green, blue) / 255 * alpha / 255
+        ground = blend(stops, (origin_u + (x - x0) * scale) / LENGTH)
+        return hexcolour([255 * white + int(ground[i:i + 2], 16) * (1 - white) for i in (1, 3, 5)])
 
     def bands(shape, axis: int, count: int, probe, reach=None):
         """Slice a shape into strips along x or y, each in the colour found at its probe
         point. reach stops the slicing early; the last strip then takes the rest."""
-        x0, y0, x1, y1 = shape.bounds
-        far = reach if reach is not None else (x1 if axis == 0 else y1)
+        bx0, by0, bx1, by1 = shape.bounds
+        far = reach if reach is not None else (bx1 if axis == 0 else by1)
         out = []
         for k in range(count):
             a, b = k / count, (k + 1) / count
-            lo, hi = (x0, far) if axis == 0 else (y0, far)
-            start, stop = lo + (hi - lo) * a, lo + (hi - lo) * b if k < count - 1 else (x1 if axis == 0 else y1)
-            strip = box(start, y0, stop, y1) if axis == 0 else box(x0, start, x1, stop)
+            lo, hi = (bx0, far) if axis == 0 else (by0, far)
+            start, stop = lo + (hi - lo) * a, lo + (hi - lo) * b if k < count - 1 else (bx1 if axis == 0 else by1)
+            strip = box(start, by0, stop, by1) if axis == 0 else box(bx0, start, bx1, stop)
             out.append((sample(*probe((a + b) / 2)), shape.intersection(strip)))
         return out
 
@@ -184,15 +226,12 @@ def fourth_street(sources: Path, colourway: str):
     parts += bands(upright, 1, 8, lambda t: (562, 30 + 894 * clear_of_level(1 - t)))
     # the wedge shows only above the level bar, so each band is sampled midway up that visible part
     parts += bands(wedge, 0, 4, lambda t: (140 + 270 * t, (508.6 - (140 + 270 * t) + 433) / 2), reach=433)
-    x0, y0, _, y1 = unary_union([upright, level, wedge]).bounds
-    scale, origin_u, origin_v = .62 / (y1 - y0), .385, HEIGHT / 2 - .31
 
-    def place(shape):
-        return affinity.translate(affinity.scale(shape, scale, scale, origin=(0, 0)), origin_u - x0 * scale, origin_v - y0 * scale)
-
-    word = np.pad(lockup[745:835, 750:1200], ((0, 0), (0, 6)))
-    wordmark = fit(trace(upscaled(word, 8)), 1.45, (origin_u + .62 + .16 + .725, HEIGHT / 2 - .045))
-    return {'field': '#fbfafc', 'top': sample(562, 200), 'layers': [(tone, place(shape)) for tone, shape in parts] + [('#1c1c1e', wordmark)]}
+    word = np.pad(art[745:835, 750:1200, 3].astype(np.uint8), ((0, 0), (0, 6)))
+    wordmark = fit(trace(upscaled(word, 8)), 1.6, (origin_u + .66 + .18 + .8, HEIGHT / 2 - .045))
+    count = 24
+    ground = [(blend(stops, (k + .5) / count), box(LENGTH * k / count, 0, LENGTH * (k + 1) / count, HEIGHT)) for k in range(count)]
+    return {'field': stops[0], 'top': stops[0], 'layers': [*((tone, place(shape)) for tone, shape in parts), ('#fbfafc', wordmark), *ground]}
 
 
 DISTRICTS = {

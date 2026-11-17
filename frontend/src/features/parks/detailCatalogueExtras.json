@@ -9895,7 +9895,7 @@
     "id": "detail-yyc-district-barrier-kensington",
     "label": "District barrier \u00b7 Kensington",
     "category": "Traffic & safety",
-    "description": "Repeatable 3 m road barrier with the Kensington district logo in burgundy on off-white. The logo belongs to its business association.",
+    "description": "Repeatable 3 m road barrier in burgundy with the Kensington wordmark and gradient roundel. The logo belongs to its business association.",
     "dimensions": [
       3.012,
       0.63,
@@ -9911,10 +9911,10 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:district_barrier_kensington",
-    "sha256": "1827c6d4a936817850231bea4d675af97585fc5e34c8ebe3fa780d0ce35769bb",
-    "triangles": 2072,
+    "sha256": "dbb00a2bf409026f0074a8937c8c7ec35d54420af50a3e5dc7538448b78b2d09",
+    "triangles": 2526,
     "meshes": 1,
-    "bytes": 237412,
+    "bytes": 289168,
     "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-kensington.webp"
   },
   {
@@ -9947,7 +9947,7 @@
     "id": "detail-yyc-district-barrier-fourth-street-purple",
     "label": "District barrier \u00b7 Fourth Street \u00b7 purple",
     "category": "Traffic & safety",
-    "description": "Repeatable 3 m road barrier with the Fourth Street district logo in purple on white. The logo belongs to its business association.",
+    "description": "Repeatable 3 m road barrier with the Fourth Street logo in white on a purple gradient. The logo belongs to its business association.",
     "dimensions": [
       3.012,
       0.63,
@@ -9963,17 +9963,17 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:district_barrier_fourth_street_purple",
-    "sha256": "a8fba45a1930093021fc13019212f42f90cc48647d6c0bb93b34826f3ca42d97",
-    "triangles": 2312,
+    "sha256": "9be9882d30ae3396a0c520833f9b77c38b864a949d428e384c6961457742554a",
+    "triangles": 2734,
     "meshes": 1,
-    "bytes": 264792,
+    "bytes": 312900,
     "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-fourth-street-purple.webp"
   },
   {
     "id": "detail-yyc-district-barrier-fourth-street-green",
     "label": "District barrier \u00b7 Fourth Street \u00b7 green",
     "category": "Traffic & safety",
-    "description": "Repeatable 3 m road barrier with the Fourth Street district logo in green on white. The logo belongs to its business association.",
+    "description": "Repeatable 3 m road barrier with the Fourth Street logo in white on a green gradient. The logo belongs to its business association.",
     "dimensions": [
       3.012,
       0.63,
@@ -9989,10 +9989,10 @@
     ],
     "sourceKit": "calgary-details-v1",
     "sourceBuilder": "calgary:district_barrier_fourth_street_green",
-    "sha256": "3ab9b064b40419ba9a3e4093c421cbe42a5c7c1a5a9d5829a8e6d171cc4dda6d",
-    "triangles": 2312,
+    "sha256": "ef7d73be8ff9a13a5eb55b320136d92a88b5c7bc6198bce76b9d76fd185f5556",
+    "triangles": 2734,
     "meshes": 1,
-    "bytes": 264792,
+    "bytes": 312900,
     "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-fourth-street-green.webp"
   }
 ]

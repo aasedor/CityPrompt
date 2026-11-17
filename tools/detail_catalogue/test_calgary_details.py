@@ -187,7 +187,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertAlmostEqual(face['bend'], self.module.MURAL_LOWER, places=5)
         self.assertAlmostEqual(face['height'], self.module.MURAL_HEIGHT, places=5)
         # every source file is recorded by hash, since the files themselves are not kept here
-        self.assertEqual(len(baked['sources']), 5)
+        self.assertEqual(len(baked['sources']), 4)
         for digest in baked['sources'].values():
             self.assertRegex(digest, r'^[0-9a-f]{64}$')
         plain = self.by_slug['concrete-barrier']
