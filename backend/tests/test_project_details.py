@@ -438,7 +438,9 @@ async def test_claude_detail_packs_save_reload_and_preserve_legacy_details(monke
     placements = {"trees": [], "props": []}
     for choice in choices:
         field = "trees" if choice["kind"] == "tree" else "props"
-        placements[field].append({"id": choice["id"], "lng": -114.1, "lat": 51.05, "angle": 45, "variant": choice["id"]})
+        placements[field].append(
+            {"id": choice["id"], "lng": -114.1, "lat": 51.05, "angle": 45, "variant": choice["id"]}
+        )
     assert len(placements["trees"]) == 50
     assert len(placements["props"]) == 190
     monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
