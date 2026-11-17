@@ -60,5 +60,13 @@
     "plus15-brutalist-concrete-office-clay-v002": "independent review: rework required, 2 P1 and 6 P2",
     "plus15-brutalist-concrete-office-clay-v003": "withdrawn before review: some band faces were wound inside out",
     "plus15-brutalist-concrete-office-clay-v004": "withdrawn before review: one cap triangle of the first band was wound backwards, which hid the same fault"
+  },
+  "independent_review": {
+    "file": "evidence/independent-review-v005.json",
+    "sha256": "68001736d5de325d352e3e5dc0f57997a801e7bbf39772ce061cc8236ea37ab7",
+    "decision": "architectural_clay_pass",
+    "unresolved_p0": 0,
+    "unresolved_p1": 0,
+    "unresolved_p2": 9
   }
 }

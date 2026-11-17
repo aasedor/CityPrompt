@@ -1,0 +1,715 @@
+{
+  "schema": "rlasm-independent-architectural-clay-review-v1",
+  "candidate": "plus15-brutalist-concrete-office-clay-v005",
+  "model_sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
+  "reviewer": "independent reviewer, fresh agent session with no builder context (AI review, not a human)",
+  "reviewed_utc": "2026-11-17T20:38:29Z",
+  "method": "RLASM v6.1",
+  "scope": "Holistic source-locked architectural-clay review of the delivered texture-free v005 GLB, its 23 renders and 4 phone boards against the three locked references for calgary_15_connected_tower / brutalist_concrete_slab, treated as a new candidate; not a textured-keeper, runtime or engineering review.",
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_pass",
+  "architectural_clay_pass": true,
+  "keeper_approved": false,
+  "runtime_activation_approved": false,
+  "canonical_promotion_approved": false,
+  "human_activation_required": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 0,
+  "unresolved_p2": 9,
+  "recommended_lifecycle_state": "architectural_clay_reviewed",
+  "decision_note": "Zero P0 and zero P1. Both v002 blockers are closed as blockers and each leaves a P2 remnant. Nine P2 findings are open. Two declared limitations need a person to accept them knowingly before activation: the near-flat street skyline, and the 9 m walkway stub with no support at its free end.",
+  "findings": [
+    {
+      "id": "V5-P2-01",
+      "severity": "P2",
+      "carried_from": "P1-02",
+      "title": "The walkway glazed band still reads a little short from both source viewpoints",
+      "evidence": [
+        "Fitted street view, same pixel columns as the v002 review. At x=860 the glazed band is rows 350 to 411 in the reference (61 px) and rows 364 to 417 in renders/match_front.png (53 px); v002 was 47 px. At x=920 it is rows 341 to 405 (64 px) against rows 356 to 411 (55 px); v002 was 49 px. Crown and belly at x=920 read 30 and 42 px in the reference and 27 and 46 px in v005.",
+        "Fitted oblique at x = 850, 880, 920, 960 and 1000: glazed band 45, 44, 45, 45, 46 px in the reference; 38, 38, 34, 35, 35 px in renders/match_oblique.png; v002 was 32, 31, 27, 28, 22 px.",
+        "GLB: tube y 8.50 to 13.10 (4.60 m deep) by 4.46 m wide; belly 1.25 m, opening 2.20 m (glass 2.06 m), crown 1.15 m; edges eased at 0.35 m in ten smooth-shaded segments. The glass plane sits 0.25 m behind the tube face (z 10.98 against 11.23).",
+        "boards/phone-street.png lower image about x 780 to 1030, y 1310 to 1470."
+      ],
+      "why_it_matters": "The opening is 48 percent of the tube on paper, which matches the sources, but because the glass sits 0.25 m back the sill ledge hides part of it from the street and the crown hides part of it from above. The visible band is about 42 percent of the tube against 47 to 48 percent in both sources, so the walkway still reads slightly heavier than drawn. It no longer reads as a hood over a slot, which is why this is no longer blocking.",
+      "suggested_correction": "Set the walkway glass about 0.10 m behind the tube face and trim the crown to about 0.95 m so the opening is about 2.4 m, then re-measure at x = 860 and 920 in the street view and x = 850 to 1000 in the oblique."
+    },
+    {
+      "id": "V5-P2-02",
+      "severity": "P2",
+      "carried_from": null,
+      "title": "The parapet band is too tall and the four ribbons sit a little low",
+      "evidence": [
+        "Fitted street view at x=640: the top band is rows 64 to 116 in the reference (52 px: cap 13, shadow line 8, face 28) and rows 65 to 127 in renders/match_front.png (62 px: cap 15, line 5, face 42). The bands below are 48 px in the reference and 50 px in the render.",
+        "The same offset holds along the whole front. Top ribbon head: x=600 row 129 against 140; x=500 row 162 against 172; x=400 row 194 against 204; x=300 row 227 against 236. The shadow line of the top band is on the same rows in both images, so the extra height is all in the band face.",
+        "Ribbon heads at x=640: reference rows 117, 225, 333, 441; v005 rows 127, 233, 340, 446. Sills: 176, 283, 391, 499 against 182, 289, 396, 502.",
+        "GLB: top band y 19.75 to 21.90 (2.15 m); the other bands are 1.82 m. The manifest measures the top band at 115 units against 107 for the others at the corner, about 0.15 m taller, not 0.33 m.",
+        "This was also true of v002 (top band 2.20 m). I did not raise it then; I put the low window heads down to ribbon height."
+      ],
+      "why_it_matters": "In the source all five bands read as nearly equal. In the model the top band is visibly the fattest, and the whole window stack sits about 0.2 to 0.3 m low at the top storey. It shows in a side-by-side of the street corner (variant_0.png and renders/match_front.png, about x 420 to 700, y 60 to 240).",
+      "suggested_correction": "Lower the parapet top by about 0.2 m (parapet about 0.9 m, top band about 1.95 m), refit the street camera, and check that the ribbon heads land near rows 117, 225, 333 and 441 at x=640."
+    },
+    {
+      "id": "V5-P2-03",
+      "severity": "P2",
+      "carried_from": "P1-01",
+      "title": "A 20 mm clearance beside the walkway is left open between floor and sill level",
+      "evidence": [
+        "GLB: the tube sides are at z 6.77 and 11.23, the cut edges of the band at z 6.75 and 11.25, and the new jambs at z 6.78 to 7.06 and 10.94 to 11.22. Between y 9.10 and 9.94 nothing fills z 11.22 to 11.25 on the south side or z 6.75 to 6.78 on the north side through the band depth x 22.14 to 22.50.",
+        "Ray test on the delivered GLB: rays travelling toward -x at z 11.2300 to 11.2475 and z 6.7525 to 6.7675, y 9.11 to 9.93, hit nothing before the office interior (a column at x=21.1 on the south side, the core wall at x=16 on the north). The same happens in a strip 60 mm tall above the jamb frame (y 11.89 to 11.94).",
+        "The old slot is closed: rays from the side at x 22.16 to 22.49 and y 9.15 to 11.93 now all hit jamb, frame or glass within 1.32 to 1.62 m, on both sides. A coverage raster of the whole envelope at 25 mm finds no through-hole; the same raster on the v002 GLB shows the old slot at x 22.0 to 22.4, y 9.9 to 11.9.",
+        "renders/bridge_end.png about x 450 to 452, y 660 to 740: a dark hairline one to two pixels wide between the band and the tube."
+      ],
+      "why_it_matters": "Two slits, each 20 to 30 mm wide and 0.82 m tall, open into the third-storey office. They can be seen through only from within about three degrees of square-on to the flank, and in the renders they read as a shadow joint. It is still an opening in the envelope at the element that had the blocking defect.",
+      "suggested_correction": "Run the tube and jambs 20 mm into the band cut, or put a joint-coloured strip in the gap from y 9.10 to 11.95 on both sides."
+    },
+    {
+      "id": "V5-P2-04",
+      "severity": "P2",
+      "carried_from": "P2-02",
+      "title": "The shadow line under the cap strip is now built but is still thinner and paler than the source",
+      "evidence": [
+        "variant_0.png at x=640: the dark line is 8 px on every band (rows 80 to 88, 188 to 196, 295 to 303). renders/match_front.png at x=640: 5, 4 and 3 px (rows 80 to 85, 195 to 199, 302 to 305), and under 3 px on the two lowest bands.",
+        "At x=600 the reference luminance stays between 28 and 73 for six rows (409 to 414); the render dips to between 63 and 120 for three rows (414 to 416).",
+        "GLB: cap strip 0.49 m tall projecting 0.15 m beyond the band face, over a reveal 0.10 m tall set 0.08 m behind the face. The first band carries a lower moulding 0.30 m tall and 0.11 m proud.",
+        "renders/facade_close.png and renders/corner_close.png show the reveal as real relief on both faces of the corner."
+      ],
+      "why_it_matters": "The manifest lists the cap strip and its shadow line as identity. The relief now exists, but on the sunlit street front it reads as a hairline where the source has a bold dark line.",
+      "suggested_correction": "Make the reveal about 0.18 to 0.20 m tall, taking the height from the band face, and re-measure at x=640."
+    },
+    {
+      "id": "V5-P2-05",
+      "severity": "P2",
+      "carried_from": "P2-01",
+      "title": "Corner panes still show the background through two sheets of glass",
+      "evidence": [
+        "renders/match_front.png x 44 to 49 on all four ribbons: luminance 157 to 161 against 220 for the sky and about 40 for a typical pane.",
+        "renders/rear_ground.png about x 1190 to 1220, y 300 to 640 (far corner, four storeys) and a patch about x 1030 to 1045, y 610 to 625. renders/west_ground.png about x 445 to 485, y 310 to 670 and a patch about x 625 to 645, y 640 to 655.",
+        "renders/front.png x 1222 to 1390, y 630 to 675 and renders/rear.png x 270 to 378: the walkway glazing seen side-on is pale grey-blue against the dark ribbons. That is a true through-view and I do not ask for it to change.",
+        "GLB: corner rooms are 2.6 m square. The partitions at x = +/-19.5 stop at z = +/-13.75 and those at z = +/-17.25 stop at x = +/-16, leaving a 3.5 m diagonal passage round each corner of the core, so a sightline can cross from one flank to the next.",
+        "Runtime: frontend/src/components/viewer/globe/reviewBuildingGlass.ts sets CLAY_GLASS to opacity 0.42 whatever the file carries (the file now carries 0.45), so glass opacity is not the candidate's to change.",
+        "The main defect is fixed: the pale column bars are gone from every ribbon (renders/front.png rows 482, 570, 659, 747 have no run brighter than 120 between x 230 and 1215; v002 had at least eight per row), 95th-percentile ribbon luminance in the rear and side elevations fell from 125 to 161 down to 61 to 64, and seen square-on to the street front the area where a sightline passes through glass alone fell from 73.5 m2 to 0.6 m2."
+      ],
+      "why_it_matters": "The last pane or two at each corner, and one diagonal sightline per storey, read as light windows at the ends of dark bronze ribbons. The source corners are dark.",
+      "suggested_correction": "Close the diagonal gap at each core corner, and give the two end panes each side of every corner a dark blind plane or a darker room behind them."
+    },
+    {
+      "id": "V5-P2-06",
+      "severity": "P2",
+      "carried_from": null,
+      "title": "The new corner-room walls and relocated columns cut through desks and ceiling lights",
+      "evidence": [
+        "GLB: 32 desks (88 furniture components) cross the new partitions, eight on each office storey. Example on the second storey: desk top x -18.8 to -17.2, y 5.90, z 17.10 to 17.85 passes through the wall at z 17.2 to 17.3.",
+        "GLB: 32 ceiling lights are bisected by the partitions at x = +/-19.5 (for example the light at x -20.1 to -18.9, z 17.7 to 18.3), and 32 lights are clipped by 50 mm by the relocated columns (for example the light at z 17.7 to 18.3 against the column at z 18.25 to 18.85).",
+        "renders/corner_close.png about x 1100 to 1240, y 890 to 930: a desk meets the corner-room wall."
+      ],
+      "why_it_matters": "This is intersecting geometry introduced by this revision. It sits behind tinted glass and is hard to see in the stills, but it is visible from above where the ribbons show the floor plates (renders/aerial.png, renders/rear_side.png).",
+      "suggested_correction": "Leave out desks and lights within 0.3 m of a partition or column."
+    },
+    {
+      "id": "V5-P2-07",
+      "severity": "P2",
+      "carried_from": "P2-05",
+      "title": "Thin offsets and fine lines still alias, and the new reveal adds to them",
+      "evidence": [
+        "Fixed since v002: the 15 mm band sliver at the walkway is gone; the penthouse membrane no longer shares a face with the well walls; ceiling lights are 40 mm boxes seated on the soffit. No same-facing coplanar faces of different materials remain in view.",
+        "Unchanged from v002: granite and penthouse panels stand 11 to 31 mm proud of their backing and the panel joints are fine lines 12 to 30 mm across.",
+        "renders/aerial.png east ground storey about x 990 to 1290, y 720 to 940: granite joints break into dots.",
+        "renders/match_oblique.png about x 130 to 520, y 195 to 470: band joints and the new reveal break into dots and dashes along the west half of the street front.",
+        "renders/glass_close.png about y 835 to 900 across the frame, and renders/corner_close.png about y 395 to 440 and y 1040 to 1090: rippled shading inside the reveal.",
+        "GLB: the end caps of the sixteen first-band panels have a vertex on an edge without a matching split (at y 4.45). They are hidden inside the joints."
+      ],
+      "why_it_matters": "None of this is an error in a still, but these are the lines that crawl and shimmer once the camera moves in the runtime.",
+      "suggested_correction": "Use offsets of at least 20 to 30 mm, wider joints, and the taller reveal suggested in V5-P2-04."
+    },
+    {
+      "id": "V5-P2-08",
+      "severity": "P2",
+      "carried_from": "P2-06",
+      "title": "The refitted oblique camera registers the near corner but not the west end or the penthouse",
+      "evidence": [
+        "South-east corner, ten pixels left of the corner edge: ribbons at rows 424 to 466, 508 to 548, 588 to 625, 663 to 697 in the reference and 423 to 468, 509 to 551, 588 to 626, 661 to 696 in renders/match_oblique.png. Pier foot about y 805 against about y 797. In v002 the foot was 38 px out.",
+        "West end of the street front at x=190: ribbons at rows 265 to 296, 331 to 360, 393 to 421, 452 to 478 in the reference and 256 to 287, 314 to 342, 367 to 393, 417 to 440 in the render. The lowest ribbon is 35 to 38 px high. South-west pier foot about (192, 550) against about (195, 507).",
+        "Penthouse street face: 283 px wide in the reference (x 363 to 646) and 307 px in the render (x 347 to 654), 8 percent wider. At x=630 the face is about 122 px tall in the reference and about 138 px in the render, 13 percent taller, the same as v002 although the penthouse is now 6.8 m instead of 7.3 m.",
+        "The reference shows the well opening and its inner walls plainly (about x 650 to 800, y 75 to 135); the fitted render shows a sliver (about x 745 to 850, y 92 to 110). The fitted camera sits lower than the source camera.",
+        "The manifest now says the oblique is a looser fit that settles roof layout and not facade heights, and declares the penthouse width difference."
+      ],
+      "why_it_matters": "The oblique board now proves the near corner, the walkway position and the roof layout. It does not prove the west end of the front or the penthouse height, and a fit \"within 18 px\" cannot hold if the south-west corner is one of the eight points.",
+      "suggested_correction": "List the eight fitted points with their residuals. Either refit with the south-west pier foot and the penthouse arris included, or declare both residuals alongside the width."
+    },
+    {
+      "id": "V5-P2-09",
+      "severity": "P2",
+      "carried_from": null,
+      "title": "The penthouse has ten panels to a face where the source has eight",
+      "evidence": [
+        "variant_0_angle_60.jpg, penthouse street face x 362 to 643, y 110 to 285: eight panels in each of two tiers, with joints at about x 387, 420, 453, 490, 527, 567 and 607.",
+        "renders/match_oblique.png, same face x 347 to 654: ten panels in each tier.",
+        "GLB: panels are 2.22 m wide (for example x -11.235 to -9.015), ten to a 22.5 m face. The manifest says \"roughly 2.25 m wide\".",
+        "This was also true of v002. I noted eight panels in the reference then and did not raise the difference."
+      ],
+      "why_it_matters": "The panel joints are the only articulation the penthouse has, and eight against ten can be counted at phone scale (boards/phone-oblique.png).",
+      "suggested_correction": "Use eight panels to a face, about 2.8 m each."
+    }
+  ],
+  "prior_findings": [
+    {
+      "id": "P1-01",
+      "v002_severity": "P1",
+      "title": "Walkway not closed against the building",
+      "status": "partly_resolved",
+      "still_blocking": false,
+      "residual_severity": "P2",
+      "residual_finding": "V5-P2-03",
+      "evidence": "The 0.40 m by 1.98 m slot is gone. Solid jambs now stand at x 22.14 to 22.35, y 9.10 to 11.95, z 6.78 to 7.06 and z 10.94 to 11.22. Rays cast from the side at x 22.16 to 22.49, y 9.15 to 11.93 all hit within 1.32 to 1.62 m on both sides, where in v002 they passed straight through. The whole-envelope raster finds no through-hole. renders/bridge_contact.png about x 553 to 567, y 530 to 640 and renders/bridge_junction.png about x 948 to 972, y 460 to 650 show a concrete jamb where the untinted strip was. What remains is a 20 to 30 mm clearance, 0.82 m tall, each side."
+    },
+    {
+      "id": "P1-02",
+      "v002_severity": "P1",
+      "title": "Walkway section too heavy",
+      "status": "partly_resolved",
+      "still_blocking": false,
+      "residual_severity": "P2",
+      "residual_finding": "V5-P2-01",
+      "evidence": "The barrel hood is gone: the crown and belly are flat with 0.35 m eased edges, which is what the oblique shows. The tube is 4.60 m deep with a 2.20 m opening (48 percent). In the fitted street view the glazed band went from 47 and 49 px to 53 and 55 px against 61 and 64 px in the reference (x = 860 and 920); in the oblique from 22 to 32 px to 34 to 38 px against 44 to 46 px. It is still 13 to 14 percent short from the street and about 20 percent short from above."
+    },
+    {
+      "id": "P2-01",
+      "v002_severity": "P2",
+      "title": "Glazing too transparent; pale columns break the ribbons",
+      "status": "partly_resolved",
+      "still_blocking": false,
+      "residual_severity": "P2",
+      "residual_finding": "V5-P2-05",
+      "evidence": "Columns now stand 1.1 m behind the glass (1.4 m behind the cap face) in a dark role, and each corner has a room. The pale bars at x 116, 212, 328 and 475 in renders/match_front.png are gone; the west corner pane (x 44 to 49) is still bright and the lowest ribbon keeps two faint patches (x 478 to 485 and 624 to 636, luminance about 100). renders/front.png no longer shows the background at x 357 to 369 or x 1067 to 1108. renders/corner_close.png shows a bronze corner post with a dim room behind it. The last pane at each corner still shows the background."
+    },
+    {
+      "id": "P2-02",
+      "v002_severity": "P2",
+      "title": "Band relief flatter than the source",
+      "status": "partly_resolved",
+      "still_blocking": false,
+      "residual_severity": "P2",
+      "residual_finding": "V5-P2-04",
+      "evidence": "The cap strip now projects 0.15 m over a real reveal, and the first band has a lower moulding. A dark line now shows under every cap in renders/match_front.png (rows 80 to 85, 195 to 199, 302 to 305 at x=640) where v002 had none, but it is 3 to 5 px against 8 px in the reference."
+    },
+    {
+      "id": "P2-03",
+      "v002_severity": "P2",
+      "title": "Ribbons under-height and deeply recessed",
+      "status": "resolved",
+      "still_blocking": false,
+      "residual_severity": null,
+      "residual_finding": null,
+      "evidence": "Openings are 2.08 m between 1.82 m bands in the GLB, with the glass 0.30 m behind the cap face (was 0.57 m). Fitted street view, x 600 to 640: ribbons 54 to 56 px against 56 to 60 px in the reference (v002: 51 to 53). Fitted oblique down the south-east corner: 45, 42, 38, 35 px against 42, 40, 37, 34 (v002: 35, 33, 30, 28). The remaining head offset belongs to the parapet band, finding V5-P2-02."
+    },
+    {
+      "id": "P2-04",
+      "v002_severity": "P2",
+      "title": "Curved walkway surfaces faceted",
+      "status": "resolved",
+      "still_blocking": false,
+      "residual_severity": null,
+      "residual_finding": null,
+      "evidence": "Each eased edge is ten segments on a 0.35 m radius with shared normals (80 smooth-shaded triangles in the walkway mesh). renders/bridge_junction.png and renders/bridge_contact.png show continuous shading with no stripes."
+    },
+    {
+      "id": "P2-05",
+      "v002_severity": "P2",
+      "title": "Leftovers, coplanar faces and millimetre offsets",
+      "status": "partly_resolved",
+      "still_blocking": false,
+      "residual_severity": "P2",
+      "residual_finding": "V5-P2-07",
+      "evidence": "The sliver, the coplanar membrane and the 6 mm light offset are fixed. Proud panels of 11 to 31 mm and fine joints remain and still alias; the new 0.10 m reveal adds a dotted line at distance."
+    },
+    {
+      "id": "P2-06",
+      "v002_severity": "P2",
+      "title": "Fitted oblique camera does not register the facade",
+      "status": "partly_resolved",
+      "still_blocking": false,
+      "residual_severity": "P2",
+      "residual_finding": "V5-P2-08",
+      "evidence": "The south-east corner now registers within about 8 px from parapet to pier foot (was 38 px) and the manifest declares the looser fit and the penthouse width. The west end of the front is still 35 to 43 px out and the penthouse still renders 13 percent taller."
+    }
+  ],
+  "builder_reported_fixes_checked": [
+    {
+      "claim": "Some band faces were wound inside out and one cap triangle of the first band was wound backwards (v003, v004 withdrawn).",
+      "result": "Not present in v005. All 4,338 band triangles and all 188 walkway triangles face outward from their own solid (ray parity test on every face); every closed component in the model has positive volume; stored normals agree with triangle winding in all 19 meshes; no render shows an inverted or dark panel. v003 and v004 were not reviewed."
+    },
+    {
+      "claim": "Glass alpha in the file is 0.45; the review renderer and the runtime both replace CLAY_GLASS at 0.42.",
+      "result": "The file carries alpha 0.45 with transmission 0.28. The runtime helper does set opacity 0.42. I did not read the renderer, so that half is not verified."
+    },
+    {
+      "claim": "Openings 2.05 m in 1.85 m bands.",
+      "result": "The GLB has 2.08 m openings between 1.82 m bands. The 30 mm difference does not matter visually; the manifest should carry the built numbers."
+    }
+  ],
+  "source_conflict_opinions": [
+    {
+      "conflict": "Walkway level (archetype text says second storey; images show third)",
+      "declared": true,
+      "opinion": "Agree with the resolution.",
+      "detail": "Both perspective sources put the walkway glazing level with the second ribbon above the ground storey. The GLB floor is at 9.10 m."
+    },
+    {
+      "conflict": "Penthouse from the street",
+      "declared": true,
+      "opinion": "Agree with the resolution; the stated magnitude is still loose.",
+      "detail": "The roof plan and oblique agree and the method gives the top view authority over roof topology. I measure 47 to 57 px of penthouse above the parapet in the street view, about 3 m at that depth, not the 6 m the manifest quotes. With the penthouse now 6.8 m, about 3 to 6 px shows in renders/match_front.png (a sliver just above the parapet line from about x 258 to 548) and the skyline is nearly flat where the source is stepped. That is a visible difference at phone scale and a person should accept it knowingly at activation."
+    },
+    {
+      "conflict": "Penthouse width (oblique about 7 percent narrower than the roof plan)",
+      "declared": true,
+      "opinion": "Agree that the roof plan governs.",
+      "detail": "I measure 8 percent (283 against 307 px). The same fitted view shows the penthouse 13 percent taller than the reference, which is not declared; see V5-P2-08."
+    },
+    {
+      "conflict": "Walkway roof (street view rounded, oblique flat with eased edges)",
+      "declared": true,
+      "opinion": "Agree.",
+      "detail": "Flat with 0.35 m eased edges matches the oblique and is a fair reading of the street view. The remaining difference is the height of the glazed band, V5-P2-01."
+    },
+    {
+      "conflict": "Storey count (catalogue text says six; images show five)",
+      "declared": true,
+      "opinion": "Agree.",
+      "detail": "The runtime row must be fixed at five storeys for this variant."
+    },
+    {
+      "conflict": "Parapet band height",
+      "declared": false,
+      "opinion": "Not a source conflict; the manifest's own measurement and the model disagree.",
+      "detail": "The manifest measures the top band about 0.15 m taller than the others and the model builds it 0.33 m taller. See V5-P2-02."
+    },
+    {
+      "conflict": "Penthouse panel width",
+      "declared": false,
+      "opinion": "The manifest figure does not match the pixels.",
+      "detail": "The oblique shows eight panels to a face, about 2.8 m, not 2.25 m. See V5-P2-09."
+    }
+  ],
+  "hidden_view_opinions": [
+    {
+      "assumption": "West flank mirrors the east at street level with plant louvres and an exit door; ribbons repeat above",
+      "opinion": "Reasonable and honestly stated.",
+      "detail": "Complete in renders/left_side.png and renders/west_ground.png; louvre and door are cut into the wall and the glazing returns at the street corner."
+    },
+    {
+      "assumption": "Rear is a service side with high windows, a loading door and a staff exit; ribbons repeat above",
+      "opinion": "Reasonable and honestly stated.",
+      "detail": "Complete in renders/rear.png, renders/rear_ground.png and renders/service_close.png; the high windows are real openings and the shutter sits in a reveal."
+    },
+    {
+      "assumption": "Interior layout, floor levels and structural grid inferred from the facade rhythm",
+      "opinion": "Honestly stated; adequate as depth behind the glass, not a floor plan.",
+      "detail": "Floors, ceilings with lights, desks, a lobby with lifts and timber panelling, shop counters, perimeter columns and corner rooms are present. The core is still one block 32 m by 27.5 m. The new partitions cut through desks and lights (V5-P2-06) and leave a diagonal sightline round each core corner (V5-P2-05)."
+    },
+    {
+      "assumption": "Walkway delivered as a 9 m length with a glazed end, no neighbour and no support at the free end",
+      "opinion": "Honestly stated and unchanged; acceptable only as a declared limitation that a person accepts.",
+      "detail": "The source walkway runs about 15.6 m to a neighbour. On its own the stub reads as a cantilever cut off in mid-air (renders/right_side.png, renders/aerial.png). Site fit must use the 54.0 m native width, and the runtime entry should carry the limitation in words."
+    },
+    {
+      "assumption": "Penthouse rear and west faces are plain board-formed panels",
+      "opinion": "Reasonable.",
+      "detail": "Complete in renders/rear_side.png and renders/left_side.png."
+    },
+    {
+      "assumption": "Penthouse well open down to the main roof deck, holding one cooling unit",
+      "opinion": "Reasonable, and now declared.",
+      "detail": "The sources show the well and a square unit but not its depth."
+    }
+  ],
+  "reference_observations": {
+    "street_view": [
+      "Five storeys: a taller recessed ground storey and four ribbon storeys under a flat parapet, seen from the front-right corner.",
+      "All five concrete bands, the parapet band included, read as nearly the same height; each has a projecting cap strip over a bold dark line about a sixth of the band tall.",
+      "A board-formed penthouse stands above the parapet over the left-centre of the front, about 50 px tall.",
+      "Dark bronze ribbon glazing with close bronze mullions wraps the corner with a bronze corner post and no concrete pier; the left third of the front reflects the sky and reads pale.",
+      "Front ground storey: five bays between six square aggregate piers, storefront glazing with a transom, one pair of doors in the second bay from the corner, timber panelling in the corner bay.",
+      "Flank ground storey: a short glazed return, blank aggregate panels between piers, a dark service door at the far end.",
+      "The walkway leaves the flank at the third storey as a grey concrete tube with rounded top and bottom edges and a glazed band a little under half its depth; a concrete return closes the glazing at the building end. It runs out of frame."
+    ],
+    "oblique": [
+      "The same five storeys with ribbons on both visible sides and band joints at the structural lines.",
+      "The walkway joins about a third of the way back along the flank, has a flat roof with eased edges and a thin fascia over tall glazing, and lands on a brick neighbour; a flank pier stands beneath it.",
+      "Flat gravel roof inside a concrete parapet with a dark flashing line.",
+      "A centred penthouse in two tiers of panels with tie holes, eight panels across each visible face, with a door and a large louvre on the flank-facing side and an open well in its rear right corner whose inner walls are plainly visible. A skylight dome sits on the roof in front of it."
+    ],
+    "roof_plan": [
+      "Footprint about 670 by 613 px with the street front along the bottom edge.",
+      "Penthouse about 336 by 345 px, centred.",
+      "A well in the rear right corner of the penthouse holding one square unit.",
+      "The walkway is about 68 px wide on the right flank, centred about 28 percent of the depth back from the front, and runs to a neighbour.",
+      "A hatch in front of the penthouse, a small vent to its right, a box and two conduit runs on its roof."
+    ]
+  },
+  "positive_observations": [
+    "Model hash, byte count and source hashes match the build report and manifest; the GLB carries no images or textures; the boards carry the model hash prefix.",
+    "Both v002 blockers are closed as blockers: the walkway mouth is solid on both sides and the walkway section is flat-topped with eased edges and a 2.2 m glazed band.",
+    "Massing, storey count, bay count, piers, entrance bay, walkway level and position agree with the sources. The fitted roof plan registers footprint, penthouse, well, unit, hatch, vent and walkway closely.",
+    "The ribbons now read as continuous dark strips on all four sides, with ceilings, lights, desks, columns and rooms behind them.",
+    "Ribbon heights now match both perspective sources within a few pixels.",
+    "All four sides and the roof are complete in the same band and ribbon grammar; openings are real wall sections with recessed frames, glass and occupied depth.",
+    "Every pier stands on a plinth and carries the first band through a bearing pad; no component is isolated; lowest geometry is at grade; the roof is fully covered seen from above.",
+    "Every triangle is wound consistently with its normal.",
+    "Whole-building views include grade, the full footprint and the highest point with neutral margin."
+  ],
+  "limitations": [
+    "Stills only. Flicker, depth precision and crawling lines in a moving runtime camera were not observed; V5-P2-07 rests on measured offsets and aliasing in the stills.",
+    "Runtime placement, terrain fit, entrance routing and saved reload were not tested.",
+    "The generator and renderer were neither read nor run, so \"rebuilds to the same bytes\" and the renderer's glass opacity are not verified. v003 and v004 were not reviewed.",
+    "The fitted camera parameters and the points used for fitting were not available; registration was judged by overlay and pixel profiles.",
+    "The references carry no scale and disagree with each other in places; the 45 m width rests on the manifest assumption of a 3.9 m storey.",
+    "Interiors were seen only through the glazing; there are no interior cameras.",
+    "Faint short tick marks on the cap strips beside some joints (for example renders/right_side.png about x 831, y 513 to 528, 597 to 611 and 681 to 695) still have no geometry behind them in the GLB. I could not identify their cause; they look like a renderer artefact."
+  ],
+  "inspected_files": [
+    {
+      "path": "plus15-brutalist-concrete-office-clay-v005.glb",
+      "base": "candidate",
+      "sha256": "500b9bdc86cb25fd0df9eeb98129d160d797d6cc2de227f38143bbdc87d72ede",
+      "bytes": 2373968,
+      "inspection": "Hashed; loaded read-only with trimesh and numpy. Checked the header (0 images, 0 textures, 19 materials, 41,206 triangles), bounds, band, glass, walkway, column, partition and roof extents, triangle winding against stored normals for every mesh, outward winding of every band and walkway face, component contact (no isolated parts), same-facing coplanar faces, ray tests through the walkway junction, and a whole-envelope coverage raster along three axes."
+    },
+    {
+      "path": "prework-manifest.json",
+      "base": "candidate",
+      "sha256": "dfec69fbe18e1079d2d85eeff86945f1598840a190158f85a111039554ba01ec",
+      "bytes": 8719,
+      "inspection": "Read in full after looking at the references. Source hashes and byte counts match the locked files. Five declared conflicts and five hidden-view assumptions assessed below."
+    },
+    {
+      "path": "build-report.json",
+      "base": "candidate",
+      "sha256": "1890b1352f0bf3099260231e0fe7eb7854f4b12c86c8095a2ef85987e46c67cc",
+      "bytes": 2925,
+      "inspection": "Read in full. Model hash and byte count match my own. Levels, penthouse top and walkway figures agree with what I measured in the GLB."
+    },
+    {
+      "path": "delivery-verification.json",
+      "base": "candidate",
+      "sha256": "67140efe72ba9a623ef3920dc419f9fdc0a98026e3835493612131ebab3d3d2f",
+      "bytes": 3265,
+      "inspection": "Read in full. Deterministic checks only; not treated as visual proof and not re-run."
+    },
+    {
+      "path": "renders/front.png",
+      "base": "candidate",
+      "sha256": "b76bb2ad3019ff001a6712b393da9ccd060a646a522b0801857e08c91ee533b1",
+      "bytes": 781717,
+      "inspection": "Whole frame and enlarged building area; pixel rows through all four ribbons. South elevation complete; pale column bars and see-through bays of v002 are gone; walkway glazing reads pale side-on."
+    },
+    {
+      "path": "renders/front_corner.png",
+      "base": "candidate",
+      "sha256": "51b9dedf16023bb450d26f3f96dfe77fa015608f117d046ca8373a5383477904",
+      "bytes": 1028295,
+      "inspection": "Whole frame. Street corner complete; walkway section now flat-topped with eased edges."
+    },
+    {
+      "path": "renders/aerial.png",
+      "base": "candidate",
+      "sha256": "b2ac4e187b35d3715265ebc01c9e4f41bfab594625f58a907d11a43a12769dfb",
+      "bytes": 974108,
+      "inspection": "Whole frame plus 4x crops of the south-west bands and of the walkway and east ground storey. Roof complete; joints still alias to dots."
+    },
+    {
+      "path": "renders/top.png",
+      "base": "candidate",
+      "sha256": "de13af855cea567f8f8d6a8de5e323ac05b87248f2203b484cf9595a5aa1209b",
+      "bytes": 422247,
+      "inspection": "Whole frame. Roof plan, penthouse, well unit, hatch, vent, conduits and walkway present."
+    },
+    {
+      "path": "renders/left_side.png",
+      "base": "candidate",
+      "sha256": "a2710093cd303286e38332610e8eee09276961bce03d52293304b136c0b18454",
+      "bytes": 678847,
+      "inspection": "Whole frame, enlarged building area and pixel rows through the ribbons. West flank complete."
+    },
+    {
+      "path": "renders/right_side.png",
+      "base": "candidate",
+      "sha256": "d3e970d103f8217d59e55bd0fded0f68a3198bf0bb8a99b26006ae87509a6682",
+      "bytes": 653577,
+      "inspection": "Whole frame, 2x crop, 7x and 10x crops and pixel rows through the ribbons. East flank complete with walkway end-on, service door, penthouse door and louvre."
+    },
+    {
+      "path": "renders/rear.png",
+      "base": "candidate",
+      "sha256": "dafc09db43750e56b4f30a4a865183b7e876cf33ef2041098cbc2d8d20127d26",
+      "bytes": 734026,
+      "inspection": "Whole frame, enlarged building area and pixel rows through the ribbons. Rear complete."
+    },
+    {
+      "path": "renders/rear_side.png",
+      "base": "candidate",
+      "sha256": "4c7ad06cbf1638fabe8bf62ab8a8bd594665fa4b88fc1b564060e8a46d42ea9a",
+      "bytes": 1390303,
+      "inspection": "Whole frame. North-west corner complete with neutral margin."
+    },
+    {
+      "path": "renders/facade_close.png",
+      "base": "candidate",
+      "sha256": "4fb8ca1f6d111d88697a0d37776fdb29ff83262d9e1828dcc969802867b5b348",
+      "bytes": 1605709,
+      "inspection": "Whole frame. Cap strip, recessed reveal, lower moulding, ribbon recess and corner bay inspected."
+    },
+    {
+      "path": "renders/architecture_close.png",
+      "base": "candidate",
+      "sha256": "ee5d63b76b226996ae76e922c46b68c77aed7d51270f93b529fad97a9c3e5d07",
+      "bytes": 1233661,
+      "inspection": "Whole frame. Entrance bay, piers, bearing pads, storefront and lobby inspected."
+    },
+    {
+      "path": "renders/glass_close.png",
+      "base": "candidate",
+      "sha256": "0b625ddf0aafe68d15d6806ec7961256aa7b00a45ce1956c42b8123efc23267a",
+      "bytes": 743014,
+      "inspection": "Whole frame plus 2x crop of the reveal. Head, sill, recessed frame, glass and occupied depth present; rippled shading in the reveal noted."
+    },
+    {
+      "path": "renders/roof_contact.png",
+      "base": "candidate",
+      "sha256": "de65730cc0a920b7b78c30b094f7ccb11a1c341fd035799150427d40e5a7757f",
+      "bytes": 695851,
+      "inspection": "Whole frame plus 4x crop of the penthouse east face. Penthouse seating, parapet, well, door, louvre and roof items inspected."
+    },
+    {
+      "path": "renders/bridge_contact.png",
+      "base": "candidate",
+      "sha256": "4ed9cf9fe0f16bfb892266937254cf1efd155e1368a54cbf393cc04ea96ca77e",
+      "bytes": 1326851,
+      "inspection": "Whole frame plus 2x and 5x crops of the junction. The jamb now closes the old slot."
+    },
+    {
+      "path": "renders/entrance_contact.png",
+      "base": "candidate",
+      "sha256": "cf7fcc914e54b73588e5bc5c4576a222779d9614d6f53d2448dbabe018242ad9",
+      "bytes": 1088231,
+      "inspection": "Whole frame. Door pair, pulls, threshold, sill and apron inspected."
+    },
+    {
+      "path": "renders/rear_ground.png",
+      "base": "candidate",
+      "sha256": "da95088a38a7c55c8d56c9422cce4df23d5dd7f692740f66664724df38a20f2f",
+      "bytes": 1224550,
+      "inspection": "Whole frame plus 3x and 4x crops of the near and far corners. High windows, loading door and staff exit inspected; see-through end panes noted."
+    },
+    {
+      "path": "renders/west_ground.png",
+      "base": "candidate",
+      "sha256": "2b5cf8f11a2c3f5dd7ebf56a70b65a0368b946d8cdfac8775a362d865ef72ab2",
+      "bytes": 1167261,
+      "inspection": "Whole frame plus 3x crop of the corner. Louvre, exit door and glazed return inspected; see-through end panes noted."
+    },
+    {
+      "path": "renders/bridge_junction.png",
+      "base": "candidate",
+      "sha256": "71cf348a6148ef4c9a1d04f624dfb6a4bd5d4bbc60fd6b07bd28d8862e8ab59c",
+      "bytes": 1058988,
+      "inspection": "Whole frame plus 5x and 12x crops. Smooth eased edges; jamb between walkway and ribbon; no open slot."
+    },
+    {
+      "path": "renders/bridge_end.png",
+      "base": "candidate",
+      "sha256": "45272ed0aafb6d048d5e6a00d8a7bb7a85f579b498f6f9e0362e33ad5f5f7ffc",
+      "bytes": 1163579,
+      "inspection": "Whole frame plus 2x and 10x crops. Glazed end wall, end caps and the hairline gap beside the tube inspected."
+    },
+    {
+      "path": "renders/corner_close.png",
+      "base": "candidate",
+      "sha256": "b83d53cb1c1bc3ca9f165a879c901d03128c0a1e85ea0283491764d2b928e68d",
+      "bytes": 978979,
+      "inspection": "Whole frame plus a brightened crop of the lower ribbon. Glazed corner with bronze post, corner room and desks inspected."
+    },
+    {
+      "path": "renders/service_close.png",
+      "base": "candidate",
+      "sha256": "dba1eb3d0b1657c6a23f625932cf4b10904ba1f03ab434fda720f694724c8abd",
+      "bytes": 1115315,
+      "inspection": "Whole frame. Loading door reveal, granite panels, pier plinths and apron inspected."
+    },
+    {
+      "path": "renders/match_front.png",
+      "base": "candidate",
+      "sha256": "67d3a950e4b685b2cb079ba707a9c7e0c54a7a71204c7b7a8bd2b363af771860",
+      "bytes": 451872,
+      "inspection": "Whole frame; pixel profiles at the same columns as the v002 review (x 560 to 640 and x 800 to 980) and at x 300, 400 and 500; enlarged side-by-side crops of the corner, ground storey, parapet, lowest bands and walkway."
+    },
+    {
+      "path": "renders/match_oblique.png",
+      "base": "candidate",
+      "sha256": "05660148ae8ae25f5e67ca694c32a5cdfa9d431e6465ad34a7cc2f73a6e3341f",
+      "bytes": 738952,
+      "inspection": "Whole frame, 50/50 blend with the reference, pixel profiles down the south-east corner, at x=190 and through the walkway, and ruled side-by-side crops of both street-front corners, the walkway and the penthouse."
+    },
+    {
+      "path": "renders/match_top.png",
+      "base": "candidate",
+      "sha256": "000148a7aca7e54ac5bb64f94afa4cdb4dadbbb079118655faee3c5e5f08d6d0",
+      "bytes": 215998,
+      "inspection": "Whole frame and 50/50 blend with the reference. Footprint, penthouse, well, unit, walkway, hatch and vent register closely."
+    },
+    {
+      "path": "boards/phone-street.png",
+      "base": "candidate",
+      "sha256": "67913ea3f5beec64ddc9920642691e1b35b08130183a9d833464ceacb8b4292b",
+      "bytes": 1590868,
+      "inspection": "1080x1920 board inspected at phone scale: reference above fitted render; header carries model 500b9bdc86cb."
+    },
+    {
+      "path": "boards/phone-oblique.png",
+      "base": "candidate",
+      "sha256": "19272763661bb0b53e7af025f2f0a22ddd9582d7df281c781b87f866b6fe03e2",
+      "bytes": 1962128,
+      "inspection": "1080x1920 board inspected at phone scale: reference above fitted render."
+    },
+    {
+      "path": "boards/phone-roof.png",
+      "base": "candidate",
+      "sha256": "d2b7b7dc7b2099642e416dc3a6090329e4251bb8125b61d398871dfd986a356f",
+      "bytes": 1535284,
+      "inspection": "1080x1920 board inspected at phone scale: reference above fitted render."
+    },
+    {
+      "path": "boards/phone-construction.png",
+      "base": "candidate",
+      "sha256": "50e92d44c4a0ace3361f8a3d443e16f6220c17612eff8ef0f8363c75d528c6a1",
+      "bytes": 864456,
+      "inspection": "1080x1920 board of eight close views inspected at phone scale."
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
+      "base": "repository",
+      "sha256": "ea6a28363104886398ba75294af97682bb0666485c73a48a2a0c7f363bfbb8ff",
+      "bytes": 1098329,
+      "inspection": "Locked street view, 1024x768. Opened again at full frame in this pass and inspected in enlarged crops and pixel profiles."
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0_angle_60.jpg",
+      "base": "repository",
+      "sha256": "49ec51c36c9f789d0883a159665f77905ee17842587ce78aa425c4a0105395c5",
+      "bytes": 874856,
+      "inspection": "Locked oblique, 1195x896. Opened again at full frame in this pass and inspected in enlarged crops and pixel profiles."
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0_angle_90.jpg",
+      "base": "repository",
+      "sha256": "695c6c3d93783def1343596b6cc9a537fd741db4e3674a4fcc3c107b6e4cf7a8",
+      "bytes": 844896,
+      "inspection": "Locked roof plan, 1195x896. Opened again at full frame in this pass and blended with the fitted top view."
+    },
+    {
+      "path": "docs/RLASM_LATEST_METHOD.md",
+      "base": "repository",
+      "sha256": "c684ca1c9d9a6442ecb3247051e91936342f5e00e412e9213c46ad0b2373c2c0",
+      "bytes": 28335,
+      "inspection": "Standard applied; unchanged since the v002 review (same hash)."
+    },
+    {
+      "path": "tools/archetype_compiler/rlasm_method.json",
+      "base": "repository",
+      "sha256": "369dbfa9f9e908e9fb7889adee6f9075eace9cd1415f3d4dace4f7c82e2ba190",
+      "bytes": 13802,
+      "inspection": "Severity definitions and clay delivery contract; unchanged since the v002 review (same hash)."
+    },
+    {
+      "path": "frontend/src/components/viewer/globe/reviewBuildingGlass.ts",
+      "base": "repository",
+      "sha256": "8d2766380342b8a0538d26b1c5e1ed552e15aa90ca93662d2ada1e990ec36abe",
+      "bytes": 1716,
+      "inspection": "Runtime helper, read to check the claim about glass: it replaces CLAY_GLASS with opacity 0.42 whatever alpha the file carries."
+    },
+    {
+      "path": "artifacts/plus15-brutalist-concrete-office/v002/independent-review.json",
+      "base": "repository",
+      "sha256": "ae06892841ce0c0c0188c761ded50c8b6554878dd2dce84cbc2eda0936003d4a",
+      "bytes": 35287,
+      "inspection": "My own v002 review, used as the list of prior findings and prior measurements."
+    },
+    {
+      "path": "artifacts/plus15-brutalist-concrete-office/v002/plus15-brutalist-concrete-office-clay-v002.glb",
+      "base": "repository",
+      "sha256": "c9f6889621d77e2de51db76adca67bada368ce1c961537d32adc0fef182999a0",
+      "bytes": 2107968,
+      "inspection": "Used only as a control for the envelope coverage raster (it shows the old slot at x 22.0 to 22.4, y 9.9 to 11.9)."
+    },
+    {
+      "path": "artifacts/plus15-brutalist-concrete-office/v002/renders/match_front.png",
+      "base": "repository",
+      "sha256": "8c50a80f2ec7a3bd6bdc1ed3be0bf72de725c729f7e84d04712ec0ccd1e5c844",
+      "bytes": 432185,
+      "inspection": "Control for before-and-after pixel profiles."
+    },
+    {
+      "path": "artifacts/plus15-brutalist-concrete-office/v002/renders/match_oblique.png",
+      "base": "repository",
+      "sha256": "f8732d1cd471326f422c8c04c878235acd4b7b16f99baa1e07640f4d68dee705",
+      "bytes": 675632,
+      "inspection": "Control for before-and-after pixel profiles."
+    },
+    {
+      "path": "artifacts/plus15-brutalist-concrete-office/v002/renders/front.png",
+      "base": "repository",
+      "sha256": "034abf13dfdb8175a62ed056b9a2bf93fa58ae5d1ae38c01881f2a3e24c301f3",
+      "bytes": 741901,
+      "inspection": "Control for before-and-after pixel rows through the ribbons."
+    },
+    {
+      "path": "artifacts/plus15-brutalist-concrete-office/v002/renders/rear.png",
+      "base": "repository",
+      "sha256": "956e52c8878ee465324b1702ef4aaeeb802799c6bd03c2bdfa980f8ceab80879",
+      "bytes": 722348,
+      "inspection": "Control for before-and-after pixel rows through the ribbons."
+    },
+    {
+      "path": "artifacts/plus15-brutalist-concrete-office/v002/renders/left_side.png",
+      "base": "repository",
+      "sha256": "c674bdcfdc9665f74a1e2fbc85ef93acb42cf0dd13a3fdd27d4c1dac40ea2fbe",
+      "bytes": 668753,
+      "inspection": "Control for before-and-after pixel rows through the ribbons."
+    },
+    {
+      "path": "artifacts/plus15-brutalist-concrete-office/v002/renders/right_side.png",
+      "base": "repository",
+      "sha256": "913db972368c90b1d64a1cb89ec205b0452dbbce55fa80ae416818eb12004116",
+      "bytes": 638489,
+      "inspection": "Control for before-and-after pixel rows through the ribbons."
+    }
+  ],
+  "render_resolution": {
+    "standard_renders": [
+      1600,
+      1200
+    ],
+    "match_front": [
+      1024,
+      768
+    ],
+    "match_oblique": [
+      1195,
+      896
+    ],
+    "match_top": [
+      1195,
+      896
+    ],
+    "phone_boards": [
+      1080,
+      1920
+    ]
+  },
+  "phone_boards_inspected": [
+    "boards/phone-street.png",
+    "boards/phone-oblique.png",
+    "boards/phone-roof.png",
+    "boards/phone-construction.png"
+  ]
+}

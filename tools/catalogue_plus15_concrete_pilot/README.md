@@ -14,7 +14,7 @@ Status of candidate **plus15-brutalist-concrete-office-clay-v005**:
 |---|---|
 | Deterministic delivery checks | Pass, 75 checks. `evidence/delivery-verification.json` |
 | Builder pixel review | Pass, with open notes. `evidence/builder-pixel-review.json` |
-| Independent architectural-clay review | v005 is under review. No result yet |
+| Independent architectural-clay review | **Pass**, zero P0 and zero P1, nine P2 notes. `evidence/independent-review-v005.json`. An AI reviewer with no builder context, not a person |
 | Runtime integration | NOT REVIEWED. No part of it has been run |
 | Publication or activation | Not authorized |
 
