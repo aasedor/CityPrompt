@@ -40,11 +40,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_twenty_four_unique_items(self):
+    def test_one_hundred_and_twenty_eight_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 124)
-        self.assertEqual(len({s['slug'] for s in specs}), 124)
-        self.assertEqual(len({s['label'] for s in specs}), 124)
+        self.assertEqual(len(specs), 128)
+        self.assertEqual(len({s['slug'] for s in specs}), 128)
+        self.assertEqual(len({s['label'] for s in specs}), 128)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -52,7 +52,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 124)
+        self.assertEqual(sum(counts.values()), 128)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -128,6 +128,23 @@ class CalgaryDetailsContract(unittest.TestCase):
             row = self.by_slug[slug]
             self.assertAlmostEqual(row['dimensions'][0], span, places=2)
             self.assertIn(f'{int(span)} m', row['description'])
+
+    def test_boardwalk_modules_in_feet_are_exact_and_stand_on_their_own(self):
+        foot = self.module.FOOT
+        for slug, length_ft in (('boardwalk-module-nine-foot', 9), ('boardwalk-module-twelve-foot', 12), ('boardwalk-corner', 6), ('boardwalk-corner-approach', 6)):
+            row = self.by_slug[slug]
+            self.assertEqual(row['dimensions'][:2], [round(length_ft * foot, 3), round(6 * foot, 3)], slug)
+            self.assertLessEqual(row['dimensions'][2], 1.2, slug)
+        # Metric sections keep their posts off the joints so a guard runs through; a module in
+        # feet carries a post just inside each end, at most a metre apart, so it stands alone.
+        self.assertEqual(self.module.guard_posts(3.0, (False, False)), [.5, 1.5, 2.5])
+        for length_ft in (9, 12):
+            length = length_ft * foot
+            posts = self.module.guard_posts(length, (True, True))
+            self.assertAlmostEqual(posts[0], .045)
+            self.assertAlmostEqual(posts[-1], length - .045)
+            self.assertLessEqual(max(posts[k + 1] - posts[k] for k in range(len(posts) - 1)), 1.0)
+        self.assertEqual(len(self.module.guard_posts(1.7738, (True, False))), len(self.module.guard_posts(1.7738, (False, True))))
 
     def test_backend_allowlist_and_category_tiles(self):
         allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))

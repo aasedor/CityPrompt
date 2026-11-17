@@ -154,7 +154,7 @@ class HostedAssetsTests(unittest.TestCase):
         self.assertIn(DETAIL_CARD_LOCK, RepositoryAssets.metadata_paths)
         locks = json.loads((ROOT / DETAIL_CARD_LOCK).read_text())
         local = [row for row in rows if row.get("sourceKit") in ("prairie-foliage-v1", "calgary-details-v1")]
-        self.assertEqual((len(local), len(locks)), (209, 209))
+        self.assertEqual((len(local), len(locks)), (213, 213))
         self.assertEqual({row["id"] for row in local}, set(locks))
         requirements = detail_requirements(rows, locks)
         self.assertEqual(len(requirements), 525 + 2 * len(local))

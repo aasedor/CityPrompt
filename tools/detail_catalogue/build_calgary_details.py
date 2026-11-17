@@ -2563,19 +2563,30 @@ def deck(s, x0, x1, y0, y1, top=DECK, plank=.143):
         s.quad((xa, y0, top), (xb, y0, top), (xb, y1, top), (xa, y1, top), s.pick(DECK_TONES, .03))
 
 
-def guard_run(s, a, b, base=DECK, road=0, feet=0, colour=GUARD_TIMBER):
-    """Patio guard from a to b: posts about every metre and never at the ends, so runs butt
-    together; a handrail, two boards and a cane-detection rail. road is +1 or -1 for the
-    side of the run, left or right of a to b, that carries reflective tape. feet is +1 or
-    -1 for the side the weighted feet reach toward, which must be the patio side: supports
-    may not project into the walkway."""
+def guard_posts(length, ends):
+    """Post stations along a guard. By default posts sit about every metre and never at
+    the ends, so runs butt together. ends asks for a post just inside the start, the
+    finish or both, for a module that has to stand on its own."""
+    if not any(ends):
+        count = max(1, round(length / 1.0))
+        return [length * (k + .5) / count for k in range(count)]
+    first = .045 if ends[0] else 0.0
+    last = length - .045 if ends[1] else length
+    spans = max(1, round((last - first) / 1.0))
+    stations = [first + (last - first) * k / spans for k in range(spans + 1)]
+    return stations[0 if ends[0] else 1:len(stations) if ends[1] else -1]
+
+
+def guard_run(s, a, b, base=DECK, road=0, feet=0, colour=GUARD_TIMBER, ends=(False, False)):
+    """Patio guard from a to b: posts, a handrail, two boards and a cane-detection rail.
+    road is +1 or -1 for the side of the run, left or right of a to b, that carries
+    reflective tape. feet is +1 or -1 for the side the weighted feet reach toward, which
+    must be the patio side: supports may not project into the walkway."""
     length = math.hypot(b[0] - a[0], b[1] - a[1])
     if length < .05:
         return
     with s.at(a[0], a[1], base, yaw=math.atan2(b[1] - a[1], b[0] - a[0])):
-        count = max(1, round(length / 1.0))
-        for k in range(count):
-            x = length * (k + .5) / count
+        for x in guard_posts(length, ends):
             s.box((x, 0, GUARD / 2), (.09, .09, GUARD), s.c(colour, .04))
             if feet:
                 s.box((x, feet * .19, .012), (.34, .48, .024), '#5e666a')
@@ -2679,6 +2690,50 @@ def curbside_deck(s, length, returns=(False, False), marker=False, width=2.5, st
 
 def boardwalk_section(s):
     curbside_deck(s, 3.0)
+
+
+# Boardwalk modules in feet: 6 ft wide, 9 ft or 12 ft long, with a guard on both long
+# sides and open ends so they run on, and a 6 ft square corner for turning a run toward
+# the sidewalk. The handrail's outer face sits on the deck edge, which keeps the footprint
+# exact and the walkway as wide as the module allows.
+FOOT = .3048
+RAIL_INSET = .055
+
+
+def boardwalk_module(s, length_ft, width_ft=6):
+    half, edge = length_ft * FOOT / 2, width_ft * FOOT / 2
+    deck(s, -half, half, -edge, edge)
+    guard_run(s, (-half, -edge + RAIL_INSET), (half, -edge + RAIL_INSET), road=-1, ends=(True, True))
+    guard_run(s, (-half, edge - RAIL_INSET), (half, edge - RAIL_INSET), ends=(True, True))
+
+
+def boardwalk_module_nine_foot(s):
+    boardwalk_module(s, 9)
+
+
+def boardwalk_module_twelve_foot(s):
+    boardwalk_module(s, 12)
+
+
+def boardwalk_corner_piece(s, marker=False, size_ft=6):
+    """Guards on the road side (-y) and the outer end (+x); open toward the run (-x) and the sidewalk (+y)."""
+    edge = size_ft * FOOT / 2
+    outer = edge - RAIL_INSET
+    deck(s, -edge, edge, -edge, edge)
+    s.box((-.03, edge - .04, DECK + .003), (edge * 2 - .2, .08, .006), '#aab1b6')
+    guard_run(s, (-edge, -outer), (outer, -outer), road=-1, ends=(True, False))
+    guard_run(s, (outer, -outer), (outer, edge), road=-1, ends=(False, True))
+    corner_post(s, outer, -outer)
+    if marker:
+        object_marker(s, edge - .1, -edge + .28, 1, -1)
+
+
+def boardwalk_corner(s):
+    boardwalk_corner_piece(s)
+
+
+def boardwalk_corner_approach(s):
+    boardwalk_corner_piece(s, marker=True)
 
 
 def boardwalk_section_short(s):
@@ -3627,6 +3682,11 @@ SPECS = [
     spec('sidewalk-patio', 'Sidewalk patio', 'Seating', 'Fenced dining area on a wide sidewalk, 6 m by 2.2 m, with tables, umbrellas and planters. Keep 2 m of walkway clear beside it.', sidewalk_patio, 2909, '#8a6a4a'),
     spec('patio-fence-panel', 'Patio guard panel', 'Edges & gates', 'Repeatable 2.4 m free-standing timber patio guard with a cane-detection rail. Its weighted feet go on the patio side.', patio_fence_panel, 2910, '#8a6a4a'),
     spec('low-profile-barrier', 'Low-profile barrier', 'Traffic & safety', 'Repeatable 3 m low concrete traffic barrier, half a metre tall, for the road end of a patio or boardwalk.', low_profile_barrier, 2911, '#b9b6ae'),
+    # --- boardwalk modules in feet, with guards on both long sides and open ends ---
+    spec('boardwalk-module-nine-foot', 'Boardwalk module · 6 × 9 ft', 'Access & levels', 'Repeatable 6 ft by 9 ft timber boardwalk module, level with the sidewalk, with guards on both long sides and open ends.', boardwalk_module_nine_foot, 2921, '#b99a6b'),
+    spec('boardwalk-module-twelve-foot', 'Boardwalk module · 6 × 12 ft', 'Access & levels', 'Repeatable 6 ft by 12 ft timber boardwalk module, level with the sidewalk, with guards on both long sides and open ends.', boardwalk_module_twelve_foot, 2922, '#b99a6b'),
+    spec('boardwalk-corner', 'Boardwalk corner · 6 × 6 ft', 'Access & levels', 'Six-foot-square boardwalk corner with guards on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.', boardwalk_corner, 2923, '#b99a6b'),
+    spec('boardwalk-corner-approach', 'Boardwalk corner · approach', 'Access & levels', 'Six-foot-square boardwalk corner with guards on two outer sides and a hazard marker facing approaching traffic.', boardwalk_corner_approach, 2924, '#f2c230'),
 ]
 
 

@@ -32,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(374 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(378 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -119,7 +119,7 @@ describe("standalone detail catalogue", () => {
   });
   it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
     const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
-    expect(site).toHaveLength(124);
+    expect(site).toHaveLength(128);
     expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(13_500_000);
     for (const model of site) {
       expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
@@ -164,18 +164,25 @@ describe("standalone detail catalogue", () => {
     }
     // Seasonal patio pieces: boardwalk sections butt end to end at one width, every platform
     // stays under 1.2 m of guard above the street, and whole patios fit parking stalls.
-    const boardwalk = searchDetails("boardwalk", "Access & levels");
-    expect(boardwalk.map((m) => m.label)).toEqual([
+    const everyBoardwalk = searchDetails("boardwalk", "Access & levels");
+    expect(everyBoardwalk.map((m) => m.label)).toEqual([
       "Boardwalk section",
       "Boardwalk section · 1.5 m",
       "Boardwalk end · approach",
       "Boardwalk end · far",
+      "Boardwalk module · 6 × 9 ft",
+      "Boardwalk module · 6 × 12 ft",
+      "Boardwalk corner · 6 × 6 ft",
+      "Boardwalk corner · approach",
     ]);
-    for (const piece of boardwalk) {
-      expect(piece.dimensions[1]).toBe(2.5);
-      expect(piece.dimensions[2]).toBeLessThanOrEqual(1.2);
-    }
+    for (const piece of everyBoardwalk) expect(piece.dimensions[2]).toBeLessThanOrEqual(1.2);
+    const boardwalk = everyBoardwalk.slice(0, 4);
+    for (const piece of boardwalk) expect(piece.dimensions[1]).toBe(2.5);
     expect(boardwalk.map((m) => m.dimensions[0])).toEqual([3, 1.5, 3, 3]);
+    // The modules in feet are exact to the millimetre, so a run of them does not drift.
+    const foot = 0.3048;
+    const feet = (m: { dimensions: readonly number[] }) => [m.dimensions[0] / foot, m.dimensions[1] / foot].map((n) => Math.round(n * 100) / 100);
+    expect(everyBoardwalk.slice(4).map(feet)).toEqual([[9, 6], [12, 6], [6, 6], [6, 6]]);
     const patios = extras.filter((m) => /^detail-yyc-(street-patio|parklet)-/.test(m.id));
     expect(patios.map((m) => [m.dimensions[0], m.dimensions[1]])).toEqual([[6, 2.5], [11, 2.5], [6, 2.5], [11, 2.5]]);
     expect(searchDetails("parklet").filter((m) => m.id.startsWith("detail-yyc-")).map((m) => m.label)).toEqual([

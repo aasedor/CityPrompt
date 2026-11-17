@@ -98,7 +98,79 @@ The files follow the kit convention: linear vertex colours, flat normals, one
 matte mesh, no textures. The eleven total 1,157,768 bytes and 10,046 triangles.
 The 113 earlier models are byte-identical.
 
-## Verification
+## Added later the same day: boardwalk modules in feet
+
+Four more pieces, built to requested module sizes in feet:
+
+| Item | Size | W × D × H (m) | Triangles |
+|---|---|---:|---:|
+| Boardwalk module · 6 × 9 ft | 6 ft wide, 9 ft long | 2.743 × 1.829 × 1.19 | 250 |
+| Boardwalk module · 6 × 12 ft | 6 ft wide, 12 ft long | 3.658 × 1.829 × 1.19 | 288 |
+| Boardwalk corner · 6 × 6 ft | 6 ft square | 1.829 × 1.829 × 1.19 | 226 |
+| Boardwalk corner · approach | 6 ft square, with hazard marker | 1.829 × 1.829 × 1.19 | 258 |
+
+- **Straight modules** have a railing on both long sides and are open at both
+  ends, so they run on from one to the next. The side with the yellow strip
+  faces the road.
+- **Corner pieces** have railings on their two outer sides and are open on the
+  other two: one toward the run and one toward the sidewalk. One corner serves
+  every position, because it is square: turn it a quarter to suit. The approach
+  version adds the hazard marker and goes at the end traffic reaches first.
+- **Exact footprints.** Sizes are exact conversions (1 ft = 0.3048 m) and the
+  handrail's outer face sits on the deck edge, so a run does not drift.
+- **Each module stands on its own.** Unlike the metric sections, whose posts
+  stay off the joints, every module in feet has a post just inside each end of
+  each railing, with posts no more than 0.9 m apart between them. Joined modules
+  therefore show a pair of posts at each joint, as separate units do. This was
+  changed after the first review, where the railings overhung their last posts
+  by 18 in and a single module looked unfinished.
+- The deck, the 1.0 m guard, the cane-detection rail and the 150 mm height are
+  the same as the metric sections above.
+
+**Clear width to check.** A 6 ft module is 1.83 m wide and has about 1.61 m
+clear between its handrails. The published guidance asks for a 2 m pedestrian
+detour, so these modules are narrower than that figure. They are modelled to the
+requested size; the 2.5 m metric section above remains for a 2 m clear walkway.
+
+Checked the same way as the rest:
+
+- rendered at eye level, oblique and card size and reviewed
+  ([sheet](calgary-details-v1/boardwalk-feet-review.jpg));
+- placed on the test street through the app's own placement code. A 45 ft run
+  of an approach corner, two 12 ft modules, one 9 ft module and a turned far
+  corner sits beside a sidewalk patio
+  ([run](calgary-details-v1/scene-boardwalk-feet-run.jpg),
+  [corner entrance](calgary-details-v1/scene-boardwalk-feet-corner.jpg)), and a
+  short run of two corners and one 9 ft module stands alone
+  ([short run](calgary-details-v1/scene-boardwalk-feet-short.jpg)). All 213
+  local models passed the datum, size and anchor checks;
+- a tools test requires the four footprints to be exact conversions and the
+  end posts to sit inside the footprint, and a frontend test checks the
+  catalogue order and the sizes in feet;
+- in the real project page with a mocked backend, in a temporary browser trial
+  that was not committed: searching `boardwalk` in **Access & levels** lists all
+  eight boardwalk pieces, the four new ones load from their static card images
+  without requesting a model file, and choosing the 12 ft module arms placement
+  ([screenshot](calgary-details-v1/app-boardwalk-feet.jpg)).
+
+The kit is now 128 objects and the 124 earlier models, and their card images,
+are byte-identical. The whole CI list was run again locally: lint with zero
+warnings, dead-code and type checks; `npx vitest run` with 512 files and 4,542
+tests passed; the 135 catalogue delivery tests; the asset and manifest checks,
+with 5,935 required runtime files; tools, hosted-asset and backend detail tests
+with 213 local rows and 368 extras; and the browser tests, 13 passed plus the
+startup test. Not done here: placing these on the live map, which needs a real
+map key, and the full backend suite, which needs a database.
+
+## Bundle budget after this work
+
+The eleven patio pieces left 5.3 KB of the 8,448 KB JavaScript budget. Before
+adding these four, every packed catalogue was moved to the shared-decoder
+transport, in its own commit, which freed 13.2 KB. A test now walks the source
+tree and requires every packed catalogue to decode to its exact source. With
+the four new rows the total is 8,430.1 KB, leaving 17.9 KB.
+
+## Verification of the first eleven pieces
 
 - Every item was rendered at eye level, oblique and card size and reviewed:
   [eye level](calgary-details-v1/patio-eye-level.jpg),

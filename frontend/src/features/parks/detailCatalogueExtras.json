@@ -9292,5 +9292,109 @@
     "meshes": 1,
     "bytes": 14860,
     "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-barrier.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-module-nine-foot",
+    "label": "Boardwalk module \u00b7 6 \u00d7 9 ft",
+    "category": "Access & levels",
+    "description": "Repeatable 6 ft by 9 ft timber boardwalk module, level with the sidewalk, with guards on both long sides and open ends.",
+    "dimensions": [
+      2.743,
+      1.829,
+      1.188
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot.glb",
+    "color": "#b99a6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_module_nine_foot",
+    "sha256": "9ee98001df9f6181aab2324dd6ed1e1a3c8bff6856450fc1249799e44b5606bb",
+    "triangles": 250,
+    "meshes": 1,
+    "bytes": 29696,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-module-twelve-foot",
+    "label": "Boardwalk module \u00b7 6 \u00d7 12 ft",
+    "category": "Access & levels",
+    "description": "Repeatable 6 ft by 12 ft timber boardwalk module, level with the sidewalk, with guards on both long sides and open ends.",
+    "dimensions": [
+      3.658,
+      1.829,
+      1.188
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot.glb",
+    "color": "#b99a6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_module_twelve_foot",
+    "sha256": "272cd63ef3be3f1b04f9c55045edbb7f67ab798fb0e64f67c1d8a714e27d1870",
+    "triangles": 288,
+    "meshes": 1,
+    "bytes": 34036,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-corner",
+    "label": "Boardwalk corner \u00b7 6 \u00d7 6 ft",
+    "category": "Access & levels",
+    "description": "Six-foot-square boardwalk corner with guards on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.",
+    "dimensions": [
+      1.829,
+      1.829,
+      1.19
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-corner.glb",
+    "color": "#b99a6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_corner",
+    "sha256": "2ef9aa0f2bcb0c2280b7f9dbae6e13fa0736142c95982614a70c3791a01750d8",
+    "triangles": 226,
+    "meshes": 1,
+    "bytes": 26940,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-corner-approach",
+    "label": "Boardwalk corner \u00b7 approach",
+    "category": "Access & levels",
+    "description": "Six-foot-square boardwalk corner with guards on two outer sides and a hazard marker facing approaching traffic.",
+    "dimensions": [
+      1.829,
+      1.829,
+      1.19
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-corner-approach.glb",
+    "color": "#f2c230",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_corner_approach",
+    "sha256": "2b8d479c06539acd6dee14e90928b2e1833d00742de7c68110b70223a1f5f3c6",
+    "triangles": 258,
+    "meshes": 1,
+    "bytes": 30604,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner-approach.webp"
   }
 ]

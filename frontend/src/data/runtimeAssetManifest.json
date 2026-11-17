@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4143,
+    "explicitReferenceCount": 4151,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5927,
-    "requiredLogicalBytes": 13087194598,
+    "requiredFileCount": 5935,
+    "requiredLogicalBytes": 13087503266,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -25838,6 +25838,36 @@
       "logicalBytes": 2744
     },
     {
+      "url": "/park-kits/calgary-details-v1/boardwalk-corner-approach.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 30604,
+      "lfsOid": "2b8d479c06539acd6dee14e90928b2e1833d00742de7c68110b70223a1f5f3c6"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-corner-approach.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8394
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-corner.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 26940,
+      "lfsOid": "2ef9aa0f2bcb0c2280b7f9dbae6e13fa0736142c95982614a70c3791a01750d8"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-corner.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7806
+    },
+    {
       "url": "/park-kits/calgary-details-v1/boardwalk-end-approach.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25866,6 +25896,36 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 7144
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 29696,
+      "lfsOid": "9ee98001df9f6181aab2324dd6ed1e1a3c8bff6856450fc1249799e44b5606bb"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8548
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 34036,
+      "lfsOid": "272cd63ef3be3f1b04f9c55045edbb7f67ab798fb0e64f67c1d8a714e27d1870"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8310
     },
     {
       "url": "/park-kits/calgary-details-v1/boardwalk-section-short.glb",
@@ -35951,9 +36011,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 921,
-      "logicalBytes": 521709102,
-      "pathDigest": "7f27cd341ddfda29c0fa8c539bb46b913a1ef818a45ba3b4652196c3bf08020c"
+      "fileCount": 929,
+      "logicalBytes": 521863436,
+      "pathDigest": "b5b9058ec497c399e0489698c6a9c23aebd18062058dcb1891dd169c9b66396b"
     },
     {
       "name": "public-realm-skins",
