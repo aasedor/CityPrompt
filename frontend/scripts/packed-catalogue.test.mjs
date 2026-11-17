@@ -1,6 +1,6 @@
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { performance } from 'node:perf_hooks';
-import { resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -45,6 +45,31 @@ for (const [relative, minimumSaving] of [['src/data/streetPathArchetypes.json', 
     assert.ok(minified.code.length < base64.code.length - minimumSaving, `expected at least ${minimumSaving} bytes back, got ${base64.code.length - minified.code.length}`);
   });
 }
+
+test('every packed catalogue ships in the shared-decoder transport and decodes to its exact source', async () => {
+  // Walks the source tree rather than a list, so a catalogue added later is covered without editing this test.
+  const files = [];
+  (function walk(directory) {
+    for (const entry of readdirSync(directory)) {
+      const path = join(directory, entry);
+      if (statSync(path).isDirectory()) walk(path);
+      else if (path.endsWith('.json')) files.push(path);
+    }
+  })(resolve('src'));
+  let packed = 0;
+  for (const path of files) {
+    const transformed = packedCatalogue().transform('', path);
+    if (!transformed) continue;
+    packed += 1;
+    assert.ok(transformed.code.includes('Z85 v1 / RFC32'), `${path} should use the Z85 transport`);
+    assert.equal(transformed.code.match(/decodeZ85/g).length, 2, `${path} should import the shared decoder, not carry its own`);
+    const source = readFileSync(path, 'utf8');
+    const expected = JSON.parse(path.endsWith('/src/data/classroomStarter.json') ? productionStarter(source) : source);
+    const decoded = await import(`data:text/javascript,${encodeURIComponent(runnable(transformed.code))}`);
+    assert.deepEqual(decoded.default, expected, path);
+  }
+  assert.ok(packed >= 55, `expected every catalogue to be packed, found ${packed}`);
+});
 
 test('detail registries keep every provenance lock through the production transport', async () => {
   const path = resolve('src/features/parks/detailCatalogueExtras.json'), source = JSON.parse(readFileSync(path, 'utf8'));

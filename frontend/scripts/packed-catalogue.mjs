@@ -11,12 +11,11 @@ const DATA_CATALOGUES = /\/src\/data\/(?:buildingArchetypes|openSpaceArchetypes|
 
 const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails|trafficSafetyCatalogue)|people\/(?:peopleCatalogue|inclusivePeopleCatalogue|peopleAppearancePreviews)|zoningCatalogue\/(?:buildingPrograms|parkPrograms|districtRules))\.json$/;
 
-// Catalogues shipped in the denser Z85 transport. It is lossless like base64 but
-// costs 25% instead of 33%. The decoder is one shared module, so a catalogue
-// gains from the move at any size. Moving a catalogue here is how headroom is
-// recovered when the catalogue grows, without relaxing the bundle budget or
-// dropping a field.
-const DENSE_TRANSPORT = /\/src\/(?:data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes|streetPathArchetypes|nativeParks|cataloguePlanningHistory|catalogueTeaching|archetypeReferenceAvailability|nativeBridgeRelease|legoFamilySignatures|nativeBridgePilots|validationCatalogue|classroomExpansion)|features\/(?:parks\/(?:detailCatalogueExtras|recoveredDetails)|policyPlans\/data\/localPlanIndex))\.json$/;
+// Every packed catalogue ships in the Z85 transport. It is lossless like base64
+// but costs 25% instead of 33%, and since the decoder is one shared module a
+// catalogue gains from it at any size. base64 remains in packCatalogue only as
+// the reference the tests compare against.
+const TRANSPORT = 'z85';
 
 // Exact additional registries used by the combined student/catalogue handoff.
 // Keep this allowlist explicit so unrelated JSON retains Vite's normal exports.
@@ -79,7 +78,7 @@ export function packPublishedBuildingCatalogue(input) {
   }
   const data = source.slice(prefix.length, -suffix.length);
   if (!Array.isArray(JSON.parse(data))) throw new Error('Expected generated building catalogue array');
-  return packCatalogue(data).replace('export default ', 'export const CATALOGUE_BUILDING_ASSETS = ')
+  return packCatalogue(data, { encoding: TRANSPORT }).replace('export default ', 'export const CATALOGUE_BUILDING_ASSETS = ')
     + "\nexport const PUBLISHED_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset => asset.readiness === 'ready');";
 }
 
@@ -96,7 +95,7 @@ export function packedCatalogue() {
       if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename) && !STATIC_METADATA.test(filename)) return null;
       const source = readFileSync(id, 'utf8');
       return { code: packCatalogue(filename.endsWith('/src/data/classroomStarter.json')
-        ? productionStarter(source) : source, { encoding: DENSE_TRANSPORT.test(filename) ? 'z85' : 'base64' }), map: null };
+        ? productionStarter(source) : source, { encoding: TRANSPORT }), map: null };
     },
   };
 }
