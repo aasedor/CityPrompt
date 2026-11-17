@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4121,
+    "explicitReferenceCount": 4143,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5905,
-    "requiredLogicalBytes": 13084730734,
+    "requiredFileCount": 5927,
+    "requiredLogicalBytes": 13087194598,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -25838,6 +25838,66 @@
       "logicalBytes": 2744
     },
     {
+      "url": "/park-kits/calgary-details-v1/boardwalk-end-approach.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 35104,
+      "lfsOid": "46dea4d323eb0e76752699c286f22126cbf28f6da103aefbd6236817c6ab57b7"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-end-approach.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7746
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-end-far.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 31444,
+      "lfsOid": "1f98f7f305ce5a2f8a9a3285c710b0f408ff4c879de59769c15aa1fdff9b0853"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-end-far.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7144
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-section-short.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 15268,
+      "lfsOid": "7dec74681cae019f303b5546b82f81f36d39dc1abeed9e2ef8ae94e988997f54"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-section-short.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5242
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-section.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 19128,
+      "lfsOid": "95aadcbd48afa5479db31d001640eda797a9607a7730b846b0aa651a59738609"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-section.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5910
+    },
+    {
       "url": "/park-kits/calgary-details-v1/bus-bench.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26348,6 +26408,21 @@
       "logicalBytes": 3990
     },
     {
+      "url": "/park-kits/calgary-details-v1/low-profile-barrier.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 14860,
+      "lfsOid": "54ce91a61f5f6e9d705c52ba817c9f9675f2700f3d76f56f54211a75308be8e8"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/low-profile-barrier.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 2162
+    },
+    {
       "url": "/park-kits/calgary-details-v1/lrt-catenary-pole.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26663,6 +26738,36 @@
       "logicalBytes": 3136
     },
     {
+      "url": "/park-kits/calgary-details-v1/parklet-one-stall.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 158664,
+      "lfsOid": "aece859e000ffe381a297a4c6eea00a370d3586de21f6caaa247b7a9740c85c6"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/parklet-one-stall.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 7154
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/parklet-two-stall.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 204948,
+      "lfsOid": "21a54a1b799ea92826abe6f310171402615bf8f5b51eef59221a6ded0059a510"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/parklet-two-stall.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6314
+    },
+    {
       "url": "/park-kits/calgary-details-v1/pathway-marker.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -26676,6 +26781,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 2710
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/patio-fence-panel.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 12120,
+      "lfsOid": "9f8fe85414d09c57020b109bf47079d0716b0b131c1567313fb95368a0931be0"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/patio-fence-panel.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5168
     },
     {
       "url": "/park-kits/calgary-details-v1/patio-heater.glb",
@@ -27038,6 +27158,21 @@
       "logicalBytes": 8554
     },
     {
+      "url": "/park-kits/calgary-details-v1/sidewalk-patio.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 180388,
+      "lfsOid": "7f375c0d499341e1f08aafdd91cacf8050f5ba9f0bef2c471fdb3d08a29e5e01"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/sidewalk-patio.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8280
+    },
+    {
       "url": "/park-kits/calgary-details-v1/signal-cabinet.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -27201,6 +27336,36 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 1276
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/street-patio-one-stall.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 190368,
+      "lfsOid": "5c0ba202c296fe1841ea5ca1b7d4c5b17c326c0c0ca34e0976e9eaf72f0b34ec"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/street-patio-one-stall.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 10132
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/street-patio-two-stall.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 295476,
+      "lfsOid": "bcdc46dcfa30b2e095588949ca6e6f4e4acc9a8a50dd4a5cc749adfe160b62a5"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/street-patio-two-stall.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8912
     },
     {
       "url": "/park-kits/calgary-details-v1/telecom-pedestals.glb",
@@ -35786,9 +35951,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 899,
-      "logicalBytes": 520477170,
-      "pathDigest": "77e33bcf6afeb7d6dc22432b7651ad7ad2497ae4931319d51f3f86a96313fbfc"
+      "fileCount": 921,
+      "logicalBytes": 521709102,
+      "pathDigest": "7f27cd341ddfda29c0fa8c539bb46b913a1ef818a45ba3b4652196c3bf08020c"
     },
     {
       "name": "public-realm-skins",

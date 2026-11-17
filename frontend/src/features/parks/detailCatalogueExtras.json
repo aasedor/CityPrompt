@@ -9006,5 +9006,291 @@
     "meshes": 1,
     "bytes": 167636,
     "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-confetti.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-section",
+    "label": "Boardwalk section",
+    "category": "Access & levels",
+    "description": "Repeatable 3 m timber walkway for the parking lane, level with the sidewalk, 2.3 m clear, with a guard on the road side.",
+    "dimensions": [
+      3.0,
+      2.5,
+      1.188
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-section.glb",
+    "color": "#b99a6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_section",
+    "sha256": "95aadcbd48afa5479db31d001640eda797a9607a7730b846b0aa651a59738609",
+    "triangles": 158,
+    "meshes": 1,
+    "bytes": 19128,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-section.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-section-short",
+    "label": "Boardwalk section \u00b7 1.5 m",
+    "category": "Access & levels",
+    "description": "Half-length boardwalk section for fitting a run to a frontage. Level with the sidewalk, guard on the road side.",
+    "dimensions": [
+      1.5,
+      2.5,
+      1.188
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-section-short.glb",
+    "color": "#b99a6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_section_short",
+    "sha256": "7dec74681cae019f303b5546b82f81f36d39dc1abeed9e2ef8ae94e988997f54",
+    "triangles": 124,
+    "meshes": 1,
+    "bytes": 15268,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-section-short.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-end-approach",
+    "label": "Boardwalk end \u00b7 approach",
+    "category": "Access & levels",
+    "description": "Boardwalk end closed by a guard return, with a yellow and black hazard marker facing approaching traffic.",
+    "dimensions": [
+      3.0,
+      2.5,
+      1.19
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-end-approach.glb",
+    "color": "#f2c230",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_end_approach",
+    "sha256": "46dea4d323eb0e76752699c286f22126cbf28f6da103aefbd6236817c6ab57b7",
+    "triangles": 298,
+    "meshes": 1,
+    "bytes": 35104,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-end-approach.webp"
+  },
+  {
+    "id": "detail-yyc-boardwalk-end-far",
+    "label": "Boardwalk end \u00b7 far",
+    "category": "Access & levels",
+    "description": "Boardwalk end closed by a guard return, for the end that traffic leaves behind.",
+    "dimensions": [
+      3.0,
+      2.5,
+      1.19
+    ],
+    "url": "/park-kits/calgary-details-v1/boardwalk-end-far.glb",
+    "color": "#b99a6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:boardwalk_end_far",
+    "sha256": "1f98f7f305ce5a2f8a9a3285c710b0f408ff4c879de59769c15aa1fdff9b0853",
+    "triangles": 266,
+    "meshes": 1,
+    "bytes": 31444,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-end-far.webp"
+  },
+  {
+    "id": "detail-yyc-street-patio-one-stall",
+    "label": "On-street patio \u00b7 one stall",
+    "category": "Seating",
+    "description": "Fenced dining platform in one parking stall, level with the sidewalk: two tables, eight seats, umbrellas and a 2 m entrance.",
+    "dimensions": [
+      6.0,
+      2.5,
+      2.75
+    ],
+    "url": "/park-kits/calgary-details-v1/street-patio-one-stall.glb",
+    "color": "#b5432a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:street_patio_one_stall",
+    "sha256": "5c0ba202c296fe1841ea5ca1b7d4c5b17c326c0c0ca34e0976e9eaf72f0b34ec",
+    "triangles": 1660,
+    "meshes": 1,
+    "bytes": 190368,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-patio-one-stall.webp"
+  },
+  {
+    "id": "detail-yyc-street-patio-two-stall",
+    "label": "On-street patio \u00b7 two stalls",
+    "category": "Seating",
+    "description": "Fenced dining platform 11 m long in two parking stalls: four tables, sixteen seats, umbrellas and a 2 m entrance.",
+    "dimensions": [
+      11.0,
+      2.5,
+      2.75
+    ],
+    "url": "/park-kits/calgary-details-v1/street-patio-two-stall.glb",
+    "color": "#2f6f8f",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:street_patio_two_stall",
+    "sha256": "bcdc46dcfa30b2e095588949ca6e6f4e4acc9a8a50dd4a5cc749adfe160b62a5",
+    "triangles": 2582,
+    "meshes": 1,
+    "bytes": 295476,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-patio-two-stall.webp"
+  },
+  {
+    "id": "detail-yyc-parklet-one-stall",
+    "label": "Parklet \u00b7 one stall",
+    "category": "Seating",
+    "description": "Public seating platform in one parking stall, open to the sidewalk, with built-in benches, planters and two small tables.",
+    "dimensions": [
+      6.0,
+      2.5,
+      2.75
+    ],
+    "url": "/park-kits/calgary-details-v1/parklet-one-stall.glb",
+    "color": "#e0b63a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:parklet_one_stall",
+    "sha256": "aece859e000ffe381a297a4c6eea00a370d3586de21f6caaa247b7a9740c85c6",
+    "triangles": 1382,
+    "meshes": 1,
+    "bytes": 158664,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/parklet-one-stall.webp"
+  },
+  {
+    "id": "detail-yyc-parklet-two-stall",
+    "label": "Parklet \u00b7 two stalls",
+    "category": "Seating",
+    "description": "Public seating platform 11 m long in two parking stalls, with benches, a long shared table, planters and umbrellas.",
+    "dimensions": [
+      11.0,
+      2.5,
+      2.75
+    ],
+    "url": "/park-kits/calgary-details-v1/parklet-two-stall.glb",
+    "color": "#1f7a8c",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:parklet_two_stall",
+    "sha256": "21a54a1b799ea92826abe6f310171402615bf8f5b51eef59221a6ded0059a510",
+    "triangles": 1788,
+    "meshes": 1,
+    "bytes": 204948,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/parklet-two-stall.webp"
+  },
+  {
+    "id": "detail-yyc-sidewalk-patio",
+    "label": "Sidewalk patio",
+    "category": "Seating",
+    "description": "Fenced dining area on a wide sidewalk, 6 m by 2.2 m, with tables, umbrellas and planters. Keep 2 m of walkway clear beside it.",
+    "dimensions": [
+      6.11,
+      2.255,
+      2.6
+    ],
+    "url": "/park-kits/calgary-details-v1/sidewalk-patio.glb",
+    "color": "#8a6a4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:sidewalk_patio",
+    "sha256": "7f375c0d499341e1f08aafdd91cacf8050f5ba9f0bef2c471fdb3d08a29e5e01",
+    "triangles": 1572,
+    "meshes": 1,
+    "bytes": 180388,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sidewalk-patio.webp"
+  },
+  {
+    "id": "detail-yyc-patio-fence-panel",
+    "label": "Patio guard panel",
+    "category": "Edges & gates",
+    "description": "Repeatable 2.4 m free-standing timber patio guard with a cane-detection rail. Its weighted feet go on the patio side.",
+    "dimensions": [
+      2.4,
+      0.485,
+      1.038
+    ],
+    "url": "/park-kits/calgary-details-v1/patio-fence-panel.glb",
+    "color": "#8a6a4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:patio_fence_panel",
+    "sha256": "9f8fe85414d09c57020b109bf47079d0716b0b131c1567313fb95368a0931be0",
+    "triangles": 96,
+    "meshes": 1,
+    "bytes": 12120,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/patio-fence-panel.webp"
+  },
+  {
+    "id": "detail-yyc-low-profile-barrier",
+    "label": "Low-profile barrier",
+    "category": "Traffic & safety",
+    "description": "Repeatable 3 m low concrete traffic barrier, half a metre tall, for the road end of a patio or boardwalk.",
+    "dimensions": [
+      3.01,
+      0.62,
+      0.516
+    ],
+    "url": "/park-kits/calgary-details-v1/low-profile-barrier.glb",
+    "color": "#b9b6ae",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:low_profile_barrier",
+    "sha256": "54ce91a61f5f6e9d705c52ba817c9f9675f2700f3d76f56f54211a75308be8e8",
+    "triangles": 120,
+    "meshes": 1,
+    "bytes": 14860,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-barrier.webp"
   }
 ]

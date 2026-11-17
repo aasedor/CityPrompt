@@ -2534,6 +2534,281 @@ def mural_confetti(s):
 
 
 # ---------------------------------------------------------------------------
+# Seasonal patios: boardwalk sections, on-street patios, parklets and a sidewalk
+# patio. Dimensions follow the City of Calgary's published "Guidelines for
+# Seasonal Patios located on public property": a platform level with the
+# sidewalk, a guard 1.0 m high and never more than 1.2 m above the street, a
+# cane-detectable rail within 100 mm of the walking surface, at least 2 m of
+# clear walkway, umbrella canopies at least 2.1 m up, nothing fixed to the road,
+# and a hazard marker on the corner facing approaching traffic. These are
+# concept models for site visualization, not permit drawings.
+#
+# x runs along the curb. The road is at -y and the sidewalk at +y. For
+# right-hand traffic in the lane beside the curb, vehicles approach from +x.
+# ---------------------------------------------------------------------------
+DECK = .15
+GUARD = 1.0
+DECK_TONES = ['#b99a6b', '#ad8f61', '#c2a374', '#a98a5c']
+GUARD_TIMBER = '#8a6a4a'
+
+
+def deck(s, x0, x1, y0, y1, top=DECK, plank=.143):
+    """Timber platform at sidewalk grade: skirt boards, and planks laid across the path of travel."""
+    skirt = '#806848'
+    for a, b in (((x0, y0), (x1, y0)), ((x1, y0), (x1, y1)), ((x1, y1), (x0, y1)), ((x0, y1), (x0, y0))):
+        s.quad((a[0], a[1], 0), (b[0], b[1], 0), (b[0], b[1], top), (a[0], a[1], top), skirt)
+    count = max(1, round((x1 - x0) / plank))
+    for k in range(count):
+        xa, xb = x0 + (x1 - x0) * k / count, x0 + (x1 - x0) * (k + 1) / count
+        s.quad((xa, y0, top), (xb, y0, top), (xb, y1, top), (xa, y1, top), s.pick(DECK_TONES, .03))
+
+
+def guard_run(s, a, b, base=DECK, road=0, feet=0, colour=GUARD_TIMBER):
+    """Patio guard from a to b: posts about every metre and never at the ends, so runs butt
+    together; a handrail, two boards and a cane-detection rail. road is +1 or -1 for the
+    side of the run, left or right of a to b, that carries reflective tape. feet is +1 or
+    -1 for the side the weighted feet reach toward, which must be the patio side: supports
+    may not project into the walkway."""
+    length = math.hypot(b[0] - a[0], b[1] - a[1])
+    if length < .05:
+        return
+    with s.at(a[0], a[1], base, yaw=math.atan2(b[1] - a[1], b[0] - a[0])):
+        count = max(1, round(length / 1.0))
+        for k in range(count):
+            x = length * (k + .5) / count
+            s.box((x, 0, GUARD / 2), (.09, .09, GUARD), s.c(colour, .04))
+            if feet:
+                s.box((x, feet * .19, .012), (.34, .48, .024), '#5e666a')
+        s.box((length / 2, 0, GUARD + .019), (length, .11, .038), s.c(colour, .04))
+        for z in (.72, .44):
+            s.box((length / 2, 0, z), (length, .03, .14), s.c(colour, .05))
+        s.box((length / 2, 0, .085), (length, .04, .09), s.c(colour, .05))
+        if road:
+            s.box((length / 2, road * .018, .72), (length, .004, .05), '#f2c230')
+
+
+def corner_post(s, x, y, base=DECK):
+    s.box((x, y, base + GUARD / 2 + .02), (.1, .1, GUARD + .04), GUARD_TIMBER)
+
+
+def object_marker(s, x, y, facing, low, base=DECK):
+    """Yellow and black hazard marker on the corner, facing approaching traffic. Its
+    stripes fall toward the side that vehicles pass on; low is that side's y sign."""
+    slope = low * (1 if facing > 0 else -1)
+    with s.at(x, y, base, yaw=0.0 if facing > 0 else math.pi):
+        # mounted below the handrail, so the corner stays under 1.2 m above the street
+        s.box((.03, 0, .5), (.05, .05, 1.0), '#5e666a')
+        s.box((.062, 0, .53), (.012, .3, .92), '#f2c230')
+        for k in range(4):
+            centre = .24 + k * .17
+            s.quad((.07, -.15, centre + slope * .15), (.07, .15, centre - slope * .15), (.07, .15, centre - slope * .15 + .085), (.07, -.15, centre + slope * .15 + .085), '#16181a')
+
+
+def cafe_chair(s, colour, legs='#2b2e31'):
+    """Chair facing local +x."""
+    s.box((0, 0, .44), (.4, .4, .03), colour)
+    s.box((-.19, 0, .66), (.03, .38, .34), colour)
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            s.box((sx * .17, sy * .17, .215), (.03, .03, .43), legs)
+
+
+def patio_umbrella(s, x, y, base, tones, radius=.95):
+    """Free-standing on a weighted base; the canopy edge clears 2.1 m above the walking surface."""
+    s.cyl((x, y, base), (x, y, base + .09), .25, '#3a3d40', sides=10)
+    s.cyl((x, y, base + .09), (x, y, base + 2.58), .022, GALV, sides=6)
+    rim, peak, sides = base + 2.13, base + 2.6, 8
+    for k in range(sides):
+        a0, a1 = k * math.tau / sides, (k + 1) * math.tau / sides
+        s.tri((x, y, peak), (x + math.cos(a0) * radius, y + math.sin(a0) * radius, rim), (x + math.cos(a1) * radius, y + math.sin(a1) * radius, rim), tones[k % len(tones)])
+
+
+def bistro_set(s, x, y, base, yaw=0.0, seats=4, chair='#2f6f8f', umbrella=None):
+    with s.at(x, y, base, yaw=yaw):
+        s.box((0, 0, .735), (.75, .75, .03), '#d9dde0')
+        if not umbrella:
+            s.cyl((0, 0, .02), (0, 0, .72), .03, '#2b2e31', sides=6)
+            s.box((0, 0, .012), (.42, .42, .024), '#2b2e31')
+        for k in range(seats):
+            a = k * math.tau / seats
+            with s.at(math.cos(a) * .62, math.sin(a) * .62, 0, yaw=a + math.pi):
+                cafe_chair(s, chair)
+    if umbrella:
+        patio_umbrella(s, x, y, base, umbrella)
+
+
+def box_planter(s, x, y, base, size=(.55, .55, .5), plant='shrub', colour='#3f4347'):
+    w, d, h = size
+    s.box((x, y, base + h / 2), (w, d, h), colour)
+    s.box((x, y, base + h + .004), (w - .08, d - .08, .008), '#3d3027')
+    greens = ['#4f7a3f', '#5d8a4a', '#456c38']
+    if plant == 'conifer':
+        s.cyl((x, y, base + h), (x, y, base + h + .45), min(w, d) * .36, s.pick(greens, .05), r1=.03, sides=8)
+    elif plant == 'grass':
+        for k in range(9):
+            a, r = k * 2.399963, min(w, d) * .3 * math.sqrt((k + .5) / 9)
+            foot = (x + math.cos(a) * r, y + math.sin(a) * r, base + h)
+            tip = (foot[0] + math.cos(a) * .12, foot[1] + math.sin(a) * .12, base + h + .32 + s.random() * .12)
+            s.tri((foot[0] - .03, foot[1], foot[2]), (foot[0] + .03, foot[1], foot[2]), tip, s.pick(['#8a9a52', '#a3ab5e', '#768a48'], .05))
+            s.tri((foot[0], foot[1] - .03, foot[2]), (foot[0], foot[1] + .03, foot[2]), tip, s.pick(['#8a9a52', '#a3ab5e', '#768a48'], .05))
+    else:
+        s.dome((x, y, base + h), (w * .46, d * .46, .4), lambda j, i: s.pick(greens, .05), nu=8, nv=3, noise=.1)
+        for k in range(6):
+            a = k * 1.047 + .4
+            s.dome((x + math.cos(a) * w * .3, y + math.sin(a) * d * .3, base + h + .26), (.05, .05, .04), s.pick(['#d4493f', '#e86aa0', '#f2c230'], .05), nu=6, nv=3, full=True)
+
+
+def curbside_deck(s, length, returns=(False, False), marker=False, width=2.5, strip=True):
+    """Platform in the parking lane with a guard on the road side. returns closes the -x and +x ends."""
+    half, front, back = length / 2, -width / 2, width / 2
+    deck(s, -half, half, front, back)
+    if strip:
+        s.box((0, back - .04, DECK + .003), (length, .08, .006), '#aab1b6')
+    line = front + .07
+    guard_run(s, (-half, line), (half, line), road=-1)
+    for sign, closed in zip((-1, 1), returns):
+        if not closed:
+            continue
+        x = sign * (half - .07)
+        guard_run(s, (x, line), (x, back - .07), road=-sign)
+        corner_post(s, x, line)
+        corner_post(s, x, back - .07)
+    if marker:
+        object_marker(s, half - .09, line + .09, 1, -1)
+
+
+def boardwalk_section(s):
+    curbside_deck(s, 3.0)
+
+
+def boardwalk_section_short(s):
+    curbside_deck(s, 1.5)
+
+
+def boardwalk_end_approach(s):
+    curbside_deck(s, 3.0, returns=(False, True), marker=True)
+
+
+def boardwalk_end_far(s):
+    curbside_deck(s, 3.0, returns=(True, False))
+
+
+def street_patio(s, length, tables, width=2.5):
+    half, back = length / 2, width / 2
+    curbside_deck(s, length, returns=(True, True), marker=True, width=width)
+    # sidewalk side: a guard with a 2 m barrier-free opening in the middle
+    line = back - .07
+    guard_run(s, (-(half - .07), line), (-1.0, line))
+    guard_run(s, (1.0, line), (half - .07, line))
+    for sign in (-1, 1):
+        corner_post(s, sign * 1.0, line)
+        box_planter(s, sign * 1.38, back - .5, DECK, size=(.5, .5, .5), plant='conifer' if sign < 0 else 'shrub')
+    stripes = (['#b5432a', '#f1e9d2'], ['#2f6f8f', '#f1e9d2'])
+    for k, x in enumerate(tables):
+        bistro_set(s, x, -.22, DECK, yaw=.785, umbrella=stripes[k % 2], chair='#2f6f8f' if k % 2 else '#b5432a')
+
+
+def street_patio_one_stall(s):
+    street_patio(s, 6.0, (-1.95, 1.95))
+
+
+def street_patio_two_stall(s):
+    street_patio(s, 11.0, (-4.3, -2.25, 2.25, 4.3))
+
+
+def bench_run(s, x0, x1, y, base, facing=1, colour=None):
+    """Built-in slatted bench along a guard; facing is the y direction the sitter looks."""
+    colour = colour or TIMBER
+    length = x1 - x0
+    for k in range(4):
+        s.box(((x0 + x1) / 2, y + facing * (.06 + k * .105), base + .45), (length, .09, .04), s.c(colour, .06))
+    s.box(((x0 + x1) / 2, y + facing * .22, base + .21), (length - .1, .34, .42), '#6f5a44')
+    for k in range(3):
+        s.box(((x0 + x1) / 2, y - facing * .01, base + .62 + k * .13), (length, .03, .1), s.c(colour, .06))
+
+
+def stool_table(s, x, y, base, stools=2, tone='#e0b63a'):
+    s.cyl((x, y, base), (x, y, base + .02), .2, '#2b2e31', sides=10)
+    s.cyl((x, y, base + .02), (x, y, base + .7), .025, '#2b2e31', sides=6)
+    s.cyl((x, y, base + .7), (x, y, base + .73), .3, '#d9dde0', sides=12)
+    for k in range(stools):
+        a = k * math.tau / stools + .5
+        sx, sy = x + math.cos(a) * .55, y + math.sin(a) * .55
+        s.cyl((sx, sy, base), (sx, sy, base + .43), .16, tone, r1=.18, sides=10)
+
+
+def parklet_one_stall(s):
+    length, width = 6.0, 2.5
+    half, front = length / 2, -width / 2
+    curbside_deck(s, length, returns=(True, True), marker=True, width=width)
+    inner = front + .14
+    bench_run(s, -1.9, 1.9, inner, DECK)
+    for sign in (-1, 1):
+        box_planter(s, sign * 2.42, inner + .3, DECK, size=(.9, .6, .5), plant='grass' if sign < 0 else 'shrub')
+    stool_table(s, -1.1, .25, DECK, tone='#e0b63a')
+    stool_table(s, 1.2, .35, DECK, tone='#1f7a8c')
+    patio_umbrella(s, 0, -.15, DECK, ['#e0b63a', '#f1e9d2'], radius=1.0)
+    # a short bench along the far end
+    with s.at(-(half - .16), .35, 0, yaw=math.pi / 2):
+        bench_run(s, -.75, .75, 0, DECK, facing=-1)
+
+
+def parklet_two_stall(s):
+    length, width = 11.0, 2.5
+    front = -width / 2
+    curbside_deck(s, length, returns=(True, True), marker=True, width=width)
+    inner = front + .14
+    for x0, x1 in ((-4.6, -1.1), (1.1, 4.6)):
+        bench_run(s, x0, x1, inner, DECK)
+    for x, plant in ((-5.05, 'grass'), (0, 'shrub'), (5.05, 'conifer')):
+        box_planter(s, x, inner + .3, DECK, size=(.8 if x else 1.6, .6, .5), plant=plant)
+    # long shared table with two benches, across from the first bay
+    s.box((-2.9, .35, DECK + .74), (2.4, .8, .05), s.c(TIMBER, .05))
+    for x in (-3.9, -1.9):
+        s.box((x, .35, DECK + .36), (.08, .7, .72), '#2b2e31')
+    for sy in (-1, 1):
+        s.box((-2.9, .35 + sy * .68, DECK + .44), (2.3, .3, .05), s.c(TIMBER, .06))
+        for x in (-3.8, -2.0):
+            s.box((x, .35 + sy * .68, DECK + .21), (.06, .26, .42), '#2b2e31')
+    stool_table(s, 2.2, .3, DECK, stools=3, tone='#b5432a')
+    stool_table(s, 3.9, .45, DECK, stools=2, tone='#1f7a8c')
+    patio_umbrella(s, -2.9, .35, DECK, ['#1f7a8c', '#f1e9d2'], radius=.9)
+    patio_umbrella(s, 3.0, .2, DECK, ['#b5432a', '#f1e9d2'], radius=1.0)
+
+
+def sidewalk_patio(s):
+    """On the sidewalk itself, open to the building at +y, with free-standing guards on weighted feet."""
+    length, depth = 6.0, 2.2
+    half, front = length / 2, -depth / 2
+    gate = 1.5
+    guard_run(s, (-half, front), (half - gate, front), base=0, feet=1)
+    for sign in (-1, 1):
+        guard_run(s, (sign * half, front), (sign * half, depth / 2), base=0, feet=sign)
+        corner_post(s, sign * half, front, base=0)
+    corner_post(s, half - gate, front, base=0)
+    box_planter(s, half - gate - .45, front + .45, 0, size=(.5, .5, .5), plant='conifer')
+    box_planter(s, half - .4, front + .45, 0, size=(.5, .5, .5), plant='shrub')
+    stripes = (['#b5432a', '#f1e9d2'], ['#2f6f8f', '#f1e9d2'])
+    for k, x in enumerate((-2.05, -.05)):
+        bistro_set(s, x, .1, 0, yaw=.785, umbrella=stripes[k], chair='#b5432a' if k == 0 else '#2f6f8f')
+    bistro_set(s, 1.9, .45, 0, yaw=0, seats=2, chair='#2f6f8f')
+
+
+def patio_fence_panel(s):
+    guard_run(s, (-1.2, 0), (1.2, 0), base=0, feet=1)
+
+
+def low_profile_barrier(s):
+    wedge_body(s, 3.0, [(-.3, 0), (.3, 0), (.3, .1), (.2, .5), (-.2, .5), (-.3, .1)], '#b9b6ae')
+    for x in (-.9, .9):
+        s.box((x, 0, .04), (.28, .62, .08), '#55524c')
+    for x in (-1.2, -.4, .4, 1.2):
+        s.box((x, 0, .508), (.1, .06, .016), '#f2a23a')
+    for sx in (-1, 1):
+        s.box((sx * 1.502, 0, .3), (.006, .3, .2), '#f2c230')
+
+
+# ---------------------------------------------------------------------------
 # River and city edge.
 # ---------------------------------------------------------------------------
 def open_hull(s, rings, tones, split):
@@ -3340,6 +3615,18 @@ SPECS = [
     spec('mural-barrier-quilt', 'Mural barrier · Prairie quilt', 'Traffic & safety', 'Repeatable 3 m road barrier painted as patchwork quilt blocks in barn red, mustard and denim. Original design.', mural_quilt, 2806, '#9b2d30'),
     spec('mural-barrier-aspen', 'Mural barrier · Aspen grove', 'Traffic & safety', 'Repeatable 3 m road barrier painted with white aspen trunks under a gold canopy. Original design.', mural_aspen, 2807, '#e6b93a'),
     spec('mural-barrier-confetti', 'Mural barrier · Confetti', 'Traffic & safety', 'Repeatable 3 m road barrier painted with bright dots on deep teal. Original design.', mural_confetti, 2808, '#1f5f6b'),
+    # --- seasonal patios: boardwalk sections, on-street patios, parklets ---
+    spec('boardwalk-section', 'Boardwalk section', 'Access & levels', 'Repeatable 3 m timber walkway for the parking lane, level with the sidewalk, 2.3 m clear, with a guard on the road side.', boardwalk_section, 2901, '#b99a6b'),
+    spec('boardwalk-section-short', 'Boardwalk section · 1.5 m', 'Access & levels', 'Half-length boardwalk section for fitting a run to a frontage. Level with the sidewalk, guard on the road side.', boardwalk_section_short, 2902, '#b99a6b'),
+    spec('boardwalk-end-approach', 'Boardwalk end · approach', 'Access & levels', 'Boardwalk end closed by a guard return, with a yellow and black hazard marker facing approaching traffic.', boardwalk_end_approach, 2903, '#f2c230'),
+    spec('boardwalk-end-far', 'Boardwalk end · far', 'Access & levels', 'Boardwalk end closed by a guard return, for the end that traffic leaves behind.', boardwalk_end_far, 2904, '#b99a6b'),
+    spec('street-patio-one-stall', 'On-street patio · one stall', 'Seating', 'Fenced dining platform in one parking stall, level with the sidewalk: two tables, eight seats, umbrellas and a 2 m entrance.', street_patio_one_stall, 2905, '#b5432a'),
+    spec('street-patio-two-stall', 'On-street patio · two stalls', 'Seating', 'Fenced dining platform 11 m long in two parking stalls: four tables, sixteen seats, umbrellas and a 2 m entrance.', street_patio_two_stall, 2906, '#2f6f8f'),
+    spec('parklet-one-stall', 'Parklet · one stall', 'Seating', 'Public seating platform in one parking stall, open to the sidewalk, with built-in benches, planters and two small tables.', parklet_one_stall, 2907, '#e0b63a'),
+    spec('parklet-two-stall', 'Parklet · two stalls', 'Seating', 'Public seating platform 11 m long in two parking stalls, with benches, a long shared table, planters and umbrellas.', parklet_two_stall, 2908, '#1f7a8c'),
+    spec('sidewalk-patio', 'Sidewalk patio', 'Seating', 'Fenced dining area on a wide sidewalk, 6 m by 2.2 m, with tables, umbrellas and planters. Keep 2 m of walkway clear beside it.', sidewalk_patio, 2909, '#8a6a4a'),
+    spec('patio-fence-panel', 'Patio guard panel', 'Edges & gates', 'Repeatable 2.4 m free-standing timber patio guard with a cane-detection rail. Its weighted feet go on the patio side.', patio_fence_panel, 2910, '#8a6a4a'),
+    spec('low-profile-barrier', 'Low-profile barrier', 'Traffic & safety', 'Repeatable 3 m low concrete traffic barrier, half a metre tall, for the road end of a patio or boardwalk.', low_profile_barrier, 2911, '#b9b6ae'),
 ]
 
 

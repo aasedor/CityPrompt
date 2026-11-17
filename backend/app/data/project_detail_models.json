@@ -645,6 +645,17 @@
     "detail-yyc-mural-barrier-chevron",
     "detail-yyc-mural-barrier-quilt",
     "detail-yyc-mural-barrier-aspen",
-    "detail-yyc-mural-barrier-confetti"
+    "detail-yyc-mural-barrier-confetti",
+    "detail-yyc-boardwalk-section",
+    "detail-yyc-boardwalk-section-short",
+    "detail-yyc-boardwalk-end-approach",
+    "detail-yyc-boardwalk-end-far",
+    "detail-yyc-street-patio-one-stall",
+    "detail-yyc-street-patio-two-stall",
+    "detail-yyc-parklet-one-stall",
+    "detail-yyc-parklet-two-stall",
+    "detail-yyc-sidewalk-patio",
+    "detail-yyc-patio-fence-panel",
+    "detail-yyc-low-profile-barrier"
   ]
 }

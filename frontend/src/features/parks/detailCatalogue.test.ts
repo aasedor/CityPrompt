@@ -32,7 +32,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(363 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(374 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),
@@ -119,8 +119,8 @@ describe("standalone detail catalogue", () => {
   });
   it("offers the Calgary site details in existing categories plus Winter city and Wildlife", () => {
     const site = extras.filter((m) => m.sourceKit === "calgary-details-v1");
-    expect(site).toHaveLength(113);
-    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(12_000_000);
+    expect(site).toHaveLength(124);
+    expect(site.reduce((bytes, m) => bytes + m.bytes, 0)).toBeLessThan(13_500_000);
     for (const model of site) {
       expect(model.id).toMatch(/^detail-yyc-[a-z-]+$/);
       expect(model.kind).toBe("object");
@@ -162,6 +162,31 @@ describe("standalone detail catalogue", () => {
       expect(mural.dimensions).toEqual(plain.dimensions);
       expect(mural.description).toContain("Original design.");
     }
+    // Seasonal patio pieces: boardwalk sections butt end to end at one width, every platform
+    // stays under 1.2 m of guard above the street, and whole patios fit parking stalls.
+    const boardwalk = searchDetails("boardwalk", "Access & levels");
+    expect(boardwalk.map((m) => m.label)).toEqual([
+      "Boardwalk section",
+      "Boardwalk section · 1.5 m",
+      "Boardwalk end · approach",
+      "Boardwalk end · far",
+    ]);
+    for (const piece of boardwalk) {
+      expect(piece.dimensions[1]).toBe(2.5);
+      expect(piece.dimensions[2]).toBeLessThanOrEqual(1.2);
+    }
+    expect(boardwalk.map((m) => m.dimensions[0])).toEqual([3, 1.5, 3, 3]);
+    const patios = extras.filter((m) => /^detail-yyc-(street-patio|parklet)-/.test(m.id));
+    expect(patios.map((m) => [m.dimensions[0], m.dimensions[1]])).toEqual([[6, 2.5], [11, 2.5], [6, 2.5], [11, 2.5]]);
+    expect(searchDetails("parklet").filter((m) => m.id.startsWith("detail-yyc-")).map((m) => m.label)).toEqual([
+      "Parklet · one stall",
+      "Parklet · two stalls",
+    ]);
+    expect(searchDetails("patio", "Seating").map((m) => m.label)).toEqual(expect.arrayContaining([
+      "On-street patio · one stall",
+      "On-street patio · two stalls",
+      "Sidewalk patio",
+    ]));
     expect(searchDetails("cart", "Street furniture").map((m) => m.id)).toEqual([
       "detail-yyc-waste-cart-black",
       "detail-yyc-waste-cart-blue",

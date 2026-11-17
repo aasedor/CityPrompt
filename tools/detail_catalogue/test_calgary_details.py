@@ -40,11 +40,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_thirteen_unique_items(self):
+    def test_one_hundred_and_twenty_four_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 113)
-        self.assertEqual(len({s['slug'] for s in specs}), 113)
-        self.assertEqual(len({s['label'] for s in specs}), 113)
+        self.assertEqual(len(specs), 124)
+        self.assertEqual(len({s['slug'] for s in specs}), 124)
+        self.assertEqual(len({s['label'] for s in specs}), 124)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -52,7 +52,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 113)
+        self.assertEqual(sum(counts.values()), 124)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -121,7 +121,7 @@ class CalgaryDetailsContract(unittest.TestCase):
                 self.assertEqual((row['offset'][0], row['offset'][2]), (0.0, 0.0))
                 self.assertTrue(lo[0] < 0 < hi[0] and lo[2] < 0 < hi[2])
             total += row['bytes']
-        self.assertLess(total, 12_000_000)
+        self.assertLess(total, 13_500_000)
 
     def test_line_carriers_are_centred_on_their_pole_for_chaining(self):
         for slug, span in (('utility-pole-lines', 30.0), ('lrt-catenary-pole', 40.0)):

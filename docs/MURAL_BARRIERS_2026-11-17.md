@@ -1,5 +1,8 @@
 # Painted road barriers for Add details: eight original murals
 
+> **Update, same day.** The [seasonal patio pieces](SEASONAL_PATIO_DETAILS_2026-11-17.md) show
+> these barriers in use across the parking lane at the ends of patios and a boardwalk.
+
 ## Scope
 
 Add eight versions of the 3 m concrete road barrier with a mural painted on
