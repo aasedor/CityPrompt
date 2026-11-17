@@ -432,7 +432,7 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
 
     root = Path(__file__).resolve().parents[2]
     choices = json.loads((root / "frontend/src/features/parks/detailCatalogueExtras.json").read_text())
-    assert len(choices) == 370
+    assert len(choices) == 376
     choices += json.loads((root / "frontend/src/features/parks/recoveredDetails.json").read_text())
     choices += json.loads((root / "frontend/src/features/parks/trafficSafetyCatalogue.json").read_text())
     # Local preview IDs must round-trip before their public picker gate is lifted.

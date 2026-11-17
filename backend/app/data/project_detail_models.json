@@ -662,6 +662,12 @@
     "detail-yyc-boardwalk-corner",
     "detail-yyc-boardwalk-corner-approach",
     "detail-yyc-boardwalk-module-nine-foot-road-rail",
-    "detail-yyc-boardwalk-module-twelve-foot-road-rail"
+    "detail-yyc-boardwalk-module-twelve-foot-road-rail",
+    "detail-yyc-boardwalk-module-nine-foot-black",
+    "detail-yyc-boardwalk-module-twelve-foot-black",
+    "detail-yyc-boardwalk-corner-black",
+    "detail-yyc-boardwalk-corner-approach-black",
+    "detail-yyc-boardwalk-module-nine-foot-road-rail-black",
+    "detail-yyc-boardwalk-module-twelve-foot-road-rail-black"
   ]
 }

@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4155,
+    "explicitReferenceCount": 4167,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5939,
-    "requiredLogicalBytes": 13087656030,
+    "requiredFileCount": 5951,
+    "requiredLogicalBytes": 13088106090,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -25838,6 +25838,21 @@
       "logicalBytes": 2744
     },
     {
+      "url": "/park-kits/calgary-details-v1/boardwalk-corner-approach-black.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 33812,
+      "lfsOid": "a1ad6b5195fdeb714f50327e3a7040839682c9bace52e4a6780d481fd3cf27cb"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-corner-approach-black.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5690
+    },
+    {
       "url": "/park-kits/calgary-details-v1/boardwalk-corner-approach.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25851,6 +25866,21 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 6626
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-corner-black.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 31512,
+      "lfsOid": "04c8ffcc864055ee8c818f77f0b583f5b51fea1bcd390f99774821187648b477"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-corner-black.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4664
     },
     {
       "url": "/park-kits/calgary-details-v1/boardwalk-corner.glb",
@@ -25898,6 +25928,36 @@
       "logicalBytes": 7144
     },
     {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-black.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 35640,
+      "lfsOid": "9c1378ba67c9ccf39ab6a0966f67b017dc12e10095f22c9c731185e66f275944"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-black.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 4982
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail-black.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 21976,
+      "lfsOid": "6a2db17b858029f06d80a1965d9894335af82ea4bae75e04ba787cdf73841055"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail-black.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3792
+    },
+    {
       "url": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -25926,6 +25986,36 @@
         "src/features/parks/detailCatalogueExtras.json"
       ],
       "logicalBytes": 6244
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-black.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 46592,
+      "lfsOid": "c62c7bc917449032898806aa97cc6d840b2f0e498d8bab89227a90e90bbbc164"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-black.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 5162
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail-black.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 27452,
+      "lfsOid": "46f07a8a6f6bd52b92efd62826aa4ccbdfe15b7cb3715f4370bd1cf33d89eb4c"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail-black.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3756
     },
     {
       "url": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail.glb",
@@ -36041,9 +36131,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 933,
-      "logicalBytes": 521939818,
-      "pathDigest": "e5bc97f2caabd2d1de506657e2e142f998d7d70f04be88f4d08c482360e4c9fd"
+      "fileCount": 945,
+      "logicalBytes": 522164848,
+      "pathDigest": "0ea32b09de5412a641a6e100379695809aada25cb9182104e1edd9f08a0158c8"
     },
     {
       "name": "public-realm-skins",

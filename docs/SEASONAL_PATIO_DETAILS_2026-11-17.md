@@ -98,9 +98,10 @@ The files follow the kit convention: linear vertex colours, flat normals, one
 matte mesh, no textures. The eleven total 1,157,768 bytes and 10,046 triangles.
 The 113 earlier models are byte-identical.
 
-## Added later the same day: boardwalk modules in feet, with red steel railings
+## Added later the same day: boardwalk modules in feet, with steel railings
 
-Six more pieces, built to requested module sizes in feet:
+Six more pieces, built to requested module sizes in feet, each in red and in
+black. The red set:
 
 | Item | Size | Railings | W × D × H (m) | Triangles |
 |---|---|---|---:|---:|
@@ -166,23 +167,47 @@ Checked the same way as the rest:
   [corner entrance](calgary-details-v1/scene-boardwalk-feet-corner.jpg),
   [walking along it](calgary-details-v1/scene-boardwalk-feet-walk.jpg)), and a
   second run with railings on both sides stands alone
-  ([two-sided run](calgary-details-v1/scene-boardwalk-feet-short.jpg)). All 215
+  ([two-sided run](calgary-details-v1/scene-boardwalk-feet-short.jpg)). All 221
   local models passed the datum, size and anchor checks;
 - a tools test requires the six footprints to be exact conversions, the
   height to be 1.15 m, a stile inside each end and no bay longer than 6 ft, and
   a frontend test checks the catalogue order and the sizes in feet;
 - in the real project page with a mocked backend, in a temporary browser trial
   that was not committed: searching `boardwalk` in **Access & levels** lists all
-  ten boardwalk pieces, the six new ones load from their static card images
+  sixteen boardwalk pieces, the twelve new ones load from their static card images
   without requesting a model file, and choosing a road-side-rail module arms
   placement ([screenshot](calgary-details-v1/app-boardwalk-feet.jpg)).
 
-The kit is now 130 objects and the 124 earlier models, and their card images,
+### The same pieces with black railings
+
+All six pieces also come with black steel railings, for streets where red does
+not suit. They are the same models in another colour, so the sizes, the grey
+deck and the way they join are identical, and a run should use one colour
+throughout. Their names end in `· black`:
+
+| Item | Railings |
+|---|---|
+| Boardwalk module · 6 × 9 ft · black | both long sides |
+| Boardwalk module · 6 × 12 ft · black | both long sides |
+| Boardwalk corner · 6 × 6 ft · black | two outer sides |
+| Boardwalk corner · approach · black | two outer sides, with hazard marker |
+| Boardwalk module · 6 × 9 ft · road-side rail · black | road side only |
+| Boardwalk module · 6 × 12 ft · road-side rail · black | road side only |
+
+They were rendered and reviewed
+([sheet](calgary-details-v1/boardwalk-feet-black-review.jpg)) and placed on the
+test street as a run beside a sidewalk patio
+([run](calgary-details-v1/scene-boardwalk-feet-black-run.jpg),
+[walking along it](calgary-details-v1/scene-boardwalk-feet-black-walk.jpg)).
+A tools test requires each black piece to match its red counterpart in size and
+triangle count while being a different file.
+
+The kit is now 136 objects and the 130 earlier models, and their card images,
 are byte-identical. The whole CI list was run again locally: lint with zero
 warnings, dead-code and type checks; `npx vitest run` with 512 files and 4,542
 tests passed; the 135 catalogue delivery tests; the asset and manifest checks,
-with 5,939 required runtime files; tools, hosted-asset and backend detail tests
-with 215 local rows and 370 extras; and the browser tests, 13 passed plus the
+with 5,951 required runtime files; tools, hosted-asset and backend detail tests
+with 221 local rows and 376 extras; and the browser tests, 13 passed plus the
 startup test. Not done here: placing these on the live map, which needs a real
 map key, and the full backend suite, which needs a database.
 
@@ -192,7 +217,7 @@ The eleven patio pieces left 5.3 KB of the 8,448 KB JavaScript budget. Before
 adding the modules in feet, every packed catalogue was moved to the
 shared-decoder transport, in its own commit, which freed 13.2 KB. A test now
 walks the source tree and requires every packed catalogue to decode to its
-exact source. With the six new rows the total is 8,430.3 KB, leaving 17.7 KB.
+exact source. With the twelve new rows the total is 8,430.9 KB, leaving 17.1 KB.
 
 ## Verification of the first eleven pieces
 

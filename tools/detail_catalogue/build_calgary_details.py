@@ -2687,6 +2687,7 @@ def boardwalk_section(s):
 # exact and the walkway as wide as the module allows.
 FOOT = .3048
 RAIL_RED = '#cf1f2b'
+RAIL_BLACK = '#232527'
 RAIL_TUBE = .05
 DECK_GREY = ['#84817d', '#7c7975', '#8a8782', '#807d79']
 DECK_METAL = '#b3b8bc'
@@ -2715,7 +2716,7 @@ def steel_rail_bays(length):
 
 
 def steel_rail(s, a, b, base=DECK, colour=RAIL_RED):
-    """Red welded steel railing from a to b: a square top rail, a square stile at each end
+    """Welded steel railing from a to b, red unless told otherwise: a square top rail, a square stile at each end
     and at most six feet apart, thin upright bars about a foot apart, and a solid kick
     band along the bottom that a cane can find. The top is 1.0 m above the deck."""
     length = math.hypot(b[0] - a[0], b[1] - a[1])
@@ -2746,15 +2747,15 @@ def rail_marker(s, x, y):
         s.quad((x, y + .15, low + .15), (x, y - .15, low), (x, y - .15, low + .09), (x, y + .15, low + .24), '#16181a')
 
 
-def boardwalk_module(s, length_ft, width_ft=6, both_sides=True):
+def boardwalk_module(s, length_ft, width_ft=6, both_sides=True, colour=RAIL_RED):
     """Road at -y. Open at both ends; a railing on the road side, and on the sidewalk side too
     unless that side is left open to the curb."""
     half, edge = length_ft * FOOT / 2, width_ft * FOOT / 2
     line = edge - RAIL_TUBE / 2
     composite_deck(s, -half, half, -edge, edge)
-    steel_rail(s, (-half, -line), (half, -line))
+    steel_rail(s, (-half, -line), (half, -line), colour=colour)
     if both_sides:
-        steel_rail(s, (-half, line), (half, line))
+        steel_rail(s, (-half, line), (half, line), colour=colour)
     else:
         curb_strip(s, -half + .03, half - .03, edge)
 
@@ -2775,14 +2776,14 @@ def boardwalk_module_twelve_foot_road_rail(s):
     boardwalk_module(s, 12, both_sides=False)
 
 
-def boardwalk_corner_piece(s, marker=False, size_ft=6):
+def boardwalk_corner_piece(s, marker=False, size_ft=6, colour=RAIL_RED):
     """Railings on the road side (-y) and across the outer end (+x); open toward the run (-x) and the sidewalk (+y)."""
     edge = size_ft * FOOT / 2
     line = edge - RAIL_TUBE / 2
     composite_deck(s, -edge, edge, -edge, edge)
     curb_strip(s, -edge + .03, edge - RAIL_TUBE - .01, edge)
-    steel_rail(s, (-edge, -line), (edge, -line))
-    steel_rail(s, (line, -edge + RAIL_TUBE), (line, edge))
+    steel_rail(s, (-edge, -line), (edge, -line), colour=colour)
+    steel_rail(s, (line, -edge + RAIL_TUBE), (line, edge), colour=colour)
     if marker:
         rail_marker(s, edge, -edge + .3)
 
@@ -2793,6 +2794,30 @@ def boardwalk_corner(s):
 
 def boardwalk_corner_approach(s):
     boardwalk_corner_piece(s, marker=True)
+
+
+def boardwalk_module_nine_foot_black(s):
+    boardwalk_module(s, 9, colour=RAIL_BLACK)
+
+
+def boardwalk_module_twelve_foot_black(s):
+    boardwalk_module(s, 12, colour=RAIL_BLACK)
+
+
+def boardwalk_corner_black(s):
+    boardwalk_corner_piece(s, colour=RAIL_BLACK)
+
+
+def boardwalk_corner_approach_black(s):
+    boardwalk_corner_piece(s, marker=True, colour=RAIL_BLACK)
+
+
+def boardwalk_module_nine_foot_road_rail_black(s):
+    boardwalk_module(s, 9, both_sides=False, colour=RAIL_BLACK)
+
+
+def boardwalk_module_twelve_foot_road_rail_black(s):
+    boardwalk_module(s, 12, both_sides=False, colour=RAIL_BLACK)
 
 
 def boardwalk_section_short(s):
@@ -3748,6 +3773,12 @@ SPECS = [
     spec('boardwalk-corner-approach', 'Boardwalk corner · approach', 'Access & levels', 'Six-foot-square boardwalk corner with red steel railings on two outer sides and a hazard marker facing approaching traffic.', boardwalk_corner_approach, 2924, '#f2c230'),
     spec('boardwalk-module-nine-foot-road-rail', 'Boardwalk module · 6 × 9 ft · road-side rail', 'Access & levels', 'Repeatable 6 ft by 9 ft boardwalk module with grey decking and a red steel railing on the road side only. Open to the sidewalk.', boardwalk_module_nine_foot_road_rail, 2925, '#cf1f2b'),
     spec('boardwalk-module-twelve-foot-road-rail', 'Boardwalk module · 6 × 12 ft · road-side rail', 'Access & levels', 'Repeatable 6 ft by 12 ft boardwalk module with grey decking and a red steel railing on the road side only. Open to the sidewalk.', boardwalk_module_twelve_foot_road_rail, 2926, '#cf1f2b'),
+    spec('boardwalk-module-nine-foot-black', 'Boardwalk module · 6 × 9 ft · black', 'Access & levels', 'Repeatable 6 ft by 9 ft boardwalk module with grey decking, level with the sidewalk. Black steel railings on both long sides, open ends.', boardwalk_module_nine_foot_black, 2927, '#232527'),
+    spec('boardwalk-module-twelve-foot-black', 'Boardwalk module · 6 × 12 ft · black', 'Access & levels', 'Repeatable 6 ft by 12 ft boardwalk module with grey decking, level with the sidewalk. Black steel railings on both long sides, open ends.', boardwalk_module_twelve_foot_black, 2928, '#232527'),
+    spec('boardwalk-corner-black', 'Boardwalk corner · 6 × 6 ft · black', 'Access & levels', 'Six-foot-square boardwalk corner with black steel railings on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.', boardwalk_corner_black, 2929, '#232527'),
+    spec('boardwalk-corner-approach-black', 'Boardwalk corner · approach · black', 'Access & levels', 'Six-foot-square boardwalk corner with black steel railings on two outer sides and a hazard marker facing approaching traffic.', boardwalk_corner_approach_black, 2930, '#f2c230'),
+    spec('boardwalk-module-nine-foot-road-rail-black', 'Boardwalk module · 6 × 9 ft · road-side rail · black', 'Access & levels', 'Repeatable 6 ft by 9 ft boardwalk module with grey decking and a black steel railing on the road side only. Open to the sidewalk.', boardwalk_module_nine_foot_road_rail_black, 2931, '#232527'),
+    spec('boardwalk-module-twelve-foot-road-rail-black', 'Boardwalk module · 6 × 12 ft · road-side rail · black', 'Access & levels', 'Repeatable 6 ft by 12 ft boardwalk module with grey decking and a black steel railing on the road side only. Open to the sidewalk.', boardwalk_module_twelve_foot_road_rail_black, 2932, '#232527'),
 ]
 
 

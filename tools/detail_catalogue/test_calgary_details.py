@@ -40,11 +40,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_thirty_unique_items(self):
+    def test_one_hundred_and_thirty_six_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 130)
-        self.assertEqual(len({s['slug'] for s in specs}), 130)
-        self.assertEqual(len({s['label'] for s in specs}), 130)
+        self.assertEqual(len(specs), 136)
+        self.assertEqual(len({s['slug'] for s in specs}), 136)
+        self.assertEqual(len({s['label'] for s in specs}), 136)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -52,7 +52,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 130)
+        self.assertEqual(sum(counts.values()), 136)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -133,7 +133,8 @@ class CalgaryDetailsContract(unittest.TestCase):
         foot, tube = self.module.FOOT, self.module.RAIL_TUBE
         sizes = (('boardwalk-module-nine-foot', 9), ('boardwalk-module-twelve-foot', 12), ('boardwalk-corner', 6), ('boardwalk-corner-approach', 6),
                  ('boardwalk-module-nine-foot-road-rail', 9), ('boardwalk-module-twelve-foot-road-rail', 12))
-        for slug, length_ft in sizes:
+        # every piece also comes with black railings: the same model in another colour
+        for slug, length_ft in (*sizes, *((f'{slug}-black', length_ft) for slug, length_ft in sizes)):
             row = self.by_slug[slug]
             # nothing overhangs the deck, so the footprint is the exact conversion and a run does not drift
             self.assertEqual(row['dimensions'][:2], [round(length_ft * foot, 3), round(6 * foot, 3)], slug)
@@ -147,6 +148,12 @@ class CalgaryDetailsContract(unittest.TestCase):
         # a road-side-only module carries one railing where the standard module carries two
         for length in ('nine', 'twelve'):
             self.assertLess(self.by_slug[f'boardwalk-module-{length}-foot-road-rail']['triangles'], self.by_slug[f'boardwalk-module-{length}-foot']['triangles'])
+        for slug, _ in sizes:
+            red, black = self.by_slug[slug], self.by_slug[f'{slug}-black']
+            self.assertEqual((black['dimensions'], black['triangles']), (red['dimensions'], red['triangles']), slug)
+            self.assertNotEqual(black['sha256'], red['sha256'], slug)
+            self.assertIn('black steel', black['description'].lower())
+            self.assertIn('red steel', red['description'].lower())
 
     def test_backend_allowlist_and_category_tiles(self):
         allow = json.loads(ALLOWLIST.read_text(encoding='utf-8'))
