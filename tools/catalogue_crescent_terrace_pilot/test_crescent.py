@@ -186,3 +186,68 @@ def test_floors_meet_the_walls_in_every_bay():
     for k in list(range(build.FRONT_BAYS + 1)) + list(range(build.STARTS['back'], build.STARTS['east'] + 1)):
         x, y, _ = build.LOOP.node(k, inset)
         assert (round(x, 3), round(y, 3)) in corners, k
+
+
+def test_no_floor_shares_a_plane_with_the_stone_above_or_below_it():
+    """The band the columns stand on stops at the wall's inner face. It once ran 80 mm under
+    the first floor at the same level, two colours in one plane."""
+    inner = build.WALL + build.THICK
+    nodes = build.NODES
+
+    def depth(x, y):
+        best = math.inf
+        for (ax, ay), (bx, by) in zip(nodes, nodes[1:] + nodes[:1]):
+            dx, dy = bx - ax, by - ay
+            t = max(0.0, min(1.0, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)))
+            best = min(best, math.hypot(x - ax - t * dx, y - ay - t * dy))
+        return best
+
+    level = [face for face in CLAY.triangles['dressed'] if all(abs(p[2] - build.FIRST) < 1e-9 for p in face[:3])]
+    assert level, 'the band has a top'
+    for x, y in {(round(p[0], 3), round(p[1], 3)) for face in level for p in face[:3]}:
+        if all(math.hypot(x - nx, y - ny) > 3 for nx, ny in (nodes[k] for k in (0, 60, 66, 126))):     # mitres at the four corners reach further in
+            assert depth(x, y) <= inner + .01, (x, y)                          # 80 mm was the fault; a mitre adds a millimetre or two
+
+
+def test_each_column_is_one_unbroken_stack_from_band_to_architrave():
+    """Plinth, base, shaft, necking, cushion and abacus follow one another with no slit.
+    The cushion once started 20 mm above the necking."""
+    spans = []
+    lathe, block = build.lathe, build.block
+
+    def spy_lathe(clay, role, x, y, profile, **options):
+        spans.append((min(z for _, z in profile), max(z for _, z in profile)))
+        return lathe(clay, role, x, y, profile, **options)
+
+    def spy_block(clay, role, x, y, along, inward, half_u, half_n, z0, z1, **options):
+        spans.append((z0, z1))
+        return block(clay, role, x, y, along, inward, half_u, half_n, z0, z1, **options)
+
+    build.lathe, build.block = spy_lathe, spy_block
+    try:
+        build.column(Clay(), 30)
+    finally:
+        build.lathe, build.block = lathe, block
+    spans.sort()
+    assert math.isclose(spans[0][0], build.FIRST) and math.isclose(max(hi for _, hi in spans), build.ARCHITRAVE)
+    reach = spans[0][1]
+    for lo, hi in spans[1:]:
+        assert lo <= reach + 1e-9, f'slit between {reach:.3f} and {lo:.3f}'
+        reach = max(reach, hi)
+
+
+def test_ironwork_stands_on_something():
+    iron = CLAY.triangles['iron']
+    assert math.isclose(min(p[2] for face in iron for p in face[:3]), .02), 'the lowest railing bars stand on the paving'
+    bay = build.Bay(build.LOOP, 31)                       # a window bay near the middle of the front
+    here = [face for face in iron if all(p[2] > build.FIRST - 1e-9 for p in face[:3])
+            and all(math.hypot(p[0] - bay.p(bay.length / 2, 0, 0)[0], p[1] - bay.p(bay.length / 2, 0, 0)[1]) < bay.length / 2 + .05 for p in face[:3])]
+    assert here and math.isclose(min(p[2] for face in here for p in face[:3]), build.FIRST), 'each guard has posts standing on the band'
+    along = [(p[0] - bay.origin[0]) * bay.along[0] + (p[1] - bay.origin[1]) * bay.along[1] for face in here for p in face[:3] if p[2] < build.FIRST + .095]
+    assert min(along) < build.PLINTH and max(along) > bay.length - build.PLINTH, 'the bottom rail is let into both plinth blocks'
+
+
+def test_sills_stand_proud_of_the_wall_beneath_them():
+    tops = {round(max(p[2] for p in face[:3]), 3) for face in CLAY.triangles['dressed']}
+    for lo, _ in (build.GROUND_WINDOW, build.FIRST_WINDOW, build.SECOND_WINDOW):
+        assert round(lo + .012, 3) in tops and round(lo, 3) not in {round(p[2], 3) for face in CLAY.triangles['dressed'] for p in face[:3] if abs(p[2] - lo) < 1e-9}

@@ -1,43 +1,36 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v003",
-  "model_sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
+  "candidate": "crescent-terrace-bath-stone-clay-v004",
+  "model_sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
   "independent_approval": false,
   "views_inspected": {
-    "v003, scratch build of the same bytes apart from the version label": [
-      "renders/end_contact.png",
-      "renders/corner_close.png",
-      "renders/match_oblique.png",
-      "renders/entrance_contact.png"
+    "v004": [
+      "renders/architecture_close.png",
+      "renders/glass_close.png",
+      "renders/entrance_contact.png",
+      "renders/facade_close.png"
     ],
-    "v002, same geometry apart from the two faults fixed and the door colour": [
+    "v003, same geometry apart from the audit fixes below": [
+      "boards/phone-construction.png",
+      "boards/phone-oblique.png",
+      "boards/phone-roof.png"
+    ],
+    "v002 and v001, earlier geometry": [
       "renders/match_front.png",
       "renders/street.png",
       "renders/roof_contact.png",
       "renders/front_corner.png",
-      "boards/phone-street.png",
-      "boards/phone-oblique.png"
-    ],
-    "v001, same geometry apart from stack height": [
       "renders/front.png",
-      "renders/front_corner.png",
       "renders/aerial.png",
       "renders/left_side.png",
       "renders/right_side.png",
       "renders/rear.png",
       "renders/rear_side.png",
       "renders/top.png",
-      "renders/street.png",
       "renders/rear_ground.png",
-      "renders/facade_close.png",
-      "renders/architecture_close.png",
-      "renders/glass_close.png",
-      "renders/entrance_contact.png",
       "renders/end_contact.png",
       "renders/corner_close.png",
-      "renders/roof_contact.png",
-      "renders/match_oblique.png",
       "boards/phone-street.png"
     ]
   },
@@ -65,5 +58,6 @@
   "geometric_audit": {
     "method": "rays cast in through every sash at seven headings and three pitches, 7,434 in all, on the v002 geometry",
     "result": "four rays pass through glass only: each enters a first-floor sash on the convex side beside a corner and leaves through a sash in the end. These are corner rooms with windows in two walls, as built."
-  }
+  },
+  "changes_since_v003": "Five small faults found by reading the model against its own numbers are fixed. Each window sill shared a plane with the top of the wall beneath it and now stands 12 mm proud. The iron guards stopped 20 mm short of the column plinths and 60 mm above the band; the bottom rail is now let into the plinths and an end post stands on the band at each end. The railing returns beside each door path stood 20 mm above the paving and now stand on it. The cushion of each capital started 20 mm above the necking, leaving a slit, and now sits on it. The band the columns stand on ran 80 mm under the first floor at the same level and now stops at the wall. Faces buried in a neighbour (the backs and tops of modillions, the ends of pedestals and plinths) are left off, which saves 3,400 triangles."
 }

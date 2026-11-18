@@ -11,7 +11,7 @@ No pass is carried over from any other archetype.
 
 - Kind: building
 - Archetype ID and exact variant ID: `london_crescent_terrace` / `london-crescent-terrace-bath-stone` (variant 0)
-- Model SHA-256 or procedural recipe ID/revision/hash: `c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202`, candidate `crescent-terrace-bath-stone-clay-v003`, 9341796 bytes. Rebuilt byte for byte by `tools/catalogue_crescent_terrace_pilot/build.py`
+- Model SHA-256 or procedural recipe ID/revision/hash: `1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf`, candidate `crescent-terrace-bath-stone-clay-v004`, 9161220 bytes. Rebuilt byte for byte by `tools/catalogue_crescent_terrace_pilot/build.py`
 - Runtime source commit and integration-checklist version: not run. Branch base `4922d9771e` on `deployment-version`; checklist as at that commit
 - Reviewer, date, project URL, viewport/device/input: none. No project was opened
 - Vacant test site, protected reference, disposable test project: none

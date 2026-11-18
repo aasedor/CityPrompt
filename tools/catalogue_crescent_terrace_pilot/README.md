@@ -9,7 +9,7 @@ No model of this archetype existed before: not in the clay library, the textured
 families, the model library, the native model contract, the validation
 catalogue, the teaching buildings or the picker.
 
-Status of candidate **crescent-terrace-bath-stone-clay-v003**:
+Status of candidate **crescent-terrace-bath-stone-clay-v004**:
 
 | Checkpoint | Status |
 |---|---|
@@ -22,7 +22,9 @@ Status of candidate **crescent-terrace-bath-stone-clay-v003**:
 Earlier candidates: v001 had chimney stacks too low to read from the street. v002
 went to independent review; while it was there the builder's own audit found a
 spine wall running out to the face of each end and floors short of the convex
-wall, both fixed in v003.
+wall, both fixed in v003. A second pass found five smaller faults, in the sills,
+the iron guards, the railing returns, the capitals and the column band, all
+fixed in v004.
 
 ## What the building is
 
@@ -43,7 +45,7 @@ storey and carrying one continuous entablature and balustrade.
 | Railings | Spear-headed iron railings on a stone kerb round the building, opening at each door |
 | Inside | Three floors, a spine wall and party walls to every house, so each window has a room behind it |
 
-The model is 178,210 triangles in 12 flat-coloured parts, with no textures or
+The model is 175,306 triangles in 12 flat-coloured parts, with no textures or
 images. Nothing sits below grade.
 
 ## What it was measured from
@@ -92,7 +94,7 @@ stand square to the front.
 
 ## Size
 
-At 135 m by 51 m this is a large fixed-size building, and at 178,210 triangles
+At 135 m by 51 m this is a large fixed-size building, and at 175,306 triangles
 it sits just under the 180,000 that the building memory gives as the usual
 ceiling. It needs a plot of at least 139 m by 55 m. It cannot be stretched, and
 a shorter crescent would be a different candidate: `HOUSES` is one constant.
@@ -105,7 +107,7 @@ a shorter crescent would be a different candidate: `HOUSES` is one constant.
 | `cameras.json`, `review.html`, `render.cjs` | Review renders of the exact GLB in headless Chromium |
 | `boards.py` | Four 1080 x 1920 phone boards |
 | `verify.py` | Delivery checks; writes `delivery-verification.json` |
-| `test_crescent.py` | 13 tests, including that the generator still produces the recorded bytes, that every swept piece faces outward, that the roof covers the building and that no room reaches an outside face |
+| `test_crescent.py` | 17 tests, including that the generator still produces the recorded bytes, that every swept piece faces outward, that the roof covers the building and that no room reaches an outside face |
 | `prework-manifest.json`, `candidate.json` | The measured contract and the candidate's hashes |
 | `evidence/` | Builder review, delivery verification and independent reviews |
 | `integration/runtime-review.md` | The runtime review template, filled in honestly: nothing was run. It lists all 42 doors |

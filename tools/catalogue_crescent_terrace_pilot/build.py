@@ -219,7 +219,7 @@ def sash(clay, bay, uc, z0, z1, face, bars=(2, 1)):
         for k in range(1, level + 1):
             z = lo + (hi - lo) * k / (level + 1)
             bay.quad(clay, 'joinery', a + .06, b - .06, glass - .012, z - .012, z + .012)
-    bay.box(clay, 'dressed', a - .06, b + .06, face - .06, face + .14, z0 - .10, z0)      # stone sill
+    bay.box(clay, 'dressed', a - .06, b + .06, face - .06, face + .14, z0 - .10, z0 + .012)   # stone sill, weathered 12 mm above the wall it sits on
 
 
 def door(clay, bay, uc, face):
@@ -249,10 +249,11 @@ def lathe(clay, role, x, y, profile, steps=12, caps=(True, True)):
     clay.loft(role, rings, caps=caps, smooth=50)
 
 
-def block(clay, role, x, y, along, inward, half_u, half_n, z0, z1):
-    """A box square to a node's own tangent and mitre line."""
+def block(clay, role, x, y, along, inward, half_u, half_n, z0, z1, caps=(True, True)):
+    """A box square to a node's own tangent and mitre line. `caps` says whether to build
+    its bottom and top; a face buried in its neighbour is left off."""
     ring = [(x + su * half_u * along[0] + sn * half_n * inward[0], y + su * half_u * along[1] + sn * half_n * inward[1]) for su, sn in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
-    clay.prism(role, ring, z0, z1)
+    clay.prism(role, ring, z0, z1, caps=caps)
 
 
 def column(clay, k):
@@ -260,13 +261,13 @@ def column(clay, k):
     multiple of the lower radius, so the order keeps its proportions if that changes."""
     x, y, _ = LOOP.node(k, AXIS)
     along, inward, z, r = LOOP.tangent(k), LOOP.bisector[k % BAY_COUNT], FIRST, RADIUS
-    block(clay, 'dressed', x, y, along, inward, PLINTH, PLINTH, z, z + .16)
+    block(clay, 'dressed', x, y, along, inward, PLINTH, PLINTH, z, z + .16, caps=(False, True))
     lathe(clay, 'dressed', x, y, [(1.24 * r, z + .16), (1.29 * r, z + .22), (1.10 * r, z + .30), (1.16 * r, z + .36), (r, z + .42)], steps=10, caps=(False, False))
     top = z + COLUMN - .52
     lathe(clay, 'dressed', x, y, [(r, z + .42), (r, z + 2.50), (.94 * r, z + 4.70), (.855 * r, top)], steps=10, caps=(False, False))
     lathe(clay, 'dressed', x, y, [(.855 * r, top), (.92 * r, top + .05), (.87 * r, top + .09), (1.05 * r, top + .22)], steps=10, caps=(False, True))
     centre = top + .27                       # the capital: a cushion between two scrolls that run front to back
-    block(clay, 'dressed', x, y, along, inward, .90 * r, 1.05 * r, centre - .03, centre + .13)
+    block(clay, 'dressed', x, y, along, inward, .90 * r, 1.05 * r, centre - .05, centre + .15)
     for side in (-1, 1):
         cx, cy = x + side * .90 * r * along[0], y + side * .90 * r * along[1]
         rings = []
@@ -284,14 +285,15 @@ ENTABLATURE = [(.95, ARCHITRAVE), (.12, ARCHITRAVE), (.12, ARCHITRAVE + .22), (.
 
 def order(clay):
     """Band, columns, entablature and balustrade, right round the building."""
-    LOOP.sweep(clay, 'dressed', [(1.00, BAND), (-.07, BAND), (-.07, FIRST - .06), (-.04, FIRST), (1.00, FIRST)])
+    inner = WALL + THICK                      # the band stops at the wall's inner face, where the first floor begins
+    LOOP.sweep(clay, 'dressed', [(inner, BAND), (-.07, BAND), (-.07, FIRST - .06), (-.04, FIRST), (inner, FIRST)])
     LOOP.sweep(clay, 'dressed', ENTABLATURE)
     LOOP.sweep(clay, 'dressed', [(.10, CORNICE), (.10, CORNICE + .22), (.60, CORNICE + .22), (.60, CORNICE)])           # blocking course
     LOOP.sweep(clay, 'dressed', [(.11, RAIL - .18), (.11, RAIL - .04), (.14, RAIL), (.56, RAIL), (.59, RAIL - .04), (.59, RAIL - .18)])   # top rail
     for k in range(BAY_COUNT):
         column(clay, k)
         x, y, _ = LOOP.node(k, .35)
-        block(clay, 'dressed', x, y, LOOP.tangent(k), LOOP.bisector[k], .30, .25, CORNICE + .22, RAIL - .18)             # pedestal over the column
+        block(clay, 'dressed', x, y, LOOP.tangent(k), LOOP.bisector[k], .30, .24, CORNICE + .22, RAIL - .18, caps=(False, False))   # pedestal over the column, as deep as the rail it carries
         bay = Bay(LOOP, k)
         count = max(4, round((bay.length - .6) / .28))
         turn = math.atan2(bay.along[1], bay.along[0]) + math.pi / 4
@@ -302,9 +304,14 @@ def order(clay):
             profile = [(.085, base), (.115, base + .20), (.055, base + .46), (.085, RAIL - .18)]
             clay.loft('dressed', [[(bx + r * math.cos(turn + math.pi / 2 * s), by + r * math.sin(turn + math.pi / 2 * s), z) for s in range(4)] for r, z in profile],
                       caps=(False, False))
-        for j in range(5):                   # modillions under the corona
-            u = bay.length * (j + .5) / 5
-            bay.box(clay, 'dressed', u - .07, u + .07, -.34, .04, ARCHITRAVE + .99, ARCHITRAVE + 1.09)
+        for j in range(5):                   # modillions under the corona: front, underside and two cheeks
+            u, z0, z1 = bay.length * (j + .5) / 5, ARCHITRAVE + .99, ARCHITRAVE + 1.09
+            a, b = u - .07, u + .07
+            clay.quad('dressed', bay.p(a, -.34, z0), bay.p(b, -.34, z0), bay.p(b, -.34, z1), bay.p(a, -.34, z1), facing=bay.out)
+            clay.quad('dressed', bay.p(a, -.34, z0), bay.p(b, -.34, z0), bay.p(b, .04, z0), bay.p(a, .04, z0), facing=(0, 0, -1))
+            for end, side in ((a, -1), (b, 1)):
+                clay.quad('dressed', bay.p(end, -.34, z0), bay.p(end, .04, z0), bay.p(end, .04, z1), bay.p(end, -.34, z1),
+                          facing=(side * bay.along[0], side * bay.along[1], 0))
 
 
 # ---- walls ---------------------------------------------------------------------------
@@ -339,12 +346,13 @@ def walls(clay):
         for u0, u1, lo, hi in ((a - .13, a, s0 - .10, s1 + .13), (b, b + .13, s0 - .10, s1 + .13), (a, b, s1, s1 + .13)):
             bay.box(clay, 'dressed', u0, u1, WALL - .035, WALL, lo, hi)
         # iron guard between the column plinths at the tall window
-        clear = PLINTH + .02
-        bay.box(clay, 'iron', clear, length - clear, -.03, .00, FIRST + .86, FIRST + .90, ends=False)
-        bay.box(clay, 'iron', clear, length - clear, -.03, .00, FIRST + .06, FIRST + .09, ends=False)
+        clear = PLINTH + .02                 # the bottom rail is let into the plinth blocks; an end post stands on the band at each end
+        bay.box(clay, 'iron', clear, length - clear, -.03, .00, FIRST + .86, FIRST + .90)
+        bay.box(clay, 'iron', PLINTH - .02, length - PLINTH + .02, -.03, .00, FIRST + .06, FIRST + .09, ends=False)
         count = max(4, round((length - 2 * clear) / .18))
         for j in range(count + 1):
-            bay.cross(clay, 'iron', clear + (length - 2 * clear) * j / count, -.015, FIRST + .09, FIRST + .86, width=.018)
+            post = j in (0, count)
+            bay.cross(clay, 'iron', clear + (length - 2 * clear) * j / count, -.015, FIRST if post else FIRST + .09, FIRST + .86, width=.03 if post else .018)
 
 
 # ---- area railings and paving -------------------------------------------------------------
@@ -375,7 +383,7 @@ def areas(clay):
             bay.box(clay, 'iron', u - .015, u + .015, n0, n1, .22, .25)
             count = round((n1 - n0) / .14)
             for j in range(count + 1):
-                bay.cross(clay, 'iron', u, n0 + (n1 - n0) * j / count, .04, 1.22)
+                bay.cross(clay, 'iron', u, n0 + (n1 - n0) * j / count, .02, 1.22)
         bay.box(clay, 'dressed', uc - half, uc + half, -AREA - .10, -.05, .02, .035)         # flagged path over the area
 
 

@@ -1,6 +1,6 @@
 {
   "status": "PASS_DELIVERY_CHECKS",
-  "candidate": "crescent-terrace-bath-stone-clay-v003",
+  "candidate": "crescent-terrace-bath-stone-clay-v004",
   "checks": {
     "source front": true,
     "source oblique": true,
@@ -73,8 +73,8 @@
     "phone-roof.png": true,
     "phone-construction.png": true
   },
-  "model_sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
-  "model_bytes": 9341796,
+  "model_sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
+  "model_bytes": 9161220,
   "delivered_bounds_gltf_m": [
     [
       -67.6944,
@@ -87,10 +87,10 @@
       1.8
     ]
   ],
-  "triangles": 178210,
+  "triangles": 175306,
   "script_sha256": {
     "clay_kit.py": "6237cadfb42ecbabc4c849a5305416e8a7657d71387ce2c7baa18bc7b1b71dcd",
-    "build.py": "60045ff7d3e70e43769ac7d0eda7e3edf82249ab6710df2c34e2c974f95d9032",
+    "build.py": "a26574ce340094794dc83d5da8494e36fae80c8ee6d50d00c11a463fd90fcc94",
     "cameras.json": "94976ef346d5f79cc2f2e57c1dd9ee45b4b49f9d7627df13b4fcf33fca9a22c9",
     "review.html": "f2af47dded2aa9d6ffaea6994bf603e3fe193f1216248914177ad6ea9c03f98f",
     "render.cjs": "cf9329799b70567b18419c2ac5e324409dadbeb0241dbdf8c910ff872d8d9053"

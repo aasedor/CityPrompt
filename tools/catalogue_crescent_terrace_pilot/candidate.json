@@ -1,11 +1,11 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v003",
+  "candidate": "crescent-terrace-bath-stone-clay-v004",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/crescent-terrace-bath-stone/v003 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
-  "model_bytes": 9341796,
+  "external_directory": "artifacts/crescent-terrace-bath-stone/v004 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
+  "model_bytes": 9161220,
   "delivered_bounds_gltf_m": [
     [
       -67.6944,
@@ -27,14 +27,14 @@
   "houses": 20,
   "columns": 132,
   "runtime": {
-    "path": "crescent-terrace-bath-stone-clay-v003.glb",
-    "bytes": 9341796,
-    "sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
+    "path": "crescent-terrace-bath-stone-clay-v004.glb",
+    "bytes": 9161220,
+    "sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
     "meshes": 12,
     "materials": 12,
     "textures": 0,
     "images": 0,
-    "triangles": 178210
+    "triangles": 175306
   },
   "entrances": {
     "front doors": 20,
@@ -49,6 +49,11 @@
       "status": "sent to independent review; superseded when the builder found a spine wall reaching the face of each end and floors short of the convex wall",
       "model_sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
       "source_commit": "60195b050"
+    },
+    "crescent-terrace-bath-stone-clay-v003": {
+      "status": "builder review only; superseded when the audit found sills sharing a plane with the wall, guards and gate bars clear of their supports, a slit in each capital, and the column band running under the first floor",
+      "model_sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
+      "source_commit": "a7eb70b82"
     }
   }
 }
