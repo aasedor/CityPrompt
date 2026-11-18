@@ -183,9 +183,10 @@ scripts refuse to replace a file: RLASM never overwrites a candidate.
 
 ## Before this can be offered to students
 
-1. **A person rules on the roof-plan reference.** The reviewer's pass does not
-   settle it: either accept in writing that the street view and the oblique are
-   the plan authority for this variant, or replace that image.
+1. **Done 2026-11-18: a person ruled on the roof-plan reference.** The street
+   view and the oblique are accepted as the plan authority for this variant; the
+   roof-plan image informs roof character only. Recorded under `human_decisions`
+   in `integration/promotion.json`. This settles the source question only.
 2. A person looks at the renders and boards and accepts or rejects the model,
    knowing the differences listed above.
 3. Local install and student trial, as `docs/BUILDING_CATALOGUE_WORKFLOW.md`

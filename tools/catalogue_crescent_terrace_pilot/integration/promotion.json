@@ -38,7 +38,7 @@
       "Fixed native assembly of the whole crescent, 126 m by 48 m; no resizing, no repeated houses, and no single-house version.",
       "The catalogue lists a 6 m by 12 m plot for this archetype; this model needs a plot of at least 130 m by 52 m.",
       "Thirty-six doors at grade; which one is the plot's entrance is undecided. The sunken areas of the real building type are left out.",
-      "The roof-plan reference shows a different, shorter building. A person must accept in writing that the street view and the oblique are the plan authority for this variant, or replace that image, before activation.",
+      "The roof-plan reference shows a different, shorter building. On 2026-11-18 a person accepted the street view and the oblique as the plan authority for this variant; the roof-plan image informs roof character only.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_crescent_terrace_pilot/integration/runtime-review.md.",
       "Remaining review notes, none blocking: corner capitals show a scroll end to each end elevation, end-bay windows sit tight between the columns, door reveals have no floor, dormers have no attic, and column shafts are twelve-sided.",
       "The independent review is by an AI reviewer, not a person."
@@ -78,5 +78,16 @@
       "close_and_occluded_capture": false,
       "no_console_errors": false
     }
-  }
+  },
+  "human_decisions": [
+    {
+      "decision": "The street view (variant_0.png) and the oblique (variant_0_angle_60.jpg) are the plan authority for london-crescent-terrace-bath-stone. The roof-plan image (variant_0_angle_90.jpg) informs roof character only and is not replaced.",
+      "answers": "independent-review-v006.json, for_human_acceptance item 1 (P2-10; Gate A and clay profile condition 1)",
+      "authorized_by": "human_user",
+      "quote": "I agree.",
+      "context": "Reply to the builder recommending that the street view and oblique be accepted as plan authority rather than replacing the roof-plan image.",
+      "date": "2026-11-18",
+      "grants": "This settles the source question only. It is not keeper approval, runtime activation or publication."
+    }
+  ]
 }
