@@ -1,0 +1,56 @@
+{
+  "candidate": "crescent-terrace-bath-stone-clay-v002",
+  "model_sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
+  "reviewer": "builder (the agent session that wrote the generator)",
+  "builder_visual_review": "pass",
+  "independent_approval": false,
+  "views_inspected": {
+    "v002": [
+      "renders/match_front.png",
+      "renders/street.png",
+      "renders/roof_contact.png",
+      "renders/front_corner.png"
+    ],
+    "v001, same geometry apart from stack height": [
+      "renders/front.png",
+      "renders/front_corner.png",
+      "renders/aerial.png",
+      "renders/left_side.png",
+      "renders/right_side.png",
+      "renders/rear.png",
+      "renders/rear_side.png",
+      "renders/top.png",
+      "renders/street.png",
+      "renders/rear_ground.png",
+      "renders/facade_close.png",
+      "renders/architecture_close.png",
+      "renders/glass_close.png",
+      "renders/entrance_contact.png",
+      "renders/end_contact.png",
+      "renders/corner_close.png",
+      "renders/roof_contact.png",
+      "renders/match_oblique.png",
+      "boards/phone-street.png"
+    ]
+  },
+  "findings": [
+    "The plan reads as a half-ellipse crescent of twenty houses, as the street view and the oblique show.",
+    "Three storeys: a plain ground storey, then two storeys behind a giant Ionic order with one sash to a bay on each.",
+    "Proportions were set from pixel measurements on the street view: ground storey 4.4 m against 7.2 m columns, slender columns about eleven diameters tall.",
+    "Each capital reads as Ionic, with two scrolls side by side under the abacus; each column stands on a plinth block on the band.",
+    "Entablature, modillion cornice and balustrade run unbroken round all four sides and mitre cleanly at the four corners.",
+    "Every sash sits in a reveal with a frame, glazing bars and glass, with floors and walls behind; every door has panels, a fanlight and a threshold.",
+    "The roof is closed: slate ranges, lead gutters and flat, party upstands, stacks with pots and dormers; both ends are hipped.",
+    "The convex side and both ends are complete elevations. Nothing floats and nothing sits below grade."
+  ],
+  "changes_since_v001": "Chimney stacks raised by 0.8 m so that they read from the street as they do in the reference.",
+  "open_notes": [
+    "The roof plan reference shows a different, shorter building; it informs roof character only.",
+    "The comparison cameras are approximate; in the street view the near end renders larger than the reference.",
+    "Sunken areas, their steps and the bridges to the doors are left out; railings stand at grade.",
+    "The reference stacks are broader and stand closer to the front than the model's.",
+    "Bays on the convex side widen toward the ends, from 2.7 m to 3.7 m.",
+    "Thin railing bars and glazing bars break up in distant views; a renderer sampling effect.",
+    "At 176,290 triangles the model is just under the usual 180,000 ceiling."
+  ]
+}

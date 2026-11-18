@@ -1,0 +1,49 @@
+{
+  "candidate": "crescent-terrace-bath-stone-clay-v002",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local pilot only",
+  "canonical_promotion_approved": false,
+  "external_directory": "artifacts/crescent-terrace-bath-stone/v002 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
+  "model_bytes": 9241936,
+  "delivered_bounds_gltf_m": [
+    [
+      -67.6944,
+      0.0,
+      -49.6002
+    ],
+    [
+      67.6944,
+      19.16,
+      1.8
+    ]
+  ],
+  "native_dimensions_m": {
+    "width": 135.3888,
+    "depth": 51.4002,
+    "height": 19.16
+  },
+  "storeys": 3,
+  "houses": 20,
+  "columns": 132,
+  "runtime": {
+    "path": "crescent-terrace-bath-stone-clay-v002.glb",
+    "bytes": 9241936,
+    "sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
+    "meshes": 12,
+    "materials": 12,
+    "textures": 0,
+    "images": 0,
+    "triangles": 176290
+  },
+  "entrances": {
+    "front doors": 20,
+    "garden doors": 20,
+    "end doors": 2
+  },
+  "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them.",
+  "independent_review": "pending for this candidate",
+  "superseded": {
+    "crescent-terrace-bath-stone-clay-v001": "builder review only: chimney stacks were too low to read from the street as they do in the reference"
+  }
+}

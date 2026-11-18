@@ -1,0 +1,173 @@
+{
+  "candidate": "crescent-terrace-bath-stone-clay-v002",
+  "title": "Bath Stone Grand",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "london_crescent_terrace",
+  "variant_id": "london-crescent-terrace-bath-stone",
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "sources": [
+    {
+      "role": "front",
+      "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0.png",
+      "bytes": 1257907,
+      "sha256": "ee92450f910e07cab1027edb0991cde1d6657c2809eb457b5687aa37c9f6f1c9"
+    },
+    {
+      "role": "oblique",
+      "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0_angle_60.jpg",
+      "bytes": 945323,
+      "sha256": "bb30edb03c4a913ae32ac5d233adf0ee4335f8413194cfdd90681cbb270e1857"
+    },
+    {
+      "role": "top",
+      "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0_angle_90.jpg",
+      "bytes": 903446,
+      "sha256": "b68ebfbcd4e05c5ca24591646c09507fd84330326e6595266bdb3122b30de158"
+    }
+  ],
+  "measurement_contract": {
+    "dimensions_m": {
+      "width": 131.6,
+      "depth": 47.8,
+      "range_depth": 13.8,
+      "cornice": 13.0,
+      "balustrade": 14.1,
+      "ridge": 15.9,
+      "stack_top": 19.16
+    },
+    "storeys": 3,
+    "storey_policy": "fixed_authored_assembly",
+    "houses": 20,
+    "bays_per_house": 3,
+    "columns": 132,
+    "source_measurements": {
+      "front": [
+        "An eye-level view along the concave front from inside the crescent. It carries no scale. Scale is set by the column: 7.2 m, about 280 px at the right edge.",
+        "At the right-hand column: ground storey about 175 px of wall below the band, columns 270 to 280 px, entablature about 55 px, balustrade about 45 px. Built 4.4 m, 7.2 m, 1.4 m and 1.1 m.",
+        "Ground storey: plain ashlar with one tall window to a bay, about 2.0 m tall with its sill at railing height. Built 1.95 m tall with the sill at 1.15 m.",
+        "Behind the columns: a first-floor sash about 2.05 m tall with its sill 0.65 m above the column bases, and a second-floor sash about 1.75 m tall whose head is 0.8 m below the capitals.",
+        "Columns are slender, about eleven lower diameters tall, three-quarters engaged, Ionic, with the scrolls of each capital side by side as seen from the front.",
+        "An iron guard stands between the column plinths at every first-floor window.",
+        "A continuous entablature with a modillion cornice, then a balustrade with a pedestal over every column and about six balusters to a bay.",
+        "Stone chimney stacks with a row of pots rise behind the balustrade at each party wall. Slate shows above the balustrade toward the far end.",
+        "Spear-headed iron railings run along the pavement edge."
+      ],
+      "oblique": [
+        "A view from high outside one end, looking along the convex side and across to the concave front.",
+        "Plan: close to half an ellipse. The far end faces back toward the camera.",
+        "House count: front doors are three bays apart, and about forty columns show on the visible two thirds of the concave front, so about sixty bays and twenty houses. Built 20 houses of 3 bays, 61 columns on the front.",
+        "The giant order runs along the convex side and across the six-bay end as well as the concave front.",
+        "Each house: a white door and two windows at street level; a first-floor sash about 2.4 m tall and a second-floor sash about 1.6 m tall, both with glazing bars.",
+        "Roof: slate ranges behind the balustrade, a stone upstand and broad stacks with about seven pots at each party wall, small dormers just behind the balustrade, a hipped roof over each end.",
+        "A sunken area with railings and a bridge to each door lies between the pavement and the front."
+      ],
+      "top": [
+        "A roof plan of a short block of about ten houses, concave on both long sides, with flared hipped ends. It is not the building the other two images show.",
+        "Used only for the character of the roof: two slate ranges with a lead flat and lead-covered additions between them, a stack on each party wall, dormers behind the parapet, hipped ends."
+      ]
+    },
+    "source_conflicts": [
+      "Plan and length. The roof plan shows about ten houses in a shallow block. The street view and the oblique, which agree with each other, show a long sweep of about twenty houses on half an ellipse. Street view and oblique govern.",
+      "Column count. The catalogue text gives 114 columns. Counted on the oblique, the concave front has about sixty bays. Built 61 columns on the concave front and 132 in all.",
+      "Catalogue plot. The catalogue lists a 6 m by 12 m plot, the size of one house. All three images show a complete crescent. Built as the complete crescent; each house is 6.85 m wide and 13.8 m deep.",
+      "Window bars. The street view shows sashes with one large pane above another. The oblique shows small panes with glazing bars. Built with glazing bars.",
+      "First-floor sash height. About 2.05 m in the street view and about 2.4 m in the oblique. Built 2.35 m.",
+      "Columns on the convex side. The oblique shows the giant order on the convex side. A real crescent of this kind has a plain back. Built as drawn."
+    ],
+    "camera_note": "The three fitted cameras are approximate. No camera can register this model exactly against the oblique or the roof plan, because the images do not agree on the plan. The street camera matches the far end of the sweep; the near end renders about 15 percent larger than the reference.",
+    "hidden_assumptions": [
+      "The far end, and most of the convex side, are not shown in detail. Both ends are built alike, and the convex side repeats the front with a garden door to each house.",
+      "Interiors are inferred: three floors, a spine wall and party walls to each house, so that every window has a room behind it.",
+      "The roof between the two slate ranges is a plain lead flat. The lead-covered additions in the roof plan are left out.",
+      "The sunken areas, their steps and the bridges to the doors are left out, because nothing may lie below grade. Railings stand at grade and each door has a level stone path through them.",
+      "Ashlar coursing and joints are left out, as surface texture.",
+      "The crescent is taken to be symmetrical about its middle.",
+      "Party walls stand square to the concave front, so bays on the convex side widen from 2.7 m at the middle to 3.7 m toward the ends."
+    ]
+  },
+  "roof_contract": {
+    "form": "two slate ranges with a lead flat between, behind lead gutters and a stone balustrade; hipped at both ends",
+    "weathering": "closed gutter, slopes, flat and party upstands; a stack on each ridge at every party wall"
+  },
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false,
+    "roles": {
+      "paving": "#a8a08e",
+      "stone": "#cbb385",
+      "dressed": "#d3bd90",
+      "slate": "#5d636b",
+      "lead": "#9aa1a6",
+      "pot": "#b98a63",
+      "iron": "#2b2d30",
+      "joinery": "#ece7da",
+      "door": "#f1ede2",
+      "floor": "#7b6a55",
+      "interior": "#b9b09d",
+      "glass": "#3d464f"
+    }
+  },
+  "identity_contract": [
+    "half-ellipse crescent",
+    "twenty houses of three bays",
+    "three storeys",
+    "giant Ionic order on a plain ground storey",
+    "one sash to a bay on each storey",
+    "continuous entablature and balustrade",
+    "a stack with pots at every party wall",
+    "slate roof with dormers behind the balustrade",
+    "iron railings at the pavement"
+  ],
+  "programme_contract": {
+    "houses": 20,
+    "front_doors": 20,
+    "garden_doors": 20,
+    "end_doors": 2
+  },
+  "contact_contract": {
+    "base_datum_m": 0.0,
+    "lowest_geometry_m": 0.0,
+    "threshold_rise_m": 0.035,
+    "ground": "a 20 mm paved strip 1.8 m wide round the building; no lawn, street or sunken area in the model"
+  },
+  "camera_roster": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "entrance_contact",
+    "end_contact",
+    "roof_contact",
+    "street",
+    "rear_ground",
+    "corner_close",
+    "match_front",
+    "match_oblique",
+    "match_top"
+  ],
+  "mandatory_review_views": [
+    "front.png",
+    "front_corner.png",
+    "aerial.png",
+    "left_side.png",
+    "right_side.png",
+    "rear.png",
+    "rear_side.png",
+    "facade_close.png",
+    "architecture_close.png",
+    "glass_close.png",
+    "entrance_contact.png",
+    "end_contact.png",
+    "roof_contact.png"
+  ]
+}

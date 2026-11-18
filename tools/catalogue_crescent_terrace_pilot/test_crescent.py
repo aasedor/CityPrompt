@@ -1,0 +1,161 @@
+"""Deterministic checks on the crescent generator. Run: pytest tools/catalogue_crescent_terrace_pilot"""
+import hashlib
+import importlib.util
+import json
+import math
+import struct
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+spec = importlib.util.spec_from_file_location('crescent_build', HERE / 'build.py')
+build = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(build)
+Clay = build.Clay
+
+IDENTITY = {'archetype_id': build.ARCHETYPE, 'variant_id': build.VARIANT}
+CLAY = build.build()
+DATA = CLAY.glb(build.PALETTE, IDENTITY)
+DOCUMENT = json.loads(DATA[20:20 + struct.unpack('<I', DATA[12:16])[0]])
+
+
+def sub(a, b):
+    return (a[0] - b[0], a[1] - b[1], a[2] - b[2])
+
+
+def cross(a, b):
+    return (a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0])
+
+
+def dot(a, b):
+    return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
+
+
+def test_build_is_deterministic_and_matches_the_recorded_candidate():
+    assert build.build().glb(build.PALETTE, IDENTITY) == DATA
+    record = json.loads((HERE / 'candidate.json').read_text(encoding='utf-8'))
+    assert hashlib.sha256(DATA).hexdigest() == record['model_sha256'], 'generator output no longer matches the recorded candidate; build a new version'
+    assert len(DATA) == record['model_bytes']
+
+
+def test_container_matches_the_clay_library_convention():
+    assert DATA[:4] == b'glTF' and struct.unpack('<I', DATA[8:12])[0] == len(DATA)
+    assert 'textures' not in DOCUMENT and 'images' not in DOCUMENT and 'cameras' not in DOCUMENT
+    assert len(DOCUMENT['nodes']) == len(DOCUMENT['meshes']) == len(DOCUMENT['materials']) == len(build.PALETTE) <= 20
+    for node, material in zip(DOCUMENT['nodes'], DOCUMENT['materials']):
+        assert node['name'] == material['name'] and node['name'].startswith('CLAY_')
+        assert not {'translation', 'rotation', 'scale', 'matrix'} & set(node)
+        extras = node['extras']
+        assert extras['representation_kind'] == 'architectural_clay' and extras['rlasm_building_object'] is True
+        assert extras['archetype_id'] == 'london_crescent_terrace' and extras['variant_id'] == 'london-crescent-terrace-bath-stone'
+        assert material['doubleSided'] is True and material['extras']['texture_free'] is True
+    glass = next(m for m in DOCUMENT['materials'] if m['name'] == 'CLAY_GLASS')       # the runtime swaps this material by name
+    assert glass['alphaMode'] == 'BLEND' and 'KHR_materials_transmission' in glass['extensions']
+
+
+def test_native_size_grade_and_budget():
+    lo, hi = CLAY.bounds()
+    assert lo[2] == 0.0, 'nothing may sit below grade'
+    assert math.isclose(hi[0], -lo[0], abs_tol=1e-6), 'the crescent is centred on its axis of symmetry'
+    assert 135 < hi[0] - lo[0] < 136 and 51 < hi[1] - lo[1] < 52
+    assert math.isclose(hi[2], build.RIDGE + build.STACK + .71, abs_tol=1e-6), 'the chimney pots are the highest point'
+    assert 12_000 <= sum(CLAY.triangle_counts().values()) <= 180_000
+
+
+def test_every_triangle_is_sound():
+    for faces in CLAY.triangles.values():
+        for face in faces:
+            a, b, c = face[:3]
+            normal = cross(sub(b, a), sub(c, a))
+            assert dot(normal, normal) > 1e-16 and all(math.isfinite(v) for p in face for v in p)
+            for given in face[3:]:
+                assert math.isclose(dot(given, given), 1, abs_tol=1e-9) and dot(given, normal) > 0
+
+
+def test_every_loft_faces_outward():
+    """Each swept piece that is closed, measured about its own centre, encloses a positive volume."""
+    original, checked = Clay.loft, []
+
+    def spy(self, role, rings, loop=False, caps=(True, True), smooth=None):
+        before = len(self.triangles.get(role, []))
+        original(self, role, rings, loop=loop, caps=caps, smooth=smooth)
+        middle = [sum(p[k] for ring in rings for p in ring) / sum(len(ring) for ring in rings) for k in range(3)]
+        checked.append(sum(dot(sub(f[0], middle), cross(sub(f[1], middle), sub(f[2], middle))) for f in self.triangles[role][before:]))
+
+    Clay.loft = spy
+    try:
+        build.build()
+    finally:
+        Clay.loft = original
+    assert len(checked) > 5000 and min(checked) > 0
+
+
+def test_plan_is_a_symmetrical_half_ellipse_of_twenty_houses():
+    assert build.HOUSES == 20 and build.BAYS == 3 and build.BAY_COUNT == 2 * 60 + 2 * build.END_BAYS == 132
+    front = build.NODES[:build.FRONT_BAYS + 1]
+    assert len(front) == 61, 'sixty-one columns stand on the concave front'
+    for x, y in front:
+        assert math.isclose((x / build.SEMI_MAJOR) ** 2 + (y / build.SEMI_MINOR) ** 2, 1, abs_tol=1e-6)
+    for (ax, ay), (bx, by) in zip(front, front[::-1]):
+        assert math.isclose(ax, -bx, abs_tol=1e-5) and math.isclose(ay, by, abs_tol=1e-5)
+    lengths = [build.Bay(build.LOOP, k).length for k in range(build.FRONT_BAYS)]
+    assert max(lengths) - min(lengths) < .01 and 2.2 < lengths[0] < 2.35, 'front bays are equal'
+    assert math.isclose(build.FRONT_BAYS / build.HOUSES * lengths[0], 6.83, abs_tol=.05), 'each house is about 6.8 m wide'
+
+
+def test_three_storeys_with_one_sash_to_a_bay():
+    assert build.STOREYS == 3
+    assert math.isclose(build.FIRST + build.COLUMN, build.ARCHITRAVE) and build.ARCHITRAVE < build.CORNICE < build.RAIL
+    for lo, hi in (build.GROUND_WINDOW, build.FIRST_WINDOW, build.SECOND_WINDOW):
+        assert hi - lo > 1.5
+    assert build.GROUND_WINDOW[1] < build.BAND and build.FIRST < build.FIRST_WINDOW[0] and build.SECOND_WINDOW[1] < build.ARCHITRAVE
+    assert 10.5 < build.COLUMN / (2 * build.RADIUS) < 11.5, 'slender Ionic columns, about eleven diameters tall'
+    panes = len(CLAY.triangles['glass']) // 2
+    dormers = sum(1 for face in CLAY.triangles['glass'][::2] if min(p[2] for p in face[:3]) > build.EAVES)
+    doors = sum(1 for k in range(build.BAY_COUNT) if build.opening_kind(k) == 'door')
+    assert panes - dormers == 3 * build.BAY_COUNT, 'a sash on each storey of every bay, with a fanlight where a door stands'
+    assert doors == 42
+
+
+def test_doors():
+    report = build.entrances()
+    kinds = [door['kind'] for door in report]
+    assert kinds.count('front door') == 20 and kinds.count('garden door') == 20 and kinds.count('end door') == 2
+    for door in report:
+        assert door['rise_m'] < .04 and door['clear_width_m'] > .9
+        bay = build.Bay(build.LOOP, door['bay'])
+        x, y, _ = bay.p(bay.length / 2, .22, 0)
+        assert math.isclose(x, door['centre_xy_m'][0], abs_tol=1e-3) and math.isclose(y, door['centre_xy_m'][1], abs_tol=1e-3)
+    fronts = sorted(door['bay'] for door in report if door['kind'] == 'front door')
+    assert fronts == list(range(0, 60, 3)), 'one front door to each house, in its first bay'
+
+
+def test_roof_covers_the_whole_building():
+    """Looking straight down, every point inside the walls meets slate or lead."""
+    cover = [face[:3] for role in ('slate', 'lead') for face in CLAY.triangles[role]]
+
+    def covered(x, y):
+        for a, b, c in cover:
+            d1 = (x - b[0]) * (a[1] - b[1]) - (a[0] - b[0]) * (y - b[1])
+            d2 = (x - c[0]) * (b[1] - c[1]) - (b[0] - c[0]) * (y - c[1])
+            d3 = (x - a[0]) * (c[1] - a[1]) - (c[0] - a[0]) * (y - a[1])
+            if not ((d1 < 0 or d2 < 0 or d3 < 0) and (d1 > 0 or d2 > 0 or d3 > 0)):
+                return True
+        return False
+
+    inset = build.WALL + build.THICK + .05
+    for k in range(0, build.FRONT_BAYS, 4):
+        back = (build.STARTS['east'] - k) % build.BAY_COUNT
+        (fx, fy, _), (bx, by, _) = build.LOOP.node(k, inset), build.LOOP.node(back, inset)
+        for t in (0, .2, .4, .5, .6, .8, 1):
+            assert covered(fx + (bx - fx) * t, fy + (by - fy) * t), (k, t)
+
+
+def test_gutter_starts_on_the_cornice():
+    low = min(p[2] for face in CLAY.triangles['lead'] for p in face[:3])
+    assert math.isclose(low, build.CORNICE), 'no slit is left under the gutter edge'
+
+
+def test_source_lock_matches_the_recorded_prework():
+    recorded = json.loads((HERE / 'prework-manifest.json').read_text(encoding='utf-8'))
+    assert build.source_lock() == recorded['sources']
+    assert recorded['measurement_contract']['houses'] == 20 and recorded['keeper_claimed'] is False
