@@ -5,12 +5,12 @@
 Add the City of Calgary's e-scooter corral: the galvanized pipe enclosure with
 four art panels that the City places on sidewalks and curb extensions for shared
 e-scooters. It extends `calgary-details-v1` (now 164 objects, IDs prefixed
-`detail-yyc-`).
+`detail-yyc-`), with a tenth version that has a shared fleet parked inside.
 
 All scooter items sit in a new category, **Shared micromobility**, with its own
-tile: a scooter parked in front of a corral. The category holds the nine corrals
+tile: a scooter parked in front of a corral. The category holds the ten corrals
 below and the older e-scooter parking corral, which moved there from Street
-furniture. Searching `e-scooter corral` lists all ten.
+furniture. Searching `e-scooter corral` lists all eleven.
 
 | Item | Panels | Triangles |
 |---|---|---:|
@@ -23,6 +23,7 @@ furniture. Searching `e-scooter corral` lists all ten.
 | E-scooter corral · Prairie quilt | Quilt blocks of barn red, mustard and denim | 1,606 |
 | E-scooter corral · Aspen grove | White aspen trunks under a gold canopy | 1,848 |
 | E-scooter corral · Confetti | Bright dots on deep teal | 2,962 |
+| E-scooter corral · Bird and Lime fleet | Triangle mosaic, with two scooters and an e-bike from each fleet parked inside | 3,408 |
 
 The older **E-scooter parking corral** (`detail-yyc-scooter-corral`), a painted
 on-street bay with a low rail, a sign and four scooters, is a different thing.
@@ -73,9 +74,33 @@ barriers, a mural replaces the panel's face rather than lying on it, so nothing
 can flicker.
 
 The files follow the kit convention: linear vertex colours, flat normals, one
-matte mesh, no textures. The nine total 2,260,672 bytes and 19,736 triangles,
+matte mesh, no textures. The ten total 2,650,396 bytes and 23,144 triangles,
 each under the kit's limit of 3,500 triangles and 400 KB. The 155 earlier
 models are byte-identical.
+
+## The Bird and Lime fleet version
+
+Asked for by name: the Triangle mosaic corral with shared vehicles parked inside,
+two Bird scooters, two Lime scooters, a Bird e-bike and a Lime e-bike
+([review and card](calgary-details-v1/scooter-corral-fleet.jpg)).
+
+- **Colours only.** Lime's vehicles are lime green and white, Bird's black with
+  white details. No logos or wordmarks are drawn; the names and their marks
+  belong to their companies, and the description says so.
+- **Lean models.** The kit's bicycle is 1,388 triangles, too many for six vehicles
+  in one item, so the fleet has its own: a stand-up scooter of 252 triangles and a
+  step-through e-bike of 376, on solid cast wheels with a front basket, rear rack,
+  battery and centre stand.
+- **Parked nose-in.** Every vehicle points at the long side, as riders leave
+  them. The scooters stand alternately deeper and shallower, so their handlebars
+  pass one another. The e-bikes are 1.76 m long, longer than the corral is deep,
+  so their rear wheels stand out of the open side; the item is 1.86 m deep.
+- **Turned half round.** This version alone has its open side toward the viewer,
+  so the card shows the fleet rather than the back of the panels. Rotate it after
+  placing like any other item.
+- 3,408 triangles and 389,724 bytes, inside the kit's limits. A tools test
+  requires every vehicle to stand on the ground, clear of both returns and short
+  of the long side's panel.
 
 ## Verification
 
@@ -93,13 +118,13 @@ models are byte-identical.
   micromobility, and a tile drawing for the category. A frontend test requires
   the category to list exactly these ten, and Street furniture to list none.
 - The tools, hosted-asset, frontend park and backend detail tests pass, with 249
-  local rows and 404 extras.
-- Runtime asset manifest: 6,007 required files (+18). The manifest generator
-  needs every referenced file on disk, and the 370 recovered-detail files are
-  installed from a separate bundle that this checkout does not have. For that
-  one run, size-matched stand-ins were placed in their folder, which holds no
-  tracked files, and removed afterwards. The only rows that changed are the 18 new files and the
-  totals.
+  local rows and 405 extras.
+- Runtime asset manifest: 6,009 required files (+20). The manifest generator
+  needs every referenced file on disk, including the 370 recovered details, which
+  are not tracked files. They were installed from their archive in Git LFS with
+  `scripts/hydrate_recovered_details.py`, which checks every hash, and removed
+  afterwards. The only rows that changed are the 20 new files and the totals, and
+  one source file added by the latest release merge.
 
 - Lint with zero warnings and the type check pass on the changed files.
 - Production build with CI settings, then `check-budget`: all budgets met, with

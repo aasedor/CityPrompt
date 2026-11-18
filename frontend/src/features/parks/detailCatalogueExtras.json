@@ -10581,5 +10581,32 @@
     "bytes": 338872,
     "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-confetti.webp",
     "thumbnailSha256": "88169e6a596968d688a96856635afcd2f33beef08f9aaf994ad7ee20a12f9d8b"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-bird-lime",
+    "label": "E-scooter corral \u00b7 Bird and Lime fleet",
+    "category": "Shared micromobility",
+    "description": "Triangle mosaic corral with Bird and Lime scooters and e-bikes parked inside, in fleet colours. No logos.",
+    "dimensions": [
+      2.608,
+      1.86,
+      1.051
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-bird-lime.glb",
+    "color": "#2fcf4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_bird_lime",
+    "sha256": "5181ba497daa1fa46f18aaaf5282cfa854c3e01be1028ec169fa6e38d2f03368",
+    "triangles": 3408,
+    "meshes": 1,
+    "bytes": 389724,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-bird-lime.webp",
+    "thumbnailSha256": "25b0a33ec052421fb1d0bf380ad04f87053a2b86aedb305b2bc2c1df2192b91f"
   }
 ]

@@ -16,7 +16,7 @@ import inclusivePeople from '../people/inclusivePeopleCatalogue.json';
 
 describe("standalone detail catalogue", () => {
   it.each([
-    ["calgary-details-v1", 164],
+    ["calgary-details-v1", 165],
     ["prairie-foliage-v1", 85],
   ])("offers every imported %s model with its source thumbnail", (sourceKit, count) => {
     const models = extras.filter(model => model.sourceKit === sourceKit);
@@ -33,7 +33,7 @@ describe("standalone detail catalogue", () => {
     expect(DETAIL_CATEGORIES).toContain("Shared micromobility");
     const corrals = searchDetails("", "Shared micromobility").map(asset => asset.id);
     expect(corrals).toEqual(["detail-yyc-scooter-corral", ...["plain", "foothills", "chinook", "river", "mosaic", "chevron", "quilt", "aspen", "confetti"]
-      .map(design => `detail-yyc-scooter-corral-${design}`)]);
+      .map(design => `detail-yyc-scooter-corral-${design}`), "detail-yyc-scooter-corral-bird-lime"]);
     expect(searchDetails("e-scooter corral", "Street furniture")).toHaveLength(0);
     expect(searchDetails("trembling aspen", "Trees").map(asset => asset.id)).toContain("detail-prairie-trembling-aspen");
     expect(searchDetails("swedish columnar aspen", "Trees").map(asset => asset.id)).toContain("detail-prairie-swedish-columnar-aspen");
@@ -55,7 +55,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(414 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(415 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),

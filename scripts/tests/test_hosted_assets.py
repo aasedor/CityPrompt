@@ -150,7 +150,7 @@ class HostedAssetsTests(unittest.TestCase):
         for name in ("detailCatalogueExtras.json", "recoveredDetails.json"):
             rows.extend(json.loads((ROOT / "frontend/src/features/parks" / name).read_text()))
         requirements = detail_requirements(rows)
-        self.assertEqual(len(requirements), 1023)
+        self.assertEqual(len(requirements), 1025)
         for row in rows:
             self.assertEqual(requirements[row["url"]]["sha256"], row["sha256"])
             self.assertEqual(requirements[row["url"]]["bytes"], row["bytes"])
@@ -162,9 +162,9 @@ class HostedAssetsTests(unittest.TestCase):
     def test_calgary_and_prairie_details_ship_exact_models_and_thumbnails(self):
         rows = json.loads((ROOT / 'frontend/src/features/parks/detailCatalogueExtras.json').read_text())
         rows = [row for row in rows if row.get('sourceKit') in {'calgary-details-v1', 'prairie-foliage-v1'}]
-        self.assertEqual(len(rows), 249)
+        self.assertEqual(len(rows), 250)
         requirements = detail_requirements(rows)
-        self.assertEqual(len(requirements), 498)
+        self.assertEqual(len(requirements), 500)
         for url, lock in requirements.items():
             payload = (ROOT / 'frontend/public' / url.lstrip('/')).read_bytes()
             if payload.startswith(b'version https://git-lfs.github.com/spec/v1'):

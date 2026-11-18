@@ -624,6 +624,7 @@
     "src/features/siteLandscape/automaticSiteTrees.ts",
     "src/features/siteLandscape/landscapeCapture.ts",
     "src/features/siteLandscape/landscapeContext.ts",
+    "src/features/siteLandscape/siteBoundarySurface.ts",
     "src/features/siteLandscape/siteLandscape.ts",
     "src/features/siteLandscape/useSiteLandscapeTexture.ts",
     "src/features/studentReports/StudentPlanningReport.tsx",
@@ -680,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4223,
+    "explicitReferenceCount": 4225,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 6007,
-    "requiredLogicalBytes": 13102217234,
+    "requiredFileCount": 6009,
+    "requiredLogicalBytes": 13103019874,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -27607,6 +27608,21 @@
       "logicalBytes": 6328
     },
     {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-bird-lime.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 389724,
+      "lfsOid": "5181ba497daa1fa46f18aaaf5282cfa854c3e01be1028ec169fa6e38d2f03368"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-bird-lime.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 11596
+    },
+    {
       "url": "/park-kits/calgary-details-v1/scooter-corral-chevron.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -36550,9 +36566,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 1001,
-      "logicalBytes": 529220420,
-      "pathDigest": "ecb335fcd192de32158899d4986c0d5fdff46a42c11f447561be1e32d761e909"
+      "fileCount": 1003,
+      "logicalBytes": 529621740,
+      "pathDigest": "2275ce8e2b2c95d3a9f94d34e2d0ec7de206319aa0826c90a813d40c10d7bbc1"
     },
     {
       "name": "public-realm-skins",

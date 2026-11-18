@@ -41,11 +41,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_sixty_four_unique_items(self):
+    def test_one_hundred_and_sixty_five_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 164)
-        self.assertEqual(len({s['slug'] for s in specs}), 164)
-        self.assertEqual(len({s['label'] for s in specs}), 164)
+        self.assertEqual(len(specs), 165)
+        self.assertEqual(len({s['slug'] for s in specs}), 165)
+        self.assertEqual(len({s['label'] for s in specs}), 165)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -53,8 +53,8 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(counts['Shared micromobility'], 10)
-        self.assertEqual(sum(counts.values()), 164)
+        self.assertEqual(counts['Shared micromobility'], 11)
+        self.assertEqual(sum(counts.values()), 165)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -242,6 +242,24 @@ class CalgaryDetailsContract(unittest.TestCase):
         # one mural window per panel at true proportions, so a 3 m design runs round all four
         self.assertAlmostEqual(module.CORRAL_WINDOW / module.MURAL_HEIGHT, panel_w / panel_h)
 
+    def test_bird_and_lime_corral_parks_its_fleet_inside_the_frame(self):
+        module = self.module
+        row, mosaic = self.by_slug['scooter-corral-bird-lime'], self.by_slug['scooter-corral-mosaic']
+        self.assertEqual(row['category'], 'Shared micromobility')
+        # fleet colours only: the names and logos belong to their companies
+        self.assertIn('No logos', row['description'])
+        self.assertEqual(set(module.FLEETS), {'bird', 'lime'})
+        # the same corral, so the same width; the e-bikes stand out of its open side
+        self.assertEqual(row['dimensions'][0], mosaic['dimensions'][0])
+        self.assertGreater(row['dimensions'][1], mosaic['dimensions'][1])
+        fleet = module.Solid(1)
+        module.corral_fleet(fleet)
+        xs, ys, zs = fleet.body.positions[0::3], fleet.body.positions[1::3], fleet.body.positions[2::3]
+        self.assertAlmostEqual(min(zs), 0.0, places=6)       # every vehicle stands on the ground
+        self.assertLess(max(abs(x) for x in xs), module.CORRAL_BAY - module.CORRAL_FIT)     # clear of both returns
+        self.assertGreater(min(ys), -module.CORRAL_BAY / 2 + module.CORRAL_PANEL[2])       # short of the long side's panel
+        self.assertLess(max(zs), 1.1)
+
     def test_district_barriers_carry_baked_logo_artwork_that_tiles_the_face(self):
         baked = json.loads((ROOT / 'tools/detail_catalogue/district_logo_shapes.json').read_text(encoding='utf-8'))
         face = baked['face']
@@ -349,7 +367,7 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertIn("'Shared micromobility': () =>", tiles)
         # every scooter item, old and new, sits in its own category
         scooters = [row for row in self.registry if 'scooter' in row['id']]
-        self.assertEqual(len(scooters), 10)
+        self.assertEqual(len(scooters), 11)
         self.assertTrue(all(row['category'] == 'Shared micromobility' for row in scooters))
 
     def test_ids_never_share_the_traffic_safety_family_prefix(self):

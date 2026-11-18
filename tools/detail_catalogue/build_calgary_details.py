@@ -3578,6 +3578,80 @@ def scooter_corral_confetti(s):
     scooter_corral_mural(s, mural_confetti)
 
 
+# Shared fleets parked in a corral, in the colours of the two operators the
+# student asked for. Colours and shapes only: no logos or wordmarks, which belong
+# to their companies. Each vehicle faces -y, so parked nose-in it points at the
+# corral's long side; the e-bikes are longer than the corral is deep and stand
+# out of its open side, as they do on the street.
+FLEETS = {
+    'lime': {'stem': '#eef1ec', 'deck': '#34373a', 'trim': '#2fcf4a', 'frame': '#2fcf4a', 'battery': '#eef1ec'},
+    'bird': {'stem': '#1d1f22', 'deck': '#26292c', 'trim': '#1d1f22', 'frame': '#1d1f22', 'battery': '#eef0ef'},
+}
+FLEET_LIGHT = '#fbf7e6'
+FLEET_HUB = '#8b9095'
+
+
+def share_scooter(s, fleet):
+    """A shared stand-up e-scooter, about 1.1 m long with its bar at 1.04 m."""
+    c = FLEETS[fleet]
+    s.box((0, 0, .13), (.15, .56, .035), c['deck'])
+    for y in (-.36, .36):
+        wheel(s, (0, y, .1), .1, .045, tyre=BLACK, hub=FLEET_HUB, sides=8)    # eight sides: a corner touches the ground
+    s.box((0, .36, .215), (.06, .22, .012), c['trim'])                 # rear fender
+    s.box((0, -.4, .21), (.05, .12, .012), c['trim'])                  # front fender
+    s.box((0, -.3, .17), (.07, .16, .07), c['trim'])                   # battery and controller at the foot of the stem
+    s.cyl((0, -.36, .14), (0, -.27, 1.02), .022, c['stem'], sides=6)
+    s.cyl((-.2, -.27, 1.04), (.2, -.27, 1.04), .013, BLACK, sides=6)
+    s.box((0, -.3, .95), (.06, .04, .05), FLEET_LIGHT)                 # headlight
+
+
+def share_ebike(s, fleet):
+    """A shared step-through e-bike on solid wheels, with a front basket and a rear rack."""
+    c = FLEETS[fleet]
+    radius = .33
+    rear, front = (0, .55, radius), (0, -.55, radius)
+    for hub in (rear, front):                # a black tyre round a grey cast wheel
+        s.cyl((-.025, hub[1], hub[2]), (.025, hub[1], hub[2]), radius, BLACK, sides=12)
+        s.cyl((-.029, hub[1], hub[2]), (.029, hub[1], hub[2]), radius * .78, FLEET_HUB, sides=8)
+    head_top, head_bottom, low, bracket, seat = (0, -.45, .92), (0, -.42, .66), (0, -.22, .3), (0, .08, .28), (0, .17, .78)
+    for a, b, r in ((head_bottom, head_top, .025), (head_bottom, low, .028), (low, bracket, .028), (bracket, seat, .022),
+                    (bracket, rear, .016), (seat, rear, .014), (head_bottom, front, .018)):
+        s.cyl(a, b, r, c['frame'], sides=6, cap0=False, cap1=False)
+    s.box((0, -.1, .34), (.1, .3, .08), c['battery'], yaw=0)          # battery along the low tube
+    s.cyl(seat, (0, .2, .9), .014, GALV, sides=6)
+    s.box((0, .22, .92), (.14, .24, .05), BLACK)                       # saddle
+    s.cyl(head_top, (0, -.47, 1.0), .016, BLACK, sides=6)
+    s.cyl((-.28, -.47, 1.0), (.28, -.47, 1.0), .013, BLACK, sides=6)
+    # front basket, open at the top
+    bx, by, bz, bh = .14, .1, .8, .12
+    corners = [(-bx, -.64 - by), (bx, -.64 - by), (bx, -.64 + by), (-bx, -.64 + by)]
+    for (x0, y0), (x1, y1) in zip(corners, corners[1:] + corners[:1]):
+        s.quad((x0, y0, bz), (x1, y1, bz), (x1, y1, bz + bh), (x0, y0, bz + bh), '#2a2d30')
+    s.quad(*[(x, y, bz) for x, y in corners], '#2a2d30')
+    s.box((0, .55, .72), (.12, .3, .02), BLACK)                        # rear rack
+    s.box((0, .1, .14), (.04, .04, .28), BLACK)                        # centre stand, down to the ground
+
+
+def corral_fleet(s):
+    """Two e-bikes and four scooters parked nose-in. The scooters are set alternately
+    deeper and shallower, so their handlebars pass one another."""
+    for x, fleet in ((-.85, 'bird'), (-.2, 'lime')):
+        with s.at(x, .32, 0):
+            share_ebike(s, fleet)
+    for k, (x, fleet) in enumerate(((.3, 'bird'), (.52, 'lime'), (.74, 'bird'), (.96, 'lime'))):
+        with s.at(x, -.08 if k % 2 == 0 else .06, 0):
+            share_scooter(s, fleet)
+
+
+def scooter_corral_bird_lime(s):
+    # turned half round, so the open side and the parked fleet face the viewer
+    with s.at(yaw=math.pi):
+        corral_frame(s)
+        corral_panels(s)
+        mural_mosaic(s)
+        corral_fleet(s)
+
+
 # ---------------------------------------------------------------------------
 # Planters that stand between a patio and the road. Black planters filled with
 # summer annuals; with their plants they stay under 1.2 m above the street.
@@ -4555,6 +4629,7 @@ SPECS = [
     spec('scooter-corral-quilt', 'E-scooter corral · Prairie quilt', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in quilt blocks of barn red, mustard and denim. Original design.', scooter_corral_quilt, 2987, '#9b2d30'),
     spec('scooter-corral-aspen', 'E-scooter corral · Aspen grove', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in white aspen trunks under a gold canopy. Original design.', scooter_corral_aspen, 2988, '#e6b93a'),
     spec('scooter-corral-confetti', 'E-scooter corral · Confetti', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in bright dots on deep teal. Original design.', scooter_corral_confetti, 2989, '#1f5f6b'),
+    spec('scooter-corral-bird-lime', 'E-scooter corral · Bird and Lime fleet', MICROMOBILITY, 'Triangle mosaic corral with Bird and Lime scooters and e-bikes parked inside, in fleet colours. No logos.', scooter_corral_bird_lime, 2991, '#2fcf4a'),
 ]
 
 
