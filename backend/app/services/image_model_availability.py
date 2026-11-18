@@ -6,7 +6,13 @@ import time
 
 import httpx
 
-from app.core.image_models import OPENAI_IMAGE_CREDIT_MULTIPLIERS, NANO_BANANA_MODEL
+from app.core.image_models import (
+    DEFAULT_OPENAI_IMAGE_MODEL,
+    FLARE_IMAGE_MODEL,
+    LEGACY_FLARE_IMAGE_MODEL,
+    NANO_BANANA_MODEL,
+    OPENAI_IMAGE_CREDIT_MULTIPLIERS,
+)
 
 _cache: tuple[str, float, dict] | None = None
 _lock = asyncio.Lock()
@@ -57,7 +63,10 @@ async def get_image_model_availability(api_key: str, gemini_api_key: str = "") -
         if _cache and _cache[0] == key_id and _cache[1] > time.monotonic():
             return _cache[2]
         available, google = await asyncio.gather(_openai_availability(api_key), _google_availability(gemini_api_key))
-        default_model = "gpt-image-2.5-flare" if available and "gpt-image-2.5-flare" in available else "gpt-image-2"
+        default_model = next(
+            (model for model in (FLARE_IMAGE_MODEL, LEGACY_FLARE_IMAGE_MODEL) if model in (available or ())),
+            DEFAULT_OPENAI_IMAGE_MODEL,
+        )
         result = {
             "default_model": default_model,
             "models": [

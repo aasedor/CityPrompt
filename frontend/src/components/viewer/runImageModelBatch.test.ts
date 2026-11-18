@@ -10,8 +10,8 @@ describe('bounded image comparison', () => {
     }, async (result) => { events.push(`save ${result}`); });
     expect(events).toEqual([
       'render gpt-image-2', 'save gpt-image-2',
-      'render gpt-image-2.5-flare', 'save gpt-image-2.5-flare',
-      'render gpt-image-2.5-sunburst', 'save gpt-image-2.5-sunburst',
+      'render gpt-image-2.6-flare', 'save gpt-image-2.6-flare',
+      'render gpt-image-2.6-sunburst', 'save gpt-image-2.6-sunburst',
     ]);
   });
 
@@ -35,7 +35,7 @@ describe('bounded image comparison', () => {
     const save = vi.fn();
     await expect(runImageModelBatch('compare-all-three', render, save)).rejects.toThrow('Sunburst unavailable');
     expect(render.mock.calls.map(([model]) => model)).toEqual([
-      'gpt-image-2', 'gpt-image-2.5-flare', 'gpt-image-2.5-sunburst',
+      'gpt-image-2', 'gpt-image-2.6-flare', 'gpt-image-2.6-sunburst',
     ]);
     expect(save.mock.calls).toEqual([['image 2', 0], ['flare', 1]]);
   });

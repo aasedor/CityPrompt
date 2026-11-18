@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { rendersApi } from '@/services/api';
-import { DEFAULT_OPENAI_IMAGE_MODEL, PAID_IMAGE_MODELS, type ImageModelAvailability, type ImageModelChoice } from '@/config/imageModels';
+import { DEFAULT_OPENAI_IMAGE_MODEL, accountImageModel, imageModelsForChoice, isImageEngine, type ImageModelAvailability, type ImageModelChoice } from '@/config/imageModels';
 import { readStoredRenderDraft } from './renderDraftStorage';
 
 export function useImageModelChoice({ compareByDefault = true, projectId, accountRevision }: { compareByDefault?: boolean; projectId?: string; accountRevision?: string } = {}) {
@@ -11,8 +11,7 @@ export function useImageModelChoice({ compareByDefault = true, projectId, accoun
   const initial = useMemo(() => {
     try {
       const saved = readStoredRenderDraft(key).imageModel;
-      return saved === 'compare-all-three' || PAID_IMAGE_MODELS.some(model => model.id === saved)
-        || saved === 'gpt-image-2-2026-04-21' ? saved as ImageModelChoice : null;
+      return saved === 'compare-all-three' || isImageEngine(saved) ? saved : null;
     } catch { return null; }
   }, [key]);
   const [choices, setChoices] = useState<Record<string, ImageModelChoice>>({});
@@ -33,18 +32,20 @@ export function useImageModelChoice({ compareByDefault = true, projectId, accoun
       return result && Array.isArray(result.models)
         && result.models.every(model => model && typeof model.id === 'string'
           && (model.available === null || typeof model.available === 'boolean'))
-        && (PAID_IMAGE_MODELS.some(model => model.id === result.default_model) || result.default_model === 'gpt-image-2-2026-04-21')
+        && isImageEngine(result.default_model)
         ? result : unavailable();
     }).catch(unavailable).then(result => {
       if (active) setDiscovery({ accountRevision, value: result });
     });
     return () => { active = false; };
   }, [accountRevision]);
-  const allAvailable = ['gpt-image-2', 'gpt-image-2.5-flare', 'gpt-image-2.5-sunburst'].every(
+  const allAvailable = imageModelsForChoice('compare-all-three', availability).every(
     (id) => availability?.models.some((model) => model.id === id && model.available === true),
   );
+  const fallback = compareByDefault && allAvailable ? 'compare-all-three' : availability?.default_model ?? DEFAULT_OPENAI_IMAGE_MODEL;
+  const imageModel = selected ?? fallback;
   return {
-    imageModel: selected ?? (compareByDefault && allAvailable ? 'compare-all-three' : availability?.default_model ?? DEFAULT_OPENAI_IMAGE_MODEL),
+    imageModel: imageModel === 'compare-all-three' ? imageModel : accountImageModel(imageModel, availability),
     setImageModel: setSelected,
     availability,
   };

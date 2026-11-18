@@ -1,4 +1,4 @@
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { rendersApi } from '@/services/api';
@@ -292,7 +292,7 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).not.toContain('Add realistic public-realm activity');
   });
 
-  it.each(['gpt-image-2.5-flare', 'gpt-image-2.5-sunburst'] as const)('forwards %s with the same geometry controls and reports the actual model', async (model) => {
+  it.each(['gpt-image-2.6-flare', 'gpt-image-2.6-sunburst'] as const)('forwards %s with the same geometry controls and reports the actual model', async (model) => {
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue({ ...response, model });
     const { result } = renderHook(() => useDirect3DRender());
     const direct = await result.current.renderDirect3D(capture, {
@@ -505,10 +505,11 @@ describe('Direct 3D presentation adapter', () => {
     })).rejects.toThrow('Unknown Direct 3D style');
     expect(rendersApi.generateDirect3D).not.toHaveBeenCalled();
   });
-  it.each(['gpt-image-2.5-sunburst','gemini-nano-banana-2.1'] as const)('sends the project draft’s persisted %s engine to the mocked image request', async model => {
+  it.each(['gpt-image-2.5-sunburst', 'gpt-image-2.6-sunburst', 'gemini-nano-banana-2.1'] as const)('sends the project draft’s persisted %s engine to the mocked image request', async model => {
     sessionStorage.setItem('cityprompt:render-draft:project-1', JSON.stringify({ imageModel: model }));
     vi.mocked(rendersApi.imageModels).mockResolvedValue({default_model:'gpt-image-2.5-flare',models:[{id:model,available:true}]});
     const { result, unmount } = renderHook(() => ({choice:useImageModelChoice({projectId:'project-1'}), renderer:useDirect3DRender()}));
+    await waitFor(() => expect(result.current.choice.availability).not.toBeNull());
     await act(async () => {
       await result.current.renderer.renderDirect3D(capture, {style:'photorealistic',projectId:'project-1',community3DClaims,model:imageModelsForChoice(result.current.choice.imageModel)[0]});
     });

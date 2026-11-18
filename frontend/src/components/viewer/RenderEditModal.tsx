@@ -48,7 +48,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
 
   const [prompt, setPrompt] = useState('');
   const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ projectId });
-  const selectedEngineUnavailable = imageModelsForChoice(imageModel).some(model => imageModelUnavailable(imageModelAvailability, model));
+  const selectedEngineUnavailable = imageModelsForChoice(imageModel, imageModelAvailability).some(model => imageModelUnavailable(imageModelAvailability, model));
   const [imageProgress, setImageProgress] = useState('');
   const [brushSize, setBrushSize] = useState(DEFAULT_BRUSH_SIZE);
   const [zoom, setZoom] = useState(1);
@@ -293,7 +293,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
           image_quality: render.image_quality || 'auto',
         });
         onSaved(saved);
-      }, (model, index, total) => setImageProgress(`${index + 1}/${total} · ${imageModelLabel(model)}`));
+      }, (model, index, total) => setImageProgress(`${index + 1}/${total} · ${imageModelLabel(model)}`), imageModelAvailability);
       toast.success('Edited render saved');
       onClose();
     } catch (error) {
@@ -302,7 +302,7 @@ export function RenderEditModal({ projectId, render, imageUrl, onClose, onSaved 
       setSubmitting(false);
       setImageProgress('');
     }
-  }, [hasMask, imageUrl, imageModel, onClose, onSaved, projectId, prompt, render.image_quality, render.prompt, render.style, submitting, selectedEngineUnavailable]);
+  }, [hasMask, imageUrl, imageModel, imageModelAvailability, onClose, onSaved, projectId, prompt, render.image_quality, render.prompt, render.style, submitting, selectedEngineUnavailable]);
 
   const canSubmit = Boolean(hasMask && prompt.trim() && imageSize && !submitting && !selectedEngineUnavailable);
 

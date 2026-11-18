@@ -1,4 +1,4 @@
-import { PAID_IMAGE_MODELS, imageModelUnavailable, type ImageModelChoice, type ImageModelAvailability } from '@/config/imageModels';
+import { imageModelOptions, imageModelsForChoice, imageModelUnavailable, type ImageModelChoice, type ImageModelAvailability } from '@/config/imageModels';
 
 export function ImageModelSelect({ value, onChange, disabled = false, availability }: {
   value: ImageModelChoice;
@@ -7,7 +7,7 @@ export function ImageModelSelect({ value, onChange, disabled = false, availabili
   availability: ImageModelAvailability | null;
 }) {
   const unavailable = (id: string) => imageModelUnavailable(availability, id);
-  const batchUnavailable = unavailable('gpt-image-2') || unavailable('gpt-image-2.5-flare') || unavailable('gpt-image-2.5-sunburst');
+  const batchUnavailable = imageModelsForChoice('compare-all-three', availability).some(unavailable);
   const allUnavailable = Boolean(availability?.models.length && availability.models.every((model) => model.available === false));
   const unavailableLabel = allUnavailable ? 'Unavailable in this session' : 'Awaiting access';
   return (
@@ -21,7 +21,7 @@ export function ImageModelSelect({ value, onChange, disabled = false, availabili
           className="min-h-9 max-w-full rounded-lg border border-slate-400 bg-white py-1 pl-2 pr-8 text-slate-900 disabled:opacity-60"
         >
           <option value="compare-all-three" disabled={batchUnavailable}>GPT Image 2 + Flare + Sunburst · 3 images{batchUnavailable ? ` · ${unavailableLabel}` : ''}</option>
-          {PAID_IMAGE_MODELS.map((model) => (
+          {imageModelOptions(availability).map((model) => (
             <option key={model.id} value={model.id} disabled={unavailable(model.id)}>{model.option}{unavailable(model.id) ? ` · ${unavailableLabel}` : ''}</option>
           ))}
         </select>

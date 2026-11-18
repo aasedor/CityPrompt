@@ -52,18 +52,20 @@ async def test_failed_guide_keeps_a_safe_provider_code_without_retrying_or_billi
         assert (await db.get(User, f.user.id)).render_credits == 1000
 
 
-def request(f):
+def request(f, model=None):
     return VideoAppearanceRequest(
         project_id=f.project.id,
         beauty_image_base64=_jpeg_data_url(),
         source_video_sha256="a" * 64,
         details_revision=1,
         community_3d_claims=[],
+        **({"model": model} if model is not None else {}),
     )
 
 
 @pytest.mark.asyncio
-async def test_guide_is_one_paid_image_and_recovers_exact_bytes_without_a_second_dispatch(isolated, monkeypatch):
+@pytest.mark.parametrize("model", [None, "gpt-image-2.6-sunburst"])
+async def test_guide_is_one_paid_image_and_recovers_exact_bytes_without_a_second_dispatch(isolated, monkeypatch, model):
     f = isolated
     monkeypatch.setattr(appearance, "get_settings", lambda: f.settings)
     monkeypatch.setattr(appearance, "write_evidence", f.write)
@@ -74,7 +76,7 @@ async def test_guide_is_one_paid_image_and_recovers_exact_bytes_without_a_second
     )
     monkeypatch.setattr(appearance, "call_image_edit", provider)
     key = str(uuid.uuid4())
-    attempts = await asyncio.gather(*[submit(f, key, request(f)) for _ in range(8)])
+    attempts = await asyncio.gather(*[submit(f, key, request(f, model)) for _ in range(8)])
     assert len({a.id for a in attempts}) == 1
     a = attempts[0]
     await asyncio.gather(*[execute(f, a) for _ in range(8)])
@@ -89,7 +91,7 @@ async def test_guide_is_one_paid_image_and_recovers_exact_bytes_without_a_second
         assert (await db.get(User, f.user.id)).render_credits == 974
     assert provider.await_count == 1
     image_request = provider.await_args.args[0]
-    assert image_request.model == "gpt-image-2.5-sunburst"
+    assert image_request.model == (model or "gpt-image-2.5-sunburst")
     assert image_request.image_quality == "high" and image_request.post_process is False
     assert image_request.mask_base64 is None
     assert provider.await_args.kwargs["include_mask"] is False
