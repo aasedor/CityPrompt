@@ -4,7 +4,7 @@
  *
  * Regression budgets measured from the 2026-08 clean-release build:
  * - Initial app shell: < 600 KiB
- * - Total JS bundle: < 8.25 MiB
+ * - Total JS bundle: < 8.25 MiB + 64 KiB for the November detail catalogue
  * - Largest individual chunk: < 3.5 MiB
  * - Total CSS: < 192 KiB (October 2026 landing/catalogue interface baseline)
  *
@@ -24,11 +24,14 @@ const MANIFEST_PATH = join(buildRoot, '.vite', 'manifest.json');
 
 const BUDGETS = {
   initialJs: 600 * 1024,
-  totalJs: 8.25 * 1024 * 1024,
+  // The 240 approved Calgary/prairie details add 54,324 bytes of packed
+  // catalogue metadata. The full map-enabled build is 8,495.4 KiB; reserve
+  // 64 KiB for this content addition without changing shell/chunk/route limits.
+  totalJs: 8.25 * 1024 * 1024 + 64 * 1024,
   maxChunkJs: 3.5 * 1024 * 1024,
   // October release: 150.8 KiB application/landing + 37.8 KiB lazy Mapbox CSS.
   // Retain the implemented interface; test-source exclusion saved only 30 bytes.
-  // JS and route-isolation budgets remain unchanged. See the release runbook.
+  // That CSS adjustment did not change JS or route-isolation limits.
   totalCss: 192 * 1024,
 };
 
