@@ -11,12 +11,12 @@ No pass is carried over from any other archetype.
 
 - Kind: building
 - Archetype ID and exact variant ID: `london_crescent_terrace` / `london-crescent-terrace-bath-stone` (variant 0)
-- Model SHA-256 or procedural recipe ID/revision/hash: `72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153`, candidate `crescent-terrace-bath-stone-clay-v005`, 8610196 bytes. Rebuilt byte for byte by `tools/catalogue_crescent_terrace_pilot/build.py`
+- Model SHA-256 or procedural recipe ID/revision/hash: `705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284`, candidate `crescent-terrace-bath-stone-clay-v006`, 8594664 bytes. Rebuilt byte for byte by `tools/catalogue_crescent_terrace_pilot/build.py`
 - Runtime source commit and integration-checklist version: not run. Branch base `4922d9771e` on `deployment-version`; checklist as at that commit
 - Reviewer, date, project URL, viewport/device/input: none. No project was opened
 - Vacant test site, protected reference, disposable test project: none
 - Mixed-scene project and separate oversized-candidate project, if applicable: none
-- Supported plot dimensions, axes/base datum, reshape/repetition behavior: declared, not tested. Metres. In the GLB, Y is up, east is +X, and the crescent opens toward +Z. Base datum Y = 0 at grade; nothing lies below it. Complete native envelope 126.2855 m wide by 48.4002 m deep by 19.16 m high, including the 1.8 m paved strip with its railings. The envelope is symmetrical about X = 0; its centre is at Z = -22.4, that far behind the line joining the two ends. `fixed_native`: move and rotate only, no stretch, no repetition. Smallest plot 129.3 m by 51.4 m, the envelope plus 3 m. The catalogue lists a 6 m by 12 m plot for this archetype, the size of one house; this model is the whole crescent
+- Supported plot dimensions, axes/base datum, reshape/repetition behavior: declared, not tested. Metres. In the GLB, Y is up, east is +X, and the crescent opens toward +Z. Base datum Y = 0 at grade; nothing lies below it. Complete native envelope 126.3175 m wide by 48.4002 m deep by 19.16 m high, including the 1.8 m paved strip with its railings. The envelope is symmetrical about X = 0; its centre is at Z = -22.4, that far behind the line joining the two ends. `fixed_native`: move and rotate only, no stretch, no repetition. Smallest plot 129.3 m by 51.4 m, the envelope plus 3 m. The catalogue lists a 6 m by 12 m plot for this archetype, the size of one house; this model is the whole crescent
 - Authored storey programme: exact source/module hashes, shared whole-source origin, complete-assembly bounds centre, native-lock flag, and any bounded uniform-scale opt-in: one complete model, three storeys, `fixed_authored_assembly`. No storey edits are advertised. Centred by its whole-model bounds; native lock required; no scale opt-in
 - Supported terrain modes and connection capabilities: not tested. Thirty-six doors: sixteen on the concave front, eighteen on the convex side, one at each end. The two end houses are entered from their ends
 - Public-realm detail: metric plant height/footprint, paving scale, instance/texture budgets, and native close/aerial evidence: N/A: building only; the model contains no such element
@@ -191,42 +191,42 @@ The bay number counts round the building from the east end of the concave front.
 
 | Bay | Kind | X (m) | Z (m) | Out direction (X, Z) |
 |---|---|---|---|---|
-| 5 | front door | 44.77 | -10.77 | -0.87, +0.49 |
-| 8 | front door | 40.70 | -16.28 | -0.73, +0.68 |
-| 11 | front door | 35.56 | -20.81 | -0.59, +0.81 |
-| 14 | front door | 29.74 | -24.41 | -0.46, +0.89 |
-| 17 | front door | 23.48 | -27.17 | -0.35, +0.94 |
-| 20 | front door | 16.94 | -29.18 | -0.24, +0.97 |
-| 23 | front door | 10.23 | -30.49 | -0.14, +0.99 |
-| 26 | front door | 3.42 | -31.13 | -0.05, +1.00 |
-| 29 | front door | -3.42 | -31.13 | +0.05, +1.00 |
-| 32 | front door | -10.23 | -30.49 | +0.14, +0.99 |
-| 35 | front door | -16.94 | -29.18 | +0.24, +0.97 |
-| 38 | front door | -23.48 | -27.17 | +0.35, +0.94 |
-| 41 | front door | -29.74 | -24.41 | +0.46, +0.89 |
-| 44 | front door | -35.56 | -20.81 | +0.59, +0.81 |
-| 47 | front door | -40.70 | -16.28 | +0.73, +0.68 |
-| 50 | front door | -44.77 | -10.77 | +0.87, +0.49 |
-| 59 | end door | -53.41 | -0.22 | -0.00, +1.00 |
-| 66 | garden door | -60.31 | -6.80 | -0.98, -0.20 |
-| 69 | garden door | -56.45 | -17.21 | -0.87, -0.49 |
-| 72 | garden door | -50.51 | -25.33 | -0.73, -0.68 |
-| 75 | garden door | -43.49 | -31.55 | -0.59, -0.81 |
-| 78 | garden door | -35.95 | -36.23 | -0.46, -0.89 |
-| 81 | garden door | -28.14 | -39.69 | -0.35, -0.94 |
-| 84 | garden door | -20.17 | -42.14 | -0.24, -0.97 |
-| 87 | garden door | -12.13 | -43.71 | -0.14, -0.99 |
-| 90 | garden door | -4.05 | -44.47 | -0.05, -1.00 |
-| 93 | garden door | 4.05 | -44.47 | +0.05, -1.00 |
-| 96 | garden door | 12.13 | -43.71 | +0.14, -0.99 |
-| 99 | garden door | 20.17 | -42.14 | +0.24, -0.97 |
-| 102 | garden door | 28.14 | -39.69 | +0.35, -0.94 |
-| 105 | garden door | 35.95 | -36.23 | +0.46, -0.89 |
-| 108 | garden door | 43.49 | -31.55 | +0.59, -0.81 |
-| 111 | garden door | 50.51 | -25.33 | +0.73, -0.68 |
-| 114 | garden door | 56.45 | -17.21 | +0.87, -0.49 |
-| 117 | garden door | 60.31 | -6.80 | +0.98, -0.20 |
-| 124 | end door | 53.41 | -0.22 | -0.00, +1.00 |
+| 5 | front door | 44.62 | -11.02 | -0.87, +0.50 |
+| 8 | front door | 40.52 | -16.46 | -0.73, +0.69 |
+| 11 | front door | 35.39 | -20.93 | -0.59, +0.81 |
+| 14 | front door | 29.58 | -24.49 | -0.46, +0.89 |
+| 17 | front door | 23.35 | -27.22 | -0.34, +0.94 |
+| 20 | front door | 16.84 | -29.20 | -0.24, +0.97 |
+| 23 | front door | 10.17 | -30.49 | -0.14, +0.99 |
+| 26 | front door | 3.40 | -31.13 | -0.05, +1.00 |
+| 29 | front door | -3.40 | -31.13 | +0.05, +1.00 |
+| 32 | front door | -10.17 | -30.49 | +0.14, +0.99 |
+| 35 | front door | -16.84 | -29.20 | +0.24, +0.97 |
+| 38 | front door | -23.35 | -27.22 | +0.34, +0.94 |
+| 41 | front door | -29.58 | -24.49 | +0.46, +0.89 |
+| 44 | front door | -35.39 | -20.93 | +0.59, +0.81 |
+| 47 | front door | -40.52 | -16.46 | +0.73, +0.69 |
+| 50 | front door | -44.62 | -11.02 | +0.87, +0.50 |
+| 59 | end door | -53.45 | -0.22 | -0.00, +1.00 |
+| 66 | garden door | -60.22 | -7.24 | -0.98, -0.21 |
+| 69 | garden door | -56.23 | -17.60 | -0.87, -0.50 |
+| 72 | garden door | -50.27 | -25.59 | -0.73, -0.69 |
+| 75 | garden door | -43.26 | -31.72 | -0.59, -0.81 |
+| 78 | garden door | -35.75 | -36.33 | -0.46, -0.89 |
+| 81 | garden door | -27.98 | -39.75 | -0.34, -0.94 |
+| 84 | garden door | -20.06 | -42.17 | -0.24, -0.97 |
+| 87 | garden door | -12.06 | -43.72 | -0.14, -0.99 |
+| 90 | garden door | -4.03 | -44.48 | -0.05, -1.00 |
+| 93 | garden door | 4.03 | -44.48 | +0.05, -1.00 |
+| 96 | garden door | 12.06 | -43.72 | +0.14, -0.99 |
+| 99 | garden door | 20.06 | -42.17 | +0.24, -0.97 |
+| 102 | garden door | 27.98 | -39.75 | +0.34, -0.94 |
+| 105 | garden door | 35.75 | -36.33 | +0.46, -0.89 |
+| 108 | garden door | 43.26 | -31.72 | +0.59, -0.81 |
+| 111 | garden door | 50.27 | -25.59 | +0.73, -0.69 |
+| 114 | garden door | 56.23 | -17.60 | +0.87, -0.50 |
+| 117 | garden door | 60.22 | -7.24 | +0.98, -0.21 |
+| 124 | end door | 53.45 | -0.22 | -0.00, +1.00 |
 
 ### Design notes left open (B5)
 

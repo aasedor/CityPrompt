@@ -32,7 +32,8 @@ SOURCES = {'front': f'variant_{INDEX}.png', 'oblique': f'variant_{INDEX}_angle_6
 HOUSES, BAYS = 18, 3              # houses round the sweep, window bays to a house
 SEMI_MAJOR, SEMI_MINOR = 47.5, 31.0   # half ellipse of the concave front's face line
 DEPTH, END_BAYS = 13.8, 6         # front face to back face; window bays across each end
-COUPLED = .95                     # at every corner a second column stands this far along each face, with blind wall between
+COUPLED = {'front': 1.30, 'back': 1.35}   # how far along each face a partner column stands from its corner, with blind wall
+                                  # between: about 1.4 diameters from the corner column, which is sharper on the convex side
 STOREYS = 3
 FIRST, SECOND = 4.40, 8.70        # floor levels above the ground storey
 BAND = 4.05                       # underside of the band the columns stand on
@@ -128,6 +129,23 @@ class Bay:
         (x, y), (ux, uy), (mx, my) = self.origin, self.along, self.inward
         return (x + u * ux + n * mx, y + u * uy + n * my, z)
 
+    def q(self, u, n, z):
+        """Like `p`, but never snapped to a mitre line: for a piece placed beyond either end."""
+        (x, y), (ux, uy), (mx, my) = self.origin, self.along, self.inward
+        return (x + u * ux + n * mx, y + u * uy + n * my, z)
+
+    def reach(self, end, n):
+        """Where, along this bay, the mitre line at its start (end 0) or finish (end 1)
+        crosses setback n. Beyond a convex corner that lies outside the bay itself."""
+        x, y, _ = self.loop.node(self.k + end, n)
+        return (x - self.origin[0]) * self.along[0] + (y - self.origin[1]) * self.along[1]
+
+    def bar(self, clay, role, u, n, z0, z1, width=.022):
+        """A slender bar drawn as two crossed blades, anywhere along the bay's line."""
+        h = width / 2
+        clay.quad(role, self.q(u - h, n, z0), self.q(u + h, n, z0), self.q(u + h, n, z1), self.q(u - h, n, z1))
+        clay.quad(role, self.q(u, n - h, z0), self.q(u, n + h, z0), self.q(u, n + h, z1), self.q(u, n - h, z1))
+
     def box(self, clay, role, u0, u1, n0, n1, z0, z1, ends=True):
         """A box along the bay. `ends=False` leaves off the two end faces, for a piece
         whose ends are buried in its neighbours."""
@@ -155,8 +173,8 @@ def outline():
         total.append(total[-1] + math.hypot(point[0] - points[-1][0], point[1] - points[-1][1]))
         points.append(point)
     windows = HOUSES * BAYS
-    pitch = (total[-1] - 2 * COUPLED) / windows
-    stations = [0.0] + [COUPLED + pitch * j for j in range(windows + 1)] + [total[-1]]
+    pitch = (total[-1] - 2 * COUPLED['front']) / windows
+    stations = [0.0] + [COUPLED['front'] + pitch * j for j in range(windows + 1)] + [total[-1]]
     inner, at = [], 0
     for index, target in enumerate(stations):
         while at < samples and total[at + 1] < target:
@@ -175,7 +193,7 @@ def outline():
     outer = [(round(x + DEPTH * nx, 6), round(y + DEPTH * ny, 6)) for (x, y), (nx, ny) in inner]
 
     # Party walls stand square to the front, so the convex side is longer. Its nodes are
-    # respaced house by house: the partner column 0.95 m from each corner, then equal bays.
+    # respaced house by house: the partner column COUPLED from each corner, then equal bays.
     reach = [0.0]
     for a, b in zip(outer, outer[1:]):
         reach.append(reach[-1] + math.hypot(b[0] - a[0], b[1] - a[1]))
@@ -188,8 +206,8 @@ def outline():
     party = [0] + [1 + BAYS * h for h in range(1, HOUSES)] + [len(outer) - 1]
     respaced = list(outer)
     for h, (first, last) in enumerate(zip(party, party[1:])):
-        start = reach[first] + (COUPLED if h == 0 else 0)
-        end = reach[last] - (COUPLED if h == HOUSES - 1 else 0)
+        start = reach[first] + (COUPLED['back'] if h == 0 else 0)
+        end = reach[last] - (COUPLED['back'] if h == HOUSES - 1 else 0)
         if h == 0:
             respaced[1] = at_reach(start)
         if h == HOUSES - 1:
@@ -199,13 +217,14 @@ def outline():
             respaced[base + j] = at_reach(start + (end - start) * j / BAYS)
     outer = respaced
 
-    def across(a, b):
-        """The nodes strictly between two corners of an end, in travelling order."""
+    def across(a, b, first, last):
+        """The nodes strictly between two corners of an end, in travelling order, with the
+        partner columns `first` from corner a and `last` from corner b."""
         way = 1 if b[0] > a[0] else -1
-        step = (DEPTH - 2 * COUPLED) / END_BAYS
-        return [(round(a[0] + way * (COUPLED + step * j), 6), 0.0) for j in range(END_BAYS + 1)]
+        step = (DEPTH - first - last) / END_BAYS
+        return [(round(a[0] + way * (first + step * j), 6), 0.0) for j in range(END_BAYS + 1)]
 
-    nodes = front + across(front[-1], outer[-1]) + outer[::-1] + across(outer[0], front[0])
+    nodes = front + across(front[-1], outer[-1], COUPLED['front'], COUPLED['back']) + outer[::-1] + across(outer[0], front[0], COUPLED['back'], COUPLED['front'])
     long_bays, end_bays = windows + 2, END_BAYS + 2
     starts = {'front': 0, 'west': long_bays, 'back': long_bays + end_bays, 'east': 2 * long_bays + end_bays}
     return nodes, starts
@@ -246,10 +265,13 @@ def opening_kind(k):
 
 
 def frame_at(k):
-    """The two directions a block at node k is squared to: its mitre line on a curve, the
-    face itself at a corner."""
+    """The two directions a block at node k is squared to: its mitre line on a curve, and
+    at a corner the long face, front or back, so that the two ends mirror each other."""
     k %= BAY_COUNT
-    return (LOOP.along[k], LOOP.inward[k]) if k in CORNERS else (LOOP.tangent(k), LOOP.bisector[k])
+    if k in CORNERS:
+        face = k if side_of(k) in ('front', 'back') else k - 1
+        return (LOOP.along[face], LOOP.inward[face])
+    return (LOOP.tangent(k), LOOP.bisector[k])
 
 
 def depth_inside(x, y):
@@ -301,7 +323,7 @@ def door(clay, bay, uc, face):
     for k in (1, 2):
         u = a + .07 + (width - .14) * k / 3
         bay.quad(clay, 'joinery', u - .012, u + .012, n0 + .04, leaf + .07, head - .06)
-    bay.box(clay, 'iron', b - .22, b - .17, n0 - .03, n0 + .02, 1.02, 1.07)                # knob
+    bay.box(clay, 'iron', uc - .025, uc + .025, n0 - .03, n0 + .02, 1.02, 1.07)            # a knob on the centre stile, as Georgian front doors have
     bay.box(clay, 'dressed', a - .10, b + .10, face - .30, face + .30, .02, .035)           # threshold stone
 
 
@@ -346,6 +368,9 @@ ENTABLATURE = [(.95, ARCHITRAVE), (.12, ARCHITRAVE), (.12, ARCHITRAVE + .22), (.
                (-.40, ARCHITRAVE + 1.26), (-.48, ARCHITRAVE + 1.32), (-.48, CORNICE), (.95, CORNICE)]
 
 
+PEDESTAL = {False: (.30, .24), True: (.27, .27)}   # half sizes of the pedestal over a column: elsewhere, and at a corner
+
+
 def order(clay):
     """Band, columns, entablature and balustrade, right round the building."""
     inner = WALL + THICK                      # the band stops at the wall's inner face, where the first floor begins
@@ -358,11 +383,12 @@ def order(clay):
         column(clay, k)
         x, y, _ = LOOP.node(k, .35)
         along, inward = frame_at(k)
-        half = (.27, .27) if k in CORNERS else (.30, .24)      # a pedestal over each column, as deep as the rail it carries
-        block(clay, 'dressed', x, y, along, inward, *half, base, RAIL - .18, caps=(False, False))
+        block(clay, 'dressed', x, y, along, inward, *PEDESTAL[k in CORNERS], base, RAIL - .18, caps=(False, False))
         bay = Bay(LOOP, k)
-        if opening_kind(k) == 'blind':       # between a corner column and its partner the balustrade is a solid panel
-            bay.box(clay, 'dressed', .27, bay.length - .27, .14, .56, base, RAIL - .18, ends=False)
+        if opening_kind(k) == 'blind':       # between a corner pedestal and its partner's the balustrade is a solid panel
+            start = bay.reach(0, .35) + PEDESTAL[k in CORNERS][0]
+            end = bay.reach(1, .35) - PEDESTAL[(k + 1) % BAY_COUNT in CORNERS][0]
+            bay.box(clay, 'dressed', start, end, .14, .56, base, RAIL - .18, ends=False)
         else:
             count = max(4, round((bay.length - .6) / .28))
             turn = math.atan2(bay.along[1], bay.along[0]) + math.pi / 4
@@ -455,14 +481,19 @@ def walls(clay):
 
 # ---- area railings and paving -------------------------------------------------------------
 def railing(clay, bay, u0, u1):
-    """Spear-headed iron railings on a stone kerb along the edge of the area."""
+    """Spear-headed iron railings on a stone kerb along the edge of the area. Where the
+    railing runs to a node, its bars run on to the mitre it shares with the next bay, so
+    they turn every corner; the bar on a shared node belongs to the bay that leaves it."""
     n = -AREA + .08
     bay.box(clay, 'dressed', u0, u1, -AREA, -AREA + .16, .02, .14)
     bay.box(clay, 'iron', u0, u1, n - .015, n + .015, 1.04, 1.07)
     bay.box(clay, 'iron', u0, u1, n - .015, n + .015, .22, .25)
-    count = max(1, round((u1 - u0) / .16))
-    for j in range(count + 1):
-        bay.cross(clay, 'iron', u0 + (u1 - u0) * j / count, n, .14, 1.22)
+    to_node = u1 >= bay.length - 1e-9
+    start = bay.reach(0, n) if u0 <= 1e-9 else u0
+    end = bay.reach(1, n) if to_node else u1
+    count = max(1, math.ceil((end - start) / .16 - 1e-9))
+    for j in range(count if to_node else count + 1):
+        bay.bar(clay, 'iron', start + (end - start) * j / count, n, .14, 1.22)
 
 
 def areas(clay):
@@ -523,23 +554,33 @@ def contour(depth, z):
 
 
 def strip(clay, role, outer, inner):
-    """Skin between two contours, walking both in step. At each step the shorter of the
-    two possible diagonals is taken, which runs the hips straight from corner to corner
-    and never lets one face cross another."""
-    def gap(p, q):
-        return math.hypot(p[1][0] - q[1][0], p[1][1] - q[1][1])
-
-    i = j = 0
+    """Skin between two contours, bay by bay. Each bay still on the inner contour gets
+    its own face, a quad between its outer and inner edges, which lies in that bay's own
+    slope. Each bay that has vanished on the way in gets a triangle closing to the point
+    where its neighbours now meet. Every choice is made from the bay alone, never from
+    the direction of travel, so the skin mirrors exactly as the outline does."""
+    where = {k: m for m, (k, _) in enumerate(outer)}
+    assert all(k in where for k, _ in inner), 'a bay reappeared on the way in'
     n, m = len(outer), len(inner)
-    while i < n or j < m:
-        a, b = outer[i % n], inner[j % m]
-        a_next, b_next = outer[(i + 1) % n], inner[(j + 1) % m]
-        if j >= m or (i < n and gap(a_next, b) <= gap(a, b_next)):
-            clay.tri(role, a[1], a_next[1], b[1], facing=(0, 0, 1))
-            i += 1
+    for i, (k, point) in enumerate(inner):
+        _, after = inner[(i + 1) % m]
+        a = where[k]
+        o0, o1 = outer[a][1], outer[(a + 1) % n][1]
+        one, two = math.dist(o1, point), math.dist(o0, after)
+        if abs(one - two) < 1e-9:            # a rectangle: take the diagonal whose outer end is nearer the middle
+            first = abs(o1[0]) < abs(o0[0])
         else:
-            clay.tri(role, a[1], b_next[1], b[1], facing=(0, 0, 1))
-            j += 1
+            first = one < two
+        if first:
+            clay.tri(role, o0, o1, point, facing=(0, 0, 1))
+            clay.tri(role, o1, after, point, facing=(0, 0, 1))
+        else:
+            clay.tri(role, o0, after, point, facing=(0, 0, 1))
+            clay.tri(role, o0, o1, after, facing=(0, 0, 1))
+        j, stop = (a + 1) % n, where[inner[(i + 1) % m][0]]
+        while j != stop:                     # bays that vanished between the two contours
+            clay.tri(role, outer[j][1], outer[(j + 1) % n][1], after, facing=(0, 0, 1))
+            j = (j + 1) % n
 
 
 def roof(clay):
@@ -589,7 +630,7 @@ def party_wall(clay, front, back):
     tx, ty = -uy, ux
     span = math.hypot(bx - fx, by - fy)
     section = [(EAVES_SET - .1, EAVES), (RIDGE_SET, RIDGE + .30), (VALLEY_SET, VALLEY + .30), (span - VALLEY_SET, VALLEY + .30), (span - RIDGE_SET, RIDGE + .30),
-               (span - EAVES_SET + .1, EAVES), (span - EAVES_SET + .1, EAVES - .3), (EAVES_SET - .1, EAVES - .3)]
+               (span - EAVES_SET + .1, EAVES), (span - EAVES_SET + .1, EAVES - .25), (EAVES_SET - .1, EAVES - .25)]   # its foot is buried in the ceiling
     clay.loft('stone', [[(fx + d * ux + s * tx, fy + d * uy + s * ty, z) for d, z in section] for s in (-.14, .14)])
     for d in (RIDGE_SET, span - RIDGE_SET):
         x, y = fx + d * ux, fy + d * uy
@@ -620,6 +661,17 @@ def dormer(clay, bay):
 
 
 # ---- rooms ---------------------------------------------------------------------------------
+def straight(ring):
+    """The ring without points that lie in a straight run, so a flat polygon is cut the
+    same way at both ends of the crescent."""
+    keep = []
+    for i, (x, y, z) in enumerate(ring):
+        (ax, ay, _), (bx, by, _) = ring[i - 1], ring[(i + 1) % len(ring)]
+        if abs((x - ax) * (by - y) - (y - ay) * (bx - x)) > 1e-7:
+            keep.append((x, y, z))
+    return keep
+
+
 def rooms(clay):
     """Floors, a spine wall and party walls, so every sash has a room behind it. Nothing
     here comes nearer an outside face than the inner face of the wall."""
@@ -632,7 +684,7 @@ def rooms(clay):
     for level, thick, role, edge in ((.02, .03, 'floor', .90), (FIRST - .12, .12, 'floor', inset), (SECOND - .12, .12, 'floor', inset),
                                      (EAVES - .30, .12, 'interior', inset)):
         # each floor is the outline moved in to the wall's inner face, so it meets every wall and enters none
-        ring = [point for _, point in contour(edge, level)]
+        ring = straight([point for _, point in contour(edge, level)])
         clay.polygon(role, [(x, y, z + thick) for x, y, z in ring], facing=(0, 0, 1))
         clay.polygon(role, ring, facing=(0, 0, -1))
     lines = party_lines()
@@ -672,8 +724,8 @@ def source_lock():
 
 
 CAMERAS = ('front', 'front_corner', 'aerial', 'top', 'left_side', 'right_side', 'rear', 'rear_side', 'facade_close', 'architecture_close',
-           'glass_close', 'entrance_contact', 'end_contact', 'end_roof', 'roof_contact', 'street', 'rear_ground', 'corner_close', 'match_front', 'match_oblique',
-           'match_top')
+           'glass_close', 'entrance_contact', 'end_contact', 'end_roof', 'roof_contact', 'street', 'rear_ground', 'corner_close', 'outer_corner_close', 'corner_eye',
+           'match_front', 'match_oblique', 'match_top')
 
 
 def prework(candidate):

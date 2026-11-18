@@ -9,13 +9,13 @@ No model of this archetype existed before: not in the clay library, the textured
 families, the model library, the native model contract, the validation
 catalogue, the teaching buildings or the picker.
 
-Status of candidate **crescent-terrace-bath-stone-clay-v005**:
+Status of candidate **crescent-terrace-bath-stone-clay-v006**:
 
 | Checkpoint | Status |
 |---|---|
-| Deterministic delivery checks | Pass, 82 checks. `evidence/delivery-verification.json` |
+| Deterministic delivery checks | Pass, 86 checks. `evidence/delivery-verification.json` |
 | Builder pixel review | Pass, with open notes. `evidence/builder-pixel-review.json` |
-| Independent architectural-clay review | Not yet reviewed. v002 was reviewed and refused; v005 answers that review and has not been reviewed itself |
+| Independent architectural-clay review | Not yet reviewed. v002 and v005 were each reviewed and refused; v006 answers the review of v005 and has not been reviewed itself |
 | Runtime integration | NOT REVIEWED. No part of it has been run. `integration/runtime-review.md` |
 | Publication or activation | Not authorized |
 
@@ -33,8 +33,14 @@ Earlier candidates, none of which may be used:
 - **v004.** A second audit found five smaller faults, in the sills, the iron
   guards, the railing returns, the capitals and the column band.
 
-v005 is a rework that answers every finding of the v002 review.
-`evidence/builder-pixel-review.json` lists the answer to each one.
+- **v005.** A rework that answered every finding of the v002 review. It went to
+  a second independent review and was refused with two P1 findings, both at the
+  corners. `evidence/independent-review-v005.json` holds that review. The corner
+  column and its two partners ran through each other, and the pavement railings
+  had no bars for 1.6 m either side of each corner.
+
+v006 answers the review of v005. `evidence/builder-pixel-review.json` lists the
+answer to each finding of both reviews.
 
 ## What the building is
 
@@ -47,17 +53,18 @@ storey and carrying one continuous entablature and balustrade.
 | Plan | The concave front follows half an ellipse 95 m by 31 m. The range is 13.8 m deep. Over its paved strip the model is 126.3 m wide and 48.4 m deep |
 | Houses | Eighteen, each three bays and 6.8 m wide on the front |
 | Storeys | Ground storey 4.4 m, then two storeys behind the columns. Cornice at 13.0 m, balustrade at 14.1 m, ridge at 15.9 m, chimney pots at 19.2 m |
-| Order | 128 engaged Ionic columns, 7.2 m tall and 0.66 m across: 57 on the concave front and 9 across each end. Each stands on a plinth block and carries a capital with two scrolls |
-| Corners | A corner column with a partner 0.95 m along each face and blind wall between, so no window stands near a corner |
+| Order | 128 engaged Ionic columns, 7.2 m tall and 0.66 m across: 57 on the concave front and 9 across each end. Each stands on a plinth block and carries a capital with two scrolls. At the four corners each capital faces the long front or back, so the two ends mirror |
+| Corners | A corner column with a partner 1.30 m along each face on the concave side and 1.35 m on the convex side. Every pair stands 1.38 to 1.42 diameters apart, centre to centre, with blind wall between, so no window stands near a corner |
 | Entablature | Architrave, frieze and a modillion cornice, then a balustrade with a pedestal over every column |
 | Windows | One sash to a window bay on each storey, six panes over six: 1.95 m at street level, 2.35 m behind the columns with an iron guard, 1.70 m above |
-| Doors | A six-panel door under a fanlight in the middle bay of sixteen houses on the front, one at each end for the two end houses, and a garden door to each house on the convex side: 36 in all, each 35 mm above grade |
+| Doors | A six-panel door under a fanlight, with a knob on the centre stile, in the middle bay of sixteen houses on the front, one at each end for the two end houses, and a garden door to each house on the convex side: 36 in all, each 35 mm above grade |
 | Roof | Two slate ranges with a lead flat between them, behind lead gutters, hipped at both ends. A stone upstand and two stacks with seven pots at every party wall. Dormers behind the balustrade |
-| Railings | Spear-headed iron railings on a stone kerb round the building, opening at each door |
+| Railings | Spear-headed iron railings on a stone kerb round the building, with bars no more than 0.16 m apart all the way round each corner, opening at each door |
 | Inside | Three floors, a spine wall and party walls to every house, so each window has a room behind it |
 
-The model is 170,534 triangles in 12 flat-coloured parts, with no textures or
-images. Nothing sits below grade.
+The model is 170,276 triangles in 12 flat-coloured parts, with no textures or
+images. Nothing sits below grade. Every point of the model has a partner within
+2 mm across the middle of the crescent.
 
 ## What it was measured from
 
@@ -114,17 +121,18 @@ to 4.0 m in the end houses, because party walls stand square to the front.
 The roof height at any point depends only on how far in that point lies from
 the nearest face. `contour()` moves the whole outline in by a given distance,
 drops each bay as it shrinks to nothing, and so gives a closed line at one
-height. `strip()` joins one line to the next with triangles, always taking the
-shorter diagonal. Hips then run from each corner of the walls to the ridge with
-no special case for the ends. A test samples a grid of points round every
-corner and requires exactly one slate face over each.
-
-Where flat faces turn the curved plan beside each outer corner, the slate lies
-up to 0.26 m from the ideal surface, over about a square metre.
+height. `strip()` joins one line to the next. Each bay still present on the
+inner line gets its own face, which lies in that bay's own slope; a bay that
+vanishes on the way in gets a triangle closing to the point where its neighbours
+meet. Hips then run from each corner of the walls to the ridge with no special
+case for the ends. Every choice is made from the bay alone, never from the
+direction of travel, so the slate is cut into the same triangles at both ends.
+A test samples a grid of points round every corner and requires exactly one
+slate face over each.
 
 ## Size
 
-At 126 m by 48 m this is a large fixed-size building, and at 170,534 triangles
+At 126 m by 48 m this is a large fixed-size building, and at 170,276 triangles
 it sits just under the 180,000 that the building memory gives as the usual
 ceiling. It needs a plot of at least 130 m by 52 m. It cannot be stretched, and
 a shorter crescent would be a different candidate: `HOUSES` is one constant.
@@ -137,7 +145,7 @@ a shorter crescent would be a different candidate: `HOUSES` is one constant.
 | `cameras.json`, `review.html`, `render.cjs` | Review renders of the exact GLB in headless Chromium |
 | `boards.py` | Four 1080 x 1920 phone boards |
 | `verify.py` | Delivery checks, including that every whole view keeps the building in frame; writes `delivery-verification.json` |
-| `test_crescent.py` | 23 tests, including that the generator still produces the recorded bytes, that every swept piece faces outward, that the roof is one surface with true hips, that no glass stands near a corner, that stacks stand through the roof and that no room reaches an outside face |
+| `test_crescent.py` | 27 tests, including that the generator still produces the recorded bytes, that every swept piece faces outward, that the roof is one surface with true hips, that no glass stands near a corner, that the corner columns stand clear of their partners, that railing bars turn every corner, that the whole crescent mirrors, that stacks stand through the roof and that no room reaches an outside face |
 | `prework-manifest.json`, `candidate.json` | The measured contract and the candidate's hashes |
 | `evidence/` | Builder review, delivery verification and independent reviews |
 | `integration/runtime-review.md` | The runtime review template, filled in honestly: nothing was run. It lists all 36 doors |
@@ -165,7 +173,7 @@ scripts refuse to replace a file: RLASM never overwrites a candidate.
 
 ## Before this can be offered to students
 
-1. An independent review of v005 with no P0 and no P1 finding.
+1. An independent review of v006 with no P0 and no P1 finding.
 2. A person looks at the renders and boards and accepts or rejects the model,
    knowing the differences listed above.
 3. Local install and student trial, as `docs/BUILDING_CATALOGUE_WORKFLOW.md`

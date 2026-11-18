@@ -115,12 +115,117 @@ def test_every_corner_has_coupled_columns_and_blind_wall():
     blind = [k for k in range(build.BAY_COUNT) if build.opening_kind(k) == 'blind']
     assert blind == [0, 55, 56, 63, 64, 119, 120, 127]
     for k in blind:
-        assert math.isclose(build.Bay(build.LOOP, k).length, build.COUPLED, abs_tol=1e-3)
+        assert math.isclose(build.Bay(build.LOOP, k).length, build.COUPLED['front' if k in (0, 55) else 'back' if k in (64, 119) else 'front' if k in (56, 127) else 'back'], abs_tol=1e-3)
     assert build.END_FACE_BAYS + 1 == 9, 'nine columns across each end, as the oblique shows'
     corners = [build.NODES[k] for k in build.CORNERS]
     for face in CLAY.triangles['glass']:
         for x, y, _ in face[:3]:
             assert min(math.hypot(x - cx, y - cy) for cx, cy in corners) > 1.4, 'no glass near a corner'
+
+
+def square(k, setback, half_u, half_n):
+    """The plan of a block at node k, as `build.block` lays it out."""
+    x, y, _ = build.LOOP.node(k, setback)
+    along, inward = build.frame_at(k)
+    return [(x + su * half_u * along[0] + sn * half_n * inward[0], y + su * half_u * along[1] + sn * half_n * inward[1])
+            for su, sn in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
+
+
+def apart(first, second):
+    """True when two convex plan polygons are separated by some gap."""
+    for ring in (first, second):
+        for (ax, ay), (bx, by) in zip(ring, ring[1:] + ring[:1]):
+            nx, ny = by - ay, ax - bx
+            one = [nx * x + ny * y for x, y in first]
+            two = [nx * x + ny * y for x, y in second]
+            if max(one) < min(two) - 1e-6 or max(two) < min(one) - 1e-6:
+                return True
+    return False
+
+
+def test_corner_columns_stand_clear_of_their_partners():
+    """The independent review of v005 found the corner column and its two partners
+    running through each other, plinths, shafts, capitals and all. Each now stands
+    about 1.35 diameters from its neighbour, with wall showing between."""
+    r = build.RADIUS
+    for k in build.CORNERS:
+        cx, cy, _ = build.LOOP.node(k, build.AXIS)
+        for j in (k - 1, k + 1):
+            px, py, _ = build.LOOP.node(j, build.AXIS)
+            assert 1.3 < math.hypot(px - cx, py - cy) / (2 * r) < 1.45
+            assert apart(square(k, build.AXIS, build.PLINTH, build.PLINTH), square(j, build.AXIS, build.PLINTH, build.PLINTH)), 'plinths'
+            assert apart(square(k, build.AXIS, 1.32 * r, 1.32 * r), square(j, build.AXIS, 1.32 * r, 1.32 * r)), 'abaci'
+            assert apart(square(k, .35, *build.PEDESTAL[True]), square(j, .35, *build.PEDESTAL[False])), 'balustrade pedestals'
+    for k in range(build.BAY_COUNT):
+        if build.opening_kind(k) == 'blind':     # the solid balustrade panel spans only the gap between two pedestals
+            bay = build.Bay(build.LOOP, k)
+            start = bay.reach(0, .35) + build.PEDESTAL[k in build.CORNERS][0]
+            end = bay.reach(1, .35) - build.PEDESTAL[(k + 1) % build.BAY_COUNT in build.CORNERS][0]
+            assert end - start > .3
+
+
+def test_railing_bars_turn_every_corner():
+    """The review of v005 found 1.6 m of railing with no bars either side of each corner.
+    Walking round the railing line, no gap between bars is wider than a bar spacing except
+    the opening at each door, and no bar is drawn twice."""
+    n = -build.AREA + .08
+    ring = [build.LOOP.node(k, n)[:2] for k in range(build.BAY_COUNT)]
+    edges, total = [], 0.0
+    for (ax, ay), (bx, by) in zip(ring, ring[1:] + ring[:1]):
+        length = math.hypot(bx - ax, by - ay)
+        edges.append((ax, ay, (bx - ax) / length, (by - ay) / length, length, total))
+        total += length
+    positions = []
+    for face in CLAY.triangles['iron']:
+        zs = sorted({round(point[2], 3) for point in face[:3]})
+        if zs != [.14, 1.22]:
+            continue
+        x, y = sum(point[0] for point in face[:3]) / 3, sum(point[1] for point in face[:3]) / 3
+        best = None
+        for ax, ay, ux, uy, length, start in edges:
+            t = max(0.0, min(length, (x - ax) * ux + (y - ay) * uy))
+            off = math.hypot(x - ax - t * ux, y - ay - t * uy)
+            if best is None or off < best[0]:
+                best = (off, start + t)
+        assert best[0] < .03, 'every railing bar stands on the railing line'
+        positions.append(best[1])
+    positions.sort()
+    bars = [positions[0]]
+    for s in positions[1:]:
+        if s - bars[-1] > .03:
+            bars.append(s)
+    if bars[0] + total - bars[-1] < .03:     # the bar on the first node, seen from both of its bays
+        bars.pop()
+    gaps = [b - a for a, b in zip(bars, bars[1:])] + [bars[0] + total - bars[-1]]
+    openings = [g for g in gaps if g > .2]
+    assert len(openings) == len(build.entrances()), 'the only openings are the paths to the doors'
+    for g in openings:
+        assert math.isclose(g, build.DOOR[0] + .5, abs_tol=.06)
+    assert min(gaps) > .08, 'no bar is drawn twice; the shortest run, beside an end door, is 0.10 m'
+    assert max(g for g in gaps if g <= .2) < .17, 'bars 0.16 m apart at most, measured here to within a bar thickness'
+
+
+NEAR = (0, .001, -.001, .002, -.002)
+
+
+def test_the_crescent_mirrors_about_its_middle():
+    """The review of v005 found the corner capitals of one end not mirroring the other,
+    and the slate cut differently at the two ends. Every point of every part now has a
+    partner across the middle, and the slate is cut into the same triangles both sides.
+    Flat quads elsewhere may be split along either diagonal; that changes nothing seen."""
+    for role, faces in CLAY.triangles.items():
+        points = {(round(point[0], 3), round(point[1], 3), round(point[2], 3)) for face in faces for point in face[:3]}
+        for x, y, z in points:
+            assert any((round(-x + dx, 3), round(y + dy, 3), z) in points for dx in NEAR for dy in NEAR), (role, x, y, z)   # within 2 mm
+    cut = {tuple(sorted((round(point[0], 3), round(point[1], 3), round(point[2], 3)) for point in face[:3])) for face in CLAY.triangles['slate']}
+    assert cut == {tuple(sorted((round(-x, 3) + 0.0, y, z) for x, y, z in face)) for face in cut}
+
+
+def test_party_walls_stand_in_the_ceiling():
+    """Their feet once shared one downward plane with the ceiling under them."""
+    underside = build.EAVES - .30
+    for face in CLAY.triangles['stone']:
+        assert not all(math.isclose(point[2], underside) for point in face[:3])
 
 
 def test_layout_mirrors_about_the_middle():

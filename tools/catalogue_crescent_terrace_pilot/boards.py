@@ -20,10 +20,11 @@ spec.loader.exec_module(shared)
 
 def construction(directory, report):
     board, draw = shared.sheet('Construction and contact views', report)
-    views = ('facade_close', 'architecture_close', 'glass_close', 'entrance_contact', 'end_contact', 'corner_close', 'end_roof', 'roof_contact')
+    views = ('facade_close', 'architecture_close', 'glass_close', 'entrance_contact', 'end_contact', 'corner_close', 'outer_corner_close', 'corner_eye',
+             'end_roof', 'roof_contact')
     for k, view in enumerate(views):
-        x, y = 36 + (k % 2) * 510, 150 + (k // 2) * 430
-        board.paste(shared.fitted(directory / 'renders' / f'{view}.png', 498, 374), (x, y + 34))
+        x, y = 36 + (k % 2) * 510, 150 + (k // 2) * 344
+        board.paste(shared.fitted(directory / 'renders' / f'{view}.png', 498, 300), (x, y + 34))
         draw.text((x, y), view, fill=shared.INK, font=shared.font(22))
     shared.save(board, directory / 'boards' / 'phone-construction.png')
 

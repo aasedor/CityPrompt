@@ -1,5 +1,5 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v005",
+  "candidate": "crescent-terrace-bath-stone-clay-v006",
   "title": "Bath Stone Grand",
   "method": "RLASM v6.1 clay-first",
   "representation_kind": "architectural_clay",
@@ -167,6 +167,8 @@
     "street",
     "rear_ground",
     "corner_close",
+    "outer_corner_close",
+    "corner_eye",
     "match_front",
     "match_oblique",
     "match_top"

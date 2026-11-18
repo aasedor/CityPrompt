@@ -1,25 +1,25 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v005",
+  "candidate": "crescent-terrace-bath-stone-clay-v006",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/crescent-terrace-bath-stone/v005 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153",
-  "model_bytes": 8610196,
+  "external_directory": "artifacts/crescent-terrace-bath-stone/v006 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
+  "model_bytes": 8594664,
   "delivered_bounds_gltf_m": [
     [
-      -63.1427,
-      0.0,
+      -63.1587,
+      0,
       -46.6002
     ],
     [
-      63.1427,
+      63.1587,
       19.16,
       1.8
     ]
   ],
   "native_dimensions_m": {
-    "width": 126.2855,
+    "width": 126.3175,
     "depth": 48.4002,
     "height": 19.16
   },
@@ -28,14 +28,14 @@
   "columns": 128,
   "front_columns": 57,
   "runtime": {
-    "path": "crescent-terrace-bath-stone-clay-v005.glb",
-    "bytes": 8610196,
-    "sha256": "72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153",
+    "path": "crescent-terrace-bath-stone-clay-v006.glb",
+    "bytes": 8594664,
+    "sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
     "meshes": 12,
     "materials": 12,
     "textures": 0,
     "images": 0,
-    "triangles": 170534
+    "triangles": 170276
   },
   "entrances": {
     "front doors": 16,
@@ -61,6 +61,11 @@
       "status": "builder review only; superseded by the rework that followed the independent review of v002",
       "model_sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
       "source_commit": "c1a1eedd5"
+    },
+    "crescent-terrace-bath-stone-clay-v005": {
+      "status": "independent review: rework required, 0 P0, 2 P1 and 9 P2 (evidence/independent-review-v005.json)",
+      "model_sha256": "72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153",
+      "source_commit": "854dfdeec"
     }
   }
 }

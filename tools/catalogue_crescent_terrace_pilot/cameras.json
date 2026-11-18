@@ -19,6 +19,8 @@
     "street": {"pos": [18, 2, 1.7], "target": [-28, 27, 9], "fov": 50, "shadow": 100, "centre": [0, 22, 8]},
     "rear_ground": {"pos": [20, 68, 1.7], "target": [0, 45, 8], "fov": 52, "sun": [0.3, 0.7, 0.5], "shadow": 60, "centre": [0, 42, 8]},
     "corner_close": {"pos": [38, -9, 10], "target": [47.5, 0.5, 11.5], "fov": 40, "shadow": 45, "centre": [52, 5, 8]},
+    "outer_corner_close": {"pos": [71, -9, 10], "target": [61.3, 0.5, 11.0], "fov": 40, "shadow": 45, "centre": [58, 6, 8]},
+    "corner_eye": {"pos": [69, -9.5, 1.6], "target": [60.5, 0.5, 3.2], "fov": 58, "shadow": 45, "centre": [58, 6, 6]},
     "match_front": {"pos": [4.5, 16.9, 1.6], "target": [-41, 25, 1.6], "fov": 49, "shift": 0.5, "w": 1024, "h": 768, "sun": [0.75, -0.5, 0.42], "shadow": 100, "centre": [0, 22, 8]},
     "match_oblique": {"pos": [-92, -40, 40], "target": [-20, 22, 2], "fov": 52, "w": 1195, "h": 896, "sun": [0.8, -0.25, 0.5], "shadow": 100, "centre": [0, 22, 8]},
     "match_top": {"pos": [0, 22.4, 400], "target": [0, 22.4, 0], "up": [0, 1, 0], "ortho": 70, "w": 1195, "h": 896, "sun": [0.6, -0.5, 0.6], "shadow": 100, "centre": [0, 22, 8]}
