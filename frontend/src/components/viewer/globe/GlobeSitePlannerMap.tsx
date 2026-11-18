@@ -57,7 +57,6 @@ import { GlobeBuildingPlotLandscape } from './GlobeBuildingPlotLandscape';
 import { BuildingLandscapeSurfaceProvider } from './BuildingFoundationSurface';
 import { nativeStreetPreparationProblem } from './nativeStreetPilot';
 import { appendStreetDrawingValue, finishDoubleClickValues, streetDrawingGeometry } from '@/features/pickPlace/streetDrawingGeometry';
-import { fitBridgeDrawingSpan } from '@/features/pickPlace/bridgeDrawingSpan';
 import { usePublicRoadContext } from '@/features/pickPlace/usePublicRoadContext';
 import { supportsPublicRoadSuggestions } from '@/features/pickPlace/publicRoadSuggestions';
 import { Canvas, useThree } from '@react-three/fiber';
@@ -5201,15 +5200,14 @@ export function GlobeSitePlannerMap({
         const tool = activeSitePlannerTool!;
         const min = minPointsForTool(tool);
         const isLineTool = isLinearTool(tool);
-        const bridge = tool === 'road' && modularBridgeProgramFor(activeToolProperties?.road_selected_variant_id);
         const canFinish = n >= min && !streetPreparationProblem;
         const canConnect = !isLineTool && canFinish && centerNearStartVertex;
         const placeLabel = canConnect
           ? 'Connect & Finish'
           : n === 0
-            ? bridge ? 'Place bridge start' : 'Place First Vertex'
+            ? 'Place First Vertex'
             : isLineTool
-              ? bridge ? n === 1 ? 'Set bridge end' : 'Adjust bridge end' : 'Place Waypoint'
+              ? 'Place Waypoint'
               : 'Place Vertex';
 
         return (
@@ -5269,20 +5267,19 @@ export function GlobeSitePlannerMap({
         const label = activeToolProperties?.parking_layout_version === 1 ? 'Parking lot' : activeToolProperties?.ground_surface_material ? 'Ground surface' : activeToolProperties?.cartography_study ? 'Land-use zone' : getToolDisplayLabel(tool);
         const min = minPointsForTool(tool);
         const linear = isLinearTool(tool);
-        const bridge = tool === 'road' && modularBridgeProgramFor(activeToolProperties?.road_selected_variant_id);
 
         let measurement = '';
         if (n >= 2 && linear) {
-          measurement = formatDistance(polylineLength(fitBridgeDrawingSpan(drawingPoints, activeToolProperties)));
+          measurement = formatDistance(polylineLength(drawingPoints));
         } else if (n >= 3 && !linear) {
           measurement = formatDrawingArea(polygonAreaM2(drawingPoints));
         }
 
         let mobileHint: string;
         if (n === 0) {
-          mobileHint = bridge ? 'Center the crosshair, then tap Place bridge start' : 'Center the crosshair, then tap Place First Vertex';
+          mobileHint = `Center the crosshair, then tap Place First Vertex`;
         } else if (n < min) {
-          mobileHint = bridge ? 'Move the crosshair toward the other side. The span fits automatically.' : linear
+          mobileHint = linear
             ? `${n} waypoint${n > 1 ? 's' : ''} - need ${min} min - move under crosshair`
             : `${n} point${n > 1 ? 's' : ''} - need ${min} min - move under crosshair`;
         } else if (!linear && centerNearStartVertex) {
@@ -5308,7 +5305,7 @@ export function GlobeSitePlannerMap({
 
         return (
           <>
-            <div className={`${streetDrawingNotice ? 'hidden' : ''} pointer-events-none absolute left-1/2 bottom-40 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:hidden`}>
+            <div className="pointer-events-none absolute left-1/2 top-20 z-30 max-w-[90vw] -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:hidden">
               {mobileHint}
             </div>
             <div className="pointer-events-none absolute left-1/2 bottom-24 z-30 hidden -translate-x-1/2 rounded-lg bg-gray-900/90 px-4 py-2 text-center text-xs text-white backdrop-blur-sm border border-amber-500/30 sm:block">

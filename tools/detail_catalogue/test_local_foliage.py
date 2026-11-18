@@ -142,8 +142,8 @@ class PrairieFoliageContract(unittest.TestCase):
         for row in self.registry:
             with self.subTest(id=row['id']):
                 self.assertEqual(row['thumbnailUrl'], row['url'][:-len('.glb')] + '.webp')
-                # the hash is locked beside the builder, not in the row that ships in the bundle
-                self.assertNotIn('thumbnailSha256', row)
+                # the row ships the hash, as the released catalogue does; the lock file must agree
+                self.assertEqual(row['thumbnailSha256'], locks[row['id']])
                 data = (kit / Path(row['thumbnailUrl']).name).read_bytes()
                 self.assertEqual((data[:4], data[8:12]), (b'RIFF', b'WEBP'))
                 self.assertEqual(hashlib.sha256(data).hexdigest(), locks[row['id']])

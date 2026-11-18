@@ -3863,7 +3863,7 @@
     "id": "detail-prairie-trembling-aspen",
     "label": "Trembling aspen",
     "category": "Trees",
-    "description": "Populus tremuloides \u00b7 Alberta native with pale bark and a light, open crown. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus tremuloides · Alberta native with pale bark and a light, open crown. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.799,
       4.759,
@@ -3883,13 +3883,14 @@
     "triangles": 11236,
     "meshes": 2,
     "bytes": 1282952,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen.webp",
+    "thumbnailSha256": "26adacd046f7ee7c8dbc1cdd116cd26b1d722c14da06859f751284f2b2b5ff5b"
   },
   {
     "id": "detail-prairie-swedish-columnar-aspen",
     "label": "Swedish columnar aspen",
     "category": "Trees",
-    "description": "Populus tremula Erecta \u00b7 narrow upright screen tree planted across Calgary. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus tremula Erecta · narrow upright screen tree planted across Calgary. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       2.42,
       2.362,
@@ -3909,13 +3910,14 @@
     "triangles": 9740,
     "meshes": 2,
     "bytes": 1112440,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen.webp",
+    "thumbnailSha256": "381a9c93ce3807b8b09a6610e0a410d545adf36437f4f25a7aaedc5811a2cd74"
   },
   {
     "id": "detail-prairie-balsam-poplar",
     "label": "Balsam poplar",
     "category": "Trees",
-    "description": "Populus balsamifera \u00b7 tall river-valley native with coarse ascending limbs. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus balsamifera · tall river-valley native with coarse ascending limbs. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       9.358,
       8.004,
@@ -3935,13 +3937,14 @@
     "triangles": 13248,
     "meshes": 2,
     "bytes": 1512312,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/balsam-poplar.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/balsam-poplar.webp",
+    "thumbnailSha256": "52d888211f96964e1e97955e5db505f6505cc1a43a934bdfb6396a1c0f200502"
   },
   {
     "id": "detail-prairie-paper-birch",
     "label": "Paper birch",
     "category": "Trees",
-    "description": "Betula papyrifera \u00b7 white-barked native, often multi-stem, with fine drooping twigs. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Betula papyrifera · white-barked native, often multi-stem, with fine drooping twigs. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.502,
       4.693,
@@ -3961,13 +3964,14 @@
     "triangles": 13788,
     "meshes": 2,
     "bytes": 1573868,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch.webp",
+    "thumbnailSha256": "d9b270b3de1b3b8e93ee9d258ea2ec73ca1e98938a03c774de37a3b8a3ba1d2d"
   },
   {
     "id": "detail-prairie-green-ash",
     "label": "Green ash",
     "category": "Trees",
-    "description": "Fraxinus pennsylvanica \u00b7 hardy boulevard shade tree with a rounded crown. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Fraxinus pennsylvanica · hardy boulevard shade tree with a rounded crown. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.703,
       8.759,
@@ -3987,13 +3991,14 @@
     "triangles": 13248,
     "meshes": 2,
     "bytes": 1512296,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash.webp",
+    "thumbnailSha256": "dfdeb0ecf59b76ecf0900275e5642245e2ec7ff8903aad81fec4483c592103b6"
   },
   {
     "id": "detail-prairie-bur-oak",
     "label": "Bur oak",
     "category": "Trees",
-    "description": "Quercus macrocarpa \u00b7 slow, broad prairie oak with heavy spreading limbs. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Quercus macrocarpa · slow, broad prairie oak with heavy spreading limbs. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       9.302,
       9.384,
@@ -4013,13 +4018,14 @@
     "triangles": 12462,
     "meshes": 2,
     "bytes": 1422688,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak.webp",
+    "thumbnailSha256": "4d9735ff4a7a3977ce6e93deeee721c9161437c0b1869d56b31d7fb75aadc18d"
   },
   {
     "id": "detail-prairie-manitoba-maple",
     "label": "Manitoba maple",
     "category": "Trees",
-    "description": "Acer negundo \u00b7 fast, wide, often multi-stem shelterbelt maple. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Acer negundo · fast, wide, often multi-stem shelterbelt maple. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.762,
       7.681,
@@ -4039,13 +4045,14 @@
     "triangles": 13920,
     "meshes": 2,
     "bytes": 1588928,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple.webp",
+    "thumbnailSha256": "53daf83a6b18ebe201a38aad55b58057efcc3b1553fa2a255a65323e5e103af4"
   },
   {
     "id": "detail-prairie-laurel-leaf-willow",
     "label": "Laurel leaf willow",
     "category": "Trees",
-    "description": "Salix pentandra \u00b7 dense glossy rounded crown common in older Calgary neighbourhoods. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Salix pentandra · dense glossy rounded crown common in older Calgary neighbourhoods. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       10.287,
       10.375,
@@ -4065,13 +4072,14 @@
     "triangles": 13248,
     "meshes": 2,
     "bytes": 1512332,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/laurel-leaf-willow.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/laurel-leaf-willow.webp",
+    "thumbnailSha256": "bf5f4b3d0a086d4f41e8a23b3db12047b95864c1bf97c2c5a01fa60eeb41cea8"
   },
   {
     "id": "detail-prairie-schubert-chokecherry",
     "label": "Schubert chokecherry",
     "category": "Trees",
-    "description": "Prunus virginiana Schubert \u00b7 small tree whose leaves turn deep purple by summer. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Prunus virginiana Schubert · small tree whose leaves turn deep purple by summer. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.421,
       4.039,
@@ -4091,13 +4099,14 @@
     "triangles": 10398,
     "meshes": 2,
     "bytes": 1187440,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/schubert-chokecherry.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/schubert-chokecherry.webp",
+    "thumbnailSha256": "892e75ee68fa4d4028a473b55a035534ea345a4ec6331e2a97d66cefbbbfdbf6"
   },
   {
     "id": "detail-prairie-showy-mountain-ash",
     "label": "Showy mountain ash",
     "category": "Trees",
-    "description": "Sorbus decora \u00b7 compact ornamental with orange-red berry clusters. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Sorbus decora · compact ornamental with orange-red berry clusters. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.127,
       4.148,
@@ -4117,13 +4126,14 @@
     "triangles": 12218,
     "meshes": 2,
     "bytes": 1394916,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash.webp",
+    "thumbnailSha256": "f3ba4dc168bfeec67e08b9ee6ed929ba484cc6b0da3725e6d51bdfafb3c1277f"
   },
   {
     "id": "detail-prairie-amur-cherry",
     "label": "Amur cherry",
     "category": "Trees",
-    "description": "Prunus maackii \u00b7 multi-stem ornamental with glossy copper-amber bark. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Prunus maackii · multi-stem ornamental with glossy copper-amber bark. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       3.815,
       3.916,
@@ -4143,13 +4153,14 @@
     "triangles": 13194,
     "meshes": 2,
     "bytes": 1506152,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/amur-cherry.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/amur-cherry.webp",
+    "thumbnailSha256": "1c15d1211a752f28beb4c6e45b70fa79d62cfc8a2c6645997f67edbbd0980112"
   },
   {
     "id": "detail-prairie-plains-cottonwood",
     "label": "Plains cottonwood",
     "category": "Trees",
-    "description": "Populus deltoides \u00b7 massive river-flat native with furrowed bark and a broad crown. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus deltoides · massive river-flat native with furrowed bark and a broad crown. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       12.406,
       12.317,
@@ -4169,13 +4180,14 @@
     "triangles": 12606,
     "meshes": 2,
     "bytes": 1439136,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood.webp",
+    "thumbnailSha256": "ec9e69a55570daf5ecfd9d2cc826e8bcf1ddb08f2a10e3e52eb214fe530d2a0f"
   },
   {
     "id": "detail-prairie-brandon-elm",
     "label": "Brandon elm",
     "category": "Trees",
-    "description": "Ulmus americana Brandon \u00b7 vase-shaped prairie elm that arches over Calgary boulevards. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Ulmus americana Brandon · vase-shaped prairie elm that arches over Calgary boulevards. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       10.906,
       8.942,
@@ -4195,13 +4207,14 @@
     "triangles": 12558,
     "meshes": 2,
     "bytes": 1433648,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/brandon-elm.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/brandon-elm.webp",
+    "thumbnailSha256": "2910ad0216a44372b8ca8be6f5a285d8807e2bacd3f51586c57c4ac5b2b8cdf7"
   },
   {
     "id": "detail-prairie-littleleaf-linden",
     "label": "Littleleaf linden",
     "category": "Trees",
-    "description": "Tilia cordata \u00b7 dense, neatly pyramidal street tree with small heart-shaped leaves. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Tilia cordata · dense, neatly pyramidal street tree with small heart-shaped leaves. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.113,
       7.119,
@@ -4221,13 +4234,14 @@
     "triangles": 11808,
     "meshes": 2,
     "bytes": 1348176,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/littleleaf-linden.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/littleleaf-linden.webp",
+    "thumbnailSha256": "68760d33c9b4da700cf3bfc791622d06fb465ffe545b2760d6c618bb107db981"
   },
   {
     "id": "detail-prairie-flowering-crabapple",
     "label": "Flowering crabapple",
     "category": "Trees",
-    "description": "Malus \u00b7 small rounded yard tree covered in pink spring blossom. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Malus · small rounded yard tree covered in pink spring blossom. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       5.048,
       5.044,
@@ -4247,13 +4261,14 @@
     "triangles": 13048,
     "meshes": 2,
     "bytes": 1489536,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/flowering-crabapple.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/flowering-crabapple.webp",
+    "thumbnailSha256": "ec431c52b0064657dfaa7b6234a8f587057005790270a6ac2817739f0a48562f"
   },
   {
     "id": "detail-prairie-japanese-tree-lilac",
     "label": "Japanese tree lilac",
     "category": "Trees",
-    "description": "Syringa reticulata \u00b7 compact street tree with cherry-like bark and creamy June bloom. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Syringa reticulata · compact street tree with cherry-like bark and creamy June bloom. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       5.114,
       5.336,
@@ -4273,13 +4288,14 @@
     "triangles": 12396,
     "meshes": 2,
     "bytes": 1415204,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/japanese-tree-lilac.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/japanese-tree-lilac.webp",
+    "thumbnailSha256": "9104093592366a835d8be3ab98fea4fe17d5bf357ece219b7e2ed909aefd03b3"
   },
   {
     "id": "detail-prairie-white-spruce",
     "label": "White spruce",
     "category": "Trees",
-    "description": "Picea glauca \u00b7 Alberta native evergreen with soft drooping tiers. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Picea glauca · Alberta native evergreen with soft drooping tiers. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       5.334,
       4.959,
@@ -4299,13 +4315,14 @@
     "triangles": 13296,
     "meshes": 2,
     "bytes": 1517768,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/white-spruce.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/white-spruce.webp",
+    "thumbnailSha256": "a5e188aeb91c60f9fb39740b5cef57d8e20a4fb403e8c33e50b454df473db6ef"
   },
   {
     "id": "detail-prairie-colorado-blue-spruce",
     "label": "Colorado blue spruce",
     "category": "Trees",
-    "description": "Picea pungens \u00b7 stiff silver-blue tiers; the classic Calgary yard evergreen. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Picea pungens · stiff silver-blue tiers; the classic Calgary yard evergreen. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.959,
       4.773,
@@ -4325,13 +4342,14 @@
     "triangles": 11946,
     "meshes": 2,
     "bytes": 1363900,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/colorado-blue-spruce.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/colorado-blue-spruce.webp",
+    "thumbnailSha256": "65ba1787a95721a572d6c23176f615ca522666f60d857be527110c3e849d745b"
   },
   {
     "id": "detail-prairie-lodgepole-pine",
     "label": "Lodgepole pine",
     "category": "Trees",
-    "description": "Pinus contorta \u00b7 Alberta's provincial tree: tall clean trunk, narrow high crown. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Pinus contorta · Alberta's provincial tree: tall clean trunk, narrow high crown. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       5.531,
       5.451,
@@ -4351,13 +4369,14 @@
     "triangles": 11582,
     "meshes": 2,
     "bytes": 1322360,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/lodgepole-pine.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/lodgepole-pine.webp",
+    "thumbnailSha256": "cf5334841183695d290d32ed4cae4669e12bcb9738529ca9efe542df17909e15"
   },
   {
     "id": "detail-prairie-siberian-larch",
     "label": "Siberian larch",
     "category": "Trees",
-    "description": "Larix sibirica \u00b7 soft open conifer, bright green in spring and gold in autumn. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Larix sibirica · soft open conifer, bright green in spring and gold in autumn. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.526,
       4.561,
@@ -4377,13 +4396,14 @@
     "triangles": 10832,
     "meshes": 2,
     "bytes": 1236880,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch.webp",
+    "thumbnailSha256": "c018c819d2fe4ea2eca906e8a3a487cec2795a3ec4ec423d77412a88a069f71e"
   },
   {
     "id": "detail-prairie-scots-pine",
     "label": "Scots pine",
     "category": "Trees",
-    "description": "Pinus sylvestris \u00b7 orange-barked pine with an irregular blue-green crown held high. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Pinus sylvestris · orange-barked pine with an irregular blue-green crown held high. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       8.14,
       8.173,
@@ -4403,13 +4423,14 @@
     "triangles": 10776,
     "meshes": 2,
     "bytes": 1230468,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/scots-pine.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/scots-pine.webp",
+    "thumbnailSha256": "f4569e559ddcdba29b7d83f9de05a180110e8fa8c7a59adbfede76236ed56c14"
   },
   {
     "id": "detail-prairie-douglas-fir",
     "label": "Douglas fir",
     "category": "Trees",
-    "description": "Pseudotsuga menziesii \u00b7 tall dark native of Bow valley slopes with furrowed bark. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Pseudotsuga menziesii · tall dark native of Bow valley slopes with furrowed bark. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.12,
       6.715,
@@ -4429,13 +4450,14 @@
     "triangles": 11946,
     "meshes": 2,
     "bytes": 1363856,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/douglas-fir.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/douglas-fir.webp",
+    "thumbnailSha256": "39226ef4a2c6bc2ef560a9aee20a08b647cdbc5a3645f5d6b0a280ac75c3001c"
   },
   {
     "id": "detail-prairie-limber-pine",
     "label": "Limber pine",
     "category": "Trees",
-    "description": "Pinus flexilis \u00b7 gnarled, wind-shaped foothills pine of dry ridges and escarpments. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Pinus flexilis · gnarled, wind-shaped foothills pine of dry ridges and escarpments. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.954,
       5.428,
@@ -4455,13 +4477,14 @@
     "triangles": 9992,
     "meshes": 2,
     "bytes": 1141108,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/limber-pine.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/limber-pine.webp",
+    "thumbnailSha256": "748797cc0aebac44e4b78333173a630eef59467ff6fe1f3a7d8665f31d1814f4"
   },
   {
     "id": "detail-prairie-trembling-aspen-autumn",
-    "label": "Trembling aspen \u00b7 autumn",
+    "label": "Trembling aspen · autumn",
     "category": "Trees",
-    "description": "Populus tremuloides \u00b7 the same tree in gold September leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus tremuloides · the same tree in gold September leaf. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.799,
       4.759,
@@ -4481,13 +4504,14 @@
     "triangles": 11236,
     "meshes": 2,
     "bytes": 1282980,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen-autumn.webp",
+    "thumbnailSha256": "8183a3614defbe6639a09c59e103ebf9193d458a3ccd66bd3f9f958f47380592"
   },
   {
     "id": "detail-prairie-siberian-larch-autumn",
-    "label": "Siberian larch \u00b7 autumn",
+    "label": "Siberian larch · autumn",
     "category": "Trees",
-    "description": "Larix sibirica \u00b7 the same tree with needles turned gold. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Larix sibirica · the same tree with needles turned gold. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.526,
       4.561,
@@ -4507,13 +4531,14 @@
     "triangles": 10832,
     "meshes": 2,
     "bytes": 1236908,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch-autumn.webp",
+    "thumbnailSha256": "cf684131fa9375acd64d90ce9b10f5b57e62c45acaa0392d9fd8c47dcb57fa4b"
   },
   {
     "id": "detail-prairie-white-spruce-snow",
-    "label": "White spruce \u00b7 snow",
+    "label": "White spruce · snow",
     "category": "Trees",
-    "description": "Picea glauca \u00b7 the same tree carrying fresh snow. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Picea glauca · the same tree carrying fresh snow. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       5.352,
       5.0,
@@ -4533,13 +4558,14 @@
     "triangles": 13296,
     "meshes": 2,
     "bytes": 1517788,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/white-spruce-snow.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/white-spruce-snow.webp",
+    "thumbnailSha256": "9f1250c7c880c952ebcc0c3f966d389499de76679ea5aceaaed05004290c13af"
   },
   {
     "id": "detail-prairie-colorado-blue-spruce-snow",
-    "label": "Colorado blue spruce \u00b7 snow",
+    "label": "Colorado blue spruce · snow",
     "category": "Trees",
-    "description": "Picea pungens \u00b7 the same tree carrying fresh snow. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Picea pungens · the same tree carrying fresh snow. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.982,
       4.761,
@@ -4559,13 +4585,14 @@
     "triangles": 11946,
     "meshes": 2,
     "bytes": 1363920,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/colorado-blue-spruce-snow.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/colorado-blue-spruce-snow.webp",
+    "thumbnailSha256": "f75d27ccd251c0c6a18c2688e018ca8866a1093cb6f12fb2e0b19313b2917a6d"
   },
   {
     "id": "detail-prairie-trembling-aspen-winter",
-    "label": "Trembling aspen \u00b7 winter",
+    "label": "Trembling aspen · winter",
     "category": "Trees",
-    "description": "Populus tremuloides \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus tremuloides · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.807,
       4.777,
@@ -4585,13 +4612,14 @@
     "triangles": 7276,
     "meshes": 1,
     "bytes": 830688,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/trembling-aspen-winter.webp",
+    "thumbnailSha256": "95347b4befcfce21b8a3ac5afff2314933549ce29c00d6be0e65e1fb8df348d0"
   },
   {
     "id": "detail-prairie-swedish-columnar-aspen-winter",
-    "label": "Swedish columnar aspen \u00b7 winter",
+    "label": "Swedish columnar aspen · winter",
     "category": "Trees",
-    "description": "Populus tremula Erecta \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus tremula Erecta · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       2.453,
       2.412,
@@ -4611,13 +4639,14 @@
     "triangles": 6428,
     "meshes": 1,
     "bytes": 734032,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/swedish-columnar-aspen-winter.webp",
+    "thumbnailSha256": "123a5590626e6f7aec3097432e7c24a643476a00c87f565d211fd675c105aa21"
   },
   {
     "id": "detail-prairie-balsam-poplar-winter",
-    "label": "Balsam poplar \u00b7 winter",
+    "label": "Balsam poplar · winter",
     "category": "Trees",
-    "description": "Populus balsamifera \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus balsamifera · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       9.417,
       8.087,
@@ -4637,13 +4666,14 @@
     "triangles": 8748,
     "meshes": 1,
     "bytes": 998488,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/balsam-poplar-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/balsam-poplar-winter.webp",
+    "thumbnailSha256": "79949484f37204aa47f8596de9de5b376f2ea6c5ebec029506071a184d676639"
   },
   {
     "id": "detail-prairie-paper-birch-winter",
-    "label": "Paper birch \u00b7 winter",
+    "label": "Paper birch · winter",
     "category": "Trees",
-    "description": "Betula papyrifera \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Betula papyrifera · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.561,
       4.729,
@@ -4663,13 +4693,14 @@
     "triangles": 9288,
     "meshes": 1,
     "bytes": 1060048,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch-winter.webp",
+    "thumbnailSha256": "ae3ff8df8056f28ef1a8362e3b762e19400695ee515c41cd2d00c3013a809186"
   },
   {
     "id": "detail-prairie-green-ash-winter",
-    "label": "Green ash \u00b7 winter",
+    "label": "Green ash · winter",
     "category": "Trees",
-    "description": "Fraxinus pennsylvanica \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Fraxinus pennsylvanica · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.794,
       8.858,
@@ -4689,13 +4720,14 @@
     "triangles": 8748,
     "meshes": 1,
     "bytes": 998480,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash-winter.webp",
+    "thumbnailSha256": "ded08992cd2a28ce987aa933462e35e29f478e6e707fda2c391b9aa9c58d432b"
   },
   {
     "id": "detail-prairie-bur-oak-winter",
-    "label": "Bur oak \u00b7 winter",
+    "label": "Bur oak · winter",
     "category": "Trees",
-    "description": "Quercus macrocarpa \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Quercus macrocarpa · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       9.303,
       9.485,
@@ -4715,13 +4747,14 @@
     "triangles": 8232,
     "meshes": 1,
     "bytes": 939652,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak-winter.webp",
+    "thumbnailSha256": "4b2f66c8827df9cf5a8b747ee24a4fe3ec6b83ef71d14349b697add51984eae1"
   },
   {
     "id": "detail-prairie-manitoba-maple-winter",
-    "label": "Manitoba maple \u00b7 winter",
+    "label": "Manitoba maple · winter",
     "category": "Trees",
-    "description": "Acer negundo \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Acer negundo · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.793,
       7.782,
@@ -4741,13 +4774,14 @@
     "triangles": 9240,
     "meshes": 1,
     "bytes": 1054584,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple-winter.webp",
+    "thumbnailSha256": "2a9e50dec27768e8fcb4af07338c14f971f0ab7224ce98c56c9cd212eebce999"
   },
   {
     "id": "detail-prairie-laurel-leaf-willow-winter",
-    "label": "Laurel leaf willow \u00b7 winter",
+    "label": "Laurel leaf willow · winter",
     "category": "Trees",
-    "description": "Salix pentandra \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Salix pentandra · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       10.372,
       10.477,
@@ -4767,13 +4801,14 @@
     "triangles": 8748,
     "meshes": 1,
     "bytes": 998500,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/laurel-leaf-willow-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/laurel-leaf-willow-winter.webp",
+    "thumbnailSha256": "fd3b61b003d85f5e9b445ef0bfb7da77ecd1d1bd05c06b3d7d61062a9e28def8"
   },
   {
     "id": "detail-prairie-schubert-chokecherry-winter",
-    "label": "Schubert chokecherry \u00b7 winter",
+    "label": "Schubert chokecherry · winter",
     "category": "Trees",
-    "description": "Prunus virginiana Schubert \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Prunus virginiana Schubert · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.487,
       4.088,
@@ -4793,13 +4828,14 @@
     "triangles": 6708,
     "meshes": 1,
     "bytes": 765944,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/schubert-chokecherry-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/schubert-chokecherry-winter.webp",
+    "thumbnailSha256": "6b34ad07138935b66da9a7735efab660a57f1eb6ff3bd3db2332af7ab29d5972"
   },
   {
     "id": "detail-prairie-showy-mountain-ash-winter",
-    "label": "Showy mountain ash \u00b7 winter",
+    "label": "Showy mountain ash · winter",
     "category": "Trees",
-    "description": "Sorbus decora \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Sorbus decora · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.189,
       4.209,
@@ -4819,13 +4855,14 @@
     "triangles": 8528,
     "meshes": 2,
     "bytes": 974276,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash-winter.webp",
+    "thumbnailSha256": "e3e78b8187d11f463f4a8d73b209e8d15bc5adb26ca9721fb556c8e33a7c5b9e"
   },
   {
     "id": "detail-prairie-amur-cherry-winter",
-    "label": "Amur cherry \u00b7 winter",
+    "label": "Amur cherry · winter",
     "category": "Trees",
-    "description": "Prunus maackii \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Prunus maackii · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       3.867,
       3.929,
@@ -4845,13 +4882,14 @@
     "triangles": 8604,
     "meshes": 1,
     "bytes": 982072,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/amur-cherry-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/amur-cherry-winter.webp",
+    "thumbnailSha256": "f6da93496df68667cff2b571a7651d8a0cece3f00c6c8298000c8340e811a89f"
   },
   {
     "id": "detail-prairie-plains-cottonwood-winter",
-    "label": "Plains cottonwood \u00b7 winter",
+    "label": "Plains cottonwood · winter",
     "category": "Trees",
-    "description": "Populus deltoides \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus deltoides · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       12.224,
       12.396,
@@ -4871,13 +4909,14 @@
     "triangles": 8376,
     "meshes": 1,
     "bytes": 956092,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood-winter.webp",
+    "thumbnailSha256": "0b6ddccfa8c263f0a5b8bb99b942ebe5f30fd999c344646bf672078700ea5edd"
   },
   {
     "id": "detail-prairie-brandon-elm-winter",
-    "label": "Brandon elm \u00b7 winter",
+    "label": "Brandon elm · winter",
     "category": "Trees",
-    "description": "Ulmus americana Brandon \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Ulmus americana Brandon · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       10.939,
       9.039,
@@ -4897,13 +4936,14 @@
     "triangles": 8328,
     "meshes": 1,
     "bytes": 950608,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/brandon-elm-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/brandon-elm-winter.webp",
+    "thumbnailSha256": "a1cfc404d080afa4484a8fcd0722c55b42275bc3258588579b938878fd51687e"
   },
   {
     "id": "detail-prairie-littleleaf-linden-winter",
-    "label": "Littleleaf linden \u00b7 winter",
+    "label": "Littleleaf linden · winter",
     "category": "Trees",
-    "description": "Tilia cordata \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Tilia cordata · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.079,
       7.162,
@@ -4923,13 +4963,14 @@
     "triangles": 7833,
     "meshes": 1,
     "bytes": 894192,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/littleleaf-linden-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/littleleaf-linden-winter.webp",
+    "thumbnailSha256": "de5e5f5679969c3c810277cede819b4ba7beaf3b33ee7623911c4b73d7d9d9a5"
   },
   {
     "id": "detail-prairie-flowering-crabapple-winter",
-    "label": "Flowering crabapple \u00b7 winter",
+    "label": "Flowering crabapple · winter",
     "category": "Trees",
-    "description": "Malus \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Malus · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       5.048,
       5.044,
@@ -4949,13 +4990,14 @@
     "triangles": 9973,
     "meshes": 2,
     "bytes": 1139020,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/flowering-crabapple-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/flowering-crabapple-winter.webp",
+    "thumbnailSha256": "0903b03e49f62f11936b27bab991bac31180b8d0280da4b90a76d7deba3911f0"
   },
   {
     "id": "detail-prairie-japanese-tree-lilac-winter",
-    "label": "Japanese tree lilac \u00b7 winter",
+    "label": "Japanese tree lilac · winter",
     "category": "Trees",
-    "description": "Syringa reticulata \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Syringa reticulata · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       5.169,
       5.396,
@@ -4975,13 +5017,14 @@
     "triangles": 9321,
     "meshes": 2,
     "bytes": 1064684,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/japanese-tree-lilac-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/japanese-tree-lilac-winter.webp",
+    "thumbnailSha256": "aca82665f8392886b1695e582add0f88ed993a0220eb7d06e4bf6fa97587cba0"
   },
   {
     "id": "detail-prairie-siberian-larch-winter",
-    "label": "Siberian larch \u00b7 winter",
+    "label": "Siberian larch · winter",
     "category": "Trees",
-    "description": "Larix sibirica \u00b7 the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Larix sibirica · the same tree bare, for winter scenes. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.478,
       4.476,
@@ -5001,13 +5044,14 @@
     "triangles": 6191,
     "meshes": 1,
     "bytes": 706980,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/siberian-larch-winter.webp",
+    "thumbnailSha256": "cffc50b5e7a13ff2065a561fb9cccfb281bfe36776f09334b86da438726c2077"
   },
   {
     "id": "detail-prairie-saskatoon",
     "label": "Saskatoon berry",
     "category": "Planting",
-    "description": "Amelanchier alnifolia \u00b7 upright native shrub with round leaves and purple berries. Place in beds and soft landscape edges.",
+    "description": "Amelanchier alnifolia · upright native shrub with round leaves and purple berries. Place in beds and soft landscape edges.",
     "dimensions": [
       2.32,
       2.176,
@@ -5027,13 +5071,14 @@
     "triangles": 3288,
     "meshes": 2,
     "bytes": 376844,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon.webp",
+    "thumbnailSha256": "a14dd0842e632d5933407943db645505987a8724d5f8539630a6f9f6ec64467d"
   },
   {
     "id": "detail-prairie-wolf-willow",
     "label": "Wolf willow",
     "category": "Planting",
-    "description": "Elaeagnus commutata \u00b7 silverberry; suckering prairie native with silver-grey leaves. Place in beds and soft landscape edges.",
+    "description": "Elaeagnus commutata · silverberry; suckering prairie native with silver-grey leaves. Place in beds and soft landscape edges.",
     "dimensions": [
       1.771,
       1.729,
@@ -5053,13 +5098,14 @@
     "triangles": 3690,
     "meshes": 2,
     "bytes": 422680,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wolf-willow.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wolf-willow.webp",
+    "thumbnailSha256": "c4ce15fcf015972ab38e90a2d81a79c0d0dcfc575d6f253262f57090802517f4"
   },
   {
     "id": "detail-prairie-common-lilac",
     "label": "Common lilac",
     "category": "Planting",
-    "description": "Syringa vulgaris \u00b7 heart-leaved hedge shrub with fragrant purple panicles in June. Place in beds and soft landscape edges.",
+    "description": "Syringa vulgaris · heart-leaved hedge shrub with fragrant purple panicles in June. Place in beds and soft landscape edges.",
     "dimensions": [
       3.135,
       2.694,
@@ -5079,13 +5125,14 @@
     "triangles": 5544,
     "meshes": 2,
     "bytes": 634048,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/common-lilac.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/common-lilac.webp",
+    "thumbnailSha256": "2bb3b738a3b2453c6101141a81bc3f6d18656657952de04dd453b9523df79d38"
   },
   {
     "id": "detail-prairie-caragana-hedge",
     "label": "Caragana hedge",
     "category": "Planting",
-    "description": "Caragana arborescens \u00b7 2 m section of informal shelterbelt hedge with yellow pea flowers. Repeat along an edge.",
+    "description": "Caragana arborescens · 2 m section of informal shelterbelt hedge with yellow pea flowers. Repeat along an edge.",
     "dimensions": [
       2.966,
       1.245,
@@ -5105,13 +5152,14 @@
     "triangles": 4836,
     "meshes": 2,
     "bytes": 553340,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/caragana-hedge.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/caragana-hedge.webp",
+    "thumbnailSha256": "322e70e23d55a6e316932f02fbd2541a22864d0643a2ba004d44c0b4dc8410e7"
   },
   {
     "id": "detail-prairie-cotoneaster-hedge",
     "label": "Cotoneaster hedge",
     "category": "Planting",
-    "description": "Cotoneaster lucidus \u00b7 2 m section of clipped Calgary boulevard hedge, 1.1 m tall. Repeat along an edge.",
+    "description": "Cotoneaster lucidus · 2 m section of clipped Calgary boulevard hedge, 1.1 m tall. Repeat along an edge.",
     "dimensions": [
       2.178,
       0.859,
@@ -5131,13 +5179,14 @@
     "triangles": 2945,
     "meshes": 2,
     "bytes": 337768,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge.webp",
+    "thumbnailSha256": "1f87dc4c792f3f361a5b5937fb86b3d4006ace4599bca791d9015579ff07b549"
   },
   {
     "id": "detail-prairie-prickly-wild-rose",
     "label": "Prickly wild rose",
     "category": "Planting",
-    "description": "Rosa acicularis \u00b7 Alberta's provincial flower; low arching native with pink blooms. Place in beds and soft landscape edges.",
+    "description": "Rosa acicularis · Alberta's provincial flower; low arching native with pink blooms. Place in beds and soft landscape edges.",
     "dimensions": [
       1.594,
       1.484,
@@ -5157,13 +5206,14 @@
     "triangles": 3740,
     "meshes": 2,
     "bytes": 428400,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prickly-wild-rose.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prickly-wild-rose.webp",
+    "thumbnailSha256": "043947db6e066e1d79a4fff1a802a3e9672e235660cd122e83fd11a3033e2b09"
   },
   {
     "id": "detail-prairie-snowberry",
     "label": "Common snowberry",
     "category": "Planting",
-    "description": "Symphoricarpos albus \u00b7 twiggy native thicket shrub with white berries into winter. Place in beds and soft landscape edges.",
+    "description": "Symphoricarpos albus · twiggy native thicket shrub with white berries into winter. Place in beds and soft landscape edges.",
     "dimensions": [
       1.593,
       1.561,
@@ -5183,13 +5233,14 @@
     "triangles": 4500,
     "meshes": 2,
     "bytes": 515016,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/snowberry.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/snowberry.webp",
+    "thumbnailSha256": "f8b674e9fddabdee6a1622b62745d19809ddc320a334de3d0597964a7f98b959"
   },
   {
     "id": "detail-prairie-shrubby-cinquefoil",
     "label": "Shrubby cinquefoil",
     "category": "Planting",
-    "description": "Dasiphora fruticosa \u00b7 potentilla; tough mounding native with yellow summer flowers. Place in beds and soft landscape edges.",
+    "description": "Dasiphora fruticosa · potentilla; tough mounding native with yellow summer flowers. Place in beds and soft landscape edges.",
     "dimensions": [
       1.436,
       1.172,
@@ -5209,13 +5260,14 @@
     "triangles": 5188,
     "meshes": 2,
     "bytes": 593488,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/shrubby-cinquefoil.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/shrubby-cinquefoil.webp",
+    "thumbnailSha256": "ff764002e3342d82e9eab16b82ea3b368c771bbc132c9227fb7f7ecebac9d272"
   },
   {
     "id": "detail-prairie-buffaloberry",
     "label": "Canada buffaloberry",
     "category": "Planting",
-    "description": "Shepherdia canadensis \u00b7 grey-green native shrub with bright red berries. Place in beds and soft landscape edges.",
+    "description": "Shepherdia canadensis · grey-green native shrub with bright red berries. Place in beds and soft landscape edges.",
     "dimensions": [
       2.119,
       1.872,
@@ -5235,13 +5287,14 @@
     "triangles": 4076,
     "meshes": 2,
     "bytes": 466692,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/buffaloberry.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/buffaloberry.webp",
+    "thumbnailSha256": "638201b7093c7224c97e99ec93c78fe649c70ef3db59df3390fc0247605774e5"
   },
   {
     "id": "detail-prairie-highbush-cranberry",
     "label": "Highbush cranberry",
     "category": "Planting",
-    "description": "Viburnum trilobum \u00b7 tall native with lobed leaves and red berry clusters. Place in beds and soft landscape edges.",
+    "description": "Viburnum trilobum · tall native with lobed leaves and red berry clusters. Place in beds and soft landscape edges.",
     "dimensions": [
       2.754,
       2.609,
@@ -5261,13 +5314,14 @@
     "triangles": 3936,
     "meshes": 2,
     "bytes": 450752,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/highbush-cranberry.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/highbush-cranberry.webp",
+    "thumbnailSha256": "976fdf54e540dc696a2e7247f73d290a98a2b61a9f74733464ff4df9c540a061"
   },
   {
     "id": "detail-prairie-diabolo-ninebark",
     "label": "Diabolo ninebark",
     "category": "Planting",
-    "description": "Physocarpus opulifolius Diabolo \u00b7 arching shrub with dark purple foliage and pale flower heads. Place in beds and soft landscape edges.",
+    "description": "Physocarpus opulifolius Diabolo · arching shrub with dark purple foliage and pale flower heads. Place in beds and soft landscape edges.",
     "dimensions": [
       2.33,
       2.335,
@@ -5287,13 +5341,14 @@
     "triangles": 3920,
     "meshes": 2,
     "bytes": 448924,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/diabolo-ninebark.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/diabolo-ninebark.webp",
+    "thumbnailSha256": "3cb990c6546b0249e9b505c3704da18977e27eb162afab834baf433155bec72a"
   },
   {
     "id": "detail-prairie-mugo-pine",
     "label": "Mugo pine",
     "category": "Planting",
-    "description": "Pinus mugo \u00b7 mounding dwarf pine; evergreen mass for beds and slopes. Place in beds and soft landscape edges.",
+    "description": "Pinus mugo · mounding dwarf pine; evergreen mass for beds and slopes. Place in beds and soft landscape edges.",
     "dimensions": [
       2.402,
       2.42,
@@ -5313,13 +5368,14 @@
     "triangles": 2992,
     "meshes": 2,
     "bytes": 343096,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/mugo-pine.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/mugo-pine.webp",
+    "thumbnailSha256": "379a1df147607a2eef6d924a595745baea78bb7fe5457bc85d096a2cc6d8195d"
   },
   {
     "id": "detail-prairie-creeping-juniper",
     "label": "Creeping juniper",
     "category": "Planting",
-    "description": "Juniperus horizontalis \u00b7 low spreading native evergreen ground cover. Place in beds and soft landscape edges.",
+    "description": "Juniperus horizontalis · low spreading native evergreen ground cover. Place in beds and soft landscape edges.",
     "dimensions": [
       2.131,
       2.122,
@@ -5339,13 +5395,14 @@
     "triangles": 3168,
     "meshes": 2,
     "bytes": 363196,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/creeping-juniper.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/creeping-juniper.webp",
+    "thumbnailSha256": "4025ddf4a7da8b7cda61e7ea72c36b8b53f3333bd4341c1a3580b178f956f44f"
   },
   {
     "id": "detail-prairie-bearberry",
     "label": "Bearberry",
     "category": "Planting",
-    "description": "Arctostaphylos uva-ursi \u00b7 kinnikinnick; native evergreen mat with red berries for dry sunny slopes.",
+    "description": "Arctostaphylos uva-ursi · kinnikinnick; native evergreen mat with red berries for dry sunny slopes.",
     "dimensions": [
       1.249,
       1.206,
@@ -5365,13 +5422,14 @@
     "triangles": 4862,
     "meshes": 2,
     "bytes": 556288,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bearberry.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bearberry.webp",
+    "thumbnailSha256": "510c95fbcefac8466cef06d2ed06220d0def01d070fce48dc50beccc1b70aff9"
   },
   {
     "id": "detail-prairie-prairie-crocus",
     "label": "Prairie crocus",
     "category": "Planting",
-    "description": "Pulsatilla nuttalliana \u00b7 first flower of a Calgary spring; a drift of low mauve cups on fuzzy stems.",
+    "description": "Pulsatilla nuttalliana · first flower of a Calgary spring; a drift of low mauve cups on fuzzy stems.",
     "dimensions": [
       0.933,
       0.872,
@@ -5391,13 +5449,14 @@
     "triangles": 840,
     "meshes": 2,
     "bytes": 97788,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prairie-crocus.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prairie-crocus.webp",
+    "thumbnailSha256": "ecdf32b8c69340508582f7967c066bf1daaf6f1207a58e8da3cdbe96cbef8987"
   },
   {
     "id": "detail-prairie-blanketflower",
     "label": "Blanketflower",
     "category": "Planting",
-    "description": "Gaillardia aristata \u00b7 native summer daisy; red-centred yellow flowers for dry sunny beds.",
+    "description": "Gaillardia aristata · native summer daisy; red-centred yellow flowers for dry sunny beds.",
     "dimensions": [
       1.094,
       1.192,
@@ -5417,13 +5476,14 @@
     "triangles": 1773,
     "meshes": 2,
     "bytes": 204144,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/blanketflower.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/blanketflower.webp",
+    "thumbnailSha256": "d5ae2052addf06d4fae3fe221a3909ecdbb1b665e49ca0f42cf3b3bc3385b87c"
   },
   {
     "id": "detail-prairie-wild-bergamot",
     "label": "Wild bergamot",
     "category": "Planting",
-    "description": "Monarda fistulosa \u00b7 native bee balm; lavender pom-pom flowers that draw pollinators.",
+    "description": "Monarda fistulosa · native bee balm; lavender pom-pom flowers that draw pollinators.",
     "dimensions": [
       0.959,
       1.204,
@@ -5443,13 +5503,14 @@
     "triangles": 1336,
     "meshes": 2,
     "bytes": 154324,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wild-bergamot.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wild-bergamot.webp",
+    "thumbnailSha256": "47890e5ace8a963e3d432233135c80b9d93e42593d9b6c4e5c3728667f728041"
   },
   {
     "id": "detail-prairie-fireweed",
     "label": "Fireweed",
     "category": "Planting",
-    "description": "Chamaenerion angustifolium \u00b7 tall magenta spires of late summer along paths and clearings.",
+    "description": "Chamaenerion angustifolium · tall magenta spires of late summer along paths and clearings.",
     "dimensions": [
       1.042,
       1.165,
@@ -5469,13 +5530,14 @@
     "triangles": 1488,
     "meshes": 2,
     "bytes": 171628,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/fireweed.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/fireweed.webp",
+    "thumbnailSha256": "9d3711816a88956dab05a9aea9e26d88c1d32eb7068c971c2efa20981f02b2ba"
   },
   {
     "id": "detail-prairie-goldenrod",
     "label": "Canada goldenrod",
     "category": "Planting",
-    "description": "Solidago canadensis \u00b7 arching golden plumes of early autumn; a native meadow staple.",
+    "description": "Solidago canadensis · arching golden plumes of early autumn; a native meadow staple.",
     "dimensions": [
       1.087,
       1.28,
@@ -5495,13 +5557,14 @@
     "triangles": 1920,
     "meshes": 2,
     "bytes": 220884,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/goldenrod.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/goldenrod.webp",
+    "thumbnailSha256": "47db937ddb4108d2e7b4fa48c21ea7123edb91a9f6394da683d6ec2ce02e3ba9"
   },
   {
     "id": "detail-prairie-prairie-smoke",
     "label": "Prairie smoke",
     "category": "Planting",
-    "description": "Geum triflorum \u00b7 three-flowered avens; nodding rose buds that open into feathery pink plumes.",
+    "description": "Geum triflorum · three-flowered avens; nodding rose buds that open into feathery pink plumes.",
     "dimensions": [
       1.017,
       0.914,
@@ -5521,13 +5584,14 @@
     "triangles": 1582,
     "meshes": 2,
     "bytes": 182380,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prairie-smoke.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prairie-smoke.webp",
+    "thumbnailSha256": "1020a150160b5adc8fee389cdb33db3b95d4fde40305a82959340a2797c29538"
   },
   {
     "id": "detail-prairie-wild-blue-flax",
     "label": "Wild blue flax",
     "category": "Planting",
-    "description": "Linum lewisii \u00b7 airy sky-blue flowers on wiry stems; a native of dry prairie slopes.",
+    "description": "Linum lewisii · airy sky-blue flowers on wiry stems; a native of dry prairie slopes.",
     "dimensions": [
       1.132,
       1.192,
@@ -5547,13 +5611,14 @@
     "triangles": 3264,
     "meshes": 2,
     "bytes": 374132,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wild-blue-flax.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/wild-blue-flax.webp",
+    "thumbnailSha256": "6c65fe490d40f6dab9de98d3d1fda17e7c36c6a060edfb5f1086cd448b43ce89"
   },
   {
     "id": "detail-prairie-pasture-sage",
     "label": "Pasture sage",
     "category": "Planting",
-    "description": "Artemisia frigida \u00b7 prairie sagewort; low silver feathery mats with slender flower stalks.",
+    "description": "Artemisia frigida · prairie sagewort; low silver feathery mats with slender flower stalks.",
     "dimensions": [
       0.862,
       0.809,
@@ -5573,13 +5638,14 @@
     "triangles": 2985,
     "meshes": 2,
     "bytes": 342320,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/pasture-sage.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/pasture-sage.webp",
+    "thumbnailSha256": "a1fa9e0cfb0206ebd1703d33609bc98e22db916d720a889dbf987e8205a95dee"
   },
   {
     "id": "detail-prairie-feather-reed-grass",
     "label": "Feather reed grass",
     "category": "Planting",
-    "description": "Calamagrostis Karl Foerster \u00b7 upright ornamental grass with tan plumes; Calgary's go-to clump grass.",
+    "description": "Calamagrostis Karl Foerster · upright ornamental grass with tan plumes; Calgary's go-to clump grass.",
     "dimensions": [
       1.024,
       1.005,
@@ -5599,13 +5665,14 @@
     "triangles": 1530,
     "meshes": 2,
     "bytes": 176444,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/feather-reed-grass.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/feather-reed-grass.webp",
+    "thumbnailSha256": "4f9d9ffe423dd33eed355fc690854cd544053f0c2cec22fc5fedda5a150cc292"
   },
   {
     "id": "detail-prairie-rough-fescue-drift",
     "label": "Rough fescue drift",
     "category": "Planting",
-    "description": "Festuca hallii \u00b7 native foothills fescue; a low blue-green drift for naturalized edges.",
+    "description": "Festuca hallii · native foothills fescue; a low blue-green drift for naturalized edges.",
     "dimensions": [
       1.501,
       1.498,
@@ -5625,13 +5692,14 @@
     "triangles": 972,
     "meshes": 2,
     "bytes": 112828,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/rough-fescue-drift.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/rough-fescue-drift.webp",
+    "thumbnailSha256": "750eb373dd28836690bf9635a076cd13f29d30699fbe030f34889825411ed875"
   },
   {
     "id": "detail-prairie-blue-grama",
     "label": "Blue grama",
     "category": "Planting",
-    "description": "Bouteloua gracilis \u00b7 low native shortgrass with eyelash seed heads; a drift for dry prairie.",
+    "description": "Bouteloua gracilis · low native shortgrass with eyelash seed heads; a drift for dry prairie.",
     "dimensions": [
       1.155,
       0.988,
@@ -5651,13 +5719,14 @@
     "triangles": 1386,
     "meshes": 2,
     "bytes": 160004,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/blue-grama.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/blue-grama.webp",
+    "thumbnailSha256": "4e962e6d8fe752ff2e33982aceeb00d9de708bbb3ee997b7ec9ffff0ef662998"
   },
   {
     "id": "detail-prairie-june-grass",
     "label": "June grass",
     "category": "Planting",
-    "description": "Koeleria macrantha \u00b7 fine native bunchgrass with pale narrow spikes in early summer.",
+    "description": "Koeleria macrantha · fine native bunchgrass with pale narrow spikes in early summer.",
     "dimensions": [
       1.076,
       1.031,
@@ -5677,13 +5746,14 @@
     "triangles": 2583,
     "meshes": 2,
     "bytes": 296468,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/june-grass.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/june-grass.webp",
+    "thumbnailSha256": "6e04fcb15ad86567bedd0181c6d392fecb59bbb7166b5328d9e0c2bfa859b7df"
   },
   {
     "id": "detail-prairie-green-ash-autumn",
-    "label": "Green ash \u00b7 autumn",
+    "label": "Green ash · autumn",
     "category": "Trees",
-    "description": "Fraxinus pennsylvanica \u00b7 the same tree in clear yellow fall leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Fraxinus pennsylvanica · the same tree in clear yellow fall leaf. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.703,
       8.759,
@@ -5703,13 +5773,14 @@
     "triangles": 13248,
     "meshes": 2,
     "bytes": 1512324,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/green-ash-autumn.webp",
+    "thumbnailSha256": "830f98eb0e26e483176947da8509c3a94690db29faf12a19fb362d3e09ae9600"
   },
   {
     "id": "detail-prairie-manitoba-maple-autumn",
-    "label": "Manitoba maple \u00b7 autumn",
+    "label": "Manitoba maple · autumn",
     "category": "Trees",
-    "description": "Acer negundo \u00b7 the same tree in yellow fall leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Acer negundo · the same tree in yellow fall leaf. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       7.762,
       7.681,
@@ -5729,13 +5800,14 @@
     "triangles": 13920,
     "meshes": 2,
     "bytes": 1588956,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/manitoba-maple-autumn.webp",
+    "thumbnailSha256": "08de682698e9877701b6d087b3aeda2268af87b2cb4f67ab18a0bf9eabd97b17"
   },
   {
     "id": "detail-prairie-paper-birch-autumn",
-    "label": "Paper birch \u00b7 autumn",
+    "label": "Paper birch · autumn",
     "category": "Trees",
-    "description": "Betula papyrifera \u00b7 the same tree in gold fall leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Betula papyrifera · the same tree in gold fall leaf. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.502,
       4.693,
@@ -5755,13 +5827,14 @@
     "triangles": 13788,
     "meshes": 2,
     "bytes": 1573896,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/paper-birch-autumn.webp",
+    "thumbnailSha256": "ea2ced8c081db397179a039c82bd904a613e15e00c01d4a344b546bef73ba2df"
   },
   {
     "id": "detail-prairie-plains-cottonwood-autumn",
-    "label": "Plains cottonwood \u00b7 autumn",
+    "label": "Plains cottonwood · autumn",
     "category": "Trees",
-    "description": "Populus deltoides \u00b7 the same tree in river-valley gold. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Populus deltoides · the same tree in river-valley gold. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       12.406,
       12.317,
@@ -5781,13 +5854,14 @@
     "triangles": 12606,
     "meshes": 2,
     "bytes": 1439164,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/plains-cottonwood-autumn.webp",
+    "thumbnailSha256": "6209423eb9aa6efd56e746c5e1286e7992653fd9cb187877cad06e971c6c9e9b"
   },
   {
     "id": "detail-prairie-showy-mountain-ash-autumn",
-    "label": "Showy mountain ash \u00b7 autumn",
+    "label": "Showy mountain ash · autumn",
     "category": "Trees",
-    "description": "Sorbus decora \u00b7 the same tree in orange-red leaf with its berries. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Sorbus decora · the same tree in orange-red leaf with its berries. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       4.127,
       4.148,
@@ -5807,13 +5881,14 @@
     "triangles": 12218,
     "meshes": 2,
     "bytes": 1394944,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/showy-mountain-ash-autumn.webp",
+    "thumbnailSha256": "236978def0bc148c74c23a0ed1b1f67ff830958e6975e14db47c09165a3639e0"
   },
   {
     "id": "detail-prairie-bur-oak-autumn",
-    "label": "Bur oak \u00b7 autumn",
+    "label": "Bur oak · autumn",
     "category": "Trees",
-    "description": "Quercus macrocarpa \u00b7 the same tree in russet fall leaf. Keep the trunk clear of paths; canopies can overlap.",
+    "description": "Quercus macrocarpa · the same tree in russet fall leaf. Keep the trunk clear of paths; canopies can overlap.",
     "dimensions": [
       9.302,
       9.384,
@@ -5833,13 +5908,14 @@
     "triangles": 12462,
     "meshes": 2,
     "bytes": 1422716,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/bur-oak-autumn.webp",
+    "thumbnailSha256": "827830bba7fd59fb6454e4feb1b886084114f5bba7137375e30101cc04303d8d"
   },
   {
     "id": "detail-prairie-common-lilac-winter",
-    "label": "Common lilac \u00b7 winter",
+    "label": "Common lilac · winter",
     "category": "Planting",
-    "description": "Syringa vulgaris \u00b7 the same shrub bare, for winter scenes. Place in beds and soft landscape edges.",
+    "description": "Syringa vulgaris · the same shrub bare, for winter scenes. Place in beds and soft landscape edges.",
     "dimensions": [
       3.116,
       2.731,
@@ -5859,13 +5935,14 @@
     "triangles": 2754,
     "meshes": 1,
     "bytes": 315168,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/common-lilac-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/common-lilac-winter.webp",
+    "thumbnailSha256": "e5a83977bbb7c89fc76bdf5d527ad6a08999ccefc9325d1e76b9736d97689a32"
   },
   {
     "id": "detail-prairie-caragana-hedge-winter",
-    "label": "Caragana hedge \u00b7 winter",
+    "label": "Caragana hedge · winter",
     "category": "Planting",
-    "description": "Caragana arborescens \u00b7 the same 2 m hedge section bare, for winter scenes. Repeat along an edge.",
+    "description": "Caragana arborescens · the same 2 m hedge section bare, for winter scenes. Repeat along an edge.",
     "dimensions": [
       2.98,
       1.276,
@@ -5885,13 +5962,14 @@
     "triangles": 3219,
     "meshes": 1,
     "bytes": 368184,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/caragana-hedge-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/caragana-hedge-winter.webp",
+    "thumbnailSha256": "d366d521f8f28f78dc7c86cbbfc9f755a332e0c54c9fb478321c0aea05ce912f"
   },
   {
     "id": "detail-prairie-cotoneaster-hedge-winter",
-    "label": "Cotoneaster hedge \u00b7 winter",
+    "label": "Cotoneaster hedge · winter",
     "category": "Planting",
-    "description": "Cotoneaster lucidus \u00b7 the same clipped 2 m section as a dense bare twig box. Repeat along an edge.",
+    "description": "Cotoneaster lucidus · the same clipped 2 m section as a dense bare twig box. Repeat along an edge.",
     "dimensions": [
       2.278,
       0.942,
@@ -5911,13 +5989,14 @@
     "triangles": 824,
     "meshes": 2,
     "bytes": 95988,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-winter.webp",
+    "thumbnailSha256": "57ec785c50ad9ea1ccbd31b338b338a7a577eb6d20d8331fa252af15377bad55"
   },
   {
     "id": "detail-prairie-saskatoon-winter",
-    "label": "Saskatoon berry \u00b7 winter",
+    "label": "Saskatoon berry · winter",
     "category": "Planting",
-    "description": "Amelanchier alnifolia \u00b7 the same shrub bare, for winter scenes. Place in beds and soft landscape edges.",
+    "description": "Amelanchier alnifolia · the same shrub bare, for winter scenes. Place in beds and soft landscape edges.",
     "dimensions": [
       2.354,
       2.201,
@@ -5937,13 +6016,14 @@
     "triangles": 1992,
     "meshes": 1,
     "bytes": 228292,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon-winter.webp",
+    "thumbnailSha256": "d2b653bd2df22f55f20443e482e8d53a1b205379d3ca9ebbd9d14cc911828404"
   },
   {
     "id": "detail-prairie-highbush-cranberry-winter",
-    "label": "Highbush cranberry \u00b7 winter",
+    "label": "Highbush cranberry · winter",
     "category": "Planting",
-    "description": "Viburnum trilobum \u00b7 the same shrub bare, still holding red berries. Place in beds and soft landscape edges.",
+    "description": "Viburnum trilobum · the same shrub bare, still holding red berries. Place in beds and soft landscape edges.",
     "dimensions": [
       2.765,
       2.634,
@@ -5963,13 +6043,14 @@
     "triangles": 2820,
     "meshes": 2,
     "bytes": 323552,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/highbush-cranberry-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/highbush-cranberry-winter.webp",
+    "thumbnailSha256": "60b08a5f8a08b6aae03d96e698d201b148d8713ed373f39c2c238fb4f9ccd7d4"
   },
   {
     "id": "detail-prairie-prickly-wild-rose-winter",
-    "label": "Prickly wild rose \u00b7 winter",
+    "label": "Prickly wild rose · winter",
     "category": "Planting",
-    "description": "Rosa acicularis \u00b7 the same shrub bare, with red hips. Place in beds and soft landscape edges.",
+    "description": "Rosa acicularis · the same shrub bare, with red hips. Place in beds and soft landscape edges.",
     "dimensions": [
       1.618,
       1.51,
@@ -5989,13 +6070,14 @@
     "triangles": 2466,
     "meshes": 2,
     "bytes": 283184,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prickly-wild-rose-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/prickly-wild-rose-winter.webp",
+    "thumbnailSha256": "46e08986a124ef53ee5afc948f9f707b4ee873a38b0a47be6a803874338d6605"
   },
   {
     "id": "detail-prairie-cotoneaster-hedge-autumn",
-    "label": "Cotoneaster hedge \u00b7 autumn",
+    "label": "Cotoneaster hedge · autumn",
     "category": "Planting",
-    "description": "Cotoneaster lucidus \u00b7 the same clipped 2 m section turned orange-red. Repeat along an edge.",
+    "description": "Cotoneaster lucidus · the same clipped 2 m section turned orange-red. Repeat along an edge.",
     "dimensions": [
       2.178,
       0.859,
@@ -6015,13 +6097,14 @@
     "triangles": 2945,
     "meshes": 2,
     "bytes": 337796,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/cotoneaster-hedge-autumn.webp",
+    "thumbnailSha256": "2ba31370f3b8a981d42d22ec53c6a1ad031ece20d5ca7bdd47f3b411aa01d3eb"
   },
   {
     "id": "detail-prairie-saskatoon-autumn",
-    "label": "Saskatoon berry \u00b7 autumn",
+    "label": "Saskatoon berry · autumn",
     "category": "Planting",
-    "description": "Amelanchier alnifolia \u00b7 the same shrub in orange fall leaf. Place in beds and soft landscape edges.",
+    "description": "Amelanchier alnifolia · the same shrub in orange fall leaf. Place in beds and soft landscape edges.",
     "dimensions": [
       2.32,
       2.176,
@@ -6041,13 +6124,14 @@
     "triangles": 3288,
     "meshes": 2,
     "bytes": 376872,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon-autumn.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/saskatoon-autumn.webp",
+    "thumbnailSha256": "806091c8b9d72bda5aad6bdcc148fc5c03cd329ed52e50e5c255a463107c3be3"
   },
   {
     "id": "detail-prairie-red-osier-dogwood-winter",
-    "label": "Red-osier dogwood \u00b7 winter",
+    "label": "Red-osier dogwood · winter",
     "category": "Planting",
-    "description": "Cornus sericea \u00b7 bare red stems that light up snowy river banks and rain gardens. Place in beds and soft landscape edges.",
+    "description": "Cornus sericea · bare red stems that light up snowy river banks and rain gardens. Place in beds and soft landscape edges.",
     "dimensions": [
       2.311,
       2.597,
@@ -6067,7 +6151,8 @@
     "triangles": 3600,
     "meshes": 1,
     "bytes": 411628,
-    "thumbnailUrl": "/park-kits/prairie-foliage-v1/red-osier-dogwood-winter.webp"
+    "thumbnailUrl": "/park-kits/prairie-foliage-v1/red-osier-dogwood-winter.webp",
+    "thumbnailSha256": "ddae6d784c314cc5eecd8fe54b6845c9fa2c0cd2d6ddfe974d98db90387534b0"
   },
   {
     "id": "detail-yyc-outdoor-rink",
@@ -6093,7 +6178,8 @@
     "triangles": 2900,
     "meshes": 2,
     "bytes": 332656,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/outdoor-rink.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/outdoor-rink.webp",
+    "thumbnailSha256": "e36d33f8ccc6487024ba30f9497ea7c0e0ff7e203ca48c61ade27e5cabedbe84"
   },
   {
     "id": "detail-yyc-rink-board-section",
@@ -6119,7 +6205,8 @@
     "triangles": 102,
     "meshes": 1,
     "bytes": 12808,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/rink-board-section.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/rink-board-section.webp",
+    "thumbnailSha256": "6db3abd5cf678bbc1dd2bb11f2e8a0c7a2885062961b8fa86b7471f3d43e70ed"
   },
   {
     "id": "detail-yyc-hockey-net",
@@ -6145,7 +6232,8 @@
     "triangles": 454,
     "meshes": 1,
     "bytes": 52916,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/hockey-net.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/hockey-net.webp",
+    "thumbnailSha256": "eec7c3b591d28c6e199f1aaf4f71634cb799035691a48be9020a98662ac88663"
   },
   {
     "id": "detail-yyc-warming-hut",
@@ -6171,7 +6259,8 @@
     "triangles": 2796,
     "meshes": 2,
     "bytes": 320808,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/warming-hut.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/warming-hut.webp",
+    "thumbnailSha256": "64ea6e018f7ce3aea5d2ba5d3e611c484121e8a6ebe3f87119802ec531722d0d"
   },
   {
     "id": "detail-yyc-fire-pit-circle",
@@ -6197,7 +6286,8 @@
     "triangles": 1593,
     "meshes": 1,
     "bytes": 182784,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/fire-pit-circle.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/fire-pit-circle.webp",
+    "thumbnailSha256": "4d243924a2135ce9d63bf9a7f8546e80059cfd85e6120d0ae5b2fdec4ae4dd82"
   },
   {
     "id": "detail-yyc-snow-fence",
@@ -6223,7 +6313,8 @@
     "triangles": 300,
     "meshes": 1,
     "bytes": 35356,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-fence.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-fence.webp",
+    "thumbnailSha256": "e13499c64315d5b26be79816422cecac55c5198466f375a6a90040c9c8819ff7"
   },
   {
     "id": "detail-yyc-snow-windrow",
@@ -6249,7 +6340,8 @@
     "triangles": 648,
     "meshes": 1,
     "bytes": 75044,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-windrow.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-windrow.webp",
+    "thumbnailSha256": "f62cdba0daf0d591257bfa02acc1e0fab8b03c6a0fb14edf7153eeea97fa09b1"
   },
   {
     "id": "detail-yyc-grit-box",
@@ -6275,7 +6367,8 @@
     "triangles": 116,
     "meshes": 1,
     "bytes": 14380,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/grit-box.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/grit-box.webp",
+    "thumbnailSha256": "921ffc892b014cc167a152ad981b9e4577fe6ff2593ebd012e170814639ccce3"
   },
   {
     "id": "detail-yyc-plug-in-posts",
@@ -6301,7 +6394,8 @@
     "triangles": 368,
     "meshes": 1,
     "bytes": 43128,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/plug-in-posts.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/plug-in-posts.webp",
+    "thumbnailSha256": "a864355bc87e25446acd690d42e01d03765ef07c7986ed227e3f19f95505fa2e"
   },
   {
     "id": "detail-yyc-waste-cart-black",
@@ -6327,7 +6421,8 @@
     "triangles": 432,
     "meshes": 1,
     "bytes": 50432,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-black.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-black.webp",
+    "thumbnailSha256": "f882a05299c2a972e2a95bae699f34e09adb1d2bf1b231d57cb4c64a341d8b26"
   },
   {
     "id": "detail-yyc-waste-cart-blue",
@@ -6353,7 +6448,8 @@
     "triangles": 432,
     "meshes": 1,
     "bytes": 50432,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-blue.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-blue.webp",
+    "thumbnailSha256": "7ef655ac11e5cbc9a6ccdde236d4e51caa4ecea94c97ce3438b98ac96307d9ae"
   },
   {
     "id": "detail-yyc-waste-cart-green",
@@ -6379,7 +6475,8 @@
     "triangles": 432,
     "meshes": 1,
     "bytes": 50432,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-green.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-green.webp",
+    "thumbnailSha256": "72b53089e336926697b64050a25792ab51417580cd2bae142cc8a3648cb7012b"
   },
   {
     "id": "detail-yyc-waste-cart-trio",
@@ -6405,7 +6502,8 @@
     "triangles": 1296,
     "meshes": 1,
     "bytes": 148928,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-trio.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/waste-cart-trio.webp",
+    "thumbnailSha256": "3b474e9beab4dbc97c818f22e2ceacb62b1c98d80f749485b206311d60a25d50"
   },
   {
     "id": "detail-yyc-utility-pole",
@@ -6431,7 +6529,8 @@
     "triangles": 934,
     "meshes": 2,
     "bytes": 108588,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole.webp",
+    "thumbnailSha256": "d525f1c1b9dcb213bce59e2f11d53acc5129b3076c7adf3759afbf90d5413fac"
   },
   {
     "id": "detail-yyc-utility-pole-lines",
@@ -6457,7 +6556,8 @@
     "triangles": 1366,
     "meshes": 2,
     "bytes": 157860,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole-lines.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/utility-pole-lines.webp",
+    "thumbnailSha256": "8ec664e77a81026b48f106d0e69f3c602a18ed5e764d3178f5bcaf88054ea2ba"
   },
   {
     "id": "detail-yyc-privacy-fence",
@@ -6483,7 +6583,8 @@
     "triangles": 288,
     "meshes": 1,
     "bytes": 34008,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/privacy-fence.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/privacy-fence.webp",
+    "thumbnailSha256": "0f1f13423b97b820b04ae4f0a96af04217f7a675dbd808621be63aff72af0b36"
   },
   {
     "id": "detail-yyc-chain-link-fence",
@@ -6509,7 +6610,8 @@
     "triangles": 396,
     "meshes": 1,
     "bytes": 46332,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/chain-link-fence.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/chain-link-fence.webp",
+    "thumbnailSha256": "7ab6acaf66697a7c7f5f186daea26f14ee12cb9a2f623d82fef4b26f4b308ed2"
   },
   {
     "id": "detail-yyc-garden-shed",
@@ -6535,7 +6637,8 @@
     "triangles": 504,
     "meshes": 2,
     "bytes": 59528,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/garden-shed.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/garden-shed.webp",
+    "thumbnailSha256": "f75c18407286400da9f97d36f32651a8d91bf7602206e7444a7095197655cca2"
   },
   {
     "id": "detail-yyc-trampoline",
@@ -6561,7 +6664,8 @@
     "triangles": 2588,
     "meshes": 1,
     "bytes": 296224,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/trampoline.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/trampoline.webp",
+    "thumbnailSha256": "d187dfe14bb084342d80364707cc069e3a949d2e231e97066e381d0832e76069"
   },
   {
     "id": "detail-yyc-little-free-library",
@@ -6587,7 +6691,8 @@
     "triangles": 518,
     "meshes": 1,
     "bytes": 60244,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/little-free-library.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/little-free-library.webp",
+    "thumbnailSha256": "73195d9da4188ba7dc08f62c2329960e3e6bf0b11b1f9fb315137c50e9df647c"
   },
   {
     "id": "detail-yyc-street-hockey-net",
@@ -6613,7 +6718,8 @@
     "triangles": 596,
     "meshes": 1,
     "bytes": 69128,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/street-hockey-net.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-hockey-net.webp",
+    "thumbnailSha256": "3c9c2ca9e088109a9af851cbd7685eaf55e3caccf5a781f2c04cb9af52c8e271"
   },
   {
     "id": "detail-yyc-sandstone-blocks",
@@ -6639,7 +6745,8 @@
     "triangles": 210,
     "meshes": 1,
     "bytes": 25116,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-blocks.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-blocks.webp",
+    "thumbnailSha256": "c6426eec9662a92fef09057b3b5236d5b58ac2b337b51c1f83013d647c5d1f4e"
   },
   {
     "id": "detail-yyc-sandstone-seat-wall",
@@ -6665,7 +6772,8 @@
     "triangles": 300,
     "meshes": 1,
     "bytes": 35384,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-seat-wall.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sandstone-seat-wall.webp",
+    "thumbnailSha256": "4b232b6f99b6a0178e3eeb18ead1080ad09e4e0cda289571eb0fa5ea1afab741"
   },
   {
     "id": "detail-yyc-rundle-rock-wall",
@@ -6691,7 +6799,8 @@
     "triangles": 1104,
     "meshes": 1,
     "bytes": 127040,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/rundle-rock-wall.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/rundle-rock-wall.webp",
+    "thumbnailSha256": "dfc3f049f32cddbfae9bd41e49fdeb9b074bef46cf5074fe5a5cd9e7f741e65a"
   },
   {
     "id": "detail-yyc-glacial-erratic",
@@ -6717,7 +6826,8 @@
     "triangles": 384,
     "meshes": 1,
     "bytes": 44952,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/glacial-erratic.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/glacial-erratic.webp",
+    "thumbnailSha256": "dd978836bafe5938da323a2fe8f5e0f3936a1d6d1494f30a2fe0b589c4f08896"
   },
   {
     "id": "detail-yyc-round-hay-bale",
@@ -6743,7 +6853,8 @@
     "triangles": 528,
     "meshes": 1,
     "bytes": 61372,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/round-hay-bale.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/round-hay-bale.webp",
+    "thumbnailSha256": "f84c3c1b58f5e4b4bc6a5b02c4927d8cc4ed4faf0177ef7b9bdcab771ff61371"
   },
   {
     "id": "detail-yyc-ranch-rail-fence",
@@ -6769,7 +6880,8 @@
     "triangles": 288,
     "meshes": 1,
     "bytes": 34012,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-rail-fence.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-rail-fence.webp",
+    "thumbnailSha256": "aa8dbafb74c28e06ac9c93fae42b8a5a62914acfdce30fcd6ed21f5af8d5da21"
   },
   {
     "id": "detail-yyc-ranch-gate",
@@ -6795,7 +6907,8 @@
     "triangles": 732,
     "meshes": 1,
     "bytes": 84592,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-gate.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/ranch-gate.webp",
+    "thumbnailSha256": "c7ddcc9f799800a27d56573d9873beeb831ac2829d224c25a549e3ba21095894"
   },
   {
     "id": "detail-yyc-pathway-marker",
@@ -6821,7 +6934,8 @@
     "triangles": 206,
     "meshes": 1,
     "bytes": 24656,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/pathway-marker.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/pathway-marker.webp",
+    "thumbnailSha256": "c28ab8be36bd479ebec75453c1eeeef4c00db641257b6f1f748e72b7c0218610"
   },
   {
     "id": "detail-yyc-river-safety-station",
@@ -6847,7 +6961,8 @@
     "triangles": 840,
     "meshes": 1,
     "bytes": 96952,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/river-safety-station.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/river-safety-station.webp",
+    "thumbnailSha256": "dc3975440355e2bc33f55697b73eb0132894ca2d43de87a52317ea03c6d5232b"
   },
   {
     "id": "detail-yyc-lrt-platform-shelter",
@@ -6873,7 +6988,8 @@
     "triangles": 1052,
     "meshes": 2,
     "bytes": 122064,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-platform-shelter.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-platform-shelter.webp",
+    "thumbnailSha256": "5feb4044bab06fafe3b8d6107aeda1c3f6f0ea223167f84ea9aee838b843dd65"
   },
   {
     "id": "detail-yyc-lrt-catenary-pole",
@@ -6899,7 +7015,8 @@
     "triangles": 720,
     "meshes": 1,
     "bytes": 83252,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-catenary-pole.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lrt-catenary-pole.webp",
+    "thumbnailSha256": "450b751b74b1c260217e9a9ba440cba6f75ccc4c2eff402085868e97a90f1cee"
   },
   {
     "id": "detail-yyc-heated-bus-shelter",
@@ -6925,7 +7042,8 @@
     "triangles": 620,
     "meshes": 2,
     "bytes": 72820,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/heated-bus-shelter.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/heated-bus-shelter.webp",
+    "thumbnailSha256": "2e3f5eb6356e524a22ae477e0f12766d31064b68af10b760dacf563f38580e50"
   },
   {
     "id": "detail-yyc-scooter-corral",
@@ -6951,13 +7069,14 @@
     "triangles": 1410,
     "meshes": 1,
     "bytes": 161908,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral.webp",
+    "thumbnailSha256": "0d41e0c73681ebfc82038a5da88c78806089f490b531d70c20d99237f1fe6dbf"
   },
   {
     "id": "detail-yyc-white-tailed-jackrabbit",
     "label": "White-tailed jackrabbit",
     "category": "Wildlife",
-    "description": "Lepus townsendii \u00b7 Calgary's big prairie hare sitting alert on a lawn. Static model.",
+    "description": "Lepus townsendii · Calgary's big prairie hare sitting alert on a lawn. Static model.",
     "dimensions": [
       0.255,
       0.601,
@@ -6977,13 +7096,14 @@
     "triangles": 642,
     "meshes": 1,
     "bytes": 74408,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/white-tailed-jackrabbit.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/white-tailed-jackrabbit.webp",
+    "thumbnailSha256": "585364e1eadd35281320e4f570ae26c2cf3df38bb513428774386b4cdc8e590a"
   },
   {
     "id": "detail-yyc-magpies",
     "label": "Black-billed magpies",
     "category": "Wildlife",
-    "description": "Pica hudsonia \u00b7 a pair of long-tailed black, white and blue magpies on the ground. Static model.",
+    "description": "Pica hudsonia · a pair of long-tailed black, white and blue magpies on the ground. Static model.",
     "dimensions": [
       0.773,
       0.638,
@@ -7003,13 +7123,14 @@
     "triangles": 640,
     "meshes": 1,
     "bytes": 74148,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/magpies.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/magpies.webp",
+    "thumbnailSha256": "aaf2fea63b79130c8169363c0f3bcf99862733f84e3c459e4ad1dcebfa638973"
   },
   {
     "id": "detail-yyc-canada-geese",
     "label": "Canada geese",
     "category": "Wildlife",
-    "description": "Branta canadensis \u00b7 a pair of geese, one alert and one grazing, for river banks and ponds. Static model.",
+    "description": "Branta canadensis · a pair of geese, one alert and one grazing, for river banks and ponds. Static model.",
     "dimensions": [
       1.418,
       1.078,
@@ -7029,13 +7150,14 @@
     "triangles": 648,
     "meshes": 1,
     "bytes": 75064,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/canada-geese.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/canada-geese.webp",
+    "thumbnailSha256": "33e9422153709dec355b2dfdf455c040d9a312a82ca155a358f2f737ce3cb4ce"
   },
   {
     "id": "detail-yyc-mule-deer",
     "label": "Mule deer",
     "category": "Wildlife",
-    "description": "Odocoileus hemionus \u00b7 a doe standing alert with big ears and white rump. Static model.",
+    "description": "Odocoileus hemionus · a doe standing alert with big ears and white rump. Static model.",
     "dimensions": [
       0.423,
       1.606,
@@ -7055,7 +7177,8 @@
     "triangles": 1032,
     "meshes": 1,
     "bytes": 118840,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mule-deer.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mule-deer.webp",
+    "thumbnailSha256": "d253b981eb4246617055a1b3ebbf159e1b35b05b48dc7b2c7415a77a84d4866e"
   },
   {
     "id": "detail-yyc-dumpster",
@@ -7081,7 +7204,8 @@
     "triangles": 252,
     "meshes": 1,
     "bytes": 29888,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/dumpster.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/dumpster.webp",
+    "thumbnailSha256": "dc3a3a399467f73dff238ed9bd6d279ffc446121d68a78d5a6d2a4fd53e3785d"
   },
   {
     "id": "detail-yyc-deep-collection-bins",
@@ -7107,7 +7231,8 @@
     "triangles": 912,
     "meshes": 1,
     "bytes": 105160,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/deep-collection-bins.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/deep-collection-bins.webp",
+    "thumbnailSha256": "3c8d838f90c6e21f4e36759144226991907560014fa0db71ce18702a8e88f9f4"
   },
   {
     "id": "detail-yyc-wildlife-proof-bin",
@@ -7133,7 +7258,8 @@
     "triangles": 196,
     "meshes": 1,
     "bytes": 23524,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/wildlife-proof-bin.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/wildlife-proof-bin.webp",
+    "thumbnailSha256": "d6fb0f6e6bfcb47aa693d4c4b3c196bc918846753e3c29b4bd52b1d3630a8534"
   },
   {
     "id": "detail-yyc-yard-waste-bags",
@@ -7159,7 +7285,8 @@
     "triangles": 471,
     "meshes": 1,
     "bytes": 54876,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/yard-waste-bags.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/yard-waste-bags.webp",
+    "thumbnailSha256": "c7e3296db93b70ed299eb892194147cef987c91e35f52f258c8437ae9fae98d8"
   },
   {
     "id": "detail-yyc-donation-box",
@@ -7185,7 +7312,8 @@
     "triangles": 134,
     "meshes": 1,
     "bytes": 16440,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/donation-box.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/donation-box.webp",
+    "thumbnailSha256": "aecc756d42b4f04519fc802dd187823d29bb7f10b5e8f52e344571ca9e7e716d"
   },
   {
     "id": "detail-yyc-padmount-transformer",
@@ -7211,7 +7339,8 @@
     "triangles": 190,
     "meshes": 1,
     "bytes": 22844,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/padmount-transformer.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/padmount-transformer.webp",
+    "thumbnailSha256": "bb08d3287f30d4223e1948023490f57c89a2c0119fd3911496c3be1a64e1213d"
   },
   {
     "id": "detail-yyc-signal-cabinet",
@@ -7237,7 +7366,8 @@
     "triangles": 240,
     "meshes": 1,
     "bytes": 28532,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/signal-cabinet.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/signal-cabinet.webp",
+    "thumbnailSha256": "565a0d674f62d12f38648e365cc29a2b3f197518a8ec4403f3b10c476a83fe30"
   },
   {
     "id": "detail-yyc-street-letter-box",
@@ -7263,7 +7393,8 @@
     "triangles": 180,
     "meshes": 1,
     "bytes": 21700,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/street-letter-box.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-letter-box.webp",
+    "thumbnailSha256": "a2d8f896c7e921d06fc8f32cb4387ed9b742239c860a952128aa042db7542c7e"
   },
   {
     "id": "detail-yyc-newspaper-boxes",
@@ -7289,7 +7420,8 @@
     "triangles": 252,
     "meshes": 2,
     "bytes": 30836,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/newspaper-boxes.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/newspaper-boxes.webp",
+    "thumbnailSha256": "311182b82c358b30ae9fff2234bd203f2e5c372ac764d51d936e1000463e7651"
   },
   {
     "id": "detail-yyc-parking-pay-station",
@@ -7315,7 +7447,8 @@
     "triangles": 308,
     "meshes": 2,
     "bytes": 37220,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/parking-pay-station.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/parking-pay-station.webp",
+    "thumbnailSha256": "8b1664fdbc3107e30af09357d914b786f768785397e43b66a3336ee1e3605a48"
   },
   {
     "id": "detail-yyc-bus-bench",
@@ -7341,7 +7474,8 @@
     "triangles": 144,
     "meshes": 1,
     "bytes": 17576,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/bus-bench.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/bus-bench.webp",
+    "thumbnailSha256": "c280d766db997d99d50fea9c254bdda83dfddc978c201faf0e19b3f795f998bd"
   },
   {
     "id": "detail-yyc-sandwich-board",
@@ -7367,7 +7501,8 @@
     "triangles": 228,
     "meshes": 1,
     "bytes": 27184,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/sandwich-board.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sandwich-board.webp",
+    "thumbnailSha256": "98870b39d4652e22af361c88a62bd558b4ab39de3af3c931136d6ee899903e3f"
   },
   {
     "id": "detail-yyc-shopping-cart",
@@ -7393,7 +7528,8 @@
     "triangles": 830,
     "meshes": 1,
     "bytes": 95816,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/shopping-cart.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/shopping-cart.webp",
+    "thumbnailSha256": "6d6cfc2a7e6da9633cf37a10185e28c7fbd16789d4b9ab24c57821978bdbda5a"
   },
   {
     "id": "detail-yyc-portable-toilet",
@@ -7419,7 +7555,8 @@
     "triangles": 336,
     "meshes": 2,
     "bytes": 40424,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/portable-toilet.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/portable-toilet.webp",
+    "thumbnailSha256": "45ec999dfe2cc4e395c927bda09457e5c1e06286984139622f0cfe706d6cf87d"
   },
   {
     "id": "detail-yyc-patio-heater",
@@ -7445,7 +7582,8 @@
     "triangles": 808,
     "meshes": 1,
     "bytes": 93288,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/patio-heater.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/patio-heater.webp",
+    "thumbnailSha256": "f446cac1f8c12fefe43689b198f143e1564449656e26b907f60a5c4eaafa1437"
   },
   {
     "id": "detail-yyc-park-grill",
@@ -7471,7 +7609,8 @@
     "triangles": 204,
     "meshes": 1,
     "bytes": 24372,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/park-grill.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/park-grill.webp",
+    "thumbnailSha256": "698936d020a2d2f18ef4a5091b6514f18ac15a49ac3548e77e4e3792728ab1d9"
   },
   {
     "id": "detail-yyc-backyard-barbecue",
@@ -7497,7 +7636,8 @@
     "triangles": 628,
     "meshes": 1,
     "bytes": 72764,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/backyard-barbecue.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/backyard-barbecue.webp",
+    "thumbnailSha256": "69a67eff98829b8f6d9a7e1abad2ec1b6c1a9759cfe11c1d358f4a673033a897"
   },
   {
     "id": "detail-yyc-adirondack-chairs",
@@ -7523,7 +7663,8 @@
     "triangles": 616,
     "meshes": 1,
     "bytes": 71408,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/adirondack-chairs.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/adirondack-chairs.webp",
+    "thumbnailSha256": "6b56d694e3f6a9d37f7304ee20104bf9a8ee03c44d444c57c148f2214686e9a5"
   },
   {
     "id": "detail-yyc-rotary-clothesline",
@@ -7549,7 +7690,8 @@
     "triangles": 260,
     "meshes": 1,
     "bytes": 30820,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/rotary-clothesline.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/rotary-clothesline.webp",
+    "thumbnailSha256": "b93870dceacd741e07718b2bc6c6d131f95a489ee29a41c5af9607fcd3e77af9"
   },
   {
     "id": "detail-yyc-wheelbarrow",
@@ -7575,7 +7717,8 @@
     "triangles": 342,
     "meshes": 1,
     "bytes": 40180,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/wheelbarrow.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/wheelbarrow.webp",
+    "thumbnailSha256": "25f2305c0c627f97aee38d36a820773b20848c43777bed95f7cbd37b680ee13e"
   },
   {
     "id": "detail-yyc-barrel-planter",
@@ -7601,7 +7744,8 @@
     "triangles": 1131,
     "meshes": 1,
     "bytes": 130120,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/barrel-planter.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/barrel-planter.webp",
+    "thumbnailSha256": "2da2460299dfff0bcc960059b2286e2ae7c9047acc4584cb667c6c48ef9c806f"
   },
   {
     "id": "detail-yyc-parked-bicycle",
@@ -7627,7 +7771,8 @@
     "triangles": 1388,
     "meshes": 1,
     "bytes": 159432,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/parked-bicycle.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/parked-bicycle.webp",
+    "thumbnailSha256": "1cf5db03e078f2efcce4ba820bd8ac1a9dee22c72f6a978289033fdc8af825d3"
   },
   {
     "id": "detail-yyc-kids-bikes",
@@ -7653,7 +7798,8 @@
     "triangles": 2826,
     "meshes": 1,
     "bytes": 323344,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/kids-bikes.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/kids-bikes.webp",
+    "thumbnailSha256": "1b642f211f161d4f2a502fe725a5b063e2bbaef4ead3c3d1eef0e31bc9606198"
   },
   {
     "id": "detail-yyc-portable-hoop",
@@ -7679,7 +7825,8 @@
     "triangles": 824,
     "meshes": 2,
     "bytes": 96040,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/portable-hoop.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/portable-hoop.webp",
+    "thumbnailSha256": "a4292b59023a4bdb96dd1a4b5da4298a79858a38c71f9af4ca3738f7119e52ad"
   },
   {
     "id": "detail-yyc-sandbox",
@@ -7705,7 +7852,8 @@
     "triangles": 644,
     "meshes": 1,
     "bytes": 74580,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/sandbox.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sandbox.webp",
+    "thumbnailSha256": "e4db2f5ab883626e00ee178aea0570c1c4b64e526021b14e8c972a178f60cb1f"
   },
   {
     "id": "detail-yyc-camping-trailer",
@@ -7731,7 +7879,8 @@
     "triangles": 1256,
     "meshes": 2,
     "bytes": 145304,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/camping-trailer.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/camping-trailer.webp",
+    "thumbnailSha256": "d4d88c91fab9eaac1e4251a79b63fa9d38db10ba522bf6029b268f66079eec8a"
   },
   {
     "id": "detail-yyc-disc-golf-basket",
@@ -7757,7 +7906,8 @@
     "triangles": 804,
     "meshes": 1,
     "bytes": 92844,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/disc-golf-basket.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/disc-golf-basket.webp",
+    "thumbnailSha256": "c4e378afef3ad5808f4bab28b35c4e3bde9b5fd8e52295c631220ebc4d00eaf1"
   },
   {
     "id": "detail-yyc-traffic-barrel",
@@ -7783,7 +7933,8 @@
     "triangles": 276,
     "meshes": 1,
     "bytes": 32636,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/traffic-barrel.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/traffic-barrel.webp",
+    "thumbnailSha256": "020ee2d2bc293b9b810ccf1fec44f6d7c6bcef6af2ee7a62ef430649a62e6f2a"
   },
   {
     "id": "detail-yyc-construction-fence",
@@ -7809,7 +7960,8 @@
     "triangles": 226,
     "meshes": 1,
     "bytes": 26944,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/construction-fence.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/construction-fence.webp",
+    "thumbnailSha256": "662db36af398edfc915c8db48463517074e8cc69470db721bf53c2104b3ee5a7"
   },
   {
     "id": "detail-yyc-snowman",
@@ -7835,7 +7987,8 @@
     "triangles": 1184,
     "meshes": 1,
     "bytes": 136160,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/snowman.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/snowman.webp",
+    "thumbnailSha256": "3d2f4b33310f98adfb3c45b7ae030ad17317102c0d343c3733075a8da37b2ec3"
   },
   {
     "id": "detail-yyc-toboggan-and-sled",
@@ -7861,7 +8014,8 @@
     "triangles": 486,
     "meshes": 1,
     "bytes": 56592,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/toboggan-and-sled.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/toboggan-and-sled.webp",
+    "thumbnailSha256": "dfa6ec3b8bcaae7c15d1e6a1f191cbcd19d7f1292e7d0f7af3dd2bfa4acf31d1"
   },
   {
     "id": "detail-yyc-bike-with-trailer",
@@ -7887,7 +8041,8 @@
     "triangles": 2419,
     "meshes": 2,
     "bytes": 277892,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/bike-with-trailer.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/bike-with-trailer.webp",
+    "thumbnailSha256": "beb3753b1e9d46984200b8d3a2b3a7c6ae01a1eb542e0fb05a439ea4c52700ce"
   },
   {
     "id": "detail-yyc-bird-feeder",
@@ -7913,7 +8068,8 @@
     "triangles": 738,
     "meshes": 2,
     "bytes": 86236,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/bird-feeder.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/bird-feeder.webp",
+    "thumbnailSha256": "14b8d87e46504f5fc19461944a4897c3f297d6a5ad53066d1401a5f7c5446267"
   },
   {
     "id": "detail-yyc-telecom-pedestals",
@@ -7939,7 +8095,8 @@
     "triangles": 240,
     "meshes": 1,
     "bytes": 28540,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/telecom-pedestals.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/telecom-pedestals.webp",
+    "thumbnailSha256": "5b0302d734267d35be050705214c9e8a086eef0c0e2565db395fab5e34fd2ba0"
   },
   {
     "id": "detail-yyc-firewood-stack",
@@ -7965,7 +8122,8 @@
     "triangles": 1696,
     "meshes": 1,
     "bytes": 194544,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/firewood-stack.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/firewood-stack.webp",
+    "thumbnailSha256": "09f6aff56e0a7bc51bd419363dc0445b80448271f6e8391c898015750c8903e0"
   },
   {
     "id": "detail-yyc-snow-shovel",
@@ -7991,7 +8149,8 @@
     "triangles": 430,
     "meshes": 1,
     "bytes": 50192,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-shovel.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/snow-shovel.webp",
+    "thumbnailSha256": "952e9d9d0c7dc446fae8c411326638824e44abc3c01503399781fdeb7e0dd55d"
   },
   {
     "id": "detail-yyc-lawn-mower",
@@ -8017,7 +8176,8 @@
     "triangles": 548,
     "meshes": 1,
     "bytes": 63660,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/lawn-mower.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lawn-mower.webp",
+    "thumbnailSha256": "fd18699eddb138db11c8a416f1357b465d9727a2141499679507f409bb9241c2"
   },
   {
     "id": "detail-yyc-propane-cage",
@@ -8043,7 +8203,8 @@
     "triangles": 1220,
     "meshes": 1,
     "bytes": 140232,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/propane-cage.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/propane-cage.webp",
+    "thumbnailSha256": "7d88ec75725bf93bc9cc3f319b3900a327f86297c28db2989c807415378e397b"
   },
   {
     "id": "detail-yyc-city-bus",
@@ -8069,7 +8230,8 @@
     "triangles": 1156,
     "meshes": 2,
     "bytes": 133884,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/city-bus.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/city-bus.webp",
+    "thumbnailSha256": "238b23c4e2137481651998a71d61a8a7ba067d3de63a8cc7ea3421fda8b6eba2"
   },
   {
     "id": "detail-yyc-light-rail-car",
@@ -8095,7 +8257,8 @@
     "triangles": 1400,
     "meshes": 2,
     "bytes": 161716,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/light-rail-car.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/light-rail-car.webp",
+    "thumbnailSha256": "e617e346f79857bc13c45281db033bd42bb5da8daf8b49faa9d2f66c1e394f82"
   },
   {
     "id": "detail-yyc-school-bus",
@@ -8121,7 +8284,8 @@
     "triangles": 1304,
     "meshes": 2,
     "bytes": 150768,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/school-bus.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/school-bus.webp",
+    "thumbnailSha256": "e56dd4af1fe6a832d2ff8c2ee2208aa2610d69b6569c1d9feeca22328d526ffc"
   },
   {
     "id": "detail-yyc-plow-truck",
@@ -8147,7 +8311,8 @@
     "triangles": 1476,
     "meshes": 2,
     "bytes": 170376,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/plow-truck.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/plow-truck.webp",
+    "thumbnailSha256": "c2a23fcc3afc93ca966b3d923683ac18c31f51d709a1bd49a54a11a0b3abc698"
   },
   {
     "id": "detail-yyc-roll-off-bin",
@@ -8173,7 +8338,8 @@
     "triangles": 714,
     "meshes": 1,
     "bytes": 82568,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/roll-off-bin.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/roll-off-bin.webp",
+    "thumbnailSha256": "6018797bb18cd5840b05cce702e1d9e5fde3a365d4d0a2c2d227b47fc23b4d51"
   },
   {
     "id": "detail-yyc-site-office-trailer",
@@ -8199,7 +8365,8 @@
     "triangles": 814,
     "meshes": 2,
     "bytes": 94940,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/site-office-trailer.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/site-office-trailer.webp",
+    "thumbnailSha256": "3ae469fe845517e1ad527cd4424d48a7a6d04ead4783dddda48c590705f67488"
   },
   {
     "id": "detail-yyc-excavator",
@@ -8225,7 +8392,8 @@
     "triangles": 776,
     "meshes": 2,
     "bytes": 90556,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/excavator.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/excavator.webp",
+    "thumbnailSha256": "9fdb6d404f797b4bf38e9fb0b95036e00ca42a9d04fc8f6f74a1792f04b3ba0f"
   },
   {
     "id": "detail-yyc-skid-steer",
@@ -8251,7 +8419,8 @@
     "triangles": 616,
     "meshes": 2,
     "bytes": 72332,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/skid-steer.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/skid-steer.webp",
+    "thumbnailSha256": "f543b8cda2a120a6fe4cc599e69104012e29bc8452c03cecc716d20d61150579"
   },
   {
     "id": "detail-yyc-lumber-stacks",
@@ -8277,7 +8446,8 @@
     "triangles": 2292,
     "meshes": 1,
     "bytes": 262468,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/lumber-stacks.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lumber-stacks.webp",
+    "thumbnailSha256": "4cf9f22147926ecd196d7c40c60e1ff305be2c87befe575c14ec77813d09b742"
   },
   {
     "id": "detail-yyc-concrete-barrier",
@@ -8303,7 +8473,8 @@
     "triangles": 80,
     "meshes": 1,
     "bytes": 10288,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/concrete-barrier.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/concrete-barrier.webp",
+    "thumbnailSha256": "7b719660e7d154a579316475f975dc3b9f1f6f834c35df0387c233cfe2e969ce"
   },
   {
     "id": "detail-yyc-inflatable-raft",
@@ -8329,7 +8500,8 @@
     "triangles": 1122,
     "meshes": 1,
     "bytes": 129084,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/inflatable-raft.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/inflatable-raft.webp",
+    "thumbnailSha256": "d723c789af2331cd6ce0736910e174f2917fd0a1abcdfa7c87dd9b51a70985af"
   },
   {
     "id": "detail-yyc-canoe",
@@ -8355,7 +8527,8 @@
     "triangles": 406,
     "meshes": 1,
     "bytes": 47444,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/canoe.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/canoe.webp",
+    "thumbnailSha256": "35acfc3196d6d91677a3de1e924c7616221a91f8fcb7f0a82fde2a0c3ea0f575"
   },
   {
     "id": "detail-yyc-drift-boat",
@@ -8381,7 +8554,8 @@
     "triangles": 318,
     "meshes": 1,
     "bytes": 37404,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/drift-boat.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/drift-boat.webp",
+    "thumbnailSha256": "2001c76297e949d928ad496be552877939dc42478d684003ce4eb29c26e04ae3"
   },
   {
     "id": "detail-yyc-pumpjack",
@@ -8407,7 +8581,8 @@
     "triangles": 620,
     "meshes": 1,
     "bytes": 71844,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/pumpjack.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/pumpjack.webp",
+    "thumbnailSha256": "91224ac8ab2308deff0d7486c4a161fbab93936826531ad27eebdd93abfb9234"
   },
   {
     "id": "detail-yyc-grain-bins",
@@ -8433,7 +8608,8 @@
     "triangles": 1856,
     "meshes": 1,
     "bytes": 212732,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/grain-bins.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/grain-bins.webp",
+    "thumbnailSha256": "e87f443553155767ffcc8d117b5eb0bc84771962680a21aced132fc85ab08e65"
   },
   {
     "id": "detail-yyc-wind-turbine",
@@ -8459,7 +8635,8 @@
     "triangles": 600,
     "meshes": 1,
     "bytes": 69564,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/wind-turbine.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/wind-turbine.webp",
+    "thumbnailSha256": "af2257671850599808c5c3a2715703a69ee0f9968d28cd5371089e034eeda61e"
   },
   {
     "id": "detail-yyc-street-light",
@@ -8485,7 +8662,8 @@
     "triangles": 196,
     "meshes": 2,
     "bytes": 24440,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/street-light.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-light.webp",
+    "thumbnailSha256": "4ddeafb7b692ea895c6f7e1ddad4c0ada88ed05992f06126a446f2d67b58c5bc"
   },
   {
     "id": "detail-yyc-basket-lamp-post",
@@ -8511,7 +8689,8 @@
     "triangles": 1488,
     "meshes": 1,
     "bytes": 170812,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/basket-lamp-post.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/basket-lamp-post.webp",
+    "thumbnailSha256": "d2e0d7c379f6ae221e5d4ebdd6f6d2e5b3007fd6319fa6afb6acc26e0f920625"
   },
   {
     "id": "detail-yyc-flagpole",
@@ -8537,7 +8716,8 @@
     "triangles": 180,
     "meshes": 1,
     "bytes": 21680,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/flagpole.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/flagpole.webp",
+    "thumbnailSha256": "4707a2fdaf7a5fd373e882d75825ccb3f979ca8007af0ae0a873f8bda09465ce"
   },
   {
     "id": "detail-yyc-lane-garage",
@@ -8563,7 +8743,8 @@
     "triangles": 576,
     "meshes": 2,
     "bytes": 67716,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/lane-garage.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/lane-garage.webp",
+    "thumbnailSha256": "68b18c14ed4e2586eb8aa5b2dabdda37a8e6aa224f2d8908c15742d8e5222fcc"
   },
   {
     "id": "detail-yyc-carport",
@@ -8589,7 +8770,8 @@
     "triangles": 422,
     "meshes": 1,
     "bytes": 49272,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/carport.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/carport.webp",
+    "thumbnailSha256": "efbe58768c1a7918c3bbc32ab13ae2d4a7218d8ca4f4a252e8f0e7f6549bd6be"
   },
   {
     "id": "detail-yyc-solar-array",
@@ -8615,13 +8797,14 @@
     "triangles": 676,
     "meshes": 2,
     "bytes": 79172,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/solar-array.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/solar-array.webp",
+    "thumbnailSha256": "5be145e6ab86c4f640845f72ef176c64743a06703b2a649abdfdd672034bf1ce"
   },
   {
     "id": "detail-yyc-ground-squirrels",
     "label": "Richardson's ground squirrels",
     "category": "Wildlife",
-    "description": "Urocitellus richardsonii \u00b7 prairie gophers standing watch beside a burrow mound. Static model.",
+    "description": "Urocitellus richardsonii · prairie gophers standing watch beside a burrow mound. Static model.",
     "dimensions": [
       1.026,
       0.883,
@@ -8641,13 +8824,14 @@
     "triangles": 974,
     "meshes": 1,
     "bytes": 112224,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/ground-squirrels.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/ground-squirrels.webp",
+    "thumbnailSha256": "6c46a9585e168418f873323868d326f631194addaadf8b64b77fbac77d946e0b"
   },
   {
     "id": "detail-yyc-coyote",
     "label": "Coyote",
     "category": "Wildlife",
-    "description": "Canis latrans \u00b7 alert and standing, as seen in river valleys and on park edges. Static model.",
+    "description": "Canis latrans · alert and standing, as seen in river valleys and on park edges. Static model.",
     "dimensions": [
       0.26,
       1.343,
@@ -8667,13 +8851,14 @@
     "triangles": 976,
     "meshes": 1,
     "bytes": 112432,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/coyote.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/coyote.webp",
+    "thumbnailSha256": "1af2afd176eb01f31679112909f2990fcb22c57d71146b4674b89b8cf762b5a7"
   },
   {
     "id": "detail-yyc-mallards",
     "label": "Mallards",
     "category": "Wildlife",
-    "description": "Anas platyrhynchos \u00b7 a drake and a hen on the bank of a pond or storm pond. Static model.",
+    "description": "Anas platyrhynchos · a drake and a hen on the bank of a pond or storm pond. Static model.",
     "dimensions": [
       0.651,
       0.64,
@@ -8693,13 +8878,14 @@
     "triangles": 634,
     "meshes": 1,
     "bytes": 73460,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mallards.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mallards.webp",
+    "thumbnailSha256": "0c60503a4419c5b373a2839133f83593f39888949d9e5f2d0cf9e9f783fb64a2"
   },
   {
     "id": "detail-yyc-pelicans",
     "label": "American white pelicans",
     "category": "Wildlife",
-    "description": "Pelecanus erythrorhynchos \u00b7 two summer visitors to the Bow, one with its bill tucked. Static model.",
+    "description": "Pelecanus erythrorhynchos · two summer visitors to the Bow, one with its bill tucked. Static model.",
     "dimensions": [
       1.371,
       1.137,
@@ -8719,13 +8905,14 @@
     "triangles": 686,
     "meshes": 1,
     "bytes": 79388,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/pelicans.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/pelicans.webp",
+    "thumbnailSha256": "2642fbdc945f1831fc562909fcb9033662dfe86b1456a3fe49b2507c77e64b14"
   },
   {
     "id": "detail-yyc-osprey-platform",
     "label": "Osprey nesting platform",
     "category": "Wildlife",
-    "description": "Pandion haliaetus \u00b7 tall pole with a stick nest and a perched osprey, as raised along the rivers. Static model.",
+    "description": "Pandion haliaetus · tall pole with a stick nest and a perched osprey, as raised along the rivers. Static model.",
     "dimensions": [
       1.401,
       1.566,
@@ -8745,7 +8932,8 @@
     "triangles": 846,
     "meshes": 1,
     "bytes": 97624,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/osprey-platform.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/osprey-platform.webp",
+    "thumbnailSha256": "7e70df527106c6b321ed03e28cef1de0e2f1c4d4d70328233144bb2cc03f44d9"
   },
   {
     "id": "detail-yyc-horses",
@@ -8771,7 +8959,8 @@
     "triangles": 1936,
     "meshes": 1,
     "bytes": 221868,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/horses.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/horses.webp",
+    "thumbnailSha256": "c0341baafbae921d84314f29b45a724259a1d8df7fa4254c49669ecd8f2ef778"
   },
   {
     "id": "detail-yyc-cattle",
@@ -8797,11 +8986,12 @@
     "triangles": 1744,
     "meshes": 1,
     "bytes": 199984,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/cattle.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/cattle.webp",
+    "thumbnailSha256": "2f847f5c3ca317a1bb6af13d9be2b42fdb4de45bbc7887bee375b5c95a9db94b"
   },
   {
     "id": "detail-yyc-mural-barrier-foothills",
-    "label": "Mural barrier \u00b7 Foothills sunrise",
+    "label": "Mural barrier · Foothills sunrise",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier painted with a sunrise over peaks, foothills and prairie. Original design.",
     "dimensions": [
@@ -8823,11 +9013,12 @@
     "triangles": 2730,
     "meshes": 1,
     "bytes": 312416,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-foothills.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-foothills.webp",
+    "thumbnailSha256": "7bbf09b3acf699ffed014e0fd2e4a0bf7e68d164726f8cef9d41828a21a0a9e6"
   },
   {
     "id": "detail-yyc-mural-barrier-chinook",
-    "label": "Mural barrier \u00b7 Chinook arch",
+    "label": "Mural barrier · Chinook arch",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier painted with a chinook arch of sunset cloud over the range. Original design.",
     "dimensions": [
@@ -8849,11 +9040,12 @@
     "triangles": 2436,
     "meshes": 1,
     "bytes": 278896,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-chinook.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-chinook.webp",
+    "thumbnailSha256": "a5c394d60ccc4a198b1ecdb81a3b7750eea8dffdc353f2759946d2308b4553ae"
   },
   {
     "id": "detail-yyc-mural-barrier-river",
-    "label": "Mural barrier \u00b7 River ribbons",
+    "label": "Mural barrier · River ribbons",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier painted with flowing bands of river blue and green. Original design.",
     "dimensions": [
@@ -8875,11 +9067,12 @@
     "triangles": 1996,
     "meshes": 1,
     "bytes": 228732,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-river.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-river.webp",
+    "thumbnailSha256": "89c4c32444e9d162f377de5c1ae0050286206bc505a82ea621880e55ee480f33"
   },
   {
     "id": "detail-yyc-mural-barrier-mosaic",
-    "label": "Mural barrier \u00b7 Triangle mosaic",
+    "label": "Mural barrier · Triangle mosaic",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier painted with a bright mosaic of irregular triangles. Original design.",
     "dimensions": [
@@ -8901,11 +9094,12 @@
     "triangles": 1000,
     "meshes": 1,
     "bytes": 115188,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-mosaic.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-mosaic.webp",
+    "thumbnailSha256": "5183b6ceddd4f1f9c595a1cc460f5ac8d3df238efe965f2386ff278907cf04f5"
   },
   {
     "id": "detail-yyc-mural-barrier-chevron",
-    "label": "Mural barrier \u00b7 Chevrons",
+    "label": "Mural barrier · Chevrons",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier painted with bold zigzag chevrons. Original design.",
     "dimensions": [
@@ -8927,11 +9121,12 @@
     "triangles": 1036,
     "meshes": 1,
     "bytes": 119296,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-chevron.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-chevron.webp",
+    "thumbnailSha256": "97ca26c699d3b1141358e4efcb553aa28b5ee1b3035286dbdd44e4bd69013c83"
   },
   {
     "id": "detail-yyc-mural-barrier-quilt",
-    "label": "Mural barrier \u00b7 Prairie quilt",
+    "label": "Mural barrier · Prairie quilt",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier painted as patchwork quilt blocks in barn red, mustard and denim. Original design.",
     "dimensions": [
@@ -8953,11 +9148,12 @@
     "triangles": 900,
     "meshes": 1,
     "bytes": 103788,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-quilt.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-quilt.webp",
+    "thumbnailSha256": "f7791b831c5089eb1673d00fc9f3f987ab7f49d2f75ff893bee9e4333fee1c1a"
   },
   {
     "id": "detail-yyc-mural-barrier-aspen",
-    "label": "Mural barrier \u00b7 Aspen grove",
+    "label": "Mural barrier · Aspen grove",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier painted with white aspen trunks under a gold canopy. Original design.",
     "dimensions": [
@@ -8979,11 +9175,12 @@
     "triangles": 1182,
     "meshes": 1,
     "bytes": 135936,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-aspen.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-aspen.webp",
+    "thumbnailSha256": "9d239d3bb28d804204e553eb8f482b18c6b899d4a1be5b5f2b8356523728c73b"
   },
   {
     "id": "detail-yyc-mural-barrier-confetti",
-    "label": "Mural barrier \u00b7 Confetti",
+    "label": "Mural barrier · Confetti",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier painted with bright dots on deep teal. Original design.",
     "dimensions": [
@@ -9005,7 +9202,8 @@
     "triangles": 1460,
     "meshes": 1,
     "bytes": 167636,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-confetti.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/mural-barrier-confetti.webp",
+    "thumbnailSha256": "ba92a658ca8d232d0e8aa50a46b5b6d1be83b53b61532b7b0d8c183fbdbc8806"
   },
   {
     "id": "detail-yyc-boardwalk-section",
@@ -9031,11 +9229,12 @@
     "triangles": 158,
     "meshes": 1,
     "bytes": 19128,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-section.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-section.webp",
+    "thumbnailSha256": "b456e5e720c17c9eaad81191e5ebce2b0ddffd48ed99b807d703a0332816ca4e"
   },
   {
     "id": "detail-yyc-boardwalk-section-short",
-    "label": "Boardwalk section \u00b7 1.5 m",
+    "label": "Boardwalk section · 1.5 m",
     "category": "Access & levels",
     "description": "Half-length boardwalk section for fitting a run to a frontage. Level with the sidewalk, guard on the road side.",
     "dimensions": [
@@ -9057,11 +9256,12 @@
     "triangles": 124,
     "meshes": 1,
     "bytes": 15268,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-section-short.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-section-short.webp",
+    "thumbnailSha256": "15278d51233573cd65113fbe1956c725b133c8c58f582c45c790bbf01073070e"
   },
   {
     "id": "detail-yyc-boardwalk-end-approach",
-    "label": "Boardwalk end \u00b7 approach",
+    "label": "Boardwalk end · approach",
     "category": "Access & levels",
     "description": "Boardwalk end closed by a guard return, with a yellow and black hazard marker facing approaching traffic.",
     "dimensions": [
@@ -9083,11 +9283,12 @@
     "triangles": 298,
     "meshes": 1,
     "bytes": 35104,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-end-approach.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-end-approach.webp",
+    "thumbnailSha256": "e53db5eb86fff78b4492315414328ae865a4855d3be6c46ee1e9a82c76310e5e"
   },
   {
     "id": "detail-yyc-boardwalk-end-far",
-    "label": "Boardwalk end \u00b7 far",
+    "label": "Boardwalk end · far",
     "category": "Access & levels",
     "description": "Boardwalk end closed by a guard return, for the end that traffic leaves behind.",
     "dimensions": [
@@ -9109,11 +9310,12 @@
     "triangles": 266,
     "meshes": 1,
     "bytes": 31444,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-end-far.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-end-far.webp",
+    "thumbnailSha256": "6376000e37f4290f267000ba1d7894af0acd55e091fe1abc183326b26e05a9c9"
   },
   {
     "id": "detail-yyc-street-patio-one-stall",
-    "label": "On-street patio \u00b7 one stall",
+    "label": "On-street patio · one stall",
     "category": "Seating",
     "description": "Fenced dining platform in one parking stall, level with the sidewalk: two tables, eight seats, umbrellas and a 2 m entrance.",
     "dimensions": [
@@ -9135,11 +9337,12 @@
     "triangles": 1660,
     "meshes": 1,
     "bytes": 190368,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/street-patio-one-stall.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-patio-one-stall.webp",
+    "thumbnailSha256": "ee7cc3a383f79be8d174d2d9d452ef86c9d4ec3bdf0cb9caf11e0f2e1be297bb"
   },
   {
     "id": "detail-yyc-street-patio-two-stall",
-    "label": "On-street patio \u00b7 two stalls",
+    "label": "On-street patio · two stalls",
     "category": "Seating",
     "description": "Fenced dining platform 11 m long in two parking stalls: four tables, sixteen seats, umbrellas and a 2 m entrance.",
     "dimensions": [
@@ -9161,11 +9364,12 @@
     "triangles": 2582,
     "meshes": 1,
     "bytes": 295476,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/street-patio-two-stall.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/street-patio-two-stall.webp",
+    "thumbnailSha256": "a8a714b410a57036d8381222260b8b407d2d3c08afc52b85ece2b2188d4e4175"
   },
   {
     "id": "detail-yyc-parklet-one-stall",
-    "label": "Parklet \u00b7 one stall",
+    "label": "Parklet · one stall",
     "category": "Seating",
     "description": "Public seating platform in one parking stall, open to the sidewalk, with built-in benches, planters and two small tables.",
     "dimensions": [
@@ -9187,11 +9391,12 @@
     "triangles": 1382,
     "meshes": 1,
     "bytes": 158664,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/parklet-one-stall.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/parklet-one-stall.webp",
+    "thumbnailSha256": "b1f58ca3d7db432660f48ea114893ad0d00d1085db25cdbf73056e3856c541e5"
   },
   {
     "id": "detail-yyc-parklet-two-stall",
-    "label": "Parklet \u00b7 two stalls",
+    "label": "Parklet · two stalls",
     "category": "Seating",
     "description": "Public seating platform 11 m long in two parking stalls, with benches, a long shared table, planters and umbrellas.",
     "dimensions": [
@@ -9213,7 +9418,8 @@
     "triangles": 1788,
     "meshes": 1,
     "bytes": 204948,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/parklet-two-stall.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/parklet-two-stall.webp",
+    "thumbnailSha256": "93696bc90709e6f9fa96eb85b9f76bd6d98d4762920a4b12701cf0678a971e53"
   },
   {
     "id": "detail-yyc-sidewalk-patio",
@@ -9239,7 +9445,8 @@
     "triangles": 1572,
     "meshes": 1,
     "bytes": 180388,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/sidewalk-patio.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/sidewalk-patio.webp",
+    "thumbnailSha256": "5ebc7e0b0b209bb4225d7b65326ce48cff0df66f34a334fdc49175c34f19046c"
   },
   {
     "id": "detail-yyc-patio-fence-panel",
@@ -9265,7 +9472,8 @@
     "triangles": 96,
     "meshes": 1,
     "bytes": 12120,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/patio-fence-panel.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/patio-fence-panel.webp",
+    "thumbnailSha256": "58bd7ddabc258d0d0c7c4e533b7094d4335ddfb82b9cbd9992169a7030679c5a"
   },
   {
     "id": "detail-yyc-low-profile-barrier",
@@ -9291,11 +9499,12 @@
     "triangles": 56,
     "meshes": 1,
     "bytes": 7516,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-barrier.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-barrier.webp",
+    "thumbnailSha256": "4fd0d07ff617ec5e4972f352081e8a7707071f6e8f7001efcb891e7ca7674446"
   },
   {
     "id": "detail-yyc-boardwalk-module-nine-foot",
-    "label": "Boardwalk module \u00b7 6 \u00d7 9 ft",
+    "label": "Boardwalk module · 6 × 9 ft",
     "category": "Access & levels",
     "description": "Repeatable 6 ft by 9 ft boardwalk module with grey decking, level with the sidewalk. Red steel railings on both long sides, open ends.",
     "dimensions": [
@@ -9317,11 +9526,12 @@
     "triangles": 302,
     "meshes": 1,
     "bytes": 35628,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot.webp",
+    "thumbnailSha256": "38ba6feff5a9941621d22d7d477f202d7eb669b6256f67ace5df11fa9643d4d7"
   },
   {
     "id": "detail-yyc-boardwalk-module-twelve-foot",
-    "label": "Boardwalk module \u00b7 6 \u00d7 12 ft",
+    "label": "Boardwalk module · 6 × 12 ft",
     "category": "Access & levels",
     "description": "Repeatable 6 ft by 12 ft boardwalk module with grey decking, level with the sidewalk. Red steel railings on both long sides, open ends.",
     "dimensions": [
@@ -9343,11 +9553,12 @@
     "triangles": 398,
     "meshes": 1,
     "bytes": 46580,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot.webp",
+    "thumbnailSha256": "22d197b5440605500dc2a948e7e548e39ee8c66e157630ee8d54bb47b8a5b594"
   },
   {
     "id": "detail-yyc-boardwalk-corner",
-    "label": "Boardwalk corner \u00b7 6 \u00d7 6 ft",
+    "label": "Boardwalk corner · 6 × 6 ft",
     "category": "Access & levels",
     "description": "Six-foot-square boardwalk corner with red steel railings on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.",
     "dimensions": [
@@ -9369,11 +9580,12 @@
     "triangles": 266,
     "meshes": 1,
     "bytes": 31500,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner.webp",
+    "thumbnailSha256": "9dd4ce7ecd8d6dda21d483e4a030153d8adc6ae5343c092c911b183dde5a907d"
   },
   {
     "id": "detail-yyc-boardwalk-corner-approach",
-    "label": "Boardwalk corner \u00b7 approach",
+    "label": "Boardwalk corner · approach",
     "category": "Access & levels",
     "description": "Six-foot-square boardwalk corner with red steel railings on two outer sides and a hazard marker facing approaching traffic.",
     "dimensions": [
@@ -9395,11 +9607,12 @@
     "triangles": 286,
     "meshes": 1,
     "bytes": 33800,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner-approach.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner-approach.webp",
+    "thumbnailSha256": "dca3fd48df586508bab20d2641cc347e2559ed1f620f9d6b98fa6aea4772094b"
   },
   {
     "id": "detail-yyc-boardwalk-module-nine-foot-road-rail",
-    "label": "Boardwalk module \u00b7 6 \u00d7 9 ft \u00b7 road-side rail",
+    "label": "Boardwalk module · 6 × 9 ft · road-side rail",
     "category": "Access & levels",
     "description": "Repeatable 6 ft by 9 ft boardwalk module with grey decking and a red steel railing on the road side only. Open to the sidewalk.",
     "dimensions": [
@@ -9421,11 +9634,12 @@
     "triangles": 182,
     "meshes": 1,
     "bytes": 21964,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail.webp",
+    "thumbnailSha256": "af223c5509083261bb28197510aeaaf806f078eebcee86fd560c395af8de6b88"
   },
   {
     "id": "detail-yyc-boardwalk-module-twelve-foot-road-rail",
-    "label": "Boardwalk module \u00b7 6 \u00d7 12 ft \u00b7 road-side rail",
+    "label": "Boardwalk module · 6 × 12 ft · road-side rail",
     "category": "Access & levels",
     "description": "Repeatable 6 ft by 12 ft boardwalk module with grey decking and a red steel railing on the road side only. Open to the sidewalk.",
     "dimensions": [
@@ -9447,11 +9661,12 @@
     "triangles": 230,
     "meshes": 1,
     "bytes": 27440,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail.webp",
+    "thumbnailSha256": "e68e145e13d6c10df4f66d678de230dde5da163689c87961fe30379b788e17cb"
   },
   {
     "id": "detail-yyc-boardwalk-module-nine-foot-black",
-    "label": "Boardwalk module \u00b7 6 \u00d7 9 ft \u00b7 black",
+    "label": "Boardwalk module · 6 × 9 ft · black",
     "category": "Access & levels",
     "description": "Repeatable 6 ft by 9 ft boardwalk module with grey decking, level with the sidewalk. Black steel railings on both long sides, open ends.",
     "dimensions": [
@@ -9473,11 +9688,12 @@
     "triangles": 302,
     "meshes": 1,
     "bytes": 35640,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-black.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-black.webp",
+    "thumbnailSha256": "fefb579fc3f279e3f6d9450a5b20f2226a1e311c16a0b09c534cc634d2fcc7b9"
   },
   {
     "id": "detail-yyc-boardwalk-module-twelve-foot-black",
-    "label": "Boardwalk module \u00b7 6 \u00d7 12 ft \u00b7 black",
+    "label": "Boardwalk module · 6 × 12 ft · black",
     "category": "Access & levels",
     "description": "Repeatable 6 ft by 12 ft boardwalk module with grey decking, level with the sidewalk. Black steel railings on both long sides, open ends.",
     "dimensions": [
@@ -9499,11 +9715,12 @@
     "triangles": 398,
     "meshes": 1,
     "bytes": 46592,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-black.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-black.webp",
+    "thumbnailSha256": "f31c119d2e1aa216703577acab7af6447d7858d95b60d932d2cb746a7a0fc06b"
   },
   {
     "id": "detail-yyc-boardwalk-corner-black",
-    "label": "Boardwalk corner \u00b7 6 \u00d7 6 ft \u00b7 black",
+    "label": "Boardwalk corner · 6 × 6 ft · black",
     "category": "Access & levels",
     "description": "Six-foot-square boardwalk corner with black steel railings on its two outer sides, for turning a run toward the sidewalk. Rotate to suit.",
     "dimensions": [
@@ -9525,11 +9742,12 @@
     "triangles": 266,
     "meshes": 1,
     "bytes": 31512,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner-black.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner-black.webp",
+    "thumbnailSha256": "80f2b9bfce23c42f60bf2f4b7032b87ba04547374c10935b83396d2648542805"
   },
   {
     "id": "detail-yyc-boardwalk-corner-approach-black",
-    "label": "Boardwalk corner \u00b7 approach \u00b7 black",
+    "label": "Boardwalk corner · approach · black",
     "category": "Access & levels",
     "description": "Six-foot-square boardwalk corner with black steel railings on two outer sides and a hazard marker facing approaching traffic.",
     "dimensions": [
@@ -9551,11 +9769,12 @@
     "triangles": 286,
     "meshes": 1,
     "bytes": 33812,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner-approach-black.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-corner-approach-black.webp",
+    "thumbnailSha256": "ee46a6550bc8275489844d32a0a1abf139fdcdee4b6f9168b43bfe272ec57126"
   },
   {
     "id": "detail-yyc-boardwalk-module-nine-foot-road-rail-black",
-    "label": "Boardwalk module \u00b7 6 \u00d7 9 ft \u00b7 road-side rail \u00b7 black",
+    "label": "Boardwalk module · 6 × 9 ft · road-side rail · black",
     "category": "Access & levels",
     "description": "Repeatable 6 ft by 9 ft boardwalk module with grey decking and a black steel railing on the road side only. Open to the sidewalk.",
     "dimensions": [
@@ -9577,11 +9796,12 @@
     "triangles": 182,
     "meshes": 1,
     "bytes": 21976,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail-black.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-nine-foot-road-rail-black.webp",
+    "thumbnailSha256": "b33906137ec1877f4cc4fc7bae4d011796ad4856b4eabefee435081fabc9af2f"
   },
   {
     "id": "detail-yyc-boardwalk-module-twelve-foot-road-rail-black",
-    "label": "Boardwalk module \u00b7 6 \u00d7 12 ft \u00b7 road-side rail \u00b7 black",
+    "label": "Boardwalk module · 6 × 12 ft · road-side rail · black",
     "category": "Access & levels",
     "description": "Repeatable 6 ft by 12 ft boardwalk module with grey decking and a black steel railing on the road side only. Open to the sidewalk.",
     "dimensions": [
@@ -9603,11 +9823,12 @@
     "triangles": 230,
     "meshes": 1,
     "bytes": 27452,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail-black.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/boardwalk-module-twelve-foot-road-rail-black.webp",
+    "thumbnailSha256": "1d43824397838710708cf8069e92231f6ba4f0ed7a3aa0568fa67b9330283878"
   },
   {
     "id": "detail-yyc-low-profile-mural-foothills",
-    "label": "Low-profile mural barrier \u00b7 Foothills sunrise",
+    "label": "Low-profile mural barrier · Foothills sunrise",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low-profile barrier painted with a sunrise over peaks, foothills and prairie. Original design.",
     "dimensions": [
@@ -9629,11 +9850,12 @@
     "triangles": 2322,
     "meshes": 1,
     "bytes": 265872,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-foothills.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-foothills.webp",
+    "thumbnailSha256": "ea853a34f94669dc7f41518bad4d8c22736586ef480ea8c7bfdb5827f55f9533"
   },
   {
     "id": "detail-yyc-low-profile-mural-chinook",
-    "label": "Low-profile mural barrier \u00b7 Chinook arch",
+    "label": "Low-profile mural barrier · Chinook arch",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low-profile barrier painted with a chinook arch of sunset cloud over the range. Original design.",
     "dimensions": [
@@ -9655,11 +9877,12 @@
     "triangles": 2108,
     "meshes": 1,
     "bytes": 241472,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-chinook.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-chinook.webp",
+    "thumbnailSha256": "8fe099962465e90103b5b7399bf9e4ddc76393f0d20971341cfd046bd4087471"
   },
   {
     "id": "detail-yyc-low-profile-mural-river",
-    "label": "Low-profile mural barrier \u00b7 River ribbons",
+    "label": "Low-profile mural barrier · River ribbons",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low-profile barrier painted with flowing bands of river blue and green. Original design.",
     "dimensions": [
@@ -9681,11 +9904,12 @@
     "triangles": 1732,
     "meshes": 1,
     "bytes": 198604,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-river.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-river.webp",
+    "thumbnailSha256": "edd163dd5b07776801625bb32d025ed4df44c7b528215c35eb4335d7d81e3e81"
   },
   {
     "id": "detail-yyc-low-profile-mural-mosaic",
-    "label": "Low-profile mural barrier \u00b7 Triangle mosaic",
+    "label": "Low-profile mural barrier · Triangle mosaic",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low-profile barrier painted with a bright mosaic of irregular triangles. Original design.",
     "dimensions": [
@@ -9707,11 +9931,12 @@
     "triangles": 1492,
     "meshes": 1,
     "bytes": 171244,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-mosaic.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-mosaic.webp",
+    "thumbnailSha256": "c4b9e5d86059d210add246e48b13fa34ca35edf8151a207d18075ffb658887d7"
   },
   {
     "id": "detail-yyc-low-profile-mural-chevron",
-    "label": "Low-profile mural barrier \u00b7 Chevrons",
+    "label": "Low-profile mural barrier · Chevrons",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low-profile barrier painted with bold zigzag chevrons. Original design.",
     "dimensions": [
@@ -9733,11 +9958,12 @@
     "triangles": 1396,
     "meshes": 1,
     "bytes": 160304,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-chevron.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-chevron.webp",
+    "thumbnailSha256": "e97b3471cf590b09af9a59ae51db5b1b4ab98a96302e49bc4f120139fa412aed"
   },
   {
     "id": "detail-yyc-low-profile-mural-quilt",
-    "label": "Low-profile mural barrier \u00b7 Prairie quilt",
+    "label": "Low-profile mural barrier · Prairie quilt",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low-profile barrier painted as patchwork quilt blocks in barn red, mustard and denim. Original design.",
     "dimensions": [
@@ -9759,11 +9985,12 @@
     "triangles": 1156,
     "meshes": 1,
     "bytes": 132940,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-quilt.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-quilt.webp",
+    "thumbnailSha256": "e286ba84bf1356f0775f195301c36111ac68f1ad52ad532a1ced802eea25846b"
   },
   {
     "id": "detail-yyc-low-profile-mural-aspen",
-    "label": "Low-profile mural barrier \u00b7 Aspen grove",
+    "label": "Low-profile mural barrier · Aspen grove",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low-profile barrier painted with white aspen trunks under a gold canopy. Original design.",
     "dimensions": [
@@ -9785,11 +10012,12 @@
     "triangles": 1732,
     "meshes": 1,
     "bytes": 198604,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-aspen.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-aspen.webp",
+    "thumbnailSha256": "6950c8bda6c110d12bc723f7dbae14db36dd9df9f6491d253f7646affd97fe92"
   },
   {
     "id": "detail-yyc-low-profile-mural-confetti",
-    "label": "Low-profile mural barrier \u00b7 Confetti",
+    "label": "Low-profile mural barrier · Confetti",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m low-profile barrier painted with bright dots on deep teal. Original design.",
     "dimensions": [
@@ -9811,11 +10039,12 @@
     "triangles": 2644,
     "meshes": 1,
     "bytes": 302580,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-confetti.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/low-profile-mural-confetti.webp",
+    "thumbnailSha256": "31bc0eeb2131a2fe686aa5210a9f582a03255bcd6d5d59593d7767755f2b138f"
   },
   {
     "id": "detail-yyc-barrier-planter-pink",
-    "label": "Barrier planter \u00b7 pink petunias",
+    "label": "Barrier planter · pink petunias",
     "category": "Planting",
     "description": "Black moulded 4 ft planter with forklift pockets and reflective tape on its ends, full of pink petunias and trailing lime vine.",
     "dimensions": [
@@ -9837,11 +10066,12 @@
     "triangles": 1559,
     "meshes": 1,
     "bytes": 178924,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/barrier-planter-pink.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/barrier-planter-pink.webp",
+    "thumbnailSha256": "0e33456bd04a6db4e168904935435898d863fab625a77e840799429c6810376e"
   },
   {
     "id": "detail-yyc-barrier-planter-purple",
-    "label": "Barrier planter \u00b7 purple petunias",
+    "label": "Barrier planter · purple petunias",
     "category": "Planting",
     "description": "Black moulded 4 ft planter with forklift pockets and reflective tape on its ends, full of purple petunias and trailing lime vine.",
     "dimensions": [
@@ -9863,7 +10093,8 @@
     "triangles": 1549,
     "meshes": 1,
     "bytes": 177788,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/barrier-planter-purple.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/barrier-planter-purple.webp",
+    "thumbnailSha256": "671dcee7dd82c9edf9500c1e649f29d52bedbb8a2249189bb59692a2a549bed9"
   },
   {
     "id": "detail-yyc-long-planter",
@@ -9889,11 +10120,12 @@
     "triangles": 2464,
     "meshes": 1,
     "bytes": 282076,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/long-planter.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/long-planter.webp",
+    "thumbnailSha256": "f5632eee45e12150c3e2fcbbe4496216f4cafd1d4a32c998f66fba684c4c29c0"
   },
   {
     "id": "detail-yyc-district-barrier-kensington",
-    "label": "District barrier \u00b7 Kensington",
+    "label": "District barrier · Kensington",
     "category": "Traffic & safety",
     "description": "Burgundy 3 m road barrier with the Kensington wordmark in off-white and roundel in orange. The logo belongs to its business association.",
     "dimensions": [
@@ -9915,11 +10147,12 @@
     "triangles": 2156,
     "meshes": 1,
     "bytes": 246988,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-kensington.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-kensington.webp",
+    "thumbnailSha256": "4440466a0b66c59521ecc7874bb782bc3a99522954f73905a3b786591bc99cc5"
   },
   {
     "id": "detail-yyc-district-barrier-inglewood",
-    "label": "District barrier \u00b7 Inglewood",
+    "label": "District barrier · Inglewood",
     "category": "Traffic & safety",
     "description": "Repeatable 3 m road barrier with the Inglewood district wordmark in yellow on red. The logo belongs to its business association.",
     "dimensions": [
@@ -9941,11 +10174,12 @@
     "triangles": 858,
     "meshes": 1,
     "bytes": 99012,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-inglewood.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-inglewood.webp",
+    "thumbnailSha256": "d36701ec5d1c0868fd353ca2cb5a879f77531be17e3e2100165daf593f6116ea"
   },
   {
     "id": "detail-yyc-district-barrier-fourth-street-purple",
-    "label": "District barrier \u00b7 Fourth Street \u00b7 purple",
+    "label": "District barrier · Fourth Street · purple",
     "category": "Traffic & safety",
     "description": "Purple 3 m road barrier with the Fourth Street name between two 4s, in white and pink. The logo belongs to its business association.",
     "dimensions": [
@@ -9967,11 +10201,12 @@
     "triangles": 2868,
     "meshes": 1,
     "bytes": 328180,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-fourth-street-purple.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-fourth-street-purple.webp",
+    "thumbnailSha256": "7f019b5017ba645a3c49919f49efb117f38b94384559b6574c191daa644f6581"
   },
   {
     "id": "detail-yyc-district-barrier-fourth-street-green",
-    "label": "District barrier \u00b7 Fourth Street \u00b7 green",
+    "label": "District barrier · Fourth Street · green",
     "category": "Traffic & safety",
     "description": "Teal 3 m road barrier with the Fourth Street name between two 4s, in white and green. The logo belongs to its business association.",
     "dimensions": [
@@ -9993,11 +10228,12 @@
     "triangles": 2868,
     "meshes": 1,
     "bytes": 328180,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-fourth-street-green.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-fourth-street-green.webp",
+    "thumbnailSha256": "0269446ae949208237b7e3516ebbf2769e1f3fe00d89bb93c72ed475b0db71a5"
   },
   {
     "id": "detail-yyc-district-barrier-seventeenth-ave",
-    "label": "District barrier \u00b7 17th Ave",
+    "label": "District barrier · 17th Ave",
     "category": "Traffic & safety",
     "description": "Red 3 m road barrier with the 17th Ave logo four times in white. The logo belongs to its business association.",
     "dimensions": [
@@ -10019,11 +10255,12 @@
     "triangles": 3044,
     "meshes": 1,
     "bytes": 348236,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave.webp",
+    "thumbnailSha256": "25da175fe0803b46d184506bb4f906a96e1ef91610d3eed3e96db4d65262377d"
   },
   {
     "id": "detail-yyc-district-barrier-seventeenth-ave-single",
-    "label": "District barrier \u00b7 17th Ave \u00b7 single logo",
+    "label": "District barrier · 17th Ave · single logo",
     "category": "Traffic & safety",
     "description": "Red 3 m road barrier with one large 17th Ave logo in white at its centre. The logo belongs to its business association.",
     "dimensions": [
@@ -10045,7 +10282,8 @@
     "triangles": 824,
     "meshes": 1,
     "bytes": 95160,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave-single.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/district-barrier-seventeenth-ave-single.webp",
+    "thumbnailSha256": "903755e73b6486706d7449fd7a7aa030f8c5478d980d5542effc408029f433d2"
   },
   {
     "id": "detail-yyc-city-ghost-barrier",
@@ -10071,7 +10309,8 @@
     "triangles": 3206,
     "meshes": 1,
     "bytes": 366676,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier.webp",
+    "thumbnailSha256": "dc6af7b4e0181a2d37dff5edefafb43f560ca70be21ea50b49afdfac775884a1"
   },
   {
     "id": "detail-yyc-city-ghost-barrier-pink",
@@ -10097,6 +10336,7 @@
     "triangles": 4354,
     "meshes": 1,
     "bytes": 497564,
-    "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.webp"
+    "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.webp",
+    "thumbnailSha256": "28166921cadb097846a7099ac741ea5615f0bc68840b3acae4edb8251a00bdfd"
   }
 ]

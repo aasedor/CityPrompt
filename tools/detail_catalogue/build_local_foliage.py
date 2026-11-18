@@ -1215,9 +1215,9 @@ def attach_thumbnails(rows, directory, lock=CARD_LOCK):
 
     Static cards spare the panel from downloading a megabyte-size model per
     tile just to draw a preview. They are reviewed renders, never rebuilt here.
-    The row gains only thumbnailUrl. The image hash goes to a lock file beside
-    this builder instead: the running app never reads it, and every catalogue
-    row ships inside the JavaScript bundle, whose budget is nearly spent."""
+    The row gains thumbnailUrl and thumbnailSha256, the form the released
+    catalogue ships. The same hash is kept in a lock file beside this builder,
+    so a card image can be checked without parsing the catalogue."""
     locks = json.loads(lock.read_text(encoding='utf-8')) if lock.is_file() else {}
     attached = 0
     for record in rows:
@@ -1230,7 +1230,7 @@ def attach_thumbnails(rows, directory, lock=CARD_LOCK):
             if data[:4] != b'RIFF' or data[8:12] != b'WEBP':
                 raise ValueError(f'{image.name} is not a WebP image')
             record['thumbnailUrl'] = record['url'][:-len('.glb')] + '.webp'
-            locks[record['id']] = hashlib.sha256(data).hexdigest()
+            record['thumbnailSha256'] = locks[record['id']] = hashlib.sha256(data).hexdigest()
             attached += 1
     lock.write_text(json.dumps(dict(sorted(locks.items())), indent=2) + '\n', encoding='utf-8')
     return attached
