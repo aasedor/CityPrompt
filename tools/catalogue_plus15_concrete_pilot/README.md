@@ -116,6 +116,7 @@ first two knowingly.
 | `prework-manifest.json`, `candidate.json` | The measured contract and the candidate's hashes |
 | `evidence/` | Builder review, delivery verification and the three independent reviews |
 | `integration/runtime-review.md` | The runtime review template, filled in honestly: nothing was run |
+| `integration/promotion.json` | An **unapproved** promotion package: identity, references, plot and picker text, with the approval and trial records left blank |
 
 The GLB, renders and boards are review material and stay outside Git, under the
 ignored `artifacts/` directory. **The GLB is reproducible:** the generator is
@@ -148,5 +149,13 @@ scripts refuse to replace a file: RLASM never overwrites a candidate.
 3. The runtime review in `integration/runtime-review.md`, row by row, in the
    running app.
 4. A recorded human approval, then `python -m tools.catalogue_promotion prepare`.
+
+`integration/promotion.json` is ready for those steps. Put it beside the rebuilt
+GLB and `evidence/independent-review-v006.json`, saved as `independent-review.json`.
+The promotion tool's trial preflight accepts it without writing anything: the GLB,
+the review, the 57 m by 44 m plot, the `offices` group and the picker card all
+pass. Existing library entries were checked by their metadata only, as CI checks
+them. The publication preflight refuses it, as it must, until a person's approval
+and a student trial are recorded for these exact bytes.
 
 Each of those is a separate decision. Passing one does not grant the next.

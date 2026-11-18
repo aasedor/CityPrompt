@@ -1,0 +1,79 @@
+{
+  "entry": {
+    "candidate": "plus15-brutalist-concrete-office-clay-v006",
+    "family": "rlasm-clay-plus15-brutalist-concrete-office",
+    "archetype_id": "calgary_15_connected_tower",
+    "archetype_label": "Calgary 15 Connected Tower",
+    "variant_id": "brutalist_concrete_slab",
+    "variant_label": "Brutalist Concrete Office Slab",
+    "runtime_enabled": true,
+    "native_floors": 5,
+    "design_dimensions_m": {
+      "width": 45.0,
+      "depth": 40.5,
+      "height": 27.6
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
+        "bytes": 1098329,
+        "sha256": "ea6a28363104886398ba75294af97682bb0666485c73a48a2a0c7f363bfbb8ff"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0_angle_60.jpg",
+        "bytes": 874856,
+        "sha256": "49ec51c36c9f789d0883a159665f77905ee17842587ce78aa425c4a0105395c5"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0_angle_90.jpg",
+        "bytes": 844896,
+        "sha256": "695c6c3d93783def1343596b6cc9a537fd741db4e3674a4fcc3c107b6e4cf7a8"
+      }
+    ],
+    "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_plus15_concrete_pilot.",
+    "limitations": [
+      "Fixed native assembly; no resizing and no repeated floors.",
+      "The +15 walkway is a 9 m length with a glazed end. It reaches no neighbour and has no support at its free end.",
+      "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_plus15_concrete_pilot/integration/runtime-review.md.",
+      "The independent review is by an AI reviewer, not a person."
+    ],
+    "picker": {
+      "id": "plus15_brutalist_concrete_office",
+      "description": "Five-storey 1970s concrete office block with ribbon windows and a +15 walkway stub.",
+      "group_id": "offices",
+      "reshape_mode": "fixed_native",
+      "reshape_description": "Move and rotate the complete building. It keeps its authored size.",
+      "width": 57.0,
+      "depth": 44.0,
+      "max_size": 250.0
+    }
+  },
+  "model_file": "plus15-brutalist-concrete-office-clay-v006.glb",
+  "review_file": "independent-review.json",
+  "approval": {
+    "authorized_by": "",
+    "quote": "",
+    "date": "",
+    "model_sha256": ""
+  },
+  "trial": {
+    "model_sha256": "",
+    "project_url": "",
+    "tested_by": "",
+    "tested_at": "",
+    "evidence": [],
+    "checks": {
+      "catalogue_card": false,
+      "exact_variant": false,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": false,
+      "save_reload": false,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    }
+  }
+}
