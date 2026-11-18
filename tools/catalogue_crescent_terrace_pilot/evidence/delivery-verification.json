@@ -1,6 +1,6 @@
 {
   "status": "PASS_DELIVERY_CHECKS",
-  "candidate": "crescent-terrace-bath-stone-clay-v004",
+  "candidate": "crescent-terrace-bath-stone-clay-v005",
   "checks": {
     "source front": true,
     "source oblique": true,
@@ -27,7 +27,17 @@
     "triangle budget": true,
     "material count": true,
     "every threshold under 40 mm": true,
-    "a front door to every house": true,
+    "a street door to every house": true,
+    "camera margin front": true,
+    "camera margin front_corner": true,
+    "camera margin aerial": true,
+    "camera margin top": true,
+    "camera margin left_side": true,
+    "camera margin right_side": true,
+    "camera margin rear": true,
+    "camera margin rear_side": true,
+    "camera margin match_oblique": true,
+    "camera margin match_top": true,
     "camera front": true,
     "render front": true,
     "camera front_corner": true,
@@ -54,6 +64,8 @@
     "render entrance_contact": true,
     "camera end_contact": true,
     "render end_contact": true,
+    "camera end_roof": true,
+    "render end_roof": true,
     "camera roof_contact": true,
     "render roof_contact": true,
     "camera street": true,
@@ -73,25 +85,25 @@
     "phone-roof.png": true,
     "phone-construction.png": true
   },
-  "model_sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
-  "model_bytes": 9161220,
+  "model_sha256": "72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153",
+  "model_bytes": 8610196,
   "delivered_bounds_gltf_m": [
     [
-      -67.6944,
+      -63.1427,
       0.0,
-      -49.6002
+      -46.6002
     ],
     [
-      67.6944,
+      63.1427,
       19.16,
       1.8
     ]
   ],
-  "triangles": 175306,
+  "triangles": 170534,
   "script_sha256": {
     "clay_kit.py": "6237cadfb42ecbabc4c849a5305416e8a7657d71387ce2c7baa18bc7b1b71dcd",
-    "build.py": "a26574ce340094794dc83d5da8494e36fae80c8ee6d50d00c11a463fd90fcc94",
-    "cameras.json": "94976ef346d5f79cc2f2e57c1dd9ee45b4b49f9d7627df13b4fcf33fca9a22c9",
+    "build.py": "7906aa14954e69b86a62cacb187ca247a2e60d2244b4c315e46b8ffc5162162c",
+    "cameras.json": "b6b43d6b3baf5be4adcc5efac8825a7f3f0c78aab4817e739fd0835fa152cb69",
     "review.html": "f2af47dded2aa9d6ffaea6994bf603e3fe193f1216248914177ad6ea9c03f98f",
     "render.cjs": "cf9329799b70567b18419c2ac5e324409dadbeb0241dbdf8c910ff872d8d9053"
   },

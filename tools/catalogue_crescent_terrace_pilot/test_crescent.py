@@ -56,7 +56,7 @@ def test_native_size_grade_and_budget():
     lo, hi = CLAY.bounds()
     assert lo[2] == 0.0, 'nothing may sit below grade'
     assert math.isclose(hi[0], -lo[0], abs_tol=1e-6), 'the crescent is centred on its axis of symmetry'
-    assert 135 < hi[0] - lo[0] < 136 and 51 < hi[1] - lo[1] < 52
+    assert 126 < hi[0] - lo[0] < 127 and 48 < hi[1] - lo[1] < 49
     assert math.isclose(hi[2], build.RIDGE + build.STACK + .71, abs_tol=1e-6), 'the chimney pots are the highest point'
     assert 12_000 <= sum(CLAY.triangle_counts().values()) <= 180_000
 
@@ -89,17 +89,48 @@ def test_every_loft_faces_outward():
     assert len(checked) > 5000 and min(checked) > 0
 
 
-def test_plan_is_a_symmetrical_half_ellipse_of_twenty_houses():
-    assert build.HOUSES == 20 and build.BAYS == 3 and build.BAY_COUNT == 2 * 60 + 2 * build.END_BAYS == 132
+def test_plan_is_a_symmetrical_half_ellipse_of_eighteen_houses():
+    assert build.HOUSES == 18 and build.BAYS == 3
+    assert build.FRONT_BAYS == 56 and build.END_FACE_BAYS == 8 and build.BAY_COUNT == 2 * 56 + 2 * 8 == 128
+    assert build.CORNERS == (0, 56, 64, 120)
     front = build.NODES[:build.FRONT_BAYS + 1]
-    assert len(front) == 61, 'sixty-one columns stand on the concave front'
+    assert len(front) == 57, 'fifty-seven columns stand on the concave front'
     for x, y in front:
         assert math.isclose((x / build.SEMI_MAJOR) ** 2 + (y / build.SEMI_MINOR) ** 2, 1, abs_tol=1e-6)
-    for (ax, ay), (bx, by) in zip(front, front[::-1]):
-        assert math.isclose(ax, -bx, abs_tol=1e-5) and math.isclose(ay, by, abs_tol=1e-5)
-    lengths = [build.Bay(build.LOOP, k).length for k in range(build.FRONT_BAYS)]
-    assert max(lengths) - min(lengths) < .01 and 2.2 < lengths[0] < 2.35, 'front bays are equal'
-    assert math.isclose(build.FRONT_BAYS / build.HOUSES * lengths[0], 6.83, abs_tol=.05), 'each house is about 6.8 m wide'
+    for run in (build.NODES[:57], build.NODES[64:121]):                     # both long faces mirror about the middle
+        for (ax, ay), (bx, by) in zip(run, run[::-1]):
+            assert math.isclose(ax, -bx, abs_tol=1e-4) and math.isclose(ay, by, abs_tol=1e-4)
+    lengths = [build.Bay(build.LOOP, k).length for k in range(build.BAY_COUNT)]
+    windows = lengths[1:55]
+    assert max(windows) - min(windows) < .01 and 2.2 < windows[0] < 2.35, 'the window bays of the front are equal'
+    assert math.isclose(3 * windows[0], 6.82, abs_tol=.05), 'each house is about 6.8 m wide'
+    for house in range(build.HOUSES):                                       # on the convex side the bays of one house are equal
+        first = 65 + 3 * house
+        assert max(lengths[first:first + 3]) - min(lengths[first:first + 3]) < .01
+
+
+def test_every_corner_has_coupled_columns_and_blind_wall():
+    """The independent review of v002 found the last windows of two faces colliding
+    behind one corner column. Each face now starts and ends with a narrow blind bay."""
+    blind = [k for k in range(build.BAY_COUNT) if build.opening_kind(k) == 'blind']
+    assert blind == [0, 55, 56, 63, 64, 119, 120, 127]
+    for k in blind:
+        assert math.isclose(build.Bay(build.LOOP, k).length, build.COUPLED, abs_tol=1e-3)
+    assert build.END_FACE_BAYS + 1 == 9, 'nine columns across each end, as the oblique shows'
+    corners = [build.NODES[k] for k in build.CORNERS]
+    for face in CLAY.triangles['glass']:
+        for x, y, _ in face[:3]:
+            assert min(math.hypot(x - cx, y - cy) for cx, cy in corners) > 1.4, 'no glass near a corner'
+
+
+def test_layout_mirrors_about_the_middle():
+    kinds = [build.opening_kind(k) for k in range(build.BAY_COUNT)]
+    assert kinds[0:56] == kinds[0:56][::-1] and kinds[64:120] == kinds[64:120][::-1]
+    assert kinds[56:64] == kinds[120:128][::-1], 'the two ends mirror each other'
+    doors = {(round(door['centre_xy_m'][0], 2), round(door['centre_xy_m'][1], 2)) for door in build.entrances()}
+    assert doors == {(-x if x else x, y) for x, y in doors}
+    dormers = [build.has_dormer(k) for k in range(build.BAY_COUNT)]
+    assert dormers[0:56] == dormers[0:56][::-1] and dormers[64:120] == dormers[64:120][::-1] and dormers[56:64] == dormers[120:128][::-1]
 
 
 def test_three_storeys_with_one_sash_to_a_bay():
@@ -111,22 +142,23 @@ def test_three_storeys_with_one_sash_to_a_bay():
     assert 10.5 < build.COLUMN / (2 * build.RADIUS) < 11.5, 'slender Ionic columns, about eleven diameters tall'
     panes = len(CLAY.triangles['glass']) // 2
     dormers = sum(1 for face in CLAY.triangles['glass'][::2] if min(p[2] for p in face[:3]) > build.EAVES)
-    doors = sum(1 for k in range(build.BAY_COUNT) if build.opening_kind(k) == 'door')
-    assert panes - dormers == 3 * build.BAY_COUNT, 'a sash on each storey of every bay, with a fanlight where a door stands'
-    assert doors == 42
+    open_bays = sum(1 for k in range(build.BAY_COUNT) if build.opening_kind(k) != 'blind')
+    assert open_bays == 120 and dormers == sum(build.has_dormer(k) for k in range(build.BAY_COUNT))
+    assert panes - dormers == 3 * open_bays, 'a sash on each storey of every window bay, with a fanlight where a door stands'
 
 
 def test_doors():
     report = build.entrances()
     kinds = [door['kind'] for door in report]
-    assert kinds.count('front door') == 20 and kinds.count('garden door') == 20 and kinds.count('end door') == 2
+    assert kinds.count('front door') == 16 and kinds.count('garden door') == 18 and kinds.count('end door') == 2
+    assert kinds.count('front door') + kinds.count('end door') == build.HOUSES, 'one street door to every house'
     for door in report:
         assert door['rise_m'] < .04 and door['clear_width_m'] > .9
         bay = build.Bay(build.LOOP, door['bay'])
         x, y, _ = bay.p(bay.length / 2, .22, 0)
         assert math.isclose(x, door['centre_xy_m'][0], abs_tol=1e-3) and math.isclose(y, door['centre_xy_m'][1], abs_tol=1e-3)
     fronts = sorted(door['bay'] for door in report if door['kind'] == 'front door')
-    assert fronts == list(range(0, 60, 3)), 'one front door to each house, in its first bay'
+    assert fronts == [3 * house + 2 for house in range(1, 17)], 'the middle bay of every house but the two end houses'
 
 
 def test_roof_covers_the_whole_building():
@@ -158,7 +190,7 @@ def test_gutter_starts_on_the_cornice():
 def test_source_lock_matches_the_recorded_prework():
     recorded = json.loads((HERE / 'prework-manifest.json').read_text(encoding='utf-8'))
     assert build.source_lock() == recorded['sources']
-    assert recorded['measurement_contract']['houses'] == 20 and recorded['keeper_claimed'] is False
+    assert recorded['measurement_contract']['houses'] == build.HOUSES == 18 and recorded['keeper_claimed'] is False
 
 
 def test_rooms_stay_behind_the_walls():
@@ -176,16 +208,25 @@ def test_rooms_stay_behind_the_walls():
 
     points = {(round(p[0], 3), round(p[1], 3), p[2] < build.BAND) for role in ('floor', 'interior') for face in CLAY.triangles[role] for p in face[:3]}
     for x, y, ground in points:
-        assert depth(x, y) >= (.90 if ground else build.WALL + build.THICK) - 1e-3, (x, y)
+        assert depth(x, y) >= (.90 if ground else build.WALL + build.THICK) - 5e-3, (x, y)     # the fault was 0.9 m; a mitre costs a millimetre
 
 
-def test_floors_meet_the_walls_in_every_bay():
-    slabs = [face for face in CLAY.triangles['floor'] if abs(face[0][2] - build.FIRST) < 1e-9 and abs(face[1][2] - build.FIRST) < 1e-9 and abs(face[2][2] - build.FIRST) < 1e-9]
-    corners = {(round(p[0], 3), round(p[1], 3)) for face in slabs for p in face[:3]}
-    inset = build.WALL + build.THICK
-    for k in list(range(build.FRONT_BAYS + 1)) + list(range(build.STARTS['back'], build.STARTS['east'] + 1)):
-        x, y, _ = build.LOOP.node(k, inset)
-        assert (round(x, 3), round(y, 3)) in corners, k
+def test_floors_meet_the_walls_all_round():
+    """Each floor is the outline moved in to the wall's inner face. Floors once stopped up
+    to 0.32 m short of the convex wall."""
+    tops = [face for face in CLAY.triangles['floor'] if all(abs(p[2] - build.FIRST) < 1e-9 for p in face[:3])]
+    corners = {(round(p[0], 3), round(p[1], 3)) for face in tops for p in face[:3]}
+    ring = build.contour(build.WALL + build.THICK, 0)
+    assert len(ring) > 110
+    bends = [point for (_, before), (_, point), (_, after) in zip(ring[-1:] + ring[:-1], ring, ring[1:] + ring[:1])
+             if abs((point[0] - before[0]) * (after[1] - point[1]) - (point[1] - before[1]) * (after[0] - point[0])) > 1e-3]
+    assert len(bends) > 100
+    for x, y, _ in bends:                                    # every point where the outline turns is a corner of the floor
+        assert (round(x, 3), round(y, 3)) in corners
+    area = sum(abs((b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])) for a, b, c in (face[:3] for face in tops)) / 2
+    outline = [point for _, point in ring]
+    shoelace = abs(sum(a[0] * b[1] - b[0] * a[1] for a, b in zip(outline, outline[1:] + outline[:1]))) / 2
+    assert math.isclose(area, shoelace, rel_tol=1e-6), 'the floor fills its outline exactly once'
 
 
 def test_no_floor_shares_a_plane_with_the_stone_above_or_below_it():
@@ -205,7 +246,7 @@ def test_no_floor_shares_a_plane_with_the_stone_above_or_below_it():
     level = [face for face in CLAY.triangles['dressed'] if all(abs(p[2] - build.FIRST) < 1e-9 for p in face[:3])]
     assert level, 'the band has a top'
     for x, y in {(round(p[0], 3), round(p[1], 3)) for face in level for p in face[:3]}:
-        if all(math.hypot(x - nx, y - ny) > 3 for nx, ny in (nodes[k] for k in (0, 60, 66, 126))):     # mitres at the four corners reach further in
+        if all(math.hypot(x - nx, y - ny) > 3 for nx, ny in (nodes[k] for k in build.CORNERS)):     # mitres at the four corners reach further in
             assert depth(x, y) <= inner + .01, (x, y)                          # 80 mm was the fault; a mitre adds a millimetre or two
 
 
@@ -251,3 +292,98 @@ def test_sills_stand_proud_of_the_wall_beneath_them():
     tops = {round(max(p[2] for p in face[:3]), 3) for face in CLAY.triangles['dressed']}
     for lo, _ in (build.GROUND_WINDOW, build.FIRST_WINDOW, build.SECOND_WINDOW):
         assert round(lo + .012, 3) in tops and round(lo, 3) not in {round(p[2], 3) for face in CLAY.triangles['dressed'] for p in face[:3] if abs(p[2] - lo) < 1e-9}
+
+
+def roof_height(depth):
+    """The height the roof should have at a given distance in from the nearest face."""
+    steps = ((build.WALL + build.THICK, build.CORNICE), (build.EAVES_SET, build.EAVES), (build.RIDGE_SET, build.RIDGE), (build.VALLEY_SET, build.VALLEY))
+    for (d0, z0), (d1, z1) in zip(steps, steps[1:]):
+        if d0 <= depth <= d1:
+            return z0 + (z1 - z0) * (depth - d0) / (d1 - d0)
+    return build.VALLEY
+
+
+def test_roof_is_one_surface_with_true_hips_at_the_ends():
+    """The independent review of v002 found slate planes stacked up to 2 m apart over each
+    end. Everywhere on the slopes, and most of all round the four corners, exactly one
+    slate face lies over each point, at the height its distance from the walls gives."""
+    slate = [face[:3] for face in CLAY.triangles['slate']]
+
+    def over(x, y):
+        hits = []
+        for a, b, c in slate:
+            d = (b[1] - c[1]) * (a[0] - c[0]) + (c[0] - b[0]) * (a[1] - c[1])
+            if abs(d) < 1e-12:
+                continue
+            u = ((b[1] - c[1]) * (x - c[0]) + (c[0] - b[0]) * (y - c[1])) / d
+            v = ((c[1] - a[1]) * (x - c[0]) + (a[0] - c[0]) * (y - c[1])) / d
+            if u > 1e-6 and v > 1e-6 and u + v < 1 - 1e-6:
+                hits.append(u * a[2] + v * b[2] + (1 - u - v) * c[2])
+        return hits
+
+    samples = []
+    for corner in build.CORNERS:                                # a grid of points round each corner, across both hips
+        cx, cy = build.NODES[corner]
+        for i in range(21):
+            for j in range(15):
+                samples.append((cx - 7 + i * .7, cy + .3 + j * .6))
+    for k in range(0, build.BAY_COUNT, 3):                      # and one line across the range at every third bay
+        bay = build.Bay(build.LOOP, k)
+        for depth in (1.3, 2.0, 2.9, 3.8, 4.5, 5.2, 5.6):
+            x, y, _ = bay.p(bay.length / 2, depth, 0)
+            samples.append((x, y))
+    checked = 0
+    for x, y in samples:
+        depth = build.depth_inside(x, y)
+        inside = all(build.depth_inside(x + dx, y + dy) > 0 for dx, dy in ((.01, 0), (-.01, 0), (0, .01), (0, -.01)))
+        if not inside or not build.EAVES_SET + .05 < depth < build.VALLEY_SET - .05 or abs(depth - build.RIDGE_SET) < .05:
+            continue
+        if not point_in_outline(x, y):
+            continue
+        hits = over(x, y)
+        assert len(hits) == 1, (round(x, 2), round(y, 2), hits)
+        assert math.isclose(hits[0], roof_height(depth), abs_tol=.35), (round(x, 2), round(y, 2), hits[0], roof_height(depth))    # flat faces over a curved plan; the fault was 2 m
+        checked += 1
+    assert checked > 250
+
+
+def point_in_outline(x, y):
+    inside = False
+    nodes = build.NODES
+    for (ax, ay), (bx, by) in zip(nodes, nodes[1:] + nodes[:1]):
+        if (ay > y) != (by > y) and x < ax + (bx - ax) * (y - ay) / (by - ay):
+            inside = not inside
+    return inside
+
+
+def test_no_slate_lies_over_a_dormer():
+    slate_top = max(p[2] for face in CLAY.triangles['slate'] for p in face[:3])
+    assert math.isclose(slate_top, build.RIDGE)
+    near, far, _ = build.DORMER
+    slope = (build.RIDGE - build.EAVES) / (build.RIDGE_SET - build.EAVES_SET)
+    cap = build.EAVES + (near - build.EAVES_SET) * slope + 1.05 + .07
+    assert cap > roof_height(near) + 1.0, 'each dormer front stands a metre clear of the slope'
+    for k in range(build.BAY_COUNT):
+        if build.has_dormer(k):
+            bay = build.Bay(build.LOOP, k)
+            for u in (bay.length / 2 - .5, bay.length / 2 + .5):
+                x, y, _ = bay.p(u, far, 0)
+                assert build.depth_inside(x, y) >= far - 1e-3, f'dormer in bay {k} crosses a hip'
+
+
+def test_stacks_stand_through_the_roof():
+    """Every stack once had a flat base on the ridge with up to 0.9 m of air under its ends."""
+    tall = [face for face in CLAY.triangles['stone'] if max(p[2] for p in face[:3]) > build.RIDGE + build.STACK - 1e-6]
+    assert len(tall) >= 34 * 8
+    for face in tall:
+        assert min(p[2] for p in face[:3]) <= build.VALLEY - .10 + 1e-9 or min(p[2] for p in face[:3]) > build.RIDGE + build.STACK - 1e-6
+
+
+def test_whole_views_keep_the_building_in_frame():
+    spec = importlib.util.spec_from_file_location('crescent_verify', HERE / 'verify.py')
+    verify = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(verify)
+    roster = json.loads((HERE / 'cameras.json').read_text(encoding='utf-8'))['views']
+    assert set(roster) == set(build.CAMERAS)
+    for name in verify.WHOLE_VIEWS:
+        assert max(abs(v) for v in verify.view_extent(roster[name])) <= .94, name

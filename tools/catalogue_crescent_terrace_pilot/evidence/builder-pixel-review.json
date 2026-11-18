@@ -1,63 +1,71 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v004",
-  "model_sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
+  "candidate": "crescent-terrace-bath-stone-clay-v005",
+  "model_sha256": "72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
   "independent_approval": false,
   "views_inspected": {
-    "v004": [
-      "renders/architecture_close.png",
-      "renders/glass_close.png",
-      "renders/entrance_contact.png",
-      "renders/facade_close.png"
-    ],
-    "v003, same geometry apart from the audit fixes below": [
-      "boards/phone-construction.png",
-      "boards/phone-oblique.png",
-      "boards/phone-roof.png"
-    ],
-    "v002 and v001, earlier geometry": [
-      "renders/match_front.png",
-      "renders/street.png",
-      "renders/roof_contact.png",
-      "renders/front_corner.png",
+    "v005": [
       "renders/front.png",
-      "renders/aerial.png",
-      "renders/left_side.png",
-      "renders/right_side.png",
       "renders/rear.png",
+      "renders/front_corner.png",
+      "renders/aerial.png",
       "renders/rear_side.png",
-      "renders/top.png",
+      "renders/left_side.png",
+      "renders/street.png",
       "renders/rear_ground.png",
       "renders/end_contact.png",
-      "renders/corner_close.png",
-      "boards/phone-street.png"
+      "renders/entrance_contact.png",
+      "renders/architecture_close.png",
+      "renders/facade_close.png"
+    ],
+    "scratch builds of the same geometry": [
+      "end_roof",
+      "top",
+      "corner_close",
+      "glass_close",
+      "roof_contact",
+      "match_oblique"
     ]
   },
   "findings": [
-    "The plan reads as a half-ellipse crescent of twenty houses, as the street view and the oblique show.",
-    "Three storeys: a plain ground storey, then two storeys behind a giant Ionic order with one sash to a bay on each.",
-    "Proportions were set from pixel measurements on the street view: ground storey 4.4 m against 7.2 m columns, slender columns about eleven diameters tall.",
-    "Each capital reads as Ionic, with two scrolls side by side under the abacus; each column stands on a plinth block on the band.",
-    "Entablature, modillion cornice and balustrade run unbroken round all four sides and mitre cleanly at the four corners.",
-    "Every sash sits in a reveal with a frame, glazing bars and glass, with floors and walls behind; every door has panels, a fanlight and a threshold.",
-    "The roof is closed: slate ranges, lead gutters and flat, party upstands, stacks with pots and dormers; both ends are hipped.",
+    "The plan reads as a half-ellipse crescent of eighteen houses, as the street view and the oblique show.",
+    "Three storeys: a plain ground storey, then two storeys behind a giant Ionic order with one sash to a window bay on each.",
+    "Each corner has a corner column and a partner 0.95 m along each face with blind wall between; each end has nine columns and six window bays.",
+    "Each end roof is a true hip: one slate face over every point, with the hips running corner to corner and two dormers on the end slope.",
+    "Every chimney stack stands through the roof; none has air under its base.",
+    "Plain walling shows no hairlines: each bay of wall is a grid of faces sharing every corner with its neighbours.",
+    "Entablature, modillion cornice and balustrade run unbroken round all four sides; capitals and pedestals at the corners are square to the faces.",
+    "Every sash sits in a reveal with a frame, six panes over six and glass, with floors and walls behind; every door has panels, a fanlight and a threshold.",
+    "The door layout mirrors about the middle: the middle bay of each house, with the two end houses entered from their ends.",
     "The convex side and both ends are complete elevations. Nothing floats and nothing sits below grade."
   ],
+  "response_to_independent_review_of_v002": {
+    "P0-01 end roofs unresolved": "Fixed. The roof is now built from the outline moved in to each depth, with bays that shrink to nothing dropped, and skinned by shortest diagonals. A test samples a grid round every corner and requires exactly one slate face over each point.",
+    "P1-01 partition through each end": "Fixed in v003. The spine wall stops at the wall's inner face; a test requires every room surface to stay behind the walls.",
+    "P1-02 corner windows collide": "Fixed. Each face begins and ends with a 0.95 m blind bay between a corner column and a partner column, as the reviewer read from both references. A test requires no glass within 1.4 m of a corner.",
+    "P1-03 stacks hang over the slopes": "Fixed. Each stack starts 0.1 m below the valley, under the lowest roof it stands over.",
+    "P1-04 rear_side cropped": "Fixed. Every whole view is checked by projecting the outline through its camera; none comes nearer the frame than 6 percent.",
+    "P2-01 house count": "Adopted the reviewer's estimate: 18 houses and 54 window bays.",
+    "P2-02 roof-plan reference": "Unchanged and declared: it shows a different building.",
+    "P2-03 ends not mirrored": "Fixed. Doors, dormers and both long faces mirror about the middle; the end houses have no front door.",
+    "P2-04 dormers": "Partly addressed. Each dormer now has a blind behind its glass. They remain roof features with no attic, and the manifest says so.",
+    "P2-05 coincident faces": "Fixed. The upper wall stops 50 mm inside the entablature, the column band stops at the wall, and sills stand 12 mm proud.",
+    "P2-06 corner capitals and pedestals": "Fixed. At the four corners blocks are squared to the faces.",
+    "P2-07 faceting": "Reduced. Column shafts, bases and neckings are twelve-sided, and the scrolls twelve-sided.",
+    "P2-08 glazing pattern": "Fixed. Every sash is six over six, as the oblique shows.",
+    "P2-09 iron guards": "Fixed in v004. The bottom rail is let into the plinths and an end post stands on the band.",
+    "P2-10 panel joints": "Fixed. Walls are grids of faces with shared corners.",
+    "P2-11 framing": "Fixed. The oblique comparison shows the whole crescent, and the front and rear elevations use a wide frame."
+  },
   "open_notes": [
     "The roof plan reference shows a different, shorter building; it informs roof character only.",
-    "The comparison cameras are approximate; in the street view the near end renders larger than the reference.",
+    "The comparison cameras are approximate.",
     "Sunken areas, their steps and the bridges to the doors are left out; railings stand at grade.",
-    "The reference stacks are broader and stand closer to the front than the model's.",
-    "Bays on the convex side widen toward the ends, from 2.7 m to 3.7 m.",
-    "Thin railing bars and glazing bars break up in distant views; a renderer sampling effect.",
-    "At 176,290 triangles the model is just under the usual 180,000 ceiling.",
-    "Each corner room at the two ends has windows in two walls, so a diagonal line of sight passes through glass alone there."
-  ],
-  "changes_since_v002": "Two faults found by the builder's own geometric audit are fixed. The spine wall of each end house ran out to the outside face of the end, showing as a thin blade up the middle end column; it now stops at the inner face of the wall. Floors were one slab to a house and stopped up to 0.32 m short of the convex wall; they are now laid bay by bay and meet both walls. The door leaf is a shade darker than its panels so the six panels read. The oblique comparison camera was moved nearer the reference viewpoint.",
-  "geometric_audit": {
-    "method": "rays cast in through every sash at seven headings and three pitches, 7,434 in all, on the v002 geometry",
-    "result": "four rays pass through glass only: each enters a first-floor sash on the convex side beside a corner and leaves through a sash in the end. These are corner rooms with windows in two walls, as built."
-  },
-  "changes_since_v003": "Five small faults found by reading the model against its own numbers are fixed. Each window sill shared a plane with the top of the wall beneath it and now stands 12 mm proud. The iron guards stopped 20 mm short of the column plinths and 60 mm above the band; the bottom rail is now let into the plinths and an end post stands on the band at each end. The railing returns beside each door path stood 20 mm above the paving and now stand on it. The cushion of each capital started 20 mm above the necking, leaving a slit, and now sits on it. The band the columns stand on ran 80 mm under the first floor at the same level and now stops at the wall. Faces buried in a neighbour (the backs and tops of modillions, the ends of pedestals and plinths) are left off, which saves 3,400 triangles."
+    "Garden doors on the convex side are an invention.",
+    "Bays on the convex side widen toward the ends, from 2.7 m to 4.0 m.",
+    "Each corner room at the two ends has windows in two walls, so a diagonal line of sight passes through glass alone there.",
+    "Over about a square metre beside each outer corner the slate lies up to 0.26 m from the ideal roof surface, where flat faces turn a curved plan.",
+    "Thin railing bars and glazing bars break up in distant views; a renderer sampling effect."
+  ]
 }

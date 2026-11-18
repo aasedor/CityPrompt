@@ -20,7 +20,7 @@ spec.loader.exec_module(shared)
 
 def construction(directory, report):
     board, draw = shared.sheet('Construction and contact views', report)
-    views = ('facade_close', 'architecture_close', 'glass_close', 'entrance_contact', 'end_contact', 'corner_close', 'roof_contact', 'rear_ground')
+    views = ('facade_close', 'architecture_close', 'glass_close', 'entrance_contact', 'end_contact', 'corner_close', 'end_roof', 'roof_contact')
     for k, view in enumerate(views):
         x, y = 36 + (k % 2) * 510, 150 + (k // 2) * 430
         board.paste(shared.fitted(directory / 'renders' / f'{view}.png', 498, 374), (x, y + 34))
@@ -36,7 +36,7 @@ def main():
                       'Check: three storeys, plain ground storey, giant Ionic order, one sash to\na bay, iron guards, entablature, balustrade, stacks with pots, railings.\n'
                       'Known differences: the reference sashes have no glazing bars; ashlar\njoints and the sunken areas are left out. Entourage is not in the model.')
     shared.comparison(directory, report, 'phone-oblique.png', 'Oblique view', source['oblique'], 'match_oblique',
-                      'Check: half-ellipse plan, about twenty houses, the order on the convex\nside and the six-bay end, slate ranges, party stacks, dormers, hipped end.\n'
+                      'Check: half-ellipse plan, eighteen houses, the order on the convex side,\nnine columns across the end, slate ranges, stacks, dormers, hipped end.\n'
                       'Known differences: the camera is approximate; sunken areas, bridges\nand the lead-covered roof additions are left out.')
     shared.comparison(directory, report, 'phone-roof.png', 'Roof plan', source['top'], 'match_top',
                       'The reference roof plan shows a different building: about ten houses\nin a short block that is concave on both long sides. The street view and\n'

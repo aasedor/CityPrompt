@@ -1,52 +1,54 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v004",
+  "candidate": "crescent-terrace-bath-stone-clay-v005",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/crescent-terrace-bath-stone/v004 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
-  "model_bytes": 9161220,
+  "external_directory": "artifacts/crescent-terrace-bath-stone/v005 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153",
+  "model_bytes": 8610196,
   "delivered_bounds_gltf_m": [
     [
-      -67.6944,
+      -63.1427,
       0.0,
-      -49.6002
+      -46.6002
     ],
     [
-      67.6944,
+      63.1427,
       19.16,
       1.8
     ]
   ],
   "native_dimensions_m": {
-    "width": 135.3888,
-    "depth": 51.4002,
+    "width": 126.2855,
+    "depth": 48.4002,
     "height": 19.16
   },
   "storeys": 3,
-  "houses": 20,
-  "columns": 132,
+  "houses": 18,
+  "columns": 128,
+  "front_columns": 57,
   "runtime": {
-    "path": "crescent-terrace-bath-stone-clay-v004.glb",
-    "bytes": 9161220,
-    "sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
+    "path": "crescent-terrace-bath-stone-clay-v005.glb",
+    "bytes": 8610196,
+    "sha256": "72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153",
     "meshes": 12,
     "materials": 12,
     "textures": 0,
     "images": 0,
-    "triangles": 175306
+    "triangles": 170534
   },
   "entrances": {
-    "front doors": 20,
-    "garden doors": 20,
-    "end doors": 2
+    "front doors": 16,
+    "end doors": 2,
+    "street doors": 18,
+    "garden doors": 18
   },
   "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them.",
   "independent_review": "pending for this candidate",
   "superseded": {
     "crescent-terrace-bath-stone-clay-v001": "builder review only: chimney stacks were too low to read from the street as they do in the reference",
     "crescent-terrace-bath-stone-clay-v002": {
-      "status": "sent to independent review; superseded when the builder found a spine wall reaching the face of each end and floors short of the convex wall",
+      "status": "independent review: rework required, 1 P0, 4 P1 and 11 P2 (evidence/independent-review-v002.json)",
       "model_sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
       "source_commit": "60195b050"
     },
@@ -54,6 +56,11 @@
       "status": "builder review only; superseded when the audit found sills sharing a plane with the wall, guards and gate bars clear of their supports, a slit in each capital, and the column band running under the first floor",
       "model_sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
       "source_commit": "a7eb70b82"
+    },
+    "crescent-terrace-bath-stone-clay-v004": {
+      "status": "builder review only; superseded by the rework that followed the independent review of v002",
+      "model_sha256": "1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf",
+      "source_commit": "c1a1eedd5"
     }
   }
 }

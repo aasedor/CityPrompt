@@ -1,5 +1,5 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v004",
+  "candidate": "crescent-terrace-bath-stone-clay-v005",
   "title": "Bath Stone Grand",
   "method": "RLASM v6.1 clay-first",
   "representation_kind": "architectural_clay",
@@ -30,8 +30,8 @@
   ],
   "measurement_contract": {
     "dimensions_m": {
-      "width": 131.6,
-      "depth": 47.8,
+      "width": 122.6,
+      "depth": 44.8,
       "range_depth": 13.8,
       "cornice": 13.0,
       "balustrade": 14.1,
@@ -40,9 +40,13 @@
     },
     "storeys": 3,
     "storey_policy": "fixed_authored_assembly",
-    "houses": 20,
-    "bays_per_house": 3,
-    "columns": 132,
+    "houses": 18,
+    "window_bays_per_house": 3,
+    "columns": {
+      "all": 128,
+      "concave_front": 57,
+      "each_end": 9
+    },
     "source_measurements": {
       "front": [
         "An eye-level view along the concave front from inside the crescent. It carries no scale. Scale is set by the column: 7.2 m, about 280 px at the right edge.",
@@ -50,6 +54,7 @@
         "Ground storey: plain ashlar with one tall window to a bay, about 2.0 m tall with its sill at railing height. Built 1.95 m tall with the sill at 1.15 m.",
         "Behind the columns: a first-floor sash about 2.05 m tall with its sill 0.65 m above the column bases, and a second-floor sash about 1.75 m tall whose head is 0.8 m below the capitals.",
         "Columns are slender, about eleven lower diameters tall, three-quarters engaged, Ionic, with the scrolls of each capital side by side as seen from the front.",
+        "At the far end two columns stand close together at the corner, with blind wall between them.",
         "An iron guard stands between the column plinths at every first-floor window.",
         "A continuous entablature with a modillion cornice, then a balustrade with a pedestal over every column and about six balusters to a bay.",
         "Stone chimney stacks with a row of pots rise behind the balustrade at each party wall. Slate shows above the balustrade toward the far end.",
@@ -58,9 +63,11 @@
       "oblique": [
         "A view from high outside one end, looking along the convex side and across to the concave front.",
         "Plan: close to half an ellipse. The far end faces back toward the camera.",
-        "House count: front doors are three bays apart, and about forty columns show on the visible two thirds of the concave front, so about sixty bays and twenty houses. Built 20 houses of 3 bays, 61 columns on the front.",
-        "The giant order runs along the convex side and across the six-bay end as well as the concave front.",
-        "Each house: a white door and two windows at street level; a first-floor sash about 2.4 m tall and a second-floor sash about 1.6 m tall, both with glazing bars.",
+        "House count. Front doors are three bays apart. The builder counted about forty columns on the visible two thirds of the concave front and estimated sixty bays. The independent reviewer counted 39 columns and 38 bays visible, estimated about sixteen hidden, and gave 54 bays and 18 houses, in a range of 50 to 58 bays. Built 18 houses of 3 window bays.",
+        "The near end has nine columns: a corner column and a partner close beside it at each corner, with blind wall between, and six window bays across the rest.",
+        "The end house has no door among its three front bays. It is entered from its end.",
+        "The giant order runs along the convex side as well as the concave front and the ends.",
+        "Each house: a white door and two windows at street level; a first-floor sash about 2.4 m tall and a second-floor sash about 1.6 m tall, each six panes over six.",
         "Roof: slate ranges behind the balustrade, a stone upstand and broad stacks with about seven pots at each party wall, small dormers just behind the balustrade, a hipped roof over each end.",
         "A sunken area with railings and a bridge to each door lies between the pavement and the front."
       ],
@@ -70,27 +77,31 @@
       ]
     },
     "source_conflicts": [
-      "Plan and length. The roof plan shows about ten houses in a shallow block. The street view and the oblique, which agree with each other, show a long sweep of about twenty houses on half an ellipse. Street view and oblique govern.",
-      "Column count. The catalogue text gives 114 columns. Counted on the oblique, the concave front has about sixty bays. Built 61 columns on the concave front and 132 in all.",
-      "Catalogue plot. The catalogue lists a 6 m by 12 m plot, the size of one house. All three images show a complete crescent. Built as the complete crescent; each house is 6.85 m wide and 13.8 m deep.",
-      "Window bars. The street view shows sashes with one large pane above another. The oblique shows small panes with glazing bars. Built with glazing bars.",
+      "Plan and length. The roof plan shows about ten houses in a shallow block. The street view and the oblique, which agree with each other, show a long sweep on half an ellipse. Street view and oblique govern.",
+      "House count. Part of the front is hidden in the oblique, so the count is an estimate: about twenty by the builder, about eighteen by the independent reviewer. Built eighteen.",
+      "Catalogue text. It gives 114 columns, thirty or more houses and a rusticated base. The images show about 54 bays on the front and plain ashlar. Built 57 columns on the concave front, 128 in all, 18 houses and a plain base.",
+      "Catalogue plot. The catalogue lists a 6 m by 12 m plot, the size of one house. All three images show a complete crescent. Built as the complete crescent; each house is 6.8 m wide and 13.8 m deep.",
+      "Window bars. The street view shows sashes with one large pane above another. The oblique shows six panes over six. Built six over six.",
       "First-floor sash height. About 2.05 m in the street view and about 2.4 m in the oblique. Built 2.35 m.",
       "Columns on the convex side. The oblique shows the giant order on the convex side. A real crescent of this kind has a plain back. Built as drawn."
     ],
-    "camera_note": "The three fitted cameras are approximate. No camera can register this model exactly against the oblique or the roof plan, because the images do not agree on the plan. The street camera matches the far end of the sweep; the near end renders about 15 percent larger than the reference.",
+    "camera_note": "The three comparison cameras are approximate. No camera can register this model exactly against the oblique or the roof plan, because the images do not agree on the plan. The street camera matches the far end of the sweep; the near end renders somewhat larger than the reference.",
     "hidden_assumptions": [
-      "The far end, and most of the convex side, are not shown in detail. Both ends are built alike, and the convex side repeats the front with a garden door to each house.",
-      "Interiors are inferred: three floors, a spine wall and party walls to each house, so that every window has a room behind it.",
+      "The far end, and most of the convex side, are not shown in detail. Both ends are built alike, and the convex side repeats the front.",
+      "Garden doors. One door to each house on the convex side is an invention; no image shows that side at street level.",
+      "End doors. Each end has one door, in the third window bay from the concave front. The oblique shows a door on the near end; its exact bay is a reading of a small image.",
+      "Interiors are inferred: three floors, a spine wall and party walls to each house, so that every window has a room behind it. They are schematic.",
+      "Dormers are roof features only. Each has a sash with a blind drawn behind it; there is no attic room.",
       "The roof between the two slate ranges is a plain lead flat. The lead-covered additions in the roof plan are left out.",
       "The sunken areas, their steps and the bridges to the doors are left out, because nothing may lie below grade. Railings stand at grade and each door has a level stone path through them.",
       "Ashlar coursing and joints are left out, as surface texture.",
-      "The crescent is taken to be symmetrical about its middle.",
-      "Party walls stand square to the concave front, so bays on the convex side widen from 2.7 m at the middle to 3.7 m toward the ends."
+      "The crescent is taken to be symmetrical about its middle, in its plan, its doors and its dormers.",
+      "Party walls stand square to the concave front, so bays on the convex side widen from 2.7 m at the middle to 4.0 m in the end houses."
     ]
   },
   "roof_contract": {
-    "form": "two slate ranges with a lead flat between, behind lead gutters and a stone balustrade; hipped at both ends",
-    "weathering": "closed gutter, slopes, flat and party upstands; a stack on each ridge at every party wall"
+    "form": "two slate ranges with a lead flat between, behind lead gutters and a stone balustrade; a true hip at each of the four corners",
+    "weathering": "the roof height depends only on the distance in from the nearest face, so no plane crosses another; a stack stands through each ridge at every party wall"
   },
   "material_contract": {
     "profile": "texture-free source-palette architectural clay",
@@ -108,24 +119,28 @@
       "floor": "#7b6a55",
       "interior": "#b9b09d",
       "glass": "#3d464f"
-    }
+    },
+    "note": "every material is double-sided; the glass blends and carries the transmission extension, as the clay library does"
   },
   "identity_contract": [
     "half-ellipse crescent",
-    "twenty houses of three bays",
+    "eighteen houses of three window bays",
     "three storeys",
     "giant Ionic order on a plain ground storey",
-    "one sash to a bay on each storey",
+    "coupled columns and blind wall at every corner",
+    "nine columns across each end",
+    "one sash to a window bay on each storey",
     "continuous entablature and balustrade",
     "a stack with pots at every party wall",
-    "slate roof with dormers behind the balustrade",
+    "slate roof with dormers behind the balustrade, hipped at both ends",
     "iron railings at the pavement"
   ],
   "programme_contract": {
-    "houses": 20,
-    "front_doors": 20,
-    "garden_doors": 20,
-    "end_doors": 2
+    "houses": 18,
+    "street_doors": 18,
+    "front_doors": 16,
+    "end_doors": 2,
+    "garden_doors": 18
   },
   "contact_contract": {
     "base_datum_m": 0.0,
@@ -147,6 +162,7 @@
     "glass_close",
     "entrance_contact",
     "end_contact",
+    "end_roof",
     "roof_contact",
     "street",
     "rear_ground",
@@ -168,6 +184,7 @@
     "glass_close.png",
     "entrance_contact.png",
     "end_contact.png",
+    "end_roof.png",
     "roof_contact.png"
   ]
 }

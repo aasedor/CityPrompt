@@ -48,6 +48,46 @@ def accessor(document, blob, index):
     return struct.unpack_from(f'<{spec["count"] * width}{code}', blob, view.get('byteOffset', 0))
 
 
+WHOLE_VIEWS = ('front', 'front_corner', 'aerial', 'top', 'left_side', 'right_side', 'rear', 'rear_side', 'match_oblique', 'match_top')
+
+
+def view_extent(view):
+    """Where the building's outline falls in one camera's frame, as fractions of the half
+    width and half height: (left, right, bottom, top). Beyond 1 it is out of frame."""
+    def sub(a, c):
+        return [a[i] - c[i] for i in range(3)]
+
+    def cross(a, c):
+        return [a[1] * c[2] - a[2] * c[1], a[2] * c[0] - a[0] * c[2], a[0] * c[1] - a[1] * c[0]]
+
+    def dot(a, c):
+        return sum(a[i] * c[i] for i in range(3))
+
+    def unit(a):
+        size = math.sqrt(dot(a, a))
+        return [v / size for v in a]
+
+    top = build.RIDGE + build.STACK + .71
+    points = [build.LOOP.node(k, -build.AREA - .1, z) for k in range(build.BAY_COUNT) for z in (0.0, build.RAIL)]
+    points += [build.LOOP.node(k, build.RIDGE_SET, top) for k in range(build.BAY_COUNT)]
+    width, height = view.get('w', 1600), view.get('h', 1200)
+    forward = unit(sub(view['target'], view['pos']))
+    right = unit(cross(forward, view.get('up', [0, 0, 1])))
+    up = cross(right, forward)
+    xs, ys = [], []
+    for point in points:
+        d = sub(point, view['pos'])
+        x, y, z = dot(d, right), dot(d, up), dot(d, forward)
+        if 'ortho' in view:
+            xs.append(x / view['ortho'])
+            ys.append(y / (view['ortho'] * height / width))
+        else:
+            t = math.tan(math.radians(view['fov']) / 2)
+            xs.append(x / z / (t * width / height))
+            ys.append(y / z / t - view.get('shift', 0))
+    return min(xs), max(xs), min(ys), max(ys)
+
+
 def main():
     directory = Path(sys.argv[1])
     report = json.loads((directory / 'build-report.json').read_text(encoding='utf-8'))
@@ -78,6 +118,7 @@ def main():
                     lo[axis] = min(lo[axis], positions[k + axis])
                     hi[axis] = max(hi[axis], positions[k + axis])
     native = report['native_dimensions_m']
+    roster = json.loads((HERE / 'cameras.json').read_text(encoding='utf-8'))['views']
     checks['native grade zero'] = abs(lo[1]) < 1e-6        # glTF y is up
     checks['bounds roundtrip'] = all(abs(a - b) < 1e-3 for a, b in zip((hi[0] - lo[0], hi[2] - lo[2], hi[1] - lo[1]),
                                                                        (native['width'], native['depth'], native['height'])))
@@ -87,8 +128,9 @@ def main():
     checks['triangle budget'] = 12000 <= triangles <= 180000
     checks['material count'] = len(document['materials']) <= 20
     checks['every threshold under 40 mm'] = all(door['rise_m'] < .04 for door in report['entrances']['doors'])
-    checks['a front door to every house'] = report['entrances']['front doors'] == report['houses']
-    roster = json.loads((HERE / 'cameras.json').read_text(encoding='utf-8'))['views']
+    checks['a street door to every house'] = report['entrances']['street doors'] == report['houses']
+    for name in WHOLE_VIEWS:
+        checks[f'camera margin {name}'] = max(abs(v) for v in view_extent(roster[name])) <= .94
     for name in build.CAMERAS:
         checks[f'camera {name}'] = name in roster
         checks[f'render {name}'] = (directory / 'renders' / f'{name}.png').is_file()

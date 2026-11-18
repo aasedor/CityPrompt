@@ -11,20 +11,20 @@ No pass is carried over from any other archetype.
 
 - Kind: building
 - Archetype ID and exact variant ID: `london_crescent_terrace` / `london-crescent-terrace-bath-stone` (variant 0)
-- Model SHA-256 or procedural recipe ID/revision/hash: `1542d1e9ede76906762868219812a9415e9a5be781990917b5029c3fb64571bf`, candidate `crescent-terrace-bath-stone-clay-v004`, 9161220 bytes. Rebuilt byte for byte by `tools/catalogue_crescent_terrace_pilot/build.py`
+- Model SHA-256 or procedural recipe ID/revision/hash: `72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153`, candidate `crescent-terrace-bath-stone-clay-v005`, 8610196 bytes. Rebuilt byte for byte by `tools/catalogue_crescent_terrace_pilot/build.py`
 - Runtime source commit and integration-checklist version: not run. Branch base `4922d9771e` on `deployment-version`; checklist as at that commit
 - Reviewer, date, project URL, viewport/device/input: none. No project was opened
 - Vacant test site, protected reference, disposable test project: none
 - Mixed-scene project and separate oversized-candidate project, if applicable: none
-- Supported plot dimensions, axes/base datum, reshape/repetition behavior: declared, not tested. Metres. In the GLB, Y is up, east is +X, and the crescent opens toward +Z. Base datum Y = 0 at grade; nothing lies below it. Complete native envelope 135.3888 m wide by 51.4002 m deep by 19.16 m high, including the 1.8 m paved strip with its railings. The envelope is symmetrical about X = 0; its centre is at Z = -23.9, that far behind the line joining the two ends. `fixed_native`: move and rotate only, no stretch, no repetition. Smallest plot 139 m by 55 m, the envelope plus 3 m. The catalogue lists a 6 m by 12 m plot for this archetype, the size of one house; this model is the whole crescent
+- Supported plot dimensions, axes/base datum, reshape/repetition behavior: declared, not tested. Metres. In the GLB, Y is up, east is +X, and the crescent opens toward +Z. Base datum Y = 0 at grade; nothing lies below it. Complete native envelope 126.2855 m wide by 48.4002 m deep by 19.16 m high, including the 1.8 m paved strip with its railings. The envelope is symmetrical about X = 0; its centre is at Z = -22.4, that far behind the line joining the two ends. `fixed_native`: move and rotate only, no stretch, no repetition. Smallest plot 129.3 m by 51.4 m, the envelope plus 3 m. The catalogue lists a 6 m by 12 m plot for this archetype, the size of one house; this model is the whole crescent
 - Authored storey programme: exact source/module hashes, shared whole-source origin, complete-assembly bounds centre, native-lock flag, and any bounded uniform-scale opt-in: one complete model, three storeys, `fixed_authored_assembly`. No storey edits are advertised. Centred by its whole-model bounds; native lock required; no scale opt-in
-- Supported terrain modes and connection capabilities: not tested. Forty-two doors: twenty on the concave front, twenty on the convex side, one at each end
+- Supported terrain modes and connection capabilities: not tested. Thirty-six doors: sixteen on the concave front, eighteen on the convex side, one at each end. The two end houses are entered from their ends
 - Public-realm detail: metric plant height/footprint, paving scale, instance/texture budgets, and native close/aerial evidence: N/A: building only; the model contains no such element
 - Replacement furniture: complete mesh envelope/base datum, legacy-asset flag independence, component and in-site evidence: N/A: building only; the model contains no such element
 - Vegetation: canopy envelope, seeded prototype/triangle budget, furniture-scale comparison and route/entrance visibility: N/A: building only; the model contains no such element
 - Hardscape trees: paired bed/well style and footprint, visible root opening, shared surface datum, paving/joint exclusion, clear routes and sloped-contact evidence: N/A: building only; the model contains no such element
 - Sports: sourced playing dimensions, full run-off/equipment reserve, measured net/rim heights, open gates, crown clearance and non-coplanar floor finishes; separate recreational adaptations: N/A: building only; the model contains no such element
-- Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules: three references locked by hash in `prework-manifest.json`. The roof-plan reference shows a different, shorter building; six disagreements are recorded, with the inferred far end, convex side and interiors. No amenity modules
+- Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules: three references locked by hash in `prework-manifest.json`. The roof-plan reference shows a different, shorter building; seven disagreements are recorded, with the inferred far end, convex side and interiors. No amenity modules
 - Native park seams and raised/cycle access: full-width closed-loop/bend support, local-origin furniture transforms, measured ramp/landing or track-entry height continuity; separate offline contacts from runtime slope walking: N/A: building only; the model contains no such element
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations: N/A: building only; the model contains no such element
 - Asset review status and separate publication/activation status: independent review not complete for this candidate. Publication and activation: not authorized
@@ -66,7 +66,7 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 For fixed-native buildings, record Q/E and rotation-field evidence at the actual
 site latitude: metre dimensions/right angles preserved, exact model retained
 after save/reopen. A displayed angle alone does not prove detailed-model fit.
-| B1 Native placement | NOT TESTED | Needs the whole 135.4 m by 51.4 m envelope. The catalogue plot of 6 m by 12 m cannot hold it |
+| B1 Native placement | NOT TESTED | Needs the whole 126.3 m by 48.4 m envelope. The catalogue plot of 6 m by 12 m cannot hold it |
 | B2 Measured entrance evidence | NOT TESTED | Native measurements recorded below from the model's own numbers. Not installed and not checked in the app |
 | B3 Entrance authoring | NOT TESTED | |
 | B4 Approach and setback recovery | NOT TESTED | |
@@ -172,7 +172,7 @@ access to the native door. These design checks remain open after export.
 
 ### Native measurements for this candidate (not installed, not checked in the app)
 
-Forty-two doors, all alike: a six-panel leaf under a fanlight, set 0.22 m into a
+Thirty-six doors, all alike: a six-panel leaf under a fanlight, set 0.22 m into a
 0.9 m wall, reached by a level stone path through the railings. None has a step.
 
 | Quantity | Value |
@@ -191,58 +191,52 @@ The bay number counts round the building from the east end of the concave front.
 
 | Bay | Kind | X (m) | Z (m) | Out direction (X, Z) |
 |---|---|---|---|---|
-| 0 | front door | 52.16 | -1.15 | -1.00, +0.05 |
-| 3 | front door | 50.79 | -7.87 | -0.94, +0.34 |
-| 6 | front door | 47.65 | -13.97 | -0.83, +0.56 |
-| 9 | front door | 43.21 | -19.20 | -0.70, +0.72 |
-| 12 | front door | 37.90 | -23.53 | -0.57, +0.82 |
-| 15 | front door | 32.01 | -27.03 | -0.45, +0.89 |
-| 18 | front door | 25.73 | -29.77 | -0.35, +0.94 |
-| 21 | front door | 19.20 | -31.82 | -0.25, +0.97 |
-| 24 | front door | 12.50 | -33.22 | -0.16, +0.99 |
-| 27 | front door | 5.70 | -34.01 | -0.07, +1.00 |
-| 30 | front door | -1.14 | -34.20 | +0.01, +1.00 |
-| 33 | front door | -7.97 | -33.81 | +0.10, +0.99 |
-| 36 | front door | -14.75 | -32.82 | +0.19, +0.98 |
-| 39 | front door | -21.40 | -31.21 | +0.28, +0.96 |
-| 42 | front door | -27.86 | -28.93 | +0.38, +0.92 |
-| 45 | front door | -34.03 | -25.95 | +0.49, +0.87 |
-| 48 | front door | -39.75 | -22.18 | +0.61, +0.79 |
-| 51 | front door | -44.81 | -17.55 | +0.74, +0.67 |
-| 54 | front door | -48.87 | -12.03 | +0.87, +0.50 |
-| 57 | front door | -51.47 | -5.68 | +0.97, +0.25 |
-| 62 | end door | -57.75 | -0.22 | -0.00, +1.00 |
-| 67 | garden door | -65.12 | -5.45 | -0.99, -0.15 |
-| 70 | garden door | -62.02 | -15.62 | -0.91, -0.42 |
-| 73 | garden door | -56.75 | -24.11 | -0.78, -0.62 |
-| 76 | garden door | -50.23 | -30.86 | -0.65, -0.76 |
-| 79 | garden door | -43.06 | -36.12 | -0.53, -0.85 |
-| 82 | garden door | -35.53 | -40.16 | -0.42, -0.91 |
-| 85 | garden door | -27.79 | -43.20 | -0.31, -0.95 |
-| 88 | garden door | -19.92 | -45.38 | -0.22, -0.98 |
-| 91 | garden door | -11.98 | -46.79 | -0.13, -0.99 |
-| 94 | garden door | -4.00 | -47.48 | -0.04, -1.00 |
-| 97 | garden door | 4.00 | -47.48 | +0.04, -1.00 |
-| 100 | garden door | 11.98 | -46.79 | +0.13, -0.99 |
-| 103 | garden door | 19.92 | -45.38 | +0.22, -0.98 |
-| 106 | garden door | 27.79 | -43.20 | +0.31, -0.95 |
-| 109 | garden door | 35.53 | -40.16 | +0.42, -0.91 |
-| 112 | garden door | 43.06 | -36.12 | +0.53, -0.85 |
-| 115 | garden door | 50.23 | -30.86 | +0.65, -0.76 |
-| 118 | garden door | 56.75 | -24.11 | +0.78, -0.62 |
-| 121 | garden door | 62.02 | -15.62 | +0.91, -0.42 |
-| 124 | garden door | 65.12 | -5.45 | +0.99, -0.15 |
-| 128 | end door | 60.05 | -0.22 | -0.00, +1.00 |
+| 5 | front door | 44.77 | -10.77 | -0.87, +0.49 |
+| 8 | front door | 40.70 | -16.28 | -0.73, +0.68 |
+| 11 | front door | 35.56 | -20.81 | -0.59, +0.81 |
+| 14 | front door | 29.74 | -24.41 | -0.46, +0.89 |
+| 17 | front door | 23.48 | -27.17 | -0.35, +0.94 |
+| 20 | front door | 16.94 | -29.18 | -0.24, +0.97 |
+| 23 | front door | 10.23 | -30.49 | -0.14, +0.99 |
+| 26 | front door | 3.42 | -31.13 | -0.05, +1.00 |
+| 29 | front door | -3.42 | -31.13 | +0.05, +1.00 |
+| 32 | front door | -10.23 | -30.49 | +0.14, +0.99 |
+| 35 | front door | -16.94 | -29.18 | +0.24, +0.97 |
+| 38 | front door | -23.48 | -27.17 | +0.35, +0.94 |
+| 41 | front door | -29.74 | -24.41 | +0.46, +0.89 |
+| 44 | front door | -35.56 | -20.81 | +0.59, +0.81 |
+| 47 | front door | -40.70 | -16.28 | +0.73, +0.68 |
+| 50 | front door | -44.77 | -10.77 | +0.87, +0.49 |
+| 59 | end door | -53.41 | -0.22 | -0.00, +1.00 |
+| 66 | garden door | -60.31 | -6.80 | -0.98, -0.20 |
+| 69 | garden door | -56.45 | -17.21 | -0.87, -0.49 |
+| 72 | garden door | -50.51 | -25.33 | -0.73, -0.68 |
+| 75 | garden door | -43.49 | -31.55 | -0.59, -0.81 |
+| 78 | garden door | -35.95 | -36.23 | -0.46, -0.89 |
+| 81 | garden door | -28.14 | -39.69 | -0.35, -0.94 |
+| 84 | garden door | -20.17 | -42.14 | -0.24, -0.97 |
+| 87 | garden door | -12.13 | -43.71 | -0.14, -0.99 |
+| 90 | garden door | -4.05 | -44.47 | -0.05, -1.00 |
+| 93 | garden door | 4.05 | -44.47 | +0.05, -1.00 |
+| 96 | garden door | 12.13 | -43.71 | +0.14, -0.99 |
+| 99 | garden door | 20.17 | -42.14 | +0.24, -0.97 |
+| 102 | garden door | 28.14 | -39.69 | +0.35, -0.94 |
+| 105 | garden door | 35.95 | -36.23 | +0.46, -0.89 |
+| 108 | garden door | 43.49 | -31.55 | +0.59, -0.81 |
+| 111 | garden door | 50.51 | -25.33 | +0.73, -0.68 |
+| 114 | garden door | 56.45 | -17.21 | +0.87, -0.49 |
+| 117 | garden door | 60.31 | -6.80 | +0.98, -0.20 |
+| 124 | end door | 53.41 | -0.22 | -0.00, +1.00 |
 
 ### Design notes left open (B5)
 
 - No exposed foundation: the model stops at grade. On a slope the runtime must supply
-  the base under a building 135 m long, and the paved strip will not follow the ground.
+  the base under a building 126 m long, and the paved strip will not follow the ground.
 - The real building type has a sunken area in front of each house with a bridge to the
   door. Here the doors are level with the pavement and the areas are left out.
-- Forty-two entrances is far more than the runtime's one saved entrance per plot. Which
+- Thirty-six entrances is far more than the runtime's one saved entrance per plot. Which
   door is the plot's entrance, and whether the garden and end doors count, is undecided.
-- Railings enclose the building except at the doors, so nothing but the 42 paths
+- Railings enclose the building except at the doors, so nothing but the 36 paths
   reaches the wall.
 
 ## Classroom impact
@@ -294,7 +288,7 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Report route evidence matches the scene; stale evidence rejected; absent evidence remains uncertain:
 - Connected bend/body/section edit retains every renderable T/X patch; neighbours unchanged:
 - Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
-- Open failures, untested advertised features, owner and next bounded action: everything above marked NOT TESTED. Next bounded action: local install with `--local-trial`, then the student trial in `docs/BUILDING_CATALOGUE_WORKFLOW.md`, on a prepared level plot of at least 139 m by 55 m
+- Open failures, untested advertised features, owner and next bounded action: everything above marked NOT TESTED. Next bounded action: local install with `--local-trial`, then the student trial in `docs/BUILDING_CATALOGUE_WORKFLOW.md`, on a prepared level plot of at least 129.3 m by 51.4 m
 - Runtime integration decision: NOT REVIEWED
 - Asset visual decision (separate): NOT REVIEWED by a person. Recorded separately: independent review not complete for this candidate
 - Publication/activation authorization (separate; cite actual authorization): none given
