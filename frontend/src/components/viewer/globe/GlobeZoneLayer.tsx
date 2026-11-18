@@ -1,5 +1,6 @@
 import { isFixedNativeScene } from '@/features/pickPlace/fixedNativeScene';
-import {groundSurfaceFor,createGroundSurfaceTexture} from '@/features/groundSurfaces/groundSurfaces';
+import { GROUND_SURFACE_TEXTURE_TILE_METERS, groundSurfaceFor, createGroundSurfaceTexture } from '@/features/groundSurfaces/groundSurfaces';
+import { resolveSiteBoundarySurface } from '@/features/siteLandscape/siteBoundarySurface';
 import { isDrawnParking } from '@/features/parks/drawnParking';
 import { createDrawnParkingTexture } from '@/features/parks/drawnParkingTexture';
 import { useSiteLandscapeTexture } from '@/features/siteLandscape/useSiteLandscapeTexture';
@@ -474,9 +475,11 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
   useDeferredDisposable(surfaceTexture);
   const isPreparedBoundary = isSiteBoundary && sitePrepared;
   const boundaryOpacity = siteBoundaryOpacity(zone.properties);
+  const siteSurface = resolveSiteBoundarySurface(zone.properties?.site_boundary_surface);
+  const surfaceTileMeters = siteSurface.kind === 'material' ? GROUND_SURFACE_TEXTURE_TILE_METERS : undefined;
   const residualLandscapeRecipe = useMemo(
-    () => (isPreparedBoundary ? getResidualLandscapeRecipe(zone) : null),
-    [isPreparedBoundary, zone],
+    () => (isPreparedBoundary && siteSurface.kind === 'default' ? getResidualLandscapeRecipe(zone) : null),
+    [isPreparedBoundary, siteSurface.kind, zone],
   );
   const isReplacementFootprintGround = shouldRenderReplacementFootprintGround(
     zone,
@@ -677,8 +680,8 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
     if(!surfaceFinish||!geoData?.flatTopGeo)return null;
     const geometry=geoData.flatTopGeo.clone(),p=geometry.getAttribute('position');
     const uv=new THREE.Float32BufferAttribute(p.count*2,2);
-    for(let i=0;i<p.count;i++)uv.setXY(i,parkingSurface?(p.getX(i)-parkingSurface.minX)/parkingSurface.widthM:p.getX(i)/2,
-      parkingSurface?(p.getY(i)-parkingSurface.minY)/parkingSurface.heightM:p.getY(i)/2);
+    for(let i=0;i<p.count;i++)uv.setXY(i,parkingSurface?(p.getX(i)-parkingSurface.minX)/parkingSurface.widthM:p.getX(i)/GROUND_SURFACE_TEXTURE_TILE_METERS,
+      parkingSurface?(p.getY(i)-parkingSurface.minY)/parkingSurface.heightM:p.getY(i)/GROUND_SURFACE_TEXTURE_TILE_METERS);
     geometry.setAttribute('uv',uv);return geometry;
   },[surfaceFinish,geoData,parkingSurface]);
   useDeferredDisposable(surfaceGeo);
@@ -689,7 +692,7 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
     () => {
       if (!isPreparedBoundary || !geoData?.flatTopGeo) return null;
       const clipped = preparedGroundCutouts?.length ? cutGeometry(geoData.flatTopGeo, preparedGroundCutouts.map(ring => ring.map(p => [(p[0]-preparedOriginLng)*metersPerDegLon(preparedOriginLat), (p[1]-preparedOriginLat)*METERS_PER_DEG_LAT]))) : null;
-      const geometry = createPreparedSiteBackingGeometry(clipped ?? geoData.flatTopGeo, zone.id);
+      const geometry = createPreparedSiteBackingGeometry(clipped ?? geoData.flatTopGeo, zone.id, surfaceTileMeters);
       clipped?.dispose();
       if (residualLandscapeRecipe) {
         const positions = geometry.getAttribute('position');
@@ -701,7 +704,7 @@ function ZoneMesh({ zone, landscapeZones, isSelected, terrainHeight, onZoneClick
       // seam; the bounded excess remains hidden below surviving source tiles.
       return preparedEdgeProfile || preparedGroundCutouts?.length ? geometry : overlapPreparedGroundEdges(geometry);
     },
-    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile, preparedGroundCutouts, preparedOriginLng, preparedOriginLat],
+    [geoData, isPreparedBoundary, residualLandscapeRecipe, zone.coordinates, zone.id, preparedEdgeProfile, preparedGroundCutouts, preparedOriginLng, preparedOriginLat, surfaceTileMeters],
   );
   useDeferredDisposable(preparedSiteGeo);
   const preparedSiteTexture = useSiteLandscapeTexture(zone, residualLandscapeRecipe, isPreparedBoundary, landscapeZones);

@@ -123,8 +123,12 @@ export function preparedSiteContainsZone(boundary: SiteZone, zone: SiteZone, bou
 
 export const PREPARED_SITE_BACKING_SEPARATION_METERS = 0.06;
 
-export function createPreparedSiteBackingGeometry(source: THREE.BufferGeometry, seed: string): THREE.BufferGeometry {
-  return createSitePreparationGeometry(source, seed).translate(0, 0, -PREPARED_SITE_BACKING_SEPARATION_METERS);
+export function createPreparedSiteBackingGeometry(
+  source: THREE.BufferGeometry,
+  seed: string,
+  textureTileMeters?: number,
+): THREE.BufferGeometry {
+  return createSitePreparationGeometry(source, seed, textureTileMeters).translate(0, 0, -PREPARED_SITE_BACKING_SEPARATION_METERS);
 }
 
 /** A standalone replacement building still clips the source Google mesh, but
@@ -292,6 +296,7 @@ export function createWoonerfPaverTexture(seed: string, size = 256): THREE.DataT
 export function createSitePreparationGeometry(
   source: THREE.BufferGeometry,
   seed: string,
+  textureTileMeters?: number,
 ): THREE.BufferGeometry {
   const geometry = source.clone();
   const positions = geometry.getAttribute('position') as THREE.BufferAttribute | undefined;
@@ -320,8 +325,8 @@ export function createSitePreparationGeometry(
   const spanX = Math.max(1, maxX - minX);
   const spanY = Math.max(1, maxY - minY);
   const shortSpan = Math.min(spanX, spanY);
-  const repeatsX = Math.max(4, (spanX / shortSpan) * 4);
-  const repeatsY = Math.max(4, (spanY / shortSpan) * 4);
+  const repeatsX = textureTileMeters ? spanX / textureTileMeters : Math.max(4, (spanX / shortSpan) * 4);
+  const repeatsY = textureTileMeters ? spanY / textureTileMeters : Math.max(4, (spanY / shortSpan) * 4);
 
   for (let index = 0; index < positions.count; index += 1) {
     const x = positions.getX(index);

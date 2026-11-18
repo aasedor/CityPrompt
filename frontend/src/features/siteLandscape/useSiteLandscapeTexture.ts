@@ -1,4 +1,7 @@
 import { useEffect, useMemo } from "react";
+import { DataTexture, RGBAFormat, SRGBColorSpace } from "three";
+import { createGroundSurfaceTexture } from "@/features/groundSurfaces/groundSurfaces";
+import { resolveSiteBoundarySurface } from "./siteBoundarySurface";
 import {
   siteLandscapeImagePath,
   siteLandscapeSurfaceRegions,
@@ -14,6 +17,20 @@ import {
 import { createSitePreparationTexture } from "@/components/viewer/globe/sitePreparationSurface";
 const NO_ZONES: SiteZone[] = [];
 
+function createPreparedSurfaceTexture(zone: SiteZone) {
+  const finish = resolveSiteBoundarySurface(zone.properties?.site_boundary_surface);
+  if (finish.kind === "material") return createGroundSurfaceTexture(finish.material);
+  if (finish.kind === "colour") {
+    const rgb = Number.parseInt(finish.id.slice(1), 16);
+    const pixels = new Uint8Array([rgb >> 16, (rgb >> 8) & 255, rgb & 255, 255]);
+    const texture = new DataTexture(pixels, 1, 1, RGBAFormat);
+    texture.colorSpace = SRGBColorSpace;
+    texture.needsUpdate = true;
+    return texture;
+  }
+  return createSitePreparationTexture(zone.id, 256, finish.kind === "earth" ? "earth" : "grass");
+}
+
 /** Compose into the boundary material; no overlay covers an archetype or its hit target. */
 export function useSiteLandscapeTexture(
   zone: SiteZone,
@@ -25,7 +42,7 @@ export function useSiteLandscapeTexture(
     if (!enabled) return null;
     const value = recipe
       ? createResidualLandscapeTexture(zone, recipe, undefined, zones)
-      : createSitePreparationTexture(zone.id, 256, "grass");
+      : createPreparedSurfaceTexture(zone);
     if (recipe?.surface_image_url)
       value.userData.siteLandscapeStatus = "loading";
     return value;
