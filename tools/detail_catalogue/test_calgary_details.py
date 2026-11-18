@@ -41,11 +41,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         cls.by_slug = {row['id'].removeprefix(cls.module.PREFIX): row for row in cls.registry}
         cls.built = {item['slug']: (item, *cls.module.compile_item(item)) for item in cls.module.SPECS}
 
-    def test_one_hundred_and_fifty_five_unique_items(self):
+    def test_one_hundred_and_sixty_four_unique_items(self):
         specs = self.module.SPECS
-        self.assertEqual(len(specs), 155)
-        self.assertEqual(len({s['slug'] for s in specs}), 155)
-        self.assertEqual(len({s['label'] for s in specs}), 155)
+        self.assertEqual(len(specs), 164)
+        self.assertEqual(len({s['slug'] for s in specs}), 164)
+        self.assertEqual(len({s['label'] for s in specs}), 164)
         self.assertEqual({s['kind'] for s in specs}, {'object'})
         counts = {}
         for s in specs:
@@ -53,7 +53,8 @@ class CalgaryDetailsContract(unittest.TestCase):
         self.assertEqual(counts['Winter city'], 12)
         self.assertEqual(counts['Wildlife'], 9)
         self.assertEqual(counts['Vehicles'], 7)
-        self.assertEqual(sum(counts.values()), 155)
+        self.assertEqual(counts['Shared micromobility'], 10)
+        self.assertEqual(sum(counts.values()), 164)
         # each batch was appended, so earlier items keep their catalogue order
         self.assertEqual((specs[75]['slug'], specs[76]['slug']), ('propane-cage', 'city-bus'))
 
@@ -124,7 +125,7 @@ class CalgaryDetailsContract(unittest.TestCase):
                 self.assertEqual((row['offset'][0], row['offset'][2]), (0.0, 0.0))
                 self.assertTrue(lo[0] < 0 < hi[0] and lo[2] < 0 < hi[2])
             total += row['bytes']
-        self.assertLess(total, 18_000_000)
+        self.assertLess(total, 20_500_000)
 
     def test_line_carriers_are_centred_on_their_pole_for_chaining(self):
         for slug, span in (('utility-pole-lines', 30.0), ('lrt-catenary-pole', 40.0)):
@@ -181,6 +182,65 @@ class CalgaryDetailsContract(unittest.TestCase):
             # the plants spill a little past the box, never by more than 10 cm at either end
             self.assertTrue(length <= row['dimensions'][0] < length + .2, slug)
             self.assertEqual(row['category'], 'Planting')
+
+    def test_scooter_corrals_follow_the_city_drawing_and_wrap_each_panel_exactly_once(self):
+        """Drawing P2023-589-0001A: 96 by 48 in between post centres, 36 in tall, rails 28 in
+        apart, four 40 by 26 in panels. Every panel face is covered by its artwork once."""
+        module, inch = self.module, .0254
+        designs = ('foothills', 'chinook', 'river', 'mosaic', 'chevron', 'quilt', 'aspen', 'confetti')
+        slugs = ['scooter-corral-plain'] + [f'scooter-corral-{design}' for design in designs]
+        plain = self.by_slug['scooter-corral-plain']
+        width, depth, height = plain['dimensions']
+        self.assertAlmostEqual(width, 96 * inch + .17, places=3)       # post centres plus a flange at each end
+        self.assertAlmostEqual(depth, 48 * inch + .1, places=3)
+        self.assertTrue(35.5 * inch < height < 36.5 * inch)
+        self.assertAlmostEqual(module.CORRAL_RAILS[1] - module.CORRAL_RAILS[0], 28 * inch)
+        self.assertEqual(module.CORRAL_PANEL[:2], (40 * inch, 26 * inch))
+        self.assertEqual(len(module.corral_posts()), 5)
+        panel_w, panel_h, thick = module.CORRAL_PANEL
+        middle = sum(module.CORRAL_RAILS) / 2
+        for slug in slugs:
+            row = self.by_slug[slug]
+            self.assertEqual(row['dimensions'], plain['dimensions'], slug)
+            self.assertEqual(row['category'], 'Shared micromobility')
+            if slug != 'scooter-corral-plain':
+                design = slug.removeprefix('scooter-corral-')
+                barrier = self.by_slug[f'mural-barrier-{design}']
+                # the same eight original designs as the painted road barriers
+                self.assertEqual(row['label'].split(' · ')[1], barrier['label'].split(' · ')[1])
+                self.assertEqual(row['color'], barrier['color'])
+                self.assertIn('Original design.', row['description'])
+            item = next(spec for spec in module.SPECS if spec['slug'] == slug)
+            body = module.build(item).body
+            covered, stray = {}, 0
+            for k in range(0, len(body.positions), 9):
+                corners = [body.positions[k + 3 * i:k + 3 * i + 3] for i in range(3)]
+                normal = body.normals[k:k + 3]
+                on_a_face = placed = False
+                for index, ((cx, cy), (ax, ay), (nx, ny)) in enumerate(module.corral_panel_frames()):
+                    for side in (1, -1):
+                        depths = [((x - cx) * nx + (y - cy) * ny) * side for x, y, _ in corners]
+                        if all(abs(d - thick / 2) < 1e-6 for d in depths) and normal[0] * nx * side + normal[1] * ny * side > .99:
+                            on_a_face = True
+                            along = [(x - cx) * ax + (y - cy) * ay for x, y, _ in corners]
+                            if not all(abs(u) <= panel_w / 2 + 1e-6 for u in along):
+                                continue            # the other panel in the same plane
+                            self.assertTrue(all(abs(z - middle) <= panel_h / 2 + 1e-6 for _, _, z in corners), slug)
+                            placed = True
+                            a, b, c = corners
+                            cross = [(b[1] - a[1]) * (c[2] - a[2]) - (b[2] - a[2]) * (c[1] - a[1]),
+                                     (b[2] - a[2]) * (c[0] - a[0]) - (b[0] - a[0]) * (c[2] - a[2]),
+                                     (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0])]
+                            covered[index, side] = covered.get((index, side), 0.0) + math.sqrt(sum(v * v for v in cross)) / 2
+                stray += on_a_face and not placed
+            # no artwork spills past a panel's edge
+            self.assertEqual(stray, 0, slug)
+            # four panels, both faces, each covered once: no gap, nothing lying on anything else
+            self.assertEqual(len(covered), 8, slug)
+            for face, area in covered.items():
+                self.assertAlmostEqual(area, panel_w * panel_h, places=5, msg=f'{slug} {face}')
+        # one mural window per panel at true proportions, so a 3 m design runs round all four
+        self.assertAlmostEqual(module.CORRAL_WINDOW / module.MURAL_HEIGHT, panel_w / panel_h)
 
     def test_district_barriers_carry_baked_logo_artwork_that_tiles_the_face(self):
         baked = json.loads((ROOT / 'tools/detail_catalogue/district_logo_shapes.json').read_text(encoding='utf-8'))
@@ -286,6 +346,11 @@ class CalgaryDetailsContract(unittest.TestCase):
         tiles = TILES.read_text(encoding='utf-8')
         self.assertIn("'Winter city': () =>", tiles)
         self.assertIn('Wildlife: () =>', tiles)
+        self.assertIn("'Shared micromobility': () =>", tiles)
+        # every scooter item, old and new, sits in its own category
+        scooters = [row for row in self.registry if 'scooter' in row['id']]
+        self.assertEqual(len(scooters), 10)
+        self.assertTrue(all(row['category'] == 'Shared micromobility' for row in scooters))
 
     def test_ids_never_share_the_traffic_safety_family_prefix(self):
         """IDs are saved in student projects. detail-calgary- belongs to the safety concepts."""

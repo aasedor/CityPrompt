@@ -2338,6 +2338,9 @@ def mural_point(u, v, side, upper, proud):
 def paint(s, polygon, colour, proud=0.0):
     """One convex mural shape on both faces. Only a few accents sit proud, above the tiled field."""
     polygon = clip(clip(polygon, 1, 0, 0), -1, 0, -MURAL_LENGTH)
+    if getattr(s, 'corral_faces', None):
+        corral_paint(s, polygon, colour, proud)
+        return
     repeats = getattr(s, 'low_profile', 0)
     if repeats:
         piece = clip(clip(polygon, 0, 1, 0.0), 0, -1, -MURAL_HEIGHT)
@@ -2400,6 +2403,8 @@ def wave(u, cycles, phase=0.0):
 
 def mural_barrier(s, top):
     """The barrier without its two painted faces: ends, toe, top, underside and lifting slots."""
+    if getattr(s, 'corral_faces', None):
+        return
     if getattr(s, 'low_profile', 0):
         low_profile_body(s, faces=False)
         return
@@ -3392,6 +3397,188 @@ def low_profile_mural_confetti(s):
 
 
 # ---------------------------------------------------------------------------
+# E-scooter corral, after the City of Calgary's standard drawing P2023-589-0001A
+# (Fleet Services, 2024). A U of galvanized 1-1/2 in pipe on five floor flanges,
+# 96 by 48 in between post centres and 36 in tall, open on one long side, with a
+# top and bottom rail on each of four bays and an art panel clamped between them.
+#
+# The long side runs along x at -y, the open side faces +y. The panels carry the
+# eight original road-barrier murals, never a real corral's artwork: the 3 m mural
+# is wrapped round the outside of the four panels as one continuous strip, and
+# again round the inside, each face reading left to right when faced.
+# ---------------------------------------------------------------------------
+INCH = .0254
+CORRAL_BAY = 48 * INCH                    # post centre to post centre, along each side
+CORRAL_PIPE = 1.9 / 2 * INCH              # 1-1/2 in schedule 40 pipe, 1.900 in outside
+CORRAL_FIT = .033                         # radius of the slip-on fittings
+CORRAL_RAILS = (6.75 * INCH, 34.75 * INCH)    # rail centre lines, 28 in apart; fittings top out at 36 in
+CORRAL_PANEL = (40 * INCH, 26 * INCH, .006)   # width, height and thickness of each panel
+CORRAL_FITTING = '#8f979b'
+CORRAL_PANEL_EDGE = '#d6d8d5'
+CORRAL_PLAIN = '#e2e5e3'
+
+
+def corral_posts():
+    half = CORRAL_BAY
+    return [(-half, -half / 2), (0.0, -half / 2), (half, -half / 2), (-half, half / 2), (half, half / 2)]
+
+
+def corral_panel_frames():
+    """Each panel as (centre x, centre y, along, outward), in the order the outside strip
+    runs: left return, front left, front right, right return. `along` is the viewer's
+    right when facing the outer face."""
+    half = CORRAL_BAY
+    return [((-half, 0.0), (0.0, -1.0), (-1.0, 0.0)),
+            ((-half / 2, -half / 2), (1.0, 0.0), (0.0, -1.0)),
+            ((half / 2, -half / 2), (1.0, 0.0), (0.0, -1.0)),
+            ((half, 0.0), (0.0, 1.0), (1.0, 0.0))]
+
+
+def corral_frame(s):
+    """Posts, rails, fittings, floor flanges and panel clamps."""
+    low, high = CORRAL_RAILS
+    joints = {}                              # (x, y, z) -> directions that leave it
+    half = CORRAL_BAY
+    rails = [((-half, -half / 2), (0.0, -half / 2)), ((0.0, -half / 2), (half, -half / 2)),
+             ((-half, -half / 2), (-half, half / 2)), ((half, -half / 2), (half, half / 2))]
+    for z in (low, high):
+        for (ax, ay), (bx, by) in rails:
+            s.cyl((ax, ay, z), (bx, by, z), CORRAL_PIPE, GALV, sides=8, cap0=False, cap1=False)
+            length = math.hypot(bx - ax, by - ay)
+            d = ((bx - ax) / length, (by - ay) / length, 0.0)
+            joints.setdefault((ax, ay, z), []).append(d)
+            joints.setdefault((bx, by, z), []).append((-d[0], -d[1], 0.0))
+    for x, y in corral_posts():
+        s.cyl((x, y, .03), (x, y, high), CORRAL_PIPE, GALV, sides=8, cap0=False, cap1=False)
+        joints[(x, y, high)].append((0.0, 0.0, -1.0))
+        joints[(x, y, low)] += [(0.0, 0.0, -1.0), (0.0, 0.0, 1.0)]
+        # floor flange: an oval plate and a socket
+        plate = [(x + px, y + py) for px, py in rounded_rect(.17, .1, .045, steps=1)]
+        s.prism(plate, 0.0, .012, CORRAL_FITTING)
+        s.cyl((x, y, .012), (x, y, .07), CORRAL_FIT, CORRAL_FITTING, sides=6, cap0=False)
+    # each slip-on fitting is a squarish casting: one block per pipe that enters it,
+    # reaching just past the joint so the blocks close the corner between them
+    reach, back, side = .06, CORRAL_FIT, CORRAL_FIT
+    for (x, y, z), directions in joints.items():
+        for d in directions:
+            lo = [(-back if d[i] > 0 else -reach) if d[i] else -side for i in range(3)]
+            hi = [(reach if d[i] > 0 else back) if d[i] else side for i in range(3)]
+            s.box((x + (lo[0] + hi[0]) / 2, y + (lo[1] + hi[1]) / 2, z + (lo[2] + hi[2]) / 2), (hi[0] - lo[0], hi[1] - lo[1], hi[2] - lo[2]), CORRAL_FITTING)
+    width, height, thick = CORRAL_PANEL
+    for (cx, cy), (ax, ay), (nx, ny) in corral_panel_frames():
+        for su in (-1, 1):                    # two clamps on each rail, near the panel's ends
+            u = su * (width / 2 - .073)
+            for z, toward in ((low, 1), (high, -1)):
+                x, y = cx + ax * u, cy + ay * u
+                s.box((x, y, z), (.05 if ax else .058, .058 if ax else .05, .058), CORRAL_FITTING)
+                lug = z + toward * .052
+                s.box((x + nx * (thick / 2 + .005), y + ny * (thick / 2 + .005), lug), (.04 if ax else .008, .008 if ax else .04, .05), CORRAL_FITTING)
+
+
+def corral_panels(s, plain=None):
+    """The four panel edges; with `plain`, both faces in that colour, otherwise set up the
+    faces for a mural to paint."""
+    width, height, thick = CORRAL_PANEL
+    middle = sum(CORRAL_RAILS) / 2
+    faces = []
+    frames = corral_panel_frames()
+    for index, ((cx, cy), (ax, ay), (nx, ny)) in enumerate(frames):
+        def at(u, v, depth, cx=cx, cy=cy, ax=ax, ay=ay, nx=nx, ny=ny):
+            return (cx + ax * u + nx * depth, cy + ay * u + ny * depth, middle + v)
+        hw, hh, ht = width / 2, height / 2, thick / 2
+        for (u0, v0), (u1, v1) in (((-hw, -hh), (hw, -hh)), ((hw, -hh), (hw, hh)), ((hw, hh), (-hw, hh)), ((-hw, hh), (-hw, -hh))):
+            s.quad(at(u0, v0, -ht), at(u1, v1, -ht), at(u1, v1, ht), at(u0, v0, ht), CORRAL_PANEL_EDGE)
+        # outside: the strip runs left return, front left, front right, right return;
+        # inside it runs the other way round, so it too is continuous as you turn
+        faces.append((index, (cx, cy), (ax, ay), (nx, ny)))
+        faces.append((len(frames) - 1 - index, (cx, cy), (-ax, -ay), (-nx, -ny)))
+    if plain:
+        for _, (cx, cy), (ax, ay), (nx, ny) in faces:
+            corner = [(-1, -1), (1, -1), (1, 1), (-1, 1)]
+            points = [(cx + ax * su * width / 2 + nx * thick / 2, cy + ay * su * width / 2 + ny * thick / 2, middle + sv * height / 2) for su, sv in corner]
+            corral_face(s, points, (nx, ny), plain)
+        return
+    s.corral_faces = faces
+
+
+def corral_face(s, points, outward, colour):
+    """A convex face as a fan from its first corner, wound to face `outward`."""
+    a = points[0]
+    for b, c in zip(points[1:], points[2:]):
+        normal = (b[1] - a[1]) * (c[2] - a[2]) - (b[2] - a[2]) * (c[1] - a[1]), (b[2] - a[2]) * (c[0] - a[0]) - (b[0] - a[0]) * (c[2] - a[2])
+        if normal[0] * outward[0] + normal[1] * outward[1] >= 0:
+            s.tri(a, b, c, colour)
+        else:
+            s.tri(a, c, b, colour)
+
+
+CORRAL_WINDOW = CORRAL_PANEL[0] * MURAL_HEIGHT / CORRAL_PANEL[1]   # metres of mural on one panel, at true proportions
+
+
+def corral_paint(s, polygon, colour, proud):
+    """One convex mural shape, laid onto every panel face whose window of the strip it falls in.
+    The strip repeats every 3 m, as the scenic designs do."""
+    width, height, thick = CORRAL_PANEL
+    scale = width / CORRAL_WINDOW
+    middle = sum(CORRAL_RAILS) / 2
+    for window, (cx, cy), (ax, ay), (nx, ny) in s.corral_faces:
+        start = window * CORRAL_WINDOW
+        for shift in (0.0, MURAL_LENGTH):
+            piece = [(u + shift, v) for u, v in polygon]
+            piece = clip(clip(piece, 1, 0, start), -1, 0, -(start + CORRAL_WINDOW))
+            piece = clip(clip(piece, 0, 1, 0.0), 0, -1, -MURAL_HEIGHT)
+            if len(piece) < 3 or polygon_area(piece) < 2e-6:
+                continue
+            depth = thick / 2 + proud
+            points = [(cx + ax * ((u - start) * scale - width / 2) + nx * depth, cy + ay * ((u - start) * scale - width / 2) + ny * depth,
+                       middle - height / 2 + v * scale) for u, v in piece]
+            corral_face(s, points, (nx, ny), colour)
+
+
+def scooter_corral_plain(s):
+    corral_frame(s)
+    corral_panels(s, plain=CORRAL_PLAIN)
+
+
+def scooter_corral_mural(s, design):
+    corral_frame(s)
+    corral_panels(s)
+    design(s)
+
+
+def scooter_corral_foothills(s):
+    scooter_corral_mural(s, mural_foothills)
+
+
+def scooter_corral_chinook(s):
+    scooter_corral_mural(s, mural_chinook)
+
+
+def scooter_corral_river(s):
+    scooter_corral_mural(s, mural_river)
+
+
+def scooter_corral_mosaic(s):
+    scooter_corral_mural(s, mural_mosaic)
+
+
+def scooter_corral_chevron(s):
+    scooter_corral_mural(s, mural_chevron)
+
+
+def scooter_corral_quilt(s):
+    scooter_corral_mural(s, mural_quilt)
+
+
+def scooter_corral_aspen(s):
+    scooter_corral_mural(s, mural_aspen)
+
+
+def scooter_corral_confetti(s):
+    scooter_corral_mural(s, mural_confetti)
+
+
+# ---------------------------------------------------------------------------
 # Planters that stand between a patio and the road. Black planters filled with
 # summer annuals; with their plants they stay under 1.2 m above the street.
 # ---------------------------------------------------------------------------
@@ -4189,6 +4376,7 @@ def spec(slug, label, category, description, builder, seed, color='#8b8f8a'):
 
 WINTER = 'Winter city'
 WILDLIFE = 'Wildlife'
+MICROMOBILITY = 'Shared micromobility'
 SPECS = [
     spec('outdoor-rink', 'Community outdoor rink', WINTER, 'Boarded 30 x 15 m neighbourhood ice rink with lines, two nets, a gate and players\' benches.', outdoor_rink, 2101, '#d9e7f1'),
     spec('rink-board-section', 'Rink board section', WINTER, 'Repeatable 4 m length of braced rink boards for building a custom ice surface.', rink_board_section, 2102, '#eef0f1'),
@@ -4226,7 +4414,7 @@ SPECS = [
     spec('lrt-platform-shelter', 'Light-rail platform shelter', 'Shelters & markets', 'Ten metre station canopy with wind screens, benches, blank pylon and platform edge strip.', lrt_platform_shelter, 2403, '#3d4348'),
     spec('lrt-catenary-pole', 'Light-rail catenary pole', 'Street furniture', 'Overhead line pole with cantilever and wires 20 m each way. Place one every 40 m.', lrt_catenary_pole, 2404, '#8e969a'),
     spec('heated-bus-shelter', 'Heated bus shelter', 'Shelters & markets', 'Enclosed glazed shelter with radiant heaters, bench, blank ad panel and stop flag.', heated_bus_shelter, 2405, '#454c52'),
-    spec('scooter-corral', 'E-scooter parking corral', 'Street furniture', 'Marked on-street bay with a rail, sign and four shared scooters.', scooter_corral, 2406, '#17a2a2'),
+    spec('scooter-corral', 'E-scooter parking corral', MICROMOBILITY, 'Marked on-street bay with a rail, sign and four shared scooters.', scooter_corral, 2406, '#17a2a2'),
     # --- wildlife ---
     spec('white-tailed-jackrabbit', 'White-tailed jackrabbit', WILDLIFE, 'Lepus townsendii · Calgary\'s big prairie hare sitting alert on a lawn. Static model.', jackrabbit, 2501, '#8f8474'),
     spec('magpies', 'Black-billed magpies', WILDLIFE, 'Pica hudsonia · a pair of long-tailed black, white and blue magpies on the ground. Static model.', magpies, 2502, '#22478a'),
@@ -4358,6 +4546,15 @@ SPECS = [
     spec('district-barrier-seventeenth-ave-single', 'District barrier · 17th Ave · single logo', 'Traffic & safety', 'Red 3 m road barrier with one large 17th Ave logo in white at its centre. The logo belongs to its business association.', district_barrier_seventeenth_ave_single, 2966, '#e21a2d'),
     spec('city-ghost-barrier', 'City Ghost on a barrier', 'Water & landmarks', 'Blue ghost sculpture with big white eyes and a cowboy hat, just under 2 m tall, astride a 3 m barrier. The artwork belongs to its artist.', city_ghost_barrier, 2971, '#27a8d2'),
     spec('city-ghost-barrier-pink', 'City Ghost on a pink barrier', 'Water & landmarks', 'Blue ghost sculpture with big white eyes and a cowboy hat, astride a pink barrier of white doodles. The artwork belongs to its artist.', city_ghost_barrier_pink, 2972, '#ee8f8c'),
+    spec('scooter-corral-plain', 'E-scooter corral · plain panels', MICROMOBILITY, 'Galvanized pipe corral, 8 by 4 ft and 3 ft tall, open on one long side, with four blank panels ready for art.', scooter_corral_plain, 2981, '#9aa3a7'),
+    spec('scooter-corral-foothills', 'E-scooter corral · Foothills sunrise', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in a sunrise over peaks, foothills and prairie. Original design.', scooter_corral_foothills, 2982, '#f08a5d'),
+    spec('scooter-corral-chinook', 'E-scooter corral · Chinook arch', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in a chinook arch of sunset cloud over the range. Original design.', scooter_corral_chinook, 2983, '#b8456b'),
+    spec('scooter-corral-river', 'E-scooter corral · River ribbons', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in flowing bands of river blue and green. Original design.', scooter_corral_river, 2984, '#1b6ca8'),
+    spec('scooter-corral-mosaic', 'E-scooter corral · Triangle mosaic', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in a bright mosaic of irregular triangles. Original design.', scooter_corral_mosaic, 2985, '#06d6a0'),
+    spec('scooter-corral-chevron', 'E-scooter corral · Chevrons', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in bold zigzag chevrons. Original design.', scooter_corral_chevron, 2986, '#ef476f'),
+    spec('scooter-corral-quilt', 'E-scooter corral · Prairie quilt', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in quilt blocks of barn red, mustard and denim. Original design.', scooter_corral_quilt, 2987, '#9b2d30'),
+    spec('scooter-corral-aspen', 'E-scooter corral · Aspen grove', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in white aspen trunks under a gold canopy. Original design.', scooter_corral_aspen, 2988, '#e6b93a'),
+    spec('scooter-corral-confetti', 'E-scooter corral · Confetti', MICROMOBILITY, '8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in bright dots on deep teal. Original design.', scooter_corral_confetti, 2989, '#1f5f6b'),
 ]
 
 

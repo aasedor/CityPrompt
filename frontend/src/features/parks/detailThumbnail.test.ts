@@ -29,7 +29,7 @@ it('uses a verified pre-rendered preview without loading geometry for browsing',
 it('shows the local prairie and Calgary kits from static cards without loading any model', async () => {
   const load = vi.spyOn(GLTFLoader.prototype, 'loadAsync');
   const local = extras.filter((model) => model.sourceKit === 'prairie-foliage-v1' || model.sourceKit === 'calgary-details-v1');
-  expect(local).toHaveLength(240);
+  expect(local).toHaveLength(249);
   for (const model of local) {
     expect(await detailThumbnail(model.id)).toBe(model.url.replace(/\.glb$/, '.webp'));
   }

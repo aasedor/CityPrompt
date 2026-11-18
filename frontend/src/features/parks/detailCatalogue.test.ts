@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   DETAIL_CATALOGUE,
+  DETAIL_CATEGORIES,
   DETAIL_PROP_MODELS,
   searchDetails,
 } from "./detailCatalogue";
@@ -15,7 +16,7 @@ import inclusivePeople from '../people/inclusivePeopleCatalogue.json';
 
 describe("standalone detail catalogue", () => {
   it.each([
-    ["calgary-details-v1", 155],
+    ["calgary-details-v1", 164],
     ["prairie-foliage-v1", 85],
   ])("offers every imported %s model with its source thumbnail", (sourceKit, count) => {
     const models = extras.filter(model => model.sourceKit === sourceKit);
@@ -28,6 +29,12 @@ describe("standalone detail catalogue", () => {
   });
   it("finds Calgary props and prairie trees through the existing picker search", () => {
     expect(searchDetails("city ghost pink").map(asset => asset.id)).toContain("detail-yyc-city-ghost-barrier-pink");
+    // Shared micromobility: the City's pipe-and-panel corral, plain and in the eight original murals, and the older painted bay
+    expect(DETAIL_CATEGORIES).toContain("Shared micromobility");
+    const corrals = searchDetails("", "Shared micromobility").map(asset => asset.id);
+    expect(corrals).toEqual(["detail-yyc-scooter-corral", ...["plain", "foothills", "chinook", "river", "mosaic", "chevron", "quilt", "aspen", "confetti"]
+      .map(design => `detail-yyc-scooter-corral-${design}`)]);
+    expect(searchDetails("e-scooter corral", "Street furniture")).toHaveLength(0);
     expect(searchDetails("trembling aspen", "Trees").map(asset => asset.id)).toContain("detail-prairie-trembling-aspen");
     expect(searchDetails("swedish columnar aspen", "Trees").map(asset => asset.id)).toContain("detail-prairie-swedish-columnar-aspen");
   });
@@ -48,7 +55,7 @@ describe("standalone detail catalogue", () => {
     expect(searchDetails('ramp', 'Access & levels').map(m => m.id)).toContain('detail-site-accessible-ramp');
   });
   it("uses unique local asset paths and the existing source dimensions", () => {
-    expect(DETAIL_CATALOGUE).toHaveLength(405 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
+    expect(DETAIL_CATALOGUE).toHaveLength(414 + people.length + inclusivePeople.length + recovered.length + safety.length + calgary.filter(a=>a.runtimeApproved).length);
     expect(new Set(DETAIL_CATALOGUE.map((a) => a.id)).size).toBe(DETAIL_CATALOGUE.length);
     for (const model of DETAIL_PROP_MODELS.filter(
       (m) => !m.id.startsWith("detail-") && !('safety' in m) && !('people' in m) && !('peopleRepresentation' in m),

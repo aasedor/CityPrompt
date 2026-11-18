@@ -434,7 +434,7 @@ async def test_claude_detail_packs_save_reload_and_preserve_legacy_details(monke
     root = Path(__file__).resolve().parents[2]
     choices = json.loads((root / "frontend/src/features/parks/detailCatalogueExtras.json").read_text(encoding="utf-8"))
     choices = [c for c in choices if c.get("sourceKit") in {"calgary-details-v1", "prairie-foliage-v1"}]
-    assert len(choices) == 240
+    assert len(choices) == 249
     placements = {"trees": [], "props": []}
     for choice in choices:
         field = "trees" if choice["kind"] == "tree" else "props"
@@ -442,7 +442,7 @@ async def test_claude_detail_packs_save_reload_and_preserve_legacy_details(monke
             {"id": choice["id"], "lng": -114.1, "lat": 51.05, "angle": 45, "variant": choice["id"]}
         )
     assert len(placements["trees"]) == 50
-    assert len(placements["props"]) == 190
+    assert len(placements["props"]) == 199
     monkeypatch.setattr(endpoint, "check_project_permission", AsyncMock(return_value="editor"))
     db, row = session({"other": {"keep": True}})
     project_id = uuid.uuid4()
@@ -468,7 +468,7 @@ def test_expanded_catalogue_accepts_existing_kit_parts_and_matches_frontend():
 
     root = Path(__file__).resolve().parents[2]
     choices = json.loads((root / "frontend/src/features/parks/detailCatalogueExtras.json").read_text())
-    assert len(choices) == 395
+    assert len(choices) == 404
     choices += json.loads((root / "frontend/src/features/parks/recoveredDetails.json").read_text())
     choices += json.loads((root / "frontend/src/features/parks/trafficSafetyCatalogue.json").read_text())
     # Local preview IDs must round-trip before their public picker gate is lifted.
