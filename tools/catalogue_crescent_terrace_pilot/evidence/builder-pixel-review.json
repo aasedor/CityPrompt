@@ -1,15 +1,23 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v002",
-  "model_sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
+  "candidate": "crescent-terrace-bath-stone-clay-v003",
+  "model_sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
   "independent_approval": false,
   "views_inspected": {
-    "v002": [
+    "v003, scratch build of the same bytes apart from the version label": [
+      "renders/end_contact.png",
+      "renders/corner_close.png",
+      "renders/match_oblique.png",
+      "renders/entrance_contact.png"
+    ],
+    "v002, same geometry apart from the two faults fixed and the door colour": [
       "renders/match_front.png",
       "renders/street.png",
       "renders/roof_contact.png",
-      "renders/front_corner.png"
+      "renders/front_corner.png",
+      "boards/phone-street.png",
+      "boards/phone-oblique.png"
     ],
     "v001, same geometry apart from stack height": [
       "renders/front.png",
@@ -43,7 +51,6 @@
     "The roof is closed: slate ranges, lead gutters and flat, party upstands, stacks with pots and dormers; both ends are hipped.",
     "The convex side and both ends are complete elevations. Nothing floats and nothing sits below grade."
   ],
-  "changes_since_v001": "Chimney stacks raised by 0.8 m so that they read from the street as they do in the reference.",
   "open_notes": [
     "The roof plan reference shows a different, shorter building; it informs roof character only.",
     "The comparison cameras are approximate; in the street view the near end renders larger than the reference.",
@@ -51,6 +58,12 @@
     "The reference stacks are broader and stand closer to the front than the model's.",
     "Bays on the convex side widen toward the ends, from 2.7 m to 3.7 m.",
     "Thin railing bars and glazing bars break up in distant views; a renderer sampling effect.",
-    "At 176,290 triangles the model is just under the usual 180,000 ceiling."
-  ]
+    "At 176,290 triangles the model is just under the usual 180,000 ceiling.",
+    "Each corner room at the two ends has windows in two walls, so a diagonal line of sight passes through glass alone there."
+  ],
+  "changes_since_v002": "Two faults found by the builder's own geometric audit are fixed. The spine wall of each end house ran out to the outside face of the end, showing as a thin blade up the middle end column; it now stops at the inner face of the wall. Floors were one slab to a house and stopped up to 0.32 m short of the convex wall; they are now laid bay by bay and meet both walls. The door leaf is a shade darker than its panels so the six panels read. The oblique comparison camera was moved nearer the reference viewpoint.",
+  "geometric_audit": {
+    "method": "rays cast in through every sash at seven headings and three pitches, 7,434 in all, on the v002 geometry",
+    "result": "four rays pass through glass only: each enters a first-floor sash on the convex side beside a corner and leaves through a sash in the end. These are corner rooms with windows in two walls, as built."
+  }
 }

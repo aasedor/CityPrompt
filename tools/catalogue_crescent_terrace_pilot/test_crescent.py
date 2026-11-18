@@ -159,3 +159,30 @@ def test_source_lock_matches_the_recorded_prework():
     recorded = json.loads((HERE / 'prework-manifest.json').read_text(encoding='utf-8'))
     assert build.source_lock() == recorded['sources']
     assert recorded['measurement_contract']['houses'] == 20 and recorded['keeper_claimed'] is False
+
+
+def test_rooms_stay_behind_the_walls():
+    """No floor, ceiling or inner wall comes nearer an outside face than the wall's own
+    inner face. A spine wall once ran out to the face of each end."""
+    nodes = build.NODES
+
+    def depth(x, y):
+        best = math.inf
+        for (ax, ay), (bx, by) in zip(nodes, nodes[1:] + nodes[:1]):
+            dx, dy = bx - ax, by - ay
+            t = max(0.0, min(1.0, ((x - ax) * dx + (y - ay) * dy) / (dx * dx + dy * dy)))
+            best = min(best, math.hypot(x - ax - t * dx, y - ay - t * dy))
+        return best
+
+    points = {(round(p[0], 3), round(p[1], 3), p[2] < build.BAND) for role in ('floor', 'interior') for face in CLAY.triangles[role] for p in face[:3]}
+    for x, y, ground in points:
+        assert depth(x, y) >= (.90 if ground else build.WALL + build.THICK) - 1e-3, (x, y)
+
+
+def test_floors_meet_the_walls_in_every_bay():
+    slabs = [face for face in CLAY.triangles['floor'] if abs(face[0][2] - build.FIRST) < 1e-9 and abs(face[1][2] - build.FIRST) < 1e-9 and abs(face[2][2] - build.FIRST) < 1e-9]
+    corners = {(round(p[0], 3), round(p[1], 3)) for face in slabs for p in face[:3]}
+    inset = build.WALL + build.THICK
+    for k in list(range(build.FRONT_BAYS + 1)) + list(range(build.STARTS['back'], build.STARTS['east'] + 1)):
+        x, y, _ = build.LOOP.node(k, inset)
+        assert (round(x, 3), round(y, 3)) in corners, k

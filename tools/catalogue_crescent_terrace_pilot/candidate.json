@@ -1,11 +1,11 @@
 {
-  "candidate": "crescent-terrace-bath-stone-clay-v002",
+  "candidate": "crescent-terrace-bath-stone-clay-v003",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/crescent-terrace-bath-stone/v002 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
-  "model_bytes": 9241936,
+  "external_directory": "artifacts/crescent-terrace-bath-stone/v003 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
+  "model_bytes": 9341796,
   "delivered_bounds_gltf_m": [
     [
       -67.6944,
@@ -27,14 +27,14 @@
   "houses": 20,
   "columns": 132,
   "runtime": {
-    "path": "crescent-terrace-bath-stone-clay-v002.glb",
-    "bytes": 9241936,
-    "sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
+    "path": "crescent-terrace-bath-stone-clay-v003.glb",
+    "bytes": 9341796,
+    "sha256": "c03e7bd63ca2cb545a85a72eca19c19a01940d3148a69662ec035312e5a46202",
     "meshes": 12,
     "materials": 12,
     "textures": 0,
     "images": 0,
-    "triangles": 176290
+    "triangles": 178210
   },
   "entrances": {
     "front doors": 20,
@@ -44,6 +44,11 @@
   "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them.",
   "independent_review": "pending for this candidate",
   "superseded": {
-    "crescent-terrace-bath-stone-clay-v001": "builder review only: chimney stacks were too low to read from the street as they do in the reference"
+    "crescent-terrace-bath-stone-clay-v001": "builder review only: chimney stacks were too low to read from the street as they do in the reference",
+    "crescent-terrace-bath-stone-clay-v002": {
+      "status": "sent to independent review; superseded when the builder found a spine wall reaching the face of each end and floors short of the convex wall",
+      "model_sha256": "391354b9b33de0056c7c848149f46b9e79026a4e1df6f033d20db4d9557f79f9",
+      "source_commit": "60195b050"
+    }
   }
 }

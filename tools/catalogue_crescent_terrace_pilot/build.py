@@ -58,7 +58,7 @@ PALETTE = {  # role -> flat colour (sRGB), in node order
     'pot': {'colour': '#b98a63', 'module': 'chimneys'},
     'iron': {'colour': '#2b2d30', 'module': 'railings', 'roughness': .52},
     'joinery': {'colour': '#ece7da', 'module': 'sashes and doors'},
-    'door': {'colour': '#f1ede2', 'module': 'sashes and doors'},
+    'door': {'colour': '#d6d0c0', 'module': 'sashes and doors'},
     'floor': {'colour': '#7b6a55', 'module': 'rooms'},
     'interior': {'colour': '#b9b09d', 'module': 'rooms'},
     'glass': {'colour': '#3d464f', 'module': 'sash glazing', 'alpha': .45, 'roughness': .24, 'transmission': .28},
@@ -443,22 +443,27 @@ def dormer(clay, bay):
 
 # ---- rooms ---------------------------------------------------------------------------------
 def rooms(clay):
-    """Floors, a spine wall and party walls, so every sash has a room behind it."""
-    lines = party_lines()
+    """Floors, a spine wall and party walls, so every sash has a room behind it. Nothing
+    here comes nearer an outside face than the inner face of the wall."""
     inset = WALL + THICK
 
-    def point(index, n, z):
-        return LOOP.node(index, n, z)
+    def middle(front, back):
+        (ax, ay, _), (bx, by, _) = LOOP.node(front, inset), LOOP.node(back, inset)
+        return ((ax + bx) / 2, (ay + by) / 2)
 
-    for (f0, b0), (f1, b1) in zip(lines, lines[1:]):
-        for level, thick, role in ((.02, .03, 'floor'), (FIRST - .12, .12, 'floor'), (SECOND - .12, .12, 'floor'), (EAVES - .30, .12, 'interior')):
-            lower = [point(f0, inset, level), point(f1, inset, level), point(b1, inset, level), point(b0, inset, level)]
+    for front in range(FRONT_BAYS):          # floors and ceiling bay by bay, so each meets both walls
+        back = (STARTS['east'] - front) % BAY_COUNT
+        for level, thick, role, edge in ((.02, .03, 'floor', .90), (FIRST - .12, .12, 'floor', inset), (SECOND - .12, .12, 'floor', inset),
+                                         (EAVES - .30, .12, 'interior', inset)):
+            lower = [LOOP.node(front, edge, level), LOOP.node(front + 1, edge, level), LOOP.node(back - 1, edge, level), LOOP.node(back, edge, level)]
             clay.loft(role, [lower, [(x, y, z + thick) for x, y, z in lower]])
-        middle = [((a[0] + b[0]) / 2, (a[1] + b[1]) / 2) for a, b in ((LOOP.node(f0, 0), LOOP.node(b0, 0)), (LOOP.node(f1, 0), LOOP.node(b1, 0)))]
-        clay.quad('interior', (*middle[0], .05), (*middle[1], .05), (*middle[1], EAVES - .30), (*middle[0], EAVES - .30))
-    for front, back in lines[1:-1]:
-        a, b = point(front, inset, 0), point(back, inset, 0)
-        clay.quad('interior', (a[0], a[1], .05), (b[0], b[1], .05), (b[0], b[1], EAVES - .30), (a[0], a[1], EAVES - .30))
+    lines = party_lines()
+    for (f0, b0), (f1, b1) in zip(lines, lines[1:]):       # the spine wall of each house
+        first, second = middle(f0, b0), middle(f1, b1)
+        clay.quad('interior', (*first, .05), (*second, .05), (*second, EAVES - .30), (*first, EAVES - .30))
+    for front, back in lines[1:-1]:                         # party walls
+        (ax, ay, _), (bx, by, _) = LOOP.node(front, inset), LOOP.node(back, inset)
+        clay.quad('interior', (ax, ay, .05), (bx, by, .05), (bx, by, EAVES - .30), (ax, ay, EAVES - .30))
 
 
 def build():
