@@ -16,7 +16,7 @@ Status of candidate **crescent-terrace-bath-stone-clay-v002**:
 | Deterministic delivery checks | Pass, 70 checks. `evidence/delivery-verification.json` |
 | Builder pixel review | Pass, with open notes. `evidence/builder-pixel-review.json` |
 | Independent architectural-clay review | v002 is under review. No result yet |
-| Runtime integration | NOT REVIEWED. No part of it has been run |
+| Runtime integration | NOT REVIEWED. No part of it has been run. `integration/runtime-review.md` |
 | Publication or activation | Not authorized |
 
 ## What the building is
@@ -103,6 +103,7 @@ a shorter crescent would be a different candidate: `HOUSES` is one constant.
 | `test_crescent.py` | 11 tests, including that the generator still produces the recorded bytes, that every swept piece faces outward and that the roof covers the building |
 | `prework-manifest.json`, `candidate.json` | The measured contract and the candidate's hashes |
 | `evidence/` | Builder review, delivery verification and independent reviews |
+| `integration/runtime-review.md` | The runtime review template, filled in honestly: nothing was run. It lists all 42 doors |
 
 The GLB, renders and boards are review material and stay outside Git, under the
 ignored `artifacts/` directory. **The GLB is reproducible:** the generator is
@@ -132,8 +133,8 @@ scripts refuse to replace a file: RLASM never overwrites a candidate.
 2. Local install and student trial, as `docs/BUILDING_CATALOGUE_WORKFLOW.md`
    describes. This needs the local database and storage, which the session that
    built the model did not have.
-3. The runtime review from `docs/ARCHETYPE_RUNTIME_REVIEW_TEMPLATE.md`, row by
-   row, in the running app. Forty-two doors need entrance measurements.
+3. The runtime review in `integration/runtime-review.md`, row by row, in the
+   running app. Which of the forty-two doors is the plot's entrance is undecided.
 4. A recorded human approval, then `python -m tools.catalogue_promotion prepare`.
 
 Each of those is a separate decision. Passing one does not grant the next.
