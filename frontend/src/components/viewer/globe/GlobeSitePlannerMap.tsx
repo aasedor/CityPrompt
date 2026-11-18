@@ -1594,7 +1594,7 @@ interface GlobeSitePlannerMapProps {
     /** Full Direct 3D pass stack (beauty/class-ID/instance-ID) from the
      *  CURRENT camera with street-relaxed coverage bounds. Returns null on
      *  failure so callers can fall back to a plain screenshot. */
-    captureStreetDirect3D?: (options?: Direct3DCaptureOptions) => Promise<Direct3DCaptureBundle | null>;
+    captureStreetDirect3D?: (options?: Direct3DCaptureOptions, captureCamera?: THREE.Camera) => Promise<Direct3DCaptureBundle | null>;
     /** Capture six deterministic route views and an exact 8-second browser
      *  preview of the same camera motion for Omni control inputs. */
     captureVideoRouteControls?: (request: VideoRouteCaptureRequest) => Promise<VideoRouteCaptureResult>;
@@ -3169,10 +3169,11 @@ export function GlobeSitePlannerMap({
   // at eye level the sky legitimately dominates the frame.
   const captureStreetDirect3D = useCallback(async (
     options: Direct3DCaptureOptions = {},
+    captureCamera?: THREE.Camera,
   ): Promise<Direct3DCaptureBundle | null> => {
     const renderer = rendererRef.current;
     const scene = sceneRef.current;
-    const camera = cameraRef.current;
+    const camera = captureCamera ?? cameraRef.current;
     if (!renderer || !scene || !camera || renderer.getContext().isContextLost()) {
       if (terrainZonesRef.current.some(hasNativePark)) throw new Direct3DCaptureError('capture_failed', 'The 3D view is recovering. Wait for your park models to return, then retry.');
       return null;
