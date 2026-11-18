@@ -629,6 +629,42 @@ describe('ZonePropertiesPanel site ground', () => {
     expect(screen.getByLabelText('Site boundary opacity')).toHaveValue(String(percentage));
   });
 
+  it('saves a boundary finish and restores it from saved zone properties', () => {
+    const zone = { ...siteBoundaryZone(), properties: { terrain_elevation_m: 1035, site_boundary_opacity: 0.45 } };
+    const onUpdate = vi.fn();
+    const view = renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />);
+    const finish = screen.getByLabelText('Site surface');
+    expect(finish).toHaveValue('default');
+
+    fireEvent.change(finish, { target: { value: 'concrete' } });
+    expect(onUpdate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
+    expect(onUpdate).toHaveBeenCalledWith(zone.id, expect.objectContaining({ properties: {
+      terrain_elevation_m: 1035, site_boundary_opacity: 0.45, site_boundary_surface: 'concrete',
+    } }));
+
+    view.unmount();
+    renderPanel(<ZonePropertiesPanel zone={{ ...zone, properties: onUpdate.mock.calls[0][1].properties }} onUpdate={vi.fn()} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByLabelText('Site surface')).toHaveValue('concrete');
+  });
+
+  it('saves a custom colour using the same boundary setting', () => {
+    const zone = siteBoundaryZone();
+    const onUpdate = vi.fn();
+    const view = renderPanel(<ZonePropertiesPanel zone={zone} onUpdate={onUpdate} onDelete={vi.fn()} onClose={vi.fn()} />);
+    fireEvent.change(screen.getByLabelText('Site surface'), { target: { value: 'custom' } });
+    fireEvent.change(screen.getByLabelText('Site surface colour'), { target: { value: '#b89671' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Save Changes' }));
+    expect(onUpdate).toHaveBeenCalledWith(zone.id, expect.objectContaining({ properties: {
+      ...zone.properties, site_boundary_surface: '#b89671',
+    } }));
+
+    view.unmount();
+    renderPanel(<ZonePropertiesPanel zone={{ ...zone, properties: onUpdate.mock.calls[0][1].properties }} onUpdate={vi.fn()} onDelete={vi.fn()} onClose={vi.fn()} />);
+    expect(screen.getByLabelText('Site surface')).toHaveValue('custom');
+    expect(screen.getByLabelText('Site surface colour')).toHaveValue('#b89671');
+  });
+
   it('preserves legacy ground until the student explicitly saves a terrain choice', () => {
     Object.defineProperty(HTMLElement.prototype, 'scrollTo', { configurable: true, value: vi.fn() });
     const zone = siteBoundaryZone();

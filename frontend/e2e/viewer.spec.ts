@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import type { SiteZone } from '../src/types';
 import { test, expect, revealPlanningTools } from './fixtures/test';
 
 /**
@@ -100,6 +101,48 @@ test.describe('Integrated project workspace', () => {
     for (const name of ['Buildings', 'Parks', 'Streets', 'Import GLB']) {
       await expect(page.getByRole('button', { name, exact: true })).toBeVisible();
     }
+  });
+
+  test('saves the site surface from Review site boundary and restores it on reload', async ({ page }) => {
+    const boundary: SiteZone = {
+      id: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',
+      project_id: 'proj-1',
+      name: 'Riverside site',
+      zone_type: 'site_boundary',
+      is_active_boundary: true,
+      coordinates: [[-114.071, 51.0445], [-114.069, 51.0445], [-114.069, 51.0455], [-114.071, 51.0455]],
+      color: '#F59E0B',
+      properties: { community_3d_mask_existing_tiles: true, terrain_elevation_m: 1045 },
+      sort_order: 0,
+      created_at: '2025-06-01T10:00:00Z',
+      updated_at: '2025-06-01T10:00:00Z',
+    };
+    await page.route('**/api/v1/site-zones/projects/proj-1/zones', route =>
+      route.fulfill({ json: [boundary] }));
+    await page.route(`**/api/v1/site-assessments/zones/${boundary.id}`, route =>
+      route.fulfill({ json: null }));
+    await page.route(`**/api/v1/site-zones/${boundary.id}`, async route => {
+      expect(route.request().method()).toBe('PUT');
+      boundary.properties = route.request().postDataJSON().properties;
+      boundary.updated_at = '2025-06-01T10:01:00Z';
+      await route.fulfill({ json: boundary });
+    });
+
+    const surface = page.getByLabel('Site surface', { exact: true });
+    const openBoundary = async () => {
+      await page.getByRole('button', { name: '1 Site', exact: true }).click();
+      await page.getByRole('button', { name: 'Review site boundary', exact: true }).click();
+    };
+    await page.goto('/projects/proj-1');
+    await openBoundary();
+    await expect(surface).toHaveValue('default');
+    await surface.selectOption('concrete');
+    await page.getByRole('button', { name: 'Save Changes', exact: true }).click();
+    await expect.poll(() => boundary.properties?.site_boundary_surface).toBe('concrete');
+
+    await page.reload();
+    await openBoundary();
+    await expect(surface).toHaveValue('concrete');
   });
 
   test('shows the current plan, 3D, image, and video workflow controls', async ({ page }) => {

@@ -21,6 +21,7 @@ import { SiteIntelligencePanel } from './SiteIntelligencePanel';
 import { BuildingModelViewer } from './BuildingModelViewer';
 import { isPersistedZoneId } from '@/utils/zoneIdentity';
 import { siteBoundaryOpacity } from '@/utils/siteBoundaryAppearance';
+import { DEFAULT_SITE_BOUNDARY_COLOUR, resolveSiteBoundarySurface, SITE_BOUNDARY_SURFACE_OPTIONS } from '@/features/siteLandscape/siteBoundarySurface';
 import { formatArea, polygonDimensionsMeters } from './mapEngine/geoUtils';
 import { compileBoundaryCommunity3D } from '@/features/legoAssembly/communityCompiler';
 import { legoAssemblyApi } from '@/features/legoAssembly/legoAssemblyApi';
@@ -459,6 +460,7 @@ export function ZonePropertiesPanel({ zone, belowGlobeControls = false, savedVer
   const importedBuilding = linkedModel && (linkedModel.generation_engine === 'imported_glb' || linkedModel.specifications?.imported_glb)
     ? linkedModel : undefined;
   const [props, setProps] = useState<SiteZoneProperties>(zone.properties || {});
+  const siteSurface = resolveSiteBoundarySurface(props.site_boundary_surface);
   const nativeModel = nativeBuildingContract({ properties: props });
   const rigidModel = nativeModel?.rigid === true;
   const developmentType = props.development_type || ({
@@ -1055,6 +1057,40 @@ export function ZonePropertiesPanel({ zone, belowGlobeControls = false, savedVer
                   : 'Replaces the existing site with a level surface. Use Follow existing terrain to build on an open site.'}
               </p>
             </div>
+            {props.community_3d_mask_existing_tiles !== false && (
+              <div>
+                <label htmlFor="site-boundary-surface" className={panelLabelClass}>Site surface</label>
+                <select
+                  id="site-boundary-surface"
+                  className={panelFieldClass}
+                  value={siteSurface.kind === 'colour' ? 'custom' : siteSurface.id}
+                  onChange={(event) => {
+                    const finish = event.target.value;
+                    setProps((current) => ({
+                      ...current,
+                      site_boundary_surface: finish === 'custom' ? DEFAULT_SITE_BOUNDARY_COLOUR : finish,
+                    }));
+                  }}
+                >
+                  {SITE_BOUNDARY_SURFACE_OPTIONS.map(({ id, label }) => <option key={id} value={id}>{label}</option>)}
+                </select>
+                {siteSurface.kind === 'colour' && (
+                  <div className="mt-2">
+                    <label htmlFor="site-boundary-surface-colour" className={panelLabelClass}>Site surface colour</label>
+                    <input
+                      id="site-boundary-surface-colour"
+                      type="color"
+                      className={panelFieldClass + ' h-11 cursor-pointer'}
+                      value={siteSurface.id}
+                      onChange={(event) => {
+                        const colour = event.target.value;
+                        setProps((current) => ({ ...current, site_boundary_surface: colour }));
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
             <div>
               <label htmlFor="site-boundary-opacity" className={panelLabelClass}>Site boundary opacity · {Math.round(siteBoundaryOpacity(props) * 100)}%</label>
               <input id="site-boundary-opacity" aria-label="Site boundary opacity" type="range" min={0} max={100} step={1}

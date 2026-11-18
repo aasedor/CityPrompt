@@ -47,6 +47,8 @@ export function groundSurfaceProblem(coordinates:number[][],boundary?:SiteZone|n
   } catch { return 'Choose a valid ground surface outline.'; }
 }
 
+export const GROUND_SURFACE_TEXTURE_TILE_METERS = 2;
+
 /** Small repeatable metric textures; no downloads or generation calls. */
 export function createGroundSurfaceTexture(surface:NonNullable<ReturnType<typeof groundSurfaceFor>>) {
   const canvas=document.createElement('canvas');canvas.width=canvas.height=128;

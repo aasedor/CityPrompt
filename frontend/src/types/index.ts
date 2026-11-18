@@ -151,6 +151,8 @@ export interface CustomStyleAttachment {
 export interface SiteZoneProperties {
   /** Display opacity of the site surface, independent of zoning map layers. */
   site_boundary_opacity?: number;
+  /** Prepared site finish preset or a custom six-digit hex colour. */
+  site_boundary_surface?: string;
   road_native_stops?: Array<{id:string;stationM:number}>;
   height?: number;
   floors?: number;
