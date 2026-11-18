@@ -1,0 +1,82 @@
+{
+  "entry": {
+    "candidate": "crescent-terrace-bath-stone-clay-v006",
+    "family": "rlasm-clay-london-crescent-terrace-bath-stone",
+    "archetype_id": "london_crescent_terrace",
+    "archetype_label": "London Crescent Terrace",
+    "variant_id": "london-crescent-terrace-bath-stone",
+    "variant_label": "Bath Stone Grand",
+    "runtime_enabled": true,
+    "native_floors": 3,
+    "design_dimensions_m": {
+      "width": 122.6,
+      "depth": 44.8,
+      "height": 15.9
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0.png",
+        "bytes": 1257907,
+        "sha256": "ee92450f910e07cab1027edb0991cde1d6657c2809eb457b5687aa37c9f6f1c9"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0_angle_60.jpg",
+        "bytes": 945323,
+        "sha256": "bb30edb03c4a913ae32ac5d233adf0ee4335f8413194cfdd90681cbb270e1857"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0_angle_90.jpg",
+        "bytes": 903446,
+        "sha256": "b68ebfbcd4e05c5ca24591646c09507fd84330326e6595266bdb3122b30de158"
+      }
+    ],
+    "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_crescent_terrace_pilot.",
+    "limitations": [
+      "Fixed native assembly of the whole crescent, 126 m by 48 m; no resizing, no repeated houses, and no single-house version.",
+      "The catalogue lists a 6 m by 12 m plot for this archetype; this model needs a plot of at least 130 m by 52 m.",
+      "Thirty-six doors at grade; which one is the plot's entrance is undecided. The sunken areas of the real building type are left out.",
+      "The roof-plan reference shows a different, shorter building. A person must accept in writing that the street view and the oblique are the plan authority for this variant, or replace that image, before activation.",
+      "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_crescent_terrace_pilot/integration/runtime-review.md.",
+      "Remaining review notes, none blocking: corner capitals show a scroll end to each end elevation, end-bay windows sit tight between the columns, door reveals have no floor, dormers have no attic, and column shafts are twelve-sided.",
+      "The independent review is by an AI reviewer, not a person."
+    ],
+    "picker": {
+      "id": "london_crescent_terrace_bath_stone",
+      "description": "Eighteen-house Georgian crescent in Bath stone with a giant Ionic order, balustrade and slate roofs.",
+      "group_id": "ground_housing",
+      "reshape_mode": "fixed_native",
+      "reshape_description": "Move and rotate the complete crescent. It keeps its authored size.",
+      "width": 130.0,
+      "depth": 52.0,
+      "max_size": 250.0
+    }
+  },
+  "model_file": "crescent-terrace-bath-stone-clay-v006.glb",
+  "review_file": "independent-review.json",
+  "approval": {
+    "authorized_by": "",
+    "quote": "",
+    "date": "",
+    "model_sha256": ""
+  },
+  "trial": {
+    "model_sha256": "",
+    "project_url": "",
+    "tested_by": "",
+    "tested_at": "",
+    "evidence": [],
+    "checks": {
+      "catalogue_card": false,
+      "exact_variant": false,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": false,
+      "save_reload": false,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    }
+  }
+}

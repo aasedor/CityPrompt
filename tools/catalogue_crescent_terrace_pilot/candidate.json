@@ -44,7 +44,14 @@
     "garden doors": 18
   },
   "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them.",
-  "independent_review": "pending for this candidate",
+  "independent_review": {
+    "file": "evidence/independent-review-v006.json",
+    "sha256": "a6688fb902081b15d54cb65ae4945b7671db835719ab3a72c73dc9fafb2faa57",
+    "decision": "architectural_clay_pass",
+    "unresolved_p0": 0,
+    "unresolved_p1": 0,
+    "unresolved_p2": 10
+  },
   "superseded": {
     "crescent-terrace-bath-stone-clay-v001": "builder review only: chimney stacks were too low to read from the street as they do in the reference",
     "crescent-terrace-bath-stone-clay-v002": {

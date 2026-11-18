@@ -15,7 +15,7 @@ Status of candidate **crescent-terrace-bath-stone-clay-v006**:
 |---|---|
 | Deterministic delivery checks | Pass, 86 checks. `evidence/delivery-verification.json` |
 | Builder pixel review | Pass, with open notes. `evidence/builder-pixel-review.json` |
-| Independent architectural-clay review | Not yet reviewed. v002 and v005 were each reviewed and refused; v006 answers the review of v005 and has not been reviewed itself |
+| Independent architectural-clay review | **Pass**, zero P0 and zero P1, ten P2 notes. `evidence/independent-review-v006.json`. An AI reviewer with no builder context, not a person |
 | Runtime integration | NOT REVIEWED. No part of it has been run. `integration/runtime-review.md` |
 | Publication or activation | Not authorized |
 
@@ -39,8 +39,17 @@ Earlier candidates, none of which may be used:
   column and its two partners ran through each other, and the pavement railings
   had no bars for 1.6 m either side of each corner.
 
-v006 answers the review of v005. `evidence/builder-pixel-review.json` lists the
-answer to each finding of both reviews.
+v006 answers the review of v005, and **passed** independent review with zero P0,
+zero P1 and ten P2 notes. `evidence/builder-pixel-review.json` lists the answer to
+each finding of the earlier reviews.
+
+The reviewer's ten notes, none blocking: the corner shafts meet the wall only at
+its edge, leaving a hairline near their tops from one raking direction; corner
+capitals show a scroll end to each end elevation; end-bay windows sit tight
+between the columns; door reveals have no floor; the convex bays widen toward the
+ends; dormers have no attic; shafts are twelve-sided; the fitted oblique is
+approximate; two end windows read as bright panes in one view; and the roof-plan
+reference shows a different building.
 
 ## What the building is
 
@@ -147,8 +156,9 @@ a shorter crescent would be a different candidate: `HOUSES` is one constant.
 | `verify.py` | Delivery checks, including that every whole view keeps the building in frame; writes `delivery-verification.json` |
 | `test_crescent.py` | 27 tests, including that the generator still produces the recorded bytes, that every swept piece faces outward, that the roof is one surface with true hips, that no glass stands near a corner, that the corner columns stand clear of their partners, that railing bars turn every corner, that the whole crescent mirrors, that stacks stand through the roof and that no room reaches an outside face |
 | `prework-manifest.json`, `candidate.json` | The measured contract and the candidate's hashes |
-| `evidence/` | Builder review, delivery verification and independent reviews |
+| `evidence/` | Builder review, delivery verification and the three independent reviews, of v002, v005 and v006 |
 | `integration/runtime-review.md` | The runtime review template, filled in honestly: nothing was run. It lists all 36 doors |
+| `integration/promotion.json` | An **unapproved** promotion package: identity, references, plot and picker text, with the approval and trial records left blank |
 
 The GLB, renders and boards are review material and stay outside Git, under the
 ignored `artifacts/` directory. **The GLB is reproducible:** the generator is
@@ -173,7 +183,9 @@ scripts refuse to replace a file: RLASM never overwrites a candidate.
 
 ## Before this can be offered to students
 
-1. An independent review of v006 with no P0 and no P1 finding.
+1. **A person rules on the roof-plan reference.** The reviewer's pass does not
+   settle it: either accept in writing that the street view and the oblique are
+   the plan authority for this variant, or replace that image.
 2. A person looks at the renders and boards and accepts or rejects the model,
    knowing the differences listed above.
 3. Local install and student trial, as `docs/BUILDING_CATALOGUE_WORKFLOW.md`
@@ -183,5 +195,13 @@ scripts refuse to replace a file: RLASM never overwrites a candidate.
    running app. Which of the thirty-six doors is the plot's entrance is
    undecided.
 5. A recorded human approval, then `python -m tools.catalogue_promotion prepare`.
+
+`integration/promotion.json` is ready for those steps, in the
+`Rowhouses & townhomes` group (`ground_housing`), fixed native, on a 130 m by
+52 m plot. Put it beside the rebuilt GLB and `evidence/independent-review-v006.json`,
+saved as `independent-review.json`. The promotion tool's trial preflight accepts it
+without writing anything. Existing library entries were checked by their metadata
+only, as CI checks them. The publication preflight refuses it, as it must, until a
+person's approval and a student trial are recorded for these exact bytes.
 
 Each of those is a separate decision. Passing one does not grant the next.
