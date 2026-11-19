@@ -2,7 +2,8 @@ import { afterAll, expect, it, vi } from 'vitest';
 import type { SiteZone } from '@/types';
 import { metersPerDegLon } from '@/components/viewer/mapEngine/geoUtils';
 import { modularBridgeProgramFor } from '@/components/viewer/globe/modularBridgeProgram';
-import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
+import { nativeStreetLocalRouteProblem, nativeStreetPilot, nativeStreetRouteProblem, placeNativeStreetModules } from '@/components/viewer/globe/nativeStreetPilot';
+import { extractRenderableStreetCenterline } from '@/utils/roadGeometry';
 import { MODULAR_BRIDGE_ASSETS } from './assetRegistry';
 import { placementProblem } from './geometry';
 import { fitBridgeDrawingSpan } from './bridgeDrawingSpan';
@@ -86,4 +87,20 @@ it('keeps a valid near-boundary first anchor fixed while fitting a bridge span',
   const result=geometry.streetDrawingGeometry(points,asset.properties,[boundary]);
   expect((result.properties.plan_route_controls as number[][])[0]).toEqual(points[0]);
   expect(placementProblem(result.coordinates,[],boundary)).toBeNull();
+});
+
+it.each([[60, 80], [360, -480]])('renders diagonal span fitted from an offset of %i m east and %i m north', (east, north) => {
+  const asset = MODULAR_BRIDGE_ASSETS.find(item => item.id === 'swooping_cycle_flyover_route_v1')!;
+  const result = geometry.streetDrawingGeometry([origin, point(east, north)], asset.properties, [site]);
+  const pilot = nativeStreetPilot(asset.model.variantId)!;
+  const [start, end] = extractRenderableStreetCenterline(result);
+  const midpointLongitudeScale = metersPerDegLon((start[1] + end[1]) / 2);
+  const route = [
+    { x: 0, y: 0 },
+    { x: (end[0] - start[0]) * midpointLongitudeScale, y: (end[1] - start[1]) * 111320 },
+  ];
+
+  expect(nativeStreetRouteProblem(result, site)).toBeNull();
+  expect(nativeStreetLocalRouteProblem(pilot, route)).toBeNull();
+  expect(placeNativeStreetModules(pilot, route).length).toBeGreaterThan(0);
 });

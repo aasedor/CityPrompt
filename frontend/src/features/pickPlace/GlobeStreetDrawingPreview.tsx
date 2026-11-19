@@ -13,7 +13,8 @@ import { resolvePreparedSiteTerrainForZone } from '@/components/viewer/globe/sit
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { nativeStreetRouteProblem } from '@/components/viewer/globe/nativeStreetPilot';
 import { useSetStreetPreviewGround } from './StreetPreviewGround';
-import { modularBridgeProgramFor } from '@/components/viewer/globe/modularBridgeProgram';
+import { isNativeBridgeRoute } from '@/components/viewer/globe/nativeBridgeSources';
+import { placementProblem } from './geometry';
 
 type Surface = { lngLat: [number, number]; height: number };
 /** Cursor updates stay inside this small subtree instead of rerendering the globe. */
@@ -60,16 +61,21 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
     setSurface(raycastSurface(...target));
   });
   const height = getRepresentativeTerrainHeight(pointHeights, terrainHeight);
+  const isBridge = isNativeBridgeRoute(properties?.road_selected_variant_id);
+  const boundary = getActiveSiteBoundary(zones);
   const zone = useMemo(() => {
-    const route = streetPreviewPoints(points, surface?.lngLat ?? null,
-      modularBridgeProgramFor(properties?.road_selected_variant_id) ? 2 : Infinity);
+    const route = streetPreviewPoints(points, surface?.lngLat ?? null, isBridge ? 2 : Infinity);
     if (route.length < 2) return null;
     const geometry = streetDrawingGeometry(route, { ...ZONE_TYPE_CONFIG.road.defaultProperties,
       ...properties, terrain_elevation_m: height }, zones, { publicRoads, skipSnapping });
     return { id: 'street-drawing-preview', project_id: zones[0]?.project_id ?? '', zone_type: 'road',
       color: '#c9ff3d', sort_order: 0, created_at: '', updated_at: '', ...geometry } satisfies SiteZone;
-  }, [points, surface, properties, zones, height, publicRoads, skipSnapping]);
-  const problem = zone ? nativeStreetRouteProblem(zone, getActiveSiteBoundary(zones)) : null;
+  }, [points, surface, properties, zones, height, publicRoads, skipSnapping, isBridge]);
+  const problem = zone
+    ? nativeStreetRouteProblem(zone, boundary) ?? (isBridge
+      ? placementProblem(zone.coordinates, zones, boundary, undefined, { allowStreetIntersections: true, properties: zone.properties })
+      : null)
+    : null;
   useEffect(() => {
     // Match the saved canal's prepared-site opening. Its water is below grade;
     // a second site slab otherwise hides it until the student saves the route.
@@ -82,6 +88,6 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
   return zone ? <group name="street-drawing-preview" userData={{ editorPreview: true }}>
     {!problem && <GlobeStreetDraft zone={zone} zones={zones} terrainHeight={height} profile={profile} />}
     {zone.suggestion && <PublicRoadSuggestionMarker suggestion={zone.suggestion}
-      height={resolvePreparedSiteTerrainForZone(getActiveSiteBoundary(zones) ?? zone, zones, height) ?? height} />}
+      height={resolvePreparedSiteTerrainForZone(boundary ?? zone, zones, height) ?? height} />}
   </group> : null;
 }

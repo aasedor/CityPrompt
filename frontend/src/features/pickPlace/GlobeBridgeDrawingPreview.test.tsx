@@ -78,3 +78,27 @@ it.each([
   view.rerender(<GlobeStreetDrawingPreview {...props} points={[points[0]]}/>);
   expect(view.queryByTestId('bridge-model')).toBeNull();
 });
+
+it('explains when fitting the second point extends a bridge outside the site', () => {
+  harness.canvas = document.createElement('canvas');
+  harness.camera = { matrixWorld: new Matrix4() };
+  const asset = MODULAR_BRIDGE_ASSETS.find(item => item.id === 'swooping_cycle_flyover_route_v1')!;
+  const boundary = {
+    id: 'site', zone_type: 'site_boundary',
+    coordinates: [[-114.001, 50.999], [-113.999, 50.999], [-113.999, 51.001], [-114.001, 51.001]],
+    properties: { terrain_strategy: 'level', community_3d_mask_existing_tiles: true },
+  } as unknown as SiteZone;
+  const onStatusChange = vi.fn();
+  const view = render(<GlobeStreetDrawingPreview
+    points={[[-114, 51], [-114, 51.0005]]}
+    pointHeights={[1000, 1000]}
+    properties={asset.properties}
+    zones={[boundary]}
+    terrainHeight={1000}
+    raycastSurface={() => null}
+    onStatusChange={onStatusChange}
+  />);
+
+  expect(onStatusChange).toHaveBeenLastCalledWith(expect.stringContaining('inside your site boundary'));
+  expect(view.queryByTestId('bridge-model')).toBeNull();
+});
