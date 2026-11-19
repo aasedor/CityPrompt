@@ -2257,8 +2257,7 @@
       "url": "/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json",
-        "src/features/pickPlace/publishedBuildingAssets.ts"
+        "src/data/buildingArchetypes.json"
       ],
       "logicalBytes": 1098329,
       "lfsOid": "ea6a28363104886398ba75294af97682bb0666485c73a48a2a0c7f363bfbb8ff"
@@ -6453,8 +6452,7 @@
       "url": "/archetypes/buildings/london-crescent-terrace/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json",
-        "src/features/pickPlace/publishedBuildingAssets.ts"
+        "src/data/buildingArchetypes.json"
       ],
       "logicalBytes": 1257907,
       "lfsOid": "ee92450f910e07cab1027edb0991cde1d6657c2809eb457b5687aa37c9f6f1c9"
