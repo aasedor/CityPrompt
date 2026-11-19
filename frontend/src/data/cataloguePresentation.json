@@ -2624,5 +2624,20 @@
     "searchTags": [
       "Student Residence Tower"
     ]
+  },
+  "student_stephen_avenue_mall_v1": {
+    "label": "Stephen Avenue Pedestrian Mall",
+    "description": "Calgary's pedestrian mall as a street to draw: a granite promenade between brick frontage zones, with lindens, heritage lamps and cafe patios.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "stephen",
+      "avenue",
+      "pedestrian",
+      "mall",
+      "calgary",
+      "patio",
+      "heritage"
+    ]
   }
 }

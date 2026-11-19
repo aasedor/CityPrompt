@@ -691,7 +691,16 @@
         "public:archetypes/streets/urban-pedestrian-footbridge/weathering-steel-v-footbridge-route-v1.png"
       ]
     }
-  ],
+  ,
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "stephen_avenue_pedestrian_mall",
+  "variantId": "student_stephen_avenue_mall_v1",
+  "revision": "dfb96f981f6ab0cf919787bafa51546fbfca7ec73ec5aef99421ae3aaab5f0f2",
+  "status": "local-pilot-runtime-pending"
+}
+],
   "dependencies": [
     {
       "id": "public:archetypes/buildings/calgary-beltline-mid-rise/variant_1.png",

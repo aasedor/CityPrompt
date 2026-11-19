@@ -428,5 +428,20 @@
     "conditions": [
       "Confirm public access, operator and the proposed activities. Shelters, structures, access, servicing and site conditions require separate review."
     ]
+  },
+  "native-park:student_stormwater_pond_v1--native-v1": {
+    "variantId": "student_stormwater_pond_v1",
+    "revision": "d141d628c3378e7c37e847229c06fc88b56f36c51229f9b71e58aa5f5f5fe526",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Provisional classroom park program for the authored pond, pathway loop and planting. The geometry alone does not establish a stormwater facility, its drainage function, ownership or public access.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Stormwater Pond & Pathway Loop exact native layout in nativeParks.json; build notes in docs/STORMWATER_POND_PARK_2026-11-19.md. No operating use has been established."
+    },
+    "review": "Confirm the drainage authority, public access and water safety measures before assigning a land-use classification; the provisional Park screening is not confirmation of permission."
   }
 }

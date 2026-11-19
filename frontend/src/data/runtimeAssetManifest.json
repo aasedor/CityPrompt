@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4227,
+    "explicitReferenceCount": 4232,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 6011,
-    "requiredLogicalBytes": 13110829721,
+    "requiredFileCount": 6016,
+    "requiredLogicalBytes": 13113375025,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -23333,6 +23333,9 @@
       "url": "/archetypes/streets/stephen-avenue-pedestrian-mall/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json",
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1497286,
@@ -35539,6 +35542,41 @@
       "lfsOid": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
     },
     {
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/bench.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 18928
+    },
+    {
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/cafe_patio.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 342728
+    },
+    {
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/heritage_lamp.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 47264
+    },
+    {
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/linden_grate.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 839316
+    },
+    {
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/litter_bin.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 24416
+    },
+    {
       "url": "/street-kits/pilots/student_vine_pergola_promenade_v1/bench.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
@@ -36624,9 +36662,9 @@
         "/street-kits/pilots/"
       ],
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
-      "fileCount": 208,
-      "logicalBytes": 125056741,
-      "pathDigest": "5029539d73b8dff9db060df41226c3d895fe867248341e5609e12966b895420b"
+      "fileCount": 213,
+      "logicalBytes": 126329393,
+      "pathDigest": "a1be50efbc8fbc4004dcbca74553796c75c05cc4fdbc079c1653dde9e0061f60"
     },
     {
       "name": "sports-park-modules",

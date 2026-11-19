@@ -120,7 +120,7 @@ describe('historical planning interpretation', () => {
       { id: 'postwar', label: 'Postwar expansion · c. 1945–1975' },
     ]);
     expect(availableEras([bungalow], 'street_pathway')).toEqual([]);
-    expect(Object.keys(historyData.lessons)).toHaveLength(204);
+    expect(Object.keys(historyData.lessons)).toHaveLength(206);
     expect(CANONICAL_CHOICES.filter(choice => !historyForChoice(choice))
       .flatMap(choice => choice.placements.map(asset => asset.id)).sort())
       .toEqual(MODULAR_BRIDGE_ASSETS.map(asset => asset.id).sort());

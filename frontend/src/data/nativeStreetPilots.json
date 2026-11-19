@@ -84123,4 +84123,3333 @@
   },
   "programSha256": "ad796579bdf9f8e2216b2778e264ce19dbc8e96a37042109a28c3ab0cce7b0df"
 }
+,
+{
+  "id": "student_stephen_avenue_mall_v1",
+  "sourceArchetypeId": "stephen_avenue_pedestrian_mall",
+  "title": "Stephen Avenue Pedestrian Mall",
+  "status": "candidate",
+  "sourceRecipeSha256": "dfb96f981f6ab0cf919787bafa51546fbfca7ec73ec5aef99421ae3aaab5f0f2",
+  "sourceAssemblySha256": "6ae822857ae87db9d556e3979ee4a83ae6299a5444448bd34f302fc001baabaa",
+  "referenceSha256": "f6036dd42705eb2bd210fa52dfe5c23e1d8dcb5377e1611685302c72c79ea232",
+  "widthM": 20.0,
+  "fixtureLengthM": 40,
+  "routeAxis": "local_y",
+  "junctionSurface": "pavers",
+  "sections": [
+    {
+      "name": "west_walk",
+      "x": -8.0,
+      "width": 4.0,
+      "material": "paving"
+    },
+    {
+      "name": "west_furniture",
+      "x": -5.0,
+      "width": 2.0,
+      "material": "paving"
+    },
+    {
+      "name": "promenade",
+      "x": 0.0,
+      "width": 8.0,
+      "material": "paving"
+    },
+    {
+      "name": "east_furniture",
+      "x": 5.0,
+      "width": 2.0,
+      "material": "paving"
+    },
+    {
+      "name": "east_walk",
+      "x": 8.0,
+      "width": 4.0,
+      "material": "paving"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "linden_grate",
+      "x": -5.2,
+      "y": -15,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "linden_grate",
+      "x": -5.2,
+      "y": -5,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "linden_grate",
+      "x": -5.2,
+      "y": 5,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "linden_grate",
+      "x": -5.2,
+      "y": 15,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lamp",
+      "x": -5.2,
+      "y": -10,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lamp",
+      "x": -5.2,
+      "y": 10,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": -5.2,
+      "y": 0,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "litter_bin",
+      "x": -5.2,
+      "y": -8.8,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "cafe_patio",
+      "x": -8.775,
+      "y": -12,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "cafe_patio",
+      "x": -8.775,
+      "y": 8,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "linden_grate",
+      "x": 5.2,
+      "y": -15,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "linden_grate",
+      "x": 5.2,
+      "y": -5,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "linden_grate",
+      "x": 5.2,
+      "y": 5,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "linden_grate",
+      "x": 5.2,
+      "y": 15,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lamp",
+      "x": 5.2,
+      "y": -10,
+      "z": 0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "heritage_lamp",
+      "x": 5.2,
+      "y": 10,
+      "z": 0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": 5.2,
+      "y": 0,
+      "z": 0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "litter_bin",
+      "x": 5.2,
+      "y": 11.2,
+      "z": 0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "cafe_patio",
+      "x": 8.775,
+      "y": -2,
+      "z": 0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "cafe_patio",
+      "x": 8.775,
+      "y": 14,
+      "z": 0,
+      "yaw": 3.141593,
+      "scale": 1
+    }
+  ],
+  "modules": {
+    "linden_grate": {
+      "sha256": "4c03206d38c9dec47a01f467b91b87755b8c20933fdf70254eb0876585aced65",
+      "bytes": 839316,
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/linden_grate.glb"
+    },
+    "heritage_lamp": {
+      "sha256": "b70bc55607f9da276f33fdd34dd3f6044a11f3eb05d78fdc835eaea7cc64a077",
+      "bytes": 47264,
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/heritage_lamp.glb"
+    },
+    "cafe_patio": {
+      "sha256": "fa404a3925df2107633f91800b21923206c03712ba3b4621cc85840fbaf8a255",
+      "bytes": 342728,
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/cafe_patio.glb"
+    },
+    "litter_bin": {
+      "sha256": "29305d6598e7e841ccc58f20e175bd1f9726ce0838da2b3971a64243d51d2519",
+      "bytes": 24416,
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/litter_bin.glb"
+    },
+    "bench": {
+      "sha256": "9216caab5937a6bd54eba1dd9d1c33a2620a98f4b95af60f886d853476920458",
+      "bytes": 18928,
+      "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/bench.glb"
+    }
+  },
+  "treeWells": [],
+  "thumbnailUrl": "/archetypes/streets/stephen-avenue-pedestrian-mall/variant_2.png",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "showcase-street-v1",
+    "surfaceRegions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 8.0,
+        "depth": 40.0,
+        "material": "paving"
+      },
+      {
+        "x": -4.2,
+        "y": 0,
+        "width": 0.4,
+        "depth": 40.0,
+        "material": "granite_border"
+      },
+      {
+        "x": -7.2,
+        "y": 0,
+        "width": 5.6,
+        "depth": 40.0,
+        "material": "brick"
+      },
+      {
+        "x": 4.2,
+        "y": 0,
+        "width": 0.4,
+        "depth": 40.0,
+        "material": "granite_border"
+      },
+      {
+        "x": 7.2,
+        "y": 0,
+        "width": 5.6,
+        "depth": 40.0,
+        "material": "brick"
+      }
+    ],
+    "details": [
+      {
+        "x": -7.2,
+        "y": -19.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -19.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -19.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -19.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -18.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -18.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -18.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -18.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -17.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -17.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -17.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -17.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -16.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -16.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -16.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -16.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -15.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -15.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -15.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -15.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -14.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -14.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -14.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -14.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -14.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -13.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -13.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -13.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -13.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -12.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -12.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -12.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -12.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -11.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -11.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -11.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -11.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -10.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -10.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -10.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -10.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -9.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -9.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -9.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -9.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -8.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -8.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -8.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -8.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -8.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -7.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -7.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -7.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -7.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -6.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -6.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -6.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -6.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -5.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -5.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -5.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -5.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -4.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -4.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -4.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -4.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -3.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -3.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -3.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -3.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -2.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -2.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -2.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -2.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -2.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -1.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -1.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -1.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -1.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -0.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -0.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -0.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": -0.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 0.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 0.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 0.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 0.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 1.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 1.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 1.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 1.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 2.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 2.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 2.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 2.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 3.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 3.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 3.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 3.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 4.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 4.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 4.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 4.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 4.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 5.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 5.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 5.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 5.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 6.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 6.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 6.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 6.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 7.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 7.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 7.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 7.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 8.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 8.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 8.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 8.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 9.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 9.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 9.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 9.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 10.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 10.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 10.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 10.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 10.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 11.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 11.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 11.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 11.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 12.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 12.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 12.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 12.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 13.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 13.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 13.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 13.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 14.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 14.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 14.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 14.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 15.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 15.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 15.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 15.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 16.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 16.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 16.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 16.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 16.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 17.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 17.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 17.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 17.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 18.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 18.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 18.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 18.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 19.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 19.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -7.2,
+        "y": 19.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": -4.5,
+        "y": 0,
+        "width": 0.2,
+        "depth": 40.0,
+        "z": 0.002,
+        "height": 0,
+        "material": "brick_soldier"
+      },
+      {
+        "x": -9.9,
+        "y": 0,
+        "width": 0.2,
+        "depth": 40.0,
+        "z": 0.002,
+        "height": 0,
+        "material": "brick_soldier"
+      },
+      {
+        "x": 7.2,
+        "y": -19.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -19.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -19.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -19.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -18.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -18.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -18.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -18.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -17.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -17.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -17.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -17.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -16.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -16.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -16.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -16.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -15.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -15.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -15.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -15.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -14.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -14.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -14.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -14.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -14.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -13.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -13.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -13.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -13.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -12.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -12.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -12.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -12.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -11.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -11.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -11.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -11.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -10.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -10.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -10.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -10.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -9.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -9.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -9.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -9.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -8.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -8.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -8.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -8.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -8.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -7.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -7.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -7.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -7.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -6.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -6.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -6.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -6.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -5.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -5.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -5.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -5.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -4.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -4.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -4.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -4.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -3.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -3.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -3.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -3.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -2.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -2.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -2.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -2.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -2.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -1.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -1.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -1.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -1.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -0.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -0.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -0.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": -0.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 0.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 0.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 0.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 0.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 1.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 1.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 1.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 1.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 2.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 2.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 2.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 2.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 3.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 3.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 3.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 3.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 4.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 4.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 4.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 4.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 4.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 5.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 5.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 5.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 5.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 6.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 6.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 6.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 6.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 7.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 7.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 7.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 7.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 8.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 8.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 8.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 8.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 9.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 9.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 9.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 9.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 10.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 10.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 10.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 10.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 10.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 11.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 11.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 11.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 11.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 12.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 12.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 12.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 12.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 13.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 13.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 13.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 13.84,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 14.08,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 14.32,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 14.56,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 14.8,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 15.04,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 15.28,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 15.52,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 15.76,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 16.0,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 16.24,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 16.48,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 16.72,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 16.96,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 17.2,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 17.44,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 17.68,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 17.92,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 18.16,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 18.4,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 18.64,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 18.88,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 19.12,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 19.36,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 7.2,
+        "y": 19.6,
+        "width": 5.6,
+        "depth": 0.012,
+        "z": 0.001,
+        "height": 0,
+        "material": "brick_joint"
+      },
+      {
+        "x": 4.5,
+        "y": 0,
+        "width": 0.2,
+        "depth": 40.0,
+        "z": 0.002,
+        "height": 0,
+        "material": "brick_soldier"
+      },
+      {
+        "x": 9.9,
+        "y": 0,
+        "width": 0.2,
+        "depth": 40.0,
+        "z": 0.002,
+        "height": 0,
+        "material": "brick_soldier"
+      }
+    ],
+    "meshDetails": [],
+    "paving": "stone",
+    "pavingModuleM": [
+      1.2,
+      0.8
+    ],
+    "minLengthM": 30,
+    "maxLengthM": 300,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "paving": [
+        0.3813,
+        0.3663,
+        0.3372
+      ],
+      "edge": [
+        0.2051,
+        0.1946,
+        0.1746
+      ],
+      "granite_border": [
+        0.0908,
+        0.0865,
+        0.0782
+      ],
+      "brick": [
+        0.1946,
+        0.0595,
+        0.0395
+      ],
+      "brick_soldier": [
+        0.1119,
+        0.0331,
+        0.0222
+      ],
+      "brick_joint": [
+        0.305,
+        0.1878,
+        0.147
+      ]
+    }
+  },
+  "programSha256": "287159e2d4266cd1036b79b1a8463739898e792e3c4ba075e724fa2280f4435b"
+}
 ]

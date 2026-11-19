@@ -756,7 +756,20 @@
       "runtime_status": "NOT TESTED",
       "completed": false
     }
-  ],
+  ,
+{
+  "domain": "street",
+  "title": "Stephen Avenue Pedestrian Mall",
+  "archetype_id": "stephen_avenue_pedestrian_mall",
+  "variant_id": "student_stephen_avenue_mall_v1",
+  "version": "student_stephen_avenue_mall_v1",
+  "placement_id": "student_stephen_avenue_mall_v1",
+  "sha256": "6ae822857ae87db9d556e3979ee4a83ae6299a5444448bd34f302fc001baabaa",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+}
+],
   "assets": [
     {
       "id": "native-park:student_reading_garden_v2--native-v1",
@@ -2991,5 +3004,37 @@
         "pick_place_automatic_3d": true
       }
     }
-  ]
+  ,
+{
+  "id": "student_stephen_avenue_mall_v1",
+  "kind": "street",
+  "definitionVersion": 1,
+  "readiness": "pilot",
+  "label": "Stephen Avenue Pedestrian Mall",
+  "description": "20 m pedestrian mall: granite promenade, brick frontage, lindens, heritage lamps and cafe patios. Street only; no buildings.",
+  "thumbnail": "/archetypes/streets/stephen-avenue-pedestrian-mall/variant_2.png",
+  "model": {
+    "variantId": "student_stephen_avenue_mall_v1",
+    "revision": "dfb96f981f6ab0cf919787bafa51546fbfca7ec73ec5aef99421ae3aaab5f0f2",
+    "method": "native_street_modules_v1"
+  },
+  "calgaryGuide": {
+    "groupId": "active",
+    "basis": "form_reference"
+  },
+  "reshapeMode": "fixed_section_route",
+  "sectionWidth": 20.0,
+  "properties": {
+    "road_archetype_id": "stephen_avenue_pedestrian_mall",
+    "road_selected_variant_id": "student_stephen_avenue_mall_v1",
+    "width": 20.0,
+    "lane_count": 0,
+    "pick_place_street_section": "student_stephen_avenue_mall_v1",
+    "pick_place_automatic_3d": true,
+    "pick_place_definition_version": 1,
+    "community_3d_mask_existing_tiles": true,
+    "road_standard_citation": "City Prompt original teaching concept after Stephen Avenue; not a City of Calgary drawing"
+  }
+}
+]
 }

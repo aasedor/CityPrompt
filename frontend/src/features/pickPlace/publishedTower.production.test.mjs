@@ -11,9 +11,9 @@ const approvedBuildingIds = [
   'claude_sandstone_clock_tower_v006', 'claude_fire_station_v010', 'claude_hospital_v006',
   'claude_student_residence_v004',
 ];
-// Explicitly added pilot parks, listed by exact placement so the recorded
+// Explicitly added pilots, listed by exact placement so the recorded
 // fingerprints below still protect every older choice unchanged.
-const addedParkIds = ['native-park:student_stormwater_pond_v1--native-v1'];
+const addedPilotIds = ['native-park:student_stormwater_pond_v1--native-v1', 'student_stephen_avenue_mall_v1'];
 const digest = values => createHash('sha256').update([...values].sort().join('\n')).digest('hex');
 
 // These are the source-roster fingerprints recorded before this additive
@@ -114,10 +114,10 @@ describe('published native twisting tower in production', () => {
     for (const choice of profile.retiredBridgeChoices) {
       expect(profile.choices.some(current => current.id === choice.id)).toBe(false);
     }
-    const parks = profile.choices.filter(choice => choice.placements.some(id => addedParkIds.includes(id)));
-    expect(parks.flatMap(choice => choice.placements).sort()).toEqual([...addedParkIds].sort());
+    const pilots = profile.choices.filter(choice => choice.placements.some(id => addedPilotIds.includes(id)));
+    expect(pilots.flatMap(choice => choice.placements).sort()).toEqual([...addedPilotIds].sort());
     const previous = [...profile.choices.filter(choice => choice.id !== choiceId && !additions.includes(choice) && !bridges.includes(choice)
-      && !parks.includes(choice)),
+      && !pilots.includes(choice)),
       ...profile.retiredBridgeChoices];
     expect(previous).toHaveLength(expected.count);
     expect(digest(previous.map(choice => choice.id))).toBe(expected.choices);

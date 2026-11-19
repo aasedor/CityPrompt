@@ -1,0 +1,15 @@
+{
+  "frame": "x across the street, y along it (one 40 m fixture cycle from -20 to 20), z up, metres",
+  "views": {
+    "aerial": {"pos": [26, -34, 22], "target": [0, 0, 1], "fov": 40, "shadow": 40, "centre": [0, 0, 2]},
+    "top": {"pos": [0, 0, 80], "target": [0, 0, 0], "up": [0, 1, 0], "ortho": 22, "shadow": 40, "centre": [0, 0, 2]},
+    "walk": {"pos": [-1.2, -21, 1.65], "target": [0.2, 10, 1.8], "fov": 60, "shadow": 40, "centre": [0, 0, 2]},
+    "frontage": {"pos": [-6.8, -19, 1.65], "target": [-6.2, 5, 1.6], "fov": 60, "shadow": 40, "centre": [0, 0, 2]},
+    "patio": {"pos": [-4.0, -18.5, 2.6], "target": [-8.6, -12, 0.9], "fov": 50, "shadow": 20, "centre": [-8, -12, 1]},
+    "lamp_tree": {"pos": [-1.5, -13.5, 2.2], "target": [-5.2, -9.2, 2.7], "fov": 55, "shadow": 20, "centre": [-5, -10, 2]},
+    "east_side": {"pos": [3.0, 24, 2.2], "target": [7.0, 6, 1.4], "fov": 55, "sun": [0.4, 0.7, 0.5], "shadow": 30, "centre": [6, 8, 2]},
+    "match_front": {"pos": [-2.0, -24, 1.6], "target": [1.0, 10, 4.0], "fov": 58, "w": 1024, "h": 768, "shadow": 40, "centre": [0, 0, 2]},
+    "match_oblique": {"pos": [-9, -30, 17], "target": [1, 4, 0], "fov": 48, "w": 1195, "h": 896, "shadow": 40, "centre": [0, 0, 2]},
+    "match_top": {"pos": [0, 0, 80], "target": [0, 0, 0], "up": [0, 1, 0], "ortho": 13, "w": 1195, "h": 896, "shadow": 40, "centre": [0, 0, 2]}
+  }
+}

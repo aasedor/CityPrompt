@@ -8155,6 +8155,82 @@
       "planningIds": [],
       "constructionYear": null,
       "referenceReviewed": false
+    },
+    "native-park:student_stormwater_pond_v1--native-v1": {
+      "eraIds": [
+        "contemporary"
+      ],
+      "designPeriod": "Contemporary design reference, broadly 2000–present",
+      "eraRationale": "The authored layout follows current practice for wet stormwater ponds in new neighbourhoods; no actual construction year is supplied.",
+      "canadianContext": "Compare how a wet pond holds runoff and also serves as neighbourhood open space, with a walking loop, planting and wildlife.",
+      "internationalContext": "Stormwater ponds and constructed wetlands are used internationally; their landscape, access and safety design varies widely.",
+      "sourceIds": [
+        "ecology",
+        "picturesque",
+        "place",
+        "cmhc_catalogue"
+      ],
+      "placementId": "native-park:student_stormwater_pond_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "stormwater_retention_pond",
+      "variantId": "student_stormwater_pond_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "d141d628c3378e7c37e847229c06fc88b56f36c51229f9b71e58aa5f5f5fe526",
+      "status": "classified",
+      "profileId": "contemporary",
+      "formId": "water",
+      "styleIds": [
+        "ecological_landscape",
+        "naturalistic"
+      ],
+      "planningIds": [
+        "ecology",
+        "landscape"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "A wet stormwater pond with cattail shallows, a pathway loop, a viewing dock and inlet and outlet structures.",
+      "referenceReviewed": false,
+      "priorStyleConfidence": "Medium"
+    },
+    "student_stephen_avenue_mall_v1": {
+      "eraIds": [
+        "late_twentieth",
+        "contemporary"
+      ],
+      "designPeriod": "Late-twentieth-century downtown pedestrian mall, drawn as a contemporary teaching section",
+      "eraRationale": "Downtown pedestrian malls were a late-twentieth-century response to car-oriented cores; this section follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare how a car-free downtown street supports patios, events and walking, and what it needs from the buildings and +15 network around it.",
+      "internationalContext": "Pedestrian malls were built in many North American and European cities; some thrived and some were later reopened to traffic.",
+      "sourceIds": [
+        "place",
+        "cip_history",
+        "complete",
+        "shared"
+      ],
+      "placementId": "student_stephen_avenue_mall_v1",
+      "domain": "street_pathway",
+      "archetypeId": "stephen_avenue_pedestrian_mall",
+      "variantId": "student_stephen_avenue_mall_v1",
+      "modelMethod": "native_street_modules_v1",
+      "modelRevision": "dfb96f981f6ab0cf919787bafa51546fbfca7ec73ec5aef99421ae3aaab5f0f2",
+      "status": "classified",
+      "profileId": "current_street",
+      "formId": "active",
+      "styleIds": [
+        "heritage_street",
+        "contemporary_street"
+      ],
+      "planningIds": [
+        "place",
+        "active",
+        "heritage"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "A 20 m pedestrian mall: granite promenade between brick frontage zones, with lindens, heritage lamps and cafe patios.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
     }
   }
 }
