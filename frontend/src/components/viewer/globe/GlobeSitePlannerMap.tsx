@@ -1751,6 +1751,14 @@ export function GlobeSitePlannerMap({
   const [entranceReviews,setEntranceReviews]=useState<BuildingEntranceReview[]>([]);
   const [reviewEntranceReviews,setReviewEntranceReviews]=useState<ReadonlyMap<string,BuildingEntranceReview>>(new Map());
   const contextPresentation = useContextPresentation(allSiteZones);
+  const mapCleanupAvailable = contextPresentation.visible === 'google'
+    && cleanupBoundary !== null && onSaveMapCleanup !== undefined;
+  useEffect(() => {
+    if (mapCleanupAvailable) return;
+    setShowMapCleanup(false);
+    setCleanupPicking(false);
+    setCleanupDraft(null);
+  }, [mapCleanupAvailable]);
   const contextPresentationRef = useRef(contextPresentation);
   contextPresentationRef.current = contextPresentation;
   const [placementProblemMessage, setPlacementProblemMessage] = useState<string | null>(null);
@@ -5114,7 +5122,7 @@ export function GlobeSitePlannerMap({
           setShowBuildingGroundProblems(false); onZoneSelected(zone.id);
           void requestProjectFrame([{ ...zone, coordinates: zone.coordinates as [number, number][] }], 'manual');
         }} />}
-      {!captureOverlaysHidden && showMapCleanup && cleanupBoundary && onSaveMapCleanup && <MapCleanupControls
+      {!captureOverlaysHidden && showMapCleanup && mapCleanupAvailable && <MapCleanupControls
         boxes={cleanupBoxes} draft={cleanupDraft} picking={cleanupPicking} onDraft={setCleanupDraft}
         onPick={value => { setCleanupPicking(value); if (value) setCleanupDraft(null); }}
         onSave={boxes => onSaveMapCleanup(cleanupBoundary.id, boxes)}
@@ -5482,7 +5490,16 @@ export function GlobeSitePlannerMap({
           </button>
         )}
         {getActiveSiteBoundary(allSiteZones) && onPrepareGround && <button className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold hover:bg-[#fff9ec] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2" onClick={() => setShowGroundReview(true)}>Review ground</button>}
-        {import.meta.env.DEV && cleanupBoundary && onSaveMapCleanup && <button type="button" className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold" disabled={Boolean(detailEditing || entrancePick || placementDraft || hasDrawingTool || measureModeActive)} onClick={() => { setWalkMode(null); onZoneSelected(null); setShowMapCleanup(true); }}>Map cleanup pilot</button>}
+        {mapCleanupAvailable && (
+          <button
+            type="button"
+            className="min-h-11 w-full rounded-lg border-2 border-[#151515] bg-white px-3 text-sm font-semibold"
+            disabled={Boolean(interactionPaused || placementDraft || hasDrawingTool || measureModeActive)}
+            onClick={() => { onZoneSelected(null); setShowMapCleanup(true); }}
+          >
+            Map cleanup
+          </button>
+        )}
         </>, mapToolsTarget)}
         {(sharedGroundState.status === 'sampling' || sharedGroundState.status === 'unavailable' || Boolean(sharedGroundState.snapshot?.excludedCells?.length)) && (
           <span role="status" className="max-w-sm rounded-xl border-2 border-[#151515] bg-[#fff9ec]/95 px-3 py-1.5 text-[11px] font-bold text-[#151515]">
