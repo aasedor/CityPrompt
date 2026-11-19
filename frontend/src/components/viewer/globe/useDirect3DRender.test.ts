@@ -231,8 +231,8 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.render.savedRender).toBeUndefined();
   });
 
-  it('uses the same complete 24-style catalogue as Classic without changing Classic prompting', () => {
-    expect(DIRECT_3D_STYLE_IDS).toHaveLength(24);
+  it('uses the same complete 25-style catalogue as Classic without changing Classic prompting', () => {
+    expect(DIRECT_3D_STYLE_IDS).toHaveLength(25);
     expect(new Set(DIRECT_3D_STYLE_IDS)).toEqual(new Set(Object.keys(GLOBE_STYLE_PROMPTS)));
     expect(new Set(Object.keys(DIRECT_3D_DEFAULT_ART_DIRECTIONS)))
       .toEqual(new Set(DIRECT_3D_STYLE_IDS));
@@ -251,7 +251,7 @@ describe('Direct 3D presentation adapter', () => {
       );
     }
     expect(DIRECT_3D_STYLE_IDS.filter((style) => resolveDirect3DPresentationMode(style) === 'scene'))
-      .toHaveLength(18);
+      .toHaveLength(19);
   });
 
   it('keeps the selected Direct style while adding concise project-specific direction', () => {
@@ -335,7 +335,7 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).toContain('Keep cropped and occluded elements cropped and occluded');
   });
 
-  it.each(['photomontage', 'development', 'atmospheric', 'after-rain', 'autumn', 'winter', 'night'])('does not let the %s preset request new activity or site furniture', (style) => {
+  it.each(['photomontage', 'development', 'atmospheric', 'movie-still', 'after-rain', 'autumn', 'winter', 'night'])('does not let the %s preset request new activity or site furniture', (style) => {
     const direction = DIRECT_3D_DEFAULT_ART_DIRECTIONS[style];
     expect(direction).not.toMatch(/pedestrians|cyclists?|cafe activity|moving cars|street life|freshly landscaped|headlight|taillight/i);
     const prompt = buildDirect3DVisualPrompt(style, undefined, capture);
@@ -343,6 +343,7 @@ describe('Direct 3D presentation adapter', () => {
   });
 
   it.each([
+    ['movie-still', 'fine film grain', 'existing light fixture'],
     ['after-rain', 'damp paving', 'diffuse post-rain daylight'],
     ['autumn', 'existing deciduous', 'low autumn sunlight'],
   ])('keeps %s photographic and aligned to the source camera', (style, detail, lighting) => {

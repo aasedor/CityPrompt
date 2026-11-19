@@ -22,6 +22,7 @@ import { resolveApiFileUrl } from '@/services/api';
 import { getCustomZoneStyle } from './customZoneStyle';
 import { prepareZonesForRender } from './resolvePlanZoneArchetypes';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { MOVIE_STILL_PRESET } from './movieStillPreset';
 import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from './seasonalRenderPresets';
 
 // ---------------------------------------------------------------------------
@@ -153,6 +154,7 @@ export interface UseAIRenderReturn {
 
 export const AI_RENDER_STYLES: AIRenderStyle[] = [
   ...aiRenderStylePresets,
+  MOVIE_STILL_PRESET,
   AFTER_RAIN_PRESET,
   AUTUMN_PRESET,
 ];
@@ -184,6 +186,7 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     label: 'Atmospheric',
     prompt: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. CRITICAL: Replace all colored polygon fills with photorealistic building materials â€” real brick, stone, glass, concrete, metal roofing. No flat colored surfaces. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose overhead. Ground-level haze creating depth layers. Wet surfaces with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
   },
+  [MOVIE_STILL_PRESET.id]: MOVIE_STILL_PRESET,
   [AFTER_RAIN_PRESET.id]: AFTER_RAIN_PRESET,
   [AUTUMN_PRESET.id]: AUTUMN_PRESET,
   'site-plan': {

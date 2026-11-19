@@ -10,6 +10,7 @@ import { suggestPublicRoad, type PublicRoadContext, type PublicRoadSuggestion } 
 import { snapStreetBoundaryPlacement } from './streetBoundaryPlacement';
 import { isSurfacePath } from './surfacePath';
 import { bufferPathwayToPolygon } from '@/utils/pathwayFootprint';
+import { fitBridgeDrawingSpan } from './bridgeDrawingSpan';
 
 /** One geometry path for the unsaved preview and the final authored road. */
 export function streetDrawingGeometry(points: number[][], properties: SiteZoneProperties, zones: SiteZone[], options: {
@@ -17,10 +18,12 @@ export function streetDrawingGeometry(points: number[][], properties: SiteZonePr
 } = {}): { coordinates: number[][]; properties: SiteZoneProperties; suggestion?: PublicRoadSuggestion } {
   const width = Number(properties.width) || 10;
   const boundary = getActiveSiteBoundary(zones);
-  const connection = !options.skipSnapping && suggestPublicRoad(points, properties, zones, boundary, options.publicRoads);
+  const bridge = modularBridgeProgramFor(properties.road_selected_variant_id);
+  const fitted = fitBridgeDrawingSpan(points, properties);
+  const connection = !bridge && !options.skipSnapping && suggestPublicRoad(points, properties, zones, boundary, options.publicRoads);
   if (connection) return connection;
-  const bounded = options.skipSnapping ? points : snapStreetToBoundary(points, width, boundary, properties);
-  const authored = options.skipSnapping ? points : properties.pick_place_street_section
+  const bounded = bridge ? fitted : options.skipSnapping ? points : snapStreetToBoundary(points, width, boundary, properties);
+  const authored = bridge ? fitted : options.skipSnapping ? points : properties.pick_place_street_section
     ? snapStreetEnds(bounded, zones, undefined, width)
     : snapRoadEndpoints(bounded, zones, properties.road_level);
   const centerline = roundAuthoredStreetRoute(authored, width, properties);

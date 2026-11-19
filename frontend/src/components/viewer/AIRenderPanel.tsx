@@ -21,6 +21,7 @@ import { useAuthStore } from '@/store';
 import { saveRenderedImage } from '@/utils/renderPersistence';
 import { isTextEntryTarget } from '@/utils/domEvents';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { MOVIE_STILL_PRESET } from './movieStillPreset';
 import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from './seasonalRenderPresets';
 
 // ---------------------------------------------------------------------------
@@ -30,7 +31,7 @@ import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from './seasonalRenderPresets';
 // in the picker. Update this when adding a style so it lands in the right group.
 
 const STYLE_GROUPS = [
-  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', AFTER_RAIN_PRESET.id, AUTUMN_PRESET.id, 'winter'] },
+  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', MOVIE_STILL_PRESET.id, AFTER_RAIN_PRESET.id, AUTUMN_PRESET.id, 'winter'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'pen-and-ink'] },
   { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },
   { label: 'Stylized', ids: ['isometric', 'clay-maquette', 'woodblock'] },

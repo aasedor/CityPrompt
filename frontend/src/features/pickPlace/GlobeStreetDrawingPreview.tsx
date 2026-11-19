@@ -30,7 +30,7 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
   const [surface, setSurface] = useState<Surface | null>(null);
   // Texture/material resources depend on the selected street, never on pointer position.
   const profile = useMemo(() => resolvePilotStreetSectionProfile({ properties: properties ?? {} }), [properties]);
-  useEffect(() => { setSurface(null); dirty.current = false; }, [points]);
+  useEffect(() => { setSurface(null); dirty.current = true; }, [points]);
   useEffect(() => {
     const move = (event: PointerEvent) => {
       const rect = gl.domElement.getBoundingClientRect();
@@ -38,7 +38,13 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
         : [(event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1];
       dirty.current = true; invalidate();
     };
-    const leave = () => { pointer.current = null; dirty.current = false; setSurface(null); };
+    const leave = () => {
+      pointer.current = null;
+      // Touch release has no hover pointer. The mobile crosshair still owns
+      // the draft, including while tapping its Set end / Finish buttons.
+      dirty.current = gl.domElement.getBoundingClientRect().width < 640;
+      if (!dirty.current) setSurface(null);
+    };
     gl.domElement.addEventListener('pointermove', move);
     gl.domElement.addEventListener('pointerleave', leave);
     return () => {
@@ -47,10 +53,11 @@ export function GlobeStreetDrawingPreview({ points, pointHeights, properties, zo
     };
   }, [gl, invalidate]);
   useFrame(({ clock }) => {
-    if (!points.length || !pointer.current || clock.elapsedTime - last.current < .12
+    const target: [number, number] | null = gl.domElement.getBoundingClientRect().width < 640 ? [0, 0] : pointer.current;
+    if (!points.length || !target || clock.elapsedTime - last.current < .12
       || (!dirty.current && matrix.current.equals(camera.matrixWorld))) return;
     last.current = clock.elapsedTime; dirty.current = false; matrix.current.copy(camera.matrixWorld);
-    setSurface(raycastSurface(...pointer.current));
+    setSurface(raycastSurface(...target));
   });
   const height = getRepresentativeTerrainHeight(pointHeights, terrainHeight);
   const zone = useMemo(() => {

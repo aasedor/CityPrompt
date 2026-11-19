@@ -31,6 +31,7 @@ import { ImageModelSelect } from './ImageModelSelect';
 import { useImageModelChoice } from './useImageModelChoice';
 import { runImageModelBatch } from './runImageModelBatch';
 import { RenderStyleGuideButton } from './RenderStyleGuideButton';
+import { MOVIE_STILL_PRESET } from './movieStillPreset';
 import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from './seasonalRenderPresets';
 
 const COMPASS_LABELS: Record<number, string> = {
@@ -40,11 +41,12 @@ const COMPASS_LABELS: Record<number, string> = {
 
 const STREET_VIEW_STYLES = [
   ...streetViewStylePresets,
+  { ...MOVIE_STILL_PRESET, prompt: `${MOVIE_STILL_PRESET.prompt} ${MOVIE_STILL_PRESET.lighting}` },
   { ...AFTER_RAIN_PRESET, prompt: `${AFTER_RAIN_PRESET.prompt} ${AFTER_RAIN_PRESET.lighting}` },
   { ...AUTUMN_PRESET, prompt: `${AUTUMN_PRESET.prompt} ${AUTUMN_PRESET.lighting}` },
 ];
 const REALISTIC_STREET_STYLE_IDS = [
-  'photorealistic', 'photomontage', 'atmospheric', AFTER_RAIN_PRESET.id, AUTUMN_PRESET.id, 'winter',
+  'photorealistic', 'photomontage', 'atmospheric', MOVIE_STILL_PRESET.id, AFTER_RAIN_PRESET.id, AUTUMN_PRESET.id, 'winter',
 ];
 
 // UI grouping for the style picker — Plan group omitted because street view
