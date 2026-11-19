@@ -1,5 +1,19 @@
 import type {createDirect3DAttemptClient} from '@/services/direct3DAttempts';
+import { SUNBURST_IMAGE_MODEL } from '@/config/imageModels';
+import { rendersApi } from '@/services/api';
 import type {PhotographicGuide,PhotographicGuideRequest} from './PhotographicVideoGuide';
+
+/** Send an explicit upgrade for new guides only when OpenAI lists it. */
+export async function withPhotographicGuideModel(request: PhotographicGuideRequest): Promise<PhotographicGuideRequest> {
+  if (request.model) return request;
+  try {
+    const availability = await rendersApi.imageModels();
+    if (availability?.models?.some(row => row.id === SUNBURST_IMAGE_MODEL && row.available === true)) {
+      return { ...request, model: SUNBURST_IMAGE_MODEL };
+    }
+  } catch { /* Existing clients and model-list outages can use the backend default. */ }
+  return request;
+}
 
 // Private evidence is canonical JSON; key insertion order is not source identity.
 const canonicalJson = (value:unknown) => JSON.stringify(value, (_key, item:unknown) =>
@@ -36,5 +50,5 @@ export async function preparePhotographicVideo(client:ReturnType<typeof createDi
       && saved.response.scene_revision_sha256 === sceneSha
       && canonicalJson(saved.source_request) === canonicalJson(request.source_request)) return saved.response;
   }
-  return client.generate<Omit<PhotographicGuide,'signature'>>(request);
+  return client.generate<Omit<PhotographicGuide,'signature'>>(await withPhotographicGuideModel(request));
 }

@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { direct3DAttempts, getApiErrorMessage } from '@/services/api';
 import type { ImageAttempt } from '@/services/direct3DAttempts';
+import { imageModelLabel } from '@/config/imageModels';
+import { withPhotographicGuideModel } from './videoPhotographicWorkflow';
 
 export interface PhotographicGuide {
   purpose: 'video_appearance'; attempt_id: string; image_base64: string;
   source_video_sha256: string; scene_revision_sha256: string; output_fingerprint: string;
-  model: 'gpt-image-2.5-sunburst'; tokens_spent: number; signature: string;
+  model: 'gpt-image-2.5-sunburst' | 'gpt-image-2.6-sunburst'; tokens_spent: number; signature: string;
 }
 export interface PhotographicGuideRequest {
   purpose: 'video_appearance'; project_id: string; beauty_image_base64: string;
+  model?: PhotographicGuide['model'];
   source_video_sha256: string; prompt?: string; details_revision?: number;
   community_3d_claims?: unknown[]; residual_landscape_claim?: unknown;
   authored_surface_claims?: Array<{ zone_id: string; source_hash: string }>;
@@ -61,7 +64,7 @@ export function PhotographicVideoGuide({ projectId, signature, guide, prepare, o
     inFlight.current = true; setBusy(true); onBusyChange(true); setError(null); setCandidate(null); setRecoveredSource(null);
     if (guide) onChange(null);
     try {
-      const request = await prepare();
+      const request = await withPhotographicGuideModel(await prepare());
       if (latestSignature.current !== startedSignature) throw new Error('The scene changed before submission. No guide was requested.');
       const result = await direct3DAttempts.generate<Omit<PhotographicGuide, 'signature'>>(request);
       acceptResult(result, startedSignature);
@@ -87,7 +90,7 @@ export function PhotographicVideoGuide({ projectId, signature, guide, prepare, o
   };
   const preview = candidate?.signature === signature ? candidate : guide?.signature === signature ? guide : null;
   return <section className="mb-3 rounded-xl border-2 border-[#151515] bg-[#f7f2e8] p-3 text-[#151515]" aria-label="Photographic video finish">
-    <p className="text-xs font-black">Photographic finish · Sunburst 2.5 → Omni 1.1</p>
+    <p className="text-xs font-black">Photographic finish · {preview ? imageModelLabel(preview.model) : 'Sunburst'} → Omni 1.1</p>
     <p className="mt-1 text-[11px] leading-relaxed">{automatic ? 'Generate video prepares or reuses one matching photographic still for materials and daylight. The exact 3D route video controls camera, geometry and timing.' : 'Create and review one photographic still from your route, then use it to guide the film’s materials and daylight. The original 3D video controls layout and motion.'}</p>
     {!automatic && <button type="button" disabled={busy || disabled} onClick={() => void create()}
       className="mt-3 min-h-10 w-full rounded-full border-2 border-[#151515] bg-[#c9ff3d] px-3 text-xs font-bold disabled:opacity-50">{busy ? 'Preparing saved guide…' : 'Create photographic guide · 26 tokens'}</button>

@@ -26,33 +26,36 @@ import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d'
 import { authoredSurfaceRevision, getAuthoredSurfaceCaptureClaims, type AuthoredSurfaceClaim } from '@/features/groundSurfaces/groundSurfaceCapture';
 import { groundSurfaceFor } from '@/features/groundSurfaces/groundSurfaces';
 import { getCurrentResidualLandscapeClaim } from './globe/residualLandscape';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
+import { imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
 import { ImageModelSelect } from './ImageModelSelect';
 import { useImageModelChoice } from './useImageModelChoice';
 import { runImageModelBatch } from './runImageModelBatch';
 import { RenderStyleGuideButton } from './RenderStyleGuideButton';
+import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from './seasonalRenderPresets';
 
 const COMPASS_LABELS: Record<number, string> = {
   0: 'N', 45: 'NE', 90: 'E', 135: 'SE',
   180: 'S', 225: 'SW', 270: 'W', 315: 'NW',
 };
 
-const STREET_VIEW_STYLES: ReadonlyArray<{ readonly id: string; readonly label: string; readonly prompt: string }> = streetViewStylePresets;
+const STREET_VIEW_STYLES = [
+  ...streetViewStylePresets,
+  { ...AFTER_RAIN_PRESET, prompt: `${AFTER_RAIN_PRESET.prompt} ${AFTER_RAIN_PRESET.lighting}` },
+  { ...AUTUMN_PRESET, prompt: `${AUTUMN_PRESET.prompt} ${AUTUMN_PRESET.lighting}` },
+];
+const REALISTIC_STREET_STYLE_IDS = [
+  'photorealistic', 'photomontage', 'atmospheric', AFTER_RAIN_PRESET.id, AUTUMN_PRESET.id, 'winter',
+];
 
 // UI grouping for the style picker — Plan group omitted because street view
 // excludes orthographic styles by design.
 const STREET_VIEW_STYLE_GROUPS = [
-  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter'] },
+  { label: 'Realistic', ids: REALISTIC_STREET_STYLE_IDS },
   { label: 'Accurate', ids: ['survey', 'documentary', 'human-scale'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
   { label: 'Stylized', ids: ['clay-model', 'collage', 'pixel-art'] },
 ] as const;
 
-const STREET_VIEW_RENDER_MODELS = [
-  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL), imageQuality: 'auto' as const },
-  { model: 'gpt-image-2.5-flare', label: imageModelLabel('gpt-image-2.5-flare'), imageQuality: 'auto' as const },
-  { model: 'gpt-image-2.5-sunburst', label: imageModelLabel('gpt-image-2.5-sunburst'), imageQuality: 'auto' as const },
-];
 const STREET_VIEW_RENDER_LABEL = 'Gemini + GPT Image';
 
 // Street style ids that don't exist verbatim in the Direct 3D catalogue.
@@ -130,7 +133,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
   const [customPrompt, setCustomPrompt] = useState('');
   // A street view starts with one image call; comparisons are an explicit choice.
   const { imageModel, setImageModel, availability: imageModelAvailability } = useImageModelChoice({ compareByDefault: false, projectId });
-  const selectedEngineUnavailable = imageModelsForChoice(imageModel).some(model => imageModelUnavailable(imageModelAvailability, model));
+  const selectedEngineUnavailable = imageModelsForChoice(imageModel, imageModelAvailability).some(model => imageModelUnavailable(imageModelAvailability, model));
   const [imageProgress, setImageProgress] = useState('');
   const [lightboxOpen, setLightboxOpen] = useState(false);
   // Real Street View / Places / satellite grounding, anchored at the pegman.
@@ -232,8 +235,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
       setSelectedPreviewIndex(null);
 
       const styleObj = STREET_VIEW_STYLES.find(s => s.id === selectedStyle);
-      const PHOTO_VARIANT_STYLES = ['photorealistic', 'photomontage', 'atmospheric', 'winter'];
-      const styleModifier = styleObj && !PHOTO_VARIANT_STYLES.includes(styleObj.id)
+      const styleModifier = styleObj && !REALISTIC_STREET_STYLE_IDS.includes(styleObj.id)
         ? `RENDER STYLE: ${styleObj.prompt}`
         : styleObj && styleObj.id !== 'photorealistic'
         ? `PHOTO STYLE: ${styleObj.prompt}`
@@ -355,7 +357,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
             if (direct.outcome === 'review_required') {
               toast('Render saved. The 3D view is available for comparison.', { icon: '✓' });
             }
-          }, (model, index, total) => setImageProgress(`${index + 1}/${total} · ${imageModelLabel(model)}`));
+          }, (model, index, total) => setImageProgress(`${index + 1}/${total} · ${imageModelLabel(model)}`), imageModelAvailability);
         } catch (err) {
           const message = getApiErrorMessage(err, 'Direct 3D street render failed.');
           const errorResult: StreetViewResult = {
@@ -380,10 +382,12 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
       // passes are unavailable. Select this before submission, never as a paid
       // provider retry, and honour the user's engine choice and call count.
       const providers = directStreetMode
-        ? imageModelsForChoice(imageModel).map(model => ({
+        ? imageModelsForChoice(imageModel, imageModelAvailability).map(model => ({
           model, label: `${imageModelLabel(model)} · Image-guided`, imageQuality: 'auto' as const,
         }))
-        : STREET_VIEW_RENDER_MODELS;
+        : imageModelsForChoice('compare-all-three', imageModelAvailability)
+          .filter(model => !imageModelUnavailable(imageModelAvailability, model))
+          .map(model => ({ model, label: imageModelLabel(model), imageQuality: 'auto' as const }));
       const results: StreetViewResult[] = await Promise.all(providers.map(async (provider) => {
         try {
           const providerResult = await generateStreetView(
@@ -454,7 +458,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, needsCommunity3D, detailsRevision, selectedStyle, imageModel, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, needsCommunity3D, detailsRevision, selectedStyle, imageModel, imageModelAvailability, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
 
   const handleDownload = useCallback(async () => {
     if (!result?.imageUrl || result.error) return;

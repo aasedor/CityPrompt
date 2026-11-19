@@ -8,6 +8,8 @@ export const RENDER_STYLE_DIRECTIONS: Readonly<Record<string, StyleDirection>> =
   photomontage: {summary:'A photographic finish that brings the proposal and its real surroundings into one coherent image.', goodFor:'Discussing a proposal in its neighbourhood context.'},
   development: {summary:'Clean materials, crisp entrances and bright daylight give the existing design a newly finished appearance.', goodFor:'A polished development presentation.'},
   atmospheric: {summary:'Warm late-day light, soft haze and layered shadows give the scene a quieter, cinematic mood.', goodFor:'Explaining the atmosphere of a place.'},
+  'after-rain': {summary:'Soft daylight, damp pavement and small puddles bring out the texture of paving and brick.', goodFor:'Showing how streets and public spaces look just after a shower.'},
+  autumn: {summary:'Low sunlight, copper and gold foliage, and soft highlights on natural materials.', goodFor:'Showing how planting and streets feel in early autumn.'},
   winter: {summary:'Cold daylight, snow and seasonal planting show the existing place in winter.', goodFor:'Considering how a community feels in a colder season.'},
   night: {summary:'Blue-hour sky and a restrained glow from existing windows and lights.', goodFor:'An evening character study.'},
   watercolour: {summary:'Transparent washes, warm paper, pigment texture and selective brush edges. Material colours become a restrained painted palette.', goodFor:'An inviting concept presentation with a visible hand-painted character.'},

@@ -30,6 +30,8 @@ Direct3DStyle = Literal[
     "photomontage",
     "development",
     "atmospheric",
+    "after-rain",
+    "autumn",
     "winter",
     "night",
     "watercolour",

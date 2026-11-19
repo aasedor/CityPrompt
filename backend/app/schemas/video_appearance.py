@@ -4,6 +4,8 @@ import uuid
 from typing import Any
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field
+
+from app.core.image_models import LEGACY_SUNBURST_IMAGE_MODEL
 from app.schemas.direct_3d_render import (
     Direct3DCommunityZoneClaim,
     Direct3DResidualLandscapeClaim,
@@ -19,7 +21,9 @@ class VideoAppearanceRequest(BaseModel):
     source_video_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
     source_request: dict[str, Any] | None = None
     prompt: str = Field(default="", max_length=600)
-    model: Literal["gpt-image-2.5-sunburst"] = "gpt-image-2.5-sunburst"
+    # Keep omitted-model requests on their existing idempotent payload.
+    # Current clients explicitly choose the Sunburst version the account lists.
+    model: Literal["gpt-image-2.5-sunburst", "gpt-image-2.6-sunburst"] = LEGACY_SUNBURST_IMAGE_MODEL
     style: Literal["video-appearance"] = "video-appearance"
     fidelity_policy: Literal["expressive"] = "expressive"
     details_revision: int | None = Field(default=None, ge=0, strict=True)

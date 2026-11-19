@@ -17,7 +17,8 @@ def raster(fmt="PNG"):
 
 
 @pytest.mark.asyncio
-async def test_invalid_optional_reference_never_reaches_provider(monkeypatch):
+@pytest.mark.parametrize("model", ["gpt-image-2.6-flare", "gpt-image-2.6-sunburst"])
+async def test_invalid_optional_reference_never_reaches_provider(monkeypatch, model):
     captured = {}
 
     class Client:
@@ -48,13 +49,14 @@ async def test_invalid_optional_reference_never_reaches_provider(monkeypatch):
     await render._call_openai_image_edit(
         req,
         SimpleNamespace(openai_api_key="test"),
-        "gpt-image-2.5-sunburst",
+        model,
         include_mask=False,
         site_pack={
             "images": [("bad", "image/jpeg", pointer), ("good", "image/png", raster("JPEG"))],
             "prompt_block": "Context",
         },
     )
+    assert captured["data"]["model"] == model
     files = captured["files"]
     assert len(files) == 3
     for _, (name, data, mime) in files:

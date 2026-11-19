@@ -59,6 +59,21 @@ async def test_new_model_account_prefers_flare(monkeypatch):
 
 
 @pytest.mark.asyncio
+async def test_26_access_prefers_new_flare_and_keeps_both_legacy_models(monkeypatch):
+    ids = [
+        "gpt-image-2",
+        "gpt-image-2.6-flare",
+        "gpt-image-2.6-sunburst",
+        "gpt-image-2.5-flare",
+        "gpt-image-2.5-sunburst",
+    ]
+    mock_models(monkeypatch, ids)
+    result = await availability.get_image_model_availability("test")
+    assert result["default_model"] == "gpt-image-2.6-flare"
+    assert {entry["id"] for entry in result["models"] if entry["available"]} == set(ids)
+
+
+@pytest.mark.asyncio
 async def test_listing_failure_does_not_claim_generation_is_unavailable(monkeypatch):
     mock_models(monkeypatch, [], status=403)
     result = await availability.get_image_model_availability("test")
@@ -97,7 +112,14 @@ async def test_google_model_is_discovered_without_an_openai_key(monkeypatch):
 
 
 @pytest.mark.parametrize(
-    "model,multiplier", [("gpt-image-2", 1), ("gpt-image-2.5-flare", 2), ("gpt-image-2.5-sunburst", 2)]
+    "model,multiplier",
+    [
+        ("gpt-image-2", 1),
+        ("gpt-image-2.5-flare", 2),
+        ("gpt-image-2.5-sunburst", 2),
+        ("gpt-image-2.6-flare", 2),
+        ("gpt-image-2.6-sunburst", 2),
+    ],
 )
 def test_selected_engine_has_explicit_routing_and_credit_reservation(model, multiplier):
     assert model in render._ALLOWED_MODELS

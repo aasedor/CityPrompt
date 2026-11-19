@@ -7,7 +7,7 @@ import { authoredSurfaceRevision, getAuthoredSurfaceCaptureClaims } from '@/feat
 import { useRenderDraft } from './useRenderDraft';
 import { ImagePresentationControls } from './ImagePresentationControls';
 import { RecoverImageAttempts } from './RecoverImageAttempts';
-import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
+import { imageModelLabel, imageModelsForChoice, imageModelUnavailable } from '@/config/imageModels';
 import { useAuthStore } from '@/store';
 import { ImageModelSelect } from '../ImageModelSelect';
 import { useImageModelChoice } from '../useImageModelChoice';
@@ -79,15 +79,6 @@ const SHOW_LEGACY_COMMUNITY_3D_TOOLS =
   import.meta.env.VITE_ENABLE_RENDER_PANEL_COMMUNITY_3D_TOOLS === 'true';
 const SHOW_LEGACY_CLASSIC_RENDER =
   import.meta.env.VITE_ENABLE_CLASSIC_POLYGON_RENDER === 'true';
-
-// Both preview slots run the default GPT Image engine (user verdict 2026-07-07: Gemini globe
-// renders consistently weaker; GPT holds the drawn structure best). Two
-// samples of one engine give a real A/B choice; labels keep them apart.
-const COMPARE_RENDER_MODELS = [
-  { model: DEFAULT_OPENAI_IMAGE_MODEL, label: imageModelLabel(DEFAULT_OPENAI_IMAGE_MODEL) },
-  { model: 'gpt-image-2.5-flare', label: imageModelLabel('gpt-image-2.5-flare') },
-  { model: 'gpt-image-2.5-sunburst', label: imageModelLabel('gpt-image-2.5-sunburst') },
-];
 
 const DEFAULT_OPENAI_IMAGE_QUALITY: OpenAIImageQuality = 'auto';
 const OPENAI_IMAGE_QUALITY_LABELS: Record<OpenAIImageQuality, string> = {
@@ -278,9 +269,12 @@ export function GlobeAIRenderPanel({
     compareByDefault: false, projectId,
     accountRevision: authUser ? `${authUser.id}:${authUser.render_credits}:${authUser.role}` : 'signed-out',
   });
-  const imageGenerationUnavailable = imageModelsForChoice(directImageModel).some(model => imageModelUnavailable(imageModelAvailability, model)
+  const comparisonModels = useMemo(() => imageModelsForChoice('compare-all-three', imageModelAvailability)
+    .filter(model => !imageModelUnavailable(imageModelAvailability, model))
+    .map(model => ({ model, label: imageModelLabel(model) })), [imageModelAvailability]);
+  const paidImageModels = imageModelsForChoice(directImageModel, imageModelAvailability);
+  const imageGenerationUnavailable = paidImageModels.some(model => imageModelUnavailable(imageModelAvailability, model)
     || (imageModelAvailability !== null && !imageModelAvailability.models.some(entry => entry.id === model && entry.available !== false)));
-  const paidImageModels = imageModelsForChoice(directImageModel);
   const minimumImageCosts = paidImageModels.map(model => imageModelAvailability?.models.find(entry => entry.id === model)?.minimum_credit_cost);
   const minimumImageCredits = minimumImageCosts.every(cost => typeof cost === 'number' && Number.isFinite(cost) && cost >= 0)
     ? minimumImageCosts.reduce<number>((total, cost) => total + cost!, 0) : null;
@@ -335,9 +329,9 @@ export function GlobeAIRenderPanel({
   const [isQueuing3D, setIsQueuing3D] = useState(false);
   const [generate3DStatus, setGenerate3DStatus] = useState<string | null>(null);
   const renderCallCount = renderPipeline === 'direct3d'
-    ? imageModelsForChoice(directImageModel).length
+    ? paidImageModels.length
     : estimateCurrentViewRenderCalls(
-        COMPARE_RENDER_MODELS.length,
+        comparisonModels.length,
         highFidelity && HIGH_FIDELITY_STYLES.has(selectedStyle),
       );
 
@@ -818,11 +812,11 @@ export function GlobeAIRenderPanel({
       // Current-view rendering is deliberately bounded to one A/B single-shot
       // batch. Per-zone generation must never be selected automatically: a
       // district plan could otherwise fan out into hundreds of paid calls.
-      const compareRenderVariants = COMPARE_RENDER_MODELS.map((provider) => ({
+      const compareRenderVariants = comparisonModels.map((provider) => ({
         ...provider,
         imageQuality: getQualityForModel(provider.model, DEFAULT_OPENAI_IMAGE_QUALITY),
       }));
-      // Fan out the three model previews with different server seeds. The
+      // Fan out the available model previews with different server seeds. The
       // first success is auto-selected; the user can compare the other.
       const results = await renderPreviews(canvas, camera, editableZones, terrainHeight, {
         style: selectedStyle,
@@ -863,7 +857,7 @@ export function GlobeAIRenderPanel({
       setIsRendering(false);
       if (hidModels) setBuildingModelsVisible!(true);
     }
-  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, projectId, onRenderComplete, onBeforeRender, customPrompt, highFidelity, autoSaveGlobeRenders, onClose, renderWithModels, modeledBuildingIds, setBuildingModelsVisible, planGeometryStale, stalePlanMessage]);
+  }, [canvas, camera, siteZones, terrainHeight, selectedStyle, isRendering, renderPreviews, projectId, onRenderComplete, onBeforeRender, customPrompt, highFidelity, autoSaveGlobeRenders, onClose, renderWithModels, modeledBuildingIds, setBuildingModelsVisible, planGeometryStale, stalePlanMessage, comparisonModels]);
 
   const handleCheckDirectCapture = useCallback(async () => {
     if (!captureDirect3D || !direct3DAvailable || isCheckingDirectCapture || isRendering) return;
@@ -963,7 +957,7 @@ export function GlobeAIRenderPanel({
         }
       }, (model, index, total) => {
         setRenderProgress({ step: index + 1, total, zoneName: imageModelLabel(model), phase: 'building' });
-      });
+      }, imageModelAvailability);
     } catch (err: unknown) {
       setError(apiErrorMessage(err, 'Direct 3D render failed. Please try again.'));
     } finally {
@@ -977,6 +971,7 @@ export function GlobeAIRenderPanel({
     addPeople,
     addVehicles,
     imageGenerationUnavailable,
+    imageModelAvailability,
     imageCreditBlockedReason,
     autoSaveGlobeRenders,
     detailsRevision,

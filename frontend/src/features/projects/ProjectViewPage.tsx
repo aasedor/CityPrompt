@@ -221,7 +221,7 @@ export function ProjectViewPage() {
       maxLongEdge?: number;
     }) => Promise<Direct3DCaptureBundle>;
     withStreetCaptureScene?: <T>(fn: (kind: 'model3d' | 'context3d') => Promise<T>) => Promise<T>;
-    captureStreetDirect3D?: (options?: Direct3DCaptureOptions) => Promise<Direct3DCaptureBundle | null>;
+    captureStreetDirect3D?: (options?: Direct3DCaptureOptions, captureCamera?: import('three').Camera) => Promise<Direct3DCaptureBundle | null>;
     captureVideoRouteControls?: (request: VideoRouteCaptureRequest) => Promise<VideoRouteCaptureResult>;
   } | null>(null);
   // Buildings whose generated GLB is currently placed on the globe — the
@@ -241,6 +241,7 @@ export function ProjectViewPage() {
     const pegman = useViewerStore.getState().streetViewPegman;
     if (!pegman?.position) return null;
     const [lng, lat] = pegman.position;
+    const terrainHeight = authoredCameraGround(videoCaptureSceneRef.current.zones, lng, lat, pegman.terrainHeight ?? globeRefs.terrainHeight);
     const runCapture = async (kind: 'model3d' | 'context3d'): Promise<StreetCaptureResult | null> => {
       // Strip a data: URL prefix — the render API expects raw base64.
       const rawB64 = (value: string) => (value.includes(',') ? value.split(',')[1] : value);
@@ -251,14 +252,18 @@ export function ProjectViewPage() {
       const captureState: { bundle: Direct3DCaptureBundle | null } = { bundle: null };
       const captureFrame = kind === 'model3d' && globeRefs.captureStreetDirect3D
         ? async () => {
-          captureState.bundle = await globeRefs.captureStreetDirect3D!();
+          // Map controls can restore the live camera while street tiles load.
+          // Capture from an independent camera at the pegman's exact pose.
+          const captureCamera = globeRefs.camera!.clone();
+          flyToStreetLevel(lat, lng, pegman.angle, terrainHeight, captureCamera);
+          captureState.bundle = await globeRefs.captureStreetDirect3D!({}, captureCamera);
           return captureState.bundle ? rawB64(captureState.bundle.beautyImageBase64) : null;
         }
         : undefined;
       const imageBase64 = await captureStreetView(
         globeRefs.canvas, globeRefs.camera,
         lat, lng, pegman.angle,
-        authoredCameraGround(videoCaptureSceneRef.current.zones, lng, lat, pegman.terrainHeight ?? globeRefs.terrainHeight),
+        terrainHeight,
         flyToStreetLevel, restoreAerialView, saveCameraState,
         globeRefs.waitForTilesSettled,
         captureFrame,

@@ -1,12 +1,19 @@
 """Supported paid image engines and application credit policy.
 
-Keep explicit legacy IDs for saved workflows. Image 2.5 uses the same Images
+Keep explicit legacy IDs for saved workflows. Image 2.6 uses the same Images
 edit API; changing engines must not change the geometry-control contract.
 """
 
-from typing import Literal
+from typing import Final, Literal
+
+FLARE_IMAGE_MODEL = "gpt-image-2.6-flare"
+SUNBURST_IMAGE_MODEL = "gpt-image-2.6-sunburst"
+LEGACY_FLARE_IMAGE_MODEL = "gpt-image-2.5-flare"
+LEGACY_SUNBURST_IMAGE_MODEL: Final = "gpt-image-2.5-sunburst"
 
 OpenAIImageModel = Literal[
+    "gpt-image-2.6-flare",
+    "gpt-image-2.6-sunburst",
     "gpt-image-2.5-flare",
     "gpt-image-2.5-sunburst",
     "gpt-image-2",
@@ -17,9 +24,13 @@ OpenAIImageModel = Literal[
 DEFAULT_OPENAI_IMAGE_MODEL: OpenAIImageModel = "gpt-image-2"
 NANO_BANANA_MODEL = "gemini-nano-banana-2.1"
 PaidImageModel = Literal[OpenAIImageModel, "gemini-nano-banana-2.1"]
+# Keep the same reservation for 2.5 and 2.6. Both generations have the same
+# published per-token rates. Token consumption can still vary with the model.
 OPENAI_IMAGE_CREDIT_MULTIPLIERS: dict[str, int] = {
-    "gpt-image-2.5-flare": 2,
-    "gpt-image-2.5-sunburst": 2,
+    FLARE_IMAGE_MODEL: 2,
+    SUNBURST_IMAGE_MODEL: 2,
+    LEGACY_FLARE_IMAGE_MODEL: 2,
+    LEGACY_SUNBURST_IMAGE_MODEL: 2,
     "gpt-image-2": 1,
     "gpt-image-2-2026-04-21": 1,
 }
@@ -28,10 +39,6 @@ PAID_IMAGE_CREDIT_MULTIPLIERS = {
     **OPENAI_IMAGE_CREDIT_MULTIPLIERS,
     NANO_BANANA_MODEL: 1,
 }
-# Provisional application reservations, not provider invoice estimates. At
-# launch both 2.5 engines have twice Image 2's per-token image/text rates.
-# Output token counts can differ; keep quality capped at the existing high
-# setting and review these envelopes against actual usage after live trials.
 
 
 def image_provider_key(settings, model: str) -> str:

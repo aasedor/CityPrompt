@@ -111,11 +111,28 @@ def test_context_colours_blend_only_inside_the_six_metre_edge_band():
 
 
 @pytest.mark.asyncio
-async def test_landscape_default_cost_matches_gpt_25_renderer():
+@pytest.mark.parametrize(
+    "default,expected",
+    [
+        ("gpt-image-2.6-flare", "gpt-image-2.6-flare"),
+        ("gpt-image-2.5-flare", "gpt-image-2.5-flare"),
+        ("gpt-image-2", "gpt-image-2.5-flare"),
+    ],
+)
+async def test_landscape_quotes_the_available_flare_version(default, expected, monkeypatch):
     from app.api.v1.render import _MODEL_TOKEN_COST
 
+    settings = SimpleNamespace(
+        classroom_release=False, direct_3d_images_enabled=True, openai_api_key="test", gemini_api_key=""
+    )
+    monkeypatch.setattr(endpoint, "get_settings", lambda: settings)
+
+    async def availability(*_):
+        return {"default_model": default}
+
+    monkeypatch.setattr(endpoint, "get_image_model_availability", availability)
     options = await endpoint.landscape_options(SimpleNamespace())
-    assert options["model"] == "gpt-image-2.5-flare"
+    assert options["model"] == expected
     assert options["tokens"] == _MODEL_TOKEN_COST[options["model"]] == 26
 
 

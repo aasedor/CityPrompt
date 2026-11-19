@@ -16,10 +16,12 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.attributes import flag_modified
-from app.core.config import get_settings
+from app.core.config import Settings, get_settings
 from app.core.database import get_db
+from app.core.image_models import FLARE_IMAGE_MODEL, LEGACY_FLARE_IMAGE_MODEL, OpenAIImageModel
 from app.core.security import require_auth
 from app.models.models import SiteZone, User
+from app.services.image_model_availability import get_image_model_availability
 from app.api.v1.lego_assembly import _get_zone_with_access
 from app.api.v1.site_zones import _zone_to_response
 from app.services.residual_landscape import (
@@ -39,7 +41,11 @@ from app.services.site_landscape import (
 )
 
 router = APIRouter()
-SITE_LANDSCAPE_MODEL = "gpt-image-2.5-flare"
+
+
+async def _landscape_model(settings: Settings) -> OpenAIImageModel:
+    models = await get_image_model_availability(settings.openai_api_key, settings.gemini_api_key)
+    return FLARE_IMAGE_MODEL if models["default_model"] == FLARE_IMAGE_MODEL else LEGACY_FLARE_IMAGE_MODEL
 
 
 class LandscapeEdgeSample(BaseModel):
@@ -118,10 +124,13 @@ async def scene(db, boundary):
 async def landscape_options(user: User = Depends(require_auth)):
     from app.api.v1.render import _MODEL_TOKEN_COST
 
+    settings = get_settings()
+    enabled = not settings.classroom_release and settings.direct_3d_images_enabled
+    model = await _landscape_model(settings) if enabled else LEGACY_FLARE_IMAGE_MODEL
     return {
-        "tokens": _MODEL_TOKEN_COST[SITE_LANDSCAPE_MODEL],
-        "model": SITE_LANDSCAPE_MODEL,
-        "custom_enabled": not get_settings().classroom_release and get_settings().direct_3d_images_enabled,
+        "tokens": _MODEL_TOKEN_COST[model],
+        "model": model,
+        "custom_enabled": enabled,
     }
 
 
@@ -196,6 +205,8 @@ async def preview_landscape(
                 422,
                 "Capture the neighbouring tile colours to blend the landscape edges.",
             )
+        settings = get_settings()
+        model = await _landscape_model(settings)
         generated = await generate_render(
             RenderRequest(
                 project_id=boundary.project_id,
@@ -207,7 +218,7 @@ async def preview_landscape(
                 aspect_ratio="1:1",
                 image_size="1K",
                 post_process=False,
-                model=SITE_LANDSCAPE_MODEL,
+                model=model,
                 image_quality="high",
             ),
             user,
@@ -215,7 +226,6 @@ async def preview_landscape(
         )
         art = clip_custom_art(base64.b64decode(generated.image_base64), mask, feather=False)
         art = blend_site_edges(art, mask, geometry, [s.model_dump() for s in body.context_edge_samples])
-        settings = get_settings()
         key = f"projects/{boundary.project_id}/landscape/{uuid.uuid4()}.png"
         s3 = boto3.client(
             "s3",
@@ -233,7 +243,7 @@ async def preview_landscape(
         recipe["surface_image_url"] = f"/api/v1/files/{key}"
         recipe["surface_prompt"] = body.prompt.strip()
         recipe["surface_mode"] = "site_base"
-        recipe["surface_model"] = SITE_LANDSCAPE_MODEL
+        recipe["surface_model"] = model
         recipe["surface_edge_blend"] = {
             "width_m": 6,
             "sample_count": len(body.context_edge_samples),

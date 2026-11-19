@@ -31,8 +31,8 @@ export function MapCleanupControls({ boxes, draft, picking, onDraft, onPick, onS
       onChange={event => onDraft({ ...draft!, [key]: Number(event.target.value) })}
       className="mt-1 min-h-11 w-full rounded-lg border border-slate-500 bg-white px-2" /></label>
   );
-  return <section aria-label="Map cleanup pilot" className="absolute right-4 top-28 z-40 max-h-[75dvh] w-80 overflow-y-auto rounded-2xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-slate-950 shadow-xl">
-    <div className="flex items-center justify-between gap-2"><h2 className="font-bold">Map cleanup · local pilot</h2><button className={button} onClick={onClose} disabled={saving} aria-label="Close map cleanup">×</button></div>
+  return <section aria-label="Map cleanup" className="absolute right-4 top-28 z-40 max-h-[75dvh] w-80 overflow-y-auto rounded-2xl border-2 border-slate-900 bg-[#fff9ec] p-4 text-slate-950 shadow-xl">
+    <div className="flex items-center justify-between gap-2"><h2 className="font-bold">Map cleanup</h2><button className={button} onClick={onClose} disabled={saving} aria-label="Close map cleanup">×</button></div>
     <p className="my-3 text-xs">Hide a small unwanted map fragment. Keep the box above the road and away from buildings you want to retain. Your placed models stay visible.</p>
     <button className={`${button} w-full bg-lime-200`} disabled={saving || (!picking && boxes.length >= MAX_MAP_CLEANUP_BOXES)} onClick={() => onPick(!picking)}>{picking ? 'Cancel pick' : 'Pick map fragment'}</button>
     {picking && <p role="status" className="mt-2 text-sm font-semibold">Click the floating fragment in the map. Escape cancels.</p>}

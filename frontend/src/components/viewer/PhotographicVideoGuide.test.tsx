@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PhotographicVideoGuide } from './PhotographicVideoGuide';
 const api = vi.hoisted(() => ({ generate: vi.fn(), list: vi.fn(), recover: vi.fn() }));
-vi.mock('@/services/api', () => ({ direct3DAttempts: api, getApiErrorMessage: (_e: unknown, fallback: string) => fallback }));
+vi.mock('@/services/api', () => ({ direct3DAttempts: api, rendersApi: { imageModels: vi.fn().mockResolvedValue({ models: [] }) }, getApiErrorMessage: (_e: unknown, fallback: string) => fallback }));
 const result = { purpose: 'video_appearance' as const, attempt_id: 'image-attempt',
   image_base64: 'cGhvdG8=', source_video_sha256: 'a'.repeat(64), scene_revision_sha256: 'b'.repeat(64),
   output_fingerprint: 'c'.repeat(64), model: 'gpt-image-2.5-sunburst' as const, tokens_spent: 26 };

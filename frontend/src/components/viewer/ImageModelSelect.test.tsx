@@ -9,6 +9,18 @@ it('offers only supported cloud engines, keeping retired local engines out of ne
   expect(screen.getByRole('option',{name:/^Sunburst/})).toBeInTheDocument();
 });
 
+it('keeps the previous version when model access is unknown', () => {
+  render(<ImageModelSelect value="gpt-image-2.5-flare" onChange={vi.fn()} availability={{
+    default_model: 'gpt-image-2',
+    models: [
+      { id: 'gpt-image-2.6-flare', available: null },
+      { id: 'gpt-image-2.5-flare', available: null },
+    ],
+  }} />);
+  expect(screen.getByRole('option', { name: /Flare 2.5/ })).toBeEnabled();
+  expect(screen.queryByRole('option', { name: /Flare 2.6/ })).not.toBeInTheDocument();
+});
+
 it('offers Nano Banana independently of OpenAI and emits its exact model ID',()=>{
   const change=vi.fn();
   render(<ImageModelSelect value="gpt-image-2" onChange={change}

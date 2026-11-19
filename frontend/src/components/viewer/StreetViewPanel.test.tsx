@@ -112,7 +112,10 @@ describe('student street render', () => {
     }
   });
   it.each(['gpt-image-2.5-sunburst','gemini-nano-banana-2.1'] as const)('uses the captured image and selected %s engine once when geometry passes are unavailable', async model => {
-    mocks.imageModels.mockResolvedValue({ default_model: 'gpt-image-2.5-sunburst', models: [{ id: model, available: true }] });
+    mocks.imageModels.mockResolvedValue({
+      default_model: 'gpt-image-2.5-sunburst',
+      models: [...new Set(['gpt-image-2.5-sunburst', model])].map(id => ({ id, available: true })),
+    });
     mocks.classic.mockResolvedValue({ imageUrl: '/street-result.png', prompt: 'image-guided' });
     mocks.save.mockResolvedValue(null);
     const capture = vi.fn().mockResolvedValue({ kind: 'model3d', imageBase64: 'actual-scene-pixels', aspectRatio: '16:9' });
@@ -193,6 +196,27 @@ describe('student street render', () => {
     expect(mocks.direct.mock.calls[0][1].style).toBe('watercolour');
   });
 
+  it.each([['After Rain', 'after-rain'], ['Autumn', 'autumn']])('sends the selected %s style to Direct 3D', async (label, id) => {
+    const capture = vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} });
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} />);
+    fireEvent.click(screen.getByRole('button', { name: label }));
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    await waitFor(() => expect(mocks.direct).toHaveBeenCalledTimes(1));
+    expect(mocks.direct.mock.calls[0][1].style).toBe(id);
+  });
+
+  it.each([['After Rain', 'damp paving'], ['Autumn', 'existing deciduous']])('passes %s as a photographic style to Classic street rendering', async (label, detail) => {
+    mocks.classic.mockResolvedValue({ imageUrl: 'data:image/png;base64,street', prompt: 'street' });
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" />);
+    fireEvent.click(screen.getByRole('button', { name: label }));
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    await waitFor(() => expect(mocks.classic).toHaveBeenCalledOnce());
+    const options = mocks.classic.mock.calls[0][3];
+    expect(options.model).toBe('gpt-image-2');
+    expect(options.styleModifier).toMatch(/^PHOTO STYLE:/);
+    expect(options.styleModifier).toContain(detail);
+  });
+
   it('forwards explicitly selected street activity to the Direct request', async () => {
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} })} />);
     fireEvent.click(screen.getByRole('button', { name: 'Add People' }));
@@ -214,12 +238,19 @@ describe('student street render', () => {
     expect(mocks.direct.mock.calls[0][1].customPrompt).toContain('Keep all buildings, facilities, paths and streets in their captured positions.');
   });
 
-  it('sends the custom prompt through the classic street renderer', async () => {
+  it('sends the custom prompt to the available classic street engines', async () => {
+    const models = ['gpt-image-2', 'gpt-image-2.6-flare', 'gpt-image-2.5-sunburst'];
+    mocks.imageModels.mockResolvedValue({
+      default_model: 'gpt-image-2.6-flare', models: models.map(id => ({ id, available: true })),
+    });
     mocks.classic.mockResolvedValue({ imageUrl: 'data:image/png;base64,street', prompt: 'street' });
-    render(<StreetViewPanel siteZones={[]} projectId="project-1" />);
+    await act(async () => {
+      render(<StreetViewPanel siteZones={[]} projectId="project-1" />);
+    });
     fireEvent.change(screen.getByRole('textbox', { name: /custom prompt/i }), { target: { value: 'Rainy evening with warm shop windows.' } });
     fireEvent.click(screen.getByRole('button', { name: 'Render' }));
     await waitFor(() => expect(mocks.classic).toHaveBeenCalledTimes(3));
+    expect(mocks.classic.mock.calls.map(([, , , options]) => options.model)).toEqual(models);
     expect(mocks.classic.mock.calls.every(([, , , options]) => options.customPrompt === 'Rainy evening with warm shop windows.')).toBe(true);
   });
 

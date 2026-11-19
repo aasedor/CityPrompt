@@ -1,5 +1,9 @@
-import {describe, expect, it, vi} from 'vitest';
+import {beforeEach, describe, expect, it, vi} from 'vitest';
+import { rendersApi } from '@/services/api';
 import {findSavedPhotographicVideo,preparePhotographicVideo} from './videoPhotographicWorkflow';
+
+vi.mock('@/services/api', () => ({ rendersApi: { imageModels: vi.fn() } }));
+beforeEach(() => vi.mocked(rendersApi.imageModels).mockResolvedValue({ default_model: 'gpt-image-2', models: [] }));
 
 const request = {project_id:'p',purpose:'video_appearance' as const,beauty_image_base64:'native',source_video_sha256:'source',prompt:'daylight',source_request:{route_points:[{x:.1,y:.2}],details_revision:2}};
 const guide = {purpose:'video_appearance' as const,attempt_id:'g',image_base64:'photo',source_video_sha256:'source',scene_revision_sha256:'scene',output_fingerprint:'pixels',model:'gpt-image-2.5-sunburst' as const,tokens_spent:26};
@@ -34,6 +38,15 @@ describe('paid video photographic preparation',()=>{
     expect(await preparePhotographicVideo(client as never,request,'scene')).toEqual(guide);
     expect(client.generate).toHaveBeenCalledOnce();
     expect(client.generate).toHaveBeenCalledWith(request);
+  });
+  it('submits a single 2.6 Sunburst guide when the account lists it', async () => {
+    vi.mocked(rendersApi.imageModels).mockResolvedValue({ default_model: 'gpt-image-2.6-flare', models: [
+      { id: 'gpt-image-2.6-sunburst', available: true },
+    ] });
+    const upgraded = { ...guide, model: 'gpt-image-2.6-sunburst' as const };
+    const client = { list: vi.fn().mockResolvedValue([]), generate: vi.fn().mockResolvedValue(upgraded) };
+    expect(await preparePhotographicVideo(client as never, request, 'scene')).toEqual(upgraded);
+    expect(client.generate).toHaveBeenCalledExactlyOnceWith({ ...request, model: 'gpt-image-2.6-sunburst' });
   });
   it('does not buy when saved guide lookup fails or an earlier job is unresolved',async()=>{
     const client={list:vi.fn().mockResolvedValue([{id:'pending',status:'running'}]),resume:vi.fn().mockRejectedValue(new Error('The saved guide is still running')),recover:vi.fn(),generate:vi.fn()};
