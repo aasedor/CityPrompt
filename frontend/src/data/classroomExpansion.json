@@ -743,6 +743,18 @@
       "asset_review": "PASS_OFFLINE_NATIVE_REVIEW",
       "runtime_status": "NOT TESTED",
       "completed": false
+    },
+    {
+      "domain": "park",
+      "title": "Stormwater Pond & Pathway Loop",
+      "archetype_id": "stormwater_retention_pond",
+      "variant_id": "student_stormwater_pond_v1",
+      "version": "stormwater-pond-v002",
+      "placement_id": "native-park:student_stormwater_pond_v1--native-v1",
+      "sha256": "9f883c823d0677b74a516a0758857e17551f27eb45b64ac4a0959bb7377ac593",
+      "asset_review": "agent_native_visual_and_geometry_pass",
+      "runtime_status": "NOT TESTED",
+      "completed": false
     }
   ],
   "assets": [
@@ -2945,6 +2957,38 @@
         "pick_place_definition_version": 1,
         "community_3d_mask_existing_tiles": true,
         "road_standard_citation": "City Prompt original teaching concept; not a Calgary standard section"
+      }
+    },
+    {
+      "id": "native-park:student_stormwater_pond_v1--native-v1",
+      "kind": "object",
+      "definitionVersion": 2,
+      "readiness": "pilot",
+      "label": "Stormwater Pond & Pathway Loop",
+      "description": "A wet stormwater pond with cattail shallows, a 3 m pathway loop, a timber viewing dock, inlet and outlet structures, benches, willows and aspen. Decorative water; prepared level ground.",
+      "thumbnail": "/native-park-assets/5a49b6e2ba85769b08a0d0e90efb61d27bf5b08ab37122a35863ea0d1f103816.png",
+      "calgaryGuide": {
+        "groupId": "water",
+        "basis": "park_function"
+      },
+      "zoneType": "green_space",
+      "reshapeMode": "authored_footprint",
+      "width": 86.0,
+      "depth": 68.0,
+      "minWidth": 86.0,
+      "minDepth": 68.0,
+      "maxSize": 250,
+      "model": {
+        "variantId": "student_stormwater_pond_v1",
+        "revision": "d141d628c3378e7c37e847229c06fc88b56f36c51229f9b71e58aa5f5f5fe526",
+        "method": "native_park_v2"
+      },
+      "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+      "properties": {
+        "green_space_archetype_id": "stormwater_retention_pond",
+        "green_space_selected_variant_id": "student_stormwater_pond_v1",
+        "green_space_native_layout_id": "student_stormwater_pond_v1--native-v1",
+        "pick_place_automatic_3d": true
       }
     }
   ]

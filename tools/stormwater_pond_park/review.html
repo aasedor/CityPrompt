@@ -1,0 +1,118 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>loading</title>
+<style>html,body{margin:0;background:#fff}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"/frontend/node_modules/three/build/three.module.js","three/addons/":"/frontend/node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+// Review renderer for one native park assembly. It loads the exact file it is given and
+// changes nothing in it. Adapted from the crescent's clay review page.
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+const query = new URLSearchParams(location.search);
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color('#e7ecf1');
+scene.add(new THREE.HemisphereLight('#dfe9f7', '#9a9384', 1.45));
+const sun = new THREE.DirectionalLight('#fff0d9', 3.1);
+sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096);
+Object.assign(sun.shadow.camera, { left: -70, right: 70, top: 70, bottom: -70, near: 1, far: 700 });
+sun.shadow.bias = -0.0004;
+sun.shadow.normalBias = 0.04;
+scene.add(sun, sun.target);
+const fill = new THREE.DirectionalLight('#e6ecf5', 0.55);   // sky and ground bounce on the shaded sides; casts no shadow
+scene.add(fill, fill.target);
+// The surround stops at the park's edge: the park owns its ground, and its pond lies below grade.
+const hole = query.get('hole') ? query.get('hole').split(',').map(Number) : null;
+let groundShape = new THREE.PlaneGeometry(1600, 1600);
+if (hole) {
+  const outline = new THREE.Shape([[-800, -800], [800, -800], [800, 800], [-800, 800]].map(([x, y]) => new THREE.Vector2(x, y)));
+  outline.holes.push(new THREE.Path([[-hole[0] / 2, -hole[1] / 2], [hole[0] / 2, -hole[1] / 2], [hole[0] / 2, hole[1] / 2], [-hole[0] / 2, hole[1] / 2]].map(([x, y]) => new THREE.Vector2(x, y))));
+  groundShape = new THREE.ShapeGeometry(outline);
+}
+const ground = new THREE.Mesh(groundShape, new THREE.MeshStandardMaterial({ color: '#c9c5bb', roughness: 1 }));
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -0.004;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// authoring frame (x east, y north, z up) -> three.js (x, z, -y), the exporter's own mapping
+const v = ([x, y, z]) => new THREE.Vector3(x, z, -y);
+const gltf = await new GLTFLoader().loadAsync('/' + query.get('model'));
+const stats = { triangles: 0, meshes: 0, materials: new Set() };
+gltf.scene.traverse((object) => {
+  if (!object.isMesh) return;
+  stats.meshes += 1;
+  stats.triangles += object.geometry.index.count / 3;
+  const material = object.material;
+  stats.materials.add(material.name);
+  object.castShadow = !material.transparent;
+  object.receiveShadow = true;
+  if (material.name === 'CLAY_GLASS') {
+    Object.assign(material, { transmission: 0, transparent: true, opacity: 0.42, depthWrite: false, side: THREE.DoubleSide, forceSinglePass: true });
+    material.roughness = Math.max(material.roughness, 0.16);
+    material.needsUpdate = true;
+  }
+});
+scene.add(gltf.scene);
+const box = new THREE.Box3().setFromObject(gltf.scene);
+window.__stats = { triangles: stats.triangles, meshes: stats.meshes, materials: [...stats.materials], min: box.min.toArray(), max: box.max.toArray() };
+
+window.renderView = async (view) => {
+  const { w = 1600, h = 1200 } = view;
+  renderer.setSize(w, h, false);
+  renderer.domElement.style.width = w + 'px';
+  renderer.domElement.style.height = h + 'px';
+  let camera;
+  if (view.ortho) {
+    const half = view.ortho;
+    camera = new THREE.OrthographicCamera(-half, half, half * h / w, -half * h / w, 1, 900);
+  } else {
+    camera = new THREE.PerspectiveCamera(view.fov ?? 30, w / h, 0.5, 2400);
+  }
+  camera.position.copy(v(view.pos));
+  if (view.up) camera.up.copy(v(view.up));
+  camera.lookAt(v(view.target));
+  camera.updateProjectionMatrix();
+  if (view.shift) { camera.projectionMatrix.elements[9] = view.shift; }   // lens shift keeps verticals upright
+  const from = view.sun ?? [-0.2, -0.85, 0.48];
+  const middle = v(view.centre ?? [3, 0, 10]);
+  const reach = view.shadow ?? 70;
+  Object.assign(sun.shadow.camera, { left: -reach, right: reach, top: reach, bottom: -reach });
+  sun.shadow.camera.updateProjectionMatrix();
+  sun.position.copy(v(from)).normalize().multiplyScalar(300).add(middle);
+  sun.target.position.copy(middle);
+  sun.target.updateMatrixWorld();
+  fill.position.copy(v([-from[0], -from[1], 0.35])).normalize().multiplyScalar(300).add(middle);
+  fill.target.position.copy(middle);
+  fill.target.updateMatrixWorld();
+  scene.background.set(view.background ?? '#e7ecf1');
+  ground.visible = view.ground !== false;
+  const composer = new EffectComposer(renderer, new THREE.WebGLRenderTarget(w, h, { type: THREE.HalfFloatType, samples: 4 }));
+  composer.addPass(new RenderPass(scene, camera));
+  if (view.ao !== false) {
+    const ao = new GTAOPass(scene, camera, w, h);
+    ao.updateGtaoMaterial({ radius: 0.9, distanceExponent: 1.4, thickness: 1.2, scale: 1.15, samples: 16 });
+    ao.blendIntensity = 0.75;
+    composer.addPass(ao);
+  }
+  composer.addPass(new OutputPass());
+  composer.render();
+  const url = renderer.domElement.toDataURL(view.jpeg ? 'image/jpeg' : 'image/png', 0.92);
+  composer.dispose();
+  return url;
+};
+document.title = 'ready';
+</script>

@@ -1,0 +1,166 @@
+{
+ "frame": "authoring: x east, y north, z up, metres; the park centred at the origin",
+ "hole": [
+  86.0,
+  68.0
+ ],
+ "views": {
+  "aerial": {
+   "pos": [
+    64,
+    -72,
+    50
+   ],
+   "target": [
+    0,
+    0,
+    0
+   ],
+   "fov": 40,
+   "shadow": 60,
+   "centre": [
+    0,
+    0,
+    5
+   ]
+  },
+  "top": {
+   "pos": [
+    0,
+    0,
+    300
+   ],
+   "target": [
+    0,
+    0,
+    0
+   ],
+   "up": [
+    0,
+    1,
+    0
+   ],
+   "ortho": 40,
+   "shadow": 60,
+   "centre": [
+    0,
+    0,
+    5
+   ]
+  },
+  "walk": {
+   "pos": [
+    -22.88,
+    -15.41,
+    1.7
+   ],
+   "target": [
+    0.0,
+    3.0,
+    0.6
+   ],
+   "fov": 58,
+   "shadow": 60,
+   "centre": [
+    0,
+    0,
+    5
+   ]
+  },
+  "dock": {
+   "pos": [
+    0.4,
+    -6.22,
+    1.75
+   ],
+   "target": [
+    0,
+    22,
+    1.4
+   ],
+   "fov": 62,
+   "shadow": 60,
+   "centre": [
+    0,
+    0,
+    5
+   ]
+  },
+  "entrance": {
+   "pos": [
+    0,
+    -38,
+    1.7
+   ],
+   "target": [
+    0,
+    -6,
+    1.2
+   ],
+   "fov": 58,
+   "shadow": 60,
+   "centre": [
+    0,
+    0,
+    5
+   ]
+  },
+  "inlet": {
+   "pos": [
+    -14.29,
+    4.7,
+    2.4
+   ],
+   "target": [
+    -21.29,
+    11.83,
+    -0.1
+   ],
+   "fov": 45,
+   "shadow": 60,
+   "centre": [
+    0,
+    0,
+    5
+   ]
+  },
+  "outlet": {
+   "pos": [
+    37.15,
+    8.57,
+    3.0
+   ],
+   "target": [
+    24.39,
+    5.21,
+    0
+   ],
+   "fov": 45,
+   "shadow": 60,
+   "centre": [
+    0,
+    0,
+    5
+   ]
+  },
+  "north_oblique": {
+   "pos": [
+    -58,
+    78,
+    46
+   ],
+   "target": [
+    0,
+    0,
+    0
+   ],
+   "fov": 40,
+   "shadow": 60,
+   "centre": [
+    0,
+    0,
+    5
+   ]
+  }
+ }
+}

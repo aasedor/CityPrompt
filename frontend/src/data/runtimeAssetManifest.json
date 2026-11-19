@@ -681,10 +681,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4225,
+    "explicitReferenceCount": 4227,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 6009,
-    "requiredLogicalBytes": 13103019874,
+    "requiredFileCount": 6011,
+    "requiredLogicalBytes": 13110829721,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -15938,6 +15938,7 @@
       "url": "/archetypes/openspaces/stormwater-retention-pond/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1320760
@@ -25430,6 +25431,15 @@
       "lfsOid": "59fe473e5c81769c0bbae532851d162a335f0522c887f70183b3de3301f70212"
     },
     {
+      "url": "/native-park-assets/5a49b6e2ba85769b08a0d0e90efb61d27bf5b08ab37122a35863ea0d1f103816.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1350951,
+      "lfsOid": "5a49b6e2ba85769b08a0d0e90efb61d27bf5b08ab37122a35863ea0d1f103816"
+    },
+    {
       "url": "/native-park-assets/5d2ac31189fb9ba489af4445549c8a551895d4c5b90280fa0d82925a5d32e327.glb",
       "sources": [
         "src/data/nativeParks.json"
@@ -25511,6 +25521,14 @@
       ],
       "logicalBytes": 2162015,
       "lfsOid": "9ba6102ae7bd7376dcd8cfc5b213faec1e05384af1250242da2842e857882901"
+    },
+    {
+      "url": "/native-park-assets/9f883c823d0677b74a516a0758857e17551f27eb45b64ac4a0959bb7377ac593.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 6458896,
+      "lfsOid": "9f883c823d0677b74a516a0758857e17551f27eb45b64ac4a0959bb7377ac593"
     },
     {
       "url": "/native-park-assets/a3c219f333b46938d85499e0b2b41e0ed77a108d2d2996084225b0ced3c55fdd.glb",

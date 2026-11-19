@@ -1067,6 +1067,20 @@
       "boardwalk"
     ]
   },
+  "native-park:student_stormwater_pond_v1--native-v1": {
+    "label": "Stormwater Pond & Pathway Loop",
+    "description": "A wet stormwater pond with cattail shallows, a pathway loop, a timber viewing dock and inlet and outlet structures.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "stormwater",
+      "pond",
+      "wetland",
+      "cattail",
+      "dock",
+      "pathway"
+    ]
+  },
   "native-park:student_prairie_picnic_grove_v1--native-v1": {
     "label": "Prairie Picnic Grove",
     "description": "A prairie grove arranged for picnics and outdoor gathering.",

@@ -82,6 +82,7 @@
   "skytrain_elevated_corridor_v0": "/archetypes/streets/classroom-heroes/skytrain_elevated_corridor_v0-street-v1.webp",
   "elevated_rail_transit_corridor_v0": "/archetypes/streets/classroom-heroes/elevated_rail_transit_corridor_v0-street-v1.webp",
   "native-park:student_sandy_beach_v1--native-v1": "/archetypes/openspaces/urban-beach/hero.png",
+  "native-park:student_stormwater_pond_v1--native-v1": "/archetypes/openspaces/stormwater-retention-pond/hero.png",
   "native-park:student_prairie_picnic_grove_v1--native-v1": "/archetypes/openspaces/classroom-heroes/native-park-student_prairie_picnic_grove_v1--native-v1-street-v1.webp",
   "native-park:student_neighbourhood_sports_green_v1--native-v1": "/archetypes/openspaces/classroom-heroes/native-park-student_neighbourhood_sports_green_v1--native-v1-street-v1.webp",
   "native-park:student_sensory_wellness_garden_v1--native-v1": "/archetypes/openspaces/classroom-heroes/native-park-student_sensory_wellness_garden_v1--native-v1-street-v1.webp",
