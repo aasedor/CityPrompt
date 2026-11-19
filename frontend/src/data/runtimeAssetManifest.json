@@ -35547,35 +35547,40 @@
       "sources": [
         "src/data/nativeStreetPilots.json"
       ],
-      "logicalBytes": 18928
+      "logicalBytes": 18928,
+      "lfsOid": "9216caab5937a6bd54eba1dd9d1c33a2620a98f4b95af60f886d853476920458"
     },
     {
       "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/cafe_patio.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
       ],
-      "logicalBytes": 342728
+      "logicalBytes": 342728,
+      "lfsOid": "fa404a3925df2107633f91800b21923206c03712ba3b4621cc85840fbaf8a255"
     },
     {
       "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/heritage_lamp.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
       ],
-      "logicalBytes": 47264
+      "logicalBytes": 47264,
+      "lfsOid": "b70bc55607f9da276f33fdd34dd3f6044a11f3eb05d78fdc835eaea7cc64a077"
     },
     {
       "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/linden_grate.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
       ],
-      "logicalBytes": 839316
+      "logicalBytes": 839316,
+      "lfsOid": "4c03206d38c9dec47a01f467b91b87755b8c20933fdf70254eb0876585aced65"
     },
     {
       "url": "/street-kits/pilots/student_stephen_avenue_mall_v1/litter_bin.glb",
       "sources": [
         "src/data/nativeStreetPilots.json"
       ],
-      "logicalBytes": 24416
+      "logicalBytes": 24416,
+      "lfsOid": "29305d6598e7e841ccc58f20e175bd1f9726ce0838da2b3971a64243d51d2519"
     },
     {
       "url": "/street-kits/pilots/student_vine_pergola_promenade_v1/bench.glb",
@@ -36665,7 +36670,7 @@
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
       "fileCount": 213,
       "logicalBytes": 126329393,
-      "pathDigest": "a1be50efbc8fbc4004dcbca74553796c75c05cc4fdbc079c1653dde9e0061f60"
+      "pathDigest": "4493eb5bfa7ecdb5a854b860ac2f67078e16fab0f2f9bdb3347fda7759cbb922"
     },
     {
       "name": "sports-park-modules",
