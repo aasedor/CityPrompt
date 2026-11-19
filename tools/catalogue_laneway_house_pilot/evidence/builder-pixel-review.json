@@ -1,0 +1,67 @@
+{
+  "candidate": "laneway-garden-studio-clay-v004",
+  "model_sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
+  "reviewer": "builder (the agent session that wrote the generator)",
+  "builder_visual_review": "pass",
+  "independent_approval": false,
+  "views_inspected": {
+    "v004": [
+      "renders/aerial.png",
+      "renders/architecture_close.png",
+      "renders/balcony_contact.png",
+      "renders/band_contact.png",
+      "renders/entrance_contact.png",
+      "renders/facade_close.png",
+      "renders/front.png",
+      "renders/front_corner.png",
+      "renders/glass_close.png",
+      "renders/left_side.png",
+      "renders/match_front.png",
+      "renders/match_oblique.png",
+      "renders/match_top.png",
+      "renders/rear.png",
+      "renders/rear_side.png",
+      "renders/right_side.png",
+      "renders/roof_contact.png",
+      "renders/top.png",
+      "boards/phone-street.png",
+      "boards/phone-oblique.png",
+      "boards/phone-roof.png",
+      "boards/phone-construction.png"
+    ],
+    "v004 extra audit views, not in the roster": [
+      "under the porch canopy",
+      "back door and step",
+      "west downpipe and gooseneck",
+      "back soffit corner and lane downpipe",
+      "through the ground slot window",
+      "through the garage door lites",
+      "low west front",
+      "roof ridge from above"
+    ]
+  },
+  "findings": [
+    "Massing matches all three references: a two-storey volume on a near-square plan, with the brick garage block, balcony and porch canopy projecting 1.5 m toward the street.",
+    "Fitted cameras: one pinhole camera per reference fits 18 and 16 matched points with 12.4 and 13.9 px RMS. The remaining residual is spread over the model, not concentrated on one feature.",
+    "Corner window: a dark box wraps the street-lane corner, with a wide and a narrow pane on the street, one tall pane on the lane and a square post at the corner; reveals are dark and each pane has a room behind it.",
+    "Panel band: four vertical panels with joints, proud of the cedar, from grade to the soffit, with one slot window on each storey near its back edge. The floor band passes behind it.",
+    "Roof: one hipped sheet at 5 in 12, a 0.7 m ridge, standing seams square to each eave stopping under the hip and ridge caps; fascia, gutter on all four eaves, cedar soffit; a downpipe with a gooseneck at the back corner of each side face.",
+    "Porch: brick pier return, cedar entry wall with a glass door and sidelight, cedar post just short of the canopy corner, stoop one step above grade, canopy soffit in cedar.",
+    "Balcony: glass guard on dark posts with a dark top rail 1.09 m above the deck, returning at the porch end; a solid cedar-clad end at the west, the guard height.",
+    "Materials: brick with mortar bed joints every course, cedar with a shadow line every board, dark trim and frames, grey standing seam. Colours were sampled from the street view.",
+    "Every whole view keeps the building in frame with neutral margin; delivery checks pass (77)."
+  ],
+  "open_notes": [
+    "The variant is named Garden Studio, and its catalogue text describes a single-storey studio with no garage, dark fibre cement and a green roof. All three images show this two-storey house over a garage. The images govern; a person should rule on the name and text.",
+    "The back and west faces are not shown in any reference; their openings, the brick on the west and back of the garage block, and the west downpipe are inferred.",
+    "Brick head joints are left out as surface texture; bed joints are geometry.",
+    "Interiors are schematic: garage, back room, entry hall with a straight stair, living room, bedroom and bath partitions. The stair-well guard reads as a low white block through the corner window.",
+    "The roof plan reference is a perspective from above; the orthographic match view cannot register ground features, only the roof.",
+    "Entourage, planting, the lane and neighbours are not in the model."
+  ],
+  "rework_history": {
+    "laneway-garden-studio-clay-v001": "Corner window drawn as a box on the street face only, with a separate narrow lane window; panel band too narrow and too far back; brick and roof colours off the reference; balcony end screen too tall; downpipes on the back wall.",
+    "laneway-garden-studio-clay-v002": "Fitted cameras left about 20 px RMS residual: garage door, brick block and corner window offset by 0.3 to 0.45 m, eaves 0.15 m too deep, roof about 0.45 m too low.",
+    "laneway-garden-studio-clay-v003": "The corner window box ran along the lane face to the panel band, because the lane pane height was read as its width. Brick read as plain brown with no coursing."
+  }
+}

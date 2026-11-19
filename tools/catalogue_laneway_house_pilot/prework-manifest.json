@@ -1,0 +1,174 @@
+{
+  "candidate": "laneway-garden-studio-clay-v004",
+  "title": "Garden Studio",
+  "method": "RLASM v6.1 clay-first",
+  "representation_kind": "architectural_clay",
+  "archetype_id": "vancouver_laneway_house",
+  "variant_id": "laneway_garden_studio",
+  "variant_index": 3,
+  "state": "prework",
+  "keeper_claimed": false,
+  "runtime_seed_allowed": false,
+  "sources": [
+    {
+      "role": "front",
+      "repo_path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3.png",
+      "bytes": 1476807,
+      "sha256": "fdff57581c6477f1543103301e0d701270995f38305af93220b20026c5327284"
+    },
+    {
+      "role": "oblique",
+      "repo_path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3_angle_60.jpg",
+      "bytes": 954174,
+      "sha256": "d0913322afebd0defcc9607f219a53cd982b98e0f301e24f78435b5cae227c96"
+    },
+    {
+      "role": "top",
+      "repo_path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3_angle_90.jpg",
+      "bytes": 901961,
+      "sha256": "e09ec32b259874862c351db7915243d367af6a2082ada5561ac1533808cb1243"
+    }
+  ],
+  "measurement_contract": {
+    "dimensions_m": {
+      "main_width": 7.9,
+      "main_depth": 8.6,
+      "projection": 1.5,
+      "garage_block_width": 5.55,
+      "first_floor": 3.15,
+      "wall_plate": 5.78,
+      "eaves": 6.0,
+      "ridge": 7.833,
+      "overhang": 0.45
+    },
+    "storeys": 2,
+    "storey_policy": "fixed_authored_assembly",
+    "dwellings": 1,
+    "scale_basis": "No image carries a scale. Scale is set by the garage door, taken as a 14 by 8 ft door (4.25 by 2.4 m). The other dimensions were then adjusted until one pinhole camera per image fitted 16 to 18 matched points of the model; see camera_note.",
+    "source_measurements": {
+      "front": [
+        "Street view from across the street at the corner with the lane, at eye level. The street face recedes gently to the left; the lane face recedes steeply to the right.",
+        "Garage door: four lites in its top section, flush sections below. Built 4.25 m wide and 2.4 m tall.",
+        "Brick from grade to about 0.45 m above the door, then a dark floor band about 0.4 m deep across the whole front, round the porch canopy and on along the lane side.",
+        "Brick piers: about 0.45 m left of the door and 0.85 m right of it, with a wall lamp on each and a mailbox on the right pier.",
+        "Porch at the lane corner, under a flat canopy: a glass door and sidelight in a cedar wall set back about 1.5 m, a cedar post just short of the canopy corner, a concrete stoop.",
+        "Upper storey: cedar with a shadow line at each board. Sliding glass doors of four panels behind a glass-railed balcony, and to the right a corner window in a dark box frame that wraps onto the lane face: a wide pane and a narrow pane with a transom on the street, one tall pane on the lane.",
+        "Balcony: glass panels between dark posts with a dark top rail, about 1.07 m high, on the roof of the garage block; a cedar-clad solid end at the west, the height of the guard.",
+        "Roof: hip, about 5 in 12, standing-seam metal, eaves about 0.45 m out over a cedar soffit and dark fascia.",
+        "Lane face: the corner window upstairs and a tall narrow window near the corner below, then a dark band of four vertical panels from grade to the eaves, about 2.8 m wide, with a narrow slot window on each storey near its back edge; a downpipe at the back corner."
+      ],
+      "oblique": [
+        "High view from over the street at the lane corner.",
+        "The garage block, balcony and canopy project in front of the upper storey; the eave covers part of the balcony.",
+        "Hipped roof with all four faces visible as hips; standing seams square to each eave.",
+        "The west end of the balcony is cedar-clad and solid, the height of the glass guard.",
+        "The porch post, stoop with two risers, recessed door and brick pier all read clearly.",
+        "The panel band on the lane face stands slightly proud and carries narrow windows."
+      ],
+      "top": [
+        "Near-nadir view, street at the bottom, lane on the right.",
+        "Roof plan about 419 by 434 px, very slightly deeper than wide, hips meeting a short ridge that runs front to back.",
+        "In front of the street eave a lighter strip, the balcony deck, over the west two thirds, and a dark strip, the canopy, at the lane end. Both stand about 0.9 m past the eave."
+      ]
+    },
+    "source_conflicts": [
+      "Catalogue text. The variant is named Garden Studio and described as a single storey with no garage, a dark fibre-cement skin and a green roof. All three images show a two-storey laneway house over a garage, in brick and cedar under a hipped metal roof. The images govern; a person should rule on the name and text before this is offered to students.",
+      "Ridge length. The roof plan shows a short ridge about 2 m long; the outline ratio there implies about 0.4 m. Built 0.7 m, with equal pitches on all four faces.",
+      "Stoop. The oblique shows two risers; the street view one. Built one step of 0.18 m to a stoop level with the door."
+    ],
+    "hidden_assumptions": [
+      "The back face and the west face are not shown. The back has a glazed garden door with a step, a garage-side window and two upper windows; the west face has one window on each storey. Inferred.",
+      "Brick wraps the whole garage block, including the west side and the garage part of the back. The images show it on the street face and the west end of the projection only.",
+      "Interiors are schematic: a garage, a back room and an entry hall with a straight stair along the lane wall, lit by the slot windows; upstairs a living room across the front and a bedroom and bath behind.",
+      "A downpipe stands at the back corner of each side face. The street view shows the one on the lane face; the west one is inferred.",
+      "People, cars, planting, the lane, the street and neighbours belong to the site and are not in the model."
+    ]
+  },
+  "roof_contract": {
+    "form": "hip roof, 5 in 12 on all four faces, with a short ridge front to back; standing seams square to each eave",
+    "weathering": "a single closed sheet; seams stop under the hip caps; a gutter round all four eaves drains to downpipes at the back corners"
+  },
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false,
+    "roles": {
+      "pavers": "#9a9894",
+      "concrete": "#b8b3aa",
+      "brick": "#7d5040",
+      "cedar": "#bb8458",
+      "cedar_joint": "#7e5434",
+      "mortar": "#b4aa9c",
+      "panel": "#45484a",
+      "panel_joint": "#2b2e31",
+      "trim": "#25282b",
+      "garage_door": "#232a29",
+      "deck": "#a5a29b",
+      "roofing": "#3a3d40",
+      "metal_roof": "#7d8085",
+      "seam": "#888b90",
+      "floor": "#8a7258",
+      "interior": "#d9d3c7",
+      "glass": "#3d464f"
+    },
+    "note": "board lines on the cedar, mortar bed joints on the brick and joints in the panel band are thin geometry strips; brick head joints are left out as surface texture"
+  },
+  "identity_contract": [
+    "two storeys on a near-square plan",
+    "brick garage block projecting toward the street with a balcony on its roof",
+    "glass guard and cedar-clad solid end on the balcony",
+    "recessed corner porch with a flat canopy, cedar post and stoop",
+    "cedar upper storey with four-panel sliding doors and a dark-boxed corner window that wraps onto the lane face",
+    "dark floor band round the house",
+    "dark panel band with slot windows on the lane face",
+    "low hipped standing-seam roof with cedar soffits"
+  ],
+  "programme_contract": {
+    "dwellings": 1,
+    "garage": 1,
+    "street_doors": 1,
+    "garden_doors": 1
+  },
+  "contact_contract": {
+    "base_datum_m": 0.0,
+    "lowest_geometry_m": 0.0,
+    "threshold_rise_m": 0.20500000000000002,
+    "ground": "a 20 mm paver apron 1.2 m deep in front of the garage and porch, a concrete stoop and a garden step; nothing below grade"
+  },
+  "camera_roster": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "entrance_contact",
+    "roof_contact",
+    "band_contact",
+    "balcony_contact",
+    "match_front",
+    "match_oblique",
+    "match_top"
+  ],
+  "mandatory_review_views": [
+    "front.png",
+    "front_corner.png",
+    "aerial.png",
+    "top.png",
+    "left_side.png",
+    "right_side.png",
+    "rear.png",
+    "rear_side.png",
+    "facade_close.png",
+    "architecture_close.png",
+    "glass_close.png",
+    "entrance_contact.png",
+    "roof_contact.png",
+    "band_contact.png",
+    "balcony_contact.png"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "frame": "authoring: x east along the street front, y north toward the garden (the street is at -y, the lane at +x), z up, metres",
+  "fitted": "match_front and match_oblique are least-squares pinhole fits to 18 and 16 matched points (RMS 12.4 and 13.9 px); match_top is an orthographic fit to the roof outline",
+  "views": {
+    "front": {"pos": [3.95, -44, 3.6], "target": [3.95, 3.0, 3.6], "fov": 13, "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "front_corner": {"pos": [17, -13, 1.7], "target": [4.2, 3.0, 3.3], "fov": 44, "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "aerial": {"pos": [19, -17, 17], "target": [3.95, 3.6, 2.6], "fov": 40, "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "top": {"pos": [3.95, 3.4, 60], "target": [3.95, 3.4, 0], "up": [0, 1, 0], "ortho": 9.6, "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "left_side": {"pos": [-44, 3.4, 3.6], "target": [3.95, 3.4, 3.6], "fov": 16, "sun": [-0.6, -0.5, 0.55], "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "right_side": {"pos": [52, 3.4, 3.6], "target": [3.95, 3.4, 3.6], "fov": 16, "sun": [0.6, -0.5, 0.55], "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "rear": {"pos": [3.95, 52, 3.6], "target": [3.95, 3.4, 3.6], "fov": 13, "sun": [0.3, 0.7, 0.5], "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "rear_side": {"pos": [-15, 23, 14], "target": [3.95, 3.6, 2.6], "fov": 40, "sun": [-0.5, 0.6, 0.55], "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "facade_close": {"pos": [4.2, -10.5, 1.7], "target": [4.2, -1.5, 1.9], "fov": 48, "shadow": 14, "centre": [4, -1, 2]},
+    "architecture_close": {"pos": [5.6, -7.2, 4.9], "target": [4.4, 0, 4.3], "fov": 44, "shadow": 14, "centre": [4, -1, 4]},
+    "glass_close": {"pos": [6.6, -2.7, 4.55], "target": [6.6, 0, 4.55], "fov": 40, "shadow": 10, "centre": [6.6, 0, 4.5]},
+    "entrance_contact": {"pos": [10.2, -5.0, 1.6], "target": [6.5, -0.4, 1.4], "fov": 44, "shadow": 12, "centre": [6.6, -0.5, 1.5]},
+    "roof_contact": {"pos": [10.8, -3.6, 7.3], "target": [8.2, -0.4, 6.0], "fov": 40, "shadow": 12, "centre": [7.9, 0, 6]},
+    "band_contact": {"pos": [12.8, 2.6, 2.9], "target": [7.9, 5.2, 2.9], "fov": 46, "sun": [0.7, -0.4, 0.5], "shadow": 12, "centre": [7.9, 5, 3]},
+    "balcony_contact": {"pos": [4.9, -1.25, 4.75], "target": [1.0, -0.35, 3.95], "fov": 62, "shadow": 12, "centre": [2.5, -0.7, 4]},
+    "match_front": {"pos": [14.0, -21.79, 0.63], "target": [9.71, -12.84, 1.84], "fov": 31.26, "w": 1024, "h": 768, "sun": [-0.6, 0.5, 0.45], "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "match_oblique": {"pos": [18.12, -24.94, 17.21], "target": [13.92, -16.72, 13.34], "fov": 28.81, "w": 1195, "h": 896, "sun": [-0.6, 0.5, 0.5], "shadow": 20, "centre": [3.95, 3.4, 3.5]},
+    "match_top": {"pos": [3.84, 4.02, 60], "target": [3.84, 4.02, 0], "up": [0, 1, 0], "ortho": 12.89, "w": 1195, "h": 896, "sun": [-0.5, 0.5, 0.6], "shadow": 20, "centre": [3.95, 3.4, 3.5]}
+  }
+}

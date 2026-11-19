@@ -1,0 +1,82 @@
+{
+  "entry": {
+    "candidate": "laneway-garden-studio-clay-v004",
+    "family": "rlasm-clay-vancouver-laneway-house-garden-studio",
+    "archetype_id": "vancouver_laneway_house",
+    "archetype_label": "Vancouver Laneway House",
+    "variant_id": "laneway_garden_studio",
+    "variant_label": "Garden Studio",
+    "runtime_enabled": true,
+    "native_floors": 2,
+    "design_dimensions_m": {
+      "width": 7.9,
+      "depth": 10.1,
+      "height": 7.83
+    },
+    "references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3.png",
+        "bytes": 1476807,
+        "sha256": "fdff57581c6477f1543103301e0d701270995f38305af93220b20026c5327284"
+      },
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3_angle_60.jpg",
+        "bytes": 954174,
+        "sha256": "d0913322afebd0defcc9607f219a53cd982b98e0f301e24f78435b5cae227c96"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3_angle_90.jpg",
+        "bytes": 901961,
+        "sha256": "e09ec32b259874862c351db7915243d367af6a2082ada5561ac1533808cb1243"
+      }
+    ],
+    "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_laneway_house_pilot.",
+    "limitations": [
+      "Fixed native assembly, 9.04 m by 12.2 m including gutters, the paved apron and the garden step; no resizing and no repetition.",
+      "The variant name Garden Studio and its catalogue text describe a different, single-storey building. The model follows the three images, which show a two-storey laneway house over a garage. A person must rule on the name and text before activation.",
+      "The back and west faces are inferred; no reference shows them.",
+      "Three doors: the front door on the porch, a garden door at the back and the garage door. The front and garden doors are one 0.18 m step above grade.",
+      "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_laneway_house_pilot/integration/runtime-review.md.",
+      "No independent review yet: RLASM Gate G is open."
+    ],
+    "picker": {
+      "id": "vancouver_laneway_house_garden_studio",
+      "description": "Two-storey laneway house over a double garage, in brick and cedar, with a balcony, corner window and hipped metal roof.",
+      "group_id": "detached",
+      "reshape_mode": "fixed_native",
+      "reshape_description": "Move and rotate the complete house. It keeps its authored size.",
+      "width": 11.0,
+      "depth": 14.0,
+      "max_size": 50.0
+    }
+  },
+  "model_file": "laneway-garden-studio-clay-v004.glb",
+  "review_file": "independent-review.json",
+  "approval": {
+    "authorized_by": "",
+    "quote": "",
+    "date": "",
+    "model_sha256": ""
+  },
+  "trial": {
+    "model_sha256": "",
+    "project_url": "",
+    "tested_by": "",
+    "tested_at": "",
+    "evidence": [],
+    "checks": {
+      "catalogue_card": false,
+      "exact_variant": false,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": false,
+      "save_reload": false,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    }
+  },
+  "human_decisions": []
+}

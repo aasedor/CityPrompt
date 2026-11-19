@@ -1,0 +1,69 @@
+{
+  "candidate": "laneway-garden-studio-clay-v004",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local pilot only",
+  "canonical_promotion_approved": false,
+  "external_directory": "artifacts/laneway-garden-studio/v004 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
+  "model_bytes": 337900,
+  "delivered_bounds_gltf_m": [
+    [
+      -0.57,
+      0.0,
+      -9.5
+    ],
+    [
+      8.47,
+      7.8783,
+      2.7
+    ]
+  ],
+  "native_dimensions_m": {
+    "width": 9.04,
+    "depth": 12.2,
+    "height": 7.8783
+  },
+  "storeys": 2,
+  "dwellings": 1,
+  "runtime": {
+    "path": "laneway-garden-studio-clay-v004.glb",
+    "bytes": 337900,
+    "sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
+    "meshes": 17,
+    "materials": 17,
+    "textures": 0,
+    "images": 0,
+    "triangles": 6726
+  },
+  "entrances": {
+    "front door": 1,
+    "garden door": 1,
+    "garage door": 1
+  },
+  "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them.",
+  "builder_review": {
+    "file": "evidence/builder-pixel-review.json",
+    "decision": "builder_pass"
+  },
+  "independent_review": {
+    "status": "pending",
+    "note": "No separate reviewer has examined this candidate. RLASM Gate G is open."
+  },
+  "superseded": {
+    "laneway-garden-studio-clay-v001": {
+      "status": "builder review: rework",
+      "model_sha256": "c74e512b9f735d6dbb6cc6c44a734f981c2680b7f2bc1ad755463bc06a09d068",
+      "reason": "Corner window drawn as a box on the street face only, with a separate narrow lane window; panel band too narrow and too far back; brick and roof colours off the reference; balcony end screen too tall; downpipes on the back wall."
+    },
+    "laneway-garden-studio-clay-v002": {
+      "status": "builder review: rework",
+      "model_sha256": "358cf3f08809c47e1b66720a9b861fd7015640e0d00a3263dfcb065933fab072",
+      "reason": "Fitted cameras left about 20 px RMS residual: garage door, brick block and corner window offset by 0.3 to 0.45 m, eaves 0.15 m too deep, roof about 0.45 m too low."
+    },
+    "laneway-garden-studio-clay-v003": {
+      "status": "builder review: rework",
+      "model_sha256": "5eb3e14a60b57ccb4392e76b5b56a06b58b126e5fe789a6ba334689b7d05890c",
+      "reason": "The corner window box ran along the lane face to the panel band, because the lane pane height was read as its width. Brick read as plain brown with no coursing."
+    }
+  }
+}
