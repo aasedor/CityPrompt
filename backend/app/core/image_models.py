@@ -4,12 +4,12 @@ Keep explicit legacy IDs for saved workflows. Image 2.6 uses the same Images
 edit API; changing engines must not change the geometry-control contract.
 """
 
-from typing import Literal
+from typing import Final, Literal
 
 FLARE_IMAGE_MODEL = "gpt-image-2.6-flare"
 SUNBURST_IMAGE_MODEL = "gpt-image-2.6-sunburst"
 LEGACY_FLARE_IMAGE_MODEL = "gpt-image-2.5-flare"
-LEGACY_SUNBURST_IMAGE_MODEL = "gpt-image-2.5-sunburst"
+LEGACY_SUNBURST_IMAGE_MODEL: Final = "gpt-image-2.5-sunburst"
 
 OpenAIImageModel = Literal[
     "gpt-image-2.6-flare",
