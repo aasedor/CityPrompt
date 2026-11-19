@@ -22,6 +22,7 @@ import { resolveApiFileUrl } from '@/services/api';
 import { getCustomZoneStyle } from './customZoneStyle';
 import { prepareZonesForRender } from './resolvePlanZoneArchetypes';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from './seasonalRenderPresets';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -150,7 +151,11 @@ export interface UseAIRenderReturn {
 // Style presets (kept for UI compatibility â€” the structured prompt overrides)
 // ---------------------------------------------------------------------------
 
-export const AI_RENDER_STYLES: AIRenderStyle[] = aiRenderStylePresets as AIRenderStyle[];
+export const AI_RENDER_STYLES: AIRenderStyle[] = [
+  ...aiRenderStylePresets,
+  AFTER_RAIN_PRESET,
+  AUTUMN_PRESET,
+];
 
 // ---------------------------------------------------------------------------
 // Gemini render style modifiers (from the Orchestration Spec)
@@ -160,6 +165,7 @@ interface GeminiStyleModifier {
   id: string;
   label: string;
   prompt: string;
+  lighting?: string;
 }
 
 const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
@@ -178,6 +184,8 @@ const GEMINI_STYLE_MODIFIERS: Record<string, GeminiStyleModifier> = {
     label: 'Atmospheric',
     prompt: 'Cinematic aerial architectural photograph with dramatic atmospheric conditions. CRITICAL: Replace all colored polygon fills with photorealistic building materials â€” real brick, stone, glass, concrete, metal roofing. No flat colored surfaces. Final minutes of golden hour, low-angle warm sunlight casting extremely long shadows. Towering cumulus clouds lit amber and rose overhead. Ground-level haze creating depth layers. Wet surfaces with mirror-like reflections. Interior lights glowing warm amber through windows. Medium format digital with exceptional dynamic range.',
   },
+  [AFTER_RAIN_PRESET.id]: AFTER_RAIN_PRESET,
+  [AUTUMN_PRESET.id]: AUTUMN_PRESET,
   'site-plan': {
     id: 'site-plan',
     label: 'Site Plan',
@@ -1228,7 +1236,9 @@ function buildSCHEMAPrompt(
 
   // â”€â”€ STYLE â”€â”€
   // Truncate style prompt to first sentence or 200 chars
-  if (style) {
+  if (style?.lighting) {
+    lines.push(`STYLE: ${style.prompt}`);
+  } else if (style) {
     let styleText = style.prompt;
     const firstSentence = styleText.indexOf('. ');
     if (firstSentence > 0 && firstSentence < 200) {
@@ -1256,6 +1266,8 @@ function buildSCHEMAPrompt(
     lines.push('LIGHTING: Soft diffused studio light, gentle shadows defining form only');
   } else if (isArtistic) {
     lines.push(`LIGHTING: Match ${style?.label || styleId} artistic conventions`);
+  } else if (style?.lighting) {
+    lines.push(`LIGHTING: ${style.lighting}`);
   } else if (styleId === 'atmospheric') {
     lines.push('LIGHTING: Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze');
   } else if (styleId === 'winter') {
@@ -1989,12 +2001,14 @@ function buildPrompt(options: AIRenderOptions): string {
     return buildStructuredPrompt(options);
   }
 
+  const style = GEMINI_STYLE_MODIFIERS[options.renderStyleId || options.style || 'photorealistic'];
   if (options.mapOverlayPrompt?.trim()) {
     const parts = [
       `Replace the colored overlay areas with: ${options.mapOverlayPrompt.trim()}.`,
       'Keep all surrounding satellite imagery exactly as it is.',
       'Match lighting, shadows, and perspective for a seamless photomontage.',
     ];
+    if (style?.lighting) parts.push(style.prompt, style.lighting);
     if (options.customPrompt?.trim()) parts.push(options.customPrompt.trim());
     return parts.join(' ');
   }
@@ -2004,6 +2018,7 @@ function buildPrompt(options: AIRenderOptions): string {
     'Replace the colored overlay areas in this aerial photograph with photorealistic urban development.',
     'Keep all surrounding imagery exactly as it is.',
   ];
+  if (style?.lighting) parts.push(style.prompt, style.lighting);
   if (options.archetypePrompt?.trim()) parts.push(options.archetypePrompt.trim());
   if (options.customPrompt?.trim()) parts.push(options.customPrompt.trim());
   return parts.join(' ');

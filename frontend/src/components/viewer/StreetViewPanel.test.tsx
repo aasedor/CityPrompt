@@ -196,6 +196,27 @@ describe('student street render', () => {
     expect(mocks.direct.mock.calls[0][1].style).toBe('watercolour');
   });
 
+  it.each([['After Rain', 'after-rain'], ['Autumn', 'autumn']])('sends the selected %s style to Direct 3D', async (label, id) => {
+    const capture = vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} });
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} />);
+    fireEvent.click(screen.getByRole('button', { name: label }));
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    await waitFor(() => expect(mocks.direct).toHaveBeenCalledTimes(1));
+    expect(mocks.direct.mock.calls[0][1].style).toBe(id);
+  });
+
+  it.each([['After Rain', 'damp paving'], ['Autumn', 'existing deciduous']])('passes %s as a photographic style to Classic street rendering', async (label, detail) => {
+    mocks.classic.mockResolvedValue({ imageUrl: 'data:image/png;base64,street', prompt: 'street' });
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" />);
+    fireEvent.click(screen.getByRole('button', { name: label }));
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+    await waitFor(() => expect(mocks.classic).toHaveBeenCalledOnce());
+    const options = mocks.classic.mock.calls[0][3];
+    expect(options.model).toBe('gpt-image-2');
+    expect(options.styleModifier).toMatch(/^PHOTO STYLE:/);
+    expect(options.styleModifier).toContain(detail);
+  });
+
   it('forwards explicitly selected street activity to the Direct request', async () => {
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} })} />);
     fireEvent.click(screen.getByRole('button', { name: 'Add People' }));

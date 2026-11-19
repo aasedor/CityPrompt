@@ -1,9 +1,13 @@
+import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from '../seasonalRenderPresets';
+
 export const STYLES = [
   // ── Realistic — photo-style final-stage visualization ──
   { id: 'photorealistic', label: 'Photo Realistic' },
   { id: 'photomontage', label: 'Photomontage' },
   { id: 'development', label: 'Development' },
   { id: 'atmospheric', label: 'Atmospheric' },
+  { id: AFTER_RAIN_PRESET.id, label: AFTER_RAIN_PRESET.label },
+  { id: AUTUMN_PRESET.id, label: AUTUMN_PRESET.label },
   { id: 'winter', label: 'Winter' },
   { id: 'night', label: 'Night' },
   // ── Concept — hand-drawn / painterly early-stage exploration ──
@@ -31,7 +35,7 @@ export const STYLES = [
 // UI grouping for the style picker — keeps the new-user taxonomy visible.
 // Update this when adding a style so it lands in the right group in the UI.
 export const STYLE_GROUPS = [
-  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'development', 'atmospheric', 'winter', 'night'] },
+  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'development', 'atmospheric', AFTER_RAIN_PRESET.id, AUTUMN_PRESET.id, 'winter', 'night'] },
   { label: 'Accurate', ids: ['survey', 'documentary'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
   { label: 'Plan', ids: ['site-plan', 'site-plan-photo', 'blueprint', 'site-plan-watercolor'] },

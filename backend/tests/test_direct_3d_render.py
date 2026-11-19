@@ -2352,6 +2352,27 @@ def test_provider_first_prompts_use_one_concise_natural_design_lock():
     assert len(reproject) < 3_000
 
 
+@pytest.mark.parametrize("view_mode", ["aerial", "street"])
+@pytest.mark.parametrize(
+    ("style", "treatment"),
+    [("after-rain", "broken reflections"), ("autumn", "deciduous foliage")],
+)
+def test_seasonal_presentation_keeps_the_source_camera(style, treatment, view_mode):
+    request = _request(presentation_mode="scene", style=style, fidelity_policy="balanced")
+    prompt = _presentation_prompt(
+        "",
+        presentation_mode=request.presentation_mode,
+        style=request.style,
+        object_id_manifest=request.object_id_manifest,
+        view_mode=view_mode,
+    )
+
+    assert treatment in prompt
+    assert "Keep Image 1's camera, framing, horizon" in prompt
+    assert RENDER_PRESERVATION_LOCK in prompt
+    assert (direct_service.AERIAL_CONTEXT_REFINEMENT in prompt) is (view_mode == "aerial")
+
+
 def test_provider_first_prompt_truncates_art_direction_without_losing_final_lock():
     prompt = _presentation_prompt(
         "x" * 40_000,

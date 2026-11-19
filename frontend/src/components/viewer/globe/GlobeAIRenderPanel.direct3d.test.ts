@@ -19,7 +19,7 @@ describe('Globe AI render panel Direct 3D styles', () => {
     expect(apiErrorMessage({response:{data:{detail:{message:'Output needs review.',billed:true}}}}, 'Failed')).toContain('This attempt was charged');
   });
   it('exposes every Classic aesthetic as a selectable Direct style', () => {
-    expect(STYLES).toHaveLength(22);
+    expect(STYLES).toHaveLength(24);
     expect(new Set(STYLES.map((style) => style.id)))
       .toEqual(new Set(Object.keys(GLOBE_STYLE_PROMPTS)));
 
@@ -38,9 +38,14 @@ describe('Globe AI render panel Direct 3D styles', () => {
 
   it('groups all style buttons exactly once', () => {
     const groupedIds = STYLE_GROUPS.flatMap((group) => [...group.ids]);
-    expect(groupedIds).toHaveLength(22);
-    expect(new Set(groupedIds).size).toBe(22);
+    expect(groupedIds).toHaveLength(24);
+    expect(new Set(groupedIds).size).toBe(24);
     expect(new Set(groupedIds)).toEqual(new Set(STYLES.map((style) => style.id)));
+  });
+
+  it('lists After Rain and Autumn under Realistic', () => {
+    const realistic = STYLE_GROUPS.find((group) => group.label === 'Realistic');
+    expect(realistic?.ids).toEqual(expect.arrayContaining(['after-rain', 'autumn']));
   });
 
   it('explains saved results and optional comparison before spend', () => {

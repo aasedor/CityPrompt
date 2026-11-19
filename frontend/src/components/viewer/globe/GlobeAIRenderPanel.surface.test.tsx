@@ -58,10 +58,16 @@ beforeEach(async () => {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('ground surfaces in Direct 3D rendering', () => {
-  it('binds paid capture to the authored surface without a compiled archetype', async () => {
+  it.each([
+    ['Photo Realistic', 'photorealistic'],
+    ['After Rain', 'after-rain'],
+    ['Autumn', 'autumn'],
+  ])('sends %s from the aerial picker with the authored surface claim', async (label, style) => {
     await show([park(), surface()]);
+    fireEvent.click(screen.getByRole('button', { name: label }));
     fireEvent.click(generate());
     await screen.findByText('Provider stopped in test');
+    expect(renderer.render.mock.calls[0][1].style).toBe(style);
     expect(renderer.render.mock.calls[0][1].authoredSurfaceClaims).toEqual([{
       zone_id: 'surface', source_hash: 'd0b0d2c05786a8fe8d4284b35862a1c888dec5fd144d8254cbaf003d66869cff',
     }]);

@@ -31,18 +31,26 @@ import { ImageModelSelect } from './ImageModelSelect';
 import { useImageModelChoice } from './useImageModelChoice';
 import { runImageModelBatch } from './runImageModelBatch';
 import { RenderStyleGuideButton } from './RenderStyleGuideButton';
+import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from './seasonalRenderPresets';
 
 const COMPASS_LABELS: Record<number, string> = {
   0: 'N', 45: 'NE', 90: 'E', 135: 'SE',
   180: 'S', 225: 'SW', 270: 'W', 315: 'NW',
 };
 
-const STREET_VIEW_STYLES: ReadonlyArray<{ readonly id: string; readonly label: string; readonly prompt: string }> = streetViewStylePresets;
+const STREET_VIEW_STYLES = [
+  ...streetViewStylePresets,
+  { ...AFTER_RAIN_PRESET, prompt: `${AFTER_RAIN_PRESET.prompt} ${AFTER_RAIN_PRESET.lighting}` },
+  { ...AUTUMN_PRESET, prompt: `${AUTUMN_PRESET.prompt} ${AUTUMN_PRESET.lighting}` },
+];
+const REALISTIC_STREET_STYLE_IDS = [
+  'photorealistic', 'photomontage', 'atmospheric', AFTER_RAIN_PRESET.id, AUTUMN_PRESET.id, 'winter',
+];
 
 // UI grouping for the style picker — Plan group omitted because street view
 // excludes orthographic styles by design.
 const STREET_VIEW_STYLE_GROUPS = [
-  { label: 'Realistic', ids: ['photorealistic', 'photomontage', 'atmospheric', 'winter'] },
+  { label: 'Realistic', ids: REALISTIC_STREET_STYLE_IDS },
   { label: 'Accurate', ids: ['survey', 'documentary', 'human-scale'] },
   { label: 'Concept', ids: ['watercolour', 'charcoal', 'marker-render', 'pen-and-ink'] },
   { label: 'Stylized', ids: ['clay-model', 'collage', 'pixel-art'] },
@@ -227,8 +235,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
       setSelectedPreviewIndex(null);
 
       const styleObj = STREET_VIEW_STYLES.find(s => s.id === selectedStyle);
-      const PHOTO_VARIANT_STYLES = ['photorealistic', 'photomontage', 'atmospheric', 'winter'];
-      const styleModifier = styleObj && !PHOTO_VARIANT_STYLES.includes(styleObj.id)
+      const styleModifier = styleObj && !REALISTIC_STREET_STYLE_IDS.includes(styleObj.id)
         ? `RENDER STYLE: ${styleObj.prompt}`
         : styleObj && styleObj.id !== 'photorealistic'
         ? `PHOTO STYLE: ${styleObj.prompt}`

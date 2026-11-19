@@ -231,8 +231,8 @@ describe('Direct 3D presentation adapter', () => {
     expect(direct.render.savedRender).toBeUndefined();
   });
 
-  it('uses the same complete 22-style catalogue as Classic without changing Classic prompting', () => {
-    expect(DIRECT_3D_STYLE_IDS).toHaveLength(22);
+  it('uses the same complete 24-style catalogue as Classic without changing Classic prompting', () => {
+    expect(DIRECT_3D_STYLE_IDS).toHaveLength(24);
     expect(new Set(DIRECT_3D_STYLE_IDS)).toEqual(new Set(Object.keys(GLOBE_STYLE_PROMPTS)));
     expect(new Set(Object.keys(DIRECT_3D_DEFAULT_ART_DIRECTIONS)))
       .toEqual(new Set(DIRECT_3D_STYLE_IDS));
@@ -251,7 +251,7 @@ describe('Direct 3D presentation adapter', () => {
       );
     }
     expect(DIRECT_3D_STYLE_IDS.filter((style) => resolveDirect3DPresentationMode(style) === 'scene'))
-      .toHaveLength(16);
+      .toHaveLength(18);
   });
 
   it('keeps the selected Direct style while adding concise project-specific direction', () => {
@@ -335,11 +335,21 @@ describe('Direct 3D presentation adapter', () => {
     expect(prompt).toContain('Keep cropped and occluded elements cropped and occluded');
   });
 
-  it.each(['photomontage', 'development', 'atmospheric', 'winter', 'night'])('does not let the %s preset request new activity or site furniture', (style) => {
+  it.each(['photomontage', 'development', 'atmospheric', 'after-rain', 'autumn', 'winter', 'night'])('does not let the %s preset request new activity or site furniture', (style) => {
     const direction = DIRECT_3D_DEFAULT_ART_DIRECTIONS[style];
     expect(direction).not.toMatch(/pedestrians|cyclists?|cafe activity|moving cars|street life|freshly landscaped|headlight|taillight/i);
     const prompt = buildDirect3DVisualPrompt(style, undefined, capture);
     expect(prompt).toContain('do not invent connecting sidewalks');
+  });
+
+  it.each([
+    ['after-rain', 'damp paving', 'diffuse post-rain daylight'],
+    ['autumn', 'existing deciduous', 'low autumn sunlight'],
+  ])('keeps %s photographic and aligned to the source camera', (style, detail, lighting) => {
+    expect(resolveDirect3DPresentationMode(style)).toBe('scene');
+    expect(resolveDirect3DFidelityPolicy(style)).toBe('balanced');
+    expect(buildDirect3DVisualPrompt(style, undefined, capture)).toContain(detail);
+    expect(buildPrompt([], style)).toContain(lighting);
   });
 
   it('describes the illustrative medium without asking to simplify the authored geometry', () => {
@@ -482,7 +492,7 @@ describe('Direct 3D presentation adapter', () => {
       });
     }
 
-    expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(22);
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledTimes(DIRECT_3D_STYLE_IDS.length);
     vi.mocked(rendersApi.generateDirect3D).mock.calls.forEach(([request], index) => {
       const style = DIRECT_3D_STYLE_IDS[index];
       expect(request.style).toBe(style);
