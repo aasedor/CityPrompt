@@ -1,11 +1,11 @@
 {
   "entry": {
-    "candidate": "laneway-garden-studio-clay-v004",
+    "candidate": "laneway-garden-studio-clay-v006",
     "family": "rlasm-clay-vancouver-laneway-house-garden-studio",
     "archetype_id": "vancouver_laneway_house",
     "archetype_label": "Vancouver Laneway House",
     "variant_id": "laneway_garden_studio",
-    "variant_label": "Garden Studio",
+    "variant_label": "Garage Suite",
     "runtime_enabled": true,
     "native_floors": 2,
     "design_dimensions_m": {
@@ -35,12 +35,12 @@
     ],
     "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_laneway_house_pilot.",
     "limitations": [
-      "Fixed native assembly, 9.04 m by 12.2 m including gutters, the paved apron and the garden step; no resizing and no repetition.",
-      "The variant name Garden Studio and its catalogue text describe a different, single-storey building. The model follows the three images, which show a two-storey laneway house over a garage. A person must rule on the name and text before activation.",
+      "Fixed native assembly, 9.04 m by 12.25 m including gutters, the paved apron and the garden step; no resizing and no repetition.",
+      "The variant was catalogued as Garden Studio, with text for a different, single-storey building. On 2026-11-19 a person ruled that the images govern; the variant is renamed Garage Suite and its catalogue text rewritten to match them. The variant id laneway_garden_studio is unchanged.",
       "The back and west faces are inferred; no reference shows them.",
-      "Three doors: the front door on the porch, a garden door at the back and the garage door. The front and garden doors are one 0.18 m step above grade.",
+      "Three doors: the front door on the porch, a garden door at the back and the garage door. The front and garden doors are two steps above grade.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_laneway_house_pilot/integration/runtime-review.md.",
-      "No independent review yet: RLASM Gate G is open."
+      "Independent review: v004 was refused with three P1 findings; v006 answers them and awaits a repeat review."
     ],
     "picker": {
       "id": "vancouver_laneway_house_garden_studio",
@@ -53,7 +53,7 @@
       "max_size": 50.0
     }
   },
-  "model_file": "laneway-garden-studio-clay-v004.glb",
+  "model_file": "laneway-garden-studio-clay-v006.glb",
   "review_file": "independent-review.json",
   "approval": {
     "authorized_by": "",
@@ -78,5 +78,15 @@
       "no_console_errors": false
     }
   },
-  "human_decisions": []
+  "human_decisions": [
+    {
+      "decision": "The three images of vancouver_laneway_house / laneway_garden_studio govern. The variant is renamed \"Garage Suite\" and its catalogue description, facade, roof and palette text are rewritten to describe the two-storey house over a garage that the images show. The variant id is unchanged.",
+      "answers": "builder-pixel-review.json open note 1; prework-manifest.json source_conflicts item 1",
+      "authorized_by": "human_user",
+      "quote": "Finish the laneway house, then do Stephen Avenue mall.",
+      "context": "Reply to the builder asking whether to rename the variant, for example to \"Garage Suite\", and rewrite its text to match the pictures, and whether to run an independent AI review.",
+      "date": "2026-11-19",
+      "applied_in": "frontend/src/data/buildingArchetypes.json, by a text-level edit of the one variant block"
+    }
+  ]
 }

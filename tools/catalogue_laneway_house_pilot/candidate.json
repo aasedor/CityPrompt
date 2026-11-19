@@ -1,16 +1,16 @@
 {
-  "candidate": "laneway-garden-studio-clay-v004",
+  "candidate": "laneway-garden-studio-clay-v006",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/laneway-garden-studio/v004 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
-  "model_bytes": 337900,
+  "external_directory": "artifacts/laneway-garden-studio/v006 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3",
+  "model_bytes": 335744,
   "delivered_bounds_gltf_m": [
     [
       -0.57,
       0.0,
-      -9.5
+      -9.55
     ],
     [
       8.47,
@@ -20,20 +20,20 @@
   ],
   "native_dimensions_m": {
     "width": 9.04,
-    "depth": 12.2,
+    "depth": 12.25,
     "height": 7.8783
   },
   "storeys": 2,
   "dwellings": 1,
   "runtime": {
-    "path": "laneway-garden-studio-clay-v004.glb",
-    "bytes": 337900,
-    "sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
+    "path": "laneway-garden-studio-clay-v006.glb",
+    "bytes": 335744,
+    "sha256": "e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3",
     "meshes": 17,
     "materials": 17,
     "textures": 0,
     "images": 0,
-    "triangles": 6726
+    "triangles": 6624
   },
   "entrances": {
     "front door": 1,
@@ -47,7 +47,7 @@
   },
   "independent_review": {
     "status": "pending",
-    "note": "No separate reviewer has examined this candidate. RLASM Gate G is open."
+    "note": "v006 answers the independent review of v004 and awaits a repeat review."
   },
   "superseded": {
     "laneway-garden-studio-clay-v001": {
@@ -64,6 +64,16 @@
       "status": "builder review: rework",
       "model_sha256": "5eb3e14a60b57ccb4392e76b5b56a06b58b126e5fe789a6ba334689b7d05890c",
       "reason": "The corner window box ran along the lane face to the panel band, because the lane pane height was read as its width. Brick read as plain brown with no coursing."
+    },
+    "laneway-garden-studio-clay-v004": {
+      "status": "independent review: visual_rework_required, 0 P0, 3 P1, 10 P2 (evidence/independent-review-v004.json)",
+      "model_sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
+      "reason": "P1: the ridge was 0.7 m where both roof views show about 2 m; the corner window lane glass sat 0.33 m inside its box and read as a black return; the lane ground window and band slots were half to a third of their reference widths."
+    },
+    "laneway-garden-studio-clay-v005": {
+      "status": "builder review: rework",
+      "model_sha256": "c781864d2ef8a44b74bb5255ddf7bdd0a790d02dacc80dfb384f0e156af2bc7b",
+      "reason": "The corner window lane glass still sat 0.145 m inside the box face; the review asked for 0.05 to 0.10 m."
     }
   }
 }

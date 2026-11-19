@@ -1,6 +1,6 @@
 {
-  "candidate": "laneway-garden-studio-clay-v004",
-  "title": "Garden Studio",
+  "candidate": "laneway-garden-studio-clay-v006",
+  "title": "Garage Suite",
   "method": "RLASM v6.1 clay-first",
   "representation_kind": "architectural_clay",
   "archetype_id": "vancouver_laneway_house",
@@ -51,11 +51,11 @@
         "Garage door: four lites in its top section, flush sections below. Built 4.25 m wide and 2.4 m tall.",
         "Brick from grade to about 0.45 m above the door, then a dark floor band about 0.4 m deep across the whole front, round the porch canopy and on along the lane side.",
         "Brick piers: about 0.45 m left of the door and 0.85 m right of it, with a wall lamp on each and a mailbox on the right pier.",
-        "Porch at the lane corner, under a flat canopy: a glass door and sidelight in a cedar wall set back about 1.5 m, a cedar post just short of the canopy corner, a concrete stoop.",
+        "Porch at the lane corner, under a flat canopy: a glass door and sidelight in a cedar wall set back about 1.5 m, a cedar post just short of the canopy corner, a concrete stoop of two risers: a lower step in front of the post and a landing level with the door.",
         "Upper storey: cedar with a shadow line at each board. Sliding glass doors of four panels behind a glass-railed balcony, and to the right a corner window in a dark box frame that wraps onto the lane face: a wide pane and a narrow pane with a transom on the street, one tall pane on the lane.",
         "Balcony: glass panels between dark posts with a dark top rail, about 1.07 m high, on the roof of the garage block; a cedar-clad solid end at the west, the height of the guard.",
-        "Roof: hip, about 5 in 12, standing-seam metal, eaves about 0.45 m out over a cedar soffit and dark fascia.",
-        "Lane face: the corner window upstairs and a tall narrow window near the corner below, then a dark band of four vertical panels from grade to the eaves, about 2.8 m wide, with a narrow slot window on each storey near its back edge; a downpipe at the back corner."
+        "Roof: hip, about 5 in 12 on the side faces and steeper front and back, standing-seam metal, eaves about 0.45 m out over a cedar soffit and dark fascia.",
+        "Lane face: the corner window upstairs and, directly below it, a ground-floor window as wide as its lane pane, then a dark band of four vertical panels from grade to the eaves, about 2.8 m wide, with a slot window about 0.5 m wide on each storey near its back edge; a downpipe at the back corner."
       ],
       "oblique": [
         "High view from over the street at the lane corner.",
@@ -67,14 +67,13 @@
       ],
       "top": [
         "Near-nadir view, street at the bottom, lane on the right.",
-        "Roof plan about 419 by 434 px, very slightly deeper than wide, hips meeting a short ridge that runs front to back.",
+        "Roof plan about 419 by 434 px, very slightly deeper than wide, hips meeting a ridge about 96 px (about 2 m) long that runs front to back.",
         "In front of the street eave a lighter strip, the balcony deck, over the west two thirds, and a dark strip, the canopy, at the lane end. Both stand about 0.9 m past the eave."
       ]
     },
     "source_conflicts": [
-      "Catalogue text. The variant is named Garden Studio and described as a single storey with no garage, a dark fibre-cement skin and a green roof. All three images show a two-storey laneway house over a garage, in brick and cedar under a hipped metal roof. The images govern; a person should rule on the name and text before this is offered to students.",
-      "Ridge length. The roof plan shows a short ridge about 2 m long; the outline ratio there implies about 0.4 m. Built 0.7 m, with equal pitches on all four faces.",
-      "Stoop. The oblique shows two risers; the street view one. Built one step of 0.18 m to a stoop level with the door."
+      "Catalogue text. The variant was named Garden Studio and described as a single storey with no garage, a dark fibre-cement skin and a green roof. All three images show a two-storey laneway house over a garage, in brick and cedar under a hipped metal roof. The images govern. Ruled by a person on 2026-11-19: the variant is renamed Garage Suite and its text rewritten to match the images.",
+      "Ridge length. The roof plan and the oblique both show a ridge about 2 m long; equal pitches on this outline would give about 0.4 m. Built 2.0 m, with the side faces at 5 in 12 and the front and back faces steeper, as an independent review of v004 measured."
     ],
     "hidden_assumptions": [
       "The back face and the west face are not shown. The back has a glazed garden door with a step, a garage-side window and two upper windows; the west face has one window on each storey. Inferred.",
@@ -85,7 +84,7 @@
     ]
   },
   "roof_contract": {
-    "form": "hip roof, 5 in 12 on all four faces, with a short ridge front to back; standing seams square to each eave",
+    "form": "hip roof with a 2 m ridge front to back: side faces 5 in 12, front and back faces steeper; standing seams square to each eave",
     "weathering": "a single closed sheet; seams stop under the hip caps; a gutter round all four eaves drains to downpipes at the back corners"
   },
   "material_contract": {
@@ -97,7 +96,7 @@
       "brick": "#7d5040",
       "cedar": "#bb8458",
       "cedar_joint": "#7e5434",
-      "mortar": "#b4aa9c",
+      "mortar": "#957a6c",
       "panel": "#45484a",
       "panel_joint": "#2b2e31",
       "trim": "#25282b",
@@ -131,7 +130,7 @@
   "contact_contract": {
     "base_datum_m": 0.0,
     "lowest_geometry_m": 0.0,
-    "threshold_rise_m": 0.20500000000000002,
+    "threshold_rise_m": 0.34500000000000003,
     "ground": "a 20 mm paver apron 1.2 m deep in front of the garage and porch, a concrete stoop and a garden step; nothing below grade"
   },
   "camera_roster": [

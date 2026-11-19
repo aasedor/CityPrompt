@@ -1,0 +1,408 @@
+{
+  "schema": "rlasm-independent-architectural-clay-review-v1",
+  "candidate": "laneway-garden-studio-clay-v004",
+  "archetype_id": "vancouver_laneway_house",
+  "variant_id": "laneway_garden_studio",
+  "variant_index": 3,
+  "model_path": "artifacts/laneway-garden-studio/v004/laneway-garden-studio-clay-v004.glb",
+  "model_sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
+  "reviewer": "Independent AI reviewer (Claude, Anthropic model claude-opus-5-5) with no builder context. Not a human. The generator, builder tests, builder evaluation, candidate.json, README, evidence/ and integration/ were not opened.",
+  "reviewed_utc": "2026-11-19T22:41:58Z",
+  "method": "RLASM v6.1",
+  "scope": "Holistic, source-locked Gate G architectural-clay review of the exact delivered GLB for vancouver_laneway_house / laneway_garden_studio (variant 3) against its three locked catalogue references (street, oblique, roof plan). Covers fidelity, completeness of all four sides including inferred faces, roof weathering graph, openings as wall sections, supports and contacts, visibility and camera validity, from pixels first with GLB measurement as support. Per the human ruling, the images govern over the catalogue name and text. This review grants no keeper, runtime-activation or publication approval.",
+  "holistic_review_performed": true,
+  "decision": "visual_rework_required",
+  "architectural_clay_pass": false,
+  "keeper_approved": false,
+  "runtime_activation_approved": false,
+  "canonical_promotion_approved": false,
+  "human_activation_required": true,
+  "unresolved_p0": 0,
+  "unresolved_p1": 3,
+  "unresolved_p2": 10,
+  "recommended_lifecycle_state": "visual_rework_required",
+  "decision_note": "The model is clearly the right building: a two-storey laneway house over a brick double garage, a glass-railed balcony with a cedar end, a recessed corner porch under a flat canopy, a dark floor band, a cedar upper storey with a boxed corner window, a four-panel lane band and a closed standing-seam hip roof. Its massing registers well to both fitted reference cameras. The envelope, roof weathering graph, drainage, supports and grade contacts are coherent; no P0 was found. Three P1 fidelity errors are visible in the locked references. (1) The hip ridge is about 0.7 m where both the roof plan and the oblique show about 2 m, so the roof reads as a near-pyramid. (2) The corner window's lane-side glass sits 0.33 m deep in its box and reads as a solid black return from the street and oblique cameras. (3) The lane-face ground window and band slots are about half to a third of the reference widths and read as slits. Gate G requires zero P0 and P1, so the candidate needs a new bounded version (v005) with every view rerendered and a repeat independent review. The builder's stoop conflict is not a real conflict: both images show two risers.",
+  "findings": [
+    {
+      "id": "P1-01",
+      "severity": "P1",
+      "title": "Hip roof ridge is about one third of the length both locked roof views show; the roof reads as a near-pyramid",
+      "evidence": [
+        "variant_3_angle_90.jpg (top): hips meet a front-to-back ridge from about (603,349) to (603,445), 96 px long on a roof about 400 px wide; eave corners about NW (417,219), NE (794,219), SW (392,652), SE (814,654).",
+        "Reviewer perspective camera fitted to the four gutter corners and the deck/canopy front corners of the delivered GLB (6 points, RMS 12.2 px, reproduces the reference keystone): the model's 0.7 m ridge projects to (605,383)-(605,416), 33 px. A 2.0 m ridge on the same outline and heights projects to (605,353)-(605,447), within 4 px of the reference ends. Side-by-side: scratch crops/fit_top_cmp.png.",
+        "variant_3_angle_60.jpg (oblique): the ridge runs from the front hip node about (613,248) back to about (686,223), about 77 px. match_oblique.png with the builder's own fitted camera: hips meet at about (624,247)-(640,238), about 18 px; the builder camera projects the 0.7 m ridge to (625,249)-(641,240).",
+        "GLB: CLAY_METAL_ROOF is a 6-triangle hip sheet over X -0.45..8.35, Y -0.45..9.05, eave Z 6.0, ridge Z 7.833 from Y 3.95 to 4.65 (0.7 m), equal 22.6 degree pitches.",
+        "phone-roof.png: reference ridge reads as a clear segment (about 545,445 to 545,560); the model's hips nearly meet at one point (about 545,1355 to 545,1385). top.png ridge cap only about 60 px of an 810 px roof depth."
+      ],
+      "required_fix": "Re-solve the roof graph from the top and oblique views: a front-to-back ridge of about 2.0 m (1.8 to 2.4 m). Keeping the measured plan and the 6.0/7.833 m datums, this means steeper front and back hip faces (about 26 degrees) than the side faces (22.6 degrees), or a re-measured plan depth if the other views support it. Rebuild the seams, hip caps and ridge cap on the new graph. Refit match_top with a perspective camera (see P2-02) and rerender every view."
+    },
+    {
+      "id": "P1-02",
+      "severity": "P1",
+      "title": "Corner-window glass on the lane side is set 0.33 m deep in the box; from both reference cameras the wrap reads as a solid black box return",
+      "evidence": [
+        "variant_3.png: the corner window's lane pane is clearly glazed, with reflections, at about x 740-762, y 255-357, in a thin dark frame.",
+        "match_front.png (same fitted camera): the matching region, about x 755-775, y 260-372, is a solid black box return with no visible glass. Side-by-side: scratch crops/front_upper.png and crops/lane_front_cmp.png.",
+        "variant_3_angle_60.jpg: lane pane glazed at about x 727-753, y 460-567. match_oblique.png: dark recess at about x 740-760, y 460-567, with only a sliver of light. Scratch crops/lane_obl_cmp.png.",
+        "GLB: the box's lane outer face is X 8.05, the lane frame X 7.69..7.76 and the glass X 7.725, so the glass sits 0.325 m behind the box face. The box corner post is Y -0.15..0.12. The glass is visible only from near-normal views (right_side.png, roof_contact.png, reviewer r_corner_from_lane.png).",
+        "The identity contract names 'a dark-boxed corner window that wraps onto the lane face'; from the street the model does not show the wrap."
+      ],
+      "required_fix": "Bring the lane-side frame and glass to within about 0.05 to 0.10 m of the box's outer face, or make the box shallower, so the lane pane reads as glass from the street and oblique reference cameras, as in variant_3.png. Keep a reveal and the room behind. Rerender match_front, match_oblique, right_side and the closes."
+    },
+    {
+      "id": "P1-03",
+      "severity": "P1",
+      "title": "Lane-face ground-floor window and panel-band slot windows are roughly half to a third of the reference widths and read as black slits",
+      "evidence": [
+        "variant_3.png: the ground-floor lane window, about x 744-763, y 442-533 (about 20 px), is as wide as the corner window's lane pane directly above it (about 22 px). Slots in the band: upper about x 824-833, y 297-367; lower about x 824-833, y 457-527 (about 9 px each with frame).",
+        "match_front.png: the ground-floor lane window is a slit at about x 762-772, y 442-535. The builder's camera projects its 0.45 m opening to 7.2 px and the slot openings to 3.4 px. The box lane opening above it projects to 13.2 px, so the model's ground window is about half the upper pane's width, where the reference shows them equal.",
+        "variant_3_angle_60.jpg: ground window about x 722-748, y 620-713 (about 26 px); upper slot about x 838-853 (about 15 px). match_oblique.png: ground window about x 737-748 (projected opening 14.6 px); slot projected opening 7.2 px.",
+        "GLB: ground lane window opening Y 0.55..1.00 (0.45 m), glass Y 0.613..0.937 (0.324 m) at X 7.765. Band slots: opening Y 5.45..5.75 (0.30 m), glass 0.174 m wide at X 7.815. Corner-window lane opening Y 0.12..0.95 (0.83 m).",
+        "phone-street.png and phone-oblique.png: at phone scale the reference lane face carries two stacked windows and two glazed slots; the model shows a black box side, a thin slit and almost invisible slots."
+      ],
+      "required_fix": "Widen the ground-floor lane window to match the corner window's lane pane (about 0.8 m opening) and place it directly beneath it. Widen the band slots to about 0.5 m openings, near the band's back edge. Keep reveals, frames, glass and the hall/stair visible behind, then rerender the lane-facing views and match views."
+    },
+    {
+      "id": "P2-01",
+      "severity": "P2",
+      "title": "Stoop built with one riser; both references show two",
+      "evidence": [
+        "variant_3.png about x 574-740, y 583-612: an upper landing at the door and a lower tread, two nosings (scratch crops/stoop_ref.png). The builder's source conflict says the street view shows one; it shows two.",
+        "variant_3_angle_60.jpg about x 560-720, y 725-805: two risers, with the lower step projecting in front of the post.",
+        "GLB: a single concrete block Z 0..0.20 over X 5.55..7.9, Y -1.5..0, threshold 0.205 m. match_front.png about x 585-730, y 575-590 and match_oblique.png about x 575-690, y 690-780 show one thin slab (scratch crops/stoop_mod.png)."
+      ],
+      "required_fix": "Build two risers (about 0.17 m each), with the lower tread projecting in front of the canopy line as in the oblique, and raise the door threshold accordingly. Correct the declared source conflict."
+    },
+    {
+      "id": "P2-02",
+      "severity": "P2",
+      "title": "match_top is an orthographic view, not a camera fitted to the perspective roof reference",
+      "evidence": [
+        "tools/catalogue_laneway_house_pilot/cameras.json: 'match_top is an orthographic fit to the roof outline'. The phone-roof.png caption admits that ground features do not register.",
+        "The reference roof outline has a keystone (top edge about 377 px, bottom about 422 px). A reviewer pinhole fit reproduces it at 12.2 px RMS, which is what exposes the ridge error in P1-01."
+      ],
+      "required_fix": "Replace match_top with a perspective camera fitted to the top reference and rebuild the roof-plan phone board from it."
+    },
+    {
+      "id": "P2-03",
+      "severity": "P2",
+      "title": "Hairline cedar cracks inside the corner-window box reveal",
+      "evidence": [
+        "glass_close.png: thin cedar-coloured line along the right reveal at about x 1518-1522, y 100-1000, and at about x 473-477, y 130-260.",
+        "roof_contact.png: dotted cedar line at about x 372-380, y 640-760.",
+        "Reviewer renders r_corner_from_lane.png (about x 660-668, y 340-900, plus dots along the head) and r_box_top.png (about x 1215-1230, y 770-1110): the cedar wall shows through a seam between the box trim and the opening liner."
+      ],
+      "required_fix": "Close the box-to-opening seam so the box liner meets the frame continuously on all four sides."
+    },
+    {
+      "id": "P2-04",
+      "severity": "P2",
+      "title": "Gap in the garage's west interior lining shows the unlit back of the brick skin through the garage-door lites",
+      "evidence": [
+        "facade_close.png: dark brown vertical band inside the first lite at about x 300-312, y 545-590. entrance_contact.png: dark block inside the second lite at about x 120-180, y 405-470 (scratch crops/z_garage_lite.png).",
+        "Reviewer ray-cast from the facade_close camera through pixel (306,575): it passes the lite glass at (0.847,-1.36,2.073) and hits CLAY_BRICK at the exterior face X 0.0 (Y 0.95, Z 2.167) from inside.",
+        "GLB: the CLAY_INTERIOR lining at X 0.3 covers Y -1.2..0.0 and 0.3..5.6 but not Y 0.0..0.3, over the full Z 0..2.85."
+      ],
+      "required_fix": "Close the lining strip X 0.3, Y 0.0..0.3 (and check the matching strips on the other garage walls)."
+    },
+    {
+      "id": "P2-05",
+      "severity": "P2",
+      "title": "Faint light vertical lines on the rear facade at long range where an interior partition meets the rear wall",
+      "evidence": [
+        "rear.png: two 1-px light lines at about x 721 and 733, y 340-650, crossing the soffit, cedar and floor band (scratch crops/z_rear_line.png). Reproduced by the reviewer with AO on and off (out/r2/rear_same.png, rear_noao.png, rear_far_zoom.png). Absent at 25 m and 3.9 m (rear_mid_zoom.png, r_rear_wall.png).",
+        "GLB: the lines coincide with partition faces at X 4.5 and 4.6 (CLAY_INTERIOR, Y 5.0..8.3, Z 3.15..5.78) ending on the rear wall's inner face at Y 8.3. The exterior cedar at Y 8.6 has no vertices there."
+      ],
+      "required_fix": "Inspect at runtime map distances. If the bleed persists, stop the partition short of the envelope's inner face or merge it into the inner lining so no interior edge sits on the wall section."
+    },
+    {
+      "id": "P2-06",
+      "severity": "P2",
+      "title": "Brick reads as striped siding, and one west-face bed joint stops at the projection",
+      "evidence": [
+        "left_side.png and rear.png: bed-joint-only mortar strips in high contrast read as horizontal siding; reference variant_3.png shows running-bond brick.",
+        "rear_side.png about x 790-1150, y 640-880: diagonal moire banding on the west brick face at distance.",
+        "left_side.png about x 1130-1275, y 793: the mortar course at Z 1.596 exists only on Y -1.5..0 and is missing for Y >= 0 (37 courses on the projection, 36 behind)."
+      ],
+      "required_fix": "Make the joint course set continuous and reduce joint contrast or width, so the texture-free brick does not moire or read as siding. Head joints remain optional for clay."
+    },
+    {
+      "id": "P2-07",
+      "severity": "P2",
+      "title": "Balcony solid west end lacks the dark coping and reads thinner than the reference",
+      "evidence": [
+        "variant_3_angle_60.jpg about x 283-330, y 425-525: a capped, thicker cedar end.",
+        "GLB: cedar end X -0.03..0.09 (0.12 m), top Z 4.22, no cap. balcony_contact.png about x 510-825, y 510-735; reviewer r_balc_west.png."
+      ],
+      "required_fix": "Add a dark coping cap and thicken the end to match the oblique."
+    },
+    {
+      "id": "P2-08",
+      "severity": "P2",
+      "title": "Hip caps end in square stub blocks short of the eave corners",
+      "evidence": [
+        "roof_contact.png about x 795-860, y 575-610; reviewer r_hip_corner_se.png and r_hip_corner_nw.png: rectangular-section hip caps finish in square blocks about 0.3 m before the gutter corner.",
+        "The reference oblique shows slim caps running to the gutter corner."
+      ],
+      "required_fix": "Taper or mitre the hip-cap ends to finish at the eave corner over the gutter."
+    },
+    {
+      "id": "P2-09",
+      "severity": "P2",
+      "title": "Porch door/sidelight proportion differs from the reference",
+      "evidence": [
+        "variant_3.png about x 628-700: a glass door and sidelight of nearly equal width.",
+        "front.png about x 1020-1185: a wide door leaf and a narrow sidelight (glass X 5.813..7.187)."
+      ],
+      "required_fix": "Rebalance to two near-equal glazed leaves."
+    },
+    {
+      "id": "P2-10",
+      "severity": "P2",
+      "title": "One near-black trim value used for floor band, fascia, gutter and frames; heavy box border and roof outline",
+      "evidence": [
+        "variant_3.png about y 395-430: the floor band and canopy fascia are charcoal grey, lighter than the black window frames; the gutter is a light metal edge in variant_3_angle_90.jpg.",
+        "match_front.png and front.png: band, fascia, gutter and frames share CLAY_TRIM #25282b and read as one black value. match_top.png and phone-roof.png show a heavy black roof border. The corner-box border is about 15 px in match_front.png against about 6-8 px in variant_3.png."
+      ],
+      "required_fix": "Give the band/fascia and gutter their own charcoal and metal values, separate from the frames, and slim the box border."
+    }
+  ],
+  "source_conflict_opinions": [
+    {
+      "conflict": "Catalogue name/text (single-storey Garden Studio, no garage, fibre-cement, green roof) versus three images of a two-storey house over a garage in brick and cedar under a hipped metal roof.",
+      "builder_resolution": "Images govern; a person to rule on name and text.",
+      "reviewer_opinion": "Agree. A person has ruled that the images govern and the variant will be renamed. The model follows the images. The name 'garden-studio' remains in the candidate id and manifest title until the rename; keep it out of student-facing labels."
+    },
+    {
+      "conflict": "Ridge length: the roof plan shows about 2 m; equal pitches on the plan outline imply about 0.4 m. Built 0.7 m with equal pitches.",
+      "builder_resolution": "Compromise of 0.7 m with equal pitches.",
+      "reviewer_opinion": "Disagree. Equal pitches are an assumption, not image evidence. A pinhole camera fitted to the top reference (12.2 px RMS) shows the model's own outline is consistent with a ridge of about 2.0 m (ends within 4 px) when the front and back faces are steeper. The oblique also shows a long ridge (about 77 px against about 18 px). Both images agree, so this is not a source conflict. See P1-01."
+    },
+    {
+      "conflict": "Stoop: the oblique shows two risers; the builder says the street view shows one. Built one step of 0.18 m.",
+      "builder_resolution": "One riser.",
+      "reviewer_opinion": "Disagree on the premise. variant_3.png also shows two nosings (landing and lower tread) at about x 574-740, y 583-612. Both images agree on two risers. See P2-01."
+    }
+  ],
+  "hidden_view_opinions": [
+    {
+      "assumption": "Back face: glazed garden door with a step, a window on the brick (garage-side) part, two upper windows. West face: one window per storey.",
+      "reviewer_opinion": "Plausible and consistent with the visible grammar: dark-framed windows, cedar above the band, brick below on the garage block, concrete plinth and step. The model shows it coherently (rear.png, left_side.png, rear_side.png, reviewer r_garden.png and r_west_back.png). Acceptable as a declared inference; a human should accept it explicitly."
+    },
+    {
+      "assumption": "Brick wraps the whole garage block, including the west side and the garage part of the back.",
+      "reviewer_opinion": "Plausible. The oblique shows the brick returning on the west end of the projection. The continuous floor band over a brick base reads consistently on all sides. Acceptable as inferred."
+    },
+    {
+      "assumption": "Schematic interiors: garage, back room, entry hall with a straight stair along the lane wall lit by the slots; living room across the front, bedroom and bath behind upstairs.",
+      "reviewer_opinion": "Adequate for clay. Rooms, floors, ceilings, the stair through the front door and the stairwell to the upper slot all read through the glazing (glass_close.png, front.png, reviewer r_upper_room.png). One lining gap is visible through the garage lites (P2-04)."
+    },
+    {
+      "assumption": "A downpipe at the back corner of each side face; the west one inferred.",
+      "reviewer_opinion": "Accepted. GLB downpipes at X -0.08..-0.01 and X 7.91..7.99, Y 8.31..8.39, with goosenecks to the gutter, reaching grade (Z 0.05). Coherent in reviewer r_eave_under_ne.png and r_downpipe_nw.png."
+    },
+    {
+      "assumption": "People, cars, planting, lane, street and neighbours are site context, not model.",
+      "reviewer_opinion": "Agree."
+    }
+  ],
+  "reference_observations": [
+    "Lock: all three reference hashes match the manifest (fdff5758..., d0913322..., e09ec32b...).",
+    "Street (variant_3.png, 1024x768): two storeys. Brick garage block with a flush dark door with four top lites; brick piers with lamps and a mailbox. Charcoal floor band about 0.4 m wrapping the canopy and the lane side. Recessed corner porch: cedar wall, glass door and sidelight of near-equal width, cedar post, two-riser concrete stoop. Cedar upper storey: four-panel sliding doors behind a glass guard with dark posts, top rail and a cedar end. Dark-boxed corner window: wide pane plus narrow pane with transom on the street, a clearly glazed tall pane on the lane. Lane face: a ground window directly below and as wide as that pane; a proud 4-panel bronze-grey band with two glazed slots near its back edge; cedar beyond; downpipe at the back corner. Low standing-seam hip roof, gutter, cedar soffit.",
+    "Oblique (variant_3_angle_60.jpg, 1195x896): the garage block, balcony and canopy project about 1.5 m. The eave covers part of the balcony. The balcony west end is a capped, solid cedar wall. A ridge of about 77 px runs back from the front hip node. Two-riser stoop; the lane-face windows and slots read as glazing.",
+    "Top (variant_3_angle_90.jpg, 1195x896): perspective near-nadir view with keystone. Hip roof with a front-to-back ridge (about 96 px on a roof about 400 px wide), seams square to each eave. In front of the street eave: light balcony deck over about the west 70 percent and a dark canopy at the lane end, both about 1 m beyond the eave line.",
+    "All three references are generated photographic images with no scale. Small geometric inconsistencies are possible, but on the ridge, stoop and lane openings the views agree with each other."
+  ],
+  "positive_observations": [
+    "Correct exact building, not a generic family member. Edge overlays of match_front.png and match_oblique.png on the references (scratch crops/ov_front.png, ov_obl.png) align the eave line, storey datum, garage block, balcony, canopy, porch, panel band and corner box.",
+    "Garage block: 4.25 x 2.4 m flush door with four lites (mullions at X 1.49, 2.52, 3.54) recessed in a 0.3 m brick reveal; piers 0.46 m and 0.86 m with lamps and mailbox, as in the reference.",
+    "Balcony on the garage roof: deck Z 3.13, glass guard with dark posts and top rail about 1.09 m above the deck, glass return at the east end, cedar solid west end at guard height, flush with the west face.",
+    "Corner porch recessed 1.5 m under a flat canopy that continues the floor band. Cedar post X 7.60..7.74 from the stoop (Z 0.18) to the porch soffit (Z 2.85). The door section shows the hall and stair behind.",
+    "Dark floor band Z 2.85..3.25 continuous on all four faces, 0.12 m proud. Four-panel lane band 2.8 m wide, grade to eaves, 0.05 m proud, with joints and slots near its back edge.",
+    "Roof is a closed weathering graph: a single sheet, fascia and gutter on four eaves, cedar soffit under the overhang, hip caps and ridge cap with node pieces. Standing seams are square to each eave and stop under the caps. Goosenecks and downpipes at both back corners run to grade (reviewer r_ridge_close.png, r_eave_under_ne.png, r_eave_under_sw.png).",
+    "Openings are wall sections: reveal, recessed frame, glass at opacity 0.42 in review, occupied rooms behind (glass_close.png, reviewer r_upper_room.png). No glowing panes.",
+    "Texture-free clay: 0 images, 0 textures, 0 samplers; 17 named source-palette materials; 6,726 triangles. Nothing below grade (min Z 0.0); concrete plinth under all cedar walls; paver apron and rear garden step.",
+    "No floating parts: the only bbox-isolated components are cedar joint strips 6 mm proud of the wall. No visible z-fighting: every coincident cross-material pair is a hidden contact face or a same-colour back-to-back interior face.",
+    "The builder's renders reproduce from this exact GLB: the reviewer rerender of rear.png with the same camera differs by at most 22/255 on 667 of 1,920,000 pixels (AO noise).",
+    "All whole-building views (front, front_corner, aerial, top, left_side, right_side, rear, rear_side) frame grade, the full footprint and the roof with a visible neutral margin.",
+    "Source conflicts and hidden-view assumptions are declared openly in the prework manifest."
+  ],
+  "for_human_acceptance": [
+    "Not approved: decision visual_rework_required (0 P0, 3 P1, 10 P2). A v005 must fix P1-01..P1-03, rerender the complete camera set and be independently re-reviewed before any architectural-clay pass.",
+    "Rename the variant from 'Garden Studio' per the existing ruling, and remove 'garden studio' wording from any student-facing label of this candidate.",
+    "Decide whether to accept the inferred back and west faces (garden door, windows, brick wrap) as shown; they are plausible but unverified by any source image.",
+    "Runtime activation is a separate human step under the architectural-clay profile (fixed native scale, exact variant only); this review does not test runtime integration.",
+    "After the fixes, review P2-05 (rear bleed lines) in the runtime globe at map distances, where depth precision is worse than in the review renderer."
+  ],
+  "limitations": [
+    "AI reviewer with no builder context; not a human judgement.",
+    "The references are generated images with no scale. Camera fits are approximate: builder front and oblique RMS 12.4 and 13.9 px, reviewer top fit 12.2 px. Pixel widths are read to about +/- 2-3 px. Conclusions rely on the relative proportions stated in the findings.",
+    "Rendering used the repository review renderer (three.js in headless SwiftShader with the runtime glass replacement), not the City Prompt runtime globe. Runtime integration, placement and recovery were not tested.",
+    "The cause of the long-range rear bleed lines (P2-05) is inferred, not proven.",
+    "By instruction, the generator, builder tests, builder verification, candidate.json, README, evidence/ and integration/ were not read; build-report.json and delivery-verification.json in the version folder were also not read. Metadata counters were not used as visual proof.",
+    "Interiors were checked only for what shows through glazing, not as a full programme review."
+  ],
+  "inspected_files": [
+    {
+      "path": "artifacts/laneway-garden-studio/v004/laneway-garden-studio-clay-v004.glb",
+      "sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
+      "use": "Hash verified against the expected value. Parsed read-only: bounds, materials, components, per-plane faces, coplanar overlaps, floating parts, lining coverage, ray casts. Rerendered by the reviewer from 27 views with a scratch copy of render.cjs and the reviewer's own cameras."
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3.png",
+      "sha256": "fdff57581c6477f1543103301e0d701270995f38305af93220b20026c5327284",
+      "use": "Street reference; hash matches the manifest. Inspected at full resolution with zoomed crops of the roof crest, corner window, lane face, stoop, sliders and garage; edge-overlay registration with match_front."
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3_angle_60.jpg",
+      "sha256": "d0913322afebd0defcc9607f219a53cd982b98e0f301e24f78435b5cae227c96",
+      "use": "Oblique reference; hash matches the manifest. Full resolution, ruler crop of the ridge, lane face, stoop and balcony; edge overlay with match_oblique."
+    },
+    {
+      "path": "frontend/public/archetypes/buildings/vancouver-laneway-house/variant_3_angle_90.jpg",
+      "sha256": "e09ec32b259874862c351db7915243d367af6a2082ada5561ac1533808cb1243",
+      "use": "Roof-plan reference; hash matches the manifest. Ruler crop of corners and ridge; perspective camera fitted by the reviewer and model rerendered for comparison."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/prework-manifest.json",
+      "sha256": "0243a89cc8a345eec542656bbab1027ca51a739fdb503a7871fcccd519b82d07",
+      "use": "Read: measured contract, declared source conflicts and hidden-view assumptions."
+    },
+    {
+      "path": "docs/RLASM_LATEST_METHOD.md",
+      "sha256": "c684ca1c9d9a6442ecb3247051e91936342f5e00e412e9213c46ad0b2373c2c0",
+      "use": "Read: Gate G and the architectural-clay delivery profile."
+    },
+    {
+      "path": "tools/catalogue_laneway_house_pilot/review.html",
+      "sha256": "f2af47dded2aa9d6ffaea6994bf603e3fe193f1216248914177ad6ea9c03f98f",
+      "use": "Read and used, unmodified, via the local static server, as the render page for reviewer renders."
+    },
+    {
+      "path": "tools/catalogue_laneway_house_pilot/render.cjs",
+      "sha256": "6b98434717330cbc969c729fb36f5fd97c6cf251d6a7666c05ff68f235f46366",
+      "use": "Read and copied, unmodified, to scratch with reviewer cameras."
+    },
+    {
+      "path": "tools/catalogue_laneway_house_pilot/cameras.json",
+      "sha256": "daf7665b3c2d91e1ff4a0b04772d1d7c03a2ddb18e9fb8caae33639854e6b8fe",
+      "use": "Read the builder cameras; used match_front and match_oblique parameters to project model coordinates; noted that match_top is orthographic."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/aerial.png",
+      "sha256": "b1a62bd98aec95065a268824ecce99549e3267c43a934ef7e58c0312d5db25cf",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/architecture_close.png",
+      "sha256": "8173e127d360d32145d888fc746487d3c6f801b43fa6ffaaf7f77b16e6adf105",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/balcony_contact.png",
+      "sha256": "b257343337c2224e6c57eabcb4c53d624602954584981ffe0c6ef7b35bcc35d4",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/band_contact.png",
+      "sha256": "8c3bbcd8e11109dca45337287e892b7a3ab3cebed0552f68767bf899d52dc57b",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/entrance_contact.png",
+      "sha256": "ccaa6aefc0eab45f3d8875714dc5282631923263bc58a0759de367bc9ced800c",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/facade_close.png",
+      "sha256": "16354a7f1d78eea37e3d15164508808ab98576d15217d580227a72e49705ae28",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/front.png",
+      "sha256": "9cee4e4f9b8870c518cff037db578359bd023e3ce9920e29f59e114af2c6dd4d",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/front_corner.png",
+      "sha256": "061e4b7f740093c1f832c7ab25bc0e90663f55f94b82b70cee5ed76bb5b8a908",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/glass_close.png",
+      "sha256": "0e1292592416c6ff5161d07b0b8e6225f7ece4277a99ac4076fe197c51831204",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/left_side.png",
+      "sha256": "19fdcf146e8c08f5d45bf9ca2d1b9fbbbe5b202f2fc2bc89ad6f5d702f8873fd",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/match_front.png",
+      "sha256": "f1c546bd40a931deb8c16ded49c3426d7f2b3e86e0df71859a561259ce38fd91",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/match_oblique.png",
+      "sha256": "3af26873f94786eec8bad64b04ac7003af21c767a6ce57b361ce16de5e539dbb",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/match_top.png",
+      "sha256": "0b14a8ecb060cf2d389734608787bcab6271c2c2bfe00685dfe06c9532937622",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/rear.png",
+      "sha256": "e62b82c1abe763401c06262853cb795d9ba3c9e8a9a3f17be98c50ac75ac839d",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/rear_side.png",
+      "sha256": "d7ee9ab1199678bbb64c3ddece727e3007c6e1a1a55608539a53bf6308515b00",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/right_side.png",
+      "sha256": "d7f807a710385643582403bfde85632e78505ffad7c59c44b6bbaff2811081af",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/roof_contact.png",
+      "sha256": "b844d5571039e7a4741cec1d42bf927c2f8f32207c6d6dd658b40a2400f12ad0",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/renders/top.png",
+      "sha256": "99cbffb4da8ed156d04164445c21b81850907deb9e90f5021c40abc613ed7919",
+      "use": "Builder render inspected at full resolution, with zoomed crops where cited."
+    }
+  ],
+  "render_resolution": {
+    "builder_renders": "15 mandatory views at 1600x1200; match_front at 1024x768; match_oblique and match_top at 1195x896 (reference resolution). All 18 opened at full resolution.",
+    "reviewer_renders": "27 renders of the exact GLB at 1600x1200, plus a fitted perspective top at 1195x896, in scratch out/r1 and out/r2 under /tmp/claude-0/-home-user-CityPrompt/68388952-4a91-5986-952c-be31d5cd905a/scratchpad/laneway-review/"
+  },
+  "phone_boards_inspected": [
+    {
+      "path": "artifacts/laneway-garden-studio/v004/boards/phone-construction.png",
+      "sha256": "cf6767b20648ef8ddb5e226028218bff693460b884593b62738dfbea636b10d2",
+      "size": "1080x1920"
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/boards/phone-oblique.png",
+      "sha256": "4098bf3fd8124da9d301b54dc473a4c6d163b2f16f2136b715187e849e5e62da",
+      "size": "1080x1920"
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/boards/phone-roof.png",
+      "sha256": "89cdc9be37a7c9e05ce17ce302fe6b354adbf2eedb7f703833000d4e94b17798",
+      "size": "1080x1920"
+    },
+    {
+      "path": "artifacts/laneway-garden-studio/v004/boards/phone-street.png",
+      "sha256": "91ab9744468a62875fd8d024f25db4a8f7554e853cdbb3004bb957311670581b",
+      "size": "1080x1920"
+    }
+  ]
+}

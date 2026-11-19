@@ -1,11 +1,11 @@
 {
-  "candidate": "laneway-garden-studio-clay-v004",
-  "model_sha256": "64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15",
+  "candidate": "laneway-garden-studio-clay-v006",
+  "model_sha256": "e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
   "independent_approval": false,
   "views_inspected": {
-    "v004": [
+    "v006": [
       "renders/aerial.png",
       "renders/architecture_close.png",
       "renders/balcony_contact.png",
@@ -24,20 +24,10 @@
       "renders/right_side.png",
       "renders/roof_contact.png",
       "renders/top.png",
-      "boards/phone-street.png",
+      "boards/phone-construction.png",
       "boards/phone-oblique.png",
       "boards/phone-roof.png",
-      "boards/phone-construction.png"
-    ],
-    "v004 extra audit views, not in the roster": [
-      "under the porch canopy",
-      "back door and step",
-      "west downpipe and gooseneck",
-      "back soffit corner and lane downpipe",
-      "through the ground slot window",
-      "through the garage door lites",
-      "low west front",
-      "roof ridge from above"
+      "boards/phone-street.png"
     ]
   },
   "findings": [
@@ -52,7 +42,7 @@
     "Every whole view keeps the building in frame with neutral margin; delivery checks pass (77)."
   ],
   "open_notes": [
-    "The variant is named Garden Studio, and its catalogue text describes a single-storey studio with no garage, dark fibre cement and a green roof. All three images show this two-storey house over a garage. The images govern; a person should rule on the name and text.",
+    "Ruled 2026-11-19: the variant is renamed Garage Suite and its catalogue text describes the house the images show.",
     "The back and west faces are not shown in any reference; their openings, the brick on the west and back of the garage block, and the west downpipe are inferred.",
     "Brick head joints are left out as surface texture; bed joints are geometry.",
     "Interiors are schematic: garage, back room, entry hall with a straight stair, living room, bedroom and bath partitions. The stair-well guard reads as a low white block through the corner window.",
@@ -63,5 +53,20 @@
     "laneway-garden-studio-clay-v001": "Corner window drawn as a box on the street face only, with a separate narrow lane window; panel band too narrow and too far back; brick and roof colours off the reference; balcony end screen too tall; downpipes on the back wall.",
     "laneway-garden-studio-clay-v002": "Fitted cameras left about 20 px RMS residual: garage door, brick block and corner window offset by 0.3 to 0.45 m, eaves 0.15 m too deep, roof about 0.45 m too low.",
     "laneway-garden-studio-clay-v003": "The corner window box ran along the lane face to the panel band, because the lane pane height was read as its width. Brick read as plain brown with no coursing."
+  },
+  "response_to_independent_review_of_v004": {
+    "P1-01 ridge too short": "Fixed. The ridge is 2.0 m, front to back. The side faces stay at 5 in 12 and the ridge at 7.83 m, so the front and back faces are steeper, about 26 degrees. Seams, hip caps and ridge cap follow the new graph; a test samples the sheet against the lowest of its four face planes.",
+    "P1-02 corner window lane glass hidden": "Fixed. The box stands 0.05 m proud instead of 0.15 m and both corner frames sit 0.01 m into the reveal, so the glass is 0.095 m behind the box face (was 0.325 m). The comparison cameras now light the lane face as the street view does. The lane pane reads as glass in match_front and match_oblique.",
+    "P1-03 lane windows too narrow": "Fixed. The ground-floor lane window has the same 0.87 m opening as the corner window's lane pane and stands directly beneath it. Both band slots are 0.5 m, near the band's back edge; the stair now ends at y 5.20, before the ground slot.",
+    "P2-01 stoop one riser": "Fixed. Two risers of about 0.17 m: a 0.16 m lower step in front of the post, then the landing, level with the door at 0.34 m. The hall floor and the back door rise to match, with a two-step garden landing. The declared conflict is withdrawn.",
+    "P2-02 match_top orthographic": "Open. The plan view stays orthographic.",
+    "P2-03 hairline cracks in the corner box": "Fixed. A filler block behind the corner post runs out to both frames, so no cedar shows between box and frames.",
+    "P2-04 garage lining gap": "Fixed. The west lining runs the full depth to Y 0.",
+    "P2-05 rear partition lines": "Partly. The upper partitions now stop 20 mm short of the wall linings; long-range rendering not re-measured.",
+    "P2-06 brick reads as siding": "Fixed. Mortar contrast lowered and every course is continuous across cell edges, including the one at 1.596 m.",
+    "P2-07 balcony end thin, no coping": "Fixed. The cedar end is 0.23 m thick with a dark coping.",
+    "P2-08 hip cap stubs": "Open.",
+    "P2-09 porch door proportion": "Open; the entry opening is taller (to 2.65 m) with the raised floor.",
+    "P2-10 single trim value": "Open."
   }
 }

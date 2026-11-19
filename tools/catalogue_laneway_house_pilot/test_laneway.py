@@ -57,6 +57,14 @@ def test_nothing_below_grade_and_the_ridge_under_the_laneway_limit():
     assert abs(hi[0] - lo[0] - native['width']) < 1e-3 and abs(hi[1] - lo[1] - native['depth']) < 1e-3 and abs(hi[2] - native['height']) < 1e-3
 
 
+def test_the_ridge_is_two_metres_and_the_side_faces_are_five_in_twelve():
+    ridge = [p for t in tris('metal_roof') for p in t if abs(p[2] - max(q[2] for s in tris('metal_roof') for q in s)) < 1e-6]
+    ys = sorted({round(p[1], 6) for p in ridge})
+    assert abs(ys[-1] - ys[0] - build.RIDGE) < 1e-6 and abs(build.RIDGE - 2.0) < 1e-9
+    half = (build.WIDTH + 2 * build.OVERHANG) / 2
+    assert abs(ridge[0][2] - (build.FASCIA_TOP + half * build.PITCH)) < 1e-6
+
+
 def test_the_roof_is_one_hipped_sheet_at_the_right_pitch():
     x0, x1 = -build.OVERHANG, build.WIDTH + build.OVERHANG
     y0, y1 = -build.OVERHANG, build.DEPTH + build.OVERHANG
@@ -72,8 +80,7 @@ def test_the_roof_is_one_hipped_sheet_at_the_right_pitch():
                 if u >= -1e-9 and v >= -1e-9 and u + v <= 1 + 1e-9:
                     over.append(u * a[2] + v * b[2] + (1 - u - v) * c[2])
             assert len(over) == 1, (x, y, over)
-            inward = min(x - x0, x1 - x, y - y0, y1 - y)
-            assert abs(over[0] - (build.FASCIA_TOP + inward * build.PITCH)) < 1e-6
+            assert abs(over[0] - build.roof_height(x, y)) < 1e-6
 
 
 def test_every_seam_stands_on_the_roof_and_under_the_caps_at_its_inner_end():
@@ -82,9 +89,8 @@ def test_every_seam_stands_on_the_roof_and_under_the_caps_at_its_inner_end():
     for t in tris('seam'):
         for x, y, z in t:
             assert x0 - .2 <= x <= x1 + .2 and y0 - .2 <= y <= y1 + .2
-            inward = min(x - x0, x1 - x, y - y0, y1 - y)
-            if inward > -1e-6:
-                assert z >= build.FASCIA_TOP + inward * build.PITCH - .035, (x, y, z)
+            if min(x - x0, x1 - x, y - y0, y1 - y) > -1e-6:
+                assert z >= build.roof_height(x, y) - .035, (x, y, z)
 
 
 def test_the_corner_window_box_wraps_the_corner_and_stops_at_its_lane_pane():
@@ -118,12 +124,19 @@ def test_board_lines_and_mortar_joints_never_cross_an_opening():
                     assert not (a < u < b and c < z < d and abs(n) < .02), (role, key, o['kind'])
 
 
+def test_lane_windows_match_the_corner_pane_and_the_slots_are_half_a_metre():
+    ground, slot, corner, upper_slot = build.OPENINGS['lane']
+    assert ground['u'] == corner['u'], 'the ground window stands directly under the corner pane, as wide'
+    for o in (slot, upper_slot):
+        assert abs(o['u'][1] - o['u'][0] - .5) < 1e-9
+
+
 def test_every_opening_has_glass_set_back_in_its_reveal():
     for key, face in FACES.items():
         for o in build.OPENINGS[key]:
             (a, b), (c, d) = o['u'], o['z']
             found = [t for t in tris('glass') if all(a - 1e-6 <= local(face, p)[0] <= b + 1e-6 and c - 1e-6 <= p[2] <= d + 1e-6
-                                                     and -build.WALL < local(face, p)[1] < -.05 for p in t)]
+                                                     and -build.WALL < local(face, p)[1] < -.02 for p in t)]     # the corner panes sit near the box face, as the photos show
             assert found, (key, o['kind'])
 
 
@@ -131,8 +144,10 @@ def test_balcony_guard_height_and_its_solid_cedar_end():
     assert build.RAIL_TOP - build.DECK >= 1.07
     rails = [t for t in tris('trim') if all(abs(p[2] - build.RAIL_TOP) < 1e-6 for p in t)]
     assert rails, 'top rail'
-    end = [t for t in tris('cedar') if all(p[0] <= .1 and p[1] < 0 for p in t)]
+    end = [t for t in tris('cedar') if all(p[0] <= build.END + 1e-6 and p[1] < 0 and p[2] > build.DECK for p in t)]
     assert max(p[2] for t in end for p in t) == build.RAIL_TOP
+    coping = [t for t in tris('trim') if all(p[0] <= build.END + .03 and p[1] <= 1e-6 and abs(p[2] - build.RAIL_TOP - .04) < 1e-6 for p in t)]
+    assert coping, 'a dark coping caps the solid end'
 
 
 def test_stair_risers_are_equal_and_rise_to_the_upper_floor():
@@ -156,4 +171,4 @@ def test_entrances_are_one_front_door_one_garden_door_and_the_garage():
     assert set(doors) == {'front door', 'garden door', 'garage door'}
     assert doors['front door']['clear_width_m'] >= .8 and doors['garden door']['clear_width_m'] >= .65
     assert doors['garage door']['clear_width_m'] >= 4.2
-    assert all(door['rise_m'] <= .21 for door in doors.values())
+    assert all(door['rise_m'] <= .35 for door in doors.values())       # two steps of about 0.17 m

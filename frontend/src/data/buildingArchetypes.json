@@ -25651,22 +25651,22 @@
                 },
                 {
                       "id": "laneway_garden_studio",
-                      "label": "Garden Studio",
+                      "label": "Garage Suite",
                       "thumbnailUrl": "/archetypes/buildings/vancouver-laneway-house/variant_3.png",
-                      "description": "Single-storey garden studio laneway house without garage, maximizing living space on the ground floor. Large sliding glass doors opening to a private garden courtyard between the laneway house and main house. Green roof with native plantings. Used as artist studio, home office, or independent dwelling for family member. The most garden-integrated of the laneway typologies.",
+                      "description": "Two-storey laneway house with the home above a double garage. A brick garage block carries a glass-railed balcony, a recessed corner porch sits under a flat canopy, and the cedar-clad upper storey has sliding doors and a corner window that wraps onto the lane side. Low hipped standing-seam metal roof. Used as a rental suite, a home for a family member or a home office over parking.",
                       "facadeDetail": {
-                            "primaryMaterial": "dark grey fibre cement panel with large-format sliding glass doors at garden side",
-                            "secondaryMaterial": "vertical cedar screen at lane-facing side for privacy, steel pergola at garden entrance",
-                            "groundFloor": "single-storey living space at grade, no garage, sliding glass walls to garden courtyard",
-                            "colorScheme": "dark grey panel, natural cedar screen, extensive glazing, green roof and garden"
+                            "primaryMaterial": "horizontal cedar siding on the upper storey and red-brown brick on the garage block",
+                            "secondaryMaterial": "charcoal trim, floor band and window frames, and a band of dark fibre cement panels with slot windows on the lane side",
+                            "groundFloor": "double garage with a sectional door glazed along its top, and a recessed corner entry porch with a cedar post and concrete stoop",
+                            "colorScheme": "natural cedar, red-brown brick, charcoal trim and a grey metal roof"
                       },
                       "roofDetail": {
-                            "form": "flat green roof with native plantings, slight slope for drainage",
-                            "material": "waterproof membrane with growing medium and native grasses, sedum, and wildflowers"
+                            "form": "low hipped roof with a short ridge and modest eaves",
+                            "material": "grey standing-seam metal with dark fascia and gutters"
                       },
                       "shadeId": null,
                       "palette": {
-                            "primary": "#6A8A5A"
+                            "primary": "#BB8458"
                       }
                 }
           ],

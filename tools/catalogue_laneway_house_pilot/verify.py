@@ -54,9 +54,9 @@ def outline_points():
     garden step at grade, the gutters at the eaves, and the ridge."""
     o = build.OVERHANG + .12
     ridge = build.FASCIA_TOP + (build.WIDTH + 2 * build.OVERHANG) / 2 * build.PITCH + .05
-    points = [(x, y, 0.0) for x in (0.0, build.WIDTH) for y in (-build.PROJECT - build.APRON, build.DEPTH + .9)]
+    points = [(x, y, 0.0) for x in (0.0, build.WIDTH) for y in (-build.PROJECT - build.APRON, build.DEPTH + .95)]
     points += [(x, y, build.FASCIA_TOP) for x in (-o, build.WIDTH + o) for y in (-o, build.DEPTH + o)]
-    points += [((build.WIDTH) / 2, y, ridge) for y in (build.DEPTH / 2 - .35, build.DEPTH / 2 + .35)]
+    points += [((build.WIDTH) / 2, y, ridge) for y in (build.DEPTH / 2 - build.RIDGE / 2, build.DEPTH / 2 + build.RIDGE / 2)]
     return points
 
 
@@ -136,7 +136,7 @@ def main():
     checks['ridge under 8.5 m'] = native['height'] < 8.5
     doors = report['entrances']['doors']
     checks['one street door, one garden door, one garage door'] = sorted(d['kind'] for d in doors) == ['front door', 'garage door', 'garden door']
-    checks['every door threshold at most one step above grade'] = all(d['rise_m'] <= .21 for d in doors)
+    checks['every door threshold at most two steps above grade'] = all(d['rise_m'] <= .36 for d in doors)
     for name in WHOLE_VIEWS:
         checks[f'camera margin {name}'] = max(abs(v) for v in view_extent(roster[name])) <= .94
     for name in build.CAMERAS:

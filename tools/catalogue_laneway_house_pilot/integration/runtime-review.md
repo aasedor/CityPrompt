@@ -10,13 +10,13 @@ No pass is carried over from any other archetype.
 ## Candidate and scope
 
 - Kind: building
-- Archetype ID and exact variant ID: `vancouver_laneway_house` / `laneway_garden_studio` (variant 3, "Garden Studio")
-- Model SHA-256 or procedural recipe ID/revision/hash: `64ef0bc10b154be531f7de59914526d935f5cbb01be9cbc069be6356c12ddc15`, candidate `laneway-garden-studio-clay-v004`, 337900 bytes. Rebuilt byte for byte by `tools/catalogue_laneway_house_pilot/build.py`
+- Archetype ID and exact variant ID: `vancouver_laneway_house` / `laneway_garden_studio` (variant 3, "Garage Suite", formerly "Garden Studio")
+- Model SHA-256 or procedural recipe ID/revision/hash: `e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3`, candidate `laneway-garden-studio-clay-v006`, 335744 bytes. Rebuilt byte for byte by `tools/catalogue_laneway_house_pilot/build.py`
 - Runtime source commit and integration-checklist version: not run. Branch based on `deployment-version`; checklist as at that commit
 - Reviewer, date, project URL, viewport/device/input: none. No project was opened
 - Vacant test site, protected reference, disposable test project: none
 - Mixed-scene project and separate oversized-candidate project, if applicable: none
-- Supported plot dimensions, axes/base datum, reshape/repetition behavior: declared, not tested. Metres. In the GLB, Y is up, east is +X and the street side faces +Z; the lane runs along the east side. The origin is at grade at the west end of the upper storey's street face, not at the centre. Base datum Y = 0; nothing lies below it. Complete native envelope 9.04 m wide by 12.2 m deep by 7.88 m high, including the gutters, the 1.2 m paver apron in front of the garage and porch, and the garden step. Walls 7.9 m by 10.1 m. `fixed_native`: move and rotate only, no stretch, no repetition. Suggested plot 11 m by 14 m. The catalogue suggests 8 m by 9 m for this archetype
+- Supported plot dimensions, axes/base datum, reshape/repetition behavior: declared, not tested. Metres. In the GLB, Y is up, east is +X and the street side faces +Z; the lane runs along the east side. The origin is at grade at the west end of the upper storey's street face, not at the centre. Base datum Y = 0; nothing lies below it. Complete native envelope 9.04 m wide by 12.25 m deep by 7.88 m high, including the gutters, the 1.2 m paver apron in front of the garage and porch, and the garden step. Walls 7.9 m by 10.1 m. `fixed_native`: move and rotate only, no stretch, no repetition. Suggested plot 11 m by 14 m. The catalogue suggests 8 m by 9 m for this archetype
 - Authored storey programme: exact source/module hashes, shared whole-source origin, complete-assembly bounds centre, native-lock flag, and any bounded uniform-scale opt-in: one complete model, two storeys, `fixed_authored_assembly`. No storey edits are advertised. Centre it by its whole-model bounds; native lock required; no scale opt-in
 - Supported terrain modes and connection capabilities: not tested. Three doors: the front door in the porch, a garden door at the back, and the garage door onto the apron
 - Public-realm detail: metric plant height/footprint, paving scale, instance/texture budgets, and native close/aerial evidence: N/A: building only. The model contains a 20 mm paver apron and two concrete steps, nothing else of the site
@@ -27,7 +27,7 @@ No pass is carried over from any other archetype.
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules: three references locked by hash in `prework-manifest.json`. The variant's own name and text describe a different, single-storey building; the images govern. The back and west faces and the interiors are inferred. No amenity modules
 - Native park seams and raised/cycle access: full-width closed-loop/bend support, local-origin furniture transforms, measured ramp/landing or track-entry height continuity; separate offline contacts from runtime slope walking: N/A: building only; the model contains no such element
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations: N/A: building only; the model contains no such element
-- Asset review status and separate publication/activation status: builder pass only; independent review not done. Publication and activation: not authorized
+- Asset review status and separate publication/activation status: v004 was refused by independent review (three P1); v006 answers it and awaits a repeat review. Publication and activation: not authorized
 - Model Library storage check, configured bucket and result (building GLBs): NOT RUN. The GLB is not in the model library
 - Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence: NOT RUN
 - Evidence manifest location and hashes; durable shared location for delivery: `tools/catalogue_laneway_house_pilot/evidence/` and `candidate.json`. Renders and boards exist only in the build session's ignored `artifacts/` directory, which is not a durable shared location; they can be regenerated from the generator
@@ -66,7 +66,7 @@ to each N/A. Use the shared checklist for each gate's full meaning.
 For fixed-native buildings, record Q/E and rotation-field evidence at the actual
 site latitude: metre dimensions/right angles preserved, exact model retained
 after save/reopen. A displayed angle alone does not prove detailed-model fit.
-| B1 Native placement | NOT TESTED | Needs the whole 9.04 m by 12.2 m envelope. The catalogue suggests an 8 m by 9 m plot for this archetype, which holds the walls but not the eaves, apron and step |
+| B1 Native placement | NOT TESTED | Needs the whole 9.04 m by 12.25 m envelope. The catalogue suggests an 8 m by 9 m plot for this archetype, which holds the walls but not the eaves, apron and step |
 | B2 Measured entrance evidence | NOT TESTED | Native measurements recorded below from the model's own numbers. Not installed and not checked in the app |
 | B3 Entrance authoring | NOT TESTED | |
 | B4 Approach and setback recovery | NOT TESTED | |
@@ -178,15 +178,15 @@ access to the native door. These design checks remain open after export.
 | Door centre in the GLB frame (X, Z) | 6.31, 0.00 | 6.78, -8.75 | 2.58, 1.50 |
 | Out direction (X, Z) | 0, +1 | 0, -1 | 0, +1 |
 | Clear width | 0.85 m | 0.69 m | 4.25 m |
-| Door height | 2.22 m | 2.12 m | 2.40 m |
-| Threshold top above base datum | 0.205 m | 0.205 m | 0.02 m |
-| Outer step | the stoop: one step of 0.18 m from grade, 1.5 m deep and 2.35 m wide, level with the door | a concrete step 0.18 m high and 0.9 m deep | none: the apron is 20 mm |
+| Door height | 2.18 m | 2.08 m | 2.40 m |
+| Threshold top above base datum | 0.345 m | 0.345 m | 0.02 m |
+| Outer step | two risers: a 0.16 m lower step 0.35 m deep in front of the post, then the stoop landing, 1.5 m deep and 2.35 m wide, level with the door | two risers: a 0.16 m lower step 0.35 m deep, then a landing 0.6 m deep | none: the apron is 20 mm |
 
 ### Design notes left open (B5)
 
 - No exposed foundation beyond a 0.2 m concrete plinth under the cedar. On a slope the
   runtime must supply the base, and the apron will not follow the ground.
-- The front and garden doors are one 0.18 m step above grade. Neither is step-free.
+- The front and garden doors are two steps, about 0.17 m each, above grade. Neither is step-free.
 - Three entrances against the runtime's one saved entrance per plot. The front door is
   the natural plot entrance; the garage door is a vehicle door onto the street or lane.
 - The model is drawn with its garage toward the street, as the references show. A real

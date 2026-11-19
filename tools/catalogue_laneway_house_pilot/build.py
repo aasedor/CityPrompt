@@ -31,7 +31,7 @@ from clay_kit import METHOD, Clay, cross, sub, unit
 
 SLUG = 'laneway-garden-studio'
 ARCHETYPE, VARIANT, INDEX = 'vancouver_laneway_house', 'laneway_garden_studio', 3
-TITLE = 'Garden Studio'
+TITLE = 'Garage Suite'
 SOURCE_DIR = 'frontend/public/archetypes/buildings/vancouver-laneway-house'
 SOURCES = {'front': f'variant_{INDEX}.png', 'oblique': f'variant_{INDEX}_angle_60.jpg', 'top': f'variant_{INDEX}_angle_90.jpg'}
 
@@ -45,16 +45,18 @@ FLOOR2 = 3.15                    # upper floor level
 BAND = (2.85, 3.25, .03, .05)    # floor band: bottom, top, how far it stands proud, how far it runs into the wall
 PLATE = 5.78                     # top of the upper walls, the soffit and the ceiling
 OVERHANG, FASCIA_TOP = .45, 6.00
-PITCH = 5 / 12                   # 5 in 12
-PLINTH = .20                     # exposed concrete under the cedar
-HALL = .20                       # floor of the entry hall and back room, one step above the stoop's foot
+PITCH = 5 / 12                   # 5 in 12 on the side faces; the front and back faces are steeper
+RIDGE = 2.00                     # ridge length, front to back
+PLINTH = .30                     # exposed concrete under the cedar
+HALL = .34                       # floor of the entry hall and back room, two steps above grade
+STEP = .16                       # the lower step of the stoop and of the garden step
 GARAGE_DOOR = (.45, 4.70, 2.42)  # left, right, head: a 14 by 8 ft door; it opens at the slab, 0.02
 PANEL_BAND = (3.00, 5.80, .05)   # the dark panel band on the lane face: from, to (along y) and how proud
 PANEL_JOINTS = (3.70, 4.40, 5.10)   # vertical joints between its four panels
-CORNER = (5.80, .95, .12, .15)   # corner window: street pane from x, lane pane to y, frame width, how far the box stands proud
+CORNER = (5.80, .95, .08, .05)   # corner window: street pane from x, lane pane to y, frame width, how far the box stands proud
 RAIL_TOP = 4.22
 APRON = 1.20                     # pavers in front of the garage door and the stoop
-STAIR = (6.60, 7.55, 1.50, 16)   # stair: x from, x to, foot (y), risers
+STAIR = (6.60, 7.55, 1.45, 16)   # stair: x from, x to, foot (y), risers
 POST = 7.67                      # porch post, centre x; the canopy runs on past it to the lane face
 TREAD = .25
 BOARD = .15                      # cedar board exposure; a shadow line marks each board
@@ -66,7 +68,7 @@ PALETTE = {  # role -> flat colour (sRGB), in node order
     'brick': {'colour': '#7d5040', 'module': 'garage block'},
     'cedar': {'colour': '#bb8458', 'module': 'cedar cladding'},
     'cedar_joint': {'colour': '#7e5434', 'module': 'cedar cladding'},
-    'mortar': {'colour': '#b4aa9c', 'module': 'garage block'},
+    'mortar': {'colour': '#957a6c', 'module': 'garage block'},
     'panel': {'colour': '#45484a', 'module': 'panel band'},
     'panel_joint': {'colour': '#2b2e31', 'module': 'panel band'},
     'trim': {'colour': '#25282b', 'module': 'frames, band, gutters and rails', 'roughness': .55},
@@ -131,13 +133,13 @@ def opening(u0, u1, z0, z1, kind, **extra):
 
 OPENINGS = {
     'garage_front': [opening(GARAGE_DOOR[0], GARAGE_DOOR[1], .02, GARAGE_DOOR[2], 'garage')],
-    'entry': [opening(.20, 1.70, HALL, 2.55, 'entry', mullions=(1.28,))],
+    'entry': [opening(.20, 1.70, HALL, 2.65, 'entry', mullions=(1.28,))],
     'street_upper': [opening(1.50, 4.90, FLOOR2, 5.45, 'slider', mullions=(2.35, 3.20, 4.05)),
                      opening(CORNER[0], WIDTH - CORNER[2], 3.75, 5.35, 'corner', mullions=(7.05,), transoms=((4.60, 7.05, WIDTH),), reveal='trim',
                              skip='b')],
-    'lane': [opening(.55, 1.00, .90, 2.45, 'window'), opening(5.45, 5.75, .90, 2.10, 'window'),
-             opening(CORNER[2], CORNER[1], 3.75, 5.35, 'corner', reveal='trim', skip='a'), opening(5.45, 5.75, 3.95, 5.25, 'window')],
-    'back': [opening(.65, 1.60, HALL, 2.45, 'door'), opening(4.80, 6.00, 1.00, 2.30, 'window', mullions=(5.40,)),
+    'lane': [opening(CORNER[2], CORNER[1], .95, 2.45, 'window'), opening(5.22, 5.72, .95, 2.10, 'window'),
+             opening(CORNER[2], CORNER[1], 3.75, 5.35, 'corner', reveal='trim', skip='a'), opening(5.22, 5.72, 3.95, 5.25, 'window')],
+    'back': [opening(.65, 1.60, HALL, 2.55, 'door'), opening(4.80, 6.00, 1.00, 2.30, 'window', mullions=(5.40,)),
              opening(1.90, 2.90, 4.35, 5.25, 'window'), opening(5.30, 6.70, 3.85, 5.25, 'window', mullions=(6.00,))],
     'west': [opening(.70, 1.70, 1.60, 2.30, 'window'), opening(1.80, 3.00, 3.95, 5.25, 'window', mullions=(2.40,))],
 }
@@ -213,22 +215,28 @@ def reveal(clay, face, o, us, zs, material, thick):
             face.flat(clay, floor, ua, ub, -thick, proud, c, 1)
 
 
+def courses(clay, face, role, ua, ub, za, zb, n, start, pitch, height):
+    """A strip `height` tall every `pitch` from `start`, clipped to this cell, so a course
+    that crosses a cell edge continues on the next cell rather than vanishing."""
+    k = math.floor((za - start) / pitch)
+    while True:
+        z = round(start + k * pitch, 6)
+        if z >= zb - 1e-6:
+            break
+        lo, hi = max(z, za), min(z + height, zb)
+        if hi - lo > 1e-4 and z > start - 1e-9:
+            face.quad(clay, role, ua, ub, n, lo, hi)
+        k += 1
+
+
 def shadow_lines(clay, face, ua, ub, za, zb, proud):
     """One shadow line at the foot of each cedar board, standing 6 mm proud."""
-    z = PLINTH + BOARD * math.ceil((za - PLINTH) / BOARD - 1e-9)
-    while z + .014 < zb - .02:
-        if z > za + .02:
-            face.quad(clay, 'cedar_joint', ua, ub, proud + .006, z, z + .014)
-        z = round(z + BOARD, 6)
+    courses(clay, face, 'cedar_joint', ua, ub, za, zb, proud + .006, PLINTH + BOARD, BOARD, .014)
 
 
 def bed_joints(clay, face, ua, ub, za, zb, proud):
     """A mortar bed joint at the top of each brick course, standing 3 mm proud."""
-    z = COURSE * math.ceil(za / COURSE - 1e-9)
-    while z + .010 < zb - .004:
-        if z > za + .004:
-            face.quad(clay, 'mortar', ua, ub, proud + .003, z, z + .010)
-        z = round(z + COURSE, 6)
+    courses(clay, face, 'mortar', ua, ub, za, zb, proud + .003, COURSE, COURSE, .010)
 
 
 # ---- frames, glass and doors ---------------------------------------------------
@@ -331,11 +339,11 @@ def walls(clay):
     skin(clay, STREET_UPPER, 0.0, WIDTH, DECK, PLATE, upper, lambda u, z: ('cedar', 0.0), inner=(FLOOR2, None), inner_u=(WALL, WIDTH - WALL))
     slider, corner = upper
     frame(clay, STREET_UPPER, slider, inset=.12)
-    frame(clay, STREET_UPPER, corner, inset=.14)
+    frame(clay, STREET_UPPER, corner, inset=.01)
     lane = OPENINGS['lane']
     skin(clay, LANE, 0.0, DEPTH, 0.0, PLATE, lane, lane_material, cuts=((PANEL_BAND[0], PANEL_BAND[1]), (PLINTH, BAND[0], BAND[1])),
          inner=(HALL, None), inner_u=(WALL, DEPTH - WALL))
-    frame(clay, LANE, lane[2], inset=.14)
+    frame(clay, LANE, lane[2], inset=.01)
     corner_box(clay, corner, lane[2])
     for o in (lane[0], lane[1], lane[3]):
         proud = PANEL_BAND[2] if PANEL_BAND[0] < (o['u'][0] + o['u'][1]) / 2 < PANEL_BAND[1] else 0.0
@@ -350,7 +358,7 @@ def walls(clay):
         frame(clay, BACK, o)
         sill(clay, BACK, o)
     west = OPENINGS['west']
-    skin(clay, WEST, 0.0, DEPTH, 0.0, PLATE, west, west_material, cuts=((), (BAND[0], BAND[1])), inner_u=(WALL, DEPTH - WALL))
+    skin(clay, WEST, 0.0, DEPTH, 0.0, PLATE, west, west_material, cuts=((), (BAND[0], BAND[1])), inner_u=(WALL, DEPTH))
     projection_west = Face((0.0, 0.0), (0.0, -1.0))
     skin(clay, projection_west, 0.0, PROJECT, 0.0, SLAB, [], lambda u, z: ('brick', 0.0), inner_u=(0.0, PROJECT - WALL))
     for o in west:
@@ -371,6 +379,7 @@ def corner_box(clay, street, lane):
     clay.box('trim', a - t, a, -out, 0.0, c, d)                                  # street jamb
     clay.box('trim', WIDTH, WIDTH + out, b, b + t, c, d)                        # lane jamb
     clay.box('trim', WIDTH - t, WIDTH + out, -out, t, c, d)                      # corner post
+    clay.box('trim', WIDTH - t - .063, WIDTH, 0.0, t + .063, c + .003, d - .003)    # behind the post, out to both frames: no seam
 
 
 def panel_joints(clay):
@@ -406,11 +415,16 @@ def projection(clay):
     clay.quad('cedar', (GARAGE_X, -PROJECT + into, SLAB), (WIDTH - into, -PROJECT + into, SLAB), (WIDTH - into, 0.0, SLAB), (GARAGE_X, 0.0, SLAB),
               facing=(0, 0, -1))
     # stoop, porch post and the paved apron
-    clay.box('concrete', GARAGE_X, WIDTH, -PROJECT, 0.0, 0.0, HALL - .02)
+    clay.box('concrete', GARAGE_X, WIDTH, -PROJECT, 0.0, 0.0, HALL - .02)                              # stoop landing
+    clay.box('concrete', GARAGE_X, WIDTH, -PROJECT - .35, -PROJECT, 0.0, STEP)                           # its lower step, in front of the post
     clay.box('cedar', POST - .07, POST + .07, -PROJECT + .06, -PROJECT + .20, HALL - .02, SLAB)
     clay.box('pavers', 0.0, WIDTH, -PROJECT - APRON, -PROJECT, 0.0, .02)
-    clay.box('concrete', 6.10, 7.45, DEPTH, DEPTH + .90, 0.0, HALL - .02)                                 # garden step at the back door
+    clay.box('concrete', 6.10, 7.45, DEPTH, DEPTH + .60, 0.0, HALL - .02)                                 # garden landing at the back door
+    clay.box('concrete', 6.10, 7.45, DEPTH + .60, DEPTH + .95, 0.0, STEP)                                 # and its lower step
     balcony(clay)
+
+
+END = .20                          # the balcony's solid cedar west end reaches this far in from the west face
 
 
 def balcony(clay):
@@ -418,13 +432,13 @@ def balcony(clay):
     end at the west, standing on the band to the height of the guard."""
     top = BAND[1]
     y = -PROJECT + .10
-    for x in (.25, 1.55, 2.85, 4.15, GARAGE_X - .08):
+    for x in (1.55, 2.85, 4.15, GARAGE_X - .08):
         clay.box('trim', x - .025, x + .025, y - .025, y + .025, DECK, RAIL_TOP - .03)
     for yy in (-.85, -.08):
         clay.box('trim', GARAGE_X - .105, GARAGE_X - .055, yy - .025, yy + .025, DECK, RAIL_TOP - .03)
-    clay.box('trim', .09, GARAGE_X - .05, y - .045, y + .045, RAIL_TOP - .03, RAIL_TOP)
+    clay.box('trim', END, GARAGE_X - .05, y - .045, y + .045, RAIL_TOP - .03, RAIL_TOP)
     clay.box('trim', GARAGE_X - .125, GARAGE_X - .035, y + .045, -.002, RAIL_TOP - .03, RAIL_TOP)
-    posts = [.09, .25, 1.55, 2.85, 4.15, GARAGE_X - .08]
+    posts = [END - .03, 1.55, 2.85, 4.15, GARAGE_X - .08]
     for x0, x1 in pairwise(posts):
         clay.quad('glass', (x0 + .03, y, top + .05), (x1 - .03, y, top + .05), (x1 - .03, y, RAIL_TOP - .06), (x0 + .03, y, RAIL_TOP - .06),
                   facing=(0, -1, 0))
@@ -432,8 +446,9 @@ def balcony(clay):
     for y0, y1 in ((y + .03, -.88), (-.82, -.11)):
         clay.quad('glass', (x, y0, DECK + .05), (x, y1, DECK + .05), (x, y1, RAIL_TOP - .06), (x, y0, RAIL_TOP - .06), facing=(1, 0, 0))
     screen = Face((-BAND[2], 0.0), (0.0, -1.0))
-    screen.box(clay, 'cedar', 0.0, PROJECT + BAND[2], -.12, 0.0, top, RAIL_TOP)
-    for side, n in ((1, .006), (-1, -.126)):
+    screen.box(clay, 'cedar', 0.0, PROJECT + BAND[2], -(END + BAND[2]), 0.0, top, RAIL_TOP)
+    screen.box(clay, 'trim', 0.0, PROJECT + BAND[2] + .02, -(END + BAND[2]) - .02, .02, RAIL_TOP, RAIL_TOP + .04)     # dark coping
+    for side, n in ((1, .006), (-1, -(END + BAND[2]) - .006)):
         z = top + BOARD
         while z < RAIL_TOP - .05:
             screen.quad(clay, 'cedar_joint', 0.0, PROJECT + BAND[2], n, z, z + .014, sign=side)
@@ -448,11 +463,11 @@ def roof(clay):
     x0, x1, y0, y1 = -OVERHANG, WIDTH + OVERHANG, -OVERHANG, DEPTH + OVERHANG
     half = (x1 - x0) / 2
     ridge_z = FASCIA_TOP + half * PITCH
-    cx = (x0 + x1) / 2
-    r0, r1 = (cx, y0 + half, ridge_z), (cx, y1 - half, ridge_z)
+    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+    r0, r1 = (cx, cy - RIDGE / 2, ridge_z), (cx, cy + RIDGE / 2, ridge_z)
     c = [(x0, y0, FASCIA_TOP), (x1, y0, FASCIA_TOP), (x1, y1, FASCIA_TOP), (x0, y1, FASCIA_TOP)]
-    clay.tri('metal_roof', c[0], c[1], r0, facing=(0, -1, 3))
-    clay.tri('metal_roof', c[2], c[3], r1, facing=(0, 1, 3))
+    clay.tri('metal_roof', c[0], c[1], r0, facing=(0, -1, 2))
+    clay.tri('metal_roof', c[2], c[3], r1, facing=(0, 1, 2))
     clay.polygon('metal_roof', [c[1], c[2], r1, r0], facing=(1, 0, 3))
     clay.polygon('metal_roof', [c[3], c[0], r0, r1], facing=(-1, 0, 3))
     # fascia, soffit and the ceiling inside
@@ -466,7 +481,7 @@ def roof(clay):
         clay.quad('cedar', (*a, PLATE), (*b, PLATE), (*p, PLATE), (*q, PLATE), facing=(0, 0, -1))
     gutters(clay, x0, x1, y0, y1)
     caps(clay, c, r0, r1)
-    seams(clay, x0, x1, y0, y1, half)
+    seams(clay, x0, x1, y0, y1, half, r0[1] - y0)
 
 
 def gutters(clay, x0, x1, y0, y1):
@@ -509,23 +524,38 @@ def caps(clay, corners, r0, r1):
     along_box(clay, 'seam', r0, r1, .20, .03, .045)
 
 
-def seams(clay, x0, x1, y0, y1, half):
-    """Standing seams square to each eave, 0.43 m apart, each running up to the hip it meets."""
+def roof_height(x, y):
+    """The roof sheet's height over a plan point: the lowest of its four face planes."""
+    x0, x1, y0, y1 = -OVERHANG, WIDTH + OVERHANG, -OVERHANG, DEPTH + OVERHANG
+    half = (x1 - x0) / 2
+    run = (y1 - y0) / 2 - RIDGE / 2                 # the front and back faces' run, eave to ridge end
+    rise = half * PITCH
+    return FASCIA_TOP + min(min(x - x0, x1 - x) * PITCH, min(y - y0, y1 - y) * rise / run)
+
+
+def seams(clay, x0, x1, y0, y1, half, run):
+    """Standing seams square to each eave, 0.43 m apart, each running up to the hip or ridge
+    it meets. The side faces rise at PITCH; the front and back faces are steeper, so they
+    reach the same ridge height over their shorter run."""
     spacing, w, h = .43, .015, .03
-    faces = [((x0, y0), (1, 0), (0, 1), x1 - x0), ((x1, y1), (-1, 0), (0, -1), x1 - x0),
-             ((x1, y0), (0, 1), (-1, 0), y1 - y0), ((x0, y1), (0, -1), (1, 0), y1 - y0)]
-    for (ox, oy), (ex, ey), (wx, wy), length in faces:
+    steep = half * PITCH / run
+    faces = [((x0, y0), (1, 0), (0, 1), x1 - x0, steep), ((x1, y1), (-1, 0), (0, -1), x1 - x0, steep),
+             ((x1, y0), (0, 1), (-1, 0), y1 - y0, PITCH), ((x0, y1), (0, -1), (1, 0), y1 - y0, PITCH)]
+    for (ox, oy), (ex, ey), (wx, wy), length, slope in faces:
         count = int((length - .40) / spacing)
         start = (length - count * spacing) / 2
         for k in range(count + 1):
             s = start + k * spacing
-            reach = min(s, length - s, half) - .07
+            if slope is steep:                      # hips run from the eave corners to the ridge ends
+                reach = min(s, length - s) * run / half - .07
+            else:
+                reach = min(s * half / run, (length - s) * half / run, half) - .07
             if reach < .12:
                 continue
 
-            def at(du, d, lift, ox=ox, oy=oy, ex=ex, ey=ey, wx=wx, wy=wy, s=s):
-                return (r6(ox + ex * (s + du) + wx * d), r6(oy + ey * (s + du) + wy * d), r6(FASCIA_TOP + d * PITCH + lift))
-            clay.quad('seam', at(-w, 0, h), at(w, 0, h), at(w, reach, h), at(-w, reach, h), facing=(-wx * PITCH, -wy * PITCH, 1))
+            def at(du, d, lift, ox=ox, oy=oy, ex=ex, ey=ey, wx=wx, wy=wy, s=s, slope=slope):
+                return (r6(ox + ex * (s + du) + wx * d), r6(oy + ey * (s + du) + wy * d), r6(FASCIA_TOP + d * slope + lift))
+            clay.quad('seam', at(-w, 0, h), at(w, 0, h), at(w, reach, h), at(-w, reach, h), facing=(-wx * slope, -wy * slope, 1))
             clay.quad('seam', at(-w, 0, 0), at(-w, reach, 0), at(-w, reach, h), at(-w, 0, h), facing=(-ex, -ey, 0))
             clay.quad('seam', at(w, 0, 0), at(w, 0, h), at(w, reach, h), at(w, reach, 0), facing=(ex, ey, 0))
             clay.quad('seam', at(-w, 0, 0), at(-w, 0, h), at(w, 0, h), at(w, 0, 0), facing=(-wx, -wy, 0))
@@ -560,8 +590,8 @@ def rooms(clay):
     clay.box('interior', sx0 - .10, i1, sy - .10, sy, FLOOR2, FLOOR2 + 1.0)
     clay.polygon('interior', [(x, y, PLATE) for x, y in ((i0, j0), (i1, j0), (i1, j1), (i0, j1))], facing=(0, 0, -1))
     # upper partitions: living room at the front, bedroom and bath behind
-    clay.box('interior', i0, 4.60, 5.00, 5.10, FLOOR2, PLATE)
-    clay.box('interior', 4.50, 4.60, 5.10, j1, FLOOR2, PLATE)
+    clay.box('interior', i0 + .02, 4.60, 5.00, 5.10, FLOOR2, PLATE)
+    clay.box('interior', 4.50, 4.60, 5.10, j1 - .02, FLOOR2, PLATE)
     clay.box('interior', 4.60, sx0 - .10, 6.30, 6.40, FLOOR2, PLATE)
 
 
@@ -605,10 +635,10 @@ def entrances():
         {'kind': 'front door', 'facade': 'street', 'centre_xy_m': [round(GARAGE_X + (l0 + l1) / 2, 3), 0.0], 'route_direction': [0, -1],
          'clear_width_m': round(l1 - l0 - .14, 3), 'door_height_m': round(entry['z'][1] - HALL - .126, 2),
          'threshold_top_m': round(HALL + .005, 3), 'outer_step_foot_m': 0.0, 'rise_m': round(HALL + .005, 3),
-         'note': 'from grade to the stoop is one step of 0.18 m; the stoop is level with the door'},
+         'note': 'two steps from grade: a 0.16 m step in front of the post, then the stoop landing, level with the door'},
         {'kind': 'garden door', 'facade': 'back', 'centre_xy_m': [round(WIDTH - (back['u'][0] + back['u'][1]) / 2, 3), round(DEPTH + .15, 3)],
          'route_direction': [0, 1], 'clear_width_m': round(back['u'][1] - back['u'][0] - .26, 3), 'door_height_m': round(back['z'][1] - HALL - .13, 2),
-         'threshold_top_m': round(HALL + .005, 3), 'outer_step_foot_m': 0.0, 'rise_m': round(HALL + .005, 3), 'note': 'a concrete step 0.9 m deep outside'},
+         'threshold_top_m': round(HALL + .005, 3), 'outer_step_foot_m': 0.0, 'rise_m': round(HALL + .005, 3), 'note': 'two steps: a 0.6 m landing and a 0.35 m lower step'},
         {'kind': 'garage door', 'facade': 'street', 'centre_xy_m': [round((garage['u'][0] + garage['u'][1]) / 2, 3), round(-PROJECT, 3)],
          'route_direction': [0, -1], 'clear_width_m': round(garage['u'][1] - garage['u'][0], 2), 'door_height_m': round(garage['z'][1] - .02, 2),
          'threshold_top_m': .02, 'outer_step_foot_m': .02, 'rise_m': 0.0, 'note': 'vehicle door onto the paved apron'},
@@ -633,11 +663,11 @@ def prework(candidate):
                     'Garage door: four lites in its top section, flush sections below. Built 4.25 m wide and 2.4 m tall.',
                     'Brick from grade to about 0.45 m above the door, then a dark floor band about 0.4 m deep across the whole front, round the porch canopy and on along the lane side.',
                     'Brick piers: about 0.45 m left of the door and 0.85 m right of it, with a wall lamp on each and a mailbox on the right pier.',
-                    'Porch at the lane corner, under a flat canopy: a glass door and sidelight in a cedar wall set back about 1.5 m, a cedar post just short of the canopy corner, a concrete stoop.',
+                    'Porch at the lane corner, under a flat canopy: a glass door and sidelight in a cedar wall set back about 1.5 m, a cedar post just short of the canopy corner, a concrete stoop of two risers: a lower step in front of the post and a landing level with the door.',
                     'Upper storey: cedar with a shadow line at each board. Sliding glass doors of four panels behind a glass-railed balcony, and to the right a corner window in a dark box frame that wraps onto the lane face: a wide pane and a narrow pane with a transom on the street, one tall pane on the lane.',
                     'Balcony: glass panels between dark posts with a dark top rail, about 1.07 m high, on the roof of the garage block; a cedar-clad solid end at the west, the height of the guard.',
-                    'Roof: hip, about 5 in 12, standing-seam metal, eaves about 0.45 m out over a cedar soffit and dark fascia.',
-                    'Lane face: the corner window upstairs and a tall narrow window near the corner below, then a dark band of four vertical panels from grade to the eaves, about 2.8 m wide, with a narrow slot window on each storey near its back edge; a downpipe at the back corner.'],
+                    'Roof: hip, about 5 in 12 on the side faces and steeper front and back, standing-seam metal, eaves about 0.45 m out over a cedar soffit and dark fascia.',
+                    'Lane face: the corner window upstairs and, directly below it, a ground-floor window as wide as its lane pane, then a dark band of four vertical panels from grade to the eaves, about 2.8 m wide, with a slot window about 0.5 m wide on each storey near its back edge; a downpipe at the back corner.'],
                 'oblique': [
                     'High view from over the street at the lane corner.',
                     'The garage block, balcony and canopy project in front of the upper storey; the eave covers part of the balcony.',
@@ -647,13 +677,12 @@ def prework(candidate):
                     'The panel band on the lane face stands slightly proud and carries narrow windows.'],
                 'top': [
                     'Near-nadir view, street at the bottom, lane on the right.',
-                    'Roof plan about 419 by 434 px, very slightly deeper than wide, hips meeting a short ridge that runs front to back.',
+                    'Roof plan about 419 by 434 px, very slightly deeper than wide, hips meeting a ridge about 96 px (about 2 m) long that runs front to back.',
                     'In front of the street eave a lighter strip, the balcony deck, over the west two thirds, and a dark strip, the canopy, at the lane end. Both stand about 0.9 m past the eave.'],
             },
             'source_conflicts': [
-                'Catalogue text. The variant is named Garden Studio and described as a single storey with no garage, a dark fibre-cement skin and a green roof. All three images show a two-storey laneway house over a garage, in brick and cedar under a hipped metal roof. The images govern; a person should rule on the name and text before this is offered to students.',
-                'Ridge length. The roof plan shows a short ridge about 2 m long; the outline ratio there implies about 0.4 m. Built 0.7 m, with equal pitches on all four faces.',
-                'Stoop. The oblique shows two risers; the street view one. Built one step of 0.18 m to a stoop level with the door.'],
+                'Catalogue text. The variant was named Garden Studio and described as a single storey with no garage, a dark fibre-cement skin and a green roof. All three images show a two-storey laneway house over a garage, in brick and cedar under a hipped metal roof. The images govern. Ruled by a person on 2026-11-19: the variant is renamed Garage Suite and its text rewritten to match the images.',
+                'Ridge length. The roof plan and the oblique both show a ridge about 2 m long; equal pitches on this outline would give about 0.4 m. Built 2.0 m, with the side faces at 5 in 12 and the front and back faces steeper, as an independent review of v004 measured.'],
             'hidden_assumptions': [
                 'The back face and the west face are not shown. The back has a glazed garden door with a step, a garage-side window and two upper windows; the west face has one window on each storey. Inferred.',
                 'Brick wraps the whole garage block, including the west side and the garage part of the back. The images show it on the street face and the west end of the projection only.',
@@ -661,7 +690,7 @@ def prework(candidate):
                 'A downpipe stands at the back corner of each side face. The street view shows the one on the lane face; the west one is inferred.',
                 'People, cars, planting, the lane, the street and neighbours belong to the site and are not in the model.'],
         },
-        'roof_contract': {'form': 'hip roof, 5 in 12 on all four faces, with a short ridge front to back; standing seams square to each eave',
+        'roof_contract': {'form': 'hip roof with a 2 m ridge front to back: side faces 5 in 12, front and back faces steeper; standing seams square to each eave',
                           'weathering': 'a single closed sheet; seams stop under the hip caps; a gutter round all four eaves drains to downpipes at the back corners'},
         'material_contract': {'profile': 'texture-free source-palette architectural clay', 'generic_texture_fallback': False,
                               'roles': {role: settings['colour'] for role, settings in PALETTE.items()},
