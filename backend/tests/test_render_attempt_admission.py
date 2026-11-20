@@ -167,7 +167,9 @@ async def test_due_weekly_allowance_admits_without_persisting_reset(admission, r
 async def test_existing_request_recovery_ignores_current_balance(admission, status, monkeypatch):
     f = admission
     f.user.render_credits = 0
-    existing = SimpleNamespace(status=status, request_sha256=revision_sha256(f.req.model_dump(mode="json")))
+    # A queued row may predate the optional Street View field.
+    legacy_payload = f.req.model_dump(mode="json", exclude={"street_view_context"})
+    existing = SimpleNamespace(status=status, request_sha256=revision_sha256(legacy_payload))
     f.db.scalar.return_value = existing
     prepare = MagicMock(side_effect=AssertionError("Existing jobs must not prepare another capture"))
     monkeypatch.setattr(direct_service, "prepare_direct_3d_capture", prepare)
