@@ -1,6 +1,6 @@
 {
   "entry": {
-    "candidate": "laneway-garden-studio-clay-v006",
+    "candidate": "laneway-garden-studio-clay-v007",
     "family": "rlasm-clay-vancouver-laneway-house-garden-studio",
     "archetype_id": "vancouver_laneway_house",
     "archetype_label": "Vancouver Laneway House",
@@ -40,7 +40,7 @@
       "The back and west faces are inferred; no reference shows them.",
       "Three doors: the front door on the porch, a garden door at the back and the garage door. The front and garden doors are two steps above grade.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_laneway_house_pilot/integration/runtime-review.md.",
-      "Independent review: v004 was refused with three P1 findings; v006 answers them and awaits a repeat review."
+      "Independent review: v004 was refused with three P1 findings and v006 with one; v007 answers them and awaits a further review."
     ],
     "picker": {
       "id": "vancouver_laneway_house_garden_studio",
@@ -53,7 +53,7 @@
       "max_size": 50.0
     }
   },
-  "model_file": "laneway-garden-studio-clay-v006.glb",
+  "model_file": "laneway-garden-studio-clay-v007.glb",
   "review_file": "independent-review.json",
   "approval": {
     "authorized_by": "",

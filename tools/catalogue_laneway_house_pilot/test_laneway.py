@@ -135,8 +135,10 @@ def test_every_opening_has_glass_set_back_in_its_reveal():
     for key, face in FACES.items():
         for o in build.OPENINGS[key]:
             (a, b), (c, d) = o['u'], o['z']
+            # measured from the opening's own face: the band slots sit in panels standing proud of the wall
+            proud = build.PANEL_BAND[2] if key == 'lane' and build.PANEL_BAND[0] < (a + b) / 2 < build.PANEL_BAND[1] else 0.0
             found = [t for t in tris('glass') if all(a - 1e-6 <= local(face, p)[0] <= b + 1e-6 and c - 1e-6 <= p[2] <= d + 1e-6
-                                                     and -build.WALL < local(face, p)[1] < -.02 for p in t)]     # the corner panes sit near the box face, as the photos show
+                                                     and -build.WALL < local(face, p)[1] - proud < -.02 for p in t)]
             assert found, (key, o['kind'])
 
 

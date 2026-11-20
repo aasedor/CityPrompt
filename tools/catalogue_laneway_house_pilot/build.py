@@ -347,7 +347,7 @@ def walls(clay):
     corner_box(clay, corner, lane[2])
     for o in (lane[0], lane[1], lane[3]):
         proud = PANEL_BAND[2] if PANEL_BAND[0] < (o['u'][0] + o['u'][1]) / 2 < PANEL_BAND[1] else 0.0
-        frame(clay, LANE, o, proud)
+        frame(clay, LANE, o, proud, inset=.01)    # seen along the lane at a low angle: glass about 45 mm behind the face
         sill(clay, LANE, o, proud)
     panel_joints(clay)
     back = OPENINGS['back']
@@ -358,7 +358,8 @@ def walls(clay):
         frame(clay, BACK, o)
         sill(clay, BACK, o)
     west = OPENINGS['west']
-    skin(clay, WEST, 0.0, DEPTH, 0.0, PLATE, west, west_material, cuts=((), (BAND[0], BAND[1])), inner_u=(WALL, DEPTH))
+    skin(clay, WEST, 0.0, DEPTH, 0.0, PLATE, west, west_material, cuts=((), (BAND[0], BAND[1])), inner_u=(WALL, DEPTH - WALL))
+    clay.quad('interior', (WALL, WALL, .02), (WALL, 0.0, .02), (WALL, 0.0, SLAB), (WALL, WALL, SLAB), facing=(1, 0, 0))   # garage lining, garage level only
     projection_west = Face((0.0, 0.0), (0.0, -1.0))
     skin(clay, projection_west, 0.0, PROJECT, 0.0, SLAB, [], lambda u, z: ('brick', 0.0), inner_u=(0.0, PROJECT - WALL))
     for o in west:

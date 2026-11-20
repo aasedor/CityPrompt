@@ -1,11 +1,11 @@
 {
-  "candidate": "laneway-garden-studio-clay-v006",
+  "candidate": "laneway-garden-studio-clay-v007",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/laneway-garden-studio/v006 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3",
-  "model_bytes": 335744,
+  "external_directory": "artifacts/laneway-garden-studio/v007 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "945f61fec07dafec4f6d5ae94ffb8525a35e4c3fce394ad79c7785e77053236c",
+  "model_bytes": 340136,
   "delivered_bounds_gltf_m": [
     [
       -0.57,
@@ -26,14 +26,14 @@
   "storeys": 2,
   "dwellings": 1,
   "runtime": {
-    "path": "laneway-garden-studio-clay-v006.glb",
-    "bytes": 335744,
-    "sha256": "e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3",
+    "path": "laneway-garden-studio-clay-v007.glb",
+    "bytes": 340136,
+    "sha256": "945f61fec07dafec4f6d5ae94ffb8525a35e4c3fce394ad79c7785e77053236c",
     "meshes": 17,
     "materials": 17,
     "textures": 0,
     "images": 0,
-    "triangles": 6624
+    "triangles": 6748
   },
   "entrances": {
     "front door": 1,
@@ -47,7 +47,7 @@
   },
   "independent_review": {
     "status": "pending",
-    "note": "v006 answers the independent review of v004 and awaits a repeat review."
+    "note": "v007 answers the repeat review of v006 and awaits a further review."
   },
   "superseded": {
     "laneway-garden-studio-clay-v001": {
@@ -74,6 +74,11 @@
       "status": "builder review: rework",
       "model_sha256": "c781864d2ef8a44b74bb5255ddf7bdd0a790d02dacc80dfb384f0e156af2bc7b",
       "reason": "The corner window lane glass still sat 0.145 m inside the box face; the review asked for 0.05 to 0.10 m."
+    },
+    "laneway-garden-studio-clay-v006": {
+      "status": "independent review: visual_rework_required, 0 P0, 1 P1, 8 P2 (evidence/independent-review-v006.json)",
+      "model_sha256": "e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3",
+      "reason": "P1: the lane-face ground window and band slots had the right widths but their glass sat 0.135 m back, so from the reference cameras they read as dark slits. P2 regression: the garage lining reached the street face on the upper storey too."
     }
   }
 }

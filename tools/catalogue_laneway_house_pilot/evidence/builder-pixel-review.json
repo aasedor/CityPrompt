@@ -1,11 +1,11 @@
 {
-  "candidate": "laneway-garden-studio-clay-v006",
-  "model_sha256": "e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3",
+  "candidate": "laneway-garden-studio-clay-v007",
+  "model_sha256": "945f61fec07dafec4f6d5ae94ffb8525a35e4c3fce394ad79c7785e77053236c",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
   "independent_approval": false,
   "views_inspected": {
-    "v006": [
+    "v007": [
       "renders/aerial.png",
       "renders/architecture_close.png",
       "renders/balcony_contact.png",
@@ -68,5 +68,10 @@
     "P2-08 hip cap stubs": "Open.",
     "P2-09 porch door proportion": "Open; the entry opening is taller (to 2.65 m) with the raised floor.",
     "P2-10 single trim value": "Open."
+  },
+  "response_to_independent_review_of_v006": {
+    "V6-P1-01 lane-face windows read as slits": "Fixed as the review asked. The lane ground window and both band slots now have their frames 0.01 m into the reveal, so the glass is about 0.045 m behind the face (0.05 m panel band face for the slots). In match_front and match_oblique the ground window reads as glass and the slots show frame and glass.",
+    "garage lining regression": "Fixed. The west lining is back to its v004 extent, and a separate lining closes the garage strip X 0.30, Y 0 to 0.30, at garage level only.",
+    "other v006 notes": "Unchanged: match_top orthographic, hip-cap stubs, door proportion, single trim value, sparse corner specks, rear lines at 52 m."
   }
 }

@@ -12,7 +12,7 @@ laneway suite, but its pictures show a rowhouse block, so it could not be built
 from them. This variant's three pictures agree on one laneway house over a
 garage, which is the type asked for.
 
-Status of candidate **laneway-garden-studio-clay-v006**:
+Status of candidate **laneway-garden-studio-clay-v007**:
 
 | Checkpoint | Status |
 |---|---|
@@ -42,6 +42,10 @@ Earlier candidates, none of which may be used:
     reference widths.
 - **v005.** A rework of all three. The builder's own check found the lane glass
   still 0.145 m inside the box.
+- **v006.** Answered the v004 review. Its repeat review confirmed the ridge, corner
+  window, stoop and other fixes, but was refused with one P1: the widened lane
+  windows' glass sat 0.135 m back, so from the reference cameras they still read
+  as slits. `evidence/independent-review-v006.json` holds that review.
 
 ## The catalogue text described a different building
 

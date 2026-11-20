@@ -11,7 +11,7 @@ No pass is carried over from any other archetype.
 
 - Kind: building
 - Archetype ID and exact variant ID: `vancouver_laneway_house` / `laneway_garden_studio` (variant 3, "Garage Suite", formerly "Garden Studio")
-- Model SHA-256 or procedural recipe ID/revision/hash: `e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3`, candidate `laneway-garden-studio-clay-v006`, 335744 bytes. Rebuilt byte for byte by `tools/catalogue_laneway_house_pilot/build.py`
+- Model SHA-256 or procedural recipe ID/revision/hash: `945f61fec07dafec4f6d5ae94ffb8525a35e4c3fce394ad79c7785e77053236c`, candidate `laneway-garden-studio-clay-v007`, 340136 bytes. Rebuilt byte for byte by `tools/catalogue_laneway_house_pilot/build.py`
 - Runtime source commit and integration-checklist version: not run. Branch based on `deployment-version`; checklist as at that commit
 - Reviewer, date, project URL, viewport/device/input: none. No project was opened
 - Vacant test site, protected reference, disposable test project: none
@@ -27,7 +27,7 @@ No pass is carried over from any other archetype.
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules: three references locked by hash in `prework-manifest.json`. The variant's own name and text describe a different, single-storey building; the images govern. The back and west faces and the interiors are inferred. No amenity modules
 - Native park seams and raised/cycle access: full-width closed-loop/bend support, local-origin furniture transforms, measured ramp/landing or track-entry height continuity; separate offline contacts from runtime slope walking: N/A: building only; the model contains no such element
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations: N/A: building only; the model contains no such element
-- Asset review status and separate publication/activation status: v004 was refused by independent review (three P1); v006 answers it and awaits a repeat review. Publication and activation: not authorized
+- Asset review status and separate publication/activation status: v004 was refused by independent review (three P1) and v006 by its repeat (one P1); v007 answers both and awaits a further review. Publication and activation: not authorized
 - Model Library storage check, configured bucket and result (building GLBs): NOT RUN. The GLB is not in the model library
 - Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence: NOT RUN
 - Evidence manifest location and hashes; durable shared location for delivery: `tools/catalogue_laneway_house_pilot/evidence/` and `candidate.json`. Renders and boards exist only in the build session's ignored `artifacts/` directory, which is not a durable shared location; they can be regenerated from the generator
