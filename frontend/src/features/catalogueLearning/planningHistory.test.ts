@@ -7,7 +7,9 @@ import { planningIds, teachingSearchTerms } from './teaching';
 import { availableEras, eraIds, formLabel, historyForChoice } from './planningHistory';
 import historyData from '@/data/cataloguePlanningHistory.json';
 import release from '@/data/claudeBuildingRelease.json';
+import validation from '@/data/validationCatalogue.json';
 
+const standaloneRelease = validation.entries.filter(row => row.standalone_native === true);
 const choiceFor = (id: string) => CANONICAL_CHOICES.find(choice => choice.placements.some(asset => asset.id === id))!;
 const retainedBridgeAssets = PUBLIC_REALM_RELEASE_ASSETS.filter(hasDrawnBridgeReplacement);
 const retainedBridgeChoices = resolveCatalogueRoster(retainedBridgeAssets.map(asset => ({
@@ -120,7 +122,7 @@ describe('historical planning interpretation', () => {
       { id: 'postwar', label: 'Postwar expansion · c. 1945–1975' },
     ]);
     expect(availableEras([bungalow], 'street_pathway')).toEqual([]);
-    expect(Object.keys(historyData.lessons)).toHaveLength(204);
+    expect(Object.keys(historyData.lessons)).toHaveLength(204 + standaloneRelease.length);
     expect(CANONICAL_CHOICES.filter(choice => !historyForChoice(choice))
       .flatMap(choice => choice.placements.map(asset => asset.id)).sort())
       .toEqual(MODULAR_BRIDGE_ASSETS.map(asset => asset.id).sort());
@@ -152,8 +154,9 @@ describe('historical planning interpretation', () => {
     expect(teachingSearchTerms(choice)).toEqual([]);
   });
 
-  it('binds all seven newly approved models while withholding unreviewed historical claims', () => {
-    const additions = release.entries.filter(row => !row.asset_id.startsWith('claude_trial_'));
+  it('retains the seven earlier release records with their historical claims held', () => {
+    const additions = release.entries.filter(row => !row.asset_id.startsWith('claude_trial_')
+      && !standaloneRelease.some(entry => entry.placement_id === row.asset_id));
     expect(additions).toHaveLength(7);
     for (const row of additions) {
       const choice = choiceFor(row.asset_id);
@@ -166,6 +169,27 @@ describe('historical planning interpretation', () => {
       expect(planningIds(choice)).toEqual([]);
       expect(catalogueStyleIds(choice)).toEqual([]);
     }
+  });
+
+  it.each(standaloneRelease)('holds historical interpretation for $placement_id', entry => {
+    const choice = choiceFor(entry.placement_id);
+    expect(choice, entry.placement_id).toBeDefined();
+    expect(historyForChoice(choice)).toMatchObject({
+      status: 'review',
+      lesson: {
+        modelRevision: entry.model_revision ?? entry.sha256,
+        modelMethod: 'RLASM 6.1',
+        variantId: entry.variant_id,
+        archetypeId: entry.archetype_id,
+        constructionYear: null,
+        sourceIds: [],
+        styleIds: [],
+      },
+    });
+    expect(eraIds(choice)).toEqual([]);
+    expect(planningIds(choice)).toEqual([]);
+    expect(teachingSearchTerms(choice)).toEqual([]);
+    expect(filterCanonicalChoices('building', entry.title)).toContain(choice);
   });
 
   it('names every classified form explicitly without assigning a housing tenure', () => {

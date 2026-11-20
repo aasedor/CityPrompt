@@ -5,6 +5,7 @@ import { CATALOGUE_ASSETS, LOCAL_TOWER_ASSETS, validateRegistry } from '@/featur
 import { CANONICAL_CHOICES, filterCanonicalChoices } from '@/features/pickPlace/canonicalCatalogue';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from '@/features/pickPlace/claudeBuildingRelease';
 import drawnBridges from '@/data/nativeBridgePilots.json';
+import validation from '@/data/validationCatalogue.json';
 
 describe('three additional native street programs', () => {
   it('offers the consolidated classroom selection with distinct exact identities', () => {
@@ -12,10 +13,22 @@ describe('three additional native street programs', () => {
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'street')).toHaveLength(44 + drawnBridges.length);
     expect(CATALOGUE_ASSETS.filter(a => drawnBridges.some(row => row.id === a.model.variantId))
       .map(a => a.model.variantId).sort()).toEqual(drawnBridges.map(row => row.id).sort());
-    expect(CLAUDE_BUILDING_RELEASE_ASSETS).toHaveLength(25);
-    const buildingReleaseIds = new Set(CLAUDE_BUILDING_RELEASE_ASSETS.map(a => a.id));
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building' && !buildingReleaseIds.has(a.id))).toHaveLength(79+LOCAL_TOWER_ASSETS.length);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building')).toHaveLength(104+LOCAL_TOWER_ASSETS.length);
+    const buildings = CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building');
+    expect(CLAUDE_BUILDING_RELEASE_ASSETS).toHaveLength(27);
+    const standalone = validation.entries.filter(entry => entry.standalone_native === true);
+    expect(standalone).toHaveLength(5);
+    for (const entry of standalone) {
+      expect(buildings.filter(asset => asset.id === entry.placement_id)).toEqual([
+        expect.objectContaining({
+          model: expect.objectContaining({ variantId: entry.variant_id, revision: entry.model_revision ?? entry.sha256 }),
+        }),
+      ]);
+    }
+    const buildingReleaseIds = new Set([
+      ...CLAUDE_BUILDING_RELEASE_ASSETS.map(a => a.id), ...standalone.map(entry => entry.placement_id),
+    ]);
+    expect(buildings.filter(a => !buildingReleaseIds.has(a.id))).toHaveLength(79 + LOCAL_TOWER_ASSETS.length);
+    expect(buildings).toHaveLength(79 + LOCAL_TOWER_ASSETS.length + buildingReleaseIds.size);
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space' && a.model.method !== 'fixed_public_realm_v1' && !a.properties.court_only_native)).toHaveLength(38);
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.properties.court_only_native).map(a => a.model.variantId).sort()).toEqual([
       'court_only_basketball_v1', 'court_only_beach_volleyball_v1', 'court_only_pickleball_v1', 'court_only_tennis_v1',

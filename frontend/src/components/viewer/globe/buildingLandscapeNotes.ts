@@ -1,4 +1,5 @@
 import catalogue from '@/data/buildingArchetypes.json';
+import { standaloneNativeBuildingBinding } from '@/features/pickPlace/validationNativeBuildingBinding';
 import type { SiteZone } from '@/types';
 
 interface LandscapeSource {
@@ -18,6 +19,7 @@ export function buildingLandscapeNotes(zone: Pick<SiteZone, 'properties'>) {
   const p = zone.properties ?? {};
   const entry = entries.get(String(p.building_archetype_id ?? ''));
   const variant = entry?.variants?.find(v => v.id === p.development_selected_variant_id);
+  const native = entry ? undefined : standaloneNativeBuildingBinding(zone);
   const notes = [variant?.facadeDetail?.groundFloor, entry?.styleProfile?.frontageType,
     entry?.styleProfile?.streetRelationship, entry?.styleProfile?.publicRealm,
     entry?.facadeDetail?.groundFloor].filter((note): note is string => Boolean(note));
@@ -32,7 +34,7 @@ export function buildingLandscapeNotes(zone: Pick<SiteZone, 'properties'>) {
     : entry?.aestheticCategory === 'minimalist' || /formal|hedge|clipped/.test(text) ? 'evergreen'
       : /flower|cottage|planted front|planted bed|heritage/.test(text) ? 'flowering' : 'mixed';
   const color = variant?.palette?.landscape ?? entry?.palette?.landscape;
-  return { archetypeId: entry?.id ?? null, variantId: variant?.id ?? null, notes, planting,
+  return { archetypeId: entry?.id ?? native?.archetype_id ?? null, variantId: variant?.id ?? native?.variant_id ?? null, notes, planting,
     source: notes.length ? 'archetype_ground_notes' as const : 'conservative_fallback' as const,
     foliage: /^#[\da-f]{6}$/i.test(color ?? '') ? color! : '#527344',
     bed: /gravel|aggregate/.test(text) ? '#a59b82' : '#665342' };

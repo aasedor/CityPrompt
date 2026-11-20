@@ -19,11 +19,17 @@ export function validationNativeBuildingBinding(assetId: unknown, revision: unkn
   return (binding?.model_revision ?? binding?.sha256) === revision ? binding : undefined;
 }
 
-export function isStandaloneNativeBuilding(zone: Pick<SiteZone, 'properties'>): boolean {
+export function standaloneNativeBuildingBinding(zone: Pick<SiteZone, 'properties'>) {
   const properties = zone.properties;
   const binding = validationNativeBuildingBinding(properties?.pick_place_asset, properties?.pick_place_model_revision);
-  if (!binding?.standalone_native || binding.variant_id !== properties?.development_selected_variant_id) return false;
-  if (properties.validation_fixed_fixture === true) return binding.local_url === properties.validation_native_url;
+  if (!binding?.standalone_native || binding.variant_id !== properties?.development_selected_variant_id) return undefined;
+  if (properties.validation_fixed_fixture === true) {
+    return binding.local_url === properties.validation_native_url ? binding : undefined;
+  }
   // A published named revision may have been saved before it had a static URL.
-  return Boolean(binding.model_revision) && properties.validation_native_url == null;
+  return binding.model_revision && properties.validation_native_url == null ? binding : undefined;
+}
+
+export function isStandaloneNativeBuilding(zone: Pick<SiteZone, 'properties'>): boolean {
+  return Boolean(standaloneNativeBuildingBinding(zone));
 }

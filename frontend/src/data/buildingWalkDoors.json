@@ -3219,5 +3219,32 @@
       "sourceEvidence": "C:\\dev-artifacts\\CityPrompt\\neighbourhood-four-2026-10-01\\cafe-v010\\build-report.json",
       "sourceEvidenceSha256": "7ca1fb1b4dd8d5687a765eb83adc857438e56b52efdf58b69fdc937031429645"
     }
+  ],
+  "exteriorOnly": [
+    {
+      "variantId": "terraced_science_centre",
+      "revision": "ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7",
+      "reason": "Prepared-site exterior access reaches the stone forecourt. Interactive doors and gallery circulation remain unmeasured."
+    },
+    {
+      "variantId": "folded_roof_market_hall",
+      "revision": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7",
+      "reason": "Prepared-site exterior access reaches the paved apron. Interactive workshop doors and interior circulation remain unmeasured."
+    },
+    {
+      "variantId": "passage_tower",
+      "revision": "81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51",
+      "reason": "Prepared-site exterior access reaches the ground-level granite passage. Retail doors and upper circulation remain unmeasured."
+    },
+    {
+      "variantId": "london-crescent-terrace-bath-stone",
+      "revision": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
+      "reason": "The crescent has several street doors. A site-specific entrance and interactive routes through the dwellings remain unmeasured."
+    },
+    {
+      "variantId": "brutalist_concrete_slab",
+      "revision": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0",
+      "reason": "The authored +15 stub ends at its enclosure. A receiving span and interactive office circulation remain unmeasured."
+    }
   ]
 }
