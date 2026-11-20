@@ -46,8 +46,16 @@
     "decision": "builder_pass"
   },
   "independent_review": {
-    "status": "pending",
-    "note": "v007 answers the repeat review of v006 and awaits a further review."
+    "status": "pass",
+    "decision": "architectural_clay_pass",
+    "file": "evidence/independent-review-v007.json",
+    "sha256": "58cf89c9c5e520ca96aeba382ebcbb6f1aec0eda81abb30358e4647975ab458b",
+    "reviewed_utc": "2026-11-20T05:49:27Z",
+    "unresolved_p0": 0,
+    "unresolved_p1": 0,
+    "unresolved_p2": 8,
+    "reviewer": "Independent AI reviewer with no builder context; not a human",
+    "note": "RLASM Gate G passed on the third review (v004 refused with three P1, v006 with one). Not keeper approval, not runtime activation and not publication; a person must activate it."
   },
   "superseded": {
     "laneway-garden-studio-clay-v001": {

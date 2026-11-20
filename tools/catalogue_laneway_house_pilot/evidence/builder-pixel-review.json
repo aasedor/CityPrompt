@@ -3,7 +3,7 @@
   "model_sha256": "945f61fec07dafec4f6d5ae94ffb8525a35e4c3fce394ad79c7785e77053236c",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
-  "independent_approval": false,
+  "independent_approval": "architectural_clay_pass for v007 (evidence/independent-review-v007.json); not keeper, runtime or publication approval",
   "views_inspected": {
     "v007": [
       "renders/aerial.png",
@@ -73,5 +73,10 @@
     "V6-P1-01 lane-face windows read as slits": "Fixed as the review asked. The lane ground window and both band slots now have their frames 0.01 m into the reveal, so the glass is about 0.045 m behind the face (0.05 m panel band face for the slots). In match_front and match_oblique the ground window reads as glass and the slots show frame and glass.",
     "garage lining regression": "Fixed. The west lining is back to its v004 extent, and a separate lining closes the garage strip X 0.30, Y 0 to 0.30, at garage level only.",
     "other v006 notes": "Unchanged: match_top orthographic, hip-cap stubs, door proportion, single trim value, sparse corner specks, rear lines at 52 m."
+  },
+  "response_to_independent_review_of_v007": {
+    "decision": "Accepted. Gate G passes with zero P0 and zero P1.",
+    "V7-P2-01 inner jamb reads as cedar behind the lane ground window": "Left open. Giving the inner jambs the interior finish is cheap, but any geometry change makes a new candidate and needs a fresh review; it is listed for the person who decides on activation.",
+    "other P2": "Left open and listed in integration/promotion.json limitations: match_top orthographic, corner seam specks, long-range lines at 44 to 52 m, hip-cap stubs, door proportion, one trim value, corner pane tone."
   }
 }

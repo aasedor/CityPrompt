@@ -40,7 +40,7 @@
       "The back and west faces are inferred; no reference shows them.",
       "Three doors: the front door on the porch, a garden door at the back and the garage door. The front and garden doors are two steps above grade.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_laneway_house_pilot/integration/runtime-review.md.",
-      "Independent review: v004 was refused with three P1 findings and v006 with one; v007 answers them and awaits a further review."
+      "Independent review: v004 was refused with three P1 findings and v006 with one. v007 passed on 2026-11-20 with zero P0, zero P1 and eight P2 (evidence/independent-review-v007.json). Open P2: the lane ground window's inner jamb reads as cedar from the street camera; the corner pane reads darker than the reference; hip caps stop short of the eave corners; the porch door and sidelight proportion differs; one near-black trim colour."
     ],
     "picker": {
       "id": "vancouver_laneway_house_garden_studio",

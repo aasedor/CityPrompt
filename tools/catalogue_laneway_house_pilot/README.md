@@ -18,7 +18,7 @@ Status of candidate **laneway-garden-studio-clay-v007**:
 |---|---|
 | Deterministic delivery checks | Pass, 77 checks. `evidence/delivery-verification.json` |
 | Builder pixel review | Pass, with open notes. `evidence/builder-pixel-review.json` |
-| Independent architectural-clay review | **Not done.** RLASM Gate G is open |
+| Independent architectural-clay review | **Pass**, 2026-11-20: 0 P0, 0 P1, 8 P2. RLASM Gate G is met. `evidence/independent-review-v007.json` |
 | Runtime integration | NOT REVIEWED. No part of it has been run. `integration/runtime-review.md` |
 | Publication or activation | Not authorized |
 
@@ -46,6 +46,12 @@ Earlier candidates, none of which may be used:
   window, stoop and other fixes, but was refused with one P1: the widened lane
   windows' glass sat 0.135 m back, so from the reference cameras they still read
   as slits. `evidence/independent-review-v006.json` holds that review.
+
+v007 brought those frames 0.01 m into the reveal, with the glass about 45 mm
+behind each face, and confined the garage lining to garage level. Its review
+passed. Eight P2 notes stay open, the largest being that from the street camera
+the lane ground window's inner jamb reads as cedar behind the glass. They are
+listed in `integration/promotion.json`.
 
 ## The catalogue text described a different building
 
@@ -81,7 +87,7 @@ a backyard suite over a garage.
 | Back and west | Inferred: a glazed garden door with a step, a window to the back room and two upper windows at the back; one window on each storey on the west |
 | Inside | A garage, a back room and an entry hall with a straight stair along the lane wall; upstairs a living room across the front and a bedroom and bath behind. Every window has a room behind it |
 
-The model is 6,624 triangles in 17 flat-coloured parts, with no textures or
+The model is 6,748 triangles in 17 flat-coloured parts, with no textures or
 images. Nothing lies below grade.
 
 ## What it was measured from
@@ -117,7 +123,7 @@ cars, planting, the lane, the street and neighbours.
 | `verify.py` | Delivery checks, including that every whole view keeps the building in frame; writes `delivery-verification.json` |
 | `test_laneway.py` | 15 tests: the generator still produces the recorded bytes; the ridge is 2 m and the side faces 5 in 12; the roof is one hipped sheet, lowest of its four planes everywhere; the lane windows match the corner pane and the slots are 0.5 m; seams stand on it; the corner box stops at its lane pane; no room surface stands in an opening; board and mortar lines never cross one; every opening has glass in its reveal; guard height; stair risers; downpipes; doors |
 | `prework-manifest.json`, `candidate.json` | The measured contract and the candidate's hashes |
-| `evidence/` | Builder review and delivery verification |
+| `evidence/` | Builder review, delivery verification and the three independent reviews |
 | `integration/runtime-review.md` | The runtime review template, filled in honestly: nothing was run |
 | `integration/promotion.json` | An **unapproved** promotion package: identity, references, plot and picker text, with the approval and trial records left blank |
 
@@ -144,9 +150,10 @@ scripts refuse to replace a file: RLASM never overwrites a candidate.
 
 ## Before this can be offered to students
 
-1. An independent architectural-clay review with zero P0 and zero P1 findings
-   (RLASM Gate G). The promotion tool's trial preflight refuses the package until
-   that review is saved beside it as `independent-review.json`.
+1. Done 2026-11-20: an independent architectural-clay review with zero P0 and
+   zero P1 findings (RLASM Gate G). The promotion tool's trial preflight needs it
+   saved beside the GLB as `independent-review.json`; copy
+   `evidence/independent-review-v007.json` there.
 2. Done 2026-11-19: a person ruled on the variant's name and text. It is now
    Garage Suite.
 3. A person looks at the renders and boards and accepts or rejects the model.
