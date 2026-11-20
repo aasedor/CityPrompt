@@ -230,6 +230,7 @@ class Settings(BaseSettings):
     kling_animation_cost_per_second_usd: float = Field(default=0.112, gt=0)
     kling_animation_credit_cost: int = Field(default=50, gt=0)
     google_maps_api_key: str = ""
+    direct_3d_street_view_context_enabled: bool = False
     fal_key: str = ""
     fal_style_model: str = "fal-ai/fast-sdxl/image-to-image"
     gemini_2d_image_model: str = "gemini-3-pro-image-preview"

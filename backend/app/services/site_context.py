@@ -14,6 +14,7 @@ from __future__ import annotations
 import asyncio
 import base64
 import logging
+import math
 import time
 
 import httpx
@@ -39,6 +40,8 @@ async def fetch_streetview_plate(
     fov: float,
     width: int,
     height: int,
+    *,
+    max_offset_m: float | None = None,
 ) -> dict | None:
     """Fetch ONE real Street View photo aligned to a given camera, for use as the
     composite background plate in SV-snap photomontage mode.
@@ -67,6 +70,17 @@ async def fetch_streetview_plate(
                 return None
             pano = meta["pano_id"]
             ploc = meta.get("location", {})
+            offset_m = None
+            if ploc.get("lat") is not None and ploc.get("lng") is not None:
+                dlat = math.radians(ploc["lat"] - lat)
+                dlng = math.radians(ploc["lng"] - lng)
+                a = (
+                    math.sin(dlat / 2) ** 2
+                    + math.cos(math.radians(lat)) * math.cos(math.radians(ploc["lat"])) * math.sin(dlng / 2) ** 2
+                )
+                offset_m = 2 * 6_371_000 * math.asin(math.sqrt(min(1.0, a)))
+            if max_offset_m is not None and (offset_m is None or offset_m > max_offset_m):
+                return None
             r = await client.get(
                 "https://maps.googleapis.com/maps/api/streetview",
                 params={
@@ -75,30 +89,22 @@ async def fetch_streetview_plate(
                     "heading": round(heading),
                     "fov": round(fov),
                     "pitch": 0,
+                    "return_error_code": "true",
                     "key": key,
                 },
             )
-            if r.status_code != 200 or not r.headers.get("content-type", "").startswith("image/"):
+            mime_type = r.headers.get("content-type", "").split(";", 1)[0].strip().lower()
+            if r.status_code != 200 or mime_type not in {"image/jpeg", "image/png"}:
                 logger.warning("sv-plate: image fetch HTTP %s", r.status_code)
                 return None
     except Exception as exc:  # noqa: BLE001
-        logger.warning("sv-plate fetch failed: %s", exc)
+        logger.warning("sv-plate fetch failed (%s)", type(exc).__name__)
         return None
 
-    offset_m = None
-    if ploc.get("lat") is not None:
-        import math
-
-        dlat = math.radians(ploc["lat"] - lat)
-        dlng = math.radians(ploc["lng"] - lng)
-        a = (
-            math.sin(dlat / 2) ** 2
-            + math.cos(math.radians(lat)) * math.cos(math.radians(ploc["lat"])) * math.sin(dlng / 2) ** 2
-        )
-        offset_m = round(2 * 6_371_000 * math.asin(math.sqrt(a)), 1)
     return {
         "photo_base64": base64.b64encode(r.content).decode(),
-        "pano_offset_m": offset_m,
+        "mime_type": mime_type,
+        "pano_offset_m": round(offset_m, 1) if offset_m is not None else None,
         "pano_date": meta.get("date"),
         "width": w,
         "height": h,

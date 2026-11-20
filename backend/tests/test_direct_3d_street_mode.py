@@ -1,16 +1,23 @@
 """Street view_mode contract for the Direct 3D pipeline (Stage 3 v1)."""
 
+from types import SimpleNamespace
+from unittest.mock import AsyncMock
+
+import httpx
 import numpy as np
 import pytest
 from PIL import Image
 from pydantic import ValidationError
 
 from app.schemas.direct_3d_render import Direct3DRenderRequest
+from app.services import direct_3d_render as direct_service, site_context
 from app.services.direct_3d_render import (
+    Direct3DProviderError,
+    Direct3DRenderService,
     _presentation_prompt,
     prepare_direct_3d_capture,
 )
-from tests.test_direct_3d_render import _capture_images, _request
+from tests.test_direct_3d_render import _FakeResponse, _RecordingClient, _capture_images, _png_b64, _request
 
 
 def _street_request(**overrides) -> Direct3DRenderRequest:
@@ -30,6 +37,86 @@ def test_street_requires_scene_presentation():
 
 def test_street_with_scene_is_valid():
     assert _street_request().view_mode == "street"
+
+
+def test_aerial_requests_reject_street_view_context():
+    payload = _request(presentation_mode="scene").model_dump()
+    payload["street_view_context"] = {"latitude": 51.045535, "longitude": -114.067772, "heading": 90}
+    with pytest.raises(ValidationError, match="street"):
+        Direct3DRenderRequest.model_validate(payload)
+
+
+@pytest.mark.parametrize("coverage", ["available", "missing", "invalid"])
+async def test_street_context_is_attached_once_or_fails_before_the_image_provider(monkeypatch, coverage):
+    location = {"latitude": 51.045535, "longitude": -114.067772, "heading": 90}
+    request = Direct3DRenderRequest.model_validate(
+        {
+            **_street_request().model_dump(),
+            "street_view_context": location,
+        }
+    )
+    capture = prepare_direct_3d_capture(request)
+    fixture = {
+        "photo_base64": _png_b64(capture.normalized_beauty),
+        "mime_type": "image/png",
+        "pano_date": "2024-06",
+        "pano_offset_m": 15.0,
+    }
+    if coverage == "invalid":
+        fixture["photo_base64"] = "invalid-image"
+    lookup = AsyncMock(return_value=None if coverage == "missing" else fixture)
+    monkeypatch.setattr(site_context, "fetch_streetview_plate", lookup)
+    monkeypatch.setattr(
+        direct_service,
+        "get_settings",
+        lambda: SimpleNamespace(
+            direct_3d_street_view_context_enabled=True,
+            google_maps_api_key="test-maps-key",
+        ),
+    )
+    monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
+    _RecordingClient.calls = []
+    _RecordingClient.response = _FakeResponse(200, {"data": [{"b64_json": _png_b64(capture.normalized_beauty)}]})
+    service = Direct3DRenderService("test-image-key")
+    if coverage == "available":
+        result = await service.generate(request, capture)
+        assert result.diagnostics["street_view_context"] == {"pano_date": "2024-06", "offset_m": 15.0}
+        assert len(_RecordingClient.calls) == 1
+        call = _RecordingClient.calls[0]
+        assert call["files"][0][1][0] == "direct-3d-beauty.png"
+        assert call["files"][-1][1][0] == "street-view-context.png"
+        assert "EXISTING STREET REFERENCE" in call["data"]["prompt"]
+    else:
+        message = "within 20 m" if coverage == "missing" else "invalid image"
+        with pytest.raises(Direct3DProviderError, match=message) as error:
+            await service.generate(request, capture)
+        assert error.value.billing_status == "unproduced"
+        assert _RecordingClient.calls == []
+    lookup.assert_awaited_once()
+    assert lookup.await_args.args[:3] == (location["latitude"], location["longitude"], location["heading"])
+    assert lookup.await_args.kwargs == {"max_offset_m": 20}
+
+
+async def test_street_view_rejects_placeholder_when_panorama_image_is_unavailable(monkeypatch):
+    lat, lng = 51.045535, -114.067772
+
+    def google(request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith("/metadata"):
+            return httpx.Response(
+                200, json={"status": "OK", "pano_id": "test-pano", "location": {"lat": lat, "lng": lng}}
+            )
+        if request.url.params.get("return_error_code") == "true":
+            return httpx.Response(404)
+        return httpx.Response(200, headers={"content-type": "image/jpeg"}, content=b"placeholder")
+
+    async_client = httpx.AsyncClient
+    monkeypatch.setattr(
+        site_context.httpx,
+        "AsyncClient",
+        lambda **kwargs: async_client(transport=httpx.MockTransport(google), **kwargs),
+    )
+    monkeypatch.setattr(site_context, "get_settings", lambda: SimpleNamespace(google_maps_api_key="test-maps-key"))
+    assert await site_context.fetch_streetview_plate(lat, lng, 90, 90, 640, 360, max_offset_m=20) is None
 
 
 def _street_framed_mask(size: tuple[int, int]) -> Image.Image:

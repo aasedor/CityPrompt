@@ -1497,6 +1497,7 @@ export const rendersApi = {
     /** 'street' = eye-level capture; server is review-first and skips the
      *  aerial lower-frame-context gate. Defaults to 'aerial'. */
     view_mode?: 'aerial' | 'street';
+    street_view_context?: { latitude: number; longitude: number; heading: number };
     /** Authored archetype artwork (facade sheets, catalogue cards) the
      *  provider applies to the named buildings. Max 8. */
     archetype_references?: Array<{ image_base64: string; label: string; zone_ids?: string[] }>;
