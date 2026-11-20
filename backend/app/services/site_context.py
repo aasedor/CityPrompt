@@ -89,6 +89,7 @@ async def fetch_streetview_plate(
                     "heading": round(heading),
                     "fov": round(fov),
                     "pitch": 0,
+                    "return_error_code": "true",
                     "key": key,
                 },
             )

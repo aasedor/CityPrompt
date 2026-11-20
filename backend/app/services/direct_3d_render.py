@@ -4137,8 +4137,14 @@ class Direct3DRenderService:
                 "No usable Google Street View image was returned within 20 m. Move the camera or turn off the reference.",
                 billing_status="unproduced",
             )
-        raw = _decode_base64_payload(plate["photo_base64"], label="Google Street View reference")
-        _load_image(raw, label="Google Street View reference", allowed_formats={"PNG", "JPEG"})
+        try:
+            raw = _decode_base64_payload(plate["photo_base64"], label="Google Street View reference")
+            _load_image(raw, label="Google Street View reference", allowed_formats={"PNG", "JPEG"}).close()
+        except Direct3DValidationError as exc:
+            raise Direct3DProviderError(
+                "Google Street View returned an invalid image. Move the camera or turn off the reference.",
+                billing_status="unproduced",
+            ) from exc
         self._street_view_context = {"pano_date": plate["pano_date"], "offset_m": plate["pano_offset_m"]}
         mime = plate["mime_type"]
         return ("street-view-context.png" if mime == "image/png" else "street-view-context.jpg", raw, mime)

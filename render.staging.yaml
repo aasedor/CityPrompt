@@ -40,6 +40,8 @@ services:
     value: 'true'
   - key: DIRECT_3D_IMAGES_ENABLED
     value: 'true'
+  - key: DIRECT_3D_STREET_VIEW_CONTEXT_ENABLED
+    value: 'false'
   - key: DIRECT_3D_QUEUE_LIMIT
     value: '16'
   - key: DIRECT_3D_PROJECT_QUEUE_LIMIT
@@ -122,6 +124,16 @@ services:
       name: cityprompt-staging-api
       type: web
       envVarKey: DIRECT_3D_IMAGES_ENABLED
+  - key: DIRECT_3D_STREET_VIEW_CONTEXT_ENABLED
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: DIRECT_3D_STREET_VIEW_CONTEXT_ENABLED
+  - key: GOOGLE_MAPS_API_KEY
+    fromService:
+      name: cityprompt-staging-api
+      type: web
+      envVarKey: GOOGLE_MAPS_API_KEY
   - key: DIRECT_3D_QUEUE_LIMIT
     fromService:
       name: cityprompt-staging-api
