@@ -101,7 +101,7 @@ export function catalogueRequirements(choices, heroImage, data) {
     } else if (asset.model.method === 'public_realm_park_kit') {
       representation = 'procedural_park_kit';
       checks.push(...data.kits);
-    } else if (library) {
+    } else if (library && entry?.standalone_native !== true) {
       representation = 'model_library';
       checks.push({kind:'glb',sha256:library.model.sha256,sourcePath:library.sourcePath || 'seed/model-library/rlasm-architectural-clay/'+library.model.path,variantId:library.variant_id});
     } else if (asset.properties.validation_native_url || entry?.local_url) {

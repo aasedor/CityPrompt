@@ -197,6 +197,45 @@
       "current": true
     },
     {
+      "asset_id": "rlasm_terraced_science_centre",
+      "variant_id": "terraced_science_centre",
+      "revision": "ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7",
+      "dimensions_m": [
+        52.28,
+        36.234,
+        13.2
+      ],
+      "storeys": 2,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "rlasm_folded_roof_market_hall",
+      "variant_id": "folded_roof_market_hall",
+      "revision": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7",
+      "dimensions_m": [
+        42,
+        23,
+        9.2
+      ],
+      "storeys": 1,
+      "fixed": true,
+      "current": true
+    },
+    {
+      "asset_id": "rlasm_passage_tower",
+      "variant_id": "passage_tower",
+      "revision": "81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51",
+      "dimensions_m": [
+        42.1475,
+        34.055,
+        63.3
+      ],
+      "storeys": 18,
+      "fixed": true,
+      "current": true
+    },
+    {
       "asset_id": "clay_side_by_side_duplex",
       "variant_id": "infill_duplex",
       "revision": "calgary-side-by-side-duplex-clay-v004",
@@ -1352,6 +1391,34 @@
       "storeys": 12,
       "fixed": true,
       "current": true
+    },
+    {
+      "asset_id": "london_crescent_terrace_bath_stone",
+      "variant_id": "london-crescent-terrace-bath-stone",
+      "revision": "crescent-terrace-bath-stone-clay-v006",
+      "dimensions_m": [
+        126.31745910644531,
+        48.400219678878784,
+        19.15999984741211
+      ],
+      "storeys": 3,
+      "fixed": true,
+      "current": true,
+      "static_model_sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284"
+    },
+    {
+      "asset_id": "plus15_brutalist_concrete_office",
+      "variant_id": "brutalist_concrete_slab",
+      "revision": "plus15-brutalist-concrete-office-clay-v006",
+      "dimensions_m": [
+        54,
+        40.5,
+        28.25
+      ],
+      "storeys": 5,
+      "fixed": true,
+      "current": true,
+      "static_model_sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0"
     },
     {
       "asset_id": "clay_twisting_glass_sky_garden_tower",

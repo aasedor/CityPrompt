@@ -4,10 +4,10 @@ From a reviewed checkout, with DATABASE_URL and S3_* explicitly exported:
   python backend/scripts/verify_hosted_catalogue.py --metadata-only
   python backend/scripts/verify_hosted_catalogue.py --verify-target --report receipt.json
 
-The frontend-generated native contract identifies current selections. Candidate
-revisions resolve through the seed manifest; native SHA revisions are delivered
-by the static frontend and do not require Model Library rows. Optional authored
-storey modules are also required when their finite programme is advertised.
+The frontend-generated native contract identifies current selections. Model
+Library candidates resolve through the seed manifest. The static frontend
+delivers both SHA revisions and named revisions with a locked static model hash.
+Optional authored storey modules are required when their programme is advertised.
 """
 
 from __future__ import annotations
@@ -60,6 +60,10 @@ def load_expected(contract_path: Path, library_path: Path, additional_libraries=
         if row["asset_id"] in seen:
             raise ValueError("Duplicate current catalogue identity")
         seen.add(row["asset_id"])
+        if "static_model_sha256" in row:
+            if not SHA256.fullmatch(str(row["static_model_sha256"])):
+                raise ValueError("Invalid static model SHA-256")
+            continue
         if SHA256.fullmatch(str(row.get("revision", ""))):
             continue  # Native frontend GLB, not a Model Library binding.
         matches = [

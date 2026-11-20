@@ -547,6 +547,7 @@
     "src/features/pickPlace/surfacePath.ts",
     "src/features/pickPlace/useAutomatic3D.ts",
     "src/features/pickPlace/usePublicRoadContext.ts",
+    "src/features/pickPlace/validationNativeBuildingBinding.ts",
     "src/features/policyPlans/CityPolicyDetailsCard.tsx",
     "src/features/policyPlans/CityPolicyMapsPanel.tsx",
     "src/features/policyPlans/GlobeCityPolicyMaps.tsx",
@@ -682,10 +683,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4205,
+    "explicitReferenceCount": 4213,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5989,
-    "requiredLogicalBytes": 13097567210,
+    "requiredFileCount": 5997,
+    "requiredLogicalBytes": 13127041711,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -2255,7 +2256,9 @@
       "url": "/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1098329,
       "lfsOid": "ea6a28363104886398ba75294af97682bb0666485c73a48a2a0c7f363bfbb8ff"
@@ -5025,6 +5028,15 @@
       "lfsOid": "c571268e0568ef20c6b30c23f603cdac9893792bfe020ae4734d69be5ae828d1"
     },
     {
+      "url": "/archetypes/buildings/folded_roof_market_hall/reference-8ec8e9e318cc.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/validationCatalogue.json"
+      ],
+      "logicalBytes": 2267659,
+      "lfsOid": "8ec8e9e318ccbe944b4a3df8f935a2ffc8065e5c91d8bf63298288bf1d28b4a1"
+    },
+    {
       "url": "/archetypes/buildings/food_hall_market_hall/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -6450,7 +6462,9 @@
       "url": "/archetypes/buildings/london-crescent-terrace/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
-        "src/data/buildingArchetypes.json"
+        "src/data/buildingArchetypes.json",
+        "src/data/catalogueHeroImages.json",
+        "src/features/pickPlace/publishedBuildingAssets.ts"
       ],
       "logicalBytes": 1257907,
       "lfsOid": "ee92450f910e07cab1027edb0991cde1d6657c2809eb457b5687aa37c9f6f1c9"
@@ -8502,6 +8516,15 @@
       "lfsOid": "66c7921271c2bb94bb21fa5c129b5a4386a33ed05cd86ff2befaa5d050d73e81"
     },
     {
+      "url": "/archetypes/buildings/passage_tower/reference-3073ee61b027.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/validationCatalogue.json"
+      ],
+      "logicalBytes": 1817594,
+      "lfsOid": "3073ee61b027c7d33da4727b40401d4090c33d30ca70b08fc7b767f0a07b6646"
+    },
+    {
       "url": "/archetypes/buildings/postmodern-community-rec-centre/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -9788,6 +9811,15 @@
       ],
       "logicalBytes": 415608,
       "lfsOid": "b532ffc76d9d76844e5b3c312228eb9527e11368067eff6b63dea55347d242fc"
+    },
+    {
+      "url": "/archetypes/buildings/terraced_science_centre/reference-e2aa32dd4cfa.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/validationCatalogue.json"
+      ],
+      "logicalBytes": 2167724,
+      "lfsOid": "e2aa32dd4cfa8fe1fcc1a0eb46176a9b67d98a8ca1a6328f669f3b814a51fb52"
     },
     {
       "url": "/archetypes/buildings/terraced_stepped_building/hero.png",
@@ -25257,6 +25289,46 @@
       ],
       "logicalBytes": 675884,
       "lfsOid": "d63ebe52565957885f8287a2ffd61a4b6f2fb5299d9dfec25aa1384a10d3bccb"
+    },
+    {
+      "url": "/model-revisions/2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0.glb",
+      "sources": [
+        "src/data/validationCatalogue.json"
+      ],
+      "logicalBytes": 2273324,
+      "lfsOid": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0"
+    },
+    {
+      "url": "/model-revisions/599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7.glb",
+      "sources": [
+        "src/data/validationCatalogue.json"
+      ],
+      "logicalBytes": 2595128,
+      "lfsOid": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7"
+    },
+    {
+      "url": "/model-revisions/705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284.glb",
+      "sources": [
+        "src/data/validationCatalogue.json"
+      ],
+      "logicalBytes": 8594664,
+      "lfsOid": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284"
+    },
+    {
+      "url": "/model-revisions/81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51.glb",
+      "sources": [
+        "src/data/validationCatalogue.json"
+      ],
+      "logicalBytes": 6665936,
+      "lfsOid": "81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51"
+    },
+    {
+      "url": "/model-revisions/ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7.glb",
+      "sources": [
+        "src/data/validationCatalogue.json"
+      ],
+      "logicalBytes": 3092472,
+      "lfsOid": "ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7"
     },
     {
       "url": "/native-park-assets/02ce66e57b40653d578aa41389040b9925d1f0c38944a87807176882b3388b6f.glb",

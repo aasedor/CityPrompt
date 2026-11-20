@@ -1,7 +1,10 @@
 import validation from '@/data/validationCatalogue.json';
 import type { SiteZone } from '@/types';
 
-type NativeBuildingBinding = (typeof validation.entries)[number] & { standalone_native?: boolean };
+type NativeBuildingBinding = (typeof validation.entries)[number] & {
+  standalone_native?: boolean;
+  model_revision?: string;
+};
 
 const bindings = new Map(
   (validation.entries as NativeBuildingBinding[])
@@ -13,14 +16,14 @@ const bindings = new Map(
 export function validationNativeBuildingBinding(assetId: unknown, revision: unknown) {
   if (typeof assetId !== 'string' || typeof revision !== 'string' || !revision) return undefined;
   const binding = bindings.get(assetId);
-  return binding?.sha256 === revision ? binding : undefined;
+  return (binding?.model_revision ?? binding?.sha256) === revision ? binding : undefined;
 }
 
 export function isStandaloneNativeBuilding(zone: Pick<SiteZone, 'properties'>): boolean {
   const properties = zone.properties;
-  if (properties?.validation_fixed_fixture !== true) return false;
-  const binding = validationNativeBuildingBinding(properties.pick_place_asset, properties.pick_place_model_revision);
-  return binding?.standalone_native === true
-    && binding.variant_id === properties.development_selected_variant_id
-    && binding.local_url === properties.validation_native_url;
+  const binding = validationNativeBuildingBinding(properties?.pick_place_asset, properties?.pick_place_model_revision);
+  if (!binding?.standalone_native || binding.variant_id !== properties?.development_selected_variant_id) return false;
+  if (properties.validation_fixed_fixture === true) return binding.local_url === properties.validation_native_url;
+  // A published named revision may have been saved before it had a static URL.
+  return Boolean(binding.model_revision) && properties.validation_native_url == null;
 }

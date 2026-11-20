@@ -1027,7 +1027,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 19.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.6100006103515625,
+      24.610000610351562,
       15.179999828338623,
       12.390000343322754
     ],
@@ -1307,7 +1307,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 20.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.3600006103515625,
+      24.360000610351562,
       16.152999877929688,
       10.449999809265137
     ],
@@ -1347,7 +1347,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 20.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.3600006103515625,
+      24.360000610351562,
       16.08299970626831,
       13.75
     ],
@@ -1588,7 +1588,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "maxSize": 100.0,
     "nativeDimensions": [
       13.34000015258789,
-      21.4720001220703125,
+      21.472000122070312,
       9.0
     ],
     "reshapeDescription": "One complete two-home building at its native size. Resize the surrounding plot; the homes do not stretch or repeat.",
@@ -3519,6 +3519,86 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
       "development_archetype_label": "Student residence tower",
       "floors": 12,
       "floor_count": 12,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "london_crescent_terrace_bath_stone",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Bath Stone Grand",
+    "description": "Eighteen-house Georgian crescent in Bath stone with a giant Ionic order, balustrade and slate roofs.",
+    "thumbnail": "/archetypes/buildings/london-crescent-terrace/variant_0.png",
+    "model": {
+      "variantId": "london-crescent-terrace-bath-stone",
+      "revision": "crescent-terrace-bath-stone-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "ground_housing",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 130.0,
+    "depth": 52.0,
+    "minWidth": 130.0,
+    "minDepth": 52.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      126.31745910644531,
+      48.400219678878784,
+      19.15999984741211
+    ],
+    "reshapeDescription": "Move and rotate the complete crescent. It keeps its authored size.",
+    "properties": {
+      "building_archetype_id": "london_crescent_terrace",
+      "development_archetype_id": "london_crescent_terrace",
+      "development_selected_variant_id": "london-crescent-terrace-bath-stone",
+      "development_archetype_label": "Bath Stone Grand",
+      "floors": 3,
+      "floor_count": 3,
+      "native_plot_axes": true
+    }
+  },
+  {
+    "id": "plus15_brutalist_concrete_office",
+    "kind": "object",
+    "definitionVersion": 1,
+    "readiness": "ready",
+    "label": "Brutalist Concrete Office Slab",
+    "description": "Five-storey 1970s concrete office block with ribbon windows and a +15 walkway stub.",
+    "thumbnail": "/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
+    "model": {
+      "variantId": "brutalist_concrete_slab",
+      "revision": "plus15-brutalist-concrete-office-clay-v006",
+      "method": "RLASM 6.1"
+    },
+    "calgaryGuide": {
+      "groupId": "offices",
+      "basis": "form_reference"
+    },
+    "zoneType": "building",
+    "reshapeMode": "fixed_native",
+    "width": 57.0,
+    "depth": 44.0,
+    "minWidth": 57.0,
+    "minDepth": 44.0,
+    "maxSize": 250.0,
+    "nativeDimensions": [
+      54.0,
+      40.5,
+      28.25
+    ],
+    "reshapeDescription": "Move and rotate the complete building. It keeps its authored size.",
+    "properties": {
+      "building_archetype_id": "calgary_15_connected_tower",
+      "development_archetype_id": "calgary_15_connected_tower",
+      "development_selected_variant_id": "brutalist_concrete_slab",
+      "development_archetype_label": "Brutalist Concrete Office Slab",
+      "floors": 5,
+      "floor_count": 5,
       "native_plot_axes": true
     }
   }
