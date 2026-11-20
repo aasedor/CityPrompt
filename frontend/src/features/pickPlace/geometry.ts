@@ -51,6 +51,13 @@ export function placementProblem(
     const groundPath = isSurfacePath({zone_type:'road',properties:ownProperties});
     const footprint = local(buildingPlacementEnvelope({coordinates:coords,properties:ownProperties}));
     if (groundSurfaceFor({properties:ownProperties})) return groundSurfaceProblem(coords,boundary);
+    const prepared = boundary?.properties?.community_3d_mask_existing_tiles === true
+      && boundary.properties.terrain_strategy !== 'landscape';
+    if (!prepared && ownProperties?.pick_place_asset && assetForZone({ properties: ownProperties })?.preparedLevelOnly) {
+      return boundary
+        ? 'This building needs a prepared level site. Open Review ground to prepare it.'
+        : 'This building needs a prepared level site. Create a site boundary, then open Review ground to prepare it.';
+    }
     // Saved plots must remain inside the site, matching the server's contract.
     if (boundary && !envelopeFits(local(coords),local(boundary.coordinates))) return isFixedNativeScene(ownProperties)
       ? 'This fixed-size model needs more clear space inside your site boundary. Move or rotate it, or choose a smaller model.'

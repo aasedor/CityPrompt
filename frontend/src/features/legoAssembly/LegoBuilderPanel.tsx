@@ -414,7 +414,7 @@ export function LegoBuilderPanel({
     try {
       const results = await allSettledWithConcurrency(
       base,
-      (item) => legoAssemblyApi.plan(buildPlanRequestForItem(
+      (item) => item.standaloneNative ? Promise.resolve(null) : legoAssemblyApi.plan(buildPlanRequestForItem(
         item,
           // A manually drawn parcel is an intentional design target. Match the
           // single-building LEGO composer by allowing modular families to
@@ -428,7 +428,7 @@ export function LegoBuilderPanel({
       if (!isCurrentBatch()) return;
       const plannedItems = base.map((item, index) => {
       const result = results[index];
-      if (result.status === 'fulfilled') return { ...item, plan: result.value };
+      if (result.status === 'fulfilled') return result.value ? { ...item, plan: result.value } : item;
       const planningFailure = getLegoPlanningFailure(result.reason);
       return {
         ...item,
@@ -696,6 +696,11 @@ export function LegoBuilderPanel({
                       RLASM keeper
                     </span>
                   )}
+                  {item.standaloneNative && item.placeState === 'placed' && (
+                    <span className="shrink-0 rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                      Fixed model
+                    </span>
+                  )}
                   {!item.plan && !item.sourceLockedRlasm && item.massingState && (
                     <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-bold ${
                       item.massingState === 'compiled'
@@ -771,7 +776,7 @@ export function LegoBuilderPanel({
                 {item.error && !item.familyMissing && !item.familyIncompatible && (
                   <p className="mt-0.5 text-red-800">{item.error}</p>
                 )}
-                {!item.plan && !item.sourceLockedRlasm && !item.error && planning && (
+                {!item.plan && !item.sourceLockedRlasm && !item.standaloneNative && !item.error && planning && (
                   <p className="mt-0.5 text-black/50">Assembling…</p>
                 )}
                 {!item.offset && (

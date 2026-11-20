@@ -1,0 +1,640 @@
+{
+ "schema": "rlasm-independent-architectural-clay-review-v1",
+ "candidate": "crescent-terrace-bath-stone-clay-v006",
+ "model_sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
+ "reviewer": "AI reviewer (Claude), with no builder context and no access to the generator. Not a human. The same reviewer that reviewed v005 earlier in this session. I can review only; I cannot approve a keeper, an activation or a publication.",
+ "reviewed_utc": "2026-11-18T15:49:12Z",
+ "method": "RLASM v6.1",
+ "scope": "Holistic source-locked architectural-clay review of the delivered texture-free GLB, its 23 renders and 4 phone boards against the three locked references for london_crescent_terrace / london-crescent-terrace-bath-stone (variant 0, Bath Stone Grand), with read-only measurement of the whole GLB, my own renders of it, a check of each of the builder's six claimed changes, and a re-test of all eleven findings of my v005 review. Coordinates in metres are glTF X, Y (up), Z, and pairs are plan positions (X, Z); the crescent opens toward +Z. Pixel positions are in the full-size image named. My working images are in /tmp/claude-0/-home-user-CityPrompt/68388952-4a91-5986-952c-be31d5cd905a/scratchpad/crescent-review-v006/",
+ "holistic_review_performed": true,
+ "decision": "architectural_clay_pass",
+ "architectural_clay_pass": true,
+ "keeper_approved": false,
+ "runtime_activation_approved": false,
+ "canonical_promotion_approved": false,
+ "human_activation_required": true,
+ "unresolved_p0": 0,
+ "unresolved_p1": 0,
+ "unresolved_p2": 10,
+ "recommended_lifecycle_state": "architectural_clay_reviewed",
+ "decision_note": "No P0, no P1, ten P2. Both v005 blockers are fixed and I could measure each fix: the coupled corner columns now stand apart with wall between them, a capital and a pedestal each, and nothing of one column inside another; and the railing bars run round every corner. The roof is single-skinned and the whole model is an exact mirror image. Narrowing the bays to make room for the corner pairs caused no collision. I re-ran every geometric check on the whole model and added section tests; they found one hidden gap (no floor in the door reveals) and one hairline (the corner columns barely touch the wall), both recorded as P2 with my reasons. This pass says the model is a complete, coherent building that follows the street view and the oblique. It does not say the source set is sound: the roof-plan reference shows a different building, and a person must rule on that before any activation. It is not keeper approval, and runtime integration is untested.",
+ "findings": [
+  {
+   "id": "P2-01",
+   "severity": "P2",
+   "title": "The four corner columns touch the wall only at its arris, and near the top the tapering shaft stands clear of it, leaving a hairline of daylight from one raking direction",
+   "evidence": [
+    "GLB: the axis of each outer corner column (60.887, -0.400 and its mirror) is 0.316 m from the nearest point of the upper wall, which is the wall's corner arris; at the inner corners (47.887, -0.400) it is 0.306 m. The shaft radius is 0.330 m at the base and 0.282 m at the neck. So the shaft is into the arris by 14 mm (outer) and 24 mm (inner) at the foot, meets it at about 8.4 m (outer) and 9.4 m (inner), and stands clear above that, by 33 mm (outer) and 23 mm (inner) at 11.0 m. Every other column is 0.220 m from a flat wall face and stays engaged by 110 mm at the foot and 62 mm at the neck.",
+    "My own renders of the GLB with a magenta background: myrenders/slit_outer_right_top.png (telephoto along the gap: a clear strip of background between shaft and wall at 10.6 m; none at 6.0 m) and myrenders/slit_eye_convex.png (eye level, about 11 m from the outer corner on the convex side, 50 degree lens, 1600x1200: a line of background 1 to 3 px wide over 155 rows between the corner column and the wall).",
+    "Not visible in any of the builder's 23 renders, including renders/corner_close.png, outer_corner_close.png and corner_eye.png, none of which looks along that line.",
+    "prework-manifest.json describes the columns as three-quarters engaged."
+   ],
+   "why_p2": "The wall behind is closed and the column stands on its plinth under the corner of the entablature, so nothing is unsupported and nothing opens the envelope. It is a hairline, seen only close up and only within a few degrees of one direction at each corner. It became possible in this version because the partners no longer overlap the corner column.",
+   "required_action": "Carry a short return of wall, or a square pier, behind each corner column so the shaft stays into masonry for its whole height; then look along the tangent at 10 m height in a close view."
+  },
+  {
+   "id": "P2-02",
+   "severity": "P2",
+   "title": "Small misfits remain at the corners: the corner capital shows its roll side to the end elevation, and the corner pedestal stands 31 to 39 mm proud of the coping with its hollow top open in that strip",
+   "evidence": [
+    "GLB: each corner column carries an ordinary capital turned to the long side. Its two rolls run along X (plan angles 1.8 and 178.2 degrees) at Z -0.103 and -0.697, at all four corners, and mirror exactly. The capital therefore faces the convex side at the outer corners and the concave front at the inner corners, and shows a roll side to the end elevation.",
+    "renders/end_contact.png at about x 315-385, y 262-300 and x 1215-1285, y 262-300: the first and last of the nine capitals on the end elevation show a plain horizontal cylinder where the other seven show two scroll faces. renders/corner_close.png at about x 825-910, y 600-630 and renders/outer_corner_close.png at about x 690-775, y 540-575 show the long roll of the corner capital from the corner.",
+    "GLB: the corner pedestal of the balustrade is 0.557 m square, X 60.660 to 61.217 and Z -0.629 to -0.072 at the outer right corner, against a coping that ends at X 61.186 and Z -0.110. It projects 31 mm and 39 mm beyond the coping. The pedestal is a box with no top, so in that L-shaped strip a ray from above passes inside it and first meets the cornice at 13.00 m. The same at the other three corners.",
+    "My own render myrenders/R_outer_parapet.png: the inside faces of the corner pedestal show along its top edge (532 px at 1400x1050 from 8 m). Not resolved in any builder render."
+   ],
+   "why_p2": "Turning the corner capital to the long front is the plain, honest way to handle a two-faced capital at a corner, it is applied by one mirrored rule, and it reads as intended. A capital with an angled corner scroll would be the classical refinement. The pedestal strip is 3 to 4 cm wide and the material is double-sided, so it shades as stone.",
+   "required_action": "Either accept the turned capital or give the four corner columns a capital with scroll faces on both outer sides. Trim the corner pedestal to the coping line or give the pedestals tops."
+  },
+  {
+   "id": "P2-03",
+   "severity": "P2",
+   "title": "On the two end elevations the windows now crowd the columns: the second-floor surrounds stop 20 to 25 mm short of the shafts at their foot",
+   "evidence": [
+    "GLB: end bays are 1.858 m centre to centre (1.983 m in v005); the same window is used as on the 2.27 to 2.30 m front bays. Clear plan distance to the nearest shaft on the end bays: glass 0.289 m (first floor) and 0.304 m (second floor); sash frame 0.211 m; first-floor sill 0.050 m; second-floor sill 0.064 m; The second-floor stone surround is 1.310 m wide; where its face meets the shafts the clear width between them is 1.357 m at the sill and 1.425 m at the head, so 24 mm and 57 mm of wall show beside it and it takes 97 to 92 percent of the width. On the long fronts the same surround has 0.23 m of wall each side (74 percent). The sash frame is 1.05 m wide. Nothing overlaps: no part of any window, sill, surround or guard is inside a shaft, base or plinth, except that each guard's end posts are let 20 mm into the plinth sides, which is how they are fixed.",
+    "renders/end_contact.png, second floor at about x 430-1165, y 335-445: each surround fills the space between its two columns with no wall showing beside it.",
+    "Reference variant_0_angle_60.jpg, near end at about x 630-850, y 600-700: wall shows on both sides of each end window; the window with its frame takes roughly two thirds of the clear width between columns. The model's sash frame takes about three quarters, which is close; it is the stone surround round it that fills the bay.",
+    "On the concave front the proportion matches the street reference closely: in renders/match_front.png and variant_0.png, at the same pixels (x 700-1024, y 150-470), windows, surrounds and columns fall in the same places to within a few pixels."
+   ],
+   "why_p2": "Nothing collides, the end elevation still reads as six windows between columns, and my reading of the reference is of a small, steeply foreshortened part of the image.",
+   "required_action": "On the end bays narrow the surround, or leave off its side margins, so that about 0.15 m of wall shows between surround and shaft."
+  },
+  {
+   "id": "P2-04",
+   "severity": "P2",
+   "title": "There is no floor in the thickness of the wall behind any of the 36 doors",
+   "evidence": [
+    "GLB: behind each door leaf a vertical ray from 1.0 m finds no surface at all from 0.04 m to 0.62 m behind the leaf, across the door width. The room floor starts at the inner wall face. All 36 doors.",
+    "Found by flood-filling vertical sections from outside at 1 cm: on planes X = 3.40 and X = 20.00, which pass through a front door and a garden door, the ground-floor room is reached from beneath, under the door leaf (myrenders/section_x3.40.png). On eight other X planes and three Z planes, and on 13 plan sections from 0.5 to 12.4 m at 2 cm, no room or roof void is reached. With glass, doors and joinery removed the same test leaks, as it should.",
+    "Not visible from outside: the leaves are opaque and closed, and of 900 rays sent in through the 36 door lights at 35 to 75 degrees below the horizontal, every one lands on a floor, a wall or a ceiling.",
+    "The same strip is missing in v005. I did not run a section test on v005 and did not find it then."
+   ],
+   "why_p2": "It cannot be seen in the model as delivered. It would matter to anything that walks or looks through a doorway at runtime, which is outside this review.",
+   "required_action": "Extend each threshold slab, or the floor, through the door reveal to the leaf."
+  },
+  {
+   "id": "P2-05",
+   "severity": "P2",
+   "title": "On the convex side the bays widen toward the ends more than the oblique reference shows (carried from v005 P2-03, unchanged)",
+   "evidence": [
+    "GLB: convex-side column spacing is 2.68 m at the middle and 3.00, 3.19, 3.45 and 3.96 m in the last four houses at each end; the concave front is 2.27 to 2.30 m and the ends 1.86 m.",
+    "Reference variant_0_angle_60.jpg, near corner at about x 190-620, y 420-896: the convex-side columns next to the corner stand about as close as those of the end elevation, and the two visible convex-side doors are four bays apart.",
+    "renders/left_side.png, right_side.png and rear_side.png.",
+    "prework-manifest.json is unchanged: hidden assumption 10 states the widening and assumption 1 still says most of the convex side is not shown in detail."
+   ],
+   "why_p2": "Declared, complete and coherent. Changing it is a design decision about party walls and bay counts.",
+   "required_action": "A person should accept the widening or ask for four or five bays to the end houses on the convex side. Say in the manifest that this departs from the visible part of the oblique."
+  },
+  {
+   "id": "P2-06",
+   "severity": "P2",
+   "title": "The 72 dormers are boxes on uncut slate with a blind 58 mm behind the glass and no attic; the end slope has two where the reference shows about four (carried from v005 P2-04)",
+   "evidence": [
+    "GLB: an interior-coloured sheet 0.058 m behind each of the 72 dormer panes; one uncut slate layer under every dormer; a closed ceiling at 12.80 to 12.92 with nothing above it. Each lid runs 0.10 m into the slope at its back edge, so none floats; the nearest stack or party-wall upstand is 0.166 m away.",
+    "Reference variant_0_angle_60.jpg, near end slope at about x 640-800, y 470-550: about four small lead dormers. renders/end_roof.png and top.png: two.",
+    "prework-manifest.json hidden assumption 5 declares the dormers as roof features only."
+   ],
+   "required_action": "None for this tier if a person accepts it. Keep it declared."
+  },
+  {
+   "id": "P2-07",
+   "severity": "P2",
+   "title": "Shafts have twelve sides and scroll rolls eleven; the facets show in close views (carried from v005 P2-05, unchanged)",
+   "evidence": [
+    "GLB: 12 vertices to a shaft ring with smoothed normals; 44 triangles and 11 sides to each of the 256 rolls.",
+    "renders/architecture_close.png at about x 210-300 and 430-545, y 745-850."
+   ],
+   "required_action": "Sixteen or more sides on the rolls if the triangle budget allows; otherwise record it as a limit of the tier."
+  },
+  {
+   "id": "P2-08",
+   "severity": "P2",
+   "title": "The fitted oblique is still about two thirds of the reference's scale, and no close view shows an outer corner at base level (remainder of v005 P2-07)",
+   "evidence": [
+    "renders/match_oblique.png: margins 321, 143, 223 and 138 px, the same as v005, so the camera has not moved. The near corner column runs from about y 578 to y 667 at x about 430-445, about 90 px, against about 145 px in variant_0_angle_60.jpg. boards/phone-oblique.png therefore compares the near pavilion at very different sizes.",
+    "The two new views are present and useful: renders/outer_corner_close.png shows the capitals and parapet of an outer corner, and renders/corner_eye.png shows the railing going round an outer corner at eye level. Both are on boards/phone-construction.png. Neither shows the corner plinths and bases close up; I checked those in my own renders (myrenders/R_outer_bases.png, R_inner_bases.png)."
+   ],
+   "required_action": "Add a second oblique fitted to the near end at the reference's scale."
+  },
+  {
+   "id": "P2-09",
+   "severity": "P2",
+   "title": "Two second-floor end windows read as blank bright panes in the end view (carried from v005 P2-08, unchanged)",
+   "evidence": [
+    "renders/end_contact.png: the two second-floor windows at about x 435-515 and x 565-645, y 345-440 have a mean brightness of 198 and 213 on a scale of 255, against 84 to 136 for the other four, and their glazing bars are almost lost.",
+    "GLB: there is a room behind both, at least 2.6 m deep on the pane normal. A pale interior wall stands lit behind them, and the bars are pale against it. This is lighting and contrast, not a missing room."
+   ],
+   "required_action": "Check under the runtime lighting. If it persists, darken the interior role."
+  },
+  {
+   "id": "P2-10",
+   "severity": "P2",
+   "title": "The locked roof-plan reference shows a different building, so the three sources are not one coherent set (carried from v005 P2-09; not a geometry task)",
+   "evidence": [
+    "variant_0_angle_90.jpg: a short block of nine or ten houses between two round lawns, concave on both long sides, with flared hipped ends and deep wells in the roof. variant_0.png and variant_0_angle_60.jpg: one long sweep, concave on one side only.",
+    "renders/match_top.png and boards/phone-roof.png: the model cannot be registered against it, and the board says so.",
+    "docs/RLASM_LATEST_METHOD.md, Gate A and condition 1 of the architectural-clay profile, ask for compatible front, oblique and top sources."
+   ],
+   "why_p2": "The fault is in the catalogue's image set, not in the candidate. The method's own rule is that the highest oblique settles the plan and that a conflict is recorded, not averaged; the builder did both. Graded higher, it would make every candidate for this variant unpassable. But it means condition 1 of the profile is not met by the sources as they stand, and my pass does not settle that.",
+   "required_action": "Before any activation a person should accept in writing that the street view and the oblique are the plan authority for this variant, or replace the roof-plan image."
+  }
+ ],
+ "prior_findings": [
+  {
+   "id": "P1-01",
+   "status": "fixed",
+   "evidence": "GLB: at each corner the three shafts are 0.913 to 0.937 m apart centre to centre (1.38 to 1.42 lower diameters; 0.80 to 0.87 in v005), so 0.253 to 0.277 m of wall shows between shafts. Base mouldings clear each other by 59 to 86 mm, plinths by 81 to 150 mm, abaci by 28 to 95 mm, rolls and neighbouring abaci by 36 mm or more. Across the whole model no base or capital part of one column is within 28 mm of a part of another (758 neighbouring pairs tested, none overlapping). Every column has exactly one plinth, shaft, bell and abacus and two rolls. All four corner capitals face the long side by one rule and mirror exactly. The balustrade has one pedestal over each of the three columns and one thinner panel in each of the two gaps, let 7 to 22 mm into the pedestals. Builder's renders corner_close.png, outer_corner_close.png and end_contact.png and my own myrenders/R_outer_caps.png, R_outer_bases.png, R_inner_caps.png and plan sections at 4.5, 6.2, 11.4 and 13.6 m agree. The reference pairs stand at about 1.3 to 1.4 diameters. What is left is polish: P2-01 and P2-02."
+  },
+  {
+   "id": "P1-02",
+   "status": "fixed",
+   "evidence": "GLB: every point of the 380.4 m of top rail, sampled at 2 cm, is within 0.080 m of a bar, so no two bars along any rail are more than 0.16 m apart, round all four corners included. The nearest bar stands 33 mm (outer corners) and 51 mm (inner corners) from the mitre. There are 2,684 bars, each made of exactly two crossed ribbons and none doubled; the closest two bars are 0.080 m apart, at the 72 places where a door return meets the main rail. No bar stands in any of the 36 door paths. renders/corner_eye.png and end_roof.png show the bars going round the corners; myrenders/railplan_right_end.png and railplan_outer_right_corner.png plot them."
+  },
+  {
+   "id": "P2-01",
+   "status": "fixed",
+   "evidence": "GLB: 468 slate triangles, every one sloping between 40.2 and 52.5 degrees and facing up; the two slivers are gone. Vertical rays on a 2 cm grid over both ends, all four corners and the middle find exactly one weathering layer at every sample and no hole; on the 5 cm grid over the whole plan (693,052 samples) the only double counts are samples that fall exactly on an edge shared by two triangles at the same height (0.000 mm apart), and they vanish when the grid is shifted. Projected slate area 1,375.10 m2 against 1,375.08 m2 covered."
+  },
+  {
+   "id": "P2-02",
+   "status": "fixed",
+   "evidence": "GLB: every vertex of every role has a mirror partner about X = 0 within 1.23 mm (ironwork) and within 0.000 mm for the other eleven roles. Four sample points on each of the 170,276 triangles, mirrored, all lie on a surface of the same role within 4 mm; the same test on v005 fails on 420 triangles at the known places. The slate triangles mirror one for one. The 36 door knobs now sit on the centre line of the leaf. Eight pairs of mirrored views of the two ends differ by 0 to 63 px in 1.47 million."
+  },
+  {
+   "id": "P2-03",
+   "status": "still open",
+   "evidence": "Unchanged in geometry and in the manifest: 2.68 m to 3.96 m. Carried as P2-05."
+  },
+  {
+   "id": "P2-04",
+   "status": "still open",
+   "evidence": "Unchanged and declared. Carried as P2-06, with the count on the end slope added."
+  },
+  {
+   "id": "P2-05",
+   "status": "still open",
+   "evidence": "Unchanged: 12-sided shafts, 11-sided rolls. Carried as P2-07."
+  },
+  {
+   "id": "P2-06",
+   "status": "fixed",
+   "evidence": "GLB: the 17 party-wall upstands now start at 12.85 m, inside the ceiling slab (12.80 to 12.92), 50 mm above its underside. The coplanar test finds no stone face sharing a plane with an interior face (56.2 m2 in v005). The only cross-role coplanar overlaps left are 0.48 m2 of joinery against dressed stone at door surrounds and 0.20 m2 of iron against kerb, as before."
+  },
+  {
+   "id": "P2-07",
+   "status": "partly fixed",
+   "evidence": "Fixed: renders/outer_corner_close.png and renders/corner_eye.png exist, are 1600x1200, show what they are named for and are on boards/phone-construction.png. Not fixed: the fitted oblique is unchanged, and there is no close view of an outer corner at base level. Carried as P2-08."
+  },
+  {
+   "id": "P2-08",
+   "status": "still open",
+   "evidence": "Unchanged in renders/end_contact.png. Carried as P2-09."
+  },
+  {
+   "id": "P2-09",
+   "status": "still open",
+   "evidence": "Unchanged and not something a rebuild can change. Carried as P2-10."
+  }
+ ],
+ "source_conflict_opinions": [
+  {
+   "conflict": "Plan and length: roof plan shows about ten houses in a shallow block; street view and oblique show a long half-ellipse",
+   "declared": true,
+   "opinion": "Agree with the resolution; honestly declared.",
+   "detail": "Two images agree and the method lets the highest oblique settle the plan. Measured: a half ellipse 122.6 m across the walls and 44.8 m deep, 13.8 m front to back. The third image cannot be reconciled by any rebuild: P2-10, for a person."
+  },
+  {
+   "conflict": "House count is an estimate; built eighteen",
+   "declared": true,
+   "opinion": "Agree; honestly declared as an estimate.",
+   "detail": "My count on the oblique is 38 visible columns, give or take two, and 49 to 57 bays in all. Built: 18 houses, 54 bays and 55 columns on the concave curve, 57 with the corner columns."
+  },
+  {
+   "conflict": "Catalogue text gives 114 columns, thirty or more houses and a rusticated base; images show about 54 front bays and plain ashlar",
+   "declared": true,
+   "opinion": "Agree.",
+   "detail": "Visible locked pixels override family prose. Built: 128 columns in all, 18 houses, plain base."
+  },
+  {
+   "conflict": "Catalogue plot of 6 m by 12 m against a complete crescent in all three images",
+   "declared": true,
+   "opinion": "Agree with the reading of the images; the consequence is a person's to accept.",
+   "detail": "One fixed object of 126.32 by 48.40 by 19.16 m, about twenty times the listed plot width. It cannot be scaled or repeated under the method."
+  },
+  {
+   "conflict": "Window bars: plain sashes in the street view, six over six in the oblique; built six over six",
+   "declared": true,
+   "opinion": "Reasonable; honestly declared and repeated on the street board.",
+   "detail": "The street view is the image a user picks from, so the difference will be seen."
+  },
+  {
+   "conflict": "First-floor sash height: about 2.05 m in the street view, about 2.4 m in the oblique; built 2.35 m",
+   "declared": true,
+   "opinion": "Reasonable.",
+   "detail": "Measured: glass 2.21 m in a 2.35 m frame. In the fitted street view the heads and sills fall where the reference has them."
+  },
+  {
+   "conflict": "Giant order on the convex side: the oblique shows it, a real crescent of this kind has a plain back; built as drawn",
+   "declared": true,
+   "opinion": "Agree that the pixels govern; 'as drawn' is only partly true.",
+   "detail": "The oblique shows the order on the convex side at about the spacing of the end bays; the model spreads it to 3.96 m at the ends: P2-05."
+  }
+ ],
+ "hidden_view_opinions": [
+  {
+   "assumption": "The far end and most of the convex side are not shown in detail; both ends are built alike and the convex side repeats the front",
+   "opinion": "Reasonable and now delivered: the two ends are exact mirror images.",
+   "detail": "The wording still understates what the oblique shows of the convex side next to the near end (P2-05)."
+  },
+  {
+   "assumption": "Garden doors: one to each house on the convex side is an invention",
+   "opinion": "Reasonable.",
+   "detail": "The oblique shows at least two doors on the convex side near the end, each over a railed area, so doors there are not invented; one to every house is an inference. Built: 18, each in the middle bay of its house."
+  },
+  {
+   "assumption": "End doors: one to each end, in the third window bay from the concave front",
+   "opinion": "Agree.",
+   "detail": "That is where the oblique shows it. Built at X +-53.45, under the third window from the concave corner."
+  },
+  {
+   "assumption": "Interiors are inferred: three floors, a spine wall and party walls, so that every window has a room behind it",
+   "opinion": "Reasonable and verified.",
+   "detail": "Behind all 324 wall windows and 36 door lights the first surface on the pane normal is 2.6 to 12.1 m away. Of 19,440 slanted rays, 80 leave through glass alone, all in the two end houses' upper rooms, which have windows on two or three sides. Partitions end on piers. No floor in the door reveals (P2-04)."
+  },
+  {
+   "assumption": "Dormers are roof features only, with a blind behind each sash and no attic",
+   "opinion": "Acceptable at this tier and honestly declared.",
+   "detail": "P2-06."
+  },
+  {
+   "assumption": "The roof between the two slate ranges is a plain lead flat; the lead-covered additions are left out",
+   "opinion": "Acceptable.",
+   "detail": "A closed trough at 14.00 m crossed by 17 party-wall upstands. Schematic, not wrong for clay."
+  },
+  {
+   "assumption": "Sunken areas, steps and bridges are left out because nothing may lie below grade",
+   "opinion": "Honestly declared; a real loss of character that a person must accept.",
+   "detail": "Two of the three references show areas and bridges, and the oblique shows a basement storey on the end and convex sides. Lowest geometry is 0.000 m."
+  },
+  {
+   "assumption": "Ashlar coursing and joints are left out as surface texture",
+   "opinion": "Agree; it is the tier.",
+   "detail": "Plain walling is clean in the renders."
+  },
+  {
+   "assumption": "The crescent is symmetrical about its middle in plan, doors and dormers",
+   "opinion": "Reasonable and delivered in full.",
+   "detail": "See prior finding P2-02."
+  },
+  {
+   "assumption": "Party walls stand square to the concave front, so convex bays widen from 2.7 m to 4.0 m",
+   "opinion": "Honest about what was built; the effect departs from what the oblique shows.",
+   "detail": "P2-05."
+  }
+ ],
+ "reference_observations": {
+  "street_view": "variant_0.png, 1024x768, opened whole again for this review. Eye level inside the crescent near one end, looking along the concave front. Plain ashlar ground storey with one sash to a bay and a white door about every third bay; a band; unfluted three-quarter Ionic columns through two storeys; one tall and one shorter sash to a bay, both plain one over one, in thin stone surrounds with wall showing beside them; an iron guard between the plinths at each first-floor window; a plain frieze and a modillion cornice; a balustrade with a pedestal over each column; broad stone stacks with a row of pots; slate and a hip at the far end, where two columns stand close together with a gap between them. Continuous iron railings at the pavement edge.",
+  "oblique": "variant_0_angle_60.jpg, 1195x896, opened whole again. High, from outside one end. A half ellipse opening to a lawn. Near end: six window bays and nine columns, coupled at both corners with a gap between each pair; a white door under the third window from the concave corner, over a railed sunken area with steps; a basement storey. The convex side carries the same order at close spacing, with doors and areas. Roof: slate ranges, a stone upstand and a broad stack at each party wall, small lead dormers behind the balustrade including about four on the end slope, one clean hip over the near end, lead-covered boxes between the ranges.",
+  "roof_plan": "variant_0_angle_90.jpg, 1195x896, opened whole again. A different building: a short block of nine or ten houses between two round lawns, concave on both long sides, with flared hipped ends and deep wells between the ranges.",
+  "departures_of_the_model": "From the street view: glazing bars where it shows none (declared); no ashlar joints (declared); no sunken areas (declared); otherwise storeys, order, guards, entablature, balustrade, stacks, railings and window proportions agree, and the fitted view lays over the reference closely. From the oblique: no areas, bridges or basement storey (declared); no lead boxes on the roof (declared); convex bays too wide near the ends (declared as built, P2-05); end-bay windows wider in their bays than the reference shows (not declared, P2-03); two dormers on the end slope for about four (P2-06). The coupled corner columns and the railings now agree with both perspective references. From the roof plan: everything about the plan (declared)."
+ },
+ "positive_observations": [
+  "The model hash and byte count I computed match the build report and the delivery record, the three reference hashes match the manifest, and the four boards carry the model hash prefix 705fc02b21d5.",
+  "GLB: 12 nodes, 12 meshes, 12 materials, one per clay role; no images, textures, samplers, cameras, animations or skins; no node transforms; 170,276 triangles; bounds 126.317 by 19.160 by 48.400 m; lowest geometry 0.000 m; every node carries the archetype and variant ids.",
+  "Triangle winding agrees with the stored normal at all 510,828 triangle corners; normals are unit length; no zero-area triangle. None of the 1,504 closed solids is inside out, and every open stone, dressed-stone, slate, lead and pot shell faces outward.",
+  "All six builder claims check out against the GLB. The corner columns stand clear; the railing bars run round every corner; the roof and every other part mirror; the party-wall upstands start inside the ceiling slab; the two new views exist; the knobs are on the centre stile.",
+  "Nothing collides at the corners or in the end bays after the bays were narrowed (front 2.27 to 2.30 m, ends 1.858 m): glass, frames, sills, surrounds and guards are all clear of shafts, bases and plinths.",
+  "The envelope is closed: flood-filled from outside, 13 plan sections and 13 vertical sections reach no room and no roof void, except from beneath through the door reveals (P2-04). From 72 outside viewpoints no interior or floor surface is the first thing seen.",
+  "The roof is closed and single-skinned everywhere; all 34 stacks are bedded at least 0.44 m into the slopes on every side; all 238 pots stand on their caps; nothing floats (of 14,732 separate parts none is more than 8 mm from its neighbour).",
+  "Every wall opening is a real section with a room behind it: 324 windows, 36 door lights and 36 doors, each door 1.01 m wide with a 35 mm threshold and a clear stone path through the railings.",
+  "The whole model is an exact mirror image about its middle, tested at vertex and at surface level.",
+  "All fourteen mandatory views and nine more are present; the eight whole-building views have at least 99 px of clear margin on every side; the boards are 1080x1920 and state the known differences.",
+  "Controls: the same roof, mirror and support tests run on v005 reproduce its known faults, so their absence here is a real difference."
+ ],
+ "for_human_acceptance": [
+  "The catalogue roof-plan image shows a different building. Accept in writing that the street view and the oblique are the plan authority for this variant, or replace that image, before any activation (P2-10; method Gate A and profile condition 1).",
+  "Eighteen houses and 54 front bays is an estimate from a partly hidden view; my range is 49 to 57 bays.",
+  "The model is one fixed object, 126.32 by 48.40 by 19.16 m, where the catalogue lists a 6 m by 12 m plot. It cannot be scaled or repeated under the method.",
+  "No sunken areas, bridges, steps or basement storey, although two of the three references show them.",
+  "Six-over-six sashes throughout although the street thumbnail shows plain sashes.",
+  "The convex side carries the giant order with bays widening from 2.68 m to 3.96 m and an inferred garden door to each house (P2-05).",
+  "Corner capitals are ordinary capitals turned to the long front, so the end elevations show a roll at each extremity (P2-02); end-bay windows sit tight between the columns (P2-03).",
+  "Dormers are surface features with no attic; interiors are schematic; there is no floor in the door reveals (P2-04), which matters only if something is to pass through a doorway.",
+  "The catalogue text (114 columns, thirty or more houses, rusticated base) does not describe what is built.",
+  "Texture-free clay, every material double-sided, glass blended with the transmission extension, 170,276 triangles: whether that is acceptable for the runtime.",
+  "This review grants nothing. Keeper approval, runtime activation and publication are a person's to give, and runtime integration is untested."
+ ],
+ "limitations": [
+  "I am an AI reviewer, and the same one that reviewed v005 earlier in this session. I have no builder context and did not open the generator, but this is not a fresh pair of eyes on v005's ground: anything I misjudged then I may have misjudged again. One thing I missed in v005, the floor in the door reveals, I found only now.",
+  "I worked from stills, from ray, raster and section tests I wrote for these reviews, and from my own flat-shaded renders of the GLB. I did not see the model in a real-time viewer or a moving camera, so flicker, depth precision and the blended, transmissive glass are not assessed.",
+  "I did not open, list or run anything under tools/catalogue_crescent_terrace_pilot or tools/catalogue_plus15_concrete_pilot, so I did not check the generator, the camera file, the triangle budget or the claim that the model rebuilds to the same bytes. I could not confirm that the renders were made from a reimport of this exact file; the details that changed in this version (separate corner columns, bars round the corners, clean hips) are in both the renders and the GLB.",
+  "Runtime integration is not tested: placement, terrain, entrance routes, the fixed-scale contract and the catalogue record were not examined.",
+  "The references are generated images that do not agree with each other and carry no scale. My pixel readings are good to about 3 px; the house count, the convex-side spacing and the width of the end windows in the oblique are estimates.",
+  "Sampling is finite: 5 cm from above over the whole plan and 2 cm over the ends, corners and middle; 72 orthographic views at 4.6 cm per pixel from outside; 63 rays on the normal and 54 slanted rays to each wall pane; sections at 1 and 2 cm on 26 planes; coplanar faces within 2 mm. A smaller defect, or one between my section planes, could be missed.",
+  "The severity of every finding is my judgement. I looked for a reason to hold any of them at P1 and did not find one I could defend, but P2-01 and P2-03 are the two a stricter reader might raise.",
+  "I did not open v001, v003 or v004, and used no git command. I used the v005 GLB only as a control.",
+  "Evidence paths beginning myrenders/ or crops/ are my own working images in the reviewer's scratch folder and may not outlive this session."
+ ],
+ "inspected_files": [
+  {
+   "path": "crescent-terrace-bath-stone-clay-v006.glb",
+   "base": "candidate",
+   "sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
+   "bytes": 8594664,
+   "inspection": "Parsed read-only. Structure, bounds, normals and winding, connected parts, signed volumes; mirror symmetry at vertex and surface level; all 128 columns and the four corner clusters; balustrade; panes, frames, sills, surrounds and guards against the columns; doors and their routes; railing bars and rails; stacks, dormers and pots; vertical rays at 5 cm and 2 cm; rays through every pane; coplanar-face test; nearest-neighbour test for every part; flood-filled plan and vertical sections; my own renders."
+  },
+  {
+   "path": "prework-manifest.json",
+   "base": "candidate",
+   "sha256": "79a1426120d72780fdf28ed6e5b715789b30bb960855a483df1814d236d76fbc",
+   "bytes": 10416,
+   "inspection": "Read in full and compared field by field with v005: only the candidate name and the camera roster changed."
+  },
+  {
+   "path": "build-report.json",
+   "base": "candidate",
+   "sha256": "348472b55078c5cc8af0665ccd2c038390faba83ff28bb7bafae04d9340adb94",
+   "bytes": 16307,
+   "inspection": "Read; hash, counts, dimensions and door positions cross-checked against my measurements."
+  },
+  {
+   "path": "delivery-verification.json",
+   "base": "candidate",
+   "sha256": "08e33da0d3f4e8969d1da96e55b3bb7b7e1426c6590e5cf5eb3259a9a1b6a66f",
+   "bytes": 3650,
+   "inspection": "Read; treated as a record of deterministic checks, not as visual proof."
+  },
+  {
+   "path": "renders/front.png",
+   "base": "candidate",
+   "sha256": "151257f83dc24f5b4a710be7a5ec3d9c158fbff77b437491da4d92fd3d377d2c",
+   "bytes": 1127035,
+   "inspection": "Opened whole (2400x800); full-resolution crop of the left end; margins measured."
+  },
+  {
+   "path": "renders/front_corner.png",
+   "base": "candidate",
+   "sha256": "0545ea0dbe447e3e333d8f035dbdcac8eba105f6027ff6b5a8d79afcc9a845d6",
+   "bytes": 629317,
+   "inspection": "Opened whole; crop of the end pavilion; margins measured."
+  },
+  {
+   "path": "renders/aerial.png",
+   "base": "candidate",
+   "sha256": "7b6ac22d0bbb62f614b0a36c7f921b8ade05be6cac57cb0b40e8d95fdab0179b",
+   "bytes": 794270,
+   "inspection": "Opened whole; crop of the right-hand roof end at 2.8x; margins measured."
+  },
+  {
+   "path": "renders/top.png",
+   "base": "candidate",
+   "sha256": "f0767b35260bc6a18cd3e6e26d080440c54660d4eefef4d613c006def639238d",
+   "bytes": 722596,
+   "inspection": "Opened whole; crop of the left-hand roof end at 2.6x; margins measured."
+  },
+  {
+   "path": "renders/left_side.png",
+   "base": "candidate",
+   "sha256": "293d43454bc4fa685409f966575647f38564dc41150aeb0e22e56f4c7e732adc",
+   "bytes": 760355,
+   "inspection": "Opened whole; margins measured."
+  },
+  {
+   "path": "renders/right_side.png",
+   "base": "candidate",
+   "sha256": "97eea600370234127b972c122e958559e40ed777925b8b082a9dee7cead57e1c",
+   "bytes": 756043,
+   "inspection": "Opened whole; margins measured."
+  },
+  {
+   "path": "renders/rear.png",
+   "base": "candidate",
+   "sha256": "03d0b7c2101567a5ffd68ab25ee6f5d6012668a67c4fbf46c324d9aba603c72c",
+   "bytes": 1000813,
+   "inspection": "Opened whole (2400x800); margins measured."
+  },
+  {
+   "path": "renders/rear_side.png",
+   "base": "candidate",
+   "sha256": "850f9c3b15d3ba9ee9ba016beeda9131ffbea8c8ed6b3091fab808f799d57bb4",
+   "bytes": 613450,
+   "inspection": "Opened whole; margins measured."
+  },
+  {
+   "path": "renders/rear_ground.png",
+   "base": "candidate",
+   "sha256": "6e11b1565a98fefcd59b7c9c3d9dba3adc6480acb0867f82486dcfb2c8e59867",
+   "bytes": 1324910,
+   "inspection": "Opened whole."
+  },
+  {
+   "path": "renders/street.png",
+   "base": "candidate",
+   "sha256": "16b991c7786d9fc1d6d91291af7b004a65f660cfe66f2ab772c2d23e613999bc",
+   "bytes": 1330226,
+   "inspection": "Opened whole."
+  },
+  {
+   "path": "renders/facade_close.png",
+   "base": "candidate",
+   "sha256": "aa1b91cd8690929996a00848ee1c175d1d2bb92f581eb31be544c76a338e3483",
+   "bytes": 2123384,
+   "inspection": "Opened whole at full size."
+  },
+  {
+   "path": "renders/architecture_close.png",
+   "base": "candidate",
+   "sha256": "0c9c6ae425dedb143e89eb5ffae0c0d8ff5458b4eb2efff9ac4bc8d7dfa1da85",
+   "bytes": 1569488,
+   "inspection": "Opened whole at full size; capitals, entablature and balusters examined."
+  },
+  {
+   "path": "renders/glass_close.png",
+   "base": "candidate",
+   "sha256": "a54d191e476cf4796bae132de6f70f1624050fe6c04e1d1c1b2924e17fb70dfa",
+   "bytes": 1421248,
+   "inspection": "Opened whole at full size; reveal, sash, glass and room examined."
+  },
+  {
+   "path": "renders/entrance_contact.png",
+   "base": "candidate",
+   "sha256": "e0b2bc5535760d3f26c5ad6be1ba1287863f08b3a133cbb6ae895be7d8e69e97",
+   "bytes": 1302777,
+   "inspection": "Opened whole at full size; door, knob, path and railing returns examined."
+  },
+  {
+   "path": "renders/corner_close.png",
+   "base": "candidate",
+   "sha256": "c02ed175a90b305a7716c93cba310a6fecb37e82d1687bf9b76973d0f3517b23",
+   "bytes": 1726148,
+   "inspection": "Opened whole; crops of the inner-corner capitals at 4x and of the far corner pair."
+  },
+  {
+   "path": "renders/outer_corner_close.png",
+   "base": "candidate",
+   "sha256": "832dac6b931eb2d7bdff41e1b1767a4d2850bbd3ec9383b424632272d35c4643",
+   "bytes": 1475866,
+   "inspection": "New view. Opened whole; crops of the capitals at 4x, the parapet corner at 4.5x and the shafts."
+  },
+  {
+   "path": "renders/corner_eye.png",
+   "base": "candidate",
+   "sha256": "e1dff84ab7d1dc51afe0a922ca2033986ee93f8057d02183b931c2a696a552d0",
+   "bytes": 1206756,
+   "inspection": "New view. Opened whole; crops of the railing round the corner and of the first-floor corner at 1.6x."
+  },
+  {
+   "path": "renders/end_contact.png",
+   "base": "candidate",
+   "sha256": "83819c1ee67732458e404810a17748c2a53074f7da3a3c789f036a002f436668",
+   "bytes": 1774642,
+   "inspection": "Opened whole; crops of the second-floor windows, both corner pairs and the first-floor windows; window brightness measured."
+  },
+  {
+   "path": "renders/end_roof.png",
+   "base": "candidate",
+   "sha256": "0f52d984f0582e2b8bbfa4a74c5440a21cedf613408ae4d477d789c721564668",
+   "bytes": 1412769,
+   "inspection": "Opened whole; crops of the railing corner at 2x and of the hip."
+  },
+  {
+   "path": "renders/roof_contact.png",
+   "base": "candidate",
+   "sha256": "4da063581b310c771a617474dcb0ef2489a81e4b648ea4bab322fe9546786c6a",
+   "bytes": 1469127,
+   "inspection": "Opened whole."
+  },
+  {
+   "path": "renders/match_front.png",
+   "base": "candidate",
+   "sha256": "daeac3590aa92738ad1522556b852880afd370121ab9d9dfc7cd61e42d863856",
+   "bytes": 574415,
+   "inspection": "Opened whole and on the street board; a crop laid beside the same pixels of the reference."
+  },
+  {
+   "path": "renders/match_oblique.png",
+   "base": "candidate",
+   "sha256": "bb140c26075d1947b63cd60866615ff06201c901a591d208d1d72530e0e3b595",
+   "bytes": 596439,
+   "inspection": "Opened whole and on the oblique board; crop of the near pavilion with pixel rulers; margins measured."
+  },
+  {
+   "path": "renders/match_top.png",
+   "base": "candidate",
+   "sha256": "c20be774ef4c36e5b36718ee661e9e59d00f2fe0287f0bf42fde475187e33e8e",
+   "bytes": 461485,
+   "inspection": "Opened whole and on the roof board; margins measured."
+  },
+  {
+   "path": "boards/phone-street.png",
+   "base": "candidate",
+   "sha256": "14267cd4ae258818a3673b46febafe9f9787d49c287ced7ee8f37a79e42e55a9",
+   "bytes": 1832301,
+   "inspection": "Opened at phone scale (1080x1920); reference and fitted render compared; caption read."
+  },
+  {
+   "path": "boards/phone-oblique.png",
+   "base": "candidate",
+   "sha256": "d14a701a355bf76395e64ccd32408ba6f2759095853178b0b8acaecd93fe0e85",
+   "bytes": 1911374,
+   "inspection": "Opened at phone scale; reference and fitted render compared; caption read."
+  },
+  {
+   "path": "boards/phone-roof.png",
+   "base": "candidate",
+   "sha256": "923479bdbdd36b7de20b0a15be700c6821398b96da953050e216e6eb077d9041",
+   "bytes": 1772535,
+   "inspection": "Opened at phone scale; caption read."
+  },
+  {
+   "path": "boards/phone-construction.png",
+   "base": "candidate",
+   "sha256": "d7e6609c3eaf37986b8fa519bd4a905ed87c1340092abbf228377d438e66d67f",
+   "bytes": 1033933,
+   "inspection": "Opened at phone scale; all ten panels examined, including the two new ones."
+  },
+  {
+   "path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0.png",
+   "base": "repository",
+   "sha256": "ee92450f910e07cab1027edb0991cde1d6657c2809eb457b5687aa37c9f6f1c9",
+   "bytes": 1257907,
+   "inspection": "Locked street reference. Opened whole again for this review; a 4x crop of the right-hand bays laid beside the same pixels of the fitted render."
+  },
+  {
+   "path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0_angle_60.jpg",
+   "base": "repository",
+   "sha256": "bb30edb03c4a913ae32ac5d233adf0ee4335f8413194cfdd90681cbb270e1857",
+   "bytes": 945323,
+   "inspection": "Locked oblique reference. Opened whole again; crops of the near end elevation at 5x and 8x with pixel rulers."
+  },
+  {
+   "path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0_angle_90.jpg",
+   "base": "repository",
+   "sha256": "b68ebfbcd4e05c5ca24591646c09507fd84330326e6595266bdb3122b30de158",
+   "bytes": 903446,
+   "inspection": "Locked roof-plan reference. Opened whole again."
+  },
+  {
+   "path": "docs/RLASM_LATEST_METHOD.md",
+   "base": "repository",
+   "sha256": "c684ca1c9d9a6442ecb3247051e91936342f5e00e412e9213c46ad0b2373c2c0",
+   "bytes": 28335,
+   "inspection": "Read in full earlier in this session for the v005 review; applied again."
+  },
+  {
+   "path": "tools/archetype_compiler/rlasm_method.json",
+   "base": "repository",
+   "sha256": "369dbfa9f9e908e9fb7889adee6f9075eace9cd1415f3d4dace4f7c82e2ba190",
+   "bytes": 13802,
+   "inspection": "Read in full earlier in this session; severity definitions, required views and lifecycle states applied again."
+  },
+  {
+   "path": "artifacts/crescent-terrace-bath-stone/v005/independent-review.json",
+   "base": "repository",
+   "sha256": "654eec3415a7dec7c919136608e049007ce43a95aab7d0a58cbbf08cbb54fab4",
+   "bytes": 53548,
+   "inspection": "My own v005 review; each of its eleven findings re-tested against v006."
+  },
+  {
+   "path": "artifacts/crescent-terrace-bath-stone/v005/crescent-terrace-bath-stone-clay-v005.glb",
+   "base": "repository",
+   "sha256": "72ddeebe60c6ade74dcb3d41a4804a5f89dd7be578f1f6a987f53c71b9291153",
+   "bytes": 8610196,
+   "inspection": "Control only: the mirror, door-reveal and support tests were run on it to show that they detect its known faults."
+  },
+  {
+   "path": "artifacts/crescent-terrace-bath-stone/v005/prework-manifest.json",
+   "base": "repository",
+   "sha256": "0965e5307775d23be7d429e89cbdb9a3b207eb58776a747b66876bd1302a3df2",
+   "bytes": 10372,
+   "inspection": "Compared with the v006 manifest."
+  },
+  {
+   "path": "artifacts/crescent-terrace-bath-stone/v005/build-report.json",
+   "base": "repository",
+   "sha256": "c25a350262ade1f1e7a4f48d75daa3cae19b0cefec8ac1c742b1fb2404193324",
+   "bytes": 16307,
+   "inspection": "Compared with the v006 build report."
+  },
+  {
+   "path": "artifacts/crescent-terrace-bath-stone/v005/delivery-verification.json",
+   "base": "repository",
+   "sha256": "1f0976b108e74c97c43cd4939c78a294a22fc5d39c9f26cb687aa46c1927e9e9",
+   "bytes": 3510,
+   "inspection": "Compared with the v006 delivery record."
+  }
+ ],
+ "render_resolution": {
+  "standard_renders": "1600x1200 RGBA, 18 files",
+  "front_and_rear": "2400x800 RGBA, 2 files",
+  "match_front": "1024x768 RGBA",
+  "match_oblique": "1195x896 RGBA",
+  "match_top": "1195x896 RGBA",
+  "phone_boards": "1080x1920 RGB, 4 files"
+ },
+ "phone_boards_inspected": [
+  "boards/phone-street.png",
+  "boards/phone-oblique.png",
+  "boards/phone-roof.png",
+  "boards/phone-construction.png"
+ ]
+}

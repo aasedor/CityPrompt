@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { SiteZone } from '@/types';
 import { placeAsset, type PlaceAsset } from './catalogue';
+import * as catalogue from './catalogue';
 import { rectangleAt, rectangleDimensions, resizeRectangleCorner, placementProblem } from './geometry';
 
 const center=[-114.04677,51.04542];
@@ -33,6 +34,29 @@ describe('pick and reshape geometry',()=>{
     expect(d.degrees).toBeCloseTo(35,3);
     expect(resized[(corner+2)%4][0]).toBeCloseTo(fixed[0],8);
     expect(resized[(corner+2)%4][1]).toBeCloseTo(fixed[1],8);
+  });
+  it('requires prepared level ground only for a building with that reviewed placement constraint', () => {
+    const fixture = placeAsset('validation_brewery_crystal_brewhouse');
+    const properties = catalogue.placementProperties(fixture);
+    const assetForZone = catalogue.assetForZone;
+    const lookup = vi.spyOn(catalogue, 'assetForZone').mockImplementation((source) =>
+      source.properties?.pick_place_model_revision === fixture.model.revision
+        ? { ...fixture, preparedLevelOnly: true }
+        : assetForZone(source));
+    const plot = rectangleAt(center, fixture.width, fixture.depth);
+    const boundary = zone(rectangleAt(center, 200, 200), 'site_boundary');
+    const prepared = { ...boundary, properties: { community_3d_mask_existing_tiles: true } };
+    const natural = { ...prepared, properties: { ...prepared.properties, terrain_strategy: 'landscape' as const } };
+
+    try {
+      expect(placementProblem(plot, [], null, undefined, { properties })).toMatch(/prepared level/i);
+      expect(placementProblem(plot, [], boundary, undefined, { properties })).toMatch(/Review ground/);
+      expect(placementProblem(plot, [], natural, undefined, { properties })).toMatch(/Review ground/);
+      expect(placementProblem(plot, [], prepared, undefined, { properties })).toBeNull();
+      expect(placementProblem(plot, [], natural)).toBeNull();
+    } finally {
+      lookup.mockRestore();
+    }
   });
   it('prevents crossing a concave boundary even if every corner fits',()=>{
     const c=rectangleAt(center,100,100);

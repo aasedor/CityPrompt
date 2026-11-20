@@ -148,6 +148,10 @@ When the model has front and rear low steps, record both positions and test the
 facing/recovery behavior against the chosen sidewalk. Automatic street-facing
 rotation alone does not prove that a picked step connects.
 
+For an automatic fixed-building approach, record the measured mesh-edge
+coordinates, the 1.2–4 m connector width, and the opening width separately.
+Verify contact at both ends in the rendered scene after reopening.
+
 Record total route length and rise, building/street landing depths and elevations,
 flight run and step count. Verify the landing is level at the native-step foot,
 clears the entire measured terrain footprint and leaves enough stair run.

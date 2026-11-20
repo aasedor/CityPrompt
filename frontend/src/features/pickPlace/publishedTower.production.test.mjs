@@ -10,6 +10,8 @@ const approvedBuildingIds = [
   'claude_climbing_crucible_v004', 'claude_climbing_overhang_v007', 'claude_climbing_reef_v009',
   'claude_sandstone_clock_tower_v006', 'claude_fire_station_v010', 'claude_hospital_v006',
   'claude_student_residence_v004',
+  'london_crescent_terrace_bath_stone', 'plus15_brutalist_concrete_office',
+  'rlasm_folded_roof_market_hall', 'rlasm_passage_tower', 'rlasm_terraced_science_centre',
 ];
 // Explicitly added pilots, listed by exact placement so the recorded
 // fingerprints below still protect every older choice unchanged.

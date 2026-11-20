@@ -12,20 +12,28 @@ const server = await createServer({root,configFile:resolve(root,'vite.config.ts'
   define:{'import.meta.env.DEV':'false','import.meta.env.PROD':'true','import.meta.env.VITE_CLAUDE_FIVE_TRIAL':JSON.stringify('true')},
   cacheDir:resolve(root,'../artifacts/model-contract-vite-cache'),server:{middlewareMode:true},
   appType:'custom',optimizeDeps:{noDiscovery:true,entries:[]}});
-let rows;
+let records;
 try {
   const { CATALOGUE_ASSETS } = await server.ssrLoadModule('/src/features/pickPlace/assetRegistry.ts');
   const { CATALOGUE_BUILDING_ASSETS } = await server.ssrLoadModule('/src/features/pickPlace/publishedBuildingAssets.ts');
   const { withBuildingOnlyFootprint } = await server.ssrLoadModule('/src/features/pickPlace/buildingOnlyFootprint.ts');
+  const { validationNativeBuildingBinding } = await server.ssrLoadModule('/src/features/pickPlace/validationNativeBuildingBinding.ts');
   // Saved local trials need exact report facts without becoming production picker choices.
   // Prefer registered programmes for published assets; add only missing authored identities.
   const authored = CATALOGUE_BUILDING_ASSETS.filter(row => !CATALOGUE_ASSETS.some(asset => asset.id === row.id))
     .map(withBuildingOnlyFootprint);
-  rows = [...CATALOGUE_ASSETS, ...authored].filter(row => row.zoneType === 'building' && row.reshapeMode === 'fixed_native');
+  records = [...CATALOGUE_ASSETS, ...authored]
+    .filter(row => row.zoneType === 'building' && row.reshapeMode === 'fixed_native')
+    .map(row => {
+      const binding = validationNativeBuildingBinding(row.id, row.model.revision);
+      return {
+        asset_id: row.id, variant_id: row.model.variantId, revision: row.model.revision,
+        dimensions_m: row.nativeDimensions, storeys: row.properties.floor_count ?? row.properties.floors,
+        fixed: (row.storeyProgram?.mode ?? 'fixed_authored_assembly') === 'fixed_authored_assembly', current: true,
+        ...(binding?.model_revision && binding.standalone_native ? { static_model_sha256: binding.sha256 } : {}),
+      };
+    });
 } finally {await server.close();}
-const records = rows.map(row => ({asset_id:row.id,variant_id:row.model.variantId,revision:row.model.revision,
-  dimensions_m:row.nativeDimensions,storeys:row.properties.floor_count ?? row.properties.floors,
-  fixed:(row.storeyProgram?.mode ?? 'fixed_authored_assembly') === 'fixed_authored_assembly',current:true}));
 records.push(...revisions.revisions.map(row => ({asset_id:row.assetId,variant_id:row.variantId,revision:row.revision,
   dimensions_m:row.nativeDimensions,storeys:row.storeys,fixed:true,current:false})));
 const target = new URL('../../backend/app/data/native_model_contract.json', import.meta.url);
