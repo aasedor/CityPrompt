@@ -170,6 +170,31 @@ async def execute(fixture, attempt):
 
 
 @pytest.mark.asyncio
+async def test_retry_recovers_attempt_submitted_before_street_view_context(isolated):
+    f = isolated
+    key = str(uuid.uuid4())
+    legacy_payload = f.req.model_dump(mode="json", exclude={"street_view_context"})
+    legacy = RenderAttempt(
+        id=uuid.uuid4(),
+        user_id=f.user.id,
+        project_id=f.project.id,
+        idempotency_key=key,
+        request_sha256=jobs.revision_sha256(legacy_payload),
+        status="completed",
+        model=f.req.model,
+        style=f.req.style,
+    )
+    async with f.sessions() as db:
+        db.add(legacy)
+        await db.commit()
+
+    attempt = await submit(f, key)
+    assert attempt.id == legacy.id
+    f.delivered.assert_not_awaited()
+    f.provider.assert_not_awaited()
+
+
+@pytest.mark.asyncio
 async def test_credit_admission_preserves_real_trial_slot_and_existing_recovery(isolated):
     from app.services.render_trial import TRIAL_KEY
 

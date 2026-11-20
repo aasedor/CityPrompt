@@ -115,6 +115,9 @@ async def submit_attempt(db, user, req: Direct3DRenderRequest | VideoAppearanceR
     await check_project_permission(req.project_id, user, db, required="editor")
     user_id = user.id
     payload = req.model_dump(mode="json")
+    # Retries of pre-Street View jobs must hash the same request as before rollout.
+    if payload.get("street_view_context") is None:
+        payload.pop("street_view_context", None)
     fingerprint = revision_sha256(payload)
     # Recover existing jobs without capture work or waiting for global admission.
     existing = await db.scalar(

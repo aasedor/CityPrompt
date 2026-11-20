@@ -29,6 +29,7 @@ export type ImageEngine = PaidImageModel;
 export type ImageModelChoice = ImageEngine | 'compare-all-three';
 export type ImageModelAvailability = {
   default_model: OpenAIImageModel;
+  street_view_context_available?: boolean;
   /** Server-effective weekly balance; absent on older servers. */
   credit_balance?: number;
   credit_exempt?: boolean;
