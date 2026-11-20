@@ -404,8 +404,8 @@ describe('street section pilot profiles', () => {
   });
 
   it('compiles every street/path catalog entry to a measured non-empty section', () => {
-    expect(streetPathCatalog.archetypes).toHaveLength(115);
-    expect(CATALOG_STREET_ARCHETYPE_IDS).toHaveLength(115);
+    expect(streetPathCatalog.archetypes).toHaveLength(116);
+    expect(CATALOG_STREET_ARCHETYPE_IDS).toHaveLength(116);
     for (const entry of streetPathCatalog.archetypes) {
       const profile = resolvePilotStreetSectionProfile(entry.id);
       expect(profile, entry.id).not.toBeNull();
@@ -421,7 +421,7 @@ describe('street section pilot profiles', () => {
 
   it('resolves every selected street variant into the section and render contract', () => {
     expect(streetPathCatalog.archetypes.reduce((sum, entry) => sum + entry.variants.length, 0))
-      .toBe(355);
+      .toBe(356);
     for (const entry of streetPathCatalog.archetypes) {
       for (const variant of entry.variants) {
         const profile = resolvePilotStreetSectionProfile({

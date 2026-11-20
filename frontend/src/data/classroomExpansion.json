@@ -769,6 +769,45 @@
   "runtime_status": "NOT TESTED",
   "completed": false
 }
+,
+{
+  "domain": "street",
+  "title": "Median LRT Avenue",
+  "archetype_id": "light_rail_tram_avenue",
+  "variant_id": "student_median_lrt_avenue_v1",
+  "version": "student_median_lrt_avenue_v1",
+  "placement_id": "student_median_lrt_avenue_v1",
+  "sha256": "e4e906b391fc60a2aab2c2f4a5c772959d80fc813b08ce267eb8f732f8f36395",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+}
+,
+{
+  "domain": "street",
+  "title": "LRT Right-of-Way",
+  "archetype_id": "light_rail_tram_avenue",
+  "variant_id": "student_lrt_right_of_way_v1",
+  "version": "student_lrt_right_of_way_v1",
+  "placement_id": "student_lrt_right_of_way_v1",
+  "sha256": "e96c663a764110cadbd64b13e76a2dd3264d00b3aa1366ae18ea37e0b5c588e6",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+}
+,
+{
+  "domain": "street",
+  "title": "High-Speed Rail Line",
+  "archetype_id": "high_speed_rail_corridor",
+  "variant_id": "student_high_speed_rail_line_v1",
+  "version": "student_high_speed_rail_line_v1",
+  "placement_id": "student_high_speed_rail_line_v1",
+  "sha256": "4eda6ccbc26702a15ffa9ffa22fe80186b9b5a4bb5a178f35945d3768339d08e",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+}
 ],
   "assets": [
     {
@@ -3034,6 +3073,102 @@
     "pick_place_definition_version": 1,
     "community_3d_mask_existing_tiles": true,
     "road_standard_citation": "City Prompt original teaching concept after Stephen Avenue; not a City of Calgary drawing"
+  }
+}
+,
+{
+  "id": "student_median_lrt_avenue_v1",
+  "kind": "street",
+  "definitionVersion": 1,
+  "readiness": "pilot",
+  "label": "Median LRT Avenue",
+  "description": "34 m arterial: fenced ballasted double light-rail track in the median, two lanes each way, boulevards and sidewalks.",
+  "thumbnail": "/archetypes/streets/light-rail-tram-avenue/student_median_lrt_avenue_v1.png",
+  "model": {
+    "variantId": "student_median_lrt_avenue_v1",
+    "revision": "34bb8e4b41284d04ac7309da44bd7e27685f28d551c60fdbeb4236e770934303",
+    "method": "native_street_modules_v1"
+  },
+  "calgaryGuide": {
+    "groupId": "transit",
+    "basis": "form_reference"
+  },
+  "reshapeMode": "fixed_section_route",
+  "sectionWidth": 34.0,
+  "properties": {
+    "road_archetype_id": "light_rail_tram_avenue",
+    "road_selected_variant_id": "student_median_lrt_avenue_v1",
+    "width": 34.0,
+    "lane_count": 4,
+    "pick_place_street_section": "student_median_lrt_avenue_v1",
+    "pick_place_automatic_3d": true,
+    "pick_place_definition_version": 1,
+    "community_3d_mask_existing_tiles": true,
+    "road_standard_citation": "City Prompt original teaching section; not a City of Calgary or rail operator drawing"
+  }
+}
+,
+{
+  "id": "student_lrt_right_of_way_v1",
+  "kind": "street",
+  "definitionVersion": 1,
+  "readiness": "pilot",
+  "label": "LRT Right-of-Way",
+  "description": "20 m light-rail corridor: fenced ballasted double track, side masts, a regional pathway and a drainage swale.",
+  "thumbnail": "/archetypes/streets/light-rail-tram-avenue/student_lrt_right_of_way_v1.png",
+  "model": {
+    "variantId": "student_lrt_right_of_way_v1",
+    "revision": "7c92751871f0f8bc2898373fa671269fabe264e06602e83b9ffc082b600bf5b7",
+    "method": "native_street_modules_v1"
+  },
+  "calgaryGuide": {
+    "groupId": "transit",
+    "basis": "form_reference"
+  },
+  "reshapeMode": "fixed_section_route",
+  "sectionWidth": 20.0,
+  "properties": {
+    "road_archetype_id": "light_rail_tram_avenue",
+    "road_selected_variant_id": "student_lrt_right_of_way_v1",
+    "width": 20.0,
+    "lane_count": 0,
+    "pick_place_street_section": "student_lrt_right_of_way_v1",
+    "pick_place_automatic_3d": true,
+    "pick_place_definition_version": 1,
+    "community_3d_mask_existing_tiles": true,
+    "road_standard_citation": "City Prompt original teaching section; not a City of Calgary or rail operator drawing"
+  }
+}
+,
+{
+  "id": "student_high_speed_rail_line_v1",
+  "kind": "street",
+  "definitionVersion": 1,
+  "readiness": "pilot",
+  "label": "High-Speed Rail Line",
+  "description": "30 m high-speed rail corridor: double slab track on an embankment, overhead line, fences, ditches and a service road.",
+  "thumbnail": "/archetypes/streets/high-speed-rail-corridor/student_high_speed_rail_line_v1.png",
+  "model": {
+    "variantId": "student_high_speed_rail_line_v1",
+    "revision": "58e46729244ce89be0eeb4f6e051c5d7af85f3d45af90c8a3ce3ae69b3bf1c32",
+    "method": "native_street_modules_v1"
+  },
+  "calgaryGuide": {
+    "groupId": "transit",
+    "basis": "form_reference"
+  },
+  "reshapeMode": "fixed_section_route",
+  "sectionWidth": 30.0,
+  "properties": {
+    "road_archetype_id": "high_speed_rail_corridor",
+    "road_selected_variant_id": "student_high_speed_rail_line_v1",
+    "width": 30.0,
+    "lane_count": 0,
+    "pick_place_street_section": "student_high_speed_rail_line_v1",
+    "pick_place_automatic_3d": true,
+    "pick_place_definition_version": 1,
+    "community_3d_mask_existing_tiles": true,
+    "road_standard_citation": "City Prompt original teaching section; not a City of Calgary or rail operator drawing"
   }
 }
 ]

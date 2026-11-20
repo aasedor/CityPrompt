@@ -1,0 +1,36 @@
+{
+  "frame": "x across the street, y along it (three fixture cycles centred on 0), z up, metres",
+  "median_lrt": {
+    "views": {
+      "aerial": {"pos": [34, -66, 28], "target": [0, -4, 2], "fov": 40, "shadow": 60, "centre": [0, 0, 3]},
+      "top": {"pos": [0, 0, 120], "target": [0, 0, 0], "up": [0, 1, 0], "ortho": 32, "shadow": 60, "centre": [0, 0, 3]},
+      "driver": {"pos": [6.75, -58, 1.3], "target": [3.5, 20, 3.2], "fov": 60, "shadow": 60, "centre": [0, -20, 3]},
+      "sidewalk": {"pos": [-15.6, -52, 1.65], "target": [-7, 10, 3.2], "fov": 60, "shadow": 60, "centre": [-6, -20, 3]},
+      "median": {"pos": [-7.5, -22, 3.4], "target": [0, -8, 4.0], "fov": 52, "shadow": 30, "centre": [0, -10, 3]},
+      "catenary": {"pos": [-5.2, -17.5, 4.6], "target": [0, -10, 6.4], "fov": 45, "shadow": 25, "centre": [0, -10, 4]},
+      "card": {"pos": [5.5, -34, 9], "target": [-0.8, 6, 3.0], "fov": 48, "w": 1024, "h": 768, "shadow": 60, "centre": [0, 0, 3]}
+    }
+  },
+  "lrt_row": {
+    "views": {
+      "aerial": {"pos": [26, -60, 24], "target": [0, -4, 2], "fov": 40, "shadow": 60, "centre": [0, 0, 3]},
+      "top": {"pos": [0, 0, 120], "target": [0, 0, 0], "up": [0, 1, 0], "ortho": 22, "shadow": 60, "centre": [0, 0, 3]},
+      "pathway": {"pos": [-7.0, -55, 1.65], "target": [-4, 10, 2.6], "fov": 60, "shadow": 60, "centre": [-4, -20, 3]},
+      "track": {"pos": [-6.2, -24, 2.6], "target": [0, -4, 3.6], "fov": 52, "shadow": 30, "centre": [0, -10, 3]},
+      "mast": {"pos": [-1.0, -7.5, 3.8], "target": [3.6, 0, 5.6], "fov": 48, "shadow": 25, "centre": [2, 0, 3]},
+      "swale": {"pos": [9.3, 36, 2.0], "target": [4, 15, 2.5], "fov": 58, "shadow": 40, "centre": [4, 10, 3]},
+      "card": {"pos": [12, -29, 8], "target": [-1.5, 6, 2.6], "fov": 46, "w": 1024, "h": 768, "shadow": 60, "centre": [0, 0, 3]}
+    }
+  },
+  "hsr": {
+    "views": {
+      "aerial": {"pos": [38, -84, 32], "target": [0, -6, 2], "fov": 40, "shadow": 80, "centre": [0, 0, 4]},
+      "top": {"pos": [0, 0, 140], "target": [0, 0, 0], "up": [0, 1, 0], "ortho": 30, "shadow": 80, "centre": [0, 0, 4]},
+      "service_road": {"pos": [-12.2, -70, 1.65], "target": [-6, 10, 4], "fov": 58, "shadow": 80, "centre": [-4, -25, 4]},
+      "track": {"pos": [-5.6, -30, 2.6], "target": [0, -6, 4.6], "fov": 52, "shadow": 40, "centre": [0, -12, 4]},
+      "mast": {"pos": [-0.6, -9, 4.0], "target": [-4.2, 0, 7.4], "fov": 50, "shadow": 25, "centre": [-3, 0, 5]},
+      "embankment": {"pos": [13.5, -40, 1.6], "target": [3, -5, 3.0], "fov": 55, "shadow": 60, "centre": [4, -20, 3]},
+      "card": {"pos": [13.2, -31, 8.8], "target": [-1.5, 8, 3.4], "fov": 48, "w": 1024, "h": 768, "shadow": 80, "centre": [0, 0, 4]}
+    }
+  }
+}

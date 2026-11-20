@@ -10,7 +10,7 @@ import validation from '@/data/validationCatalogue.json';
 describe('three additional native street programs', () => {
   it('offers the consolidated classroom selection with distinct exact identities', () => {
     expect(drawnBridges).toHaveLength(10);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'street')).toHaveLength(45 + drawnBridges.length);   // + Stephen Avenue mall
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'street')).toHaveLength(48 + drawnBridges.length);   // + Stephen Avenue mall and three rail streets
     expect(CATALOGUE_ASSETS.filter(a => drawnBridges.some(row => row.id === a.model.variantId))
       .map(a => a.model.variantId).sort()).toEqual(drawnBridges.map(row => row.id).sort());
     const buildings = CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'building');

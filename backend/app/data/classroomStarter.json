@@ -486,5 +486,32 @@
   "revision": "dfb96f981f6ab0cf919787bafa51546fbfca7ec73ec5aef99421ae3aaab5f0f2",
   "status": "local-pilot-runtime-pending"
 }
+,
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "light_rail_tram_avenue",
+  "variantId": "student_median_lrt_avenue_v1",
+  "revision": "34bb8e4b41284d04ac7309da44bd7e27685f28d551c60fdbeb4236e770934303",
+  "status": "local-pilot-runtime-pending"
+}
+,
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "light_rail_tram_avenue",
+  "variantId": "student_lrt_right_of_way_v1",
+  "revision": "7c92751871f0f8bc2898373fa671269fabe264e06602e83b9ffc082b600bf5b7",
+  "status": "local-pilot-runtime-pending"
+}
+,
+{
+  "domain": "street",
+  "representation": "native-modules",
+  "archetypeId": "high_speed_rail_corridor",
+  "variantId": "student_high_speed_rail_line_v1",
+  "revision": "58e46729244ce89be0eeb4f6e051c5d7af85f3d45af90c8a3ce3ae69b3bf1c32",
+  "status": "local-pilot-runtime-pending"
+}
 ]
 }

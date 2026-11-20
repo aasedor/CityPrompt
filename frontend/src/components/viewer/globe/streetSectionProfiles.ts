@@ -698,8 +698,11 @@ export function resolvePilotStreetSectionProfile(
   const nativeSection: SyntheticSection | undefined = nativePilot && {
     rowM: nativePilot.widthM,
     renderCurbs: nativePilot.id === 'student_main_street_v1',
+    // A band may name its zone type and surface outright; rail track beds do,
+    // so they are never described as paving or planting.
     zones: nativePilot.sections.map(section => ({
-      type: nativePilot.program?.adapter === 'narrow-pathway-v1' ? 'multi_use_pathway'
+      type: 'zoneType' in section && section.zoneType ? section.zoneType
+        : nativePilot.program?.adapter === 'narrow-pathway-v1' ? 'multi_use_pathway'
         : section.name.includes('walk') || section.name.includes('furniture') ? 'sidewalk'
         : section.name.includes('parking') ? 'parking'
           : section.material === 'asphalt' ? 'travel_lane'
@@ -707,7 +710,8 @@ export function resolvePilotStreetSectionProfile(
           : ['grass','soil'].includes(section.material) ? 'boulevard' : 'multi_use_pathway',
       width_m: section.width,
       label: section.name.replace(/_/g, ' '),
-      surface: section.material === 'asphalt' ? 'fine asphalt'
+      surface: 'surface' in section && section.surface ? section.surface
+        : section.material === 'asphalt' ? 'fine asphalt'
           : ['grass','soil'].includes(section.material) ? 'planting'
           : nativePilot.junctionSurface === 'brick' ? 'brick paving'
         : nativePilot.junctionSurface === 'cobble' ? 'stone cobble paving' : 'architectural stone paving',

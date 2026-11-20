@@ -87452,4 +87452,6312 @@
   },
   "programSha256": "287159e2d4266cd1036b79b1a8463739898e792e3c4ba075e724fa2280f4435b"
 }
+,
+{
+  "id": "student_median_lrt_avenue_v1",
+  "sourceArchetypeId": "light_rail_tram_avenue",
+  "title": "Median LRT Avenue",
+  "status": "candidate",
+  "sourceRecipeSha256": "34bb8e4b41284d04ac7309da44bd7e27685f28d551c60fdbeb4236e770934303",
+  "sourceAssemblySha256": "e4e906b391fc60a2aab2c2f4a5c772959d80fc813b08ce267eb8f732f8f36395",
+  "referenceSha256": "87d79f66d27f2f85d1db0f6175392d22a548bf1a7858f5a147a2584dafe507f0",
+  "widthM": 34.0,
+  "fixtureLengthM": 40,
+  "routeAxis": "local_y",
+  "junctionSurface": "pavers",
+  "sections": [
+    {
+      "name": "west_walk",
+      "x": -15.75,
+      "width": 2.5,
+      "material": "paving",
+      "zoneType": "sidewalk",
+      "surface": "concrete sidewalk"
+    },
+    {
+      "name": "west_boulevard",
+      "x": -13.25,
+      "width": 2.5,
+      "material": "grass",
+      "zoneType": "boulevard",
+      "surface": "grass boulevard with street trees"
+    },
+    {
+      "name": "west_road",
+      "x": -8.5,
+      "width": 7.0,
+      "material": "asphalt",
+      "zoneType": "travel_lane",
+      "surface": "asphalt, two lanes"
+    },
+    {
+      "name": "lrt_median",
+      "x": 0.0,
+      "width": 10.0,
+      "material": "ballast",
+      "zoneType": "rail_track",
+      "surface": "raised median with fenced ballasted double light-rail track"
+    },
+    {
+      "name": "east_road",
+      "x": 8.5,
+      "width": 7.0,
+      "material": "asphalt",
+      "zoneType": "travel_lane",
+      "surface": "asphalt, two lanes"
+    },
+    {
+      "name": "east_boulevard",
+      "x": 13.25,
+      "width": 2.5,
+      "material": "grass",
+      "zoneType": "boulevard",
+      "surface": "grass boulevard with street trees"
+    },
+    {
+      "name": "east_walk",
+      "x": 15.75,
+      "width": 2.5,
+      "material": "paving",
+      "zoneType": "sidewalk",
+      "surface": "concrete sidewalk"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "centre_pole",
+      "x": 0.0,
+      "y": -10.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "centre_pole",
+      "x": 0.0,
+      "y": 10.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": -18.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": -16.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": -13.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": -11.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": -8.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": -6.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": -3.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": -1.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": 1.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": 3.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": 6.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": 8.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": 11.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": 13.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": 16.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": -4.45,
+      "y": 18.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "boulevard_tree",
+      "x": -13.25,
+      "y": -15.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "boulevard_tree",
+      "x": -13.25,
+      "y": -5.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "boulevard_tree",
+      "x": -13.25,
+      "y": 5.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "boulevard_tree",
+      "x": -13.25,
+      "y": 15.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "street_light",
+      "x": -12.6,
+      "y": 0.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": -18.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": -16.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": -13.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": -11.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": -8.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": -6.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": -3.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": -1.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": 1.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": 3.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": 6.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": 8.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": 11.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": 13.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": 16.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "median_fence",
+      "x": 4.45,
+      "y": 18.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "boulevard_tree",
+      "x": 13.25,
+      "y": -15.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "boulevard_tree",
+      "x": 13.25,
+      "y": -5.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "boulevard_tree",
+      "x": 13.25,
+      "y": 5.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "boulevard_tree",
+      "x": 13.25,
+      "y": 15.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "street_light",
+      "x": 12.6,
+      "y": 0.0,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    }
+  ],
+  "modules": {
+    "centre_pole": {
+      "sha256": "22ebd4011536e79cc0a2627a63f450df477d782af216837e79085170246d9ac5",
+      "bytes": 98768,
+      "url": "/street-kits/pilots/student_median_lrt_avenue_v1/centre_pole.glb"
+    },
+    "median_fence": {
+      "sha256": "490b73bfc630843c2d84ffc425ee3217a413be7d2dd3a91e812e151487358192",
+      "bytes": 32600,
+      "url": "/street-kits/pilots/student_median_lrt_avenue_v1/median_fence.glb"
+    },
+    "street_light": {
+      "sha256": "b65a08a96af4840ef03d226786a4848d012b89ef3190c7254b3fff6848269bf4",
+      "bytes": 25352,
+      "url": "/street-kits/pilots/student_median_lrt_avenue_v1/street_light.glb"
+    },
+    "boulevard_tree": {
+      "sha256": "baf075f40b6d698e66de146846284586ea464b55ea58426c68400f38516ddaab",
+      "bytes": 896708,
+      "url": "/street-kits/pilots/student_median_lrt_avenue_v1/boulevard_tree.glb"
+    }
+  },
+  "treeWells": [],
+  "thumbnailUrl": "/archetypes/streets/light-rail-tram-avenue/student_median_lrt_avenue_v1.png",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "showcase-street-v1",
+    "surfaceRegions": [
+      {
+        "x": -15.75,
+        "y": 0.0,
+        "width": 2.5,
+        "depth": 40.0,
+        "material": "paving"
+      },
+      {
+        "x": -13.25,
+        "y": 0.0,
+        "width": 2.5,
+        "depth": 40.0,
+        "material": "grass"
+      },
+      {
+        "x": -8.5,
+        "y": 0.0,
+        "width": 7.0,
+        "depth": 40.0,
+        "material": "asphalt"
+      },
+      {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 10.0,
+        "depth": 40.0,
+        "material": "ballast"
+      },
+      {
+        "x": 8.5,
+        "y": 0.0,
+        "width": 7.0,
+        "depth": 40.0,
+        "material": "asphalt"
+      },
+      {
+        "x": 13.25,
+        "y": 0.0,
+        "width": 2.5,
+        "depth": 40.0,
+        "material": "grass"
+      },
+      {
+        "x": 15.75,
+        "y": 0.0,
+        "width": 2.5,
+        "depth": 40.0,
+        "material": "paving"
+      }
+    ],
+    "details": [
+      {
+        "x": -2.3,
+        "y": -19.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -19.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -18.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -17.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -17.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -16.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -15.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -15.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -14.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -14.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -13.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -12.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -12.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -11.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -10.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -10.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -9.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -9.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -8.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -7.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -7.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -6.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -5.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -5.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -4.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -4.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -3.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -2.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -2.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -1.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -0.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": -0.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 0.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 0.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 1.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 2.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 2.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 3.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 4.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 4.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 5.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 5.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 6.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 7.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 7.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 8.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 9.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 9.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 10.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 10.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 11.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 12.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 12.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 13.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 14.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 14.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 15.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 15.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 16.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 17.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 17.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 18.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 19.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.3,
+        "y": 19.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -3.0535,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 40.0,
+        "z": 0.316,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": -3.0535,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 40.0,
+        "z": 0.402,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": -3.0535,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 40.0,
+        "z": 0.4828,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": -1.5465,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 40.0,
+        "z": 0.316,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": -1.5465,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 40.0,
+        "z": 0.402,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": -1.5465,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 40.0,
+        "z": 0.4828,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": 2.3,
+        "y": -19.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -19.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -18.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -17.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -17.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -16.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -15.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -15.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -14.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -14.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -13.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -12.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -12.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -11.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -10.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -10.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -9.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -9.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -8.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -7.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -7.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -6.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -5.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -5.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -4.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -4.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -3.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -2.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -2.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -1.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -0.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": -0.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 0.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 0.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 1.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 2.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 2.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 3.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 4.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 4.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 5.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 5.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 6.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 7.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 7.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 8.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 9.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 9.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 10.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 10.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 11.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 12.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 12.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 13.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 14.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 14.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 15.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 15.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 16.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 17.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 17.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 18.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 19.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.3,
+        "y": 19.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.23,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 1.5465,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 40.0,
+        "z": 0.316,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": 1.5465,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 40.0,
+        "z": 0.402,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": 1.5465,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 40.0,
+        "z": 0.4828,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": 3.0535,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 40.0,
+        "z": 0.316,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": 3.0535,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 40.0,
+        "z": 0.402,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": 3.0535,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 40.0,
+        "z": 0.4828,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": -2.3,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 40.0,
+        "z": 6.082,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 40.0,
+        "z": 7.082,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": -17.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": -12.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": -7.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": -2.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": 2.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": 7.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": 12.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": -2.3,
+        "y": 17.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 40.0,
+        "z": 6.082,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 40.0,
+        "z": 7.082,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": -17.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": -12.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": -7.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": -2.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": 2.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": 7.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": 12.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": 2.3,
+        "y": 17.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.582,
+        "height": 1.0,
+        "material": "wire"
+      },
+      {
+        "x": -4.875,
+        "y": 0.0,
+        "width": 0.25,
+        "depth": 40.0,
+        "z": 0.075,
+        "height": 0.15,
+        "material": "curb"
+      },
+      {
+        "x": -5.2,
+        "y": 0.0,
+        "width": 0.4,
+        "depth": 40.0,
+        "z": 0.003,
+        "height": 0.0,
+        "material": "gutter"
+      },
+      {
+        "x": -11.9,
+        "y": 0.0,
+        "width": 0.2,
+        "depth": 40.0,
+        "z": 0.075,
+        "height": 0.15,
+        "material": "curb"
+      },
+      {
+        "x": -11.6,
+        "y": 0.0,
+        "width": 0.4,
+        "depth": 40.0,
+        "z": 0.003,
+        "height": 0.0,
+        "material": "gutter"
+      },
+      {
+        "x": -8.5,
+        "y": -15.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint"
+      },
+      {
+        "x": -8.5,
+        "y": -5.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint"
+      },
+      {
+        "x": -8.5,
+        "y": 5.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint"
+      },
+      {
+        "x": -8.5,
+        "y": 15.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint"
+      },
+      {
+        "x": -15.75,
+        "y": -18.5185,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -17.037,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -15.5556,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -14.0741,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -12.5926,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -11.1111,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -9.6296,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -8.1481,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -6.6667,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -5.1852,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -3.7037,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -2.2222,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": -0.7407,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 0.7407,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 2.2222,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 3.7037,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 5.1852,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 6.6667,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 8.1481,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 9.6296,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 11.1111,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 12.5926,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 14.0741,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 15.5556,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 17.037,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": -15.75,
+        "y": 18.5185,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 4.875,
+        "y": 0.0,
+        "width": 0.25,
+        "depth": 40.0,
+        "z": 0.075,
+        "height": 0.15,
+        "material": "curb"
+      },
+      {
+        "x": 5.2,
+        "y": 0.0,
+        "width": 0.4,
+        "depth": 40.0,
+        "z": 0.003,
+        "height": 0.0,
+        "material": "gutter"
+      },
+      {
+        "x": 11.9,
+        "y": 0.0,
+        "width": 0.2,
+        "depth": 40.0,
+        "z": 0.075,
+        "height": 0.15,
+        "material": "curb"
+      },
+      {
+        "x": 11.6,
+        "y": 0.0,
+        "width": 0.4,
+        "depth": 40.0,
+        "z": 0.003,
+        "height": 0.0,
+        "material": "gutter"
+      },
+      {
+        "x": 8.5,
+        "y": -15.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint"
+      },
+      {
+        "x": 8.5,
+        "y": -5.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint"
+      },
+      {
+        "x": 8.5,
+        "y": 5.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint"
+      },
+      {
+        "x": 8.5,
+        "y": 15.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint"
+      },
+      {
+        "x": 15.75,
+        "y": -18.5185,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -17.037,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -15.5556,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -14.0741,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -12.5926,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -11.1111,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -9.6296,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -8.1481,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -6.6667,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -5.1852,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -3.7037,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -2.2222,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": -0.7407,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 0.7407,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 2.2222,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 3.7037,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 5.1852,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 6.6667,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 8.1481,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 9.6296,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 11.1111,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 12.5926,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 14.0741,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 15.5556,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 17.037,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      },
+      {
+        "x": 15.75,
+        "y": 18.5185,
+        "width": 2.5,
+        "depth": 0.012,
+        "z": 0.002,
+        "height": 0.0,
+        "material": "edge"
+      }
+    ],
+    "meshDetails": [
+      {
+        "material": "ballast",
+        "positions": [
+          -4.125,
+          -20.0,
+          0.0,
+          -3.75,
+          -20.0,
+          0.25,
+          -3.75,
+          20.0,
+          0.25,
+          -4.125,
+          -20.0,
+          0.0,
+          -3.75,
+          20.0,
+          0.25,
+          -4.125,
+          20.0,
+          0.0,
+          -3.75,
+          -20.0,
+          0.25,
+          3.75,
+          -20.0,
+          0.25,
+          3.75,
+          20.0,
+          0.25,
+          -3.75,
+          -20.0,
+          0.25,
+          3.75,
+          20.0,
+          0.25,
+          -3.75,
+          20.0,
+          0.25,
+          3.75,
+          -20.0,
+          0.25,
+          4.125,
+          -20.0,
+          0.0,
+          4.125,
+          20.0,
+          0.0,
+          3.75,
+          -20.0,
+          0.25,
+          4.125,
+          20.0,
+          0.0,
+          3.75,
+          20.0,
+          0.25,
+          -4.125,
+          -20.0,
+          0.0,
+          -3.75,
+          -20.0,
+          0.0,
+          -3.75,
+          -20.0,
+          0.25,
+          -3.75,
+          -20.0,
+          0.0,
+          3.75,
+          -20.0,
+          0.0,
+          3.75,
+          -20.0,
+          0.25,
+          -3.75,
+          -20.0,
+          0.0,
+          3.75,
+          -20.0,
+          0.25,
+          -3.75,
+          -20.0,
+          0.25,
+          3.75,
+          -20.0,
+          0.0,
+          4.125,
+          -20.0,
+          0.0,
+          3.75,
+          -20.0,
+          0.25,
+          -3.75,
+          20.0,
+          0.25,
+          -3.75,
+          20.0,
+          0.0,
+          -4.125,
+          20.0,
+          0.0,
+          -3.75,
+          20.0,
+          0.25,
+          3.75,
+          20.0,
+          0.25,
+          3.75,
+          20.0,
+          0.0,
+          -3.75,
+          20.0,
+          0.25,
+          3.75,
+          20.0,
+          0.0,
+          -3.75,
+          20.0,
+          0.0,
+          3.75,
+          20.0,
+          0.25,
+          4.125,
+          20.0,
+          0.0,
+          3.75,
+          20.0,
+          0.0
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41
+        ]
+      }
+    ],
+    "paving": "concrete",
+    "pavingModuleM": [
+      1.2,
+      0.8
+    ],
+    "minLengthM": 40,
+    "maxLengthM": 2000,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "asphalt": [
+        0.0704,
+        0.0742,
+        0.0802
+      ],
+      "ballast": [
+        0.2623,
+        0.2423,
+        0.2195
+      ],
+      "curb": [
+        0.552,
+        0.521,
+        0.4564
+      ],
+      "edge": [
+        0.2747,
+        0.2582,
+        0.2307
+      ],
+      "grass": [
+        0.1559,
+        0.2542,
+        0.0648
+      ],
+      "gutter": [
+        0.402,
+        0.3813,
+        0.3372
+      ],
+      "paint": [
+        0.7913,
+        0.7682,
+        0.6867
+      ],
+      "paving": [
+        0.4793,
+        0.4564,
+        0.4072
+      ],
+      "rail": [
+        0.1119,
+        0.0865,
+        0.0704
+      ],
+      "rail_head": [
+        0.5457,
+        0.5647,
+        0.5776
+      ],
+      "sleeper": [
+        0.3712,
+        0.3564,
+        0.3278
+      ],
+      "wire": [
+        0.0242,
+        0.0273,
+        0.0307
+      ]
+    }
+  },
+  "programSha256": "94fabdc063954ded5484c313511d758d554e8d7de9ed11bd2db5ed93e8b8e025"
+}
+,
+{
+  "id": "student_lrt_right_of_way_v1",
+  "sourceArchetypeId": "light_rail_tram_avenue",
+  "title": "LRT Right-of-Way",
+  "status": "candidate",
+  "sourceRecipeSha256": "7c92751871f0f8bc2898373fa671269fabe264e06602e83b9ffc082b600bf5b7",
+  "sourceAssemblySha256": "e96c663a764110cadbd64b13e76a2dd3264d00b3aa1366ae18ea37e0b5c588e6",
+  "referenceSha256": "aaaf1c2ba91dfc45d161cbb3e87ca93b63b6620e72aa8c27e34bfa05ff312018",
+  "widthM": 20.0,
+  "fixtureLengthM": 40,
+  "routeAxis": "local_y",
+  "junctionSurface": "pavers",
+  "sections": [
+    {
+      "name": "west_verge",
+      "x": -9.5,
+      "width": 1.0,
+      "material": "grass",
+      "zoneType": "boulevard",
+      "surface": "grass verge"
+    },
+    {
+      "name": "regional_pathway",
+      "x": -7.5,
+      "width": 3.0,
+      "material": "paving",
+      "zoneType": "multi_use_pathway",
+      "surface": "asphalt pathway with a yellow centre line"
+    },
+    {
+      "name": "west_buffer",
+      "x": -5.25,
+      "width": 1.5,
+      "material": "grass",
+      "zoneType": "boulevard",
+      "surface": "grass buffer with right-of-way fence"
+    },
+    {
+      "name": "lrt_track_bed",
+      "x": 0.0,
+      "width": 9.0,
+      "material": "ballast",
+      "zoneType": "rail_track",
+      "surface": "ballasted double light-rail track on its own right-of-way"
+    },
+    {
+      "name": "east_buffer",
+      "x": 5.25,
+      "width": 1.5,
+      "material": "grass",
+      "zoneType": "boulevard",
+      "surface": "grass buffer with right-of-way fence"
+    },
+    {
+      "name": "east_swale",
+      "x": 8.0,
+      "width": 4.0,
+      "material": "grass",
+      "zoneType": "boulevard",
+      "surface": "grassed drainage swale with aspens"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "side_mast",
+      "x": -4.2,
+      "y": 0.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "side_mast",
+      "x": 4.2,
+      "y": 0.0,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": -18.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": -16.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": -13.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": -11.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": -8.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": -6.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": -3.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": -1.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": 1.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": 3.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": 6.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": 8.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": 11.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": 13.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": 16.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": -4.75,
+      "y": 18.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": -18.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": -16.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": -13.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": -11.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": -8.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": -6.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": -3.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": -1.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": 1.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": 3.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": 6.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": 8.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": 11.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": 13.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": 16.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "row_fence",
+      "x": 4.75,
+      "y": 18.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "pathway_light",
+      "x": -9.5,
+      "y": -5.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "bench",
+      "x": -9.45,
+      "y": 10.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "litter_bin",
+      "x": -9.5,
+      "y": 12.4,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "aspen_clump",
+      "x": 7.0,
+      "y": -13.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "aspen_clump",
+      "x": 7.6,
+      "y": 7.0,
+      "z": 0.0,
+      "yaw": 2.1,
+      "scale": 1
+    },
+    {
+      "kind": "relay_case",
+      "x": 5.45,
+      "y": 16.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    }
+  ],
+  "modules": {
+    "side_mast": {
+      "sha256": "80be3411e914956502d2df19056504a2690206c629912c7280b492be608bdf62",
+      "bytes": 54064,
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/side_mast.glb"
+    },
+    "row_fence": {
+      "sha256": "8c39ac306cdacb32ab4a628fb802febb85e93db063cc15fa075123ee2d55230c",
+      "bytes": 35336,
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/row_fence.glb"
+    },
+    "pathway_light": {
+      "sha256": "e041a7f5814811901fb116c5fe0bc3b3884e1156afe5a46f6a152c694d6eec4c",
+      "bytes": 20804,
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/pathway_light.glb"
+    },
+    "bench": {
+      "sha256": "2f1b4b4d4d9da2a6c120b76cbcfa661b7b35c76a2e6af4a2d0be6fc9127b226e",
+      "bytes": 16184,
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/bench.glb"
+    },
+    "litter_bin": {
+      "sha256": "8d9c7a154c910660fa9f2e905ddd1120705d3fba9c3e96e0e74b15fecb558217",
+      "bytes": 18948,
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/litter_bin.glb"
+    },
+    "aspen_clump": {
+      "sha256": "479c14263f5e30d2f06ab05ad890fa32ab5ff02c24f63811d8465563a51fb3a2",
+      "bytes": 1057036,
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/aspen_clump.glb"
+    },
+    "relay_case": {
+      "sha256": "cbeb4fc329eff632cf8627cc8d1d76070eb24cae0a9b29251e5cc1c0148c9572",
+      "bytes": 21680,
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/relay_case.glb"
+    }
+  },
+  "treeWells": [],
+  "thumbnailUrl": "/archetypes/streets/light-rail-tram-avenue/student_lrt_right_of_way_v1.png",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "showcase-street-v1",
+    "surfaceRegions": [
+      {
+        "x": -9.5,
+        "y": 0.0,
+        "width": 1.0,
+        "depth": 40.0,
+        "material": "grass"
+      },
+      {
+        "x": -7.5,
+        "y": 0.0,
+        "width": 3.0,
+        "depth": 40.0,
+        "material": "path"
+      },
+      {
+        "x": -5.25,
+        "y": 0.0,
+        "width": 1.5,
+        "depth": 40.0,
+        "material": "grass"
+      },
+      {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 9.0,
+        "depth": 40.0,
+        "material": "formation"
+      },
+      {
+        "x": 5.25,
+        "y": 0.0,
+        "width": 1.5,
+        "depth": 40.0,
+        "material": "grass"
+      },
+      {
+        "x": 6.5,
+        "y": 0.0,
+        "width": 1.0,
+        "depth": 40.0,
+        "material": "grass"
+      },
+      {
+        "x": 8.0,
+        "y": 0.0,
+        "width": 2.0,
+        "depth": 40.0,
+        "material": "grass_dark"
+      },
+      {
+        "x": 9.5,
+        "y": 0.0,
+        "width": 1.0,
+        "depth": 40.0,
+        "material": "grass"
+      }
+    ],
+    "details": [
+      {
+        "x": -2.0,
+        "y": -19.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -19.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -18.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -17.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -17.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -16.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -15.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -15.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -14.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -14.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -13.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -12.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -12.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -11.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -10.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -10.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -9.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -9.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -8.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -7.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -7.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -6.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -5.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -5.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -4.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -4.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -3.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -2.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -2.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -1.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -0.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": -0.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 0.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 0.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 1.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 2.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 2.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 3.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 4.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 4.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 5.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 5.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 6.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 7.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 7.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 8.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 9.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 9.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 10.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 10.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 11.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 12.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 12.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 13.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 14.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 14.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 15.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 15.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 16.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 17.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 17.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 18.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 19.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.0,
+        "y": 19.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": -2.7535,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 40.0,
+        "z": 0.416,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": -2.7535,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 40.0,
+        "z": 0.502,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": -2.7535,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 40.0,
+        "z": 0.5828,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": -1.2465,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 40.0,
+        "z": 0.416,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": -1.2465,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 40.0,
+        "z": 0.502,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": -1.2465,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 40.0,
+        "z": 0.5828,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": 2.0,
+        "y": -19.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -19.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -18.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -17.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -17.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -16.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -15.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -15.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -14.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -14.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -13.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -12.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -12.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -11.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -10.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -10.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -9.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -9.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -8.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -7.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -7.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -6.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -5.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -5.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -4.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -4.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -3.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -2.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -2.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -1.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -0.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": -0.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 0.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 0.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 1.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 2.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 2.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 3.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 4.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 4.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 5.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 5.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 6.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 7.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 7.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 8.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 9.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 9.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 10.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 10.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 11.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 12.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 12.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 13.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 14.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 14.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 15.3125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 15.9375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 16.5625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 17.1875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 17.8125,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 18.4375,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 19.0625,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 2.0,
+        "y": 19.6875,
+        "width": 2.6,
+        "depth": 0.24,
+        "z": 0.33,
+        "height": 0.16,
+        "material": "sleeper"
+      },
+      {
+        "x": 1.2465,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 40.0,
+        "z": 0.416,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": 1.2465,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 40.0,
+        "z": 0.502,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": 1.2465,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 40.0,
+        "z": 0.5828,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": 2.7535,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 40.0,
+        "z": 0.416,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": 2.7535,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 40.0,
+        "z": 0.502,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": 2.7535,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 40.0,
+        "z": 0.5828,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": -2.0,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 40.0,
+        "z": 5.782,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 40.0,
+        "z": 6.882,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": -17.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": -12.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": -7.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": -2.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": 2.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": 7.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": 12.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": -2.0,
+        "y": 17.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 40.0,
+        "z": 5.782,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 40.0,
+        "z": 6.882,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": -17.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": -12.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": -7.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": -2.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": 2.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": 7.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": 12.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": 2.0,
+        "y": 17.5,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 6.332,
+        "height": 1.1,
+        "material": "wire"
+      },
+      {
+        "x": -7.5,
+        "y": -15.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint_yellow"
+      },
+      {
+        "x": -7.5,
+        "y": -5.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint_yellow"
+      },
+      {
+        "x": -7.5,
+        "y": 5.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint_yellow"
+      },
+      {
+        "x": -7.5,
+        "y": 15.0,
+        "width": 0.1,
+        "depth": 3.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "paint_yellow"
+      }
+    ],
+    "meshDetails": [
+      {
+        "material": "ballast",
+        "positions": [
+          -3.975,
+          -20.0,
+          0.0,
+          -3.45,
+          -20.0,
+          0.35,
+          -3.45,
+          20.0,
+          0.35,
+          -3.975,
+          -20.0,
+          0.0,
+          -3.45,
+          20.0,
+          0.35,
+          -3.975,
+          20.0,
+          0.0,
+          -3.45,
+          -20.0,
+          0.35,
+          3.45,
+          -20.0,
+          0.35,
+          3.45,
+          20.0,
+          0.35,
+          -3.45,
+          -20.0,
+          0.35,
+          3.45,
+          20.0,
+          0.35,
+          -3.45,
+          20.0,
+          0.35,
+          3.45,
+          -20.0,
+          0.35,
+          3.975,
+          -20.0,
+          0.0,
+          3.975,
+          20.0,
+          0.0,
+          3.45,
+          -20.0,
+          0.35,
+          3.975,
+          20.0,
+          0.0,
+          3.45,
+          20.0,
+          0.35,
+          -3.975,
+          -20.0,
+          0.0,
+          -3.45,
+          -20.0,
+          0.0,
+          -3.45,
+          -20.0,
+          0.35,
+          -3.45,
+          -20.0,
+          0.0,
+          3.45,
+          -20.0,
+          0.0,
+          3.45,
+          -20.0,
+          0.35,
+          -3.45,
+          -20.0,
+          0.0,
+          3.45,
+          -20.0,
+          0.35,
+          -3.45,
+          -20.0,
+          0.35,
+          3.45,
+          -20.0,
+          0.0,
+          3.975,
+          -20.0,
+          0.0,
+          3.45,
+          -20.0,
+          0.35,
+          -3.45,
+          20.0,
+          0.35,
+          -3.45,
+          20.0,
+          0.0,
+          -3.975,
+          20.0,
+          0.0,
+          -3.45,
+          20.0,
+          0.35,
+          3.45,
+          20.0,
+          0.35,
+          3.45,
+          20.0,
+          0.0,
+          -3.45,
+          20.0,
+          0.35,
+          3.45,
+          20.0,
+          0.0,
+          -3.45,
+          20.0,
+          0.0,
+          3.45,
+          20.0,
+          0.35,
+          3.975,
+          20.0,
+          0.0,
+          3.45,
+          20.0,
+          0.0
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41
+        ]
+      }
+    ],
+    "paving": "concrete",
+    "pavingModuleM": [
+      1.2,
+      0.8
+    ],
+    "minLengthM": 40,
+    "maxLengthM": 2000,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "ballast": [
+        0.2623,
+        0.2423,
+        0.2195
+      ],
+      "formation": [
+        0.3613,
+        0.3231,
+        0.2582
+      ],
+      "grass": [
+        0.1559,
+        0.2542,
+        0.0648
+      ],
+      "grass_dark": [
+        0.1046,
+        0.1878,
+        0.0513
+      ],
+      "paint_yellow": [
+        0.6724,
+        0.3813,
+        0.0252
+      ],
+      "path": [
+        0.0953,
+        0.0999,
+        0.1046
+      ],
+      "rail": [
+        0.1119,
+        0.0865,
+        0.0704
+      ],
+      "rail_head": [
+        0.5457,
+        0.5647,
+        0.5776
+      ],
+      "sleeper": [
+        0.3712,
+        0.3564,
+        0.3278
+      ],
+      "wire": [
+        0.0242,
+        0.0273,
+        0.0307
+      ]
+    }
+  },
+  "programSha256": "4bcc4f6096bdf3c5afd6719a39d9ff48543dda370c21264f42b9e70e4382a583"
+}
+,
+{
+  "id": "student_high_speed_rail_line_v1",
+  "sourceArchetypeId": "high_speed_rail_corridor",
+  "title": "High-Speed Rail Line",
+  "status": "candidate",
+  "sourceRecipeSha256": "58e46729244ce89be0eeb4f6e051c5d7af85f3d45af90c8a3ce3ae69b3bf1c32",
+  "sourceAssemblySha256": "4eda6ccbc26702a15ffa9ffa22fe80186b9b5a4bb5a178f35945d3768339d08e",
+  "referenceSha256": "8654d543033da56a325d1d78ad6fbcfd3f936c70b676161eaeb6cc6e130ae2ae",
+  "widthM": 30.0,
+  "fixtureLengthM": 50,
+  "routeAxis": "local_y",
+  "junctionSurface": "pavers",
+  "sections": [
+    {
+      "name": "west_margin",
+      "x": -14.5,
+      "width": 1.0,
+      "material": "grass",
+      "zoneType": "boulevard",
+      "surface": "grass margin with security fence"
+    },
+    {
+      "name": "service_road",
+      "x": -12.25,
+      "width": 3.5,
+      "material": "gravel",
+      "zoneType": "shoulder",
+      "surface": "gravel maintenance road"
+    },
+    {
+      "name": "west_ditch",
+      "x": -9.5,
+      "width": 2.0,
+      "material": "grass",
+      "zoneType": "ditch",
+      "surface": "grassed drainage ditch"
+    },
+    {
+      "name": "hsr_track_formation",
+      "x": 0.0,
+      "width": 17.0,
+      "material": "slab_track",
+      "zoneType": "rail_track",
+      "surface": "low embankment carrying double high-speed slab track"
+    },
+    {
+      "name": "east_ditch",
+      "x": 9.5,
+      "width": 2.0,
+      "material": "grass",
+      "zoneType": "ditch",
+      "surface": "grassed drainage ditch"
+    },
+    {
+      "name": "east_margin",
+      "x": 12.75,
+      "width": 4.5,
+      "material": "grass",
+      "zoneType": "boulevard",
+      "surface": "grass margin with security fence"
+    }
+  ],
+  "placements": [
+    {
+      "kind": "hsr_mast",
+      "x": -5.4,
+      "y": 0.0,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "hsr_mast",
+      "x": 5.4,
+      "y": 0.0,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -23.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -21.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -18.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -16.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -13.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -11.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -8.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -6.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -3.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": -1.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 1.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 3.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 6.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 8.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 11.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 13.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 16.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 18.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 21.25,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": -14.5,
+      "y": 23.75,
+      "z": 0.0,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -23.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -21.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -18.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -16.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -13.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -11.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -8.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -6.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -3.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": -1.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 1.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 3.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 6.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 8.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 11.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 13.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 16.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 18.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 21.25,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "security_fence",
+      "x": 14.5,
+      "y": 23.75,
+      "z": 0.0,
+      "yaw": 3.141593,
+      "scale": 1
+    },
+    {
+      "kind": "trackside_cabinet",
+      "x": -5.95,
+      "y": 20.0,
+      "z": 0.8,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "etcs_marker",
+      "x": -5.95,
+      "y": -15.0,
+      "z": 0.8,
+      "yaw": 0.0,
+      "scale": 1
+    },
+    {
+      "kind": "etcs_marker",
+      "x": 5.95,
+      "y": 15.0,
+      "z": 0.8,
+      "yaw": 3.141593,
+      "scale": 1
+    }
+  ],
+  "modules": {
+    "hsr_mast": {
+      "sha256": "eeab8f7b293c9106af6bdc312be2ebcf1153cf601f86afd90c84c8f39f08c8f9",
+      "bytes": 88244,
+      "url": "/street-kits/pilots/student_high_speed_rail_line_v1/hsr_mast.glb"
+    },
+    "security_fence": {
+      "sha256": "c79b5f1422b4ec2e5eb215ef1f732b97cc1541e9ca748f57c8e2cb995f4c0d9d",
+      "bytes": 31236,
+      "url": "/street-kits/pilots/student_high_speed_rail_line_v1/security_fence.glb"
+    },
+    "trackside_cabinet": {
+      "sha256": "39b0429c902ac7fbddea68fc4d39b12b16268fc5ff135ec64bb86e83df08b891",
+      "bytes": 21696,
+      "url": "/street-kits/pilots/student_high_speed_rail_line_v1/trackside_cabinet.glb"
+    },
+    "etcs_marker": {
+      "sha256": "98f3e26bd1e0af803f642478f7b1c27ed1a89e0ebcfd1ebb2241b584ccccdfae",
+      "bytes": 5352,
+      "url": "/street-kits/pilots/student_high_speed_rail_line_v1/etcs_marker.glb"
+    }
+  },
+  "treeWells": [],
+  "thumbnailUrl": "/archetypes/streets/high-speed-rail-corridor/student_high_speed_rail_line_v1.png",
+  "program": {
+    "schemaVersion": 1,
+    "adapter": "showcase-street-v1",
+    "surfaceRegions": [
+      {
+        "x": -14.5,
+        "y": 0.0,
+        "width": 1.0,
+        "depth": 50.0,
+        "material": "grass"
+      },
+      {
+        "x": -12.25,
+        "y": 0.0,
+        "width": 3.5,
+        "depth": 50.0,
+        "material": "gravel"
+      },
+      {
+        "x": -9.5,
+        "y": 0.0,
+        "width": 2.0,
+        "depth": 50.0,
+        "material": "grass_dark"
+      },
+      {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 17.0,
+        "depth": 50.0,
+        "material": "grass"
+      },
+      {
+        "x": 9.5,
+        "y": 0.0,
+        "width": 2.0,
+        "depth": 50.0,
+        "material": "grass_dark"
+      },
+      {
+        "x": 12.75,
+        "y": 0.0,
+        "width": 4.5,
+        "depth": 50.0,
+        "material": "grass"
+      }
+    ],
+    "details": [
+      {
+        "x": -9.5,
+        "y": 0.0,
+        "width": 0.6,
+        "depth": 50.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "riprap"
+      },
+      {
+        "x": 9.5,
+        "y": 0.0,
+        "width": 0.6,
+        "depth": 50.0,
+        "z": 0.004,
+        "height": 0.0,
+        "material": "riprap"
+      },
+      {
+        "x": -2.4,
+        "y": 0.0,
+        "width": 3.2,
+        "depth": 50.0,
+        "z": 0.95,
+        "height": 0.3,
+        "material": "base_layer"
+      },
+      {
+        "x": -2.4,
+        "y": -21.875,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": -2.4,
+        "y": -15.625,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": -2.4,
+        "y": -9.375,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": -2.4,
+        "y": -3.125,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": -2.4,
+        "y": 3.125,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": -2.4,
+        "y": 9.375,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": -2.4,
+        "y": 15.625,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": -2.4,
+        "y": 21.875,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": -3.1535,
+        "y": 0.0,
+        "width": 0.18,
+        "depth": 50.0,
+        "z": 1.3075,
+        "height": 0.015,
+        "material": "rail_pad"
+      },
+      {
+        "x": -1.6465,
+        "y": 0.0,
+        "width": 0.18,
+        "depth": 50.0,
+        "z": 1.3075,
+        "height": 0.015,
+        "material": "rail_pad"
+      },
+      {
+        "x": -3.1535,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 50.0,
+        "z": 1.321,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": -3.1535,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 50.0,
+        "z": 1.407,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": -3.1535,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 50.0,
+        "z": 1.4878,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": -1.6465,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 50.0,
+        "z": 1.321,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": -1.6465,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 50.0,
+        "z": 1.407,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": -1.6465,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 50.0,
+        "z": 1.4878,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": -4.5,
+        "y": 0.0,
+        "width": 0.6,
+        "depth": 50.0,
+        "z": 0.9,
+        "height": 0.2,
+        "material": "trough"
+      },
+      {
+        "x": 2.4,
+        "y": 0.0,
+        "width": 3.2,
+        "depth": 50.0,
+        "z": 0.95,
+        "height": 0.3,
+        "material": "base_layer"
+      },
+      {
+        "x": 2.4,
+        "y": -21.875,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": 2.4,
+        "y": -15.625,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": 2.4,
+        "y": -9.375,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": 2.4,
+        "y": -3.125,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": 2.4,
+        "y": 3.125,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": 2.4,
+        "y": 9.375,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": 2.4,
+        "y": 15.625,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": 2.4,
+        "y": 21.875,
+        "width": 2.55,
+        "depth": 6.2,
+        "z": 1.2,
+        "height": 0.2,
+        "material": "slab"
+      },
+      {
+        "x": 1.6465,
+        "y": 0.0,
+        "width": 0.18,
+        "depth": 50.0,
+        "z": 1.3075,
+        "height": 0.015,
+        "material": "rail_pad"
+      },
+      {
+        "x": 3.1535,
+        "y": 0.0,
+        "width": 0.18,
+        "depth": 50.0,
+        "z": 1.3075,
+        "height": 0.015,
+        "material": "rail_pad"
+      },
+      {
+        "x": 1.6465,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 50.0,
+        "z": 1.321,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": 1.6465,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 50.0,
+        "z": 1.407,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": 1.6465,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 50.0,
+        "z": 1.4878,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": 3.1535,
+        "y": 0.0,
+        "width": 0.15,
+        "depth": 50.0,
+        "z": 1.321,
+        "height": 0.012,
+        "material": "rail"
+      },
+      {
+        "x": 3.1535,
+        "y": 0.0,
+        "width": 0.072,
+        "depth": 50.0,
+        "z": 1.407,
+        "height": 0.16,
+        "material": "rail"
+      },
+      {
+        "x": 3.1535,
+        "y": 0.0,
+        "width": 0.064,
+        "depth": 50.0,
+        "z": 1.4878,
+        "height": 0.0,
+        "material": "rail_head"
+      },
+      {
+        "x": 4.5,
+        "y": 0.0,
+        "width": 0.6,
+        "depth": 50.0,
+        "z": 0.9,
+        "height": 0.2,
+        "material": "trough"
+      },
+      {
+        "x": -2.4,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 50.0,
+        "z": 6.787,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 50.0,
+        "z": 8.387,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": -21.875,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": -15.625,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": -9.375,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": -3.125,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": 3.125,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": 9.375,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": 15.625,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": -2.4,
+        "y": 21.875,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 50.0,
+        "z": 6.787,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": 0.0,
+        "width": 0.014,
+        "depth": 50.0,
+        "z": 8.387,
+        "height": 0.014,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": -21.875,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": -15.625,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": -9.375,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": -3.125,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": 3.125,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": 9.375,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": 15.625,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": 2.4,
+        "y": 21.875,
+        "width": 0.008,
+        "depth": 0.008,
+        "z": 7.587,
+        "height": 1.6,
+        "material": "wire"
+      },
+      {
+        "x": -5.9,
+        "y": 0.0,
+        "width": 0.02,
+        "depth": 50.0,
+        "z": 9.587,
+        "height": 0.02,
+        "material": "wire"
+      },
+      {
+        "x": 5.9,
+        "y": 0.0,
+        "width": 0.02,
+        "depth": 50.0,
+        "z": 9.587,
+        "height": 0.02,
+        "material": "wire"
+      }
+    ],
+    "meshDetails": [
+      {
+        "material": "formation",
+        "positions": [
+          -6.5,
+          -25.0,
+          0.8,
+          6.5,
+          -25.0,
+          0.8,
+          6.5,
+          25.0,
+          0.8,
+          -6.5,
+          -25.0,
+          0.8,
+          6.5,
+          25.0,
+          0.8,
+          -6.5,
+          25.0,
+          0.8,
+          -6.5,
+          -25.0,
+          0.0,
+          6.5,
+          -25.0,
+          0.0,
+          6.5,
+          -25.0,
+          0.8,
+          -6.5,
+          -25.0,
+          0.0,
+          6.5,
+          -25.0,
+          0.8,
+          -6.5,
+          -25.0,
+          0.8,
+          -6.5,
+          25.0,
+          0.8,
+          6.5,
+          25.0,
+          0.8,
+          6.5,
+          25.0,
+          0.0,
+          -6.5,
+          25.0,
+          0.8,
+          6.5,
+          25.0,
+          0.0,
+          -6.5,
+          25.0,
+          0.0
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      },
+      {
+        "material": "grass",
+        "positions": [
+          -8.5,
+          -25.0,
+          0.0,
+          -6.5,
+          -25.0,
+          0.8,
+          -6.5,
+          25.0,
+          0.8,
+          -8.5,
+          -25.0,
+          0.0,
+          -6.5,
+          25.0,
+          0.8,
+          -8.5,
+          25.0,
+          0.0,
+          -8.5,
+          -25.0,
+          0.0,
+          -6.5,
+          -25.0,
+          0.0,
+          -6.5,
+          -25.0,
+          0.8,
+          -6.5,
+          25.0,
+          0.8,
+          -6.5,
+          25.0,
+          0.0,
+          -8.5,
+          25.0,
+          0.0,
+          6.5,
+          -25.0,
+          0.8,
+          8.5,
+          -25.0,
+          0.0,
+          8.5,
+          25.0,
+          0.0,
+          6.5,
+          -25.0,
+          0.8,
+          8.5,
+          25.0,
+          0.0,
+          6.5,
+          25.0,
+          0.8,
+          6.5,
+          -25.0,
+          0.0,
+          8.5,
+          -25.0,
+          0.0,
+          6.5,
+          -25.0,
+          0.8,
+          6.5,
+          25.0,
+          0.8,
+          8.5,
+          25.0,
+          0.0,
+          6.5,
+          25.0,
+          0.0
+        ],
+        "indices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ]
+      }
+    ],
+    "paving": "concrete",
+    "pavingModuleM": [
+      1.2,
+      0.8
+    ],
+    "minLengthM": 50,
+    "maxLengthM": 2000,
+    "preparedLevelOnly": true,
+    "baseLiftM": 0.025,
+    "palette": {
+      "base_layer": [
+        0.3864,
+        0.3663,
+        0.3231
+      ],
+      "formation": [
+        0.3613,
+        0.3231,
+        0.2582
+      ],
+      "grass": [
+        0.1559,
+        0.2542,
+        0.0648
+      ],
+      "grass_dark": [
+        0.1046,
+        0.1878,
+        0.0513
+      ],
+      "gravel": [
+        0.3278,
+        0.2874,
+        0.227
+      ],
+      "rail": [
+        0.1119,
+        0.0865,
+        0.0704
+      ],
+      "rail_head": [
+        0.5457,
+        0.5647,
+        0.5776
+      ],
+      "rail_pad": [
+        0.0284,
+        0.0307,
+        0.0343
+      ],
+      "riprap": [
+        0.2582,
+        0.2384,
+        0.2051
+      ],
+      "slab": [
+        0.5089,
+        0.4851,
+        0.4397
+      ],
+      "trough": [
+        0.3419,
+        0.3278,
+        0.2961
+      ],
+      "wire": [
+        0.0242,
+        0.0273,
+        0.0307
+      ]
+    }
+  },
+  "programSha256": "b2f860b9e72abbc6b05c626661e83170115d13aab6f9fc360089867fda5ee0a5"
+}
 ]

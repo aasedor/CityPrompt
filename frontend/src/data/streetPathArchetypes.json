@@ -14422,6 +14422,136 @@
         "mapOverlay": "Replace the colored street zone with a photorealistic calm LOCAL STREET with a CHICANE — alternating planted curb extensions (build-outs) on opposite sides that deflect the travel path side-to-side (a lateral shift of about 1.6 m), with street trees on the extensions. Render ONLY the street, its asphalt, markings, the curb extensions, sidewalks, grass verges and trees; do NOT add any buildings, houses or streetwall, and do not invent extra roads. Keep surrounding satellite map context exactly as-is. Oblique aerial, sunny day, sharp shadows, photorealistic.",
         "roofView": "Directly-above view of a local street with alternating planted curb extensions deflecting the travel path, sidewalks and grass verges either side — NO buildings. Keep surrounding context as-is."
       }
+    },
+    {
+      "id": "high_speed_rail_corridor",
+      "typicalWidth_m": 30,
+      "minWidth_m": 25,
+      "maxWidth_m": 60,
+      "suggestedAreaSqm": 15000,
+      "laneCount": 0,
+      "hasSidewalk": false,
+      "hasMedian": false,
+      "hasBikeLane": false,
+      "shape": "linear",
+      "title": "High-Speed Rail Corridor",
+      "aestheticCategory": "transit_oriented",
+      "description": "Fenced intercity rail corridor for trains running at up to about 300 km/h: two tracks on a low embankment or slab, overhead line masts, drainage ditches and a maintenance road. Grade-separated, with no level crossings, it links city centres rather than serving the street.",
+      "transportModes": [
+        "rail",
+        "transit"
+      ],
+      "volume": "high",
+      "generationTags": [
+        "high-speed-rail",
+        "intercity",
+        "rail",
+        "slab-track",
+        "overhead-line",
+        "transit",
+        "streets-pathways"
+      ],
+      "styleProfile": {
+        "corridorCharacter": "A high-speed rail corridor seen from drone altitude. Two parallel tracks on pale concrete slab track run dead straight or on very gentle curves along a low grassed embankment. Steel overhead-line masts stand in pairs at regular intervals, their cantilevers holding the contact wires over each track. Security fences line both edges of the right-of-way, with drainage ditches and a gravel maintenance road inside them. No platforms, crossings or roadside activity: the corridor is closed to people.",
+        "movementHierarchy": "Intercity high-speed trains only; maintenance vehicles on the service road; no public access",
+        "surfaceType": "Concrete slab track on a grassed embankment, gravel maintenance road, grassed ditches",
+        "plantingCharacter": "Mown grass on embankment slopes, ditches and margins; no trees inside the fences",
+        "edgeConditions": "Tall green weldmesh security fences on both edges; bridges or underpasses where streets cross",
+        "publicRealm": "A fenced, grade-separated infrastructure corridor that links cities rather than serving the street"
+      },
+      "prompt": {
+        "subject": "Aerial view of a fenced high-speed rail corridor with two slab tracks on a low embankment and overhead line masts",
+        "details": [
+          "Two parallel tracks on pale concrete slab track, 4.8 m apart",
+          "Steel overhead-line masts in pairs with cantilevers over each track",
+          "Low grassed embankment with drainage ditches at its foot",
+          "Gravel maintenance road along one side",
+          "Green weldmesh security fences on both edges of the right-of-way",
+          "A streamlined high-speed train on one track"
+        ],
+        "negative": [
+          "No level crossings",
+          "No street traffic on the tracks",
+          "No text overlays"
+        ]
+      },
+      "propertyPresets": {
+        "mobility_profile": "transit_priority",
+        "transport_modes": [
+          "rail",
+          "transit"
+        ],
+        "width": 30,
+        "lane_count": 0,
+        "volume": "high",
+        "road_surface": "rail_track",
+        "sidewalks": "none",
+        "has_sidewalks": false,
+        "priority_pedestrian": 4,
+        "priority_cycling": 4,
+        "priority_transit": 1,
+        "priority_auto": 4
+      },
+      "section": {
+        "row_m": 30.0,
+        "zones": [
+          {
+            "type": "boulevard",
+            "width_m": 1.0,
+            "label": "Grass margin and security fence",
+            "surface": "grass"
+          },
+          {
+            "type": "shoulder",
+            "width_m": 3.5,
+            "label": "Maintenance road",
+            "surface": "gravel"
+          },
+          {
+            "type": "ditch",
+            "width_m": 2.0,
+            "label": "Drainage ditch",
+            "surface": "grass"
+          },
+          {
+            "type": "rail_track",
+            "width_m": 17.0,
+            "label": "Embankment with double high-speed slab track",
+            "surface": "concrete slab rail track"
+          },
+          {
+            "type": "ditch",
+            "width_m": 2.0,
+            "label": "Drainage ditch",
+            "surface": "grass"
+          },
+          {
+            "type": "boulevard",
+            "width_m": 4.5,
+            "label": "Grass margin and security fence",
+            "surface": "grass"
+          }
+        ]
+      },
+      "thumbnailUrl": "/archetypes/streets/high-speed-rail-corridor/hero.png",
+      "renderPrompt": {
+        "mapOverlay": "Replace the colored street zone with a photorealistic fenced high-speed rail corridor. Two parallel tracks on pale concrete slab track along a low grassed embankment, steel overhead-line masts in pairs with cantilevers over each track, drainage ditches, a gravel maintenance road and tall green security fences on both edges. Keep surrounding satellite map context exactly as-is. Oblique aerial view, sunny day, sharp shadows, photorealistic, 8k",
+        "roofView": "Replace the colored zone viewed from directly above with a long straight corridor: two pale slab tracks with dark rail lines down the centre, small mast dots in pairs at regular intervals, green embankment and ditch bands, a beige gravel road along one side and thin fence lines at both edges. Keep surrounding context exactly as-is.",
+        "negative": "cartoon, illustration, sketch, low quality, blurry, text, watermark, unrealistic colors, level crossing, cars on tracks"
+      },
+      "variants": [
+        {
+          "id": "high_speed_rail_corridor_v0",
+          "label": "Slab Track at Grade",
+          "description": "High-Speed Rail Corridor with double slab track on a low embankment, paired overhead-line masts, drainage ditches, a gravel maintenance road and green security fences.",
+          "palette": {
+            "primary": "#2F5D7C",
+            "accent": "#8FB3C9",
+            "ground": "#E6E2D8"
+          },
+          "thumbnailUrl": "/archetypes/streets/high-speed-rail-corridor/variant_0.png"
+        }
+      ]
     }
   ]
 }

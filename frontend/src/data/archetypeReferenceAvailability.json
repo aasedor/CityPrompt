@@ -3444,8 +3444,8 @@
     },
     "street": {
       "authoritativeRoot": "/archetypes/streets/",
-      "availableCount": 115,
-      "completeCount": 115,
+      "availableCount": 116,
+      "completeCount": 116,
       "incompleteCount": 0,
       "incomplete": [],
       "entries": {
@@ -4706,6 +4706,13 @@
             "/archetypes/streets/chicane-diagram/variant_0.png",
             "/archetypes/streets/chicane-diagram/variant_0.webp"
           ]
+        },
+        "high_speed_rail_corridor": {
+          "availableUrls": [
+            "/archetypes/streets/high-speed-rail-corridor/hero.png",
+            "/archetypes/streets/high-speed-rail-corridor/variant_0.png",
+            "/archetypes/streets/high-speed-rail-corridor/variant_0.webp"
+          ]
         }
       }
     }
@@ -5146,6 +5153,7 @@
     "halifax_waterfront_boardwalk",
     "haussmann_boulevard",
     "high_entry_angle_right_turn",
+    "high_speed_rail_corridor",
     "highway_freeway",
     "inglewood_main_street",
     "landmark_signature_bridge",
@@ -5626,6 +5634,7 @@
     "halifax_waterfront_boardwalk",
     "haussmann_boulevard",
     "high_entry_angle_right_turn",
+    "high_speed_rail_corridor",
     "highway_freeway",
     "inglewood_main_street",
     "landmark_signature_bridge",

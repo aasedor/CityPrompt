@@ -683,10 +683,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4240,
+    "explicitReferenceCount": 4261,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 6024,
-    "requiredLogicalBytes": 13142849526,
+    "requiredFileCount": 6045,
+    "requiredLogicalBytes": 13151061305,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -19930,6 +19930,43 @@
       "lfsOid": "1f610fa970ed3a06be6f6385ea91de27a80d1f50e04a051367a19db8a5d6b9f8"
     },
     {
+      "url": "/archetypes/streets/high-speed-rail-corridor/hero.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/streetPathArchetypes.json"
+      ],
+      "logicalBytes": 565964,
+      "lfsOid": "8654d543033da56a325d1d78ad6fbcfd3f936c70b676161eaeb6cc6e130ae2ae"
+    },
+    {
+      "url": "/archetypes/streets/high-speed-rail-corridor/student_high_speed_rail_line_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 565964,
+      "lfsOid": "8654d543033da56a325d1d78ad6fbcfd3f936c70b676161eaeb6cc6e130ae2ae"
+    },
+    {
+      "url": "/archetypes/streets/high-speed-rail-corridor/variant_0.png",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/streetPathArchetypes.json"
+      ],
+      "logicalBytes": 565964,
+      "lfsOid": "8654d543033da56a325d1d78ad6fbcfd3f936c70b676161eaeb6cc6e130ae2ae"
+    },
+    {
+      "url": "/archetypes/streets/high-speed-rail-corridor/variant_0.webp",
+      "sources": [
+        "src/data/archetypeReferenceAvailability.json",
+        "src/data/streetPathArchetypes.json"
+      ],
+      "logicalBytes": 68138,
+      "lfsOid": "e351b96646fb1b91ef9c491dfddfae35e8a21d9882ad67f892fb7b96e091e3a7"
+    },
+    {
       "url": "/archetypes/streets/highway-freeway/hero.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
@@ -20312,6 +20349,26 @@
         "src/data/streetPathArchetypes.json"
       ],
       "logicalBytes": 1359607
+    },
+    {
+      "url": "/archetypes/streets/light-rail-tram-avenue/student_lrt_right_of_way_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 709448,
+      "lfsOid": "aaaf1c2ba91dfc45d161cbb3e87ca93b63b6620e72aa8c27e34bfa05ff312018"
+    },
+    {
+      "url": "/archetypes/streets/light-rail-tram-avenue/student_median_lrt_avenue_v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json",
+        "src/data/classroomExpansion.json",
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 888285,
+      "lfsOid": "87d79f66d27f2f85d1db0f6175392d22a548bf1a7858f5a147a2584dafe507f0"
     },
     {
       "url": "/archetypes/streets/light-rail-tram-avenue/variant_0.png",
@@ -35019,6 +35076,38 @@
       "lfsOid": "d29da10a583df058606b5ebb7385b50f4e76eb12e4c0a3789c2377e7453832cc"
     },
     {
+      "url": "/street-kits/pilots/student_high_speed_rail_line_v1/etcs_marker.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 5352,
+      "lfsOid": "98f3e26bd1e0af803f642478f7b1c27ed1a89e0ebcfd1ebb2241b584ccccdfae"
+    },
+    {
+      "url": "/street-kits/pilots/student_high_speed_rail_line_v1/hsr_mast.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 88244,
+      "lfsOid": "eeab8f7b293c9106af6bdc312be2ebcf1153cf601f86afd90c84c8f39f08c8f9"
+    },
+    {
+      "url": "/street-kits/pilots/student_high_speed_rail_line_v1/security_fence.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 31236,
+      "lfsOid": "c79b5f1422b4ec2e5eb215ef1f732b97cc1541e9ca748f57c8e2cb995f4c0d9d"
+    },
+    {
+      "url": "/street-kits/pilots/student_high_speed_rail_line_v1/trackside_cabinet.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 21696,
+      "lfsOid": "39b0429c902ac7fbddea68fc4d39b12b16268fc5ff135ec64bb86e83df08b891"
+    },
+    {
       "url": "/street-kits/pilots/student_london_cobbled_mews_v1/autumn_flower_planter.glb",
       "sources": [
         "src/data/nativeStreetPilots.json",
@@ -35061,6 +35150,62 @@
       ],
       "logicalBytes": 1534359,
       "lfsOid": "04c3f1daa1f434fb2057548c9c5d3dd018572b9a0d5878d6dfc93399cdcdd24e"
+    },
+    {
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/aspen_clump.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 1057036,
+      "lfsOid": "479c14263f5e30d2f06ab05ad890fa32ab5ff02c24f63811d8465563a51fb3a2"
+    },
+    {
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/bench.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 16184,
+      "lfsOid": "2f1b4b4d4d9da2a6c120b76cbcfa661b7b35c76a2e6af4a2d0be6fc9127b226e"
+    },
+    {
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/litter_bin.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 18948,
+      "lfsOid": "8d9c7a154c910660fa9f2e905ddd1120705d3fba9c3e96e0e74b15fecb558217"
+    },
+    {
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/pathway_light.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 20804,
+      "lfsOid": "e041a7f5814811901fb116c5fe0bc3b3884e1156afe5a46f6a152c694d6eec4c"
+    },
+    {
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/relay_case.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 21680,
+      "lfsOid": "cbeb4fc329eff632cf8627cc8d1d76070eb24cae0a9b29251e5cc1c0148c9572"
+    },
+    {
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/row_fence.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 35336,
+      "lfsOid": "8c39ac306cdacb32ab4a628fb802febb85e93db063cc15fa075123ee2d55230c"
+    },
+    {
+      "url": "/street-kits/pilots/student_lrt_right_of_way_v1/side_mast.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 54064,
+      "lfsOid": "80be3411e914956502d2df19056504a2690206c629912c7280b492be608bdf62"
     },
     {
       "url": "/street-kits/pilots/student_main_street_v1/bench.glb",
@@ -35209,6 +35354,38 @@
       ],
       "logicalBytes": 115896,
       "lfsOid": "263b17b8a091f076e8e5f784c3315eff9270f3c5516124b02e162877e6de12aa"
+    },
+    {
+      "url": "/street-kits/pilots/student_median_lrt_avenue_v1/boulevard_tree.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 896708,
+      "lfsOid": "baf075f40b6d698e66de146846284586ea464b55ea58426c68400f38516ddaab"
+    },
+    {
+      "url": "/street-kits/pilots/student_median_lrt_avenue_v1/centre_pole.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 98768,
+      "lfsOid": "22ebd4011536e79cc0a2627a63f450df477d782af216837e79085170246d9ac5"
+    },
+    {
+      "url": "/street-kits/pilots/student_median_lrt_avenue_v1/median_fence.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 32600,
+      "lfsOid": "490b73bfc630843c2d84ffc425ee3217a413be7d2dd3a91e812e151487358192"
+    },
+    {
+      "url": "/street-kits/pilots/student_median_lrt_avenue_v1/street_light.glb",
+      "sources": [
+        "src/data/nativeStreetPilots.json"
+      ],
+      "logicalBytes": 25352,
+      "lfsOid": "b65a08a96af4840ef03d226786a4848d012b89ef3190c7254b3fff6848269bf4"
     },
     {
       "url": "/street-kits/pilots/student_neighbourhood_cycle_street_v1/flowering_perennial.glb",
@@ -36740,9 +36917,9 @@
         "/street-kits/pilots/"
       ],
       "reason": "Versioned native street modules and locked references; module URLs are resolved from the delivery manifest.",
-      "fileCount": 213,
-      "logicalBytes": 126329393,
-      "pathDigest": "4493eb5bfa7ecdb5a854b860ac2f67078e16fab0f2f9bdb3347fda7759cbb922"
+      "fileCount": 228,
+      "logicalBytes": 128753401,
+      "pathDigest": "48ae73b8b686375b1ae9af6acc1876009407b61f6dee0c8325b046f9775ea459"
     },
     {
       "name": "sports-park-modules",

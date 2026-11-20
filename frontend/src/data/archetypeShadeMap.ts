@@ -293,6 +293,7 @@ export const SHADE_MAP: Record<string, string> = {
   brt_bus_rapid_transit_corridor:     '#5d5754',
   elevated_rail_transit_corridor:     '#645d5a',
   light_rail_tram_avenue:             '#6b6460',
+  high_speed_rail_corridor:           '#6e6763',
 
   // ── Gray family: Bridges ───────────────────────────────────────────
   urban_vehicular_bridge:             '#736d68',

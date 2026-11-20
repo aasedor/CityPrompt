@@ -211,5 +211,8 @@
   "rlasm_folded_roof_market_hall": "/archetypes/buildings/folded_roof_market_hall/reference-8ec8e9e318cc.png",
   "rlasm_passage_tower": "/archetypes/buildings/passage_tower/reference-3073ee61b027.png",
   "london_crescent_terrace_bath_stone": "/archetypes/buildings/london-crescent-terrace/variant_0.png",
-  "plus15_brutalist_concrete_office": "/archetypes/buildings/calgary-15-connected-tower/variant_0.png"
+  "plus15_brutalist_concrete_office": "/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
+  "student_median_lrt_avenue_v1": "/archetypes/streets/light-rail-tram-avenue/student_median_lrt_avenue_v1.png",
+  "student_lrt_right_of_way_v1": "/archetypes/streets/light-rail-tram-avenue/student_lrt_right_of_way_v1.png",
+  "student_high_speed_rail_line_v1": "/archetypes/streets/high-speed-rail-corridor/student_high_speed_rail_line_v1.png"
 }

@@ -8331,6 +8331,113 @@
       "planningIds": [],
       "constructionYear": null,
       "referenceReviewed": false
+    },
+    "student_median_lrt_avenue_v1": {
+      "eraIds": [
+        "late_twentieth",
+        "contemporary"
+      ],
+      "status": "classified",
+      "profileId": "transit_recent",
+      "formId": "transit",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "referenceReviewed": false,
+      "priorStyleConfidence": "Medium",
+      "designPeriod": "Late-twentieth-century and current light rail, drawn as a contemporary teaching section",
+      "eraRationale": "Median light rail on arterials is a late-twentieth-century and current transit form; this section is generic, not a dated design.",
+      "canadianContext": "Calgary's light rail, opened in 1981, runs largely at grade. Compare how a fenced median line affects crossings, turns and the streets either side.",
+      "internationalContext": "Many North American cities run light rail in arterial medians; European tramways more often share the street or run on grass track.",
+      "sourceIds": [
+        "tod",
+        "complete",
+        "shared"
+      ],
+      "planningIds": [
+        "tod",
+        "complete"
+      ],
+      "designEvidence": "A 34 m arterial with fenced ballasted double light-rail track and centre catenary poles in its median.",
+      "placementId": "student_median_lrt_avenue_v1",
+      "domain": "street_pathway",
+      "archetypeId": "light_rail_tram_avenue",
+      "variantId": "student_median_lrt_avenue_v1",
+      "modelMethod": "native_street_modules_v1",
+      "modelRevision": "34bb8e4b41284d04ac7309da44bd7e27685f28d551c60fdbeb4236e770934303"
+    },
+    "student_lrt_right_of_way_v1": {
+      "eraIds": [
+        "late_twentieth",
+        "contemporary"
+      ],
+      "status": "classified",
+      "profileId": "transit_recent",
+      "formId": "transit",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "referenceReviewed": false,
+      "priorStyleConfidence": "Medium",
+      "designPeriod": "Late-twentieth-century and current light rail, drawn as a contemporary teaching section",
+      "eraRationale": "Light rail on its own right-of-way beside roads and rail corridors is a late-twentieth-century and current form; this section is generic.",
+      "canadianContext": "Calgary's light rail, opened in 1981, often runs on its own corridor beside major roads, with regional pathways alongside. Compare its barrier effect with a median line.",
+      "internationalContext": "Separate rights-of-way let light rail run faster and more reliably than street running, at the cost of fewer crossing points.",
+      "sourceIds": [
+        "tod",
+        "complete",
+        "ecology"
+      ],
+      "planningIds": [
+        "tod",
+        "active"
+      ],
+      "designEvidence": "A 20 m fenced corridor: ballasted double light-rail track with side masts, a regional pathway and a drainage swale.",
+      "placementId": "student_lrt_right_of_way_v1",
+      "domain": "street_pathway",
+      "archetypeId": "light_rail_tram_avenue",
+      "variantId": "student_lrt_right_of_way_v1",
+      "modelMethod": "native_street_modules_v1",
+      "modelRevision": "7c92751871f0f8bc2898373fa671269fabe264e06602e83b9ffc082b600bf5b7"
+    },
+    "student_high_speed_rail_line_v1": {
+      "eraIds": [
+        "postwar",
+        "contemporary"
+      ],
+      "status": "classified",
+      "profileId": "transit_recent",
+      "formId": "transit",
+      "styleIds": [
+        "contemporary_street"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "referenceReviewed": false,
+      "priorStyleConfidence": "Medium",
+      "designPeriod": "High-speed rail since 1964, drawn as a contemporary slab-track section",
+      "eraRationale": "Japan opened the first high-speed line in 1964; slab track, paired masts and security fencing reflect current practice.",
+      "canadianContext": "Canada has no high-speed line in service; links such as Calgary to Edmonton have been studied for decades. Compare station access with the corridor's barrier effect.",
+      "internationalContext": "Japan, Europe and China run large high-speed networks; lines are fully fenced and grade-separated, with no level crossings.",
+      "sourceIds": [
+        "tod",
+        "complete"
+      ],
+      "planningIds": [
+        "tod",
+        "compact"
+      ],
+      "designEvidence": "A 30 m fenced corridor: double slab track on a low embankment with paired overhead-line masts, ditches and a maintenance road.",
+      "placementId": "student_high_speed_rail_line_v1",
+      "domain": "street_pathway",
+      "archetypeId": "high_speed_rail_corridor",
+      "variantId": "student_high_speed_rail_line_v1",
+      "modelMethod": "native_street_modules_v1",
+      "modelRevision": "58e46729244ce89be0eeb4f6e051c5d7af85f3d45af90c8a3ce3ae69b3bf1c32"
     }
   }
 }

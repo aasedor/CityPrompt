@@ -114,6 +114,9 @@ def test_native_street_runtime_compiles_the_same_exact_locked_recipes_as_review(
         "student_separated_walking_cycling_greenway_v1",
         "student_neighbourhood_transit_stop_street_v1",
         "student_stephen_avenue_mall_v1",
+        "student_median_lrt_avenue_v1",
+        "student_lrt_right_of_way_v1",
+        "student_high_speed_rail_line_v1",
         "timber_covered_bridge_route_v1",
         *SOURCE_BRIDGE_SOURCES,
     }

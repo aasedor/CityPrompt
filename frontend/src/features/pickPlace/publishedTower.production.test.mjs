@@ -15,7 +15,8 @@ const approvedBuildingIds = [
 ];
 // Explicitly added pilots, listed by exact placement so the recorded
 // fingerprints below still protect every older choice unchanged.
-const addedPilotIds = ['native-park:student_stormwater_pond_v1--native-v1', 'student_stephen_avenue_mall_v1'];
+const addedPilotIds = ['native-park:student_stormwater_pond_v1--native-v1', 'student_stephen_avenue_mall_v1',
+  'student_median_lrt_avenue_v1', 'student_lrt_right_of_way_v1', 'student_high_speed_rail_line_v1'];
 const digest = values => createHash('sha256').update([...values].sort().join('\n')).digest('hex');
 
 // These are the source-roster fingerprints recorded before this additive

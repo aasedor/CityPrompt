@@ -2705,5 +2705,50 @@
       "concrete",
       "plus 15"
     ]
+  },
+  "student_median_lrt_avenue_v1": {
+    "label": "Median LRT Avenue",
+    "description": "An arterial with light rail in its centre median: fenced ballasted double track and catenary between two traffic lanes each way.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "lrt",
+      "light rail",
+      "median",
+      "transit",
+      "ctrain",
+      "catenary",
+      "arterial"
+    ]
+  },
+  "student_lrt_right_of_way_v1": {
+    "label": "LRT Right-of-Way",
+    "description": "Light rail on its own fenced corridor: ballasted double track, side masts and catenary, with a regional pathway alongside.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "lrt",
+      "light rail",
+      "right-of-way",
+      "transit",
+      "ctrain",
+      "pathway",
+      "catenary"
+    ]
+  },
+  "student_high_speed_rail_line_v1": {
+    "label": "High-Speed Rail Line",
+    "description": "A high-speed line at grade: double slab track on a low embankment, overhead-line masts, security fences and a maintenance road.",
+    "styleIds": [],
+    "searchTags": [
+      "street_pathway",
+      "high-speed rail",
+      "hsr",
+      "rail",
+      "train",
+      "intercity",
+      "catenary",
+      "transit"
+    ]
   }
 }

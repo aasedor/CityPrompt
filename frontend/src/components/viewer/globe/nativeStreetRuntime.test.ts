@@ -9,7 +9,7 @@ import { PUBLIC_REALM_STREET_FAMILIES, PUBLIC_REALM_STREET_SELECTIONS } from './
 
 describe('saved classroom native streets in a production build', () => {
   it('registers an executable family and exact selection for every packaged native street', () => {
-    expect(pilots).toHaveLength(33);
+    expect(pilots).toHaveLength(36);
     expect(pilots.filter(pilot => pilot.id.startsWith('standalone_')).map(pilot => pilot.id).sort()).toEqual([
       'standalone_narrow_sidewalk_v1', 'standalone_neighbourhood_sidewalk_v1', 'standalone_urban_sidewalk_v1',
     ]);
