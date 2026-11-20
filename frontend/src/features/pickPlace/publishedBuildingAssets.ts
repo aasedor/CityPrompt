@@ -1027,7 +1027,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 19.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.610000610351562,
+      24.6100006103515625,
       15.179999828338623,
       12.390000343322754
     ],
@@ -1307,7 +1307,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 20.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.360000610351562,
+      24.3600006103515625,
       16.152999877929688,
       10.449999809265137
     ],
@@ -1347,7 +1347,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "minDepth": 20.0,
     "maxSize": 250.0,
     "nativeDimensions": [
-      24.360000610351562,
+      24.3600006103515625,
       16.08299970626831,
       13.75
     ],
@@ -1588,7 +1588,7 @@ export const CATALOGUE_BUILDING_ASSETS: PlaceAsset[] = [
     "maxSize": 100.0,
     "nativeDimensions": [
       13.34000015258789,
-      21.472000122070312,
+      21.4720001220703125,
       9.0
     ],
     "reshapeDescription": "One complete two-home building at its native size. Resize the surrounding plot; the homes do not stretch or repeat.",
