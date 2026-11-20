@@ -4106,22 +4106,31 @@ class Direct3DRenderService:
         self._street_view_context: dict[str, Any] | None = None
 
     async def _load_street_view_context(
-        self, req: Direct3DRenderRequest, capture: PreparedDirect3DCapture,
+        self,
+        req: Direct3DRenderRequest,
+        capture: PreparedDirect3DCapture,
     ) -> tuple[str, bytes, str]:
         from app.services.site_context import fetch_streetview_plate
 
         context = req.street_view_context
         settings = get_settings()
         if context is None or not (settings.direct_3d_street_view_context_enabled and settings.google_maps_api_key):
-            raise Direct3DProviderError("Google Street View context is unavailable on this server.", billing_status="unproduced")
+            raise Direct3DProviderError(
+                "Google Street View context is unavailable on this server.", billing_status="unproduced"
+            )
 
         aspect = capture.normalized_beauty.width / capture.normalized_beauty.height
         horizontal_fov = 90.0
         if req.camera and req.camera.fov is not None:
             horizontal_fov = math.degrees(2 * math.atan(math.tan(math.radians(req.camera.fov / 2)) * aspect))
         plate = await fetch_streetview_plate(
-            context.latitude, context.longitude, context.heading, horizontal_fov,
-            640, round(640 / aspect), max_offset_m=20,
+            context.latitude,
+            context.longitude,
+            context.heading,
+            horizontal_fov,
+            640,
+            round(640 / aspect),
+            max_offset_m=20,
         )
         if plate is None:
             raise Direct3DProviderError(

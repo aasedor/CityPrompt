@@ -48,9 +48,12 @@ def test_aerial_requests_reject_street_view_context():
 @pytest.mark.parametrize("with_coverage", [True, False])
 async def test_street_context_is_attached_once_or_fails_before_the_image_provider(monkeypatch, with_coverage):
     location = {"latitude": 51.045535, "longitude": -114.067772, "heading": 90}
-    request = Direct3DRenderRequest.model_validate({
-        **_street_request().model_dump(), "street_view_context": location,
-    })
+    request = Direct3DRenderRequest.model_validate(
+        {
+            **_street_request().model_dump(),
+            "street_view_context": location,
+        }
+    )
     capture = prepare_direct_3d_capture(request)
     fixture = {
         "photo_base64": _png_b64(capture.normalized_beauty),
@@ -60,9 +63,14 @@ async def test_street_context_is_attached_once_or_fails_before_the_image_provide
     }
     lookup = AsyncMock(return_value=fixture if with_coverage else None)
     monkeypatch.setattr(site_context, "fetch_streetview_plate", lookup)
-    monkeypatch.setattr(direct_service, "get_settings", lambda: SimpleNamespace(
-        direct_3d_street_view_context_enabled=True, google_maps_api_key="test-maps-key",
-    ))
+    monkeypatch.setattr(
+        direct_service,
+        "get_settings",
+        lambda: SimpleNamespace(
+            direct_3d_street_view_context_enabled=True,
+            google_maps_api_key="test-maps-key",
+        ),
+    )
     monkeypatch.setattr(direct_service.httpx, "AsyncClient", _RecordingClient)
     _RecordingClient.calls = []
     _RecordingClient.response = _FakeResponse(200, {"data": [{"b64_json": _png_b64(capture.normalized_beauty)}]})
