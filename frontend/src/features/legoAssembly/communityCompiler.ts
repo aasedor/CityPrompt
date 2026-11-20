@@ -28,6 +28,7 @@ import {
 import { compileProjectCommunity3D } from './projectCommunityCompile';
 import { automaticSiteTreesEnabled } from '@/features/siteLandscape/automaticSiteTrees';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
+import { isStandaloneNativeBuilding } from '@/features/pickPlace/validationNativeBuildingBinding';
 
 const BUILDABLE_ZONE_TYPES = new Set<string>([
   'building',
@@ -168,6 +169,7 @@ export interface ZoneBuildItem {
   /** The linked model is a backend-certified, source-locked RLASM keeper.
    * It is already detailed 3D even when no repeatable LEGO family exists. */
   sourceLockedRlasm?: boolean;
+  standaloneNative?: boolean;
   placeState?: 'placing' | 'placed' | 'failed';
   massingState?: 'compiling' | 'compiled' | 'failed';
 }
@@ -239,6 +241,7 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
       ? persistedWingDepth
       : undefined;
     const communityMeta = getCommunity3DMeta(zone);
+    const standaloneNative = isStandaloneNativeBuilding(zone);
     const footprintScale = Number(zone.properties?.building_footprint_scale);
     const footprintNativeWidth = Number(zone.properties?.building_footprint_native_width_m);
     const footprintNativeDepth = Number(zone.properties?.building_footprint_native_depth_m);
@@ -288,16 +291,18 @@ export function deriveItems(zones: SiteZone[]): ZoneBuildItem[] {
           ] as [number, number]
         : null,
       sourceLockedRlasm,
+      standaloneNative,
       // Deleting a generated Building leaves the planning polygon available
       // for another design.  A historical compile marker alone must not make
       // the builder think the now-unlinked model is still placed.
       placeState: (
         communityMeta?.generator === 'lego_assembly'
         || sourceLockedRlasm
+        || standaloneNative
       ) && Boolean(zone.building_id)
         ? 'placed' as const
         : undefined,
-      massingState: communityMeta?.generator === 'planned_massing' ? 'compiled' as const : undefined,
+      massingState: !standaloneNative && communityMeta?.generator === 'planned_massing' ? 'compiled' as const : undefined,
     };
   });
 }
@@ -514,7 +519,7 @@ export async function compileMixedCommunity3D(
   const indicesByArchetype = new Map<string, number[]>();
   const ungroupedIndices: number[] = [];
   buildingItems.forEach((item, index) => {
-    if (item.zone.properties?.user_generated_source_id) { markCompleted(); return; }
+    if (item.standaloneNative || item.zone.properties?.user_generated_source_id) { markCompleted(); return; }
     if (!item.archetypeId) {
       ungroupedIndices.push(index);
       return;
@@ -660,7 +665,7 @@ export async function compileMixedCommunity3D(
   assertCommunityCompileResponse(expectedItems, response);
   announceCommunity3DPresentationReady(scopeZoneIds);
   const resolvedBuildings = buildingItems.map((item, index) => {
-    if (item.zone.properties?.user_generated_source_id) return item;
+    if (item.standaloneNative || item.zone.properties?.user_generated_source_id) return item;
     const result = planResults[index];
     if (result?.status === 'fulfilled') return { ...item, plan: result.value };
     const planningFailure = result?.status === 'rejected'
@@ -673,12 +678,15 @@ export async function compileMixedCommunity3D(
       familyIncompatible: planningFailure?.code === 'family_incompatible',
     };
   });
+  // The compiler stores the footprint for these models while the browser
+  // loads their exact catalogue GLB for display and capture.
+  const standaloneIds = new Set(buildingItems.filter(item => item.standaloneNative).map(item => item.zone.id));
   return {
     response,
     detailedBuildings: response.items.filter((item) => (
-      item.generator === 'lego_assembly' || item.generator === 'meshy'
+      item.generator === 'lego_assembly' || item.generator === 'meshy' || standaloneIds.has(item.zone_id)
     )).length,
-    plannedMasses: response.items.filter((item) => item.generator === 'planned_massing').length,
+    plannedMasses: response.items.filter((item) => item.generator === 'planned_massing' && !standaloneIds.has(item.zone_id)).length,
     parks: response.counts.park,
     streets: response.counts.street,
     resolvedBuildings,
