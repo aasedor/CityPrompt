@@ -17,8 +17,8 @@ describe('finite Claude architectural-clay building release', () => {
     expect(warehouse?.properties.validation_native_url).toBeUndefined();
   });
 
-  it('registers all twenty-five approved candidates at native scale', () => {
-    expect(cohort.entries).toHaveLength(25);
+  it('registers all twenty-seven approved candidates at native scale', () => {
+    expect(cohort.entries).toHaveLength(27);
     const staged = CATALOGUE_BUILDING_ASSETS.filter(asset => asset.id.startsWith('claude_trial_'));
     expect(staged.length).toBeGreaterThan(0);
     for (const asset of staged) {
@@ -57,13 +57,13 @@ describe('finite Claude architectural-clay building release', () => {
     }
   });
 
-  it('publishes the seven completed and approved runtime candidates in production', async () => {
+  it('publishes the nine completed and approved runtime candidates in production', async () => {
     vi.stubEnv('DEV', false);
     vi.stubEnv('MODE', 'production');
     vi.resetModules();
     const { CATALOGUE_ASSETS: production } = await import('./assetRegistry');
     const next = cohort.entries.filter(member => !member.asset_id.startsWith('claude_trial_'));
-    expect(next).toHaveLength(7);
+    expect(next).toHaveLength(9);
     for (const member of next) {
       const raw = CATALOGUE_BUILDING_ASSETS.find(asset => asset.id === member.asset_id)!;
       expect(raw.model.revision).toBe(member.candidate);

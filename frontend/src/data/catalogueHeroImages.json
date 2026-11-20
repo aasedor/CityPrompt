@@ -204,5 +204,10 @@
   "claude_student_residence_v004": "/archetypes/buildings/student-residence-tower/variant_0.png",
   "claude_public_realm:timber-covered-footbridge:0dbeb2731dbe": "/archetypes/streets/urban-pedestrian-footbridge/variant_2.png",
   "claude_public_realm:tied-arch-shared-bridge:7900ce3b41b0": "/archetypes/streets/shared-cycle-pedestrian-bridge/variant_1.png",
-  "claude_public_realm:planted-green-bridge:d7dddc9371b5": "/archetypes/streets/landscape-park-pedestrian-bridge/variant_2.png"
+  "claude_public_realm:planted-green-bridge:d7dddc9371b5": "/archetypes/streets/landscape-park-pedestrian-bridge/variant_2.png",
+  "rlasm_terraced_science_centre": "/archetypes/buildings/terraced_science_centre/reference-e2aa32dd4cfa.png",
+  "rlasm_folded_roof_market_hall": "/archetypes/buildings/folded_roof_market_hall/reference-8ec8e9e318cc.png",
+  "rlasm_passage_tower": "/archetypes/buildings/passage_tower/reference-3073ee61b027.png",
+  "london_crescent_terrace_bath_stone": "/archetypes/buildings/london-crescent-terrace/variant_0.png",
+  "plus15_brutalist_concrete_office": "/archetypes/buildings/calgary-15-connected-tower/variant_0.png"
 }

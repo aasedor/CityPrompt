@@ -405,6 +405,12 @@ step-foot/base datum so the generated approach does not acquire a duplicate
 rise. The [Craftsman/Edwardian pilots](CURRIE_ENTRANCE_FAMILY_PILOTS_2026-09-20.md)
 verify this distinction with actual model bytes and browser edits.
 
+For a fixed building with automatic sidewalk access, measure the outer edge of
+the native approach mesh. Enter a connector width between 1.2 m and 4 m. Record
+the architectural opening width separately. Verify the actual sidewalk and
+foundation contacts after saving and reopening, and test the refusal when the
+setback cannot fit the steps and landing.
+
 The shared approach currently reserves a 1.2 m building-end landing for rises
 over 0.04 m, then sizes the flight with 0.28–0.40 m concept goings and up to
 0.18 m rise per step. Remaining street-end space stays level; nearly level

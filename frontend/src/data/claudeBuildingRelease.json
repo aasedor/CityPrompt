@@ -186,6 +186,20 @@
       "model_sha256": "c5ab01b58d759dd92678fdf97f940ba74f728862ab582ed53f9c2caa8a39fc74",
       "source_commit": "7f30f4852c461c289fe5d305a472f853337a24f1",
       "derived_correction": true
+    },
+    {
+      "asset_id": "london_crescent_terrace_bath_stone",
+      "archetype_id": "london_crescent_terrace",
+      "variant_id": "london-crescent-terrace-bath-stone",
+      "candidate": "crescent-terrace-bath-stone-clay-v006",
+      "model_sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284"
+    },
+    {
+      "asset_id": "plus15_brutalist_concrete_office",
+      "archetype_id": "calgary_15_connected_tower",
+      "variant_id": "brutalist_concrete_slab",
+      "candidate": "plus15-brutalist-concrete-office-clay-v006",
+      "model_sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0"
     }
   ]
 }

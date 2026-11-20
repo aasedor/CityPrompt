@@ -19,7 +19,7 @@ export const PLACE_ASSETS = OBJECT_ASSETS.filter(isPlaceable);
 
 /** Preview and saved compilation share the exact variant and native plot policy. */
 export function placementPlanRequest(asset: PlaceAsset, width: number, depth: number, projectId?: string): LegoPlanRequest | null {
-  if (asset.zoneType !== 'building' || asset.model.method === 'canonical_design') return null;
+  if (asset.zoneType !== 'building' || asset.standaloneNative || asset.model.method === 'canonical_design') return null;
   const footprint = asset.footprintProgram ? footprintProgramTarget(asset.footprintProgram) : null;
   return { target_width_m: footprint?.widthM ?? width, target_depth_m: footprint?.depthM ?? depth,
     target_floors: Number(asset.properties.floor_count),

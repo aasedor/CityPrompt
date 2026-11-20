@@ -72,7 +72,7 @@ describe('walking on measured model geometry', () => {
     expect(measuredWalkPlan(null,url+'wrong')).toBeNull();
     expect(measuredWalkPlan(null,url.replace(entry.modelBasename,'other.glb'))).toBeNull();
   });
-  it('requires an exact walking binding for every current catalogue building revision', () => {
+  it('requires one exact walking scope for every current catalogue building revision', () => {
     // These five immutable revisions already contain authored walking extras.
     const embedded=new Set([
       'da8ad808774d542d9b4f6216f3c9589b40633a6c56222ab05c9863fe6cdd712b',
@@ -81,9 +81,24 @@ describe('walking on measured model geometry', () => {
       '179d762168f9eefe07161b7c6f5b5911f50cc66150c9e4d53fb7f702a13a4add',
       'dd021c969344cf7380320665a431ccacf190bc8a5a5b3967d7a4aaff8d205a8f',
     ]);
-    for(const entry of [...validation.entries,...expansion.entries].filter(e=>e.domain==='building'))
-      expect(embedded.has(entry.sha256)||measuredWalkPlan(entry.sha256)!==null,entry.variant_id).toBe(true);
-    expect(new Set(registry.entries.map(e=>e.revision)).size).toBe(registry.entries.length);
+    const exteriorByRevision = new Map(registry.exteriorOnly.map(entry => [entry.revision, entry]));
+    const revisions = [...embedded, ...registry.entries.map(entry => entry.revision),
+      ...registry.exteriorOnly.map(entry => entry.revision)];
+    expect(new Set(revisions).size).toBe(revisions.length);
+
+    for (const entry of [...validation.entries, ...expansion.entries].filter(row => row.domain === 'building')) {
+      const exterior = exteriorByRevision.get(entry.sha256);
+      if (exterior) {
+        expect(exterior.variantId).toBe(entry.variant_id);
+        expect(measuredWalkPlan(entry.sha256)).toBeNull();
+      } else {
+        expect(embedded.has(entry.sha256) || measuredWalkPlan(entry.sha256) !== null, entry.variant_id).toBe(true);
+      }
+    }
+    for (const entry of registry.exteriorOnly) {
+      expect(entry.revision).toMatch(/^[a-f0-9]{64}$/);
+      expect(entry.reason.trim(), entry.variantId).not.toBe('');
+    }
     for(const entry of registry.entries) {
       expect(entry.revision).toMatch(/^[a-f0-9]{64}$/);
       expect(entry.doors.length,entry.variantId).toBeGreaterThan(0);

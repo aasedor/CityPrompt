@@ -1,7 +1,7 @@
 {
   "schema": "cityprompt.rlasm-architectural-clay-library@1",
   "created_at": "2026-09-06T00:00:00Z",
-  "updated_at": "2026-10-30",
+  "updated_at": "2026-11-19",
   "method": "RLASM",
   "method_version": "6.1",
   "delivery_format": "architectural_clay",
@@ -12867,6 +12867,221 @@
       "review": {
         "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/clay-student-residence-tower-clay-v004.json",
         "sha256": "20659bc8a7a8b42e0a879def0c30b2396c982e8a17fbd9104121a85e1be8d369",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "crescent-terrace-bath-stone-clay-v006",
+      "family": "rlasm-clay-london-crescent-terrace-bath-stone",
+      "archetype_id": "london_crescent_terrace",
+      "archetype_label": "London Crescent Terrace",
+      "variant_id": "london-crescent-terrace-bath-stone",
+      "variant_label": "Bath Stone Grand",
+      "runtime_enabled": true,
+      "native_floors": 3,
+      "design_dimensions_m": {
+        "width": 122.6,
+        "depth": 44.8,
+        "height": 15.9
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0.png",
+          "bytes": 1257907,
+          "sha256": "ee92450f910e07cab1027edb0991cde1d6657c2809eb457b5687aa37c9f6f1c9"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0_angle_60.jpg",
+          "bytes": 945323,
+          "sha256": "bb30edb03c4a913ae32ac5d233adf0ee4335f8413194cfdd90681cbb270e1857"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/london-crescent-terrace/variant_0_angle_90.jpg",
+          "bytes": 903446,
+          "sha256": "b68ebfbcd4e05c5ca24591646c09507fd84330326e6595266bdb3122b30de158"
+        }
+      ],
+      "external_evidence": "Local evidence index and exact hashes are recorded beside this package in evidence.json. The reviewed native captures and combined rehearsal stay in their original local artifact directories. Durable archive of all builder review imagery remains unverified.",
+      "limitations": [
+        "Fixed native assembly of the whole crescent, 126 m by 48 m; no resizing, no repeated houses, and no single-house version.",
+        "The catalogue lists a 6 m by 12 m plot for this archetype; this model needs a plot of at least 130 m by 52 m.",
+        "Thirty-six doors at grade; which one is the plot's entrance is undecided. The sunken areas of the real building type are left out.",
+        "The roof-plan reference shows a different, shorter building. On 2026-11-18 a person accepted the street view and the oblique as the plan authority for this variant; the roof-plan image informs roof character only.",
+        "One prepared plot per model was rehearsed in the mixed scene. Full terrain/entrance and ordinary student edit/recovery checks remain open.",
+        "Remaining review notes, none blocking: corner capitals show a scroll end to each end elevation, end-bay windows sit tight between the columns, door reveals have no floor, dormers have no attic, and column shafts are twelve-sided.",
+        "The independent review is by an AI reviewer, not a person."
+      ],
+      "picker": {
+        "id": "london_crescent_terrace_bath_stone",
+        "description": "Eighteen-house Georgian crescent in Bath stone with a giant Ionic order, balustrade and slate roofs.",
+        "group_id": "ground_housing",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete crescent. It keeps its authored size.",
+        "width": 130.0,
+        "depth": 52.0,
+        "max_size": 250.0
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "When everything is ready, please push",
+        "date": "2026-11-19",
+        "model_sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284"
+      },
+      "local_trial": {
+        "model_sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
+        "project_url": "http://127.0.0.1:5190/projects/945e2b0b-3b63-45e5-b2b2-92713f00a82c",
+        "tested_by": "Codex",
+        "tested_at": "2026-11-20T00:54:38.299796+00:00",
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "evidence": [
+          "runtime-review.md",
+          "../../clean-placement-retest.json",
+          "../../plot-small-proof.json",
+          "../../native-view-evidence.json",
+          "../../five-buildings-street-west.png",
+          "../../publication-qa/close-and-partial-preview.json",
+          "../../publication-qa/five-buildings-street-bath-close.png",
+          "../../publication-qa/five-buildings-street-bath-out-of-frame.png"
+        ]
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/crescent-terrace-bath-stone-clay-v006.glb",
+        "bytes": 8594664,
+        "sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
+        "native_dimensions_m": {
+          "width": 126.31745910644531,
+          "height": 19.15999984741211,
+          "depth": 48.400219678878784
+        },
+        "mesh_count": 12,
+        "material_count": 12,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/crescent-terrace-bath-stone-clay-v006.json",
+        "sha256": "a6688fb902081b15d54cb65ae4945b7671db835719ab3a72c73dc9fafb2faa57",
+        "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
+        "unresolved_p0": 0,
+        "unresolved_p1": 0
+      }
+    },
+    {
+      "candidate": "plus15-brutalist-concrete-office-clay-v006",
+      "family": "rlasm-clay-plus15-brutalist-concrete-office",
+      "archetype_id": "calgary_15_connected_tower",
+      "archetype_label": "Calgary 15 Connected Tower",
+      "variant_id": "brutalist_concrete_slab",
+      "variant_label": "Brutalist Concrete Office Slab",
+      "runtime_enabled": true,
+      "native_floors": 5,
+      "design_dimensions_m": {
+        "width": 45.0,
+        "depth": 40.5,
+        "height": 27.6
+      },
+      "references": [
+        {
+          "role": "front",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
+          "bytes": 1098329,
+          "sha256": "ea6a28363104886398ba75294af97682bb0666485c73a48a2a0c7f363bfbb8ff"
+        },
+        {
+          "role": "oblique",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0_angle_60.jpg",
+          "bytes": 874856,
+          "sha256": "49ec51c36c9f789d0883a159665f77905ee17842587ce78aa425c4a0105395c5"
+        },
+        {
+          "role": "top",
+          "repo_path": "frontend/public/archetypes/buildings/calgary-15-connected-tower/variant_0_angle_90.jpg",
+          "bytes": 844896,
+          "sha256": "695c6c3d93783def1343596b6cc9a537fd741db4e3674a4fcc3c107b6e4cf7a8"
+        }
+      ],
+      "external_evidence": "Local evidence index and exact hashes are recorded beside this package in evidence.json. The reviewed native captures and combined rehearsal stay in their original local artifact directories. Durable archive of all builder review imagery remains unverified.",
+      "limitations": [
+        "Fixed native assembly; no resizing and no repeated floors.",
+        "The +15 walkway is a 9 m length with a glazed end. It reaches no neighbour and has no support at its free end.",
+        "One prepared plot per model was rehearsed in the mixed scene. Full terrain/entrance and ordinary student edit/recovery checks remain open.",
+        "The independent review is by an AI reviewer, not a person."
+      ],
+      "picker": {
+        "id": "plus15_brutalist_concrete_office",
+        "description": "Five-storey 1970s concrete office block with ribbon windows and a +15 walkway stub.",
+        "group_id": "offices",
+        "reshape_mode": "fixed_native",
+        "reshape_description": "Move and rotate the complete building. It keeps its authored size.",
+        "width": 57.0,
+        "depth": 44.0,
+        "max_size": 250.0
+      },
+      "activation": {
+        "authorized_by": "human_user",
+        "quote": "When everything is ready, please push",
+        "date": "2026-11-19",
+        "model_sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0"
+      },
+      "local_trial": {
+        "model_sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0",
+        "project_url": "http://127.0.0.1:5190/projects/945e2b0b-3b63-45e5-b2b2-92713f00a82c",
+        "tested_by": "Codex",
+        "tested_at": "2026-11-20T00:54:38.300796+00:00",
+        "checks": {
+          "catalogue_card": true,
+          "exact_variant": true,
+          "ground_contact": true,
+          "small_and_large_plot": true,
+          "rotation": true,
+          "save_reload": true,
+          "close_and_occluded_capture": true,
+          "no_console_errors": true
+        },
+        "evidence": [
+          "runtime-review.md",
+          "../../clean-placement-retest.json",
+          "../../plot-small-proof.json",
+          "../../native-view-evidence.json",
+          "../../five-buildings-street-east.png",
+          "../../publication-qa/close-and-partial-preview.json",
+          "../../publication-qa/five-buildings-street-office-close.png",
+          "../../publication-qa/five-buildings-street-office-out-of-frame.png"
+        ]
+      },
+      "local_trial_only": false,
+      "model": {
+        "path": "models/plus15-brutalist-concrete-office-clay-v006.glb",
+        "bytes": 2273324,
+        "sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0",
+        "native_dimensions_m": {
+          "width": 54.0,
+          "height": 28.25,
+          "depth": 40.5
+        },
+        "mesh_count": 19,
+        "material_count": 19,
+        "texture_count": 0,
+        "image_count": 0
+      },
+      "review": {
+        "repo_path": "seed/model-library/rlasm-architectural-clay/evidence/plus15-brutalist-concrete-office-clay-v006.json",
+        "sha256": "6b301282566a59cbe36626951e91afa974d4dfffb7e7c853a9327467bc16ee3b",
         "status": "PASS_INDEPENDENT_ARCHITECTURAL_CLAY",
         "unresolved_p0": 0,
         "unresolved_p1": 0

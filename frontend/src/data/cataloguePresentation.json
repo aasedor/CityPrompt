@@ -2610,5 +2610,71 @@
     "searchTags": [
       "Student Residence Tower"
     ]
+  },
+  "rlasm_terraced_science_centre": {
+    "label": "Terraced Science Centre",
+    "description": "Three gallery wings frame a south-facing court, with stepped terraces and rooflights.",
+    "styleIds": [
+      "contemporary"
+    ],
+    "searchTags": [
+      "science centre",
+      "museum",
+      "galleries",
+      "courtyard"
+    ]
+  },
+  "rlasm_folded_roof_market_hall": {
+    "label": "Folded-Roof Market Hall",
+    "description": "A timber market hall with a folded roof and a sheltered public apron. Place it on a prepared level site.",
+    "styleIds": [
+      "contemporary",
+      "structural"
+    ],
+    "searchTags": [
+      "market",
+      "market hall",
+      "timber",
+      "pavilion"
+    ]
+  },
+  "rlasm_passage_tower": {
+    "label": "Passage Tower",
+    "description": "A stepped tower with terracotta fins, layered podiums and a pedestrian passage at its base.",
+    "styleIds": [
+      "contemporary"
+    ],
+    "searchTags": [
+      "tower",
+      "terracotta",
+      "podium",
+      "pedestrian passage"
+    ]
+  },
+  "london_crescent_terrace_bath_stone": {
+    "label": "Bath Stone Grand",
+    "description": "An eighteen-house Georgian crescent with Bath stone, Ionic columns and slate roofs.",
+    "styleIds": [
+      "classical"
+    ],
+    "searchTags": [
+      "georgian",
+      "crescent",
+      "terrace",
+      "london"
+    ]
+  },
+  "plus15_brutalist_concrete_office": {
+    "label": "Brutalist Concrete Office Slab",
+    "description": "A five-storey concrete office with ribbon windows and a glazed +15 walkway stub.",
+    "styleIds": [
+      "brutalism"
+    ],
+    "searchTags": [
+      "office",
+      "brutalist",
+      "concrete",
+      "plus 15"
+    ]
   }
 }

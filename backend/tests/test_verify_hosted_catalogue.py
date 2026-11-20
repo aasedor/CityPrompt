@@ -96,12 +96,20 @@ def test_shipped_contract_covers_published_release_and_identifies_local_pilots()
     )
     release = json.loads((root / "frontend/src/data/claudeBuildingRelease.json").read_text(encoding="utf-8"))
     additions = {entry["asset_id"]: entry for entry in release["entries"]}
-    assert len(additions) == 25
-    assert len(rows) == 68 + len(additions)
+    static_revisions = {
+        "london_crescent_terrace_bath_stone",
+        "plus15_brutalist_concrete_office",
+    }
+    assert len(additions) == 27
+    assert len(rows) == 68 + len(additions) - len(static_revisions)
     assert not any(row["local_trial_only"] for row in rows)
     assert len({row["asset_id"] for row in rows}) == len(rows)
     added_rows = [row for row in rows if row["asset_id"] in additions]
-    assert len(added_rows) == len(additions)
+    assert {row["asset_id"] for row in added_rows} == additions.keys() - static_revisions
+    contract = json.loads((root / "backend/app/data/native_model_contract.json").read_text(encoding="utf-8"))
+    for row in contract["records"]:
+        if row["asset_id"] in static_revisions:
+            assert row["static_model_sha256"] == additions[row["asset_id"]]["model_sha256"]
     assert len([row for row in rows if row["asset_id"] not in additions]) == 68
     for row in added_rows:
         entry = additions[row["asset_id"]]
