@@ -139,6 +139,10 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
   // Real Street View / Places / satellite grounding, anchored at the pegman.
   // On by default (it helps); toggle off to A/B against a context-free render.
   const [useRealContext, setUseRealContext] = useState(true);
+  const [useStreetViewContext, setUseStreetViewContext] = useState(false);
+  const canUseStreetViewContext = directStreetMode && imageModel !== 'compare-all-three'
+    && imageModelAvailability?.street_view_context_available === true;
+  const attachStreetViewContext = canUseStreetViewContext && useStreetViewContext;
   const [includePeople, setIncludePeople] = useState(false);
   const [includeVehicles, setIncludeVehicles] = useState(false);
   const [editTarget, setEditTarget] = useState<SavedRender | null>(null);
@@ -281,6 +285,10 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
         toast.error('Save the project before a street render.');
         return;
       }
+      if (attachStreetViewContext && !streetCapture?.direct3d) {
+        toast.error('Wait for the 3D street view before using Google Street View context.');
+        return;
+      }
 
       // Inventory-locked street render: one call through the Direct 3D
       // endpoint with the full pass stack. The server saves both the returned
@@ -304,6 +312,13 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
             detailsRevision,
             residualLandscapeClaim: getCurrentResidualLandscapeClaim(siteZones),
             viewMode: 'street',
+            ...(attachStreetViewContext ? {
+              streetViewContext: {
+                latitude: pegmanPosition[1],
+                longitude: pegmanPosition[0],
+                heading: ((pegmanAngle % 360) + 360) % 360,
+              },
+            } : {}),
             archetypeReferences,
             customPrompt: [
               includePeople ? 'Include a few pedestrians on existing walking surfaces.' : 'Do not add people.',
@@ -404,7 +419,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               aspectRatio: overrideAspectRatio,
               semanticGuideBase64: overrideSemanticGuide,
               projectId,
-              useRealContext,
+              useRealContext: !directStreetMode && useRealContext,
               includePeople,
               includeVehicles,
               customPrompt: customPrompt.trim() || undefined,
@@ -458,7 +473,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
     } finally {
       setIsGenerating(false);
     }
-  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, needsCommunity3D, detailsRevision, selectedStyle, imageModel, imageModelAvailability, useRealContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
+  }, [streetViewPegman, siteZones, generateStreetView, renderDirect3D, directStreetMode, currentSceneClaims, needsCommunity3D, detailsRevision, selectedStyle, imageModel, imageModelAvailability, useRealContext, attachStreetViewContext, includePeople, includeVehicles, customPrompt, result, globeCapture, projectId, saveStreetViewRender, onRenderSaved, selectedEngineUnavailable]);
 
   const handleDownload = useCallback(async () => {
     if (!result?.imageUrl || result.error) return;
@@ -865,6 +880,14 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
             </div>
           ))}
         </div>
+
+        {canUseStreetViewContext && <label className="flex min-h-11 max-w-[160px] cursor-pointer items-center gap-2 text-xs font-semibold"
+          title="Use a nearby panorama to guide details of the existing street">
+          <input type="checkbox" checked={useStreetViewContext} disabled={isGenerating}
+            onChange={event => setUseStreetViewContext(event.target.checked)}
+            className="h-4 w-4 shrink-0 accent-[#c9ff3d]" />
+          <span>Use Google Street View context</span>
+        </label>}
 
         {/* Real-world context toggle — colour inherits the always-cream card; an explicit
             text-[#151515] would get flipped to near-white by dark mode and vanish on the card. */}
