@@ -31,7 +31,7 @@ available.
 - [x] Tracked smoke output and obvious root-level binary clutter are removed.
 - [x] Forbidden legacy public-asset trees are removed.
 - [x] Public documentation consistently names City Prompt and
-      `deployment-version` as the canonical branch, with `main` as its mirror.
+      `deployment-version` as the canonical branch, with `main` frozen and unused.
 - [x] All Markdown links resolve, excluding explicit external or archived
       historical references.
 - [x] No credentials or local-machine secrets exist in the current tree.
@@ -66,8 +66,8 @@ available.
 
 ## Release steps
 
-- [ ] Bring `main` up to date with the reviewed `deployment-version` tip and
-      keep it mirrored after each release sync.
+- [x] Direct the receiving team to `deployment-version`; `main` stays frozen
+      at its 3 October 2026 state.
 - [ ] Make required GitHub checks mandatory in branch protection on
       `deployment-version` (only `main` is protected today).
 - [ ] Remove merged remote pilot branches only after unique-commit and asset
