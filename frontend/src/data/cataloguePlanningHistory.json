@@ -8546,6 +8546,119 @@
       "designEvidence": "A walled garden with a reflecting pool on its axis, hedged beds, columnar trees, a rose arbour and blank plaques.",
       "referenceReviewed": true,
       "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_community_ball_diamond_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Neighbourhood ball diamonds are a long-standing part of North American park planning; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare how Calgary diamonds share school and community park sites, and how lights, fences and parking meet neighbouring homes.",
+      "internationalContext": "Ball diamonds range from fenced club grounds to open fields shared with other park users between games.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_community_ball_diamond_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "baseball_softball_diamond",
+      "variantId": "student_community_ball_diamond_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "99921820ac461f1bebe11f7ef995eb06575b7564611f0372e2b4eac8b3e0bb0f",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "play_sport",
+      "styleIds": [
+        "recreation"
+      ],
+      "planningIds": [
+        "active",
+        "place",
+        "child"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "A Little League diamond with a backstop, dugouts, bleachers, field lights and a scoreboard, ringed by a path and trees.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_community_track_field_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "The 400 m oval is an athletics convention rather than a period style; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare tracks on school sites that open to the neighbourhood after hours with tracks in major athletics parks.",
+      "internationalContext": "Community tracks increasingly double as walking loops and open green space between events.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_community_track_field_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "running_track_oval",
+      "variantId": "student_community_track_field_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "9b7f12a5bd3962267dc3ac1b91fa59ea7b0946d5252a26002240284b7e36d010",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "play_sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [
+        "active",
+        "place",
+        "child"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "A six-lane 400 m track round a soccer pitch, with jumps and throws, a shelter and a walking loop.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_village_green_cricket_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Village cricket grounds follow a long English tradition; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare cricket grounds within shared Calgary parks with fenced club grounds, and how they serve growing cricket communities.",
+      "internationalContext": "Village greens combine sport with common open space; urban grounds add stands, nets and larger pavilions.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_village_green_cricket_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "cricket_pitch_oval",
+      "variantId": "student_village_green_cricket_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "ebd51ad3aef3bb01b1f133b5e47c468d67acfec06142aa79fbd37a6a976208e0",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "play_sport",
+      "styleIds": [
+        "recreation",
+        "traditional_inspired"
+      ],
+      "planningIds": [
+        "active",
+        "place",
+        "heritage"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "A fenced village cricket ground with a square, sight screens and a timber-framed pavilion among shade trees.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
     }
   }
 }

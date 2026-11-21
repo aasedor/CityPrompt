@@ -66,7 +66,11 @@ def test_every_registered_layout_keeps_identity_when_rotated_in_a_larger_parcel(
             "frame": frame,
         },
     }
-    parcel = Polygon([(lon + x / east, lat + y / 111320) for x, y in [(-80, -80), (80, -80), (80, 80), (-80, 80)]])
+    # Larger than the layout at any rotation: at least 160 m, more for the largest sports grounds.
+    half = max(80.0, math.hypot(layout["occupiedWidthM"], layout["occupiedDepthM"]) / 2 + 2.0)
+    parcel = Polygon(
+        [(lon + x / east, lat + y / 111320) for x, y in [(-half, -half), (half, -half), (half, half), (-half, half)]]
+    )
     before = copy.deepcopy(props)
     recipe = plan_native_park(parcel, props)
     assert recipe.frame.model_dump() == frame

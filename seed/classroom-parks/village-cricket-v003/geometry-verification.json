@@ -1,0 +1,25 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "3819fe8dada57fcfabc096a5b24badeac38bd42895ddcb119c28fe439f56de65",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 120 x 120 m footprint",
+    "recipe bounds match the GLB",
+    "nothing below grade",
+    "nothing taller than 20 m",
+    "2400 material-aware route rays on grass, gravel, paving",
+    "192 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "stumps 20.12 m (22 yards) apart on the pitch line",
+    "boundary rope at least 42.0 m from the pitch centre",
+    "nothing stands inside the boundary but the stumps"
+  ],
+  "failures": [],
+  "triangles_rendered": 780399,
+  "mesh_instances": 200,
+  "runtime_tested": false
+}

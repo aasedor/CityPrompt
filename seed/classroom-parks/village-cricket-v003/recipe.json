@@ -1,0 +1,662 @@
+{
+  "id": "student_village_green_cricket_v1",
+  "title": "Village Green Cricket Ground",
+  "archetype_id": "cricket_pitch_oval",
+  "dimensions_m": [
+    120.0,
+    120.0
+  ],
+  "programme": "A village cricket ground inside a white picket fence: a striped outfield, a boundary rope 42 to 46 m from the pitch centre with markers, a square of prepared strips with the active 22-yard pitch, creases and stumps, white wheeled sight screens at both ends, a timber-framed pavilion with a veranda, a blank clock and a terrace of benches, a scoreboard, a roller, benches round the boundary, and bur oak, green ash, aspen and spruce outside the fence.",
+  "design_basis": "Original concept after the catalogue cricket ground \"Village Green\" references (variant 0). A club-sized ground as teaching values, not a ground or pitch design.",
+  "reference_views": "frontend/public/archetypes/openspaces/cricket-ground/variant_0",
+  "generator": "CityPrompt native park batch builder v1 (cricket)",
+  "generator_sha256": "06bccf1faccfac139672bd38957fd2106b53e7c781ac4804383aa77ae5c96bf6",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only; the square, drainage and outfield construction are not designed.",
+    "Club-sized boundaries (42 to 46 m); senior and international grounds are larger.",
+    "The pavilion is a closed massing with a veranda; its interior, services and access are not designed.",
+    "The scoreboard and clock are blank.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        16.0,
+        -60.0
+      ],
+      "b": [
+        16.0,
+        -45.0
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -11.0,
+        -45.8
+      ],
+      "b": [
+        11.0,
+        -45.8
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -36.4,
+        -44.4
+      ],
+      "b": [
+        -38.29,
+        -44.233
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -38.29,
+        -44.233
+      ],
+      "b": [
+        -39.847,
+        -43.875
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -39.847,
+        -43.875
+      ],
+      "b": [
+        -41.343,
+        -43.314
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -41.343,
+        -43.314
+      ],
+      "b": [
+        -42.75,
+        -42.558
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -42.75,
+        -42.558
+      ],
+      "b": [
+        -43.97,
+        -41.688
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -43.97,
+        -41.688
+      ],
+      "b": [
+        -45.137,
+        -40.598
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -45.137,
+        -40.598
+      ],
+      "b": [
+        -46.149,
+        -39.362
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -46.149,
+        -39.362
+      ],
+      "b": [
+        -46.988,
+        -38.003
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -46.988,
+        -38.003
+      ],
+      "b": [
+        -47.606,
+        -36.639
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -47.606,
+        -36.639
+      ],
+      "b": [
+        -48.07,
+        -35.11
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -48.07,
+        -35.11
+      ],
+      "b": [
+        -48.326,
+        -33.534
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -48.326,
+        -33.534
+      ],
+      "b": [
+        -48.4,
+        -31.036
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -48.4,
+        -31.036
+      ],
+      "b": [
+        -48.363,
+        32.963
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -48.363,
+        32.963
+      ],
+      "b": [
+        -48.22,
+        34.353
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -48.22,
+        34.353
+      ],
+      "b": [
+        -47.855,
+        35.908
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -47.855,
+        35.908
+      ],
+      "b": [
+        -47.33,
+        37.31
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -47.33,
+        37.31
+      ],
+      "b": [
+        -46.578,
+        38.72
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -46.578,
+        38.72
+      ],
+      "b": [
+        -45.646,
+        40.018
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -45.646,
+        40.018
+      ],
+      "b": [
+        -44.625,
+        41.113
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -44.625,
+        41.113
+      ],
+      "b": [
+        -43.392,
+        42.129
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -43.392,
+        42.129
+      ],
+      "b": [
+        -42.035,
+        42.972
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -42.035,
+        42.972
+      ],
+      "b": [
+        -40.579,
+        43.627
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -40.579,
+        43.627
+      ],
+      "b": [
+        -39.146,
+        44.063
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -39.146,
+        44.063
+      ],
+      "b": [
+        -37.57,
+        44.323
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -37.57,
+        44.323
+      ],
+      "b": [
+        -35.072,
+        44.4
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -35.072,
+        44.4
+      ],
+      "b": [
+        36.927,
+        44.365
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        36.927,
+        44.365
+      ],
+      "b": [
+        38.416,
+        44.208
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        38.416,
+        44.208
+      ],
+      "b": [
+        39.874,
+        43.866
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        39.874,
+        43.866
+      ],
+      "b": [
+        41.368,
+        43.301
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        41.368,
+        43.301
+      ],
+      "b": [
+        42.69,
+        42.598
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        42.69,
+        42.598
+      ],
+      "b": [
+        43.99,
+        41.67
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        43.99,
+        41.67
+      ],
+      "b": [
+        45.155,
+        40.577
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        45.155,
+        40.577
+      ],
+      "b": [
+        46.165,
+        39.339
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        46.165,
+        39.339
+      ],
+      "b": [
+        46.956,
+        38.068
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        46.956,
+        38.068
+      ],
+      "b": [
+        47.615,
+        36.613
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        47.615,
+        36.613
+      ],
+      "b": [
+        48.075,
+        35.083
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        48.075,
+        35.083
+      ],
+      "b": [
+        48.321,
+        33.606
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        48.321,
+        33.606
+      ],
+      "b": [
+        48.4,
+        31.208
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        48.4,
+        31.208
+      ],
+      "b": [
+        48.361,
+        -32.99
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        48.361,
+        -32.99
+      ],
+      "b": [
+        48.215,
+        -34.38
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        48.215,
+        -34.38
+      ],
+      "b": [
+        47.878,
+        -35.839
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        47.878,
+        -35.839
+      ],
+      "b": [
+        47.317,
+        -37.335
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        47.317,
+        -37.335
+      ],
+      "b": [
+        46.563,
+        -38.743
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        46.563,
+        -38.743
+      ],
+      "b": [
+        45.628,
+        -40.038
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        45.628,
+        -40.038
+      ],
+      "b": [
+        44.604,
+        -41.132
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        44.604,
+        -41.132
+      ],
+      "b": [
+        43.369,
+        -42.145
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        43.369,
+        -42.145
+      ],
+      "b": [
+        42.01,
+        -42.984
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        42.01,
+        -42.984
+      ],
+      "b": [
+        40.647,
+        -43.604
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        40.647,
+        -43.604
+      ],
+      "b": [
+        39.118,
+        -44.068
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        39.118,
+        -44.068
+      ],
+      "b": [
+        37.542,
+        -44.325
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        37.542,
+        -44.325
+      ],
+      "b": [
+        35.044,
+        -44.4
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        35.044,
+        -44.4
+      ],
+      "b": [
+        -36.4,
+        -44.4
+      ],
+      "width": 2.0
+    }
+  ],
+  "entrance": {
+    "x": 16.0,
+    "y": -60.0,
+    "widthM": 2.4,
+    "arrivalY": -57.0
+  },
+  "walk_surface_materials": [
+    "paving",
+    "grass",
+    "gravel"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 9010032,
+    "sha256": "3819fe8dada57fcfabc096a5b24badeac38bd42895ddcb119c28fe439f56de65"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -60.0,
+      -60.0,
+      -0.0045
+    ],
+    [
+      60.0,
+      60.0,
+      13.426
+    ]
+  ],
+  "triangles": 780399,
+  "mesh_instances": 200,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, grass, gravel. Never stretch the assembly to fit.",
+  "card": {
+    "group": "play_sport",
+    "description": "A village cricket ground with a picket fence, boundary rope, square and pitch, sight screens, a timber pavilion and shade trees. Prepared level ground."
+  }
+}

@@ -1,0 +1,596 @@
+{
+  "id": "student_community_ball_diamond_v1",
+  "title": "Community Ball Diamond",
+  "archetype_id": "baseball_softball_diamond",
+  "dimensions_m": [
+    88.0,
+    88.0
+  ],
+  "programme": "A Little League-sized ball diamond: 60 ft bases, a 46 ft pitching distance and a 200 ft outfield fence with a yellow cap and foul poles; a grass infield inside a dirt arc, a raised mound, a warning track and chalked lines; a 6 m chain-link backstop with a hood, side fences and two block dugouts; aluminium bleachers and benches on a concrete apron; four field lights and a blank scoreboard; a path loop round the outfield with benches, through lawn, prairie beds, flowering cherries and groves of aspen, green ash, bur oak and white spruce.",
+  "design_basis": "Original concept after the catalogue baseball/softball diamond \"Urban Community Diamond\" references (variant 0). Little League dimensions as teaching values, not a sports field design.",
+  "reference_views": "frontend/public/archetypes/openspaces/baseball-softball-diamond/variant_0",
+  "generator": "CityPrompt native park batch builder v1 (baseball)",
+  "generator_sha256": "41f64ba9485f8d75eb1e92ede014752f8679ea66d74851649dc1c4fcf6f3126d",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only; field drainage, irrigation and the infield mix are not designed.",
+    "Dimensions follow Little League baseball (60 ft bases, 46 ft pitching distance, 200 ft fences); fastpitch softball uses 43 ft, and older age groups need larger fields.",
+    "Fences, backstop, lights and bleachers are indicative; real installations follow the governing body, the manufacturer and the applicable building and lighting rules.",
+    "The scoreboard is blank.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        -14.0,
+        -44.0
+      ],
+      "b": [
+        -14.0,
+        -37.72
+      ],
+      "width": 2.4
+    },
+    {
+      "a": [
+        -38.0,
+        -25.0
+      ],
+      "b": [
+        -37.794,
+        -27.189
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -37.794,
+        -27.189
+      ],
+      "b": [
+        -37.306,
+        -29.126
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -37.306,
+        -29.126
+      ],
+      "b": [
+        -36.527,
+        -30.966
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -36.527,
+        -30.966
+      ],
+      "b": [
+        -35.475,
+        -32.665
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -35.475,
+        -32.665
+      ],
+      "b": [
+        -34.174,
+        -34.182
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -34.174,
+        -34.182
+      ],
+      "b": [
+        -32.656,
+        -35.481
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -32.656,
+        -35.481
+      ],
+      "b": [
+        -30.957,
+        -36.532
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -30.957,
+        -36.532
+      ],
+      "b": [
+        -29.117,
+        -37.309
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -29.117,
+        -37.309
+      ],
+      "b": [
+        -27.179,
+        -37.795
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -27.179,
+        -37.795
+      ],
+      "b": [
+        -25.189,
+        -37.98
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -25.189,
+        -37.98
+      ],
+      "b": [
+        37.91,
+        -37.971
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        37.91,
+        -37.971
+      ],
+      "b": [
+        38.778,
+        -37.752
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        38.778,
+        -37.752
+      ],
+      "b": [
+        39.176,
+        -37.457
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        39.176,
+        -37.457
+      ],
+      "b": [
+        39.382,
+        -37.009
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        39.382,
+        -37.009
+      ],
+      "b": [
+        40.055,
+        -32.56
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        40.055,
+        -32.56
+      ],
+      "b": [
+        40.42,
+        -28.076
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        40.42,
+        -28.076
+      ],
+      "b": [
+        40.477,
+        -23.577
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        40.477,
+        -23.577
+      ],
+      "b": [
+        40.225,
+        -19.085
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        40.225,
+        -19.085
+      ],
+      "b": [
+        39.665,
+        -14.621
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        39.665,
+        -14.621
+      ],
+      "b": [
+        38.8,
+        -10.206
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        38.8,
+        -10.206
+      ],
+      "b": [
+        37.633,
+        -5.861
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        37.633,
+        -5.861
+      ],
+      "b": [
+        36.172,
+        -1.606
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        36.172,
+        -1.606
+      ],
+      "b": [
+        34.421,
+        2.539
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        34.421,
+        2.539
+      ],
+      "b": [
+        32.39,
+        6.554
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        32.39,
+        6.554
+      ],
+      "b": [
+        30.088,
+        10.419
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        30.088,
+        10.419
+      ],
+      "b": [
+        27.527,
+        14.118
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        27.527,
+        14.118
+      ],
+      "b": [
+        24.717,
+        17.632
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        24.717,
+        17.632
+      ],
+      "b": [
+        21.673,
+        20.945
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        21.673,
+        20.945
+      ],
+      "b": [
+        18.408,
+        24.041
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        18.408,
+        24.041
+      ],
+      "b": [
+        14.939,
+        26.905
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        14.939,
+        26.905
+      ],
+      "b": [
+        11.281,
+        29.525
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        11.281,
+        29.525
+      ],
+      "b": [
+        7.452,
+        31.887
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        7.452,
+        31.887
+      ],
+      "b": [
+        3.47,
+        33.981
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        3.47,
+        33.981
+      ],
+      "b": [
+        -0.647,
+        35.796
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -0.647,
+        35.796
+      ],
+      "b": [
+        -4.878,
+        37.325
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -4.878,
+        37.325
+      ],
+      "b": [
+        -9.205,
+        38.559
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -9.205,
+        38.559
+      ],
+      "b": [
+        -13.606,
+        39.494
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -13.606,
+        39.494
+      ],
+      "b": [
+        -18.061,
+        40.124
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -18.061,
+        40.124
+      ],
+      "b": [
+        -22.548,
+        40.447
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -22.548,
+        40.447
+      ],
+      "b": [
+        -27.047,
+        40.46
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -27.047,
+        40.46
+      ],
+      "b": [
+        -31.537,
+        40.165
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -31.537,
+        40.165
+      ],
+      "b": [
+        -35.995,
+        39.563
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -35.995,
+        39.563
+      ],
+      "b": [
+        -37.266,
+        39.301
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -37.266,
+        39.301
+      ],
+      "b": [
+        -37.638,
+        38.977
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -37.638,
+        38.977
+      ],
+      "b": [
+        -37.902,
+        38.333
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -37.902,
+        38.333
+      ],
+      "b": [
+        -38.0,
+        37.04
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -38.0,
+        37.04
+      ],
+      "b": [
+        -38.0,
+        -25.0
+      ],
+      "width": 2.2
+    }
+  ],
+  "entrance": {
+    "x": -14.0,
+    "y": -44.0,
+    "widthM": 3.0,
+    "arrivalY": -41.0
+  },
+  "walk_surface_materials": [
+    "paving",
+    "grass",
+    "gravel"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 11411116,
+    "sha256": "08fab3e99c6b68540868ea7a17050348b1167d78600c114ab01c491aed271a9a"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -44.0,
+      -44.0,
+      -0.0358
+    ],
+    [
+      44.0,
+      44.0,
+      19.5
+    ]
+  ],
+  "triangles": 714184,
+  "mesh_instances": 389,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, grass, gravel. Never stretch the assembly to fit.",
+  "card": {
+    "group": "play_sport",
+    "description": "A Little League ball diamond with a dirt infield, backstop, dugouts, bleachers, field lights and a scoreboard, ringed by a path loop and trees. Prepared level ground."
+  }
+}

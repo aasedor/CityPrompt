@@ -488,5 +488,56 @@
       "evidence": "Walled Memorial Garden exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_1_2026-11-21.md. No operating use has been established."
     },
     "review": "Confirm ownership, public access and operating responsibility before assigning a land-use classification; the provisional Park screening is not confirmation of permission."
+  },
+  "native-park:student_community_ball_diamond_v1--native-v1": {
+    "variantId": "student_community_ball_diamond_v1",
+    "revision": "99921820ac461f1bebe11f7ef995eb06575b7564611f0372e2b4eac8b3e0bb0f",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor ball diamond for organised and casual play; spectator seating, dugouts and field lights are part of the outdoor grounds, not a stadium.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Community Ball Diamond exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_2_2026-11-21.md. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator, field lighting and hours of play. Dugouts, lights, fences, access, servicing and site conditions require separate review."
+    ]
+  },
+  "native-park:student_community_track_field_v1--native-v1": {
+    "variantId": "student_community_track_field_v1",
+    "revision": "9b7f12a5bd3962267dc3ac1b91fa59ea7b0946d5252a26002240284b7e36d010",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor athletics track and sports field for school and community use; no enclosed recreation centre or spectator stadium assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Community Track & Field exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_2_2026-11-21.md. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator, scheduling and any lighting. Shelters, structures, access, servicing and site conditions require separate review."
+    ]
+  },
+  "native-park:student_village_green_cricket_v1--native-v1": {
+    "variantId": "student_village_green_cricket_v1",
+    "revision": "ebd51ad3aef3bb01b1f133b5e47c468d67acfec06142aa79fbd37a6a976208e0",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor cricket ground for club and community play; the pavilion is treated as an accessory clubhouse, not a separate assembly or commercial use.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Village Green Cricket Ground exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_2_2026-11-21.md. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator and the pavilion’s uses. The pavilion, fences, access, servicing and site conditions require separate review."
+    ]
   }
 }

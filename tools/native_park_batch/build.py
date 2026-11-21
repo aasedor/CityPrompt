@@ -19,7 +19,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import parkkit as kit  # noqa: E402
 
-PARKS = {'skate': 'skate_park', 'fitness': 'fitness_circuit', 'memorial': 'memorial_garden'}
+PARKS = {'skate': 'skate_park', 'fitness': 'fitness_circuit', 'memorial': 'memorial_garden',
+         'baseball': 'baseball_diamond', 'track': 'running_track', 'cricket': 'cricket_ground'}
 
 
 def load(park):
@@ -32,6 +33,7 @@ def build(park):
     payload, rendered, instances = kit.write_glb(meshes, nodes, meta['generator'], meta['id'])
     lo, hi = kit.bounds(meshes, nodes)
     source = (HERE / f'{PARKS[park]}.py').read_bytes() + (HERE / 'parkkit.py').read_bytes()
+    source += b''.join((HERE / name).read_bytes() for name in getattr(module, 'KIT_SOURCES', ()))   # e.g. sportskit.py
     recipe = {
         'id': meta['id'], 'title': meta['title'], 'archetype_id': meta['archetype'], 'dimensions_m': list(meta['site']),
         'programme': meta['programme'], 'design_basis': meta['design_basis'], 'reference_views': meta['reference'],

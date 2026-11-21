@@ -217,5 +217,8 @@
   "student_high_speed_rail_line_v1": "/archetypes/streets/high-speed-rail-corridor/student_high_speed_rail_line_v1.png",
   "native-park:student_prairie_bowl_skate_park_v1--native-v1": "/archetypes/openspaces/skate-park/variant_2.png",
   "native-park:student_parkour_calisthenics_yard_v1--native-v1": "/archetypes/openspaces/outdoor-fitness-circuit/variant_1.png",
-  "native-park:student_walled_memorial_garden_v1--native-v1": "/archetypes/openspaces/memorial-garden/variant_3.png"
+  "native-park:student_walled_memorial_garden_v1--native-v1": "/archetypes/openspaces/memorial-garden/variant_3.png",
+  "native-park:student_community_ball_diamond_v1--native-v1": "/archetypes/openspaces/baseball-softball-diamond/variant_0.png",
+  "native-park:student_community_track_field_v1--native-v1": "/archetypes/openspaces/running-track-athletic-oval/variant_1.png",
+  "native-park:student_village_green_cricket_v1--native-v1": "/archetypes/openspaces/cricket-ground/variant_0.png"
 }

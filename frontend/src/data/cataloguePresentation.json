@@ -2792,5 +2792,46 @@
       "roses",
       "quiet"
     ]
+  },
+  "native-park:student_community_ball_diamond_v1--native-v1": {
+    "label": "Community Ball Diamond",
+    "description": "A Little League diamond with a dirt infield, backstop, dugouts and bleachers, field lights and a scoreboard, ringed by a path loop and trees.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "baseball",
+      "softball",
+      "ball diamond",
+      "little league",
+      "bleachers",
+      "field lights"
+    ]
+  },
+  "native-park:student_community_track_field_v1--native-v1": {
+    "label": "Community Track & Field",
+    "description": "A six-lane 400 m running track round a soccer pitch, with long jump, shot put, bleachers, a timber shelter and a walking loop through trees.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "running track",
+      "athletics",
+      "track and field",
+      "400 m",
+      "soccer",
+      "walking loop"
+    ]
+  },
+  "native-park:student_village_green_cricket_v1--native-v1": {
+    "label": "Village Green Cricket Ground",
+    "description": "A village cricket ground with a picket fence, boundary rope, square and pitch, sight screens and a timber-framed pavilion among shade trees.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "cricket",
+      "cricket ground",
+      "village green",
+      "pavilion",
+      "sight screens"
+    ]
   }
 }

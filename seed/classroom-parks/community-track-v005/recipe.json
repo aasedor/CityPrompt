@@ -1,0 +1,981 @@
+{
+  "id": "student_community_track_field_v1",
+  "title": "Community Track & Field",
+  "archetype_id": "running_track_oval",
+  "dimensions_m": [
+    200.0,
+    112.0
+  ],
+  "programme": "A six-lane 400 m track (36.5 m bends, 84.39 m straights, 1.22 m lanes) with an inner kerb, lane lines, stagger starts and a finish line; a grass infield with a 100 x 64 m soccer pitch and goals; a long jump runway and sand pit beside the home straight; a shot put circle and sector in the west D; a concrete walk ringing the track with lights and benches; bleachers, a timber shelter, a hurdle stack and a timber fitness station; prairie shrub beds, flowering cherries and groves of aspen, green ash, bur oak and white spruce.",
+  "design_basis": "Original concept after the catalogue running track \"Community Park Track\" references (variant 1). Standard 400 m track geometry as teaching values, not a certified competition facility.",
+  "reference_views": "frontend/public/archetypes/openspaces/running-track-athletic-oval/variant_1",
+  "generator": "CityPrompt native park batch builder v1 (track)",
+  "generator_sha256": "62649ac0f84657667241c00c5e6bed843362f8e6c3483dac3a24e7c8808f1d52",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only; drainage, base courses and the track surface build-up are not designed.",
+    "Six lanes, as at many schools and community tracks; competition tracks have eight and more field events.",
+    "Markings show lane lines, 400 m stagger starts and the finish line only.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0.0,
+        -56.0
+      ],
+      "b": [
+        0.0,
+        -50.02
+      ],
+      "width": 2.4
+    },
+    {
+      "a": [
+        -43.423,
+        -50.005
+      ],
+      "b": [
+        -47.413,
+        -49.744
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -47.413,
+        -49.744
+      ],
+      "b": [
+        -51.173,
+        -49.204
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -51.173,
+        -49.204
+      ],
+      "b": [
+        -54.882,
+        -48.38
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -54.882,
+        -48.38
+      ],
+      "b": [
+        -58.517,
+        -47.278
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -58.517,
+        -47.278
+      ],
+      "b": [
+        -62.059,
+        -45.903
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -62.059,
+        -45.903
+      ],
+      "b": [
+        -65.574,
+        -44.217
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -65.574,
+        -44.217
+      ],
+      "b": [
+        -69.033,
+        -42.21
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -69.033,
+        -42.21
+      ],
+      "b": [
+        -72.238,
+        -39.989
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -72.238,
+        -39.989
+      ],
+      "b": [
+        -75.186,
+        -37.593
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -75.186,
+        -37.593
+      ],
+      "b": [
+        -77.944,
+        -34.981
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -77.944,
+        -34.981
+      ],
+      "b": [
+        -80.496,
+        -32.167
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -80.496,
+        -32.167
+      ],
+      "b": [
+        -82.827,
+        -29.167
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -82.827,
+        -29.167
+      ],
+      "b": [
+        -84.924,
+        -25.999
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -84.924,
+        -25.999
+      ],
+      "b": [
+        -86.867,
+        -22.504
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -86.867,
+        -22.504
+      ],
+      "b": [
+        -88.519,
+        -18.863
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -88.519,
+        -18.863
+      ],
+      "b": [
+        -89.817,
+        -15.292
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -89.817,
+        -15.292
+      ],
+      "b": [
+        -90.84,
+        -11.634
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -90.84,
+        -11.634
+      ],
+      "b": [
+        -91.582,
+        -7.908
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -91.582,
+        -7.908
+      ],
+      "b": [
+        -92.04,
+        -4.137
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -92.04,
+        -4.137
+      ],
+      "b": [
+        -92.211,
+        -0.342
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -92.211,
+        -0.342
+      ],
+      "b": [
+        -92.081,
+        3.655
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -92.081,
+        3.655
+      ],
+      "b": [
+        -91.627,
+        7.628
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -91.627,
+        7.628
+      ],
+      "b": [
+        -90.905,
+        11.358
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -90.905,
+        11.358
+      ],
+      "b": [
+        -89.902,
+        15.022
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -89.902,
+        15.022
+      ],
+      "b": [
+        -88.624,
+        18.6
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -88.624,
+        18.6
+      ],
+      "b": [
+        -87.079,
+        22.07
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -87.079,
+        22.07
+      ],
+      "b": [
+        -85.275,
+        25.413
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -85.275,
+        25.413
+      ],
+      "b": [
+        -83.166,
+        28.692
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -83.166,
+        28.692
+      ],
+      "b": [
+        -80.742,
+        31.873
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -80.742,
+        31.873
+      ],
+      "b": [
+        -78.142,
+        34.778
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -78.142,
+        34.778
+      ],
+      "b": [
+        -75.398,
+        37.406
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -75.398,
+        37.406
+      ],
+      "b": [
+        -72.463,
+        39.818
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -72.463,
+        39.818
+      ],
+      "b": [
+        -69.354,
+        42.001
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -69.354,
+        42.001
+      ],
+      "b": [
+        -66.088,
+        43.941
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -66.088,
+        43.941
+      ],
+      "b": [
+        -62.593,
+        45.67
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -62.593,
+        45.67
+      ],
+      "b": [
+        -58.88,
+        47.153
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -58.88,
+        47.153
+      ],
+      "b": [
+        -55.156,
+        48.308
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -55.156,
+        48.308
+      ],
+      "b": [
+        -51.452,
+        49.152
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -51.452,
+        49.152
+      ],
+      "b": [
+        -47.694,
+        49.713
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -47.694,
+        49.713
+      ],
+      "b": [
+        -43.905,
+        49.987
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -43.905,
+        49.987
+      ],
+      "b": [
+        44.094,
+        49.98
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        44.094,
+        49.98
+      ],
+      "b": [
+        47.882,
+        49.692
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        47.882,
+        49.692
+      ],
+      "b": [
+        51.735,
+        49.1
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        51.735,
+        49.1
+      ],
+      "b": [
+        55.627,
+        48.182
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        55.627,
+        48.182
+      ],
+      "b": [
+        59.339,
+        46.987
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        59.339,
+        46.987
+      ],
+      "b": [
+        62.855,
+        45.55
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        62.855,
+        45.55
+      ],
+      "b": [
+        66.253,
+        43.85
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        66.253,
+        43.85
+      ],
+      "b": [
+        69.512,
+        41.898
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        69.512,
+        41.898
+      ],
+      "b": [
+        72.613,
+        39.704
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        72.613,
+        39.704
+      ],
+      "b": [
+        75.539,
+        37.281
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        75.539,
+        37.281
+      ],
+      "b": [
+        78.413,
+        34.5
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        78.413,
+        34.5
+      ],
+      "b": [
+        81.051,
+        31.495
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        81.051,
+        31.495
+      ],
+      "b": [
+        83.329,
+        28.455
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        83.329,
+        28.455
+      ],
+      "b": [
+        85.37,
+        25.251
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        85.37,
+        25.251
+      ],
+      "b": [
+        87.161,
+        21.901
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        87.161,
+        21.901
+      ],
+      "b": [
+        88.694,
+        18.425
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        88.694,
+        18.425
+      ],
+      "b": [
+        89.959,
+        14.843
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        89.959,
+        14.843
+      ],
+      "b": [
+        90.995,
+        10.98
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        90.995,
+        10.98
+      ],
+      "b": [
+        91.713,
+        7.046
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        91.713,
+        7.046
+      ],
+      "b": [
+        92.105,
+        3.268
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        92.105,
+        3.268
+      ],
+      "b": [
+        92.208,
+        -0.53
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        92.208,
+        -0.53
+      ],
+      "b": [
+        92.024,
+        -4.324
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        92.024,
+        -4.324
+      ],
+      "b": [
+        91.552,
+        -8.094
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        91.552,
+        -8.094
+      ],
+      "b": [
+        90.796,
+        -11.817
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        90.796,
+        -11.817
+      ],
+      "b": [
+        89.73,
+        -15.567
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        89.73,
+        -15.567
+      ],
+      "b": [
+        88.334,
+        -19.314
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        88.334,
+        -19.314
+      ],
+      "b": [
+        86.688,
+        -22.849
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        86.688,
+        -22.849
+      ],
+      "b": [
+        84.825,
+        -26.16
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        84.825,
+        -26.16
+      ],
+      "b": [
+        82.716,
+        -29.32
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        82.716,
+        -29.32
+      ],
+      "b": [
+        80.374,
+        -32.311
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        80.374,
+        -32.311
+      ],
+      "b": [
+        77.812,
+        -35.116
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        77.812,
+        -35.116
+      ],
+      "b": [
+        74.97,
+        -37.784
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        74.97,
+        -37.784
+      ],
+      "b": [
+        71.847,
+        -40.282
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        71.847,
+        -40.282
+      ],
+      "b": [
+        68.618,
+        -42.468
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        68.618,
+        -42.468
+      ],
+      "b": [
+        65.318,
+        -44.35
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        65.318,
+        -44.35
+      ],
+      "b": [
+        61.886,
+        -45.977
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        61.886,
+        -45.977
+      ],
+      "b": [
+        58.339,
+        -47.339
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        58.339,
+        -47.339
+      ],
+      "b": [
+        54.7,
+        -48.428
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        54.7,
+        -48.428
+      ],
+      "b": [
+        50.89,
+        -49.257
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        50.89,
+        -49.257
+      ],
+      "b": [
+        46.927,
+        -49.794
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        46.927,
+        -49.794
+      ],
+      "b": [
+        43.034,
+        -50.01
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        43.034,
+        -50.01
+      ],
+      "b": [
+        -43.423,
+        -50.005
+      ],
+      "width": 2.6
+    }
+  ],
+  "entrance": {
+    "x": 0.0,
+    "y": -56.0,
+    "widthM": 3.0,
+    "arrivalY": -53.0
+  },
+  "walk_surface_materials": [
+    "paving",
+    "grass",
+    "rubber",
+    "gravel"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 10649608,
+    "sha256": "983a00d5aa8a812714df19aaa0cdb36cf6688ec9ab4b91b4a0b57da9e286c6f5"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -100.0,
+      -56.0,
+      -0.0358
+    ],
+    [
+      100.0,
+      56.0,
+      13.667
+    ]
+  ],
+  "triangles": 838476,
+  "mesh_instances": 208,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, grass, rubber, gravel. Never stretch the assembly to fit.",
+  "card": {
+    "group": "play_sport",
+    "description": "A six-lane 400 m running track round a soccer pitch, with long jump and shot put, bleachers, a shelter and a walking loop through trees. Prepared level ground."
+  }
+}

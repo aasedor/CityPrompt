@@ -1,0 +1,26 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "08fab3e99c6b68540868ea7a17050348b1167d78600c114ab01c491aed271a9a",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 88 x 88 m footprint",
+    "recipe bounds match the GLB",
+    "nothing below grade",
+    "nothing taller than 20 m",
+    "1710 material-aware route rays on grass, gravel, paving",
+    "382 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "outfield fence 61 m (200 ft) from home plate on both foul lines and in centre field",
+    "bases 18.29 m (60 ft) apart and the pitching rubber 14.02 m (46 ft) from home plate",
+    "6 m backstop behind home plate",
+    "nothing stands in fair territory but the bases and the pitching rubber"
+  ],
+  "failures": [],
+  "triangles_rendered": 714184,
+  "mesh_instances": 389,
+  "runtime_tested": false
+}

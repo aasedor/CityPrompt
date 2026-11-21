@@ -17,7 +17,8 @@ spec = importlib.util.spec_from_file_location('native_park_batch_verify', HERE /
 verify = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verify)
 
-PACKAGES = {'skate': 'prairie-bowl-skate-v006', 'fitness': 'parkour-yard-v004', 'memorial': 'walled-memorial-v004'}
+PACKAGES = {'skate': 'prairie-bowl-skate-v006', 'fitness': 'parkour-yard-v004', 'memorial': 'walled-memorial-v004',
+            'baseball': 'community-diamond-v005', 'track': 'community-track-v005', 'cricket': 'village-cricket-v003'}
 # The skate park was registered before the shared kit grew for the other two parks. Its assembly
 # still rebuilds byte for byte, but its recipe keeps the source hash of the kit it was built with:
 # rewriting it would change the registered recipe hash and content revision.

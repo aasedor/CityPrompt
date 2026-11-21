@@ -1,0 +1,27 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "983a00d5aa8a812714df19aaa0cdb36cf6688ec9ab4b91b4a0b57da9e286c6f5",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 200 x 112 m footprint",
+    "recipe bounds match the GLB",
+    "nothing below grade",
+    "nothing taller than 20 m",
+    "3000 material-aware route rays on grass, gravel, paving, rubber",
+    "200 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "track inner edge 36.5 m and outer edge 43.82 m from the bend centre (six 1.22 m lanes)",
+    "six lane lines 1.22 m apart on the east bend",
+    "lane one measures 400.00 m, 0.30 m from the kerb",
+    "the 100 x 64 m pitch fits inside the kerb",
+    "nothing stands on the track or infield but the goals"
+  ],
+  "failures": [],
+  "triangles_rendered": 838476,
+  "mesh_instances": 208,
+  "runtime_tested": false
+}
