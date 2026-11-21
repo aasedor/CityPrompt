@@ -30,6 +30,7 @@ Direct3DStyle = Literal[
     "photomontage",
     "development",
     "atmospheric",
+    "movie-still",
     "after-rain",
     "autumn",
     "winter",

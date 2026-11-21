@@ -264,6 +264,7 @@
     "src/components/viewer/globe/walkNavigation.ts",
     "src/components/viewer/globe/zoneSurfaceMode.ts",
     "src/components/viewer/mapEngine/geoUtils.ts",
+    "src/components/viewer/movieStillPreset.ts",
     "src/components/viewer/renderDraftStorage.ts",
     "src/components/viewer/renderStyleGuideData.ts",
     "src/components/viewer/resolvePlanZoneArchetypes.ts",
@@ -487,6 +488,7 @@
     "src/features/pickPlace/UserGeneratedBuildings.tsx",
     "src/features/pickPlace/assetRegistry.ts",
     "src/features/pickPlace/boundaryEdit.ts",
+    "src/features/pickPlace/bridgeDrawingSpan.ts",
     "src/features/pickPlace/brtConnections.ts",
     "src/features/pickPlace/buildingAssetRecovery.ts",
     "src/features/pickPlace/buildingFootprintProgram.ts",
@@ -683,10 +685,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4213,
+    "explicitReferenceCount": 4236,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 5997,
-    "requiredLogicalBytes": 13127041711,
+    "requiredFileCount": 6020,
+    "requiredLogicalBytes": 13140325485,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -5028,9 +5030,16 @@
       "lfsOid": "c571268e0568ef20c6b30c23f603cdac9893792bfe020ae4734d69be5ae828d1"
     },
     {
+      "url": "/archetypes/buildings/folded_roof_market_hall/picker-street-v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 2766668,
+      "lfsOid": "cc619fce53fe0eb8b962782ea5f150a447d758fa35831a816ea96fb1d8ff2fc9"
+    },
+    {
       "url": "/archetypes/buildings/folded_roof_market_hall/reference-8ec8e9e318cc.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 2267659,
@@ -8516,9 +8525,16 @@
       "lfsOid": "66c7921271c2bb94bb21fa5c129b5a4386a33ed05cd86ff2befaa5d050d73e81"
     },
     {
+      "url": "/archetypes/buildings/passage_tower/picker-street-v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 2263104,
+      "lfsOid": "553dd66f3a18f2d120285ff0f812a4d7fd5ffff6cf5b31b149a9776c0c13c375"
+    },
+    {
       "url": "/archetypes/buildings/passage_tower/reference-3073ee61b027.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 1817594,
@@ -9813,9 +9829,16 @@
       "lfsOid": "b532ffc76d9d76844e5b3c312228eb9527e11368067eff6b63dea55347d242fc"
     },
     {
+      "url": "/archetypes/buildings/terraced_science_centre/picker-street-v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 2801338,
+      "lfsOid": "fa50f2746a9e4fbecc5305d9548b86bcfaca73fe2b8a427f6520ad1a9fc982bb"
+    },
+    {
       "url": "/archetypes/buildings/terraced_science_centre/reference-e2aa32dd4cfa.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 2167724,
@@ -27666,6 +27689,156 @@
       "logicalBytes": 7004
     },
     {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-aspen.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 211864,
+      "lfsOid": "02e4ae0b5dbcc3d04fcc3f321a7dfa029ebc296560498e261d83d4f9a7cb15dc"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-aspen.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6328
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-bird-lime.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 389724,
+      "lfsOid": "5181ba497daa1fa46f18aaaf5282cfa854c3e01be1028ec169fa6e38d2f03368"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-bird-lime.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 11596
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-chevron.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 206624,
+      "lfsOid": "e829852cc99d3ac007958c8b3c5145640352cdbfecf8464ec3f994464b501226"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-chevron.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8952
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-chinook.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 332484,
+      "lfsOid": "886325af44446b2a9f47b3f6c4af51384fc272866159e275f6ba60ea59ca5e4c"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-chinook.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6816
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-confetti.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 338872,
+      "lfsOid": "e7ebf71efd470cbe34e5c5261e5bca4f29babd2933778957b3054562bacfe9aa"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-confetti.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8488
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-foothills.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 350044,
+      "lfsOid": "52069e57008206d331dcaf44ca620de43903da1e1fd8374f8130f732b538c636"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-foothills.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6586
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-mosaic.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 197732,
+      "lfsOid": "98507e497dbf080c9de7bef860326ff81b8eb5e03b530e429ddad5bba6d215de"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-mosaic.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 9206
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-plain.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 140500,
+      "lfsOid": "57f74d6ab2c7c6aa841eb1c2527d9a28fe6426b968b8d6552808dfcb47f86433"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-plain.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 3430
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-quilt.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 184276,
+      "lfsOid": "f67a1f836eb0efa082d81295cdf0b0f1c14b3a262ad320811acfc689cb4a217c"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-quilt.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 8146
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-river.glb",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 298276,
+      "lfsOid": "5e52c559ee15d8a2351bd8c1292050d32aed3472e5cc967468b9d15098123449"
+    },
+    {
+      "url": "/park-kits/calgary-details-v1/scooter-corral-river.webp",
+      "sources": [
+        "src/features/parks/detailCatalogueExtras.json"
+      ],
+      "logicalBytes": 6388
+    },
+    {
       "url": "/park-kits/calgary-details-v1/scooter-corral.glb",
       "sources": [
         "src/features/parks/detailCatalogueExtras.json"
@@ -36489,9 +36662,9 @@
         "/park-kits/"
       ],
       "reason": "Kit filenames are selected from typed park recipes and composed into URLs at runtime.",
-      "fileCount": 983,
-      "logicalBytes": 526895408,
-      "pathDigest": "2b047c768d6b26bbdfbbe22251e9dc63543f6e3e54a7dd17da034b997df48303"
+      "fileCount": 1003,
+      "logicalBytes": 529621740,
+      "pathDigest": "2275ce8e2b2c95d3a9f94d34e2d0ec7de206319aa0826c90a813d40c10d7bbc1"
     },
     {
       "name": "public-realm-skins",

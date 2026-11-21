@@ -262,4 +262,22 @@ test.describe('Project management', () => {
       await expect(page.getByRole('button', { name, exact: true })).toHaveCount(0);
     }
   });
+
+  test('scrolls from More Tools to the lower controls in a short workspace', async ({ page }) => {
+    await page.setViewportSize({ width: 1240, height: 620 });
+    await authenticateUser(page);
+
+    await page.route('**/api/v1/projects/proj-1', route => route.fulfill({ json: MOCK_PROJECTS[0] }));
+    await page.route('**/api/v1/activity/**', route => route.fulfill({ json: [] }));
+    await page.route('**/api/v1/annotations/**', route => route.fulfill({ json: [] }));
+
+    await page.goto('/projects/proj-1');
+    await revealPlanningTools(page);
+
+    const water = page.getByRole('button', { name: 'Water', exact: true });
+    await expect(water).not.toBeInViewport();
+    await page.getByRole('button', { name: 'More Tools', exact: true }).hover();
+    await page.mouse.wheel(0, 540);
+    await expect(water).toBeInViewport({ ratio: 0.8 });
+  });
 });

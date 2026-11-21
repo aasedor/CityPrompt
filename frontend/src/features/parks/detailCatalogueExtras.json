@@ -7048,7 +7048,7 @@
   {
     "id": "detail-yyc-scooter-corral",
     "label": "E-scooter parking corral",
-    "category": "Street furniture",
+    "category": "Shared micromobility",
     "description": "Marked on-street bay with a rail, sign and four shared scooters.",
     "dimensions": [
       3.95,
@@ -10338,5 +10338,275 @@
     "bytes": 497564,
     "thumbnailUrl": "/park-kits/calgary-details-v1/city-ghost-barrier-pink.webp",
     "thumbnailSha256": "28166921cadb097846a7099ac741ea5615f0bc68840b3acae4edb8251a00bdfd"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-plain",
+    "label": "E-scooter corral \u00b7 plain panels",
+    "category": "Shared micromobility",
+    "description": "Galvanized pipe corral, 8 by 4 ft and 3 ft tall, open on one long side, with four blank panels ready for art.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-plain.glb",
+    "color": "#9aa3a7",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_plain",
+    "sha256": "57f74d6ab2c7c6aa841eb1c2527d9a28fe6426b968b8d6552808dfcb47f86433",
+    "triangles": 1222,
+    "meshes": 1,
+    "bytes": 140500,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-plain.webp",
+    "thumbnailSha256": "a6ed13a2f9ce5ac98609b334f0f9eb589a4d7e3f607466efad0526a59435bb81"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-foothills",
+    "label": "E-scooter corral \u00b7 Foothills sunrise",
+    "category": "Shared micromobility",
+    "description": "8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in a sunrise over peaks, foothills and prairie. Original design.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-foothills.glb",
+    "color": "#f08a5d",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_foothills",
+    "sha256": "52069e57008206d331dcaf44ca620de43903da1e1fd8374f8130f732b538c636",
+    "triangles": 3060,
+    "meshes": 1,
+    "bytes": 350044,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-foothills.webp",
+    "thumbnailSha256": "363d81e7c701aa95c0127005349d786f6adc55d9569e7fb39a0905d873e597fa"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-chinook",
+    "label": "E-scooter corral \u00b7 Chinook arch",
+    "category": "Shared micromobility",
+    "description": "8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in a chinook arch of sunset cloud over the range. Original design.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-chinook.glb",
+    "color": "#b8456b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_chinook",
+    "sha256": "886325af44446b2a9f47b3f6c4af51384fc272866159e275f6ba60ea59ca5e4c",
+    "triangles": 2906,
+    "meshes": 1,
+    "bytes": 332484,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-chinook.webp",
+    "thumbnailSha256": "988156de3c707d10b1aececea50ccdc199b8b880e4b70791caf5ab63fc22807a"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-river",
+    "label": "E-scooter corral \u00b7 River ribbons",
+    "category": "Shared micromobility",
+    "description": "8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in flowing bands of river blue and green. Original design.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-river.glb",
+    "color": "#1b6ca8",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_river",
+    "sha256": "5e52c559ee15d8a2351bd8c1292050d32aed3472e5cc967468b9d15098123449",
+    "triangles": 2606,
+    "meshes": 1,
+    "bytes": 298276,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-river.webp",
+    "thumbnailSha256": "1110395ee1168e69c4db5f3cc71e515bfb7d631d72f84d67ffcae5d7ca2225b0"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-mosaic",
+    "label": "E-scooter corral \u00b7 Triangle mosaic",
+    "category": "Shared micromobility",
+    "description": "8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in a bright mosaic of irregular triangles. Original design.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-mosaic.glb",
+    "color": "#06d6a0",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_mosaic",
+    "sha256": "98507e497dbf080c9de7bef860326ff81b8eb5e03b530e429ddad5bba6d215de",
+    "triangles": 1724,
+    "meshes": 1,
+    "bytes": 197732,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-mosaic.webp",
+    "thumbnailSha256": "d9c6325dc5f29a31f244b81d20702fdaab605d6263c8d0345dfe30f04ec40cd6"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-chevron",
+    "label": "E-scooter corral \u00b7 Chevrons",
+    "category": "Shared micromobility",
+    "description": "8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in bold zigzag chevrons. Original design.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-chevron.glb",
+    "color": "#ef476f",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_chevron",
+    "sha256": "e829852cc99d3ac007958c8b3c5145640352cdbfecf8464ec3f994464b501226",
+    "triangles": 1802,
+    "meshes": 1,
+    "bytes": 206624,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-chevron.webp",
+    "thumbnailSha256": "3db3693b499b49fe471aefbd63bed4b61c151c4114a16ebcfd2d4354c11f43d7"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-quilt",
+    "label": "E-scooter corral \u00b7 Prairie quilt",
+    "category": "Shared micromobility",
+    "description": "8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in quilt blocks of barn red, mustard and denim. Original design.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-quilt.glb",
+    "color": "#9b2d30",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_quilt",
+    "sha256": "f67a1f836eb0efa082d81295cdf0b0f1c14b3a262ad320811acfc689cb4a217c",
+    "triangles": 1606,
+    "meshes": 1,
+    "bytes": 184276,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-quilt.webp",
+    "thumbnailSha256": "37469837c57849abcc98274d3fa800619174204b749c14b4e85839077a392221"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-aspen",
+    "label": "E-scooter corral \u00b7 Aspen grove",
+    "category": "Shared micromobility",
+    "description": "8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in white aspen trunks under a gold canopy. Original design.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-aspen.glb",
+    "color": "#e6b93a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_aspen",
+    "sha256": "02e4ae0b5dbcc3d04fcc3f321a7dfa029ebc296560498e261d83d4f9a7cb15dc",
+    "triangles": 1848,
+    "meshes": 1,
+    "bytes": 211864,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-aspen.webp",
+    "thumbnailSha256": "eefc59da8a413e7f82316cfc35b1104034b1d021ca80231beaa7ba325d407784"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-confetti",
+    "label": "E-scooter corral \u00b7 Confetti",
+    "category": "Shared micromobility",
+    "description": "8 by 4 ft galvanized pipe corral, open on one side, its panels wrapped in bright dots on deep teal. Original design.",
+    "dimensions": [
+      2.608,
+      1.319,
+      0.916
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-confetti.glb",
+    "color": "#1f5f6b",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_confetti",
+    "sha256": "e7ebf71efd470cbe34e5c5261e5bca4f29babd2933778957b3054562bacfe9aa",
+    "triangles": 2962,
+    "meshes": 1,
+    "bytes": 338872,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-confetti.webp",
+    "thumbnailSha256": "88169e6a596968d688a96856635afcd2f33beef08f9aaf994ad7ee20a12f9d8b"
+  },
+  {
+    "id": "detail-yyc-scooter-corral-bird-lime",
+    "label": "E-scooter corral \u00b7 Bird and Lime fleet",
+    "category": "Shared micromobility",
+    "description": "Triangle mosaic corral with Bird and Lime scooters and e-bikes parked inside, in fleet colours. No logos.",
+    "dimensions": [
+      2.608,
+      1.86,
+      1.051
+    ],
+    "url": "/park-kits/calgary-details-v1/scooter-corral-bird-lime.glb",
+    "color": "#2fcf4a",
+    "kind": "object",
+    "offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sourceKit": "calgary-details-v1",
+    "sourceBuilder": "calgary:scooter_corral_bird_lime",
+    "sha256": "5181ba497daa1fa46f18aaaf5282cfa854c3e01be1028ec169fa6e38d2f03368",
+    "triangles": 3408,
+    "meshes": 1,
+    "bytes": 389724,
+    "thumbnailUrl": "/park-kits/calgary-details-v1/scooter-corral-bird-lime.webp",
+    "thumbnailSha256": "25b0a33ec052421fb1d0bf380ad04f87053a2b86aedb305b2bc2c1df2192b91f"
   }
 ]

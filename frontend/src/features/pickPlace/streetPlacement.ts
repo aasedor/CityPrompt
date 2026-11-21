@@ -8,6 +8,7 @@ import { isSpecialistStreet } from '@/components/viewer/globe/specialistStreetPr
 import { isFixedNativeScene } from './fixedNativeScene';
 import { isSurfacePath } from './surfacePath';
 import { bufferPathwayToPolygon } from '@/utils/pathwayFootprint';
+import { modularBridgeProgramFor, modularBridgeRouteProblem } from '@/components/viewer/globe/modularBridgeProgram';
 
 export const CALGARY_LOCAL_PLACEMENT = LOCAL_STREET_ASSET;
 export const CALGARY_LOCAL_WIDTH_M = LOCAL_STREET_ASSET.sectionWidth;
@@ -121,6 +122,10 @@ export function streetRouteProblem(
   const line = authoredControls ?? extractCenterline(coordinates);
   if (line.length < 2) return 'Place at least two route points.';
   const mLon = metersPerDegLon(line[0][1]);
+  const bridge = modularBridgeProgramFor(properties?.road_selected_variant_id);
+  if (bridge) return modularBridgeRouteProblem(bridge, line.map(p => ({
+    x: (p[0] - line[0][0]) * mLon, y: (p[1] - line[0][1]) * METERS_PER_DEG_LAT,
+  })));
   const segments = line.slice(1).map((p, i) => [(p[0] - line[i][0]) * mLon, (p[1] - line[i][1]) * METERS_PER_DEG_LAT]);
   // Flat path finishes do not need the approach length or turning envelope of
   // a complete vehicle street section. Keep only distinct drawing stations.

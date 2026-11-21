@@ -17,6 +17,31 @@ const { GlobeStreetDrawingPreview } = await import('./GlobeStreetDrawingPreview'
 const { MODULAR_BRIDGE_ASSETS } = await import('./assetRegistry');
 afterEach(cleanup);afterAll(()=>vi.unstubAllEnvs());
 
+it('previews and tracks a mobile crosshair without any pointer event, fitting an approximate narrow span', () => {
+  harness.canvas=document.createElement('canvas');
+  harness.canvas.getBoundingClientRect=()=>({width:390,height:800,left:0,top:0}) as DOMRect;
+  const matrix=new Matrix4(); harness.camera={matrixWorld:matrix};
+  const asset=MODULAR_BRIDGE_ASSETS.find(item=>item.id==='weathering_steel_v_footbridge_route_v1')!;
+  const boundary={id:'site',zone_type:'site_boundary',coordinates:[[-115,50],[-113,50],[-113,52],[-115,52]],
+    properties:{terrain_strategy:'level',community_3d_mask_existing_tiles:true}} as unknown as SiteZone;
+  let cursor:[number,number]=[-114,51+12/111320];
+  const raycastSurface=vi.fn(()=>({lngLat:cursor,height:1000}));
+  const props={points:[[-114,51]],pointHeights:[1000],properties:asset.properties,zones:[boundary],terrainHeight:1000,raycastSurface};
+  const view=render(<GlobeStreetDrawingPreview {...props}/>);
+  act(()=>harness.frame!({clock:{elapsedTime:1}}));
+  expect(raycastSurface).toHaveBeenLastCalledWith(0,0);
+  expect(view.queryByTestId('bridge-model')).not.toBeNull();
+  fireEvent.pointerLeave(harness.canvas);
+  act(()=>harness.frame!({clock:{elapsedTime:1.5}}));
+  expect(view.queryByTestId('bridge-model')).not.toBeNull();
+  const first=harness.zone?.properties?.plan_route_controls;
+  cursor=[-113.998,51]; matrix.makeTranslation(1,0,0);
+  act(()=>harness.frame!({clock:{elapsedTime:2}}));
+  expect(harness.zone?.properties?.plan_route_controls).not.toEqual(first);
+  view.rerender(<GlobeStreetDrawingPreview {...props} points={[]}/>);
+  expect(view.queryByTestId('bridge-model')).toBeNull();
+});
+
 it.each([
   ['timber_covered_bridge_route_v1',80], ['planted_green_bridge_route_v1',190],
   ['brick_arch_viaduct_route_v1',140], ['rail_through_truss_route_v1',150],
@@ -51,5 +76,29 @@ it.each([
   expect(harness.zone?.properties?.plan_route_controls).toEqual(points);
   expect(onStatusChange).toHaveBeenLastCalledWith(null);
   view.rerender(<GlobeStreetDrawingPreview {...props} points={[points[0]]}/>);
+  expect(view.queryByTestId('bridge-model')).toBeNull();
+});
+
+it('explains when fitting the second point extends a bridge outside the site', () => {
+  harness.canvas = document.createElement('canvas');
+  harness.camera = { matrixWorld: new Matrix4() };
+  const asset = MODULAR_BRIDGE_ASSETS.find(item => item.id === 'swooping_cycle_flyover_route_v1')!;
+  const boundary = {
+    id: 'site', zone_type: 'site_boundary',
+    coordinates: [[-114.001, 50.999], [-113.999, 50.999], [-113.999, 51.001], [-114.001, 51.001]],
+    properties: { terrain_strategy: 'level', community_3d_mask_existing_tiles: true },
+  } as unknown as SiteZone;
+  const onStatusChange = vi.fn();
+  const view = render(<GlobeStreetDrawingPreview
+    points={[[-114, 51], [-114, 51.0005]]}
+    pointHeights={[1000, 1000]}
+    properties={asset.properties}
+    zones={[boundary]}
+    terrainHeight={1000}
+    raycastSurface={() => null}
+    onStatusChange={onStatusChange}
+  />);
+
+  expect(onStatusChange).toHaveBeenLastCalledWith(expect.stringContaining('inside your site boundary'));
   expect(view.queryByTestId('bridge-model')).toBeNull();
 });

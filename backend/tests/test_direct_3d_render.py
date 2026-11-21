@@ -2355,9 +2355,13 @@ def test_provider_first_prompts_use_one_concise_natural_design_lock():
 @pytest.mark.parametrize("view_mode", ["aerial", "street"])
 @pytest.mark.parametrize(
     ("style", "treatment"),
-    [("after-rain", "broken reflections"), ("autumn", "deciduous foliage")],
+    [
+        ("movie-still", "gentle highlight roll-off"),
+        ("after-rain", "broken reflections"),
+        ("autumn", "deciduous foliage"),
+    ],
 )
-def test_seasonal_presentation_keeps_the_source_camera(style, treatment, view_mode):
+def test_photographic_preset_keeps_the_source_camera(style, treatment, view_mode):
     request = _request(presentation_mode="scene", style=style, fidelity_policy="balanced")
     prompt = _presentation_prompt(
         "",

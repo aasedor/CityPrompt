@@ -219,7 +219,11 @@ describe('student street render', () => {
     expect(mocks.direct.mock.calls[0][1].style).toBe('watercolour');
   });
 
-  it.each([['After Rain', 'after-rain'], ['Autumn', 'autumn']])('sends the selected %s style to Direct 3D', async (label, id) => {
+  it.each([
+    ['Movie Still', 'movie-still'],
+    ['After Rain', 'after-rain'],
+    ['Autumn', 'autumn'],
+  ])('sends the selected %s style to Direct 3D', async (label, id) => {
     const capture = vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} });
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} />);
     fireEvent.click(screen.getByRole('button', { name: label }));
@@ -228,7 +232,11 @@ describe('student street render', () => {
     expect(mocks.direct.mock.calls[0][1].style).toBe(id);
   });
 
-  it.each([['After Rain', 'damp paving'], ['Autumn', 'existing deciduous']])('passes %s as a photographic style to Classic street rendering', async (label, detail) => {
+  it.each([
+    ['Movie Still', 'fine film grain'],
+    ['After Rain', 'damp paving'],
+    ['Autumn', 'existing deciduous'],
+  ])('passes %s as a photographic style to Classic street rendering', async (label, detail) => {
     mocks.classic.mockResolvedValue({ imageUrl: 'data:image/png;base64,street', prompt: 'street' });
     render(<StreetViewPanel siteZones={[]} projectId="project-1" />);
     fireEvent.click(screen.getByRole('button', { name: label }));

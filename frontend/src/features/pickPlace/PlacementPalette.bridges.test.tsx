@@ -52,5 +52,7 @@ it('explains the two-endpoint bridge preview without promising site-edge road sn
     onCancel={vi.fn()} status="ready" message="" onRetry={vi.fn()}
     activeStreetVariant="timber_covered_bridge_route_v1" />);
   expect(screen.getByText(/Draw two endpoints.*32.*240 m/)).toBeVisible();
+  expect(screen.getByText(/automatically.*supported span/i)).toBeVisible();
+  expect(screen.getByText(/tap Finish/i)).toBeVisible();
   expect(screen.queryByText(/Start near a site edge to snap/)).toBeNull();
 });

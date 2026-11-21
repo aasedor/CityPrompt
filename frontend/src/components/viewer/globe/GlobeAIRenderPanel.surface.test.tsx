@@ -60,6 +60,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe('ground surfaces in Direct 3D rendering', () => {
   it.each([
     ['Photo Realistic', 'photorealistic'],
+    ['Movie Still', 'movie-still'],
     ['After Rain', 'after-rain'],
     ['Autumn', 'autumn'],
   ])('sends %s from the aerial picker with the authored surface claim', async (label, style) => {
