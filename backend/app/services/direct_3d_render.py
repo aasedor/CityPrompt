@@ -24,6 +24,7 @@ import httpx
 import numpy as np
 from PIL import Image, ImageDraw
 
+from app.core.config import get_settings
 from app.core.image_models import (
     DEFAULT_OPENAI_IMAGE_MODEL,
     PAID_IMAGE_CREDIT_MULTIPLIERS,
@@ -4104,6 +4105,51 @@ class Direct3DRenderService:
         self.api_key = api_key
         self.gemini_api_key = gemini_api_key
         self._nano_original: str | None = None
+        self._street_view_context: dict[str, Any] | None = None
+
+    async def _load_street_view_context(
+        self,
+        req: Direct3DRenderRequest,
+        capture: PreparedDirect3DCapture,
+    ) -> tuple[str, bytes, str]:
+        from app.services.site_context import fetch_streetview_plate
+
+        context = req.street_view_context
+        settings = get_settings()
+        if context is None or not (settings.direct_3d_street_view_context_enabled and settings.google_maps_api_key):
+            raise Direct3DProviderError(
+                "Google Street View context is unavailable on this server.", billing_status="unproduced"
+            )
+
+        aspect = capture.normalized_beauty.width / capture.normalized_beauty.height
+        horizontal_fov = 90.0
+        if req.camera and req.camera.fov is not None:
+            horizontal_fov = math.degrees(2 * math.atan(math.tan(math.radians(req.camera.fov / 2)) * aspect))
+        plate = await fetch_streetview_plate(
+            context.latitude,
+            context.longitude,
+            context.heading,
+            horizontal_fov,
+            640,
+            round(640 / aspect),
+            max_offset_m=20,
+        )
+        if plate is None:
+            raise Direct3DProviderError(
+                "No usable Google Street View image was returned within 20 m. Move the camera or turn off the reference.",
+                billing_status="unproduced",
+            )
+        try:
+            raw = _decode_base64_payload(plate["photo_base64"], label="Google Street View reference")
+            _load_image(raw, label="Google Street View reference", allowed_formats={"PNG", "JPEG"}).close()
+        except Direct3DValidationError as exc:
+            raise Direct3DProviderError(
+                "Google Street View returned an invalid image. Move the camera or turn off the reference.",
+                billing_status="unproduced",
+            ) from exc
+        self._street_view_context = {"pano_date": plate["pano_date"], "offset_m": plate["pano_offset_m"]}
+        mime = plate["mime_type"]
+        return ("street-view-context.png" if mime == "image/png" else "street-view-context.jpg", raw, mime)
 
     async def _call_openai(
         self,
@@ -4255,6 +4301,15 @@ class Direct3DRenderService:
             max_length=30_000,
         )
         prompt = apply_presentation_selections(prompt, add_people=req.add_people, add_vehicles=req.add_vehicles)
+        if req.street_view_context is not None:
+            files.append(("image[]", await self._load_street_view_context(req, capture)))
+            prompt += (
+                "\nEXISTING STREET REFERENCE: The last image is a photograph from a nearby panorama. "
+                "Use it for the appearance of existing façades, pavement, sidewalk edges and street furniture "
+                "only where they correspond to the captured 3D view. Keep the first image's camera, visibility, "
+                "street layout and every placed design object. Keep changes to materials and lighting. "
+                "Leave objects that are outside the frame, occluded or absent from the capture out of the result."
+            )
         if req.model == NANO_BANANA_MODEL:
             from app.services.nano_banana_image import (
                 generate_nano_banana_image,
@@ -4421,6 +4476,7 @@ class Direct3DRenderService:
     ) -> Direct3DServiceResult:
         capture = capture or prepare_direct_3d_capture(req)
         self._nano_original = None
+        self._street_view_context = None
         generated = await self._call_openai(
             req,
             capture,
@@ -4498,6 +4554,8 @@ class Direct3DRenderService:
                     provider_image_base64,
                 )
                 street_result.diagnostics["view_mode"] = "street"
+                if self._street_view_context is not None:
+                    street_result.diagnostics["street_view_context"] = self._street_view_context
                 return street_result
 
             if DIRECT_3D_PRESENTATION_FIRST and req.presentation_mode == "scene":

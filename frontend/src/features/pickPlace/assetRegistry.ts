@@ -22,6 +22,7 @@ import { reviewedAssetClassification } from './catalogueClassification';
 import { localTowerStoreyMetadata } from './localTowerStoreyPrograms';
 import { LOCAL_CLAUDE_SAVED_ASSETS } from './claudeAssetLocalTrial';
 import { LOCAL_TEACHING_BUILDINGS } from './localTeachingBuildings';
+import { validationNativeBuildingBinding } from './validationNativeBuildingBinding';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from './claudeBuildingRelease';
 import { PUBLIC_REALM_RELEASE_SAVED_ASSETS } from './publicRealmRelease';
 import { classifyCalgaryAsset, calgaryGroup, CALGARY_GROUPS, type CalgaryClassification } from '@/features/calgaryCatalogue/guide';
@@ -53,6 +54,10 @@ export interface PlaceAsset extends AssetRecord {
   maxWidth?: number;
   maxDepth?: number;
   nativeDimensions?: [number, number, number];
+  /** An exact fixed GLB owns the visible building and has no modular family. */
+  standaloneNative?: boolean;
+  /** The authored base needs a cleared, level site. */
+  preparedLevelOnly?: boolean;
   /** Finite authored vertical assembly.  Fixed podium/roof modules keep their
    * geometry while a reviewed typical-storey module repeats between them. */
   storeyProgram?: {
@@ -357,10 +362,11 @@ export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, 
   // Keep that binding reproducible rather than depending on an unrelated
   // developer database having a matching Model Library row.
   if(asset.kind==='object' && asset.zoneType==='building' && asset.reshapeMode==='fixed_native') {
-    const entry=validation.entries.find(row=>row.placement_id===asset.id);
-    if(entry?.local_url && entry.sha256===asset.model.revision && entry.binding==='native-runtime') {
-      asset={...asset,properties:{...asset.properties,validation_fixed_fixture:true,
-        validation_native_url:entry.local_url,community_3d_mask_existing_tiles:true}};
+    const binding = validationNativeBuildingBinding(asset.id, asset.model.revision);
+    if (binding?.local_url) {
+      asset = { ...asset, standaloneNative: binding.standalone_native === true,
+        properties: { ...asset.properties, validation_fixed_fixture: true,
+          validation_native_url: binding.local_url, community_3d_mask_existing_tiles: true } };
     }
   }
   if (asset.kind==='object' && asset.zoneType==='road') {

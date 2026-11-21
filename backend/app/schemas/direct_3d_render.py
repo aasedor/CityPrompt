@@ -192,6 +192,17 @@ class Direct3DArchetypeReference(BaseModel):
     zone_ids: list[str] = Field(default_factory=list, max_length=2048)
 
 
+class Direct3DStreetViewContext(BaseModel):
+    latitude: float = Field(ge=-90, le=90, allow_inf_nan=False)
+    longitude: float = Field(ge=-180, le=180, allow_inf_nan=False)
+    heading: float = Field(ge=0, lt=360, allow_inf_nan=False)
+
+
+class Direct3DStreetViewReferenceDiagnostics(BaseModel):
+    pano_date: str | None = None
+    offset_m: float = Field(ge=0)
+
+
 class Direct3DRenderRequest(BaseModel):
     """A clean 3D capture plus mode-specific presentation and design authority."""
 
@@ -251,6 +262,7 @@ class Direct3DRenderRequest(BaseModel):
             "in this first version. Street requires presentation_mode='scene'."
         ),
     )
+    street_view_context: Direct3DStreetViewContext | None = None
     style: Direct3DStyle = Field(
         default="photorealistic",
         description="The render panel style identifier governing the presentation treatment.",
@@ -391,6 +403,8 @@ class Direct3DRenderRequest(BaseModel):
     def validate_object_id_pair(self) -> "Direct3DRenderRequest":
         if self.view_mode == "street" and self.presentation_mode != "scene":
             raise ValueError("view_mode='street' requires presentation_mode='scene'")
+        if self.street_view_context is not None and self.view_mode != "street":
+            raise ValueError("street_view_context requires view_mode='street'")
         if bool(self.object_id_image_base64) != bool(self.object_id_manifest):
             raise ValueError("object_id_image_base64 and object_id_manifest must be supplied together")
         if self.presentation_mode in {"scene", "reproject"} and not self.object_id_image_base64:
@@ -603,6 +617,7 @@ class Direct3DFinishFusionDiagnostics(BaseModel):
 
 class Direct3DRenderDiagnostics(BaseModel):
     control_bundle_version: Literal[1, 2] = 1
+    street_view_context: Direct3DStreetViewReferenceDiagnostics | None = None
     processing_mode: Direct3DPresentationMode = "source_anchored"
     view_lock: Literal[
         "source_pixel_locked",

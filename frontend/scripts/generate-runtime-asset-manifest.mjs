@@ -242,6 +242,13 @@ const starter = JSON.parse(readFileSync(starterPath, 'utf8'));
 for (const dependency of starter.dependencies) {
   if (dependency.location === 'public') references.set(`/${dependency.path}`, new Set([sourcePath(starterPath)]));
 }
+const validationPath = resolve(sourceRoot, 'data/validationCatalogue.json');
+const validation = JSON.parse(readFileSync(validationPath, 'utf8'));
+for (const entry of validation.entries) {
+  if (entry.standalone_native === true && entry.binding === 'native-runtime') {
+    references.set(entry.local_url, new Set([sourcePath(validationPath)]));
+  }
+}
 const urlPattern = /\/(?:archetypes|assets|entourage|families|images|park-kits|park-skins|landscape-pilots|street-kits|native-park-assets)\/[^\s"'`<>)\]}]+/g;
 for (const filePath of sourceFiles) {
   if (catalogPaths.has(filePath)) continue;

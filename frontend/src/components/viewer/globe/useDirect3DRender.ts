@@ -360,6 +360,7 @@ export function useDirect3DRender() {
       /** 'street' marks an eye-level capture: scene presentation is forced and
        *  the server returns review_required in this first version. */
       viewMode?: 'aerial' | 'street';
+      streetViewContext?: { latitude: number; longitude: number; heading: number };
       /** Authored archetype artwork (facade sheets, catalogue cards) the
        *  provider applies to the named buildings. Max 8, server-enforced. */
       archetypeReferences?: Array<{ image_base64: string; label: string; zone_ids?: string[] }>;
@@ -403,6 +404,9 @@ export function useDirect3DRender() {
       model: options.model ?? DEFAULT_OPENAI_IMAGE_MODEL,
       control_bundle_version: 2,
       view_mode: viewMode,
+      ...(viewMode === 'street' && options.streetViewContext
+        ? { street_view_context: options.streetViewContext }
+        : {}),
       // The captured 3D model owns identity for every same-camera style.
       // Catalogue artwork can prescribe different roofs, openings or materials.
       ...(options.archetypeReferences?.length && presentationMode !== 'scene'

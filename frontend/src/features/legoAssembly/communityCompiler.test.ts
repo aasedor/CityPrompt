@@ -21,6 +21,8 @@ import {
 } from './communityCompiler';
 import { resetProjectCommunityCompileCoordinatorForTests } from './projectCommunityCompile';
 import { rectangleAt } from '@/features/pickPlace/geometry';
+import { placeAsset, placementProperties } from '@/features/pickPlace/catalogue';
+import * as nativeBuildingBinding from '@/features/pickPlace/validationNativeBuildingBinding';
 
 it('does not derive a building or park compilation job for an independently drawn ground finish', () => {
   const finish = zone('finish', 'development_area', { ground_surface_material: 'grass', _plan_role: 'building', floors: 10 });
@@ -682,6 +684,34 @@ describe('mixed community compiler', () => {
     expect(plan).not.toHaveBeenCalled();
     expect(compile.mock.calls[0][0][0]).not.toHaveProperty('recipe');
     expect(result).toMatchObject({ detailedBuildings: 1, plannedMasses: 0 });
+  });
+
+  it('uses a standalone native building without probing for a family and still compiles its saved footprint', async () => {
+    const fixture = placeAsset('validation_brewery_crystal_brewhouse');
+    const native = zone('fixed', 'building', placementProperties(fixture));
+    vi.spyOn(nativeBuildingBinding, 'isStandaloneNativeBuilding').mockImplementation(source =>
+      source.properties?.pick_place_asset === fixture.id
+      && source.properties?.pick_place_model_revision === fixture.model.revision);
+    const modular = zone('modular', 'building', { development_archetype_id: 'supported_building', floors: 5 });
+    const plan = vi.spyOn(legoAssemblyApi, 'plan').mockResolvedValue(detailedPlan);
+    const compile = vi.spyOn(legoAssemblyApi, 'compileCommunity').mockResolvedValue({
+      status: 'compiled', compiled_at: '2026-11-19T00:00:00Z', counts: { building: 2, park: 0, street: 0 },
+      items: [
+        { zone_id: native.id, kind: 'building', building_id: 'fixed-building', building_created: true, generator: 'planned_massing' },
+        { zone_id: modular.id, kind: 'building', building_id: 'modular-building', building_created: true, generator: 'lego_assembly' },
+      ],
+    });
+
+    const result = await compileMixedCommunity3D([native, modular]);
+
+    expect(plan).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ archetype_id: 'supported_building' }));
+    expect(compile.mock.calls[0][0]).toEqual([
+      { zone_id: native.id, source_updated_at: native.updated_at },
+      expect.objectContaining({ zone_id: modular.id, recipe: expect.any(Object) }),
+    ]);
+    expect(result).toMatchObject({ detailedBuildings: 2, plannedMasses: 0 });
+    expect(result.resolvedBuildings?.[0]).toMatchObject({ standaloneNative: true });
+    expect(result.resolvedBuildings?.[0]?.error).toBeUndefined();
   });
 
   it('probes each explicitly missing family once instead of repeating hundreds of 422s', async () => {

@@ -1536,6 +1536,146 @@
       "placement_id": "validation_student_market_street_v1",
       "runtime_status": "NOT TESTED",
       "binding": "native-runtime"
+    },
+    {
+      "record_id": "building/terraced_science_centre/terraced_science_centre@ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7",
+      "domain": "building",
+      "title": "Terraced science centre",
+      "archetype_id": "terraced_science_centre",
+      "variant_id": "terraced_science_centre",
+      "version": "terraced-science-centre-v002",
+      "sha256": "ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7",
+      "existing_reviews": [
+        "PASS_INDEPENDENT_HOLISTIC_TEXTURED"
+      ],
+      "completed": true,
+      "app_eligible": true,
+      "runtime_status": "READY",
+      "local_url": "/model-revisions/ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7.glb",
+      "placement_id": "rlasm_terraced_science_centre",
+      "binding": "native-runtime",
+      "standalone_native": true,
+      "native_dimensions_m": [
+        52.28,
+        36.234,
+        13.2
+      ],
+      "publication_approval": {
+        "authorized_by": "human_user",
+        "quote": "When everything is ready, please push",
+        "date": "2026-11-19",
+        "model_sha256": "ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7"
+      }
+    },
+    {
+      "record_id": "building/folded_roof_market_hall/folded_roof_market_hall@599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7",
+      "domain": "building",
+      "title": "Folded-roof market hall",
+      "archetype_id": "folded_roof_market_hall",
+      "variant_id": "folded_roof_market_hall",
+      "version": "folded-roof-market-hall-v004",
+      "sha256": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7",
+      "existing_reviews": [
+        "PASS_INDEPENDENT_HOLISTIC_TEXTURED"
+      ],
+      "completed": true,
+      "app_eligible": true,
+      "runtime_status": "READY",
+      "local_url": "/model-revisions/599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7.glb",
+      "placement_id": "rlasm_folded_roof_market_hall",
+      "binding": "native-runtime",
+      "standalone_native": true,
+      "native_dimensions_m": [
+        42.0,
+        23.0,
+        9.2
+      ],
+      "publication_approval": {
+        "authorized_by": "human_user",
+        "quote": "When everything is ready, please push",
+        "date": "2026-11-19",
+        "model_sha256": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7"
+      }
+    },
+    {
+      "record_id": "building/passage_tower/passage_tower@81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51",
+      "domain": "building",
+      "title": "Passage tower",
+      "archetype_id": "passage_tower",
+      "variant_id": "passage_tower",
+      "version": "passage-tower-v004",
+      "sha256": "81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51",
+      "existing_reviews": [
+        "PASS_INDEPENDENT_HOLISTIC_TEXTURED"
+      ],
+      "completed": true,
+      "app_eligible": true,
+      "runtime_status": "READY",
+      "local_url": "/model-revisions/81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51.glb",
+      "placement_id": "rlasm_passage_tower",
+      "binding": "native-runtime",
+      "standalone_native": true,
+      "native_dimensions_m": [
+        42.1475,
+        34.055,
+        63.3
+      ],
+      "publication_approval": {
+        "authorized_by": "human_user",
+        "quote": "When everything is ready, please push",
+        "date": "2026-11-19",
+        "model_sha256": "81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51"
+      }
+    },
+    {
+      "record_id": "building/london_crescent_terrace/london-crescent-terrace-bath-stone@705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
+      "domain": "building",
+      "title": "Bath Stone Grand",
+      "archetype_id": "london_crescent_terrace",
+      "variant_id": "london-crescent-terrace-bath-stone",
+      "version": "crescent-terrace-bath-stone-clay-v006",
+      "model_revision": "crescent-terrace-bath-stone-clay-v006",
+      "sha256": "705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284",
+      "existing_reviews": [
+        "PASS_INDEPENDENT_ARCHITECTURAL_CLAY"
+      ],
+      "completed": true,
+      "app_eligible": true,
+      "runtime_status": "READY",
+      "local_url": "/model-revisions/705fc02b21d5704bf6b97a565b1c48df079b47d8d4f38f5304f5fb0d623b0284.glb",
+      "placement_id": "london_crescent_terrace_bath_stone",
+      "binding": "native-runtime",
+      "standalone_native": true,
+      "native_dimensions_m": [
+        126.31745910644531,
+        48.400219678878784,
+        19.15999984741211
+      ]
+    },
+    {
+      "record_id": "building/calgary_15_connected_tower/brutalist_concrete_slab@2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0",
+      "domain": "building",
+      "title": "Brutalist Concrete Office Slab",
+      "archetype_id": "calgary_15_connected_tower",
+      "variant_id": "brutalist_concrete_slab",
+      "version": "plus15-brutalist-concrete-office-clay-v006",
+      "model_revision": "plus15-brutalist-concrete-office-clay-v006",
+      "sha256": "2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0",
+      "existing_reviews": [
+        "PASS_INDEPENDENT_ARCHITECTURAL_CLAY"
+      ],
+      "completed": true,
+      "app_eligible": true,
+      "runtime_status": "READY",
+      "local_url": "/model-revisions/2c94066899b883c1dc1afc351006077e25e3fe3b76e509850e977b372bd28cc0.glb",
+      "placement_id": "plus15_brutalist_concrete_office",
+      "binding": "native-runtime",
+      "standalone_native": true,
+      "native_dimensions_m": [
+        54,
+        40.5,
+        28.25
+      ]
     }
   ],
   "assets": [
@@ -2681,6 +2821,199 @@
         "community_3d_mask_existing_tiles": true
       },
       "sectionWidth": 18.0
+    },
+    {
+      "id": "rlasm_terraced_science_centre",
+      "kind": "object",
+      "zoneType": "building",
+      "definitionVersion": 1,
+      "readiness": "ready",
+      "label": "Terraced science centre",
+      "description": "Three gallery wings around a south-facing court, with two outdoor terraces and seated rooflights.",
+      "thumbnail": "/archetypes/buildings/terraced_science_centre/reference-e2aa32dd4cfa.png",
+      "model": {
+        "variantId": "terraced_science_centre",
+        "revision": "ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "civic",
+        "basis": "design_reference"
+      },
+      "reshapeMode": "fixed_native",
+      "reshapeDescription": "Move or rotate the building at its authored size.",
+      "width": 52.6,
+      "depth": 36.6,
+      "minWidth": 52.6,
+      "minDepth": 36.6,
+      "maxWidth": 52.6,
+      "maxDepth": 36.6,
+      "maxSize": 52.6,
+      "nativeDimensions": [
+        52.28,
+        36.234,
+        13.2
+      ],
+      "storeyProgram": {
+        "id": "rlasm_terraced_science_centre-authored",
+        "mode": "fixed_authored_assembly",
+        "nativeStoreys": 2,
+        "minStoreys": 2,
+        "maxStoreys": 2,
+        "podiumStoreys": 2,
+        "podiumHeightM": 13.2,
+        "repeatedStoreyHeightM": 0,
+        "roofHeightM": 0
+      },
+      "entranceSnap": {
+        "xM": 0.0,
+        "yM": -18.117,
+        "widthM": 3.0,
+        "plotWidthM": 52.6,
+        "plotDepthM": 36.6
+      },
+      "properties": {
+        "building_archetype_id": "terraced_science_centre",
+        "development_archetype_id": "terraced_science_centre",
+        "development_selected_variant_id": "terraced_science_centre",
+        "development_archetype_label": "Terraced science centre",
+        "development_archetype_image": "/archetypes/buildings/terraced_science_centre/reference-e2aa32dd4cfa.png",
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "floors": 2,
+        "floor_count": 2,
+        "height": 13.2,
+        "height_m": 13.2
+      }
+    },
+    {
+      "id": "rlasm_folded_roof_market_hall",
+      "kind": "object",
+      "zoneType": "building",
+      "definitionVersion": 1,
+      "readiness": "ready",
+      "label": "Folded-roof market hall",
+      "description": "Folded graphite zinc canopy, six glulam forks and five occupied brick workshops. Prepared level ground required.",
+      "thumbnail": "/archetypes/buildings/folded_roof_market_hall/reference-8ec8e9e318cc.png",
+      "model": {
+        "variantId": "folded_roof_market_hall",
+        "revision": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "shops",
+        "basis": "design_reference"
+      },
+      "reshapeMode": "fixed_native",
+      "reshapeDescription": "Move or rotate the building at its authored size.",
+      "width": 42.5,
+      "depth": 23.5,
+      "minWidth": 42.5,
+      "minDepth": 23.5,
+      "maxWidth": 42.5,
+      "maxDepth": 23.5,
+      "maxSize": 42.5,
+      "nativeDimensions": [
+        42.0,
+        23.0,
+        9.2
+      ],
+      "storeyProgram": {
+        "id": "rlasm_folded_roof_market_hall-authored",
+        "mode": "fixed_authored_assembly",
+        "nativeStoreys": 1,
+        "minStoreys": 1,
+        "maxStoreys": 1,
+        "podiumStoreys": 1,
+        "podiumHeightM": 9.2,
+        "repeatedStoreyHeightM": 0,
+        "roofHeightM": 0
+      },
+      "entranceSnap": {
+        "xM": -7.5,
+        "yM": -11.5,
+        "widthM": 3.0,
+        "plotWidthM": 42.5,
+        "plotDepthM": 23.5
+      },
+      "properties": {
+        "building_archetype_id": "folded_roof_market_hall",
+        "development_archetype_id": "folded_roof_market_hall",
+        "development_selected_variant_id": "folded_roof_market_hall",
+        "development_archetype_label": "Folded-roof market hall",
+        "development_archetype_image": "/archetypes/buildings/folded_roof_market_hall/reference-8ec8e9e318cc.png",
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "floors": 1,
+        "floor_count": 1,
+        "height": 9.2,
+        "height_m": 9.2
+      },
+      "preparedLevelOnly": true
+    },
+    {
+      "id": "rlasm_passage_tower",
+      "kind": "object",
+      "zoneType": "building",
+      "definitionVersion": 1,
+      "readiness": "ready",
+      "label": "Passage tower",
+      "description": "Eighteen levels with a split podium, planted setbacks and an open through-block lane.",
+      "thumbnail": "/archetypes/buildings/passage_tower/reference-3073ee61b027.png",
+      "model": {
+        "variantId": "passage_tower",
+        "revision": "81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51",
+        "method": "RLASM 6.1"
+      },
+      "calgaryGuide": {
+        "groupId": "mixed",
+        "basis": "design_reference"
+      },
+      "reshapeMode": "fixed_native",
+      "reshapeDescription": "Move or rotate the building at its authored size.",
+      "width": 42.6,
+      "depth": 34.6,
+      "minWidth": 42.6,
+      "minDepth": 34.6,
+      "maxWidth": 42.6,
+      "maxDepth": 34.6,
+      "maxSize": 42.6,
+      "nativeDimensions": [
+        42.1475,
+        34.055,
+        63.3
+      ],
+      "storeyProgram": {
+        "id": "rlasm_passage_tower-authored",
+        "mode": "fixed_authored_assembly",
+        "nativeStoreys": 18,
+        "minStoreys": 18,
+        "maxStoreys": 18,
+        "podiumStoreys": 18,
+        "podiumHeightM": 63.3,
+        "repeatedStoreyHeightM": 0,
+        "roofHeightM": 0
+      },
+      "entranceSnap": {
+        "xM": 0.0,
+        "yM": -17.0,
+        "widthM": 3.0,
+        "plotWidthM": 42.6,
+        "plotDepthM": 34.6
+      },
+      "properties": {
+        "building_archetype_id": "passage_tower",
+        "development_archetype_id": "passage_tower",
+        "development_selected_variant_id": "passage_tower",
+        "development_archetype_label": "Passage tower",
+        "development_archetype_image": "/archetypes/buildings/passage_tower/reference-3073ee61b027.png",
+        "native_home_plot": false,
+        "native_plot_axes": true,
+        "floors": 18,
+        "floor_count": 18,
+        "height": 63.3,
+        "height_m": 63.3
+      }
     }
   ]
 }

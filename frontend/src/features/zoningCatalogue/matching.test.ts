@@ -6,6 +6,12 @@ import catalogue from '@/features/referenceLayers/calgaryBylawCatalogue.json';
 import { OCTOBER_BUILDING_ASSETS, COMMUNITY_BUILDING_ASSETS, FINAL_FIVE_BUILDING_ASSETS, CLAUDE_FIVE_TRIAL_ASSETS, PARKADE_BUILDING_ASSETS, LOCAL_TOWER_ASSETS } from '@/features/pickPlace/assetRegistry';
 import { CLAUDE_BUILDING_RELEASE_ASSETS } from '@/features/pickPlace/claudeBuildingRelease';
 import release from '@/data/claudeBuildingRelease.json';
+import validation from '@/data/validationCatalogue.json';
+
+// Named standalone revisions already belong to the Claude release roster.
+const texturedRelease = validation.entries.filter(entry => entry.standalone_native && !entry.model_revision)
+  .map(entry => ({ asset_id: entry.placement_id, variant_id: entry.variant_id, candidate: entry.sha256 }));
+const unclassifiedRelease = [...release.entries, ...texturedRelease];
 
 const zone = (designation: string): ZoneInspection => ({ id: 'z', label: designation, source: 'Test', district: { designation } });
 const model = (variant: string) => ZONING_CATALOGUE_BUILDINGS.find(a => a.model.variantId === variant)!;
@@ -13,19 +19,23 @@ const result = (variant: string, designation: string) => matchBuilding(model(var
 
 describe('catalogue zoning screening', () => {
   it('retains every reviewed exact building programme while adding only the explicit release cohort', () => {
-    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length + FINAL_FIVE_BUILDING_ASSETS.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length + CLAUDE_BUILDING_RELEASE_ASSETS.length + LOCAL_TOWER_ASSETS.length);
-    const releaseIds = new Set([...release.entries.map(entry => entry.asset_id),...LOCAL_TOWER_ASSETS.map(asset=>asset.id)]);
+    expect(ZONING_CATALOGUE_BUILDINGS).toHaveLength(34 + OCTOBER_BUILDING_ASSETS.length + COMMUNITY_BUILDING_ASSETS.length
+      + FINAL_FIVE_BUILDING_ASSETS.length + CLAUDE_FIVE_TRIAL_ASSETS.length + PARKADE_BUILDING_ASSETS.length
+      + CLAUDE_BUILDING_RELEASE_ASSETS.length + LOCAL_TOWER_ASSETS.length + texturedRelease.length);
+    const releaseIds = new Set([...unclassifiedRelease.map(entry => entry.asset_id), ...LOCAL_TOWER_ASSETS.map(asset => asset.id)]);
     const reviewed = ZONING_CATALOGUE_BUILDINGS.filter(asset => !releaseIds.has(asset.id));
     expect(Object.keys(BUILDING_PROGRAMS).sort()).toEqual(reviewed.map(a => a.model.variantId).sort());
     for (const a of reviewed) expect(BUILDING_PROGRAMS[a.model.variantId].revision).toBe(a.model.revision);
     expect(Object.keys(DISTRICT_RULES).sort()).toEqual(catalogue.districts.map(d => d.code).sort());
   });
-  it('keeps all 25 activated building revisions unclassified until their actual occupancy is reviewed', () => {
-    const activated = release.entries;
-    expect(activated).toHaveLength(25);
-    expect(CLAUDE_BUILDING_RELEASE_ASSETS.map(asset => asset.id).sort()).toEqual(activated.map(entry => entry.asset_id).sort());
-    for (const entry of release.entries) expect(BUILDING_PROGRAMS[entry.variant_id]).toBeUndefined();
-    for (const entry of activated) {
+  it('keeps the exact release revisions unclassified until their occupancy is reviewed', () => {
+    expect(release.entries).toHaveLength(27);
+    expect(CLAUDE_BUILDING_RELEASE_ASSETS.map(asset => asset.id).sort())
+      .toEqual(release.entries.map(entry => entry.asset_id).sort());
+    expect(texturedRelease.map(entry => entry.asset_id).sort()).toEqual([
+      'rlasm_folded_roof_market_hall', 'rlasm_passage_tower', 'rlasm_terraced_science_centre',
+    ]);
+    for (const entry of unclassifiedRelease) {
       const asset = ZONING_CATALOGUE_BUILDINGS.find(candidate => candidate.id === entry.asset_id)!;
       expect(asset).toMatchObject({ readiness: 'ready', model: { variantId: entry.variant_id, revision: entry.candidate } });
       expect(BUILDING_PROGRAMS[entry.variant_id]).toBeUndefined();
