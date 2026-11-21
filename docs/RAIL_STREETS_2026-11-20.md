@@ -139,6 +139,25 @@ its trees.
   and worker tests that need `pygltflib`, a database or Redis, none of which are installed.
 - Runtime asset manifest: 6,045 required files (+21: 15 modules and 6 card images).
 
+## Runtime trial handoff
+
+Everything needed for a runtime trial is on `claude/tender-albattani-fsnp50`, based on
+`deployment-version`:
+
+- **Runtime reviews:** one per variant under `tools/rail_streets/runtime-review/`,
+  following the repository template. Every applicable gate and matrix row is NOT TESTED;
+  building, park and bridge rows are N/A with reasons. Each ends with rail-specific checks
+  and the classroom impact of the open items.
+- **Modules and card images** are in Git LFS: run `git lfs pull` after checkout.
+- **Trial steps:**
+  - start the app as `CLAUDE.md` describes;
+  - prepare a level site;
+  - draw each street from the Streets and Pathways picker;
+  - work through its review, recording evidence row by row.
+- **Separate decisions:** visual acceptance and publication stay separate from the
+  runtime review. All three remain `local-pilot-runtime-pending` until a person
+  approves them.
+
 ## Open checkpoints
 
 - **Runtime: NOT TESTED.** Nothing was drawn in the running app.
