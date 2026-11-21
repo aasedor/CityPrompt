@@ -22,6 +22,7 @@ import { getApiErrorMessage, resolveApiFileUrl } from '@/services/api';
 import { RenderEditModal } from './RenderEditModal';
 import { DIRECT_3D_ALLOWED_STYLES, resolveDirect3DPresentationMode, useDirect3DRender } from './globe/useDirect3DRender';
 import { collectDirect3DArchetypeReferences } from './globe/direct3dArchetypeReferences';
+import type { Direct3DCaptureOptions } from './globe/direct3dCapture';
 import { getCommunity3DCaptureClaims } from '@/features/community3d/community3d';
 import { authoredSurfaceRevision, getAuthoredSurfaceCaptureClaims, type AuthoredSurfaceClaim } from '@/features/groundSurfaces/groundSurfaceCapture';
 import { groundSurfaceFor } from '@/features/groundSurfaces/groundSurfaces';
@@ -109,7 +110,7 @@ interface StreetViewPanelProps {
   /** When provided, captures the globe scene from street level instead of the
    *  clay render — including the authored 3D building models when present
    *  (result.kind tells which framing the prompt should use). */
-  globeCapture?: () => Promise<StreetCaptureResult | null>;
+  globeCapture?: (options?: Pick<Direct3DCaptureOptions, 'allowEmptyProposal'>) => Promise<StreetCaptureResult | null>;
   /** Project buildings — required for the inventory-locked Direct 3D street
    *  path (per-zone capture claims are derived from them). */
   buildings?: Building[];
@@ -166,7 +167,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
     const angle = streetViewPegman.angle;
     setIsPreviewing(true);
     try {
-      const source = await globeCapture();
+      const source = await globeCapture({ allowEmptyProposal: attachStreetViewContext });
       if (!source) throw new Error('The 3D view is not ready. Wait for the scene to load.');
       setSourcePreview({
         imageUrl: source.imageBase64.startsWith('data:') ? source.imageBase64 : `data:image/png;base64,${source.imageBase64}`,
@@ -261,7 +262,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
         const surfaceRevision = directStreetMode ? authoredSurfaceRevision(currentSurfaceZones.current) : null;
         const [surfaceClaims, captured] = await Promise.all([
           directStreetMode ? getAuthoredSurfaceCaptureClaims(currentSurfaceZones.current) : Promise.resolve([]),
-          globeCapture(),
+          globeCapture({ allowEmptyProposal: attachStreetViewContext }),
         ]);
         if (directStreetMode && surfaceRevision !== authoredSurfaceRevision(currentSurfaceZones.current)) {
           throw new Error('Ground surfaces changed during capture. Capture the current scene again.');
@@ -320,9 +321,11 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
                 longitude: pegmanPosition[0],
                 heading: ((pegmanAngle % 360) + 360) % 360,
               },
+              addPeople: includePeople,
+              addVehicles: includeVehicles,
             } : {}),
             archetypeReferences,
-            customPrompt: [
+            customPrompt: attachStreetViewContext ? customPrompt.trim() : [
               includePeople ? 'Include a few pedestrians on existing walking surfaces.' : 'Do not add people.',
               includeVehicles ? 'Include a few vehicles on existing carriageways only.' : 'Do not add vehicles.',
               includePeople ? 'Scale people using nearby doors and storeys. Show natural walking or seated poses with believable ground contact; keep feet visible when the captured framing allows. Respect occlusion by existing trees, buildings and furniture, and keep entrances and crossings readable.' : '',
@@ -330,6 +333,10 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               'Keep all buildings, facilities, paths and streets in their captured positions.',
             ].filter(Boolean).join(' '),
           }), (direct) => {
+            const streetViewContext = direct.diagnostics?.street_view_context;
+            const streetViewCaptureDate = streetViewContext
+              ? streetViewContext.pano_date ?? null
+              : undefined;
             const directResult: StreetViewResult = {
               imageUrl: direct.render.imageUrl,
               prompt: direct.render.prompt,
@@ -337,6 +344,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               imageQuality: 'high',
               providerLabel: direct.render.providerLabel,
               reviewWarnings: direct.warnings,
+              streetViewCaptureDate,
             };
             const original = direct.providerOriginalRender;
             const originalPreview: StreetViewResult | undefined = original ? {
@@ -346,6 +354,7 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
               imageQuality: original.image_quality,
               providerLabel: 'AI render',
               reviewWarnings: ['AI original — compare its geometry with the clean 3D source.'],
+              streetViewCaptureDate,
             } : undefined;
             const sourcePreview: StreetViewResult = {
               imageUrl: direct.sourceImageUrl, prompt: '', providerLabel: 'Original 3D view',
@@ -568,9 +577,16 @@ export function StreetViewPanel({ siteZones, projectId, detailsRevision, globeCa
           <div className="flex items-center justify-between border-b border-white/10 px-5 py-3">
             <div className="flex items-center gap-2 text-white">
               <Eye size={18} className="text-amber-400" />
-              <span className="font-semibold">
-                Street View AI Render ({result.providerLabel || STREET_VIEW_RENDER_LABEL}) — Looking {compassLabel(streetViewPegman.angle)}
-              </span>
+              <div>
+                <span className="font-semibold">
+                  Street View AI Render ({result.providerLabel || STREET_VIEW_RENDER_LABEL}) — Looking {compassLabel(streetViewPegman.angle)}
+                </span>
+                {result.streetViewCaptureDate !== undefined && (
+                  <p className="text-xs text-white/70">
+                    Google Street View photo · {result.streetViewCaptureDate ?? 'Date unavailable'}
+                  </p>
+                )}
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               {projectId && !result.error && savedRendersByImage[getRenderImageKey(result)] && <AnimateRenderButton projectId={projectId} render={savedRendersByImage[getRenderImageKey(result)]}/>}

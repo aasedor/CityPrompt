@@ -1567,6 +1567,7 @@ export const rendersApi = {
       control_bundle_version?: 1 | 2;
       /** Optional so saved/legacy source-anchored responses remain readable. */
       processing_mode?: 'source_anchored' | 'scene' | 'reproject';
+      street_view_context?: { pano_date?: string | null; offset_m: number } | null;
       view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
       context_restyled?: boolean;
       provider_first?: boolean;
@@ -1632,7 +1633,7 @@ export const rendersApi = {
       minimum_object_id_proposal_iou?: number | null;
       scene_lower_context_coverage?: number | null;
       minimum_scene_lower_context_coverage?: number | null;
-      structural_edge_guide_attached: true;
+      structural_edge_guide_attached: boolean;
       finish_fusion?: {
         method: 'source-geometry-multiscale-source-phase-detail-v2';
         sigma_px: number;

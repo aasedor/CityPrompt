@@ -177,6 +177,18 @@ describe('Direct 3D presentation adapter', () => {
     vi.mocked(rendersApi.generateDirect3D).mockResolvedValue(response);
   });
 
+  it('sends just the user art direction and style when the photo supplies the streetscape', async () => {
+    const { result } = renderHook(() => useDirect3DRender());
+    const streetViewContext = { latitude: 51, longitude: -114, heading: 99 };
+    await result.current.renderDirect3D(capture, {
+      style: 'photorealistic', projectId: 'project-1', community3DClaims,
+      viewMode: 'street', streetViewContext, customPrompt: 'Soft morning light', addPeople: true,
+    });
+    expect(rendersApi.generateDirect3D).toHaveBeenCalledWith(expect.objectContaining({
+      style: 'photorealistic', prompt: 'Soft morning light', street_view_context: streetViewContext, add_people: true,
+    }));
+  });
+
   it('keeps the measured, camera-aligned AI finish instead of replacing it with the unaligned original', async () => {
     const final = { id: 'aligned', image_url: '/aligned.png', prompt: 'finish', created_at: '2026-10-19' };
     const original = { id: 'raw', image_url: '/raw.png', prompt: 'finish', created_at: '2026-10-19' };

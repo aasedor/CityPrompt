@@ -605,6 +605,11 @@ describe('Direct 3D capture helpers', () => {
     expect(() => validateDirect3DMaskCoverage(0, 0, undefined, 1)).toThrow();
   });
 
+  it('accepts a fully context-only frame when the Street View capture opts in', () => {
+    expect(() => validateDirect3DMaskCoverage(0, 0, 0, 1, true)).not.toThrow();
+    expect(() => validateDirect3DMaskCoverage(0, 15, 0, 1, true)).toThrow();
+  });
+
   it.each([289, 1])('accepts a visible proposal occupying only %i pixels', (pixels) => {
     // 289 / 512² reproduces the reported 0.11% street-view capture.
     // The same default is used by aerial capture; size is not an integrity check.

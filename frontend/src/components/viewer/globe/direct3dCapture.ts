@@ -197,6 +197,8 @@ export interface Direct3DCaptureOptions {
   maxLongEdge?: number;
   minMaskCoverage?: number;
   maxMaskCoverage?: number;
+  /** A Street View reference can support a view facing away from the proposal. */
+  allowEmptyProposal?: boolean;
   includeGeometryPasses?: boolean;
   /** Globe captures require actual drawn context, not a sky-only coarse tile. */
   minVisibleContextCoverage?: number;
@@ -1211,7 +1213,9 @@ export function validateDirect3DMaskCoverage(
   proposalPixelCount: number,
   minCoverage = DEFAULT_MIN_MASK_COVERAGE,
   maxCoverage = DEFAULT_MAX_MASK_COVERAGE,
+  allowEmptyProposal = false,
 ): void {
+  if (allowEmptyProposal && coverage === 0 && proposalPixelCount === 0) return;
   if (proposalPixelCount < 1 || coverage <= 0 || coverage < minCoverage) {
     throw new Direct3DCaptureError(
       'no_proposal_content',
@@ -1803,6 +1807,7 @@ export async function captureDirect3DScene(
       analysis.proposalPixelCount,
       options.minMaskCoverage ?? DEFAULT_MIN_MASK_COVERAGE,
       options.maxMaskCoverage ?? DEFAULT_MAX_MASK_COVERAGE,
+      options.allowEmptyProposal,
     );
 
     // Instance inventory: repeat the context depth seed in a separate target,

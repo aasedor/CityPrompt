@@ -24,7 +24,12 @@ RENDER_PRESERVATION_LOCK = (
 )
 
 
-def presentation_entourage_lock(*, add_people: bool = False, add_vehicles: bool = False) -> str:
+def presentation_entourage_lock(
+    *,
+    add_people: bool = False,
+    add_vehicles: bool = False,
+    preserve_captured_entourage: bool = True,
+) -> str:
     """Explicit UI selections override style/custom text; existing context stays intact."""
     people = (
         "Add a restrained number of realistically scaled people only on existing visible sidewalks, paths or plazas, "
@@ -43,7 +48,12 @@ def presentation_entourage_lock(*, add_people: bool = False, add_vehicles: bool 
         + people
         + " "
         + vehicles
-        + " Preserve any people or vehicles already captured in the existing context. "
+        + (
+            " Preserve any people or vehicles already captured in the existing context."
+            if preserve_captured_entourage
+            else ""
+        )
+        + " "
         "These selections never permit changes to camera, buildings, streets, park layout, paths or furniture."
     )
 
@@ -56,11 +66,22 @@ def append_render_preservation_lock(prompt: str, *, max_length: int = 32_000) ->
     return prompt[: max_length - len(suffix)].rstrip() + suffix
 
 
-def apply_presentation_selections(prompt: str, *, add_people: bool = False, add_vehicles: bool = False) -> str:
+def apply_presentation_selections(
+    prompt: str,
+    *,
+    add_people: bool = False,
+    add_vehicles: bool = False,
+    preserve_captured_entourage: bool = True,
+    reference_instruction: str = "",
+) -> str:
     suffix = (
         "\n"
-        + presentation_entourage_lock(add_people=add_people, add_vehicles=add_vehicles)
+        + presentation_entourage_lock(
+            add_people=add_people,
+            add_vehicles=add_vehicles,
+            preserve_captured_entourage=preserve_captured_entourage,
+        )
         + "\n"
-        + RENDER_PRESERVATION_LOCK
+        + (reference_instruction or RENDER_PRESERVATION_LOCK)
     )
     return prompt.removesuffix(RENDER_PRESERVATION_LOCK)[: 32_000 - len(suffix)].rstrip() + suffix

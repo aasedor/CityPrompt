@@ -91,6 +91,7 @@ export interface Direct3DRenderDiagnostics {
   displayed_image_variant?: 'processed' | 'provider_original';
   /** Missing on legacy source-anchored responses. */
   processing_mode?: Direct3DPresentationMode;
+  street_view_context?: { pano_date?: string | null; offset_m: number } | null;
   view_lock?: 'source_pixel_locked' | 'camera_registered' | 'not_applicable_layout_guided';
   context_restyled?: boolean;
   provider_first?: boolean;
@@ -162,7 +163,7 @@ export interface Direct3DRenderDiagnostics {
   minimum_object_id_proposal_iou?: number | null;
   scene_lower_context_coverage?: number | null;
   minimum_scene_lower_context_coverage?: number | null;
-  structural_edge_guide_attached: true;
+  structural_edge_guide_attached: boolean;
   finish_fusion?: {
     method: 'source-geometry-multiscale-source-phase-detail-v2';
     sigma_px: number;
@@ -379,14 +380,11 @@ export function useDirect3DRender() {
     }
     const fidelityPolicy = options.fidelityPolicy
       ?? resolveDirect3DFidelityPolicy(options.style);
-    const prompt = buildDirect3DVisualPrompt(
-      options.style,
-      options.customPrompt,
-      capture,
-      fidelityPolicy,
-      options.publicRealmContext,
-    );
     const viewMode = options.viewMode ?? 'aerial';
+    const streetViewContext = viewMode === 'street' ? options.streetViewContext : undefined;
+    const prompt = streetViewContext
+      ? options.customPrompt?.trim() || 'Use the selected finish for the photographed streetscape and visible design.'
+      : buildDirect3DVisualPrompt(options.style, options.customPrompt, capture, fidelityPolicy, options.publicRealmContext);
     const presentationMode = viewMode === 'street'
       ? 'scene'
       : resolveDirect3DPresentationMode(options.style);
@@ -404,9 +402,7 @@ export function useDirect3DRender() {
       model: options.model ?? DEFAULT_OPENAI_IMAGE_MODEL,
       control_bundle_version: 2,
       view_mode: viewMode,
-      ...(viewMode === 'street' && options.streetViewContext
-        ? { street_view_context: options.streetViewContext }
-        : {}),
+      ...(streetViewContext ? { street_view_context: streetViewContext } : {}),
       // The captured 3D model owns identity for every same-camera style.
       // Catalogue artwork can prescribe different roofs, openings or materials.
       ...(options.archetypeReferences?.length && presentationMode !== 'scene'

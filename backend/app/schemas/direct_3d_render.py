@@ -673,7 +673,7 @@ class Direct3DRenderDiagnostics(BaseModel):
     source_locked_rlasm_pixel_coverage: float | None = None
     scene_lower_context_coverage: float | None = None
     minimum_scene_lower_context_coverage: float | None = None
-    structural_edge_guide_attached: Literal[True] = True
+    structural_edge_guide_attached: bool = True
     finish_fusion: Direct3DFinishFusionDiagnostics | None = None
     provider_raw_structural_edge_fidelity: Direct3DRawStructuralEdgeFidelityDiagnostics | None = None
     macro_design_fidelity: Direct3DMacroDesignFidelityDiagnostics | None = None
