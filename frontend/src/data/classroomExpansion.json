@@ -808,6 +808,43 @@
   "runtime_status": "NOT TESTED",
   "completed": false
 }
+,
+{
+  "domain": "park",
+  "title": "Prairie Bowl Skate Park",
+  "archetype_id": "skate_park",
+  "variant_id": "student_prairie_bowl_skate_park_v1",
+  "version": "prairie-bowl-skate-v006",
+  "placement_id": "native-park:student_prairie_bowl_skate_park_v1--native-v1",
+  "sha256": "63f17b45b72cfd215efaac152232ee60dba2c2a7b282e05133edb8e1bfda5b0f",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+},
+{
+  "domain": "park",
+  "title": "Parkour & Calisthenics Yard",
+  "archetype_id": "outdoor_fitness_circuit",
+  "variant_id": "student_parkour_calisthenics_yard_v1",
+  "version": "parkour-yard-v004",
+  "placement_id": "native-park:student_parkour_calisthenics_yard_v1--native-v1",
+  "sha256": "de904793cef32f06eca7e786563864d192bdf011a537553d794b15c9506cd20e",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+},
+{
+  "domain": "park",
+  "title": "Walled Memorial Garden",
+  "archetype_id": "memorial_garden",
+  "variant_id": "student_walled_memorial_garden_v1",
+  "version": "walled-memorial-v004",
+  "placement_id": "native-park:student_walled_memorial_garden_v1--native-v1",
+  "sha256": "fbfc279068e6bdfb0b8f35064dcda46d7851a7f8cf514599637e0611464325f2",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+}
 ],
   "assets": [
     {
@@ -3169,6 +3206,103 @@
     "pick_place_definition_version": 1,
     "community_3d_mask_existing_tiles": true,
     "road_standard_citation": "City Prompt original teaching section; not a City of Calgary or rail operator drawing"
+  }
+}
+,
+{
+  "id": "native-park:student_prairie_bowl_skate_park_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Prairie Bowl Skate Park",
+  "description": "Concrete bowls and a snake run set into prairie meadow, with timber terrace seating, a street plaza and a path loop. Prepared level ground.",
+  "thumbnail": "/native-park-assets/8755c197c586fef875d47f52528fb1e9901e8a18a7a4c918ec0dbe651c097506.png",
+  "calgaryGuide": {
+    "groupId": "play_sport",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 64.0,
+  "depth": 52.0,
+  "minWidth": 64.0,
+  "minDepth": 52.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_prairie_bowl_skate_park_v1",
+    "revision": "28dd97ec98d22cdb3731e634b15c98166c7d32bbc3efa1bcfe2049912588883a",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "skate_park",
+    "green_space_selected_variant_id": "student_prairie_bowl_skate_park_v1",
+    "green_space_native_layout_id": "student_prairie_bowl_skate_park_v1--native-v1",
+    "pick_place_automatic_3d": true
+  }
+},
+{
+  "id": "native-park:student_parkour_calisthenics_yard_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Parkour & Calisthenics Yard",
+  "description": "A red rubber movement floor with vault walls, a climbing wall, a pull-up rig and a hex frame, in lawn and planting with a path loop. Prepared level ground.",
+  "thumbnail": "/native-park-assets/55f4cfc1303ef28bcfaa6f62a68400510d49624a27b335194a1f06b27595d796.png",
+  "calgaryGuide": {
+    "groupId": "play_sport",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 44.0,
+  "depth": 36.0,
+  "minWidth": 44.0,
+  "minDepth": 36.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_parkour_calisthenics_yard_v1",
+    "revision": "089c65f5fefab4857b2d77b2bd9bb8c313efc1a032d5236e6327fcb339b9d2f9",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "outdoor_fitness_circuit",
+    "green_space_selected_variant_id": "student_parkour_calisthenics_yard_v1",
+    "green_space_native_layout_id": "student_parkour_calisthenics_yard_v1--native-v1",
+    "pick_place_automatic_3d": true
+  }
+},
+{
+  "id": "native-park:student_walled_memorial_garden_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Walled Memorial Garden",
+  "description": "A brick-walled garden with a long reflecting pool, hedged flower beds, columnar trees, a rose arbour and a wall of blank plaques. Prepared level ground.",
+  "thumbnail": "/native-park-assets/019cc0b1884cd17132b29c216e0ebd38283243dba891b32cb9a819670c9d7dc5.png",
+  "calgaryGuide": {
+    "groupId": "gardens",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 36.0,
+  "depth": 50.0,
+  "minWidth": 36.0,
+  "minDepth": 50.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_walled_memorial_garden_v1",
+    "revision": "03956eb6ea3bb001df8302f29981de8e17416f805d339b28209200fa6e9cba99",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "memorial_garden",
+    "green_space_selected_variant_id": "student_walled_memorial_garden_v1",
+    "green_space_native_layout_id": "student_walled_memorial_garden_v1--native-v1",
+    "pick_place_automatic_3d": true
   }
 }
 ]

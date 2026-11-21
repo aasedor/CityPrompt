@@ -1,0 +1,716 @@
+{
+  "id": "student_prairie_bowl_skate_park_v1",
+  "title": "Prairie Bowl Skate Park",
+  "archetype_id": "skate_park",
+  "dimensions_m": [
+    64.0,
+    52.0
+  ],
+  "programme": "Three linked concrete bowls (a 2.4 m kidney bowl, a 1.8 m clover bowl and a snake run) with steel coping, set into native prairie planting; curved timber terrace seating in a grass berm; a street-skating plaza with a stair set, handrail, hubba, ledges, flat rail, manual pad and bank; a gravel entrance spur and loop; benches, lights, bins, a bike rack and a drinking fountain; aspen and bur oak.",
+  "design_basis": "Original concept after the catalogue skate park \"Naturalized Active\" references (variant 2): bowls and a snake run set into native planting with timber terraces. Depths and transitions are typical teaching values, not a skate-park design.",
+  "reference_views": "frontend/public/archetypes/openspaces/skate-park/variant_2",
+  "generator": "CityPrompt native park batch builder v1 (skate)",
+  "generator_sha256": "5c4a6527540095ff6f825cd6f66f7e26ece9bf23dcdd2d6b61a9bc4923d4dd17",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only. The bowls go 2.4 m below grade inside the park; drainage is not modelled.",
+    "Bowl transitions are quarter circles from a flat bottom to vertical at the coping; real parks are designed and built by specialist firms.",
+    "Skating surfaces are not walking routes: walkers use the deck, plaza, paths and grass.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0.0,
+        -26.0
+      ],
+      "b": [
+        0.04,
+        -21.203
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        0.04,
+        -21.203
+      ],
+      "b": [
+        0.583,
+        -16.942
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        0.583,
+        -16.942
+      ],
+      "b": [
+        -0.4,
+        -13.6
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        0.0,
+        -20.5
+      ],
+      "b": [
+        8.658,
+        -19.654
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        8.658,
+        -19.654
+      ],
+      "b": [
+        11.701,
+        -19.067
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        11.701,
+        -19.067
+      ],
+      "b": [
+        14.673,
+        -18.19
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        14.673,
+        -18.19
+      ],
+      "b": [
+        17.643,
+        -17.003
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        17.643,
+        -17.003
+      ],
+      "b": [
+        20.579,
+        -15.499
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        20.579,
+        -15.499
+      ],
+      "b": [
+        22.324,
+        -14.334
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        22.324,
+        -14.334
+      ],
+      "b": [
+        23.808,
+        -12.996
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        23.808,
+        -12.996
+      ],
+      "b": [
+        25.015,
+        -11.532
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        25.015,
+        -11.532
+      ],
+      "b": [
+        25.985,
+        -9.901
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        25.985,
+        -9.901
+      ],
+      "b": [
+        26.725,
+        -8.045
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        26.725,
+        -8.045
+      ],
+      "b": [
+        27.218,
+        -6.006
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        27.218,
+        -6.006
+      ],
+      "b": [
+        27.469,
+        -3.52
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        27.469,
+        -3.52
+      ],
+      "b": [
+        27.543,
+        0.278
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        27.543,
+        0.278
+      ],
+      "b": [
+        27.312,
+        3.97
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        27.312,
+        3.97
+      ],
+      "b": [
+        26.792,
+        7.531
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        26.792,
+        7.531
+      ],
+      "b": [
+        26.045,
+        10.744
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        26.045,
+        10.744
+      ],
+      "b": [
+        25.292,
+        12.702
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        25.292,
+        12.702
+      ],
+      "b": [
+        24.348,
+        14.348
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        24.348,
+        14.348
+      ],
+      "b": [
+        23.152,
+        15.821
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        23.152,
+        15.821
+      ],
+      "b": [
+        21.742,
+        17.09
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        21.742,
+        17.09
+      ],
+      "b": [
+        20.07,
+        18.184
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        20.07,
+        18.184
+      ],
+      "b": [
+        18.074,
+        19.106
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        18.074,
+        19.106
+      ],
+      "b": [
+        14.833,
+        20.126
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        14.833,
+        20.126
+      ],
+      "b": [
+        11.225,
+        20.942
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        11.225,
+        20.942
+      ],
+      "b": [
+        7.463,
+        21.47
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        7.463,
+        21.47
+      ],
+      "b": [
+        3.57,
+        21.697
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        3.57,
+        21.697
+      ],
+      "b": [
+        -1.328,
+        21.595
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -1.328,
+        21.595
+      ],
+      "b": [
+        -6.31,
+        21.183
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -6.31,
+        21.183
+      ],
+      "b": [
+        -11.058,
+        20.483
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -11.058,
+        20.483
+      ],
+      "b": [
+        -14.576,
+        19.725
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -14.576,
+        19.725
+      ],
+      "b": [
+        -16.833,
+        18.915
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -16.833,
+        18.915
+      ],
+      "b": [
+        -18.789,
+        17.913
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -18.789,
+        17.913
+      ],
+      "b": [
+        -20.677,
+        16.601
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -20.677,
+        16.601
+      ],
+      "b": [
+        -22.364,
+        15.041
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -22.364,
+        15.041
+      ],
+      "b": [
+        -23.841,
+        13.28
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -23.841,
+        13.28
+      ],
+      "b": [
+        -25.356,
+        10.928
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -25.356,
+        10.928
+      ],
+      "b": [
+        -26.602,
+        8.422
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -26.602,
+        8.422
+      ],
+      "b": [
+        -27.529,
+        5.888
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -27.529,
+        5.888
+      ],
+      "b": [
+        -28.169,
+        3.266
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -28.169,
+        3.266
+      ],
+      "b": [
+        -28.521,
+        0.591
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -28.521,
+        0.591
+      ],
+      "b": [
+        -28.589,
+        -2.207
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -28.589,
+        -2.207
+      ],
+      "b": [
+        -28.348,
+        -4.693
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -28.348,
+        -4.693
+      ],
+      "b": [
+        -27.816,
+        -6.929
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -27.816,
+        -6.929
+      ],
+      "b": [
+        -27.032,
+        -8.983
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -27.032,
+        -8.983
+      ],
+      "b": [
+        -25.927,
+        -10.998
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -25.927,
+        -10.998
+      ],
+      "b": [
+        -24.624,
+        -12.768
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -24.624,
+        -12.768
+      ],
+      "b": [
+        -22.98,
+        -14.514
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -22.98,
+        -14.514
+      ],
+      "b": [
+        -21.122,
+        -16.03
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -21.122,
+        -16.03
+      ],
+      "b": [
+        -19.176,
+        -17.254
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -19.176,
+        -17.254
+      ],
+      "b": [
+        -16.909,
+        -18.304
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -16.909,
+        -18.304
+      ],
+      "b": [
+        -14.536,
+        -19.083
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -14.536,
+        -19.083
+      ],
+      "b": [
+        -11.698,
+        -19.673
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -11.698,
+        -19.673
+      ],
+      "b": [
+        -8.414,
+        -19.986
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -8.414,
+        -19.986
+      ],
+      "b": [
+        0.0,
+        -20.5
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -4.0,
+        21.6
+      ],
+      "b": [
+        -4.38,
+        19.339
+      ],
+      "width": 2.2
+    },
+    {
+      "a": [
+        -4.38,
+        19.339
+      ],
+      "b": [
+        -3.6,
+        17.0
+      ],
+      "width": 2.2
+    }
+  ],
+  "entrance": {
+    "x": 0,
+    "y": -26,
+    "widthM": 2.2,
+    "arrivalY": -23
+  },
+  "walk_surface_materials": [
+    "paving",
+    "grass",
+    "gravel"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 10072412,
+    "sha256": "63f17b45b72cfd215efaac152232ee60dba2c2a7b282e05133edb8e1bfda5b0f"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -32.0,
+      -26.0,
+      -2.4
+    ],
+    [
+      32.0,
+      26.0,
+      11.585
+    ]
+  ],
+  "triangles": 710683,
+  "mesh_instances": 534,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, grass, gravel. Never stretch the assembly to fit.",
+  "card": {
+    "group": "play_sport",
+    "description": "Concrete bowls and a snake run set into prairie meadow, with timber terrace seating, a street plaza and a path loop. Prepared level ground."
+  }
+}

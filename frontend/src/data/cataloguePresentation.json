@@ -2750,5 +2750,47 @@
       "catenary",
       "transit"
     ]
+  },
+  "native-park:student_prairie_bowl_skate_park_v1--native-v1": {
+    "label": "Prairie Bowl Skate Park",
+    "description": "Concrete bowls and a snake run set into native prairie planting, with timber terrace seating and a street-skating plaza.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "skate",
+      "skatepark",
+      "bowl",
+      "snake run",
+      "prairie",
+      "terraces"
+    ]
+  },
+  "native-park:student_parkour_calisthenics_yard_v1--native-v1": {
+    "label": "Parkour & Calisthenics Yard",
+    "description": "A red rubber movement floor with vault walls, a climbing wall, a pull-up rig and a hex frame, set in lawn and dense planting.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "fitness",
+      "calisthenics",
+      "parkour",
+      "climbing",
+      "outdoor gym",
+      "pull-up"
+    ]
+  },
+  "native-park:student_walled_memorial_garden_v1--native-v1": {
+    "label": "Walled Memorial Garden",
+    "description": "A brick-walled garden with a long reflecting pool, hedged flower beds, columnar trees, a rose arbour and a wall of blank plaques.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "memorial",
+      "garden",
+      "reflecting pool",
+      "walled garden",
+      "roses",
+      "quiet"
+    ]
   }
 }

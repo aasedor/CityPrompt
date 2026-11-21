@@ -1,0 +1,26 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "63f17b45b72cfd215efaac152232ee60dba2c2a7b282e05133edb8e1bfda5b0f",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 64 x 52 m footprint",
+    "recipe bounds match the GLB",
+    "below grade only inside the declared sunken areas",
+    "nothing taller than 20 m",
+    "1137 material-aware route rays on grass, gravel, paving",
+    "526 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "kidney bowl reaches 2.4 m below the coping",
+    "clover bowl reaches 1.8 m below the coping",
+    "snake run reaches 1.3 m below the coping",
+    "steel coping at 1341 sampled points along the bowl edge"
+  ],
+  "failures": [],
+  "triangles_rendered": 710683,
+  "mesh_instances": 534,
+  "runtime_tested": false
+}

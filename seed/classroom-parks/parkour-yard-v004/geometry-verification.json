@@ -1,0 +1,24 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "de904793cef32f06eca7e786563864d192bdf011a537553d794b15c9506cd20e",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 44 x 36 m footprint",
+    "recipe bounds match the GLB",
+    "nothing below grade",
+    "nothing taller than 20 m",
+    "804 material-aware route rays on grass, paving, rubber",
+    "314 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "every equipment frame above 0.3 m stands over the rubber floor",
+    "rubber floor at least 1.5 m beyond the rig and frame posts"
+  ],
+  "failures": [],
+  "triangles_rendered": 467560,
+  "mesh_instances": 321,
+  "runtime_tested": false
+}

@@ -1,0 +1,628 @@
+{
+  "id": "student_parkour_calisthenics_yard_v1",
+  "title": "Parkour & Calisthenics Yard",
+  "archetype_id": "outdoor_fitness_circuit",
+  "dimensions_m": [
+    44.0,
+    36.0
+  ],
+  "programme": "A red rubber movement floor with concrete vault walls, a cross block, precision blocks and a tic-tac wall; a bouldering wall; a pull-up rig with monkey bars; a hexagonal climbing frame; dip bars and zigzag balance rails; a winding asphalt loop through lawn, a grass mound and dense planting; benches, lights, station signs, a bike rack and a drinking fountain; green ash and littleleaf linden.",
+  "design_basis": "Original concept after the catalogue outdoor fitness circuit \"Parkour & Movement\" references (variant 1). Equipment sizes are typical teaching values, not a certified play or fitness equipment layout.",
+  "reference_views": "frontend/public/archetypes/openspaces/outdoor-fitness-circuit/variant_1",
+  "generator": "CityPrompt native park batch builder v1 (fitness)",
+  "generator_sha256": "194971089fdf28e9a6efb7c6493aeddf8afaa9914d74c3a9798e8378538e8aa0",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only.",
+    "Equipment, fall zones and surfacing are indicative; real installations follow the manufacturer and the applicable play and fitness equipment standards.",
+    "Station signs are blank.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        6.0,
+        -18.0
+      ],
+      "b": [
+        6.0,
+        -14.6
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        6.0,
+        -14.6
+      ],
+      "b": [
+        4.393,
+        -11.048
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        4.393,
+        -11.048
+      ],
+      "b": [
+        3.377,
+        -8.23
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        3.377,
+        -8.23
+      ],
+      "b": [
+        3.0,
+        -5.4
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        6.0,
+        -14.0
+      ],
+      "b": [
+        10.345,
+        -12.836
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        10.345,
+        -12.836
+      ],
+      "b": [
+        11.782,
+        -12.139
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        11.782,
+        -12.139
+      ],
+      "b": [
+        13.058,
+        -11.177
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        13.058,
+        -11.177
+      ],
+      "b": [
+        14.208,
+        -9.928
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        14.208,
+        -9.928
+      ],
+      "b": [
+        15.249,
+        -8.341
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        15.249,
+        -8.341
+      ],
+      "b": [
+        16.235,
+        -6.265
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        16.235,
+        -6.265
+      ],
+      "b": [
+        16.942,
+        -4.079
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        16.942,
+        -4.079
+      ],
+      "b": [
+        17.384,
+        -1.721
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        17.384,
+        -1.721
+      ],
+      "b": [
+        17.544,
+        0.772
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        17.544,
+        0.772
+      ],
+      "b": [
+        17.393,
+        3.065
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        17.393,
+        3.065
+      ],
+      "b": [
+        16.947,
+        5.218
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        16.947,
+        5.218
+      ],
+      "b": [
+        16.236,
+        7.192
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        16.236,
+        7.192
+      ],
+      "b": [
+        15.396,
+        8.782
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        15.396,
+        8.782
+      ],
+      "b": [
+        14.354,
+        10.122
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        14.354,
+        10.122
+      ],
+      "b": [
+        13.091,
+        11.256
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        13.091,
+        11.256
+      ],
+      "b": [
+        11.647,
+        12.149
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        11.647,
+        12.149
+      ],
+      "b": [
+        9.892,
+        12.871
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        9.892,
+        12.871
+      ],
+      "b": [
+        6.999,
+        13.66
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        6.999,
+        13.66
+      ],
+      "b": [
+        3.843,
+        14.181
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        3.843,
+        14.181
+      ],
+      "b": [
+        0.453,
+        14.418
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        0.453,
+        14.418
+      ],
+      "b": [
+        -2.745,
+        14.349
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -2.745,
+        14.349
+      ],
+      "b": [
+        -5.822,
+        13.983
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -5.822,
+        13.983
+      ],
+      "b": [
+        -8.75,
+        13.333
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -8.75,
+        13.333
+      ],
+      "b": [
+        -10.719,
+        12.611
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -10.719,
+        12.611
+      ],
+      "b": [
+        -12.382,
+        11.696
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -12.382,
+        11.696
+      ],
+      "b": [
+        -13.882,
+        10.533
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -13.882,
+        10.533
+      ],
+      "b": [
+        -15.182,
+        9.15
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -15.182,
+        9.15
+      ],
+      "b": [
+        -16.316,
+        7.505
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -16.316,
+        7.505
+      ],
+      "b": [
+        -17.195,
+        5.711
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -17.195,
+        5.711
+      ],
+      "b": [
+        -17.836,
+        3.713
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -17.836,
+        3.713
+      ],
+      "b": [
+        -18.208,
+        1.547
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -18.208,
+        1.547
+      ],
+      "b": [
+        -18.3,
+        -0.95
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -18.3,
+        -0.95
+      ],
+      "b": [
+        -18.102,
+        -3.24
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -18.102,
+        -3.24
+      ],
+      "b": [
+        -17.618,
+        -5.384
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -17.618,
+        -5.384
+      ],
+      "b": [
+        -16.892,
+        -7.246
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -16.892,
+        -7.246
+      ],
+      "b": [
+        -15.944,
+        -8.89
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -15.944,
+        -8.89
+      ],
+      "b": [
+        -14.819,
+        -10.292
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -14.819,
+        -10.292
+      ],
+      "b": [
+        -13.473,
+        -11.484
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -13.473,
+        -11.484
+      ],
+      "b": [
+        -11.943,
+        -12.428
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -11.943,
+        -12.428
+      ],
+      "b": [
+        -10.186,
+        -13.144
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -10.186,
+        -13.144
+      ],
+      "b": [
+        -6.99,
+        -13.962
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -6.99,
+        -13.962
+      ],
+      "b": [
+        -4.124,
+        -14.397
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -4.124,
+        -14.397
+      ],
+      "b": [
+        -1.028,
+        -14.525
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -1.028,
+        -14.525
+      ],
+      "b": [
+        2.568,
+        -14.395
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        2.568,
+        -14.395
+      ],
+      "b": [
+        6.0,
+        -14.0
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -2.5,
+        14.5
+      ],
+      "b": [
+        -2.126,
+        9.816
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -2.126,
+        9.816
+      ],
+      "b": [
+        -2.0,
+        8.6
+      ],
+      "width": 2.0
+    }
+  ],
+  "entrance": {
+    "x": 6,
+    "y": -18,
+    "widthM": 2.0,
+    "arrivalY": -15
+  },
+  "walk_surface_materials": [
+    "paving",
+    "grass",
+    "rubber"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 6612740,
+    "sha256": "de904793cef32f06eca7e786563864d192bdf011a537553d794b15c9506cd20e"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -22.0,
+      -18.0,
+      -0.0037
+    ],
+    [
+      22.0,
+      18.0,
+      12.7021
+    ]
+  ],
+  "triangles": 467560,
+  "mesh_instances": 321,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, grass, rubber. Never stretch the assembly to fit.",
+  "card": {
+    "group": "play_sport",
+    "description": "A red rubber movement floor with vault walls, a climbing wall, a pull-up rig and a hex frame, in lawn and planting with a path loop. Prepared level ground."
+  }
+}

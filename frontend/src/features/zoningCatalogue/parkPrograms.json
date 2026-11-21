@@ -443,5 +443,50 @@
       "evidence": "Stormwater Pond & Pathway Loop exact native layout in nativeParks.json; build notes in docs/STORMWATER_POND_PARK_2026-11-19.md. No operating use has been established."
     },
     "review": "Confirm the drainage authority, public access and water safety measures before assigning a land-use classification; the provisional Park screening is not confirmation of permission."
+  },
+  "native-park:student_prairie_bowl_skate_park_v1--native-v1": {
+    "variantId": "student_prairie_bowl_skate_park_v1",
+    "revision": "28dd97ec98d22cdb3731e634b15c98166c7d32bbc3efa1bcfe2049912588883a",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Provisional classroom park program for the authored prairie bowl skate park. The geometry alone does not establish its ownership, operation or public access.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Prairie Bowl Skate Park exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_1_2026-11-21.md. No operating use has been established."
+    },
+    "review": "Confirm ownership, public access and operating responsibility before assigning a land-use classification; the provisional Park screening is not confirmation of permission."
+  },
+  "native-park:student_parkour_calisthenics_yard_v1--native-v1": {
+    "variantId": "student_parkour_calisthenics_yard_v1",
+    "revision": "089c65f5fefab4857b2d77b2bd9bb8c313efc1a032d5236e6327fcb339b9d2f9",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Provisional classroom park program for the authored parkour & calisthenics yard. The geometry alone does not establish its ownership, operation or public access.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Parkour & Calisthenics Yard exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_1_2026-11-21.md. No operating use has been established."
+    },
+    "review": "Confirm ownership, public access and operating responsibility before assigning a land-use classification; the provisional Park screening is not confirmation of permission."
+  },
+  "native-park:student_walled_memorial_garden_v1--native-v1": {
+    "variantId": "student_walled_memorial_garden_v1",
+    "revision": "03956eb6ea3bb001df8302f29981de8e17416f805d339b28209200fa6e9cba99",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Provisional classroom park program for the authored walled memorial garden. The geometry alone does not establish its ownership, operation or public access.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Walled Memorial Garden exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_1_2026-11-21.md. No operating use has been established."
+    },
+    "review": "Confirm ownership, public access and operating responsibility before assigning a land-use classification; the provisional Park screening is not confirmation of permission."
   }
 }

@@ -8438,6 +8438,114 @@
       "variantId": "student_high_speed_rail_line_v1",
       "modelMethod": "native_street_modules_v1",
       "modelRevision": "58e46729244ce89be0eeb4f6e051c5d7af85f3d45af90c8a3ce3ae69b3bf1c32"
+    },
+    "native-park:student_prairie_bowl_skate_park_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Concrete bowl parks date from the 1970s; this section follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare where a city places a skate park: beside play fields and transit, with sightlines, seating and planting, or on leftover land.",
+      "internationalContext": "Skate parks have moved from fenced add-ons to designed public spaces that welcome spectators and other park users.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_prairie_bowl_skate_park_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "skate_park",
+      "variantId": "student_prairie_bowl_skate_park_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "28dd97ec98d22cdb3731e634b15c98166c7d32bbc3efa1bcfe2049912588883a",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "play_sport",
+      "styleIds": [
+        "recreation",
+        "naturalistic"
+      ],
+      "planningIds": [
+        "place",
+        "child"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "Linked concrete bowls and a snake run in prairie planting, with timber terraces and a street plaza.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_parkour_calisthenics_yard_v1--native-v1": {
+      "eraIds": [
+        "contemporary"
+      ],
+      "designPeriod": "Contemporary design reference, broadly 2000–present",
+      "eraRationale": "Outdoor calisthenics and parkour parks are a recent type; the layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare free outdoor fitness in a neighbourhood park with indoor recreation centres: who it serves, in which seasons, and how close to home.",
+      "internationalContext": "Calisthenics parks spread worldwide from the 2010s, often built with local movement communities.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_parkour_calisthenics_yard_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "outdoor_fitness_circuit",
+      "variantId": "student_parkour_calisthenics_yard_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "089c65f5fefab4857b2d77b2bd9bb8c313efc1a032d5236e6327fcb339b9d2f9",
+      "status": "classified",
+      "profileId": "contemporary",
+      "formId": "play_sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [
+        "place",
+        "active"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "A rubber movement floor with vault walls, a climbing wall, a pull-up rig, a hex frame and a planted path loop.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_walled_memorial_garden_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Walled gardens and reflecting pools are a long garden tradition; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare how a quiet, enclosed memorial garden differs from an open park: its entrances, its edges and what it asks visitors to do.",
+      "internationalContext": "Memorial gardens range from formal walled enclosures to open landscapes; their design shapes how people remember together.",
+      "sourceIds": [
+        "picturesque",
+        "place"
+      ],
+      "placementId": "native-park:student_walled_memorial_garden_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "memorial_garden",
+      "variantId": "student_walled_memorial_garden_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "03956eb6ea3bb001df8302f29981de8e17416f805d339b28209200fa6e9cba99",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "gardens",
+      "styleIds": [
+        "formal_garden"
+      ],
+      "planningIds": [
+        "place",
+        "heritage"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "A walled garden with a reflecting pool on its axis, hedged beds, columnar trees, a rose arbour and blank plaques.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
     }
   }
 }

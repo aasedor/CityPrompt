@@ -214,5 +214,8 @@
   "plus15_brutalist_concrete_office": "/archetypes/buildings/calgary-15-connected-tower/variant_0.png",
   "student_median_lrt_avenue_v1": "/archetypes/streets/light-rail-tram-avenue/student_median_lrt_avenue_v1.png",
   "student_lrt_right_of_way_v1": "/archetypes/streets/light-rail-tram-avenue/student_lrt_right_of_way_v1.png",
-  "student_high_speed_rail_line_v1": "/archetypes/streets/high-speed-rail-corridor/student_high_speed_rail_line_v1.png"
+  "student_high_speed_rail_line_v1": "/archetypes/streets/high-speed-rail-corridor/student_high_speed_rail_line_v1.png",
+  "native-park:student_prairie_bowl_skate_park_v1--native-v1": "/archetypes/openspaces/skate-park/variant_2.png",
+  "native-park:student_parkour_calisthenics_yard_v1--native-v1": "/archetypes/openspaces/outdoor-fitness-circuit/variant_1.png",
+  "native-park:student_walled_memorial_garden_v1--native-v1": "/archetypes/openspaces/memorial-garden/variant_3.png"
 }

@@ -1,0 +1,24 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "fbfc279068e6bdfb0b8f35064dcda46d7851a7f8cf514599637e0611464325f2",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 36 x 50 m footprint",
+    "recipe bounds match the GLB",
+    "below grade only inside the declared sunken areas",
+    "nothing taller than 20 m",
+    "1194 material-aware route rays on grass, gravel, paving",
+    "439 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "the pool is one water plane 0.25 m below the coping",
+    "both side walls stand 2.6 m along their full length"
+  ],
+  "failures": [],
+  "triangles_rendered": 801073,
+  "mesh_instances": 448,
+  "runtime_tested": false
+}

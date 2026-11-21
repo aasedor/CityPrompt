@@ -1,0 +1,440 @@
+{
+  "id": "student_walled_memorial_garden_v1",
+  "title": "Walled Memorial Garden",
+  "archetype_id": "memorial_garden",
+  "dimensions_m": [
+    36.0,
+    50.0
+  ],
+  "programme": "A brick-walled garden entered through a timber rose arbour: a 5 by 17 m reflecting pool with stone coping on the axis, a stone pool terrace, cross and axis paths, a perimeter gravel walk, four hedged beds of perennials and roses, borders of Swedish columnar aspen along the walls, and a back terrace with a bench before a wall of blank plaques; lawn, flower beds along the front wall, and green ash and bur oak outside.",
+  "design_basis": "Original concept after the catalogue memorial garden \"Cottage Romantic\" references (variant 3): a walled garden with a long reflecting pool, flower borders and a rose-arched gate. Columnar aspen stand in for the reference's cypress, which do not grow in Calgary.",
+  "reference_views": "frontend/public/archetypes/openspaces/memorial-garden/variant_3",
+  "generator": "CityPrompt native park batch builder v1 (memorial)",
+  "generator_sha256": "9b5cfd6f58bc64ab86304b60fd8bb741d8c767daeac59e1637fd3d2b134a4c67",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only. The pool water sits 0.25 m below its coping; depth, filtration and safety are not designed.",
+    "The plaques are blank: the garden commemorates no real person or event.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0.0,
+        -25.0
+      ],
+      "b": [
+        0.0,
+        -7.4
+      ],
+      "width": 2.6
+    },
+    {
+      "a": [
+        -4.15,
+        9.3
+      ],
+      "b": [
+        -3.991,
+        10.385
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -3.991,
+        10.385
+      ],
+      "b": [
+        -3.534,
+        11.381
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -3.534,
+        11.381
+      ],
+      "b": [
+        -2.815,
+        12.209
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -2.815,
+        12.209
+      ],
+      "b": [
+        -1.894,
+        12.802
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -1.894,
+        12.802
+      ],
+      "b": [
+        -0.841,
+        13.108
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -0.841,
+        13.108
+      ],
+      "b": [
+        0.755,
+        13.12
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        0.755,
+        13.12
+      ],
+      "b": [
+        1.814,
+        12.836
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        1.814,
+        12.836
+      ],
+      "b": [
+        2.75,
+        12.266
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        2.75,
+        12.266
+      ],
+      "b": [
+        3.486,
+        11.453
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        3.486,
+        11.453
+      ],
+      "b": [
+        3.964,
+        10.468
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        3.964,
+        10.468
+      ],
+      "b": [
+        4.147,
+        9.387
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        4.147,
+        9.387
+      ],
+      "b": [
+        4.112,
+        -3.812
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        4.112,
+        -3.812
+      ],
+      "b": [
+        3.814,
+        -4.867
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        3.814,
+        -4.867
+      ],
+      "b": [
+        3.228,
+        -5.793
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        3.228,
+        -5.793
+      ],
+      "b": [
+        2.406,
+        -6.517
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        2.406,
+        -6.517
+      ],
+      "b": [
+        1.414,
+        -6.983
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        1.414,
+        -6.983
+      ],
+      "b": [
+        0.33,
+        -7.149
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        0.33,
+        -7.149
+      ],
+      "b": [
+        -1.064,
+        -7.069
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -1.064,
+        -7.069
+      ],
+      "b": [
+        -2.097,
+        -6.701
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -2.097,
+        -6.701
+      ],
+      "b": [
+        -2.983,
+        -6.056
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -2.983,
+        -6.056
+      ],
+      "b": [
+        -3.652,
+        -5.188
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -3.652,
+        -5.188
+      ],
+      "b": [
+        -4.048,
+        -4.166
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -4.048,
+        -4.166
+      ],
+      "b": [
+        -4.15,
+        -2.973
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -4.15,
+        -2.973
+      ],
+      "b": [
+        -4.15,
+        9.3
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.625,
+        -15.625
+      ],
+      "b": [
+        -9.625,
+        17.575
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.625,
+        17.575
+      ],
+      "b": [
+        -9.375,
+        17.625
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.375,
+        17.625
+      ],
+      "b": [
+        9.625,
+        17.625
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.625,
+        17.625
+      ],
+      "b": [
+        9.625,
+        -15.575
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.625,
+        -15.575
+      ],
+      "b": [
+        9.375,
+        -15.625
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.375,
+        -15.625
+      ],
+      "b": [
+        -9.625,
+        -15.625
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.625,
+        3.0
+      ],
+      "b": [
+        -4.8,
+        3.0
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        4.8,
+        3.0
+      ],
+      "b": [
+        9.625,
+        3.0
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        0.0,
+        13.8
+      ],
+      "b": [
+        0.0,
+        18.6
+      ],
+      "width": 2.0
+    }
+  ],
+  "entrance": {
+    "x": 0,
+    "y": -25,
+    "widthM": 3.0,
+    "arrivalY": -22
+  },
+  "walk_surface_materials": [
+    "paving",
+    "gravel",
+    "grass"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 7660748,
+    "sha256": "fbfc279068e6bdfb0b8f35064dcda46d7851a7f8cf514599637e0611464325f2"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -18.0,
+      -25.0,
+      -0.25
+    ],
+    [
+      18.0,
+      25.0,
+      10.7361
+    ]
+  ],
+  "triangles": 801073,
+  "mesh_instances": 448,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, gravel, grass. Never stretch the assembly to fit.",
+  "card": {
+    "group": "gardens",
+    "description": "A brick-walled garden with a long reflecting pool, hedged flower beds, columnar trees, a rose arbour and a wall of blank plaques. Prepared level ground."
+  }
+}
