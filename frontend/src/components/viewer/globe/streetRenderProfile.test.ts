@@ -7,6 +7,7 @@ import {
   applyStreetCameraProjection,
   applyStreetRoutePose,
   geographicStreetUp,
+  getGlobeFogArgs,
   projectStreetRouteToGround,
   restoreStreetCameraProjection,
   verticalFovForHorizontalSensor,
@@ -14,6 +15,20 @@ import {
 } from './streetRenderProfile';
 
 describe('streetRenderProfile', () => {
+  it.each([false, true])('captures sharp street references with street lighting set to %s', (streetRenderProfileActive) => {
+    expect(getGlobeFogArgs({
+      streetRenderProfileActive,
+      streetImageCaptureActive: true,
+    })).toBeNull();
+  });
+
+  it('retains distance fog outside the street-image capture', () => {
+    expect(getGlobeFogArgs({ streetRenderProfileActive: false, streetImageCaptureActive: false }))
+      .toEqual(['#b8c8d8', 8000, 80000]);
+    expect(getGlobeFogArgs({ streetRenderProfileActive: true, streetImageCaptureActive: false }))
+      .toEqual(['#cfdae4', 180, 900]);
+  });
+
   it('keeps full-height people in a close manual route instead of aiming above their heads', () => {
     const camera = new THREE.PerspectiveCamera(STREET_RENDER_VERTICAL_FOV_DEGREES, 16 / 9, .1, 1000);
     const curve = new THREE.CatmullRomCurve3([new THREE.Vector3(0, 0, 8), new THREE.Vector3(0, 0, 6)]);

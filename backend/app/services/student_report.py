@@ -20,7 +20,7 @@ from shapely.ops import unary_union
 
 from app.services.plan_metrics import DerivedMetric
 from app.services.saved_site_assessment import matching_assessment
-from app.services.model_contract import uses_placement_plot, catalogue_dwellings, catalogue_housing_programme
+from app.services.model_contract import catalogue_building_quantities, catalogue_dwellings, uses_placement_plot
 from app.services.lego_assembly import DETACHED_ARCHETYPE_IDS, catalog_parent_archetype_id
 from app.services.residual_landscape import community_3d_source_hash
 from app.services.policy_intelligence.retrieval import (
@@ -689,6 +689,22 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             str(bid) for z in plot_zones for bid in ([z["building_id"]] if z["building_id"] else []) + z["building_ids"]
         }
         plot_shapes = [measured[z["id"]] for z in plot_zones if z["id"] in measured]
+        catalogue_floor_areas = {}
+        for zone in plot_zones:
+            props = zone["properties"]
+            if (
+                zone["zone_type"] != "building"
+                or zone["id"] not in measured
+                or props.get("building_geometry_basis") != "placement_plot"
+                or props.get("native_home_plot") is True
+                or props.get("building_footprint_scale", 1) != 1
+            ):
+                continue
+            linked_keys = set(([zone["building_id"]] if zone["building_id"] else []) + zone["building_ids"])
+            quantities = catalogue_building_quantities(props) or {}
+            floor_area = positive(quantities.get("gross_floor_area_m2"))
+            if len(linked_keys) <= 1 and floor_area is not None:
+                catalogue_floor_areas.setdefault(next(iter(linked_keys), zone["id"]), floor_area)
         metric(
             "building_placement_plot_m2",
             "Building placement plots",
@@ -713,9 +729,14 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 or building["id"] in plot_ids
                 or building["id"] in plot_building_ids
             ):
-                # A detached recipe is anchored to its whole plot, including
-                # yards. That parent polygon is never a building floor plate.
-                missing_floors.append(building)
+                # A catalogue estimate comes from the model record. A saved
+                # placement plot supplies neither a footprint nor a floor plate.
+                floor_area = catalogue_floor_areas.get(building["id"])
+                if floor_area is None:
+                    missing_floors.append(building)
+                else:
+                    gfa += floor_area
+                    measured_floor_plates += 1
                 continue
             geom = _shape(building)
             if geom is None:
@@ -730,13 +751,13 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
                 gfa += area * floors
                 measured_floor_plates += 1
         unresolved_development = any(not z["building_id"] and not z["building_ids"] for z in development_areas)
-        has_unknown_buildings = bool(missing_floors or unresolved_development)
+        has_unknown_buildings = bool(missing_floors or unresolved_development or plot_ids or plot_building_ids)
         metric(
             "building_footprint_m2",
             "Known building footprints (incomplete)" if has_unknown_buildings else "Known building footprints",
             unary_union(areas).area if areas else None if has_unknown_buildings else 0,
             "m²",
-            "Union of drawn building footprints and linked footprint records; excludes development allocations and authored-model placement plots whose individual floor plates are unmeasured.",
+            "Union of drawn building footprints and linked footprint records. Catalogue placement plots do not supply building footprints.",
         )
         complete = not missing_floors and all(z["building_id"] or z["building_ids"] for z in development_areas)
         metric(
@@ -744,7 +765,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "Floor-area estimate" if complete else "Known floor area (incomplete)",
             gfa if measured_floor_plates or complete else None,
             "m²",
-            "Estimate from drawn footprints × recorded storeys, assuming equal floor plates. Excludes unknown floors, unresolved allocations and authored-model placement plots. Model bounding rectangles are not measured floor plates.",
+            "Estimate from reviewed catalogue quantities and drawn footprints × recorded storeys, assuming equal drawn floor plates. Excludes unmeasured plots, unknown floors and unresolved allocations.",
             0.7,
         )
         if missing_floors or not complete:
@@ -792,7 +813,7 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
         number = 0.0 if value == 0 and not isinstance(value, bool) else positive(value)
         return int(number) if number is not None and number.is_integer() else None
 
-    programme_zones = {zone["id"]: catalogue_housing_programme(zone["properties"]) for zone in quantity_zones}
+    programme_zones = {zone["id"]: catalogue_building_quantities(zone["properties"]) for zone in quantity_zones}
     for zone in quantity_zones:
         programme = programme_zones[zone["id"]]
         if programme and programme.get("source_title"):
@@ -991,7 +1012,11 @@ def analyze_snapshot(snapshot: dict, policy_sources: list[dict] | None = None) -
             "Sum of current server-certified detached recipe dwelling counts, deduplicated by linked building. Repeated podium/floor/roof modules represent one dwelling per segment, not additional units.",
             0.95,
         )
-        programme_resolved_zone_ids = {zone_id for zone_id, programme in programme_zones.items() if programme}
+        programme_resolved_zone_ids = {
+            zone_id
+            for zone_id, programme in programme_zones.items()
+            if programme and programme.get("dwellings") is not None
+        }
         unresolved_zone_ids = detached_zone_ids - compiled_detached_zone_ids - programme_resolved_zone_ids
         pending = len(unresolved_zone_ids)
         pending_zones = [zone for zone in zones if zone["id"] in unresolved_zone_ids]

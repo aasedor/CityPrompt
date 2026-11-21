@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { deflateSync } from 'node:zlib';
 import { encodeZ85, decodeZ85, Z85_ALPHABET } from './z85-codec.mjs';
 
@@ -10,9 +11,9 @@ const FEATURE_CATALOGUES = /\/src\/features\/(?:parks\/(?:detailCatalogueExtras|
 // Keep this allowlist explicit so unrelated JSON retains Vite's normal exports.
 const HANDOFF_CATALOGUES = /\/src\/(?:data\/(?:cataloguePlanningHistory|catalogueTeaching|localTeachingBuildings|classroomStarter|buildingPlacementEdges|catalogueHeroImages|claudeAssetLocalTrial)|features\/(?:legoAssembly\/buildingOnlyContracts|parks\/(?:curbBulbContracts|calgarySafetyCatalogue)|zoningCatalogue\/parkUseRules|pickPlace\/publicRealmOwnershipContracts)|components\/viewer\/globe\/publicRealmTrialAssets)\.json$/;
 
-const STATIC_METADATA = /\/src\/(?:data\/(?:archetypeVisualSystem|catalogueOctober2026|claudeBuildingRelease|claudeFiveTrial|courtOnlySports|finalFiveBuildingBatch|flexibleParks|localTowerStoreyPrograms|neighborhoodParkV0StickerKit|parkadeFamilyTrial|stickerMethodPilots|transportStandardEntries|aiRenderStylePresets|streetViewStylePresets)|features\/(?:policyPlans\/data\/(?:beltlinePlanIndex|localPlanIndex)|referenceLayers\/calgaryBylawCatalogue))\.json$/;
+const STATIC_METADATA = /\/src\/(?:data\/(?:archetypeVisualSystem|catalogueBuildingQuantities|catalogueOctober2026|claudeBuildingRelease|claudeFiveTrial|courtOnlySports|finalFiveBuildingBatch|flexibleParks|localTowerStoreyPrograms|neighborhoodParkV0StickerKit|parkadeFamilyTrial|stickerMethodPilots|transportStandardEntries|aiRenderStylePresets|streetViewStylePresets)|features\/(?:policyPlans\/data\/(?:beltlinePlanIndex|localPlanIndex)|referenceLayers\/calgaryBylawCatalogue))\.json$/;
 
-const Z85_CATALOGUES = /\/src\/(?:data\/(?:buildingArchetypes|nativeStreetPilots|openSpaceArchetypes)|features\/parks\/detailCatalogueExtras)\.json$/;
+const SHARED_Z85 = 'virtual:cityprompt-catalogue-z85';
 
 /** Retain all legacy IDs, reference paths and prompts without compiling several
  * megabytes of JSON into JavaScript object literals. Three already ships this
@@ -29,16 +30,27 @@ export function packCatalogue(source, { encoding = 'base64' } = {}) {
     .flatMap(memLevel => [0, 1].map(strategy => deflateSync(bytes, { level: 9, memLevel, strategy })))
     .reduce((a, b) => b.length < a.length ? b : a);
   let decoder = `const bytes = Uint8Array.from(atob(${JSON.stringify(packed.toString('base64'))}), character => character.charCodeAt(0));`;
-  if (encoding === 'z85') {
+  let decoderImport = '';
+  if (encoding === 'z85' || encoding === 'auto') {
     const padded = new Uint8Array(Math.ceil(packed.length / 4) * 4);
     padded.set(packed);
-    decoder = `// Z85 v1 / RFC32, with an exact unpadded deflate length.
+    const encoded = JSON.stringify(encodeZ85(padded));
+    if (encoding === 'auto') {
+      const shared = `const bytes = decodeZ85(${encoded},${packed.length});`;
+      const sharedImport = `import { decodeZ85 } from '${SHARED_Z85}';\n`;
+      if (sharedImport.length + shared.length < decoder.length) {
+        decoder = shared;
+        decoderImport = sharedImport;
+      }
+    } else {
+      decoder = `// Z85 v1 / RFC32, with an exact unpadded deflate length.
 const Z85_ALPHABET = ${JSON.stringify(Z85_ALPHABET)};
-const bytes = (${decodeZ85.toString()})(${JSON.stringify(encodeZ85(padded))},${packed.length});`;
+const bytes = (${decodeZ85.toString()})(${encoded},${packed.length});`;
+    }
   }
   // Validated constant data: discard decoding only when its value is unused.
   return `import { unzlibSync, strFromU8 } from 'three/examples/jsm/libs/fflate.module.js';
-export default /* @__PURE__ */ (() => {
+${decoderImport}export default /* @__PURE__ */ (() => {
 ${decoder}
 return JSON.parse(strFromU8(unzlibSync(bytes)));
 })();`;
@@ -68,7 +80,7 @@ export function packPublishedBuildingCatalogue(input) {
   }
   const data = source.slice(prefix.length, -suffix.length);
   if (!Array.isArray(JSON.parse(data))) throw new Error('Expected generated building catalogue array');
-  return packCatalogue(data).replace('export default ', 'export const CATALOGUE_BUILDING_ASSETS = ')
+  return packCatalogue(data, { encoding: 'auto' }).replace('export default ', 'export const CATALOGUE_BUILDING_ASSETS = ')
     + "\nexport const PUBLISHED_BUILDING_ASSETS = CATALOGUE_BUILDING_ASSETS.filter(asset => asset.readiness === 'ready');";
 }
 
@@ -77,6 +89,9 @@ export function packedCatalogue() {
     name: 'cityprompt-packed-catalogue',
     apply: 'build',
     enforce: 'post',
+    resolveId(id) {
+      return id === SHARED_Z85 ? fileURLToPath(new URL('./z85-codec.mjs', import.meta.url)) : null;
+    },
     transform(_code, id) {
       const filename = id.replaceAll('\\', '/');
       if (filename.endsWith('/src/features/pickPlace/publishedBuildingAssets.ts')) {
@@ -84,9 +99,8 @@ export function packedCatalogue() {
       }
       if (!DATA_CATALOGUES.test(filename) && !FEATURE_CATALOGUES.test(filename) && !HANDOFF_CATALOGUES.test(filename) && !STATIC_METADATA.test(filename)) return null;
       const source = readFileSync(id, 'utf8');
-      const encoding = Z85_CATALOGUES.test(filename) ? 'z85' : 'base64';
       return { code: packCatalogue(filename.endsWith('/src/data/classroomStarter.json')
-        ? productionStarter(source) : source, { encoding }), map: null };
+        ? productionStarter(source) : source, { encoding: 'auto' }), map: null };
     },
   };
 }

@@ -84,6 +84,7 @@ export function placementProperties(asset: PlaceAsset, elevation?: number, coord
       model_native_dimensions_m: asset.nativeDimensions, model_dimensions_revision: asset.model.revision,
       height: asset.nativeDimensions[2], height_m: asset.nativeDimensions[2],
       building_geometry_basis: 'placement_plot',
+      ...(asset.model.revision && asset.properties.native_plot_axes === true ? { building_plot_landscaping: false } : {}),
     } : {}),
     pick_place_definition_version: asset.definitionVersion,
     ...(asset.model.revision ? { pick_place_model_revision: asset.model.revision } : {}),

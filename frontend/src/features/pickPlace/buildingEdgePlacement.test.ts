@@ -51,6 +51,17 @@ describe('reviewed building contact envelopes',()=>{
     expect(snapPlacement(result.coordinates,[other],site,undefined,moving.properties).snapped).toBe(false);
     expect(check(building(soho,width-.2),[other])).toContain('overlaps');
   });
+  it('uses the Streamline Moderne outline and retains its reviewed side snap', () => {
+    const id = 'validation_art_deco_streamline_moderne';
+    const other = building(id);
+    expect(buildingPlacementEnvelope(other).length).toBeGreaterThan(4);
+    const width = buildingEdgeContract(other)!.width;
+    const moving = building(id, width + .4);
+    const fit = snapPlacement(moving.coordinates, [other], site, undefined, moving.properties);
+    expect(fit.problem).toBeNull();
+    expect(fit.snapped).toBe(true);
+    expect(xCenter(fit.coordinates)).toBeCloseTo(width + .02, 2);
+  });
   it('keeps attached placement accurate when both buildings are rotated',()=>{
     const angle=37,rad=angle*Math.PI/180,other=building(soho,0,0,angle),w=buildingEdgeContract(other)!.width;
     const moving=building(soho,(w+.4)*Math.cos(rad),(w+.4)*Math.sin(rad),angle);
@@ -58,6 +69,27 @@ describe('reviewed building contact envelopes',()=>{
     expect(result.problem).toBeNull();expect(result.snapped).toBe(true);
     expect(Math.hypot(xCenter(result.coordinates),yCenter(result.coordinates))).toBeCloseTo(w+.02,2);
     expect(rectangleDimensions(result.coordinates).degrees).toBeCloseTo(angle,4);
+  });
+  it.each([0, 37])('lets a neighbour fit inside the crescent at %s degrees and protects the building', angle => {
+    const crescent = building('london_crescent_terrace_bath_stone', 0, 0, angle);
+    const radians = angle * Math.PI / 180;
+    const neighbour = (depthOffset: number) => ({
+      id: 'neighbour', zone_type: 'building', properties: {},
+      coordinates: rectangleAt(ll(-depthOffset * Math.sin(radians), depthOffset * Math.cos(radians)), 4, 4, angle),
+    }) as SiteZone;
+    const clear = neighbour(-12);
+    const colliding = neighbour(12);
+    expect(check(crescent, [clear])).toBeNull();
+    expect(check(clear, [crescent])).toBeNull();
+    expect(check(crescent, [colliding])).toContain('overlaps');
+    const fitted = snapPlacement(crescent.coordinates, [clear], site, undefined, crescent.properties);
+    expect(fitted.problem).toBeNull();
+    expect(fitted.coordinates).toBe(crescent.coordinates);
+    expect(check(JSON.parse(JSON.stringify(crescent)) as SiteZone, [clear])).toBeNull();
+    expect(check({ ...crescent, properties: { ...crescent.properties, pick_place_model_revision: 'unknown' } }, [clear]))
+      .toContain('overlaps');
+    const alternateFrame = { ...crescent, coordinates: rectangleAt(ll(0, 0), 130, 150, angle) };
+    expect(buildingPlacementEnvelope(alternateFrame)).toBe(alternateFrame.coordinates);
   });
   it('retains detached side space and the Montreal duplex left entrance',()=>{
     const detached=building('trial_postwar_bungalow'),d=rectangleDimensions(buildingPlacementEnvelope(detached));

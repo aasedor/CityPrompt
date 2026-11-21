@@ -11,16 +11,23 @@ import { minify } from 'terser';
 import { packCatalogue, packedCatalogue, productionStarter } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
+const sharedDecoder = new URL('./z85-codec.mjs', import.meta.url).href;
+const linkModule = code => code.replace('three/examples/jsm/libs/fflate.module.js', inflater)
+  .replace('virtual:cityprompt-catalogue-z85', sharedDecoder);
 
 for (const [filename, minimumSaving] of [
   ['data/buildingArchetypes.json', 20000],
+  ['data/cataloguePlanningHistory.json', 1900],
   ['data/nativeStreetPilots.json', 4000],
   ['data/openSpaceArchetypes.json', 8000],
+  ['data/streetPathArchetypes.json', 7500],
+  ['data/nativeParks.json', 2750],
   ['features/parks/detailCatalogueExtras.json', 2500],
+  ['features/parks/recoveredDetails.json', 1000],
 ]) {
   test(`${filename}: production transport reduces bundle size without changing catalogue values`, async () => {
     const path = resolve('src', filename), source = readFileSync(path, 'utf8');
-    const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = linkModule(packedCatalogue().transform('', path).code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     const minified = await minify(module, { module: true, compress: { passes: 3 } });
@@ -69,7 +76,7 @@ for (const relative of [
   'features/zoningCatalogue/parkUseRules.json',
   'features/pickPlace/publicRealmOwnershipContracts.json',
   'components/viewer/globe/publicRealmTrialAssets.json',
-  'data/archetypeVisualSystem.json', 'data/catalogueOctober2026.json',
+  'data/archetypeVisualSystem.json', 'data/catalogueBuildingQuantities.json', 'data/catalogueOctober2026.json',
   'data/claudeBuildingRelease.json', 'data/claudeFiveTrial.json',
   'data/courtOnlySports.json',
   'data/finalFiveBuildingBatch.json', 'data/flexibleParks.json',
@@ -86,10 +93,10 @@ for (const relative of [
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = linkModule(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(relative === 'data/classroomStarter.json' ? productionStarter(source) : source));
-    assert.ok(module.length < JSON.stringify(JSON.parse(source)).length);
+    assert.ok(transformed.code.length < JSON.stringify(JSON.parse(source)).length);
   });
 }
 
@@ -121,7 +128,7 @@ test('fixed public-realm packing preserves exact review gates, variants and nati
   const source = readFileSync(path, 'utf8');
   const transformed = packedCatalogue().transform('', path);
   assert.notEqual(transformed, null);
-  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = linkModule(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.default, JSON.parse(source));
   assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * .55);
@@ -134,7 +141,7 @@ test('generated building packing preserves all entries and the exact ready-only 
   const reference = await import(`data:text/javascript,${encodeURIComponent(referenceCode)}`);
   const transformed = packedCatalogue().transform('', path);
   assert.notEqual(transformed, null);
-  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = linkModule(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.CATALOGUE_BUILDING_ASSETS, reference.CATALOGUE_BUILDING_ASSETS);
   assert.deepEqual(decoded.PUBLISHED_BUILDING_ASSETS, reference.PUBLISHED_BUILDING_ASSETS);
@@ -155,7 +162,7 @@ for (const filename of ['peopleCatalogue.json', 'inclusivePeopleCatalogue.json',
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = linkModule(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
@@ -168,7 +175,7 @@ for (const filename of ['streetManual.json', 'nativeStreetModuleBounds.json', 'n
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+    const module = linkModule(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
@@ -194,7 +201,7 @@ test('the production traffic-safety catalogue preserves all variants and placeme
   const source = readFileSync(filename, 'utf8');
   const transformed = packedCatalogue().transform('', filename);
   assert.notEqual(transformed, null);
-  const module = transformed.code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
+  const module = linkModule(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.default, JSON.parse(source));
   assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);

@@ -3,12 +3,28 @@ import type { SiteZone } from '@/types';
 import { placeAsset, type PlaceAsset } from './catalogue';
 import * as catalogue from './catalogue';
 import { rectangleAt, rectangleDimensions, resizeRectangleCorner, placementProblem } from './geometry';
+import { metersPerDegLon, METERS_PER_DEG_LAT } from '@/components/viewer/mapEngine/geoUtils';
 
 const center=[-114.04677,51.04542];
 const zone=(coords:number[][],type='building',id='z')=>({id,zone_type:type,coordinates:coords} as SiteZone);
 // Geometry limits are independent of which house is in the current catalogue.
 const boundedPlot={minWidth:12,minDepth:16,maxSize:240,properties:{}} as PlaceAsset;
 describe('pick and reshape geometry',()=>{
+  it('fits a courtyard office beside another office and up to a sidewalk at its native size', () => {
+    const office = placeAsset('clay_brick_timber_two_storey_office');
+    const properties = catalogue.placementProperties(office);
+    const at = (east: number, north: number) => [
+      center[0] + east / metersPerDegLon(center[1]), center[1] + north / METERS_PER_DEG_LAT,
+    ];
+    const street = zone(rectangleAt(at(0, -14.24), 80, 16), 'road', 'street');
+    const neighbour = { ...zone(rectangleAt(at(14.44, 0), 14.4, 12.4), 'building', 'neighbour'), properties };
+    const plot = rectangleAt(center, office.width, office.depth);
+    expect([office.width, office.depth]).toEqual([14.4, 12.4]);
+    expect(office.nativeDimensions?.slice(0, 2)).toEqual([14.359999656677246, 12.359999656677246]);
+    expect(placementProblem(plot, [street, neighbour], null, undefined, { properties })).toBeNull();
+    expect(placementProblem(rectangleAt(at(.5, 0), office.width, office.depth), [neighbour], null,
+      undefined, { properties })).toMatch(/overlaps/i);
+  });
   it('preserves a locked tower footprint even if a stale corner drag reaches the geometry handler',()=>{
     const asset=placeAsset('claude_trial_brick_podium_condo_tower');
     const coordinates=rectangleAt(center,57.04,47.04,35);

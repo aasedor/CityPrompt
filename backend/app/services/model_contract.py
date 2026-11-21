@@ -89,12 +89,12 @@ def uses_placement_plot(properties: dict[str, Any]) -> bool:
 
 
 @lru_cache(maxsize=1)
-def _dwelling_programmes() -> tuple[dict, ...]:
+def _quantity_records() -> tuple[dict, ...]:
     return tuple(json.loads((DATA / "catalogue_dwelling_programmes.json").read_text(encoding="utf-8"))["records"])
 
 
-def catalogue_housing_programme(properties: dict[str, Any]) -> dict | None:
-    """Return only a reviewed programme for the unchanged native revision."""
+def catalogue_building_quantities(properties: dict[str, Any]) -> dict | None:
+    """Return reviewed quantities for the matching catalogue revision and storeys."""
     facts = native_model_facts(properties)
     if not facts:
         return None
@@ -103,12 +103,16 @@ def catalogue_housing_programme(properties: dict[str, Any]) -> dict | None:
     programme = next(
         (
             row
-            for row in _dwelling_programmes()
+            for row in _quantity_records()
             if row["variant_id"] == facts["variant_id"] and row["revision"] == facts["revision"]
         ),
         None,
     )
     if not programme:
+        return None
+    # Some saved allocation shapes use a catalogue variant as a design
+    # reference. Description quantities describe a single placed model.
+    if programme.get("requires_placement_plot") and properties.get("building_geometry_basis") != "placement_plot":
         return None
     # A model capable of student edits is still its reviewed native home when
     # saved with this exact revision and native storeys. Future/edited house
@@ -122,5 +126,5 @@ def catalogue_housing_programme(properties: dict[str, Any]) -> dict | None:
 
 
 def catalogue_dwellings(properties: dict[str, Any]) -> int | None:
-    programme = catalogue_housing_programme(properties)
-    return programme["dwellings"] if programme else None
+    programme = catalogue_building_quantities(properties)
+    return programme.get("dwellings") if programme else None
