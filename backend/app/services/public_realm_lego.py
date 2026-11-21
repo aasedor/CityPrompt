@@ -37,7 +37,6 @@ from app.services.site_engine import (
     project_geometry,
 )
 
-
 PUBLIC_REALM_RECIPE_PROPERTY = "public_realm_lego"
 PUBLIC_REALM_FALLBACK_PROPERTY = "public_realm_fallback"
 PUBLIC_REALM_SCHEMA_VERSION = 1
@@ -2769,7 +2768,7 @@ def plan_public_realm_zone_recipe(
     if is_street and props.get("plan_centerline") is not None:
         from app.services.plan_geometry.generator import validate_street_plan_centerline_wgs84
 
-        if validate_street_plan_centerline_wgs84(geometry_wgs84, props["plan_centerline"]):
+        if validate_street_plan_centerline_wgs84(geometry_wgs84, props["plan_centerline"], properties=props):
             centerline_metric = project_geometry(LineString(props["plan_centerline"]), transformer)
     if is_modular_bridge(props):
         from app.services.native_modular_bridge import modular_bridge_route_length
@@ -2777,9 +2776,11 @@ def plan_public_realm_zone_recipe(
         width = props["width"]
         if centerline_metric is None:
             raise ValueError("Modular bridge needs its current two-endpoint route inside the occupied footprint.")
-        ribbon = centerline_metric.buffer(width / 2, cap_style=2, join_style=2)
-        if not ribbon.buffer(0.1).covers(metric_geometry) or not metric_geometry.buffer(0.1).covers(ribbon):
-            raise ValueError("Keep the complete modular bridge footprint at its native width and route length.")
+        from app.services.native_bridge_clearance import validate_modular_bridge_footprint
+
+        # Match the source bridge's authored metric frame for both length and
+        # occupied width. UTM reprojection can shift a wide ring's edge >10 cm.
+        validate_modular_bridge_footprint(geometry_wgs84, props)
         target = StreetSegmentTarget(
             row_width_m=width, length_m=round(modular_bridge_route_length(props["plan_centerline"]), 3)
         )

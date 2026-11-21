@@ -12,6 +12,7 @@ import {
 } from './useGlobeAIRender';
 import type { Direct3DCaptureBundle, Direct3DProposalRole } from './direct3dCapture';
 import type { ResidualLandscapeClaim } from './residualLandscape';
+import { MOVIE_STILL_PRESET } from '../movieStillPreset';
 import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from '../seasonalRenderPresets';
 
 import { DEFAULT_OPENAI_IMAGE_MODEL, imageModelLabel, type ImageEngine } from '@/config/imageModels';
@@ -37,6 +38,7 @@ export const DIRECT_3D_DEFAULT_ART_DIRECTIONS: Readonly<Record<string, string>> 
   photomontage: 'Create a professional architectural photomontage from the supplied camera, with photographic surface texture and coherent lighting across the proposal and surrounding city. Match sun direction, shadow length, atmospheric depth, grain and colour temperature so the existing objects share one believable exposure. Retain the existing material palette and reflect the visible sky in existing glazing. Finish only the buildings, planting, furniture and surfaces already present. Balanced exposure and muted natural colours, suitable for a planning presentation.',
   development: 'Create a polished completed-development visualization. Treat the existing construction as newly finished: crisp facades in their current material palette, clean glazing, readable entrance details and neatly maintained existing planting and paving. Bright optimistic daylight with gentle directional sun, soft contact shadows and balanced exposure. Keep the public-realm design and furnishing inventory exactly as captured. Aspirational but credible, with restrained saturation and realistic surface texture.',
   atmospheric: 'Create cinematic architectural photography with warm late-day directional light raking across the existing facades, long soft shadows, gentle golden haze and layered atmospheric depth. Bring out texture in the current material palette and a restrained warm glow behind existing glazing. Keep foreground details readable and retain the captured planting and furnishing arrangement. Serene, muted warm colours, soft highlights and subtle film grain.',
+  [MOVIE_STILL_PRESET.id]: `${MOVIE_STILL_PRESET.prompt} ${MOVIE_STILL_PRESET.lighting}`,
   [AFTER_RAIN_PRESET.id]: `${AFTER_RAIN_PRESET.prompt} ${AFTER_RAIN_PRESET.lighting}`,
   [AUTUMN_PRESET.id]: `${AUTUMN_PRESET.prompt} ${AUTUMN_PRESET.lighting}`,
   winter: 'Create convincing winter architectural photography. Add a thin snow treatment to existing roofs, lawns and planting beds while retaining their profiles. Show the existing walks cleared to their captured edges, bare deciduous branches and lightly snow-dusted evergreens in their original positions. Use cold overcast daylight, a pale grey-blue sky and soft blue-grey shadows with restrained warmth behind existing glazing. Keep facade identities and circulation clearly readable in a quiet desaturated palette.',

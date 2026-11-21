@@ -264,6 +264,7 @@
     "src/components/viewer/globe/walkNavigation.ts",
     "src/components/viewer/globe/zoneSurfaceMode.ts",
     "src/components/viewer/mapEngine/geoUtils.ts",
+    "src/components/viewer/movieStillPreset.ts",
     "src/components/viewer/renderDraftStorage.ts",
     "src/components/viewer/renderStyleGuideData.ts",
     "src/components/viewer/resolvePlanZoneArchetypes.ts",
@@ -487,6 +488,7 @@
     "src/features/pickPlace/UserGeneratedBuildings.tsx",
     "src/features/pickPlace/assetRegistry.ts",
     "src/features/pickPlace/boundaryEdit.ts",
+    "src/features/pickPlace/bridgeDrawingSpan.ts",
     "src/features/pickPlace/brtConnections.ts",
     "src/features/pickPlace/buildingAssetRecovery.ts",
     "src/features/pickPlace/buildingFootprintProgram.ts",
@@ -683,10 +685,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4261,
+    "explicitReferenceCount": 4264,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 6045,
-    "requiredLogicalBytes": 13151061305,
+    "requiredFileCount": 6048,
+    "requiredLogicalBytes": 13158892415,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -5028,9 +5030,16 @@
       "lfsOid": "c571268e0568ef20c6b30c23f603cdac9893792bfe020ae4734d69be5ae828d1"
     },
     {
+      "url": "/archetypes/buildings/folded_roof_market_hall/picker-street-v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 2766668,
+      "lfsOid": "cc619fce53fe0eb8b962782ea5f150a447d758fa35831a816ea96fb1d8ff2fc9"
+    },
+    {
       "url": "/archetypes/buildings/folded_roof_market_hall/reference-8ec8e9e318cc.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 2267659,
@@ -8516,9 +8525,16 @@
       "lfsOid": "66c7921271c2bb94bb21fa5c129b5a4386a33ed05cd86ff2befaa5d050d73e81"
     },
     {
+      "url": "/archetypes/buildings/passage_tower/picker-street-v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 2263104,
+      "lfsOid": "553dd66f3a18f2d120285ff0f812a4d7fd5ffff6cf5b31b149a9776c0c13c375"
+    },
+    {
       "url": "/archetypes/buildings/passage_tower/reference-3073ee61b027.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 1817594,
@@ -9813,9 +9829,16 @@
       "lfsOid": "b532ffc76d9d76844e5b3c312228eb9527e11368067eff6b63dea55347d242fc"
     },
     {
+      "url": "/archetypes/buildings/terraced_science_centre/picker-street-v1.png",
+      "sources": [
+        "src/data/catalogueHeroImages.json"
+      ],
+      "logicalBytes": 2801338,
+      "lfsOid": "fa50f2746a9e4fbecc5305d9548b86bcfaca73fe2b8a427f6520ad1a9fc982bb"
+    },
+    {
       "url": "/archetypes/buildings/terraced_science_centre/reference-e2aa32dd4cfa.png",
       "sources": [
-        "src/data/catalogueHeroImages.json",
         "src/data/validationCatalogue.json"
       ],
       "logicalBytes": 2167724,

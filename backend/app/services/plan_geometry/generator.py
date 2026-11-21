@@ -383,6 +383,8 @@ def recover_street_plan_centerline_wgs84(
 def validate_street_plan_centerline_wgs84(
     zone_wgs84: BaseGeometry,
     value: Any,
+    *,
+    properties: dict[str, Any] | None = None,
 ) -> bool:
     """Whether saved centreline metadata still describes this street polygon.
 
@@ -420,6 +422,20 @@ def validate_street_plan_centerline_wgs84(
         ):
             return False
         coordinates.append((longitude, latitude))
+
+    # Source bridge reservations can be wider than their shortest valid span.
+    # Their exact two-point programme and full footprint, not the polygon's
+    # longest edge, define the travel axis. Ordinary road recovery stays strict.
+    from app.services.native_modular_bridge import is_modular_bridge
+
+    if is_modular_bridge(properties):
+        from app.services.native_bridge_clearance import validate_modular_bridge_footprint
+
+        try:
+            validate_modular_bridge_footprint(zone_wgs84, {**properties, "plan_centerline": value})
+        except (ValueError, TypeError, KeyError):
+            return False
+        return True
 
     try:
         centerline_wgs84 = LineString(coordinates)

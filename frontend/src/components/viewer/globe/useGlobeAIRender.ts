@@ -18,6 +18,7 @@ import { api, resolveApiFileUrl } from '@/services/api';
 import { useViewerStore } from '@/store';
 import { getActiveSiteBoundary } from '@/utils/siteBoundary';
 import { getCustomZoneStyle } from '../customZoneStyle';
+import { MOVIE_STILL_PRESET } from '../movieStillPreset';
 import { AFTER_RAIN_PRESET, AUTUMN_PRESET } from '../seasonalRenderPresets';
 import { formatArea, polygonDimensionsMeters, resolveZoneColor } from '../mapEngine/geoUtils';
 import {
@@ -73,6 +74,7 @@ export const GLOBE_STYLE_PROMPTS: Record<string, string> = {
   'site-plan-photo': 'Professional near-top-down drone photomontage at 100m altitude, 15-20 degrees from nadir. DJI Mavic 3, Hasselblad sensor, 24mm lens f/5.6. Photorealistic materials, accurate short shadows, real rooftop equipment visible. Seamless integration with surrounding satellite context. Documentary drone survey photography of a completed development. CRITICAL: Replace all colored polygon fills completely with photorealistic materials. No flat green, red, blue, or orange overlay colors should remain visible.',
   'site-plan-watercolor': 'Near-top-down architectural site plan as a hand-painted watercolor on textured paper, 15-20 degrees from nadir. Soft translucent washes — warm ochre for buildings, sage green for parks, soft grey for roads, ultramarine for water. Faint pencil construction lines beneath washes. Trees as loose circular watercolor daubs. Shadows as soft blue-grey washes. White paper glowing through as highlights. Pigment granulation, wet-on-wet blooms, bleeding edges at zone boundaries. Architectural competition entry quality.',
   blueprint: 'Architectural blueprint cyanotype rendering on aged blueprint paper. Strict orthographic projection looking straight down. Pure white linework on deep Prussian-blue ground — crisp construction lines defining building footprints, roads, property lines, landscape elements. Hatched line patterns indicate grass and pavement. Trees as small white circular symbols. Roads as parallel white lines. Faint vintage paper mottling. No tonal shading, no gradients, no realistic materials. Drafted-by-hand mid-20th-century architectural drawing convention.',
+  [MOVIE_STILL_PRESET.id]: MOVIE_STILL_PRESET.prompt,
   [AFTER_RAIN_PRESET.id]: AFTER_RAIN_PRESET.prompt,
   [AUTUMN_PRESET.id]: AUTUMN_PRESET.prompt,
   winter: 'Photorealistic winter scene. Snow-covered roofs with drift patterns. Bare deciduous trees, snow-laden evergreens. Frosted surfaces, salt-grit on plowed paths. Soft diffuse winter light, pale blue-grey sky, long blue-tinted shadows. Specular melt/ice sheen on horizontal surfaces. Warm window glow.',
@@ -1324,6 +1326,7 @@ export function buildPrompt(
     photorealistic: 'Golden hour, low warm southwest sun creating strong directional light. Long crisp architectural shadows with deep material contrast — sunlit facades should read bright and textured, shadowed facades cool and recessive. Sharp highlight-to-shadow transitions emphasizing facade depth (cornices, mullions, balcony edges, podium returns) rather than flat global illumination.',
     winter: 'Soft diffuse winter daylight, low sun angle, long blue-tinted shadows, pale blue-grey overcast sky.',
     atmospheric: 'Dramatic golden hour, low-angle warm sun, long architectural shadows, volumetric haze.',
+    [MOVIE_STILL_PRESET.id]: MOVIE_STILL_PRESET.lighting,
     [AFTER_RAIN_PRESET.id]: AFTER_RAIN_PRESET.lighting,
     [AUTUMN_PRESET.id]: AUTUMN_PRESET.lighting,
     night: 'Moonlight and city glow, artificial lighting, warm window light.',
