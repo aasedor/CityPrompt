@@ -974,6 +974,11 @@ async def image_models(user: User = Depends(require_auth)):
     # are affordability floors; exact capture pricing is checked at admission.
     return {
         **availability,
+        "street_view_context_available": bool(
+            settings.direct_3d_images_enabled
+            and settings.direct_3d_street_view_context_enabled
+            and settings.google_maps_api_key
+        ),
         "credit_balance": effective_render_credit_balance(user),
         "credit_exempt": is_admin_or_above(user),
         "models": [
