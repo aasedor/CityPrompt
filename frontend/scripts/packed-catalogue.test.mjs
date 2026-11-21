@@ -12,9 +12,14 @@ import { packCatalogue, packedCatalogue, productionStarter } from './packed-cata
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
 
-for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['nativeStreetPilots.json', 4000], ['openSpaceArchetypes.json', 8000]]) {
-  test(`${filename}: production transport recovers bridge headroom without changing catalogue values`, async () => {
-    const path = resolve('src/data', filename), source = readFileSync(path, 'utf8');
+for (const [filename, minimumSaving] of [
+  ['data/buildingArchetypes.json', 20000],
+  ['data/nativeStreetPilots.json', 4000],
+  ['data/openSpaceArchetypes.json', 8000],
+  ['features/parks/detailCatalogueExtras.json', 2500],
+]) {
+  test(`${filename}: production transport reduces bundle size without changing catalogue values`, async () => {
+    const path = resolve('src', filename), source = readFileSync(path, 'utf8');
     const module = packedCatalogue().transform('', path).code.replace('three/examples/jsm/libs/fflate.module.js', inflater);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
