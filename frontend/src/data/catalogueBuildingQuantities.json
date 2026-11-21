@@ -1,0 +1,138 @@
+{
+  "source": "Concept quantities for exact catalogue revisions, based on authored floor plates and documented building programmes.",
+  "records": [
+    {
+      "variant_id": "affordable_porchlight_original",
+      "revision": "affordable-porchlight-clay-v004",
+      "dwellings": 4,
+      "gross_floor_area_m2": 396,
+      "source": "Two enclosed 22 × 9 m rowhouse floors. Front and rear gardens are outside the floor area."
+    },
+    {
+      "variant_id": "affordable_juniper_original",
+      "revision": "affordable-juniper-clay-v006",
+      "dwellings": 4,
+      "gross_floor_area_m2": 196,
+      "source": "Four one-storey cottages with 49 m² each. Shared garden and private patios are outside the floor area."
+    },
+    {
+      "variant_id": "affordable_stackyard_original",
+      "revision": "affordable-stackyard-clay-v003",
+      "dwellings": 6,
+      "gross_floor_area_m2": 462,
+      "source": "Two enclosed 21 × 11 m floors. The external gallery and stairs are outside the floor area."
+    },
+    {
+      "variant_id": "affordable_aspen_original",
+      "revision": "affordable-aspen-clay-v003",
+      "dwellings": 12,
+      "gross_floor_area_m2": 936,
+      "source": "Three enclosed 24 × 13 m apartment floors, including shared circulation."
+    },
+    {
+      "variant_id": "affordable_switchback_original",
+      "revision": "affordable-switchback-clay-v003",
+      "dwellings": 24,
+      "gross_floor_area_m2": 1344,
+      "source": "Four enclosed 24 × 14 m studio apartment floors, including shared circulation."
+    },
+    {
+      "variant_id": "bungalow_postwar_ranch",
+      "revision": "calgary-inner-city-bungalow-clay-v005",
+      "dwellings": 1,
+      "retail_units": 0,
+      "allow_exact_flexible_native_revision": true,
+      "development_type": "residential_single_family",
+      "source_title": "Post-war bungalow · reviewed single-home programme",
+      "source": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md#bungalow_postwar_ranch",
+      "source_excerpt": "Native dimensions 10.898324 × 16.050000 × 6.360000 m, one floor, one home. The reviewed source is a single-family residential home, with no retail programme."
+    },
+    {
+      "variant_id": "reference_charcoal_gable_fourplex_v1",
+      "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+      "requires_placement_plot": true,
+      "dwellings": 4,
+      "development_type": "residential"
+    },
+    {
+      "variant_id": "london-crescent-terrace-bath-stone",
+      "revision": "crescent-terrace-bath-stone-clay-v006",
+      "requires_placement_plot": true,
+      "dwellings": 18,
+      "development_type": "residential"
+    },
+    {
+      "variant_id": "infill_duplex",
+      "revision": "calgary-side-by-side-duplex-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 2,
+      "development_type": "residential"
+    },
+    {
+      "variant_id": "montreal_duplex_plateau",
+      "revision": "montreal-plateau-duplex-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 2,
+      "development_type": "residential"
+    },
+    {
+      "variant_id": "brick_timber_two_storey_office",
+      "revision": "brick-timber-courtyard-office-clay-v004",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 224,
+      "development_type": "commercial_office",
+      "source": "Two authored 112 m² floor plates, including circulation."
+    },
+    {
+      "variant_id": "garden_mews_six_homes",
+      "revision": "garden-mews-courtyard-housing-clay-v003",
+      "requires_placement_plot": true,
+      "dwellings": 6,
+      "gross_floor_area_m2": 504,
+      "development_type": "residential",
+      "source": "Six two-storey 6 × 7 m homes. The shared court and patios are outside the floor area."
+    },
+    {
+      "variant_id": "horizon_double_section",
+      "revision": "horizon-manufactured-home-clay-v003",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "gross_floor_area_m2": 97.92,
+      "development_type": "residential_single_family",
+      "source": "One 13.6 × 7.2 m enclosed storey. The roof step is unoccupied."
+    },
+    {
+      "variant_id": "maple_porch_sage",
+      "revision": "maple-porch-manufactured-cottage-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "gross_floor_area_m2": 67.2,
+      "development_type": "residential_single_family",
+      "source": "One 14 × 4.8 m enclosed storey. The front porch is open."
+    },
+    {
+      "variant_id": "brick_timber_craftsman",
+      "revision": "narrow-lot-craftsman-cottage-clay-v003",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "gross_floor_area_m2": 92.16,
+      "development_type": "residential_single_family",
+      "source": "One 7.2 × 12.8 m enclosed storey. The porch and unoccupied attic are outside the floor area."
+    },
+    {
+      "variant_id": "folded_roof_market_hall",
+      "revision": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 243.5,
+      "development_type": "commercial_retail",
+      "source": "Five enclosed ground-floor workshops measured to glazing and outside walls. The open market canopy is outside the floor area."
+    },
+    {
+      "variant_id": "montreal_depanneur_modern",
+      "revision": "brick-corner-grocery-clay-v002",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "development_type": "mixed_use"
+    }
+  ]
+}

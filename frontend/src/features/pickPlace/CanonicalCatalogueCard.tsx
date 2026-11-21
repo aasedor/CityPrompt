@@ -8,8 +8,11 @@ import type { CanonicalChoice, CanonicalSelection } from './canonicalCatalogue';
 import { pickerHeroImage } from './pickerHeroImages';
 import { cataloguePresentationFor } from './cataloguePresentation';
 import { catalogueSizeLabel, catalogueStyleIds, catalogueStyleLabel } from './catalogueFacets';
+import catalogueQuantities from '@/data/catalogueBuildingQuantities.json';
 import { lessonForChoice } from '@/features/catalogueLearning/teaching';
 import { CatalogueTeachingDetails } from '@/features/catalogueLearning/CatalogueTeachingDetails';
+
+const quantityNumber = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
 
 function CatalogueThumbnail({ sources, label }: { sources: string[]; label: string }) {
   const [index, setIndex] = useState(0);
@@ -31,6 +34,11 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
   const [variantId, setVariantId] = useState(initialVariantId ?? placements[0]?.model.variantId ?? option.variants?.[0]?.id ?? '');
   const variant = option.variants?.find(v => v.id === variantId);
   const placement = placements.find(a => a.model.variantId === variantId);
+  const building = choice.domain === 'building' && placement?.kind === 'object' ? placement : undefined;
+  const quantities = building && catalogueQuantities.records.find(record =>
+    record.variant_id === building.model.variantId && record.revision === building.model.revision);
+  const grossFloorArea = quantities?.gross_floor_area_m2;
+  const referenceLotArea = building && (building.referenceLotAreaM2 ?? building.width * building.depth);
   const variantGuide = classifyCalgaryVariant(option.id, variantId);
   const thumbnail = pickerHeroImage(placement?.id,
     (choice.groupedVariants ? variant?.thumbnailUrl || placement?.thumbnail : undefined)
@@ -64,6 +72,22 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
       <p className="text-sm text-slate-700">{presentation?.description ?? placement?.description ?? variant?.description ?? option.description}</p>
       <p className="text-xs font-medium text-slate-700">{placement?.kind === 'object' && placement.properties.pick_place_flexible_park ? 'Flexible 3D · draw your outline' : placement ? 'Detailed 3D' : choice.domain === 'building' ? 'Design massing · detailed model depends on size and availability' : 'Design reference · layout depends on available 3D support'}</p>
       <p className="text-[11px] text-slate-600">{catalogueSizeLabel(placement)}</p>
+      {building && <dl className="space-y-1 text-xs text-slate-700">
+        {grossFloorArea != null && <div>
+          <dt className="font-semibold">Estimated gross floor area</dt>
+          <dd>{quantityNumber.format(grossFloorArea)} m² · {quantityNumber.format(grossFloorArea * 10.7639104167)} ft²</dd>
+        </div>}
+        {quantities?.dwellings != null && <div>
+          <dt className="font-semibold">Modelled dwellings</dt>
+          <dd>{quantityNumber.format(quantities.dwellings)}</dd>
+        </div>}
+        <div>
+          <dt className="font-semibold">Estimated FAR on reference lot</dt>
+          <dd>{grossFloorArea != null && referenceLotArea
+            ? `${(grossFloorArea / referenceLotArea).toFixed(2)} on ${quantityNumber.format(referenceLotArea)} m²`
+            : 'Floor area pending'}</dd>
+        </div>
+      </dl>}
       <CatalogueTeachingDetails choice={choice} variantId={variantId} />
       {choice.domain === 'building' && !lesson && <p className="text-[11px] text-slate-600">{styles.map(id => catalogueStyleLabel(id)).join(' · ') || 'Style not catalogued'}</p>}
       {Boolean(option.variants?.length) && <label className="block text-xs font-medium">Design variant

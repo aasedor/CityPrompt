@@ -8,6 +8,14 @@ import { pickerHeroImage } from './pickerHeroImages';
 import { cataloguePresentationFor } from './cataloguePresentation';
 
 afterEach(cleanup);
+it('shows estimated floor area and FAR using the reference lot of a compact building', () => {
+  const choice = CANONICAL_CHOICES.find(item => item.placements[0]?.id === 'clay_brick_timber_two_storey_office')!;
+  render(<CanonicalCatalogueCard choice={choice} selected={null} onPlacement={vi.fn()} onDraw={vi.fn()} />);
+  fireEvent.click(screen.getByRole('button', { name: 'Expand details for Brick-and-Timber Courtyard Office' }));
+  expect(screen.getByText('Estimated FAR on reference lot')).toBeVisible();
+  expect(screen.getByText(/0\.78.*288 m²/)).toBeVisible();
+  expect(screen.getByText(/224 m².*2,411 ft²/)).toBeVisible();
+});
 it('keeps court-only as a base-card variant and places its original geometry and thumbnail', () => {
   const choice = CANONICAL_CHOICES.find(choice => choice.option.id === 'basketball_court')!;
   const court = choice.placements.find(asset => asset.model.variantId === 'court_only_basketball_v1')!;

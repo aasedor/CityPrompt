@@ -33,7 +33,8 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
   const asset = assetForZone(zone)!;
   const fixedFixture = isFixedNativeScene(zone.properties);
   const fixedFootprint = fixedFixture || asset.reshapeMode === 'fixed_native' || hasFixedBuildingFootprint(asset) || hasNativePark(zone);
-  const buildingOnly = hasBuildingOnlyFootprint(asset);
+  const fitBuilding = asset.reshapeMode === 'fixed_native'
+    && (asset.referenceLotAreaM2 != null || hasBuildingOnlyFootprint(asset));
   const isPark = zone.zone_type === 'green_space' && !fixedFixture;
   const keepOutline = isPark || asset.reshapeMode === 'authored_footprint';
   const dimensions = keepOutline ? parkOutlineDimensions(zone.coordinates) : rectangleDimensions(zone.coordinates);
@@ -91,7 +92,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
         <label className="text-xs font-semibold text-slate-800">Plot width (m)<input aria-label="Plot width (m)" disabled={fixedFootprint} type="number" min={asset.minWidth} max={maxWidth} step="0.1" value={width} onChange={e=>setWidth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
         <label className="text-xs font-semibold text-slate-800">Plot depth (m)<input aria-label="Plot depth (m)" disabled={fixedFootprint} type="number" min={asset.minDepth} max={maxDepth} step="0.1" value={depth} onChange={e=>setDepth(e.target.value)} className="mt-1 min-h-11 w-full rounded border border-slate-400 bg-white px-2 text-base text-slate-900" /></label>
       </div>}
-      {buildingOnly && (Math.abs(dimensions.width-asset.width)>.15 || Math.abs(dimensions.depth-asset.depth)>.15) &&
+      {fitBuilding && (Math.abs(dimensions.width-asset.width)>.15 || Math.abs(dimensions.depth-asset.depth)>.15) &&
         <button type="button" disabled={disabled} className={`${button} mt-2 w-full`} onClick={()=>{
           const result=onReshape(rectangleAt(dimensions.center,asset.width,asset.depth,dimensions.degrees));
           setReshapeRejected(result===false);
@@ -103,7 +104,7 @@ export function ReshapePanel({ zone, disabled, onReshape, onClose, onDelete, onD
       {flexibleProblem && <p role="alert" className="mb-2 text-xs text-red-700">{flexibleProblem}</p>}
       <button disabled={disabled||!valid} className={`${button} w-full !bg-[#c9ff3d]`}>{disabled?'Saving…':'Apply shape'}</button>
     </form>
-    <div className="mt-2 grid grid-cols-2 gap-2"><button className={button} disabled={disabled} onClick={()=>onDuplicate(asset.id,buildingOnly?asset.width:Number(dimensions.width.toFixed(3)),buildingOnly?asset.depth:Number(dimensions.depth.toFixed(3)),Number(dimensions.degrees.toFixed(3)))}>Place another</button><button className={button} disabled={disabled} onClick={onDelete}>Delete</button></div>
+    <div className="mt-2 grid grid-cols-2 gap-2"><button className={button} disabled={disabled} onClick={()=>onDuplicate(asset.id,fitBuilding?asset.width:Number(dimensions.width.toFixed(3)),fitBuilding?asset.depth:Number(dimensions.depth.toFixed(3)),Number(dimensions.degrees.toFixed(3)))}>Place another</button><button className={button} disabled={disabled} onClick={onDelete}>Delete</button></div>
     {onTerrace && !fixedFixture && !hasNativePark(zone) && <button onClick={onTerrace} className={`${button} mt-2 w-full`}>Terrace & path</button>}
     <button onClick={onMore} className="mt-2 min-h-11 text-xs text-slate-700 underline">More settings</button>
   </aside>;

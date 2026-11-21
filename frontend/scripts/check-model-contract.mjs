@@ -41,3 +41,24 @@ const content = JSON.stringify({schema:'cityprompt.native-model-contract@1',reco
 if(process.argv.includes('--write')) writeFileSync(target,content);
 else if(readFileSync(target,'utf8').replace(/\r\n/g,'\n') !== content) throw new Error('Backend model contract is stale; run node scripts/check-model-contract.mjs --write');
 console.log('Backend model contract matches authored catalogue: '+fileURLToPath(target));
+
+const quantities = read('../src/data/catalogueBuildingQuantities.json');
+const quantityIdentities = new Set();
+for (const { variant_id, revision, gross_floor_area_m2, dwellings } of quantities.records) {
+  const identity = `${variant_id}@${revision}`;
+  if (quantityIdentities.has(identity) || !records.some(record => record.variant_id === variant_id && record.revision === revision)) {
+    throw new Error(`Invalid or duplicate catalogue quantity identity: ${identity}`);
+  }
+  if ((gross_floor_area_m2 == null && dwellings == null)
+    || (gross_floor_area_m2 != null && (!Number.isFinite(gross_floor_area_m2) || gross_floor_area_m2 <= 0))
+    || (dwellings != null && (!Number.isInteger(dwellings) || dwellings < 0))) {
+    throw new Error(`Invalid catalogue quantity: ${identity}`);
+  }
+  quantityIdentities.add(identity);
+}
+const quantityTarget = new URL('../../backend/app/data/catalogue_dwelling_programmes.json', import.meta.url);
+const quantityContent = JSON.stringify(quantities, null, 2) + '\n';
+if (process.argv.includes('--write')) writeFileSync(quantityTarget, quantityContent);
+else if (readFileSync(quantityTarget, 'utf8').replace(/\r\n/g, '\n') !== quantityContent) {
+  throw new Error('Backend catalogue quantities are stale; run node scripts/check-model-contract.mjs --write');
+}

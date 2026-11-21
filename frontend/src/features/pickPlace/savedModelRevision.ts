@@ -10,6 +10,7 @@ export function savedModelRevision(asset: PlaceAsset, properties: SiteZoneProper
     && row.variantId === asset.model.variantId);
   if (!record) return undefined;
   return { ...asset, model: { ...asset.model, revision: record.revision },
+    referenceLotAreaM2: undefined,
     width: record.plotWidthM, depth: record.plotDepthM, minWidth: record.plotWidthM, minDepth: record.plotDepthM,
     nativeDimensions: record.nativeDimensions as [number, number, number],
     storeyProgram: { id: `${record.variantId}-${record.revision}-fixed`, mode: 'fixed_authored_assembly',

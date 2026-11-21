@@ -138,6 +138,33 @@ def test_exact_catalogue_dwelling_programmes_are_counted_without_plot_floor_area
     assert values(analyze_snapshot(plan))["catalogue_dwellings"] is None
 
 
+def test_native_office_estimate_counts_its_floor_area_once_after_compilation():
+    compiled = SimpleNamespace(
+        id=uuid.uuid4(),
+        name="Courtyard office",
+        footprint=rectangle(),
+        height_meters=7.4,
+        floor_count=2,
+        specifications={},
+    )
+    office = zone(
+        "building",
+        building_geometry_basis="placement_plot",
+        pick_place_asset="clay_brick_timber_two_storey_office",
+        development_selected_variant_id="brick_timber_two_storey_office",
+        pick_place_model_revision="brick-timber-courtyard-office-clay-v004",
+        floor_count=2,
+    )
+    office.building_id = compiled.id
+    plan = snapshot([office], [compiled])
+    result = values(analyze_snapshot(plan))
+    assert result["gfa_m2"] == 224
+    assert result["gfa_ft2"] == pytest.approx(2411.12, abs=0.01)
+    assert result["building_footprint_m2"] is None
+    plan["zones"][0]["properties"]["pick_place_model_revision"] = "old-revision"
+    assert values(analyze_snapshot(plan))["gfa_m2"] is None
+
+
 def test_proposed_study_area_is_separate_clipped_and_deduplicated():
     boundary = zone("site_boundary")
     collection = {

@@ -149,6 +149,8 @@ export interface CustomStyleAttachment {
 }
 
 export interface SiteZoneProperties {
+  /** When false, the underlying site surface shows around the model. */
+  building_plot_landscaping?: boolean;
   /** Display opacity of the site surface, independent of zoning map layers. */
   site_boundary_opacity?: number;
   /** Prepared site finish preset or a custom six-digit hex colour. */

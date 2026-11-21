@@ -61,11 +61,12 @@ describe('release candidate native placement contracts (not browser acceptance)'
       expect(screen.queryByLabelText('Placement width')).toBeNull();
       expect(screen.queryByLabelText('Placement depth')).toBeNull();
       expect(draftValue()).toMatchObject({ assetId: asset.id, width: asset.width, depth: asset.depth });
-      // Saved plot metadata remains compatible at its historical limits even
-      // though new student placement no longer offers plot resizing.
-      for (const [width, depth] of [[asset.width, asset.depth], [asset.minWidth, asset.minDepth], [asset.maxWidth ?? asset.maxSize, asset.maxDepth ?? asset.maxSize]]) {
-        expect(width).toBeGreaterThanOrEqual(native.width + 3 - 1e-6);
-        expect(depth).toBeGreaterThanOrEqual(native.depth + 3 - 1e-6);
+      // Exercise the compact default and also the original generous plot
+      // stored with older scene data.
+      for (const [width, depth] of [[asset.width, asset.depth], [entry.picker.width, entry.picker.depth],
+        [asset.minWidth, asset.minDepth], [asset.maxWidth ?? asset.maxSize, asset.maxDepth ?? asset.maxSize]]) {
+        expect(width).toBeGreaterThanOrEqual(native.width - 1e-6);
+        expect(depth).toBeGreaterThanOrEqual(native.depth - 1e-6);
         expect(placementPlanRequest(asset, width, depth)).toMatchObject({
           target_width_m: asset.footprintProgram?.editable === false ? native.width : width,
           target_depth_m: asset.footprintProgram?.editable === false ? native.depth : depth, target_floors: entry.native_floors,

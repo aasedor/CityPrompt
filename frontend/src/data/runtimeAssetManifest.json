@@ -291,6 +291,7 @@
     "src/data/buildingPlacementEdges.json",
     "src/data/buildingWalkDoors.json",
     "src/data/canalRoutePolicy.json",
+    "src/data/catalogueBuildingQuantities.json",
     "src/data/catalogueHeroImages.json",
     "src/data/catalogueOctober2026.json",
     "src/data/cataloguePlanningHistory.json",

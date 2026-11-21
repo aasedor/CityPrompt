@@ -14,6 +14,7 @@ const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/ffl
 
 for (const [filename, minimumSaving] of [
   ['data/buildingArchetypes.json', 20000],
+  ['data/cataloguePlanningHistory.json', 1900],
   ['data/nativeStreetPilots.json', 4000],
   ['data/openSpaceArchetypes.json', 8000],
   ['features/parks/detailCatalogueExtras.json', 2500],
@@ -69,7 +70,7 @@ for (const relative of [
   'features/zoningCatalogue/parkUseRules.json',
   'features/pickPlace/publicRealmOwnershipContracts.json',
   'components/viewer/globe/publicRealmTrialAssets.json',
-  'data/archetypeVisualSystem.json', 'data/catalogueOctober2026.json',
+  'data/archetypeVisualSystem.json', 'data/catalogueBuildingQuantities.json', 'data/catalogueOctober2026.json',
   'data/claudeBuildingRelease.json', 'data/claudeFiveTrial.json',
   'data/courtOnlySports.json',
   'data/finalFiveBuildingBatch.json', 'data/flexibleParks.json',
