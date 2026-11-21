@@ -20,6 +20,18 @@ export const STREET_RENDER_SENSOR_WIDTH_MM = 36;
 export const STREET_RENDER_FRAME_ASPECT = 16 / 9;
 export const STREET_RENDER_MAX_ROUTE_DISTANCE_METERS = 80;
 
+export function getGlobeFogArgs({
+  streetRenderProfileActive,
+  streetImageCaptureActive,
+}: {
+  streetRenderProfileActive: boolean;
+  streetImageCaptureActive: boolean;
+}): [color: string, near: number, far: number] | null {
+  // Keep facade contrast in the image that guides the model.
+  if (streetImageCaptureActive) return null;
+  return streetRenderProfileActive ? ['#cfdae4', 180, 900] : ['#b8c8d8', 8000, 80000];
+}
+
 /** People-only close-ups need a torso-height target; retain the existing
  * architectural framing when an authored building is present. */
 export function manualStreetFocusHeight({ hasPeople, hasBuildings, savedBuildings = [] }: {
