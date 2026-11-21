@@ -32,7 +32,7 @@ export function buildingEdgeContract(zone: PlacedZone) {
     // A legacy frame with swapped proportions can quarter-turn the compiled model.
     if (p.building_geometry_basis !== 'placement_plot'
       || plotWidth + .01 < row.nativeWidthM || plotDepth + .01 < row.nativeDepthM
-      || (plotWidth - plotDepth) * (row.nativeWidthM - row.nativeDepthM) < 0) return null;
+      || (Math.abs(plotWidth - plotDepth) > .01 && (plotWidth - plotDepth) * (row.nativeWidthM - row.nativeDepthM) < 0)) return null;
   }
   if(p.development_height_override_m!=null && (!asset.storeyProgram || !storeyProgramSupports(
     asset.storeyProgram,p.floor_count ?? p.floors,p.development_height_override_m,
@@ -53,7 +53,7 @@ export function buildingEdgeContract(zone: PlacedZone) {
 
 /** Local -Y is the authored front. The plot remains the compilation/ground
  * frame; this separate envelope controls contact with neighbouring objects. */
-export function buildingPlacementEnvelope(zone: PlacedZone): number[][] {
+export function buildingPlacementEnvelope(zone: PlacedZone, useMeasuredOutline = true): number[][] {
   const contract=buildingEdgeContract(zone), ring=zone.coordinates;
   if (!contract || ring.some(p=>!Number.isFinite(p[0]+p[1]))) return ring;
   const center=computeCentroid(ring), east=metersPerDegLon(center[1]);
@@ -64,7 +64,7 @@ export function buildingPlacementEnvelope(zone: PlacedZone): number[][] {
   const left=contract.left==='abut'?-contract.width/2:-Math.max(w,contract.width)/2;
   const right=contract.right==='abut'?contract.width/2:Math.max(w,contract.width)/2;
   const front=-contract.depth/2,rear=Math.max(d,contract.depth)/2;
-  const localOutline = contract.outlineM ?? [[left,front],[right,front],[right,rear],[left,rear]];
+  const localOutline = (useMeasuredOutline && contract.outlineM) || [[left,front],[right,front],[right,rear],[left,rear]];
   return localOutline.map(([x,y])=>[
     center[0]+(x*c-y*s)/east,center[1]+(x*s+y*c)/METERS_PER_DEG_LAT,
   ]);
@@ -109,8 +109,13 @@ export function placementEdgeSnapCandidates(zone: PlacedZone, neighbours: SiteZo
     }
     const ownEdges=[...(contract?.right==='abut'?[1]:[]),...(contract?.left==='abut'?[3]:[])];
     const targetEdges=[...(otherContract?.right==='abut'?[1]:[]),...(otherContract?.left==='abut'?[3]:[])];
+    if (!ownEdges.length || !targetEdges.length) continue;
+    // Keep reviewed party-wall magnetism on the authored axes. The measured
+    // outlines still validate the resulting position against real geometry.
+    const ownSides = contract?.outlineM ? buildingPlacementEnvelope(zone, false).map(local) : ring;
+    const targetSides = otherContract?.outlineM ? buildingPlacementEnvelope(other, false).map(local) : target;
     for(const i of ownEdges)for(const j of targetEdges) {
-      const a=ring[i],b=ring[(i+1)%ring.length],q=target[j],r=target[(j+1)%target.length];
+      const a=ownSides[i],b=ownSides[(i+1)%ownSides.length],q=targetSides[j],r=targetSides[(j+1)%targetSides.length];
       const length=Math.hypot(b[0]-a[0],b[1]-a[1]),otherLength=Math.hypot(r[0]-q[0],r[1]-q[1]);
       if(length<.01||otherLength<.01)continue;
       const t=[(b[0]-a[0])/length,(b[1]-a[1])/length],n=[t[1],-t[0]];

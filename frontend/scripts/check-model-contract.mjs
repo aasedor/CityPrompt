@@ -44,20 +44,34 @@ console.log('Backend model contract matches authored catalogue: '+fileURLToPath(
 
 const quantities = read('../src/data/catalogueBuildingQuantities.json');
 const quantityIdentities = new Set();
-for (const { variant_id, revision, gross_floor_area_m2, dwellings } of quantities.records) {
+const areaMethods = new Set(['storey_sections', 'typical_plate', 'source_programme']);
+const authoredQuantities = [];
+for (const { estimated_gross_floor_area_m2, estimated_dwellings_range, area_method, ...authored } of quantities.records) {
+  const { variant_id, revision, gross_floor_area_m2, dwellings } = authored;
   const identity = `${variant_id}@${revision}`;
   if (quantityIdentities.has(identity) || !records.some(record => record.variant_id === variant_id && record.revision === revision)) {
     throw new Error(`Invalid or duplicate catalogue quantity identity: ${identity}`);
   }
-  if ((gross_floor_area_m2 == null && dwellings == null)
+  const hasAuthoredQuantity = gross_floor_area_m2 != null || dwellings != null;
+  const hasEstimatedArea = estimated_gross_floor_area_m2 !== undefined;
+  const hasEstimatedDwellings = estimated_dwellings_range !== undefined;
+  const validDwellingRange = Array.isArray(estimated_dwellings_range) && estimated_dwellings_range.length === 2
+    && estimated_dwellings_range.every(value => Number.isInteger(value) && value >= 0)
+    && estimated_dwellings_range[0] <= estimated_dwellings_range[1];
+  if ((!hasAuthoredQuantity && !hasEstimatedArea && !hasEstimatedDwellings)
     || (gross_floor_area_m2 != null && (!Number.isFinite(gross_floor_area_m2) || gross_floor_area_m2 <= 0))
-    || (dwellings != null && (!Number.isInteger(dwellings) || dwellings < 0))) {
+    || (dwellings != null && (!Number.isInteger(dwellings) || dwellings < 0))
+    || (hasEstimatedArea && (!Number.isFinite(estimated_gross_floor_area_m2) || estimated_gross_floor_area_m2 < 0))
+    || (hasEstimatedDwellings && !validDwellingRange)
+    || (area_method !== undefined && !areaMethods.has(area_method))) {
     throw new Error(`Invalid catalogue quantity: ${identity}`);
   }
   quantityIdentities.add(identity);
+  // The backend reports use authored programmes. Planning estimates belong to the picker.
+  if (hasAuthoredQuantity) authoredQuantities.push(authored);
 }
 const quantityTarget = new URL('../../backend/app/data/catalogue_dwelling_programmes.json', import.meta.url);
-const quantityContent = JSON.stringify(quantities, null, 2) + '\n';
+const quantityContent = JSON.stringify({ ...quantities, records: authoredQuantities }, null, 2) + '\n';
 if (process.argv.includes('--write')) writeFileSync(quantityTarget, quantityContent);
 else if (readFileSync(quantityTarget, 'utf8').replace(/\r\n/g, '\n') !== quantityContent) {
   throw new Error('Backend catalogue quantities are stale; run node scripts/check-model-contract.mjs --write');

@@ -105,7 +105,7 @@ def building_contact_geometry(zone, geometry):
         p.get("building_geometry_basis") != "placement_plot"
         or width + 0.01 < native_width
         or depth + 0.01 < native_depth
-        or (width - depth) * (native_width - native_depth) < 0
+        or (abs(width - depth) > 0.01 and (width - depth) * (native_width - native_depth) < 0)
     ):
         return geometry
     return Polygon(

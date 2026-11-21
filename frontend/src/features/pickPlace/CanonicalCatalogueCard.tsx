@@ -12,7 +12,22 @@ import catalogueQuantities from '@/data/catalogueBuildingQuantities.json';
 import { lessonForChoice } from '@/features/catalogueLearning/teaching';
 import { CatalogueTeachingDetails } from '@/features/catalogueLearning/CatalogueTeachingDetails';
 
+type CatalogueBuildingQuantity = {
+  variant_id: string;
+  revision: string;
+  gross_floor_area_m2?: number | null;
+  dwellings?: number | null;
+  estimated_gross_floor_area_m2?: number;
+  estimated_dwellings_range?: readonly number[];
+};
+
+const buildingQuantities: readonly CatalogueBuildingQuantity[] = catalogueQuantities.records;
 const quantityNumber = new Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 });
+
+function formatDwellingRange([minimum, maximum]: readonly number[]) {
+  const lower = quantityNumber.format(minimum);
+  return minimum === maximum ? lower : `${lower}–${quantityNumber.format(maximum)}`;
+}
 
 function CatalogueThumbnail({ sources, label }: { sources: string[]; label: string }) {
   const [index, setIndex] = useState(0);
@@ -35,9 +50,12 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
   const variant = option.variants?.find(v => v.id === variantId);
   const placement = placements.find(a => a.model.variantId === variantId);
   const building = choice.domain === 'building' && placement?.kind === 'object' ? placement : undefined;
-  const quantities = building && catalogueQuantities.records.find(record =>
+  const quantities = building && buildingQuantities.find(record =>
     record.variant_id === building.model.variantId && record.revision === building.model.revision);
-  const grossFloorArea = quantities?.gross_floor_area_m2;
+  const authoredGrossFloorArea = quantities?.gross_floor_area_m2;
+  const grossFloorArea = authoredGrossFloorArea ?? quantities?.estimated_gross_floor_area_m2;
+  const dwellings = quantities?.dwellings;
+  const dwellingRange = quantities?.estimated_dwellings_range;
   const referenceLotArea = building && (building.referenceLotAreaM2 ?? building.width * building.depth);
   const variantGuide = classifyCalgaryVariant(option.id, variantId);
   const thumbnail = pickerHeroImage(placement?.id,
@@ -73,21 +91,26 @@ export function CanonicalCatalogueCard({ choice, selected, activeStreetVariant, 
       <p className="text-xs font-medium text-slate-700">{placement?.kind === 'object' && placement.properties.pick_place_flexible_park ? 'Flexible 3D · draw your outline' : placement ? 'Detailed 3D' : choice.domain === 'building' ? 'Design massing · detailed model depends on size and availability' : 'Design reference · layout depends on available 3D support'}</p>
       <p className="text-[11px] text-slate-600">{catalogueSizeLabel(placement)}</p>
       {building && <dl className="space-y-1 text-xs text-slate-700">
-        {grossFloorArea != null && <div>
-          <dt className="font-semibold">Estimated gross floor area</dt>
-          <dd>{quantityNumber.format(grossFloorArea)} m² · {quantityNumber.format(grossFloorArea * 10.7639104167)} ft²</dd>
-        </div>}
-        {quantities?.dwellings != null && <div>
-          <dt className="font-semibold">Modelled dwellings</dt>
-          <dd>{quantityNumber.format(quantities.dwellings)}</dd>
-        </div>}
+        <div>
+          <dt className="font-semibold">{grossFloorArea != null && authoredGrossFloorArea == null ? 'Estimated gross floor area' : 'Gross floor area'}</dt>
+          <dd>{grossFloorArea != null
+            ? `${quantityNumber.format(grossFloorArea)} m² · ${quantityNumber.format(grossFloorArea * 10.7639104167)} ft²`
+            : 'Pending'}</dd>
+        </div>
+        <div>
+          <dt className="font-semibold">{dwellings != null ? 'Modelled dwellings' : dwellingRange ? 'Estimated dwellings' : 'Dwellings'}</dt>
+          <dd>{dwellings != null ? quantityNumber.format(dwellings) : dwellingRange ? formatDwellingRange(dwellingRange) : 'Pending'}</dd>
+        </div>
         <div>
           <dt className="font-semibold">Estimated FAR on reference lot</dt>
-          <dd>{grossFloorArea != null && referenceLotArea
-            ? `${(grossFloorArea / referenceLotArea).toFixed(2)} on ${quantityNumber.format(referenceLotArea)} m²`
-            : 'Floor area pending'}</dd>
+          <dd>{grossFloorArea == null ? 'Floor area pending'
+            : referenceLotArea && referenceLotArea > 0 && Number.isFinite(referenceLotArea)
+              ? `${(grossFloorArea / referenceLotArea).toFixed(2)} on ${quantityNumber.format(referenceLotArea)} m²`
+              : 'Reference lot area pending'}</dd>
         </div>
       </dl>}
+      {building && (quantities?.estimated_gross_floor_area_m2 != null || (dwellingRange && dwellingRange[1] > 0)) &&
+        <p className="text-[11px] text-slate-600">Concept estimates approximate enclosed floor area and use typical dwelling sizes.</p>}
       <CatalogueTeachingDetails choice={choice} variantId={variantId} />
       {choice.domain === 'building' && !lesson && <p className="text-[11px] text-slate-600">{styles.map(id => catalogueStyleLabel(id)).join(' · ') || 'Style not catalogued'}</p>}
       {Boolean(option.variants?.length) && <label className="block text-xs font-medium">Design variant

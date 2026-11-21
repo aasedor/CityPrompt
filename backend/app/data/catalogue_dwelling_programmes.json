@@ -2,6 +2,289 @@
   "source": "Concept quantities for exact catalogue revisions, based on authored floor plates and documented building programmes.",
   "records": [
     {
+      "variant_id": "reference_charcoal_gable_fourplex_v1",
+      "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
+      "requires_placement_plot": true,
+      "dwellings": 4,
+      "development_type": "residential"
+    },
+    {
+      "variant_id": "minimalist_infill_brick_monolith",
+      "revision": "97f91c15feddd9c2bf0595f61266aa08fa85cb140f70cd2271ff75d3a33f1de7",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:322"
+    },
+    {
+      "variant_id": "clapboard_north_end",
+      "revision": "3c7ab81c4db3c2a67ec280788ff84008da0cbd20a16129feba75dffcfcd0d4a6",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:57"
+    },
+    {
+      "variant_id": "cast_iron_italianate",
+      "revision": "29ed79811ff9f9e89ce975a105835e8d425d33730fd0de187d85d034426a3e6f",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 1872,
+      "source_title": "Three 24 x 26 m enclosed plates, with ground retail and two upper loft plates. The rooftop plant enclosure is excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:133"
+    },
+    {
+      "variant_id": "art_deco_streamline_moderne",
+      "revision": "4969c98cb0f6fd6d510fbbf2e410fd45b934a93005d8a0a49460b1ae7540d0a3",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 2845.9,
+      "source_title": "Seven enclosed, stepped L-shaped model levels. Ground retail and the upper crown are excluded from the dwelling-area scenario.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:210"
+    },
+    {
+      "variant_id": "rndsqr_midrise_terraced_garden",
+      "revision": "927bb882aad323702146db98c9095a4f798f101384c5af15901ff712724a0d47",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 3315,
+      "source_title": "One 34 x 28 m retail floor and three setback apartment storeys measured by frontage bay and depth. The roof garden and exterior terraces are excluded. The nominal plan omits the small projecting corner trim/bay.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:116",
+      "dwellings": 18
+    },
+    {
+      "variant_id": "contemporary_townhouse_timber_screen",
+      "revision": "c7a40074d68f8e0d7429caa553ba767723192e8d0b1d7e54bc4db3cdb2ee2ab5",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:337"
+    },
+    {
+      "variant_id": "beltline_brick_modern",
+      "revision": "81d39f92f9f85aa769598bdcfbfe989a628ed52fd1e6da8c27660b6cbec66618",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 4302.36,
+      "source_title": "A 30 x 30 m retail floor, three residential floors of that same base plan less two open 2.7 x 1.8 m loggias per floor, and the occupied cross-shaped setback floor. Roof service enclosure excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:146"
+    },
+    {
+      "variant_id": "infill_flat_roof_minimal",
+      "revision": "71f9478a6a053be8c43fe1a6c39c4bae700af94f043aac8be42e42ab8bcbdc74",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:2"
+    },
+    {
+      "variant_id": "terraced_science_centre",
+      "revision": "ba4afc44e21c53307eedc3798aa90a848411023705084ff6a01e240fd6ad32c7",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 2195.45,
+      "source_title": "Nominal enclosure polygons of west ground, east ground and setback floor, plus two north gallery floors. Roof terraces, court and lift headhouse are excluded.",
+      "source": "frontend/src/data/validationCatalogue.json:1545"
+    },
+    {
+      "variant_id": "folded_roof_market_hall",
+      "revision": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 243.5,
+      "development_type": "commercial_retail",
+      "source": "Five enclosed ground-floor workshops measured to glazing and outside walls. The open market canopy is outside the floor area."
+    },
+    {
+      "variant_id": "passage_tower",
+      "revision": "81e375e50ef397d131336673387681c019f73cda6ea5cf4a13fdd5a82aac4f51",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 9078.55,
+      "source_title": "Three split podium floors at nominal glazing lines, one enclosed crossing above the open lane, and 15 graduated office floor plates to the inset glazing. Podium roof gardens and setbacks are excluded.",
+      "source": "frontend/src/data/validationCatalogue.json:1605"
+    },
+    {
+      "variant_id": "london-crescent-terrace-bath-stone",
+      "revision": "crescent-terrace-bath-stone-clay-v006",
+      "requires_placement_plot": true,
+      "dwellings": 18,
+      "development_type": "residential"
+    },
+    {
+      "variant_id": "infill_duplex",
+      "revision": "calgary-side-by-side-duplex-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 2,
+      "development_type": "residential"
+    },
+    {
+      "variant_id": "montreal_duplex_plateau",
+      "revision": "montreal-plateau-duplex-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 2,
+      "development_type": "residential"
+    },
+    {
+      "variant_id": "courtyard_family_brick_modern",
+      "revision": "courtyard-brick-modern-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 8,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:99"
+    },
+    {
+      "variant_id": "bungalow_postwar_ranch",
+      "revision": "calgary-inner-city-bungalow-clay-v005",
+      "dwellings": 1,
+      "retail_units": 0,
+      "allow_exact_flexible_native_revision": true,
+      "development_type": "residential_single_family",
+      "source_title": "Post-war bungalow · reviewed single-home programme",
+      "source": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md#bungalow_postwar_ranch",
+      "source_excerpt": "Native dimensions 10.898324 × 16.050000 × 6.360000 m, one floor, one home. The reviewed source is a single-family residential home, with no retail programme."
+    },
+    {
+      "variant_id": "toronto_foursquare_red_brick",
+      "revision": "toronto-edwardian-foursquare-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:24"
+    },
+    {
+      "variant_id": "detached_infill_rammed_earth",
+      "revision": "detached_contemporary_infill-clay-v003",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:35"
+    },
+    {
+      "variant_id": "vancouverism_classic",
+      "revision": "vancouverism-tower-podium-clay-v004",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 15604.32,
+      "source_title": "Thirteen 32 x 26 m rounded residential tower plates, three 38 x 38 m rounded main podium levels and two rounded 9 x 30 m side-wing floors. Open balconies, podium terrace and rooftop penthouse excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:159"
+    },
+    {
+      "variant_id": "med_villa_tuscan",
+      "revision": "autumn-villa-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:46"
+    },
+    {
+      "variant_id": "brick_timber_two_storey_office",
+      "revision": "brick-timber-courtyard-office-clay-v004",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 224,
+      "development_type": "commercial_office",
+      "source": "Two authored 112 m² floor plates, including circulation."
+    },
+    {
+      "variant_id": "corten_timber_equipment_yard",
+      "revision": "contractor-storage-yard-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 180,
+      "source_title": "Enclosed 22 x 6 m equipment shed and 8 x 6 m dispatch office. Open rack canopy and yard are excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:687"
+    },
+    {
+      "variant_id": "meadow_three_gable_childcare",
+      "revision": "courtyard-childcare-centre-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 315,
+      "source_title": "One 22.5 x 12 m classroom plate and an enclosed 22.5 x 2 m staff spine. Outdoor veranda and play yard are excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:722"
+    },
+    {
+      "variant_id": "factory_sawtooth_roof",
+      "revision": "daylight-sawtooth-factory-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 1372,
+      "source_title": "One enclosed 49 x 28 m hall. Roof teeth, chimney and canopy are excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:493"
+    },
+    {
+      "variant_id": "folded_roof_recovery_hall",
+      "revision": "enclosed-materials-recovery-clay-v002",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 864,
+      "source_title": "One 36 x 24 m enclosed processing hall.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:662"
+    },
+    {
+      "variant_id": "garden_mews_six_homes",
+      "revision": "garden-mews-courtyard-housing-clay-v003",
+      "requires_placement_plot": true,
+      "dwellings": 6,
+      "gross_floor_area_m2": 504,
+      "development_type": "residential",
+      "source": "Six two-storey 6 × 7 m homes. The shared court and patios are outside the floor area."
+    },
+    {
+      "variant_id": "horizon_double_section",
+      "revision": "horizon-manufactured-home-clay-v003",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "gross_floor_area_m2": 97.92,
+      "development_type": "residential_single_family",
+      "source": "One 13.6 × 7.2 m enclosed storey. The roof step is unoccupied."
+    },
+    {
+      "variant_id": "industrial_tilt_up_concrete",
+      "revision": "industrial-tilt-up-concrete-clay-v006",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 2238.51,
+      "source_title": "One enclosed 54 x 36 m grade plate and a 38.7 x 7.61 m local office floor.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:525"
+    },
+    {
+      "variant_id": "maple_porch_sage",
+      "revision": "maple-porch-manufactured-cottage-clay-v004",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "gross_floor_area_m2": 67.2,
+      "development_type": "residential_single_family",
+      "source": "One 14 × 4.8 m enclosed storey. The front porch is open."
+    },
+    {
+      "variant_id": "copperline_four_bay_depot",
+      "revision": "municipal-works-depot-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 846,
+      "source_title": "One 30 x 22 m garage and a 15.5 x 12 m adjacent office floor. The covered apron is open.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:633"
+    },
+    {
+      "variant_id": "brick_timber_craftsman",
+      "revision": "narrow-lot-craftsman-cottage-clay-v003",
+      "requires_placement_plot": true,
+      "dwellings": 1,
+      "gross_floor_area_m2": 92.16,
+      "development_type": "residential_single_family",
+      "source": "One 7.2 × 12.8 m enclosed storey. The porch and unoccupied attic are outside the floor area."
+    },
+    {
+      "variant_id": "prairie_cedar_chassis_home",
+      "revision": "prairie-manufactured-home-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 73.6,
+      "source_title": "One 16 x 4.6 m enclosed manufactured-home floor. Steps and roof edges are excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:609",
+      "dwellings": 1
+    },
+    {
+      "variant_id": "rndsqr_townhome_brick_contextual",
+      "revision": "rndsqr-brick-contextual-row-clay-v005",
+      "requires_placement_plot": true,
+      "dwellings": 4,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:573"
+    },
+    {
+      "variant_id": "warehouse_tilt_wall_mega",
+      "revision": "tilt-wall-warehouse-clay-v006",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 13032,
+      "source_title": "One 144 x 86 m warehouse/office grade plate and two local 18 x 18 m office levels.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:541"
+    },
+    {
+      "variant_id": "rndsqr_townhome_scandinavian_peaks",
+      "revision": "rndsqr-scandinavian-peaks-row-clay-v006",
+      "requires_placement_plot": true,
+      "dwellings": 6,
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:591"
+    },
+    {
       "variant_id": "affordable_porchlight_original",
       "revision": "affordable-porchlight-clay-v004",
       "dwellings": 4,
@@ -37,102 +320,97 @@
       "source": "Four enclosed 24 × 14 m studio apartment floors, including shared circulation."
     },
     {
-      "variant_id": "bungalow_postwar_ranch",
-      "revision": "calgary-inner-city-bungalow-clay-v005",
-      "dwellings": 1,
-      "retail_units": 0,
-      "allow_exact_flexible_native_revision": true,
-      "development_type": "residential_single_family",
-      "source_title": "Post-war bungalow · reviewed single-home programme",
-      "source": "docs/CLASSROOM_STARTER_ACCEPTANCE_2026-09-24.md#bungalow_postwar_ranch",
-      "source_excerpt": "Native dimensions 10.898324 × 16.050000 × 6.360000 m, one floor, one home. The reviewed source is a single-family residential home, with no retail programme."
-    },
-    {
-      "variant_id": "reference_charcoal_gable_fourplex_v1",
-      "revision": "22538e0683d0ee64995c5c24d20972c9b86ca84fa615ca20fec346a908bb1732",
-      "requires_placement_plot": true,
-      "dwellings": 4,
-      "development_type": "residential"
-    },
-    {
-      "variant_id": "london-crescent-terrace-bath-stone",
-      "revision": "crescent-terrace-bath-stone-clay-v006",
-      "requires_placement_plot": true,
-      "dwellings": 18,
-      "development_type": "residential"
-    },
-    {
-      "variant_id": "infill_duplex",
-      "revision": "calgary-side-by-side-duplex-clay-v004",
-      "requires_placement_plot": true,
-      "dwellings": 2,
-      "development_type": "residential"
-    },
-    {
-      "variant_id": "montreal_duplex_plateau",
-      "revision": "montreal-plateau-duplex-clay-v004",
-      "requires_placement_plot": true,
-      "dwellings": 2,
-      "development_type": "residential"
-    },
-    {
-      "variant_id": "brick_timber_two_storey_office",
-      "revision": "brick-timber-courtyard-office-clay-v004",
-      "requires_placement_plot": true,
-      "gross_floor_area_m2": 224,
-      "development_type": "commercial_office",
-      "source": "Two authored 112 m² floor plates, including circulation."
-    },
-    {
-      "variant_id": "garden_mews_six_homes",
-      "revision": "garden-mews-courtyard-housing-clay-v003",
-      "requires_placement_plot": true,
-      "dwellings": 6,
-      "gross_floor_area_m2": 504,
-      "development_type": "residential",
-      "source": "Six two-storey 6 × 7 m homes. The shared court and patios are outside the floor area."
-    },
-    {
-      "variant_id": "horizon_double_section",
-      "revision": "horizon-manufactured-home-clay-v003",
-      "requires_placement_plot": true,
-      "dwellings": 1,
-      "gross_floor_area_m2": 97.92,
-      "development_type": "residential_single_family",
-      "source": "One 13.6 × 7.2 m enclosed storey. The roof step is unoccupied."
-    },
-    {
-      "variant_id": "maple_porch_sage",
-      "revision": "maple-porch-manufactured-cottage-clay-v004",
-      "requires_placement_plot": true,
-      "dwellings": 1,
-      "gross_floor_area_m2": 67.2,
-      "development_type": "residential_single_family",
-      "source": "One 14 × 4.8 m enclosed storey. The front porch is open."
-    },
-    {
-      "variant_id": "brick_timber_craftsman",
-      "revision": "narrow-lot-craftsman-cottage-clay-v003",
-      "requires_placement_plot": true,
-      "dwellings": 1,
-      "gross_floor_area_m2": 92.16,
-      "development_type": "residential_single_family",
-      "source": "One 7.2 × 12.8 m enclosed storey. The porch and unoccupied attic are outside the floor area."
-    },
-    {
-      "variant_id": "folded_roof_market_hall",
-      "revision": "599cd816bf995ab20eece3731602d2148d15eb9c8605ff84b6e7fb102ee3dcf7",
-      "requires_placement_plot": true,
-      "gross_floor_area_m2": 243.5,
-      "development_type": "commercial_retail",
-      "source": "Five enclosed ground-floor workshops measured to glazing and outside walls. The open market canopy is outside the floor area."
-    },
-    {
       "variant_id": "montreal_depanneur_modern",
       "revision": "brick-corner-grocery-clay-v002",
       "requires_placement_plot": true,
       "dwellings": 1,
       "development_type": "mixed_use"
+    },
+    {
+      "variant_id": "final-seniors-apartments-v1",
+      "revision": "final-seniors-apartments-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 1953.11,
+      "source_title": "Five 24 x 16 m main floors plus 8 x 13.6 m ground lounge, less three open 4.35 x 1.45 m balcony recesses per upper floor.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:1286"
+    },
+    {
+      "variant_id": "final-transit-pavilion-v1",
+      "revision": "final-transit-pavilion-clay-v002",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 216,
+      "source_title": "One 24 x 9 m floor enclosed by the glazed hall and stone service core. Overhangs and forecourt excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:1300"
+    },
+    {
+      "variant_id": "final-courtyard-block-v1",
+      "revision": "final-courtyard-block-clay-v006",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 1923.52,
+      "source_title": "Four 30 x 24.4 m floors around a 15 x 13.2 m open court, less both ground passages and open balcony recesses on the three upper floors.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:1266"
+    },
+    {
+      "variant_id": "final-health-centre-v1",
+      "revision": "final-health-centre-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 777,
+      "source_title": "Two L-shaped floors, each with 28 x 9 m front and 10.5 x 13 m rear wings. Open portico, canopy and garden excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:1314"
+    },
+    {
+      "variant_id": "final-urban-grocery-v1",
+      "revision": "final-urban-grocery-clay-v004",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 240,
+      "source_title": "One enclosed 20 x 12 m grocery floor. Open canopy and roof lanterns excluded.",
+      "source": "frontend/src/features/zoningCatalogue/buildingPrograms.json:1331"
+    },
+    {
+      "variant_id": "brick_podium_glass_tower",
+      "revision": "clay-brick-podium-condo-tower-clay-v006",
+      "requires_placement_plot": true,
+      "dwellings": 88,
+      "source": "frontend/src/data/buildingArchetypes.json:31347"
+    },
+    {
+      "variant_id": "gastown_italianate",
+      "revision": "clay-gastown-heritage-commercial-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 1840.8,
+      "source_title": "Three 26 x 23.6 m enclosed floors. Adjacent context is excluded.",
+      "source": "frontend/src/data/buildingArchetypes.json:25236"
+    },
+    {
+      "variant_id": "georgian_clapboard_original",
+      "revision": "clay-halifax-georgian-colonial-clay-v003",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 681.8,
+      "source_title": "Two nominal occupied floors comprising the main 21.2 x 14.7 m plate, centre 7.2 x 0.6 m projection and two 5.8 x 2.15 m rear wings. Open portico and storage attic excluded.",
+      "source": "frontend/src/data/buildingArchetypes.json:22734"
+    },
+    {
+      "variant_id": "warehouse_privateers_wharf",
+      "revision": "clay-halifax-waterfront-warehouse-clay-v006",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 822.8,
+      "source_title": "Two 24.2 x 17 m enclosed floors. Adjacent context is excluded.",
+      "source": "frontend/src/data/buildingArchetypes.json:23268"
+    },
+    {
+      "variant_id": "london-mews-house-original-stable",
+      "revision": "clay-mews-coach-house-clay-v006",
+      "requires_placement_plot": true,
+      "gross_floor_area_m2": 127.28,
+      "source_title": "Two 8.6 x 7.4 m nominal enclosed floors of the primary mews house, including the ground coach garage. Attached contextual house, back yard and street are excluded.",
+      "source": "frontend/src/data/buildingArchetypes.json:20747"
+    },
+    {
+      "variant_id": "midcentury_concrete_slab",
+      "revision": "clay-slab-balcony-tower-clay-v007",
+      "requires_placement_plot": true,
+      "dwellings": 48,
+      "source": "frontend/src/data/buildingArchetypes.json:26308"
     }
   ]
 }

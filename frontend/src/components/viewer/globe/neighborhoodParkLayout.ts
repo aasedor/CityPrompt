@@ -50,6 +50,8 @@ export function envelopeFits(envelope: readonly ParkPoint[], boundary: readonly 
   }));
 }
 export function envelopesOverlap(a: readonly ParkPoint[], b: readonly ParkPoint[]): boolean {
+  const first = bounds(a), second = bounds(b);
+  if (first.maxX < second.minX || second.maxX < first.minX || first.maxY < second.minY || second.maxY < first.minY) return false;
   return a.some(p => pointInPark(p, b)) || b.some(p => pointInPark(p, a))
     || a.some((p, i) => b.some((q, j) => segmentsCross(p, a[(i + 1) % a.length], q, b[(j + 1) % b.length])));
 }

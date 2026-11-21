@@ -51,6 +51,17 @@ describe('reviewed building contact envelopes',()=>{
     expect(snapPlacement(result.coordinates,[other],site,undefined,moving.properties).snapped).toBe(false);
     expect(check(building(soho,width-.2),[other])).toContain('overlaps');
   });
+  it('uses the Streamline Moderne outline and retains its reviewed side snap', () => {
+    const id = 'validation_art_deco_streamline_moderne';
+    const other = building(id);
+    expect(buildingPlacementEnvelope(other).length).toBeGreaterThan(4);
+    const width = buildingEdgeContract(other)!.width;
+    const moving = building(id, width + .4);
+    const fit = snapPlacement(moving.coordinates, [other], site, undefined, moving.properties);
+    expect(fit.problem).toBeNull();
+    expect(fit.snapped).toBe(true);
+    expect(xCenter(fit.coordinates)).toBeCloseTo(width + .02, 2);
+  });
   it('keeps attached placement accurate when both buildings are rotated',()=>{
     const angle=37,rad=angle*Math.PI/180,other=building(soho,0,0,angle),w=buildingEdgeContract(other)!.width;
     const moving=building(soho,(w+.4)*Math.cos(rad),(w+.4)*Math.sin(rad),angle);
