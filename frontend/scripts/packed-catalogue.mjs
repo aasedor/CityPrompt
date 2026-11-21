@@ -12,7 +12,7 @@ const HANDOFF_CATALOGUES = /\/src\/(?:data\/(?:cataloguePlanningHistory|catalogu
 
 const STATIC_METADATA = /\/src\/(?:data\/(?:archetypeVisualSystem|catalogueBuildingQuantities|catalogueOctober2026|claudeBuildingRelease|claudeFiveTrial|courtOnlySports|finalFiveBuildingBatch|flexibleParks|localTowerStoreyPrograms|neighborhoodParkV0StickerKit|parkadeFamilyTrial|stickerMethodPilots|transportStandardEntries|aiRenderStylePresets|streetViewStylePresets)|features\/(?:policyPlans\/data\/(?:beltlinePlanIndex|localPlanIndex)|referenceLayers\/calgaryBylawCatalogue))\.json$/;
 
-const Z85_CATALOGUES = /\/src\/(?:data\/(?:buildingArchetypes|cataloguePlanningHistory|nativeStreetPilots|openSpaceArchetypes)|features\/parks\/detailCatalogueExtras)\.json$/;
+const Z85_CATALOGUES = /\/src\/(?:data\/(?:buildingArchetypes|cataloguePlanningHistory|nativeStreetPilots|openSpaceArchetypes)|features\/parks\/(?:detailCatalogueExtras|recoveredDetails))\.json$/;
 
 /** Retain all legacy IDs, reference paths and prompts without compiling several
  * megabytes of JSON into JavaScript object literals. Three already ships this

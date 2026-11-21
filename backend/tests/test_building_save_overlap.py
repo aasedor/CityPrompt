@@ -98,6 +98,33 @@ async def test_save_allows_reviewed_side_by_side_buildings_with_overlapping_plot
 
 
 @pytest.mark.asyncio
+@pytest.mark.parametrize("overlap", [False, True])
+async def test_save_fits_the_bath_crescent_to_its_curved_outline(overlap):
+    from tests.test_building_placement_edges import zone
+
+    neighbour = zone(y=12 if overlap else -12, width=4, depth=4)
+    neighbour.name = "Neighbour"
+    neighbour.properties = {}
+    crescent = zone(
+        width=126.4,
+        depth=48.5,
+        pick_place_asset="london_crescent_terrace_bath_stone",
+        development_selected_variant_id="london-crescent-terrace-bath-stone",
+        pick_place_model_revision="crescent-terrace-bath-stone-clay-v006",
+        building_geometry_basis="placement_plot",
+    )
+    db = SimpleNamespace(execute=AsyncMock(return_value=result(rows=[neighbour])))
+    save = site_zones._assert_new_catalogue_building_clear(
+        db, uuid.uuid4(), "building", crescent.geometry, crescent.properties
+    )
+    if overlap:
+        with pytest.raises(HTTPException, match="Neighbour"):
+            await save
+    else:
+        await save
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize(
     "properties",
     [{"_plan_role": "framework_height"}, {"_imported_from": "Alternative A"}, {"_plan_snapshot_id": "study"}],

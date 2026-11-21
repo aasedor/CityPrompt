@@ -28,6 +28,7 @@ import { rectangleAt, rectangleDimensions } from './geometry';
 import { snapPlacement } from './snapPlacement';
 import { streetFacingDegrees } from './streetFacing';
 import { nativePlacementPreviewUrl } from './nativePlacementPreview';
+import { buildingEdgeContract } from './buildingPlacementEdges';
 
 export interface PlacementDraft {
   assetId: PlaceAssetId; width: number; depth: number; degrees: number;
@@ -120,6 +121,10 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange, onRotation
   const previewZone=useMemo(()=>({id:'placement-preview',zone_type:asset?.zoneType??'building',
     coordinates:rectangleAt([ORIGIN.lng,ORIGIN.lat],draft.width,draft.depth),
     properties:placementDraftProperties(draft)} as SiteZone),[asset,draft]);
+  const previewShape = useMemo(() => {
+    const outline = buildingEdgeContract(previewZone)?.outlineM;
+    return outline && new THREE.Shape(outline.map(([x, y]) => new THREE.Vector2(x, y)));
+  }, [previewZone]);
   const degrees = surface && draft.faceStreet ? streetFacingDegrees([surface.lng,surface.lat], zones, draft.degrees) : draft.degrees;
   useEffect(() => { onRotationChange?.(degrees); }, [degrees, onRotationChange]);
   useEffect(() => () => onRotationChange?.(null), [onRotationChange]);
@@ -140,7 +145,10 @@ export function GlobePlacementPreview({ draft, zones, onStatusChange, onRotation
   const fallback=<mesh position={[0,0,envelope[2]/2]}><boxGeometry args={[envelope[0],envelope[1],envelope[2]]}/><meshBasicMaterial color="#64748b" wireframe/></mesh>;
   return <EastNorthUpFrame lat={center[1]*Math.PI/180} lon={center[0]*Math.PI/180} height={previewHeight+.12}>
     <group rotation={[0,0,degrees*Math.PI/180]} name="placement-preview" raycast={()=>null}>
-      <mesh position={[0,0,.1]}><planeGeometry args={[draft.width,draft.depth]}/><meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/></mesh>
+      <mesh position={[0,0,.1]}>
+        {previewShape ? <shapeGeometry args={[previewShape]} /> : <planeGeometry args={[draft.width,draft.depth]}/>}
+        <meshBasicMaterial color={invalid?'#ef4444':'#c9ff3d'} transparent opacity={.3} side={THREE.DoubleSide} depthWrite={false}/>
+      </mesh>
       <PreviewFallback key={draft.assetId} fallback={fallback}><Suspense fallback={fallback}>
         {draft.generatedModel ? <GeneratedModelPreview model={draft.generatedModel} width={draft.width} depth={draft.depth}/>
           : asset?.zoneType==='building' && nativePreviewUrl

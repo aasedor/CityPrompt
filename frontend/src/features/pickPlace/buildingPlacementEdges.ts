@@ -27,6 +27,13 @@ export function buildingEdgeContract(zone: PlacedZone) {
   if (!row || asset?.kind!=='object' || asset.zoneType!=='building' || asset.reshapeMode!=='fixed_native'
     || asset.model.variantId!==row.variantId || asset.model.revision!==row.revision
     || p.development_selected_variant_id!==row.variantId || p.pick_place_model_revision!==row.revision) return null;
+  if (row.outlineM) {
+    const plotWidth = Math.hypot(...vectors[0]), plotDepth = Math.hypot(...vectors[1]);
+    // A legacy frame with swapped proportions can quarter-turn the compiled model.
+    if (p.building_geometry_basis !== 'placement_plot'
+      || plotWidth + .01 < row.nativeWidthM || plotDepth + .01 < row.nativeDepthM
+      || (plotWidth - plotDepth) * (row.nativeWidthM - row.nativeDepthM) < 0) return null;
+  }
   if(p.development_height_override_m!=null && (!asset.storeyProgram || !storeyProgramSupports(
     asset.storeyProgram,p.floor_count ?? p.floors,p.development_height_override_m,
   )))return null;
@@ -57,7 +64,8 @@ export function buildingPlacementEnvelope(zone: PlacedZone): number[][] {
   const left=contract.left==='abut'?-contract.width/2:-Math.max(w,contract.width)/2;
   const right=contract.right==='abut'?contract.width/2:Math.max(w,contract.width)/2;
   const front=-contract.depth/2,rear=Math.max(d,contract.depth)/2;
-  return [[left,front],[right,front],[right,rear],[left,rear]].map(([x,y])=>[
+  const localOutline = contract.outlineM ?? [[left,front],[right,front],[right,rear],[left,rear]];
+  return localOutline.map(([x,y])=>[
     center[0]+(x*c-y*s)/east,center[1]+(x*s+y*c)/METERS_PER_DEG_LAT,
   ]);
 }

@@ -18,6 +18,7 @@ for (const [filename, minimumSaving] of [
   ['data/nativeStreetPilots.json', 4000],
   ['data/openSpaceArchetypes.json', 8000],
   ['features/parks/detailCatalogueExtras.json', 2500],
+  ['features/parks/recoveredDetails.json', 1000],
 ]) {
   test(`${filename}: production transport reduces bundle size without changing catalogue values`, async () => {
     const path = resolve('src', filename), source = readFileSync(path, 'utf8');
