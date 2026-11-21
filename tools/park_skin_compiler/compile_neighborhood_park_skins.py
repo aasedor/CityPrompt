@@ -107,7 +107,7 @@ def build_material_qa(schedule: dict, public_out: Path, artifact_out: Path) -> P
     height = header_h + source_h + atlas_h + gap * 4 + 70
     sheet = Image.new("RGB", (width, height), "#f4f2ed")
     draw = ImageDraw.Draw(sheet)
-    draw.text((gap, 22), "NEIGHBORHOOD PARK â€” REFERENCE-DRIVEN MATERIAL PILOT", font=font(29, True), fill="#1d2a25")
+    draw.text((gap, 22), "NEIGHBORHOOD PARK — REFERENCE-DRIVEN MATERIAL PILOT", font=font(29, True), fill="#1d2a25")
     draw.text((gap, 64), "Existing archetype photo â†’ audited park crop â†’ rectified orthographic atlas â†’ derived PBR", font=font(18), fill="#4d5b55")
     draw.text((gap, 94), "No generated colors and no image-generation API calls", font=font(16, True), fill="#7b5635")
     for column, (variant_id, variant) in enumerate(schedule["variants"].items()):

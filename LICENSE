@@ -1,0 +1,13 @@
+City Prompt
+Copyright (c) 2026 Andrew Sedor. All rights reserved.
+
+This repository and its contents, including source code, documentation,
+catalogue data, 3D assets and images, are proprietary and confidential.
+
+No licence is granted to use, copy, modify, merge, publish, distribute,
+sublicense or sell any part of this repository except under a separate
+written agreement with the copyright holder.
+
+Third-party components remain subject to their own licences, as recorded in
+frontend/package.json, backend/requirements.txt and the corresponding package
+metadata.

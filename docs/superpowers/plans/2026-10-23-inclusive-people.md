@@ -8,16 +8,16 @@ Architecture: retain rigged People path; new peopleRepresentation metadata selec
 
 Review focus: existing 23 semantics, invalid fixed-pose actions, group person counts, source aid contacts/proportions, immutable originals/scene persistence, dynamic catalogue counts.
 
-## Task 1 â€” runtime contract (separate file ownership)
+## Task 1 — runtime contract (separate file ownership)
 - [x] Frontend: failing supported-action/default/static-group regression; integrate inclusive catalogue and helpers into picker/save/render-direction. Existing animation loader untouched for static assets. Test narrow suites and completed type-check.
 - [x] Backend: failing fixed-action validation/authoritative group semantics tests; metadata eight entries, existing people preserved. Run narrow pytest. No source models or registry writes by delegate.
 
-## Task 2 â€” measured eight-model assets (main)
+## Task 2 — measured eight-model assets (main)
 - [x] Verify sources/licenses; inspect one manual wheelchair + seated adult pilot in Blender/browser before finite scale-up.
 - [x] Build eight fitted static derivatives using source adult anatomy, CC0 aids and source-locked dog; child-specific proportions. Measure GLB geometry/materials/bytes/bounds/contact; retain originals and version all derivatives.
 - [x] Render truthful source thumbnails, generate eight separately reviewed matching realistic picker images, preserve prompts/hash evidence. Register only passing assets; sync frontend/server model IDs and appearance overlay without changing prior 23.
 
-## Task 3 â€” local integration and delivery (main + fresh reviews)
+## Task 3 — local integration and delivery (main + fresh reviews)
 - [ ] HTTP/hash all eight and31 previews; actual browser all-eight/mixed-scene trial, edit/undo/save/reload and free capture. Measure actual renderer costs; disclose unavailable hardware/paid AI checks.
 - [x] Narrow frontend/backend regression, type-check/lint/diff; independent fidelity/integration review; fix relevant findings.
 - [ ] Exact source-only checkpoint, external asset package/provenance, leave local trial open. No push/deploy.

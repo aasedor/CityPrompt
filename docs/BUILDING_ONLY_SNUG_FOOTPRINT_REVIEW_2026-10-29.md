@@ -1,4 +1,4 @@
-# Snug footprints â€” newest building batch, 29 October 2026
+# Snug footprints — newest building batch, 29 October 2026
 
 The user requested footprints as snug to buildings as possible, limited to the newest batch.
 This follow-up supersedes the unchanged-plot limitation in the earlier building-only review.
@@ -8,7 +8,7 @@ plots, minimum sizes, backend compilation fit and packaged quantitative-report f
 No GLB or seed library source was edited. Original source hashes remain identical. Floors,
 roof forms, podiums, projecting steps and other retained geometry remain at scale 1.0.
 Each horizontal bound rounds outward to the next 0.1m after 0.02m TOTAL numeric tolerance:
-about 1â€“6cm per side. This is an architectural bounding rectangle, not a zoning setback or
+about 1–6cm per side. This is an architectural bounding rectangle, not a zoning setback or
 an irregular floor-plate/roof silhouette. Internal voids within that rectangle remain empty.
 
 Scope: 18 exact candidates from `buildingOnlyContracts.json`. The held Mews source and older

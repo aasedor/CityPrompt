@@ -34,6 +34,7 @@ build/
 /tools/archetype_compiler/textures_*/
 # IDE
 .vscode/
+.claude/settings.local.json
 .idea/
 *.swp
 *.swo

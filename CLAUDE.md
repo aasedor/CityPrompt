@@ -46,9 +46,8 @@ Always verify on localhost:5174 before committing. Check that cards load, render
 - `origin` → `https://github.com/aasedor/CityPrompt.git`
 - `origin/deployment-version` is the canonical integration and release branch
   and GitHub's default branch.
-- `origin/main` is a synchronized mirror of `deployment-version`. Do not base
-  work on it or open pull requests against it; bring it up to date from
-  `deployment-version` after each release sync.
+- `origin/main` is frozen at its 3 October 2026 state and is not a development
+  or release target. Do not base work on it or open pull requests against it.
 - `cityprompt-authorized`, `upstream`, and any other remotes are comparison or
   upstream sources. Do not push to them unless the user explicitly changes the
   authorized destination.
