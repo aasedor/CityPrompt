@@ -1632,7 +1632,7 @@ export const rendersApi = {
       minimum_object_id_proposal_iou?: number | null;
       scene_lower_context_coverage?: number | null;
       minimum_scene_lower_context_coverage?: number | null;
-      structural_edge_guide_attached: true;
+      structural_edge_guide_attached: boolean;
       finish_fusion?: {
         method: 'source-geometry-multiscale-source-phase-detail-v2';
         sigma_px: number;

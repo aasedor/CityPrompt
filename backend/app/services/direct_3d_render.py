@@ -48,6 +48,17 @@ DIRECT_3D_MODEL = DEFAULT_OPENAI_IMAGE_MODEL
 # review-required; a 2D comparison cannot certify exact 3D identity.
 DIRECT_3D_PRESENTATION_FIRST = True
 _OPENAI_EDIT_URL = "https://api.openai.com/v1/images/edits"
+_STREET_VIEW_REFERENCE_INSTRUCTION = (
+    "EXISTING STREET REFERENCE: Reproduce the tree canopies and trunks, open plazas, entrance steps, planters, paving, "
+    "curbs, crossings and facades visible in the Street View photo. Preserve small or temporary streetscape details "
+    "shown in the photo, including painted concrete barriers, bollards, street signs, signals, railings and benches. "
+    "Keep these elements distinct at their photographed locations, scale and spacing. Retain visible paint colors, "
+    "mural patterns and markings on the individual barriers, and keep the pedestrian gaps and open paving shown "
+    "in the photo. Use the photo and authored design as evidence for the features shown. "
+    "Preserve the camera framing, street layout and the exact count, silhouette, materials, position and occlusion "
+    "of visible authored objects. Apply the selected finish and lighting within that layout. "
+    "Reconstruct pavement obscured by incidental traffic and use the presentation selections for people and vehicles."
+)
 _MIN_PROVIDER_PIXELS = 655_360
 DIRECT_3D_MAX_SOURCE_EDGE = 2_048
 DIRECT_3D_MAX_SOURCE_PIXELS = 4_194_304
@@ -634,10 +645,11 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
     proposal_values = np.asarray(proposal_mask, dtype=np.float32) / 255.0
     proposal_coverage = float(proposal_values.mean())
     maximum_proposal_coverage = 1.0 if req.presentation_mode == "scene" else _MAX_PROPOSAL_COVERAGE
-    # Camera framing is the student's choice. Even a single visible detail is
-    # valid; percentage floors reject sparse street scenes and distant views.
-    # Keep empty captures invalid and check mask/ID agreement below.
-    if not (0 < proposal_coverage <= maximum_proposal_coverage):
+    # An opted-in street camera can face entirely away from the design. The
+    # project inventory is still validated, and every proposal ID pass must
+    # confirm that nothing from that inventory is visible in this frame.
+    context_only_street = proposal_coverage == 0 and req.street_view_context is not None
+    if not context_only_street and not (0 < proposal_coverage <= maximum_proposal_coverage):
         raise Direct3DValidationError(
             "Proposal coverage must include visible proposal pixels and be at most "
             f"{maximum_proposal_coverage:.0%}; received {proposal_coverage:.2%}"
@@ -665,6 +677,10 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         ).convert("RGB")
         if object_id_image.size != beauty_image.size:
             raise Direct3DValidationError("Object-ID image dimensions must exactly match the beauty capture")
+        if context_only_street and object_id_image.getbbox():
+            raise Direct3DValidationError(
+                "Object-ID image must be black for a Street View frame with no visible proposal"
+            )
 
         object_pixels = np.asarray(object_id_image)
         classified = np.zeros((height, width), dtype=bool)
@@ -672,28 +688,29 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             rgb = np.asarray(_hex_to_rgb(color), dtype=np.uint8)
             classified |= np.all(object_pixels == rgb, axis=2)
         object_id_coverage = float(classified.mean())
-        if not np.any(classified):
-            raise Direct3DValidationError("Object-ID image does not contain any classified proposal pixels")
-        proposal_active = proposal_values >= 0.5
-        intersection_count = int(np.count_nonzero(classified & proposal_active))
-        proposal_count = int(np.count_nonzero(proposal_active))
-        union_count = int(np.count_nonzero(classified | proposal_active))
-        object_id_proposal_recall = float(intersection_count / max(1, proposal_count))
-        object_id_proposal_iou = float(intersection_count / max(1, union_count))
-        outside = proposal_values < (8 / 255)
-        leak_count = int(np.count_nonzero(classified & outside))
-        classified_count = int(np.count_nonzero(classified))
-        if leak_count / max(classified_count, 1) > 0.01:
-            raise Direct3DValidationError("Object-ID classes extend materially outside the proposal mask")
-        if req.presentation_mode in {"scene", "reproject"} and (
-            object_id_proposal_recall < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL
-            or object_id_proposal_iou < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_IOU
-        ):
-            raise Direct3DValidationError(
-                "Presentation object-ID classes must cover the proposal "
-                f"(recall {object_id_proposal_recall:.3f}, "
-                f"IoU {object_id_proposal_iou:.3f})"
-            )
+        if not context_only_street:
+            if not np.any(classified):
+                raise Direct3DValidationError("Object-ID image does not contain any classified proposal pixels")
+            proposal_active = proposal_values >= 0.5
+            intersection_count = int(np.count_nonzero(classified & proposal_active))
+            proposal_count = int(np.count_nonzero(proposal_active))
+            union_count = int(np.count_nonzero(classified | proposal_active))
+            object_id_proposal_recall = float(intersection_count / max(1, proposal_count))
+            object_id_proposal_iou = float(intersection_count / max(1, union_count))
+            outside = proposal_values < (8 / 255)
+            leak_count = int(np.count_nonzero(classified & outside))
+            classified_count = int(np.count_nonzero(classified))
+            if leak_count / max(classified_count, 1) > 0.01:
+                raise Direct3DValidationError("Object-ID classes extend materially outside the proposal mask")
+            if req.presentation_mode in {"scene", "reproject"} and (
+                object_id_proposal_recall < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_RECALL
+                or object_id_proposal_iou < _MIN_PRESENTATION_OBJECT_ID_PROPOSAL_IOU
+            ):
+                raise Direct3DValidationError(
+                    "Presentation object-ID classes must cover the proposal "
+                    f"(recall {object_id_proposal_recall:.3f}, "
+                    f"IoU {object_id_proposal_iou:.3f})"
+                )
     elif req.presentation_mode in {"scene", "reproject"}:
         raise Direct3DValidationError("Presentation modes require an object-ID image and manifest")
 
@@ -713,6 +730,10 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         ).convert("RGB")
         if instance_id_image.size != beauty_image.size:
             raise Direct3DValidationError("Instance-ID image dimensions must exactly match the beauty capture")
+        if context_only_street and instance_id_image.getbbox():
+            raise Direct3DValidationError(
+                "Instance-ID image must be black for a Street View frame with no visible proposal"
+            )
 
         instance_pixels = np.asarray(instance_id_image)
         classified_instances = np.zeros((height, width), dtype=bool)
@@ -753,28 +774,29 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
             )
 
         instance_id_coverage = float(classified_instances.mean())
-        if not np.any(classified_instances):
-            raise Direct3DValidationError("Instance-ID image does not contain any classified proposal pixels")
-        proposal_active = proposal_values >= 0.5
-        intersection_count = int(np.count_nonzero(classified_instances & proposal_active))
-        proposal_count = int(np.count_nonzero(proposal_active))
-        union_count = int(np.count_nonzero(classified_instances | proposal_active))
-        instance_id_proposal_recall = float(intersection_count / max(1, proposal_count))
-        instance_id_proposal_iou = float(intersection_count / max(1, union_count))
-        outside = proposal_values < (8 / 255)
-        leak_count = int(np.count_nonzero(classified_instances & outside))
-        classified_count = int(np.count_nonzero(classified_instances))
-        if leak_count / max(classified_count, 1) > 0.01:
-            raise Direct3DValidationError("Instance-ID classes extend materially outside the proposal mask")
-        if req.presentation_mode in {"scene", "reproject"} and (
-            instance_id_proposal_recall < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_RECALL
-            or instance_id_proposal_iou < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_IOU
-        ):
-            raise Direct3DValidationError(
-                "Presentation instance-ID classes must cover the proposal "
-                f"(recall {instance_id_proposal_recall:.3f}, "
-                f"IoU {instance_id_proposal_iou:.3f})"
-            )
+        if not context_only_street:
+            if not np.any(classified_instances):
+                raise Direct3DValidationError("Instance-ID image does not contain any classified proposal pixels")
+            proposal_active = proposal_values >= 0.5
+            intersection_count = int(np.count_nonzero(classified_instances & proposal_active))
+            proposal_count = int(np.count_nonzero(proposal_active))
+            union_count = int(np.count_nonzero(classified_instances | proposal_active))
+            instance_id_proposal_recall = float(intersection_count / max(1, proposal_count))
+            instance_id_proposal_iou = float(intersection_count / max(1, union_count))
+            outside = proposal_values < (8 / 255)
+            leak_count = int(np.count_nonzero(classified_instances & outside))
+            classified_count = int(np.count_nonzero(classified_instances))
+            if leak_count / max(classified_count, 1) > 0.01:
+                raise Direct3DValidationError("Instance-ID classes extend materially outside the proposal mask")
+            if req.presentation_mode in {"scene", "reproject"} and (
+                instance_id_proposal_recall < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_RECALL
+                or instance_id_proposal_iou < _MIN_PRESENTATION_INSTANCE_ID_PROPOSAL_IOU
+            ):
+                raise Direct3DValidationError(
+                    "Presentation instance-ID classes must cover the proposal "
+                    f"(recall {instance_id_proposal_recall:.3f}, "
+                    f"IoU {instance_id_proposal_iou:.3f})"
+                )
     elif req.presentation_mode in {"scene", "reproject"}:
         raise Direct3DValidationError("Presentation modes require an instance-ID image and manifest")
 
@@ -810,6 +832,10 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         ).convert("RGB")
         if material_id_image.size != beauty_image.size:
             raise Direct3DValidationError("Material-ID image dimensions must exactly match the beauty capture")
+        if context_only_street and material_id_image.getbbox():
+            raise Direct3DValidationError(
+                "Material-ID image must be black for a Street View frame with no visible proposal"
+            )
         material_pixels = np.asarray(material_id_image)
         classified_materials = np.zeros((height, width), dtype=bool)
         semantic_pixels = np.asarray(object_id_image) if object_id_image is not None else None
@@ -853,7 +879,7 @@ def prepare_direct_3d_capture(req: Direct3DRenderRequest) -> PreparedDirect3DCap
         union_count = int(np.count_nonzero(classified_materials | proposal_active))
         material_recall = float(intersection_count / max(1, proposal_count))
         material_iou = float(intersection_count / max(1, union_count))
-        if material_recall < 0.85 or material_iou < 0.84:
+        if not context_only_street and (material_recall < 0.85 or material_iou < 0.84):
             raise Direct3DValidationError(
                 "Material-ID classes must cover the proposal " f"(recall {material_recall:.3f}, IoU {material_iou:.3f})"
             )
@@ -3250,6 +3276,31 @@ _REPROJECT_VIEW_INSTRUCTIONS: dict[str, str] = {
 }
 
 
+def _street_view_presentation_prompt(
+    client_prompt: str,
+    *,
+    style: str,
+    has_visible_proposal: bool,
+    server_inventory: list[dict[str, Any]],
+) -> str:
+    treatment = _PRESENTATION_STYLE_TREATMENTS.get(style, _PRESENTATION_STYLE_TREATMENTS["photorealistic"])
+    prompt = [
+        f"Create one street-level image as {treatment}.",
+        "Image 1 is the Street View photo and the base for the existing scene. Use its matched heading and lens.",
+    ]
+    if has_visible_proposal:
+        prompt.append(
+            "Image 2 is the authored design at the exact framing of the City Prompt camera. "
+            "Place only its visible objects and surfaces at the same locations, scale and depth. "
+            "The neutral gray background is empty guide space. Fill it with the existing scene from Image 1, "
+            "aligning the ground and occlusions to the visible design."
+        )
+        if server_inventory:
+            prompt.append(_server_inventory_prompt(server_inventory))
+    prompt.append(f"Requested finish and art direction:\n{client_prompt.strip()}")
+    return "\n".join(prompt)
+
+
 def _presentation_prompt(
     client_prompt: str,
     *,
@@ -3266,6 +3317,7 @@ def _presentation_prompt(
     """Build a natural provider-first prompt with one final design lock."""
 
     del visible_component_summary
+    treatment = _PRESENTATION_STYLE_TREATMENTS.get(style, _PRESENTATION_STYLE_TREATMENTS["photorealistic"])
     has_object_id = bool(object_id_manifest)
     has_instance_id = bool(instance_id_manifest)
     base_guide_number = 2 + int(has_object_id) + int(has_instance_id)
@@ -3326,10 +3378,6 @@ def _presentation_prompt(
         else ""
     )
     inventory = _server_inventory_prompt(server_inventory)
-    treatment = _PRESENTATION_STYLE_TREATMENTS.get(
-        style,
-        _PRESENTATION_STYLE_TREATMENTS["photorealistic"],
-    )
     if presentation_mode == "scene":
         if view_mode == "street":
             task = (
@@ -3969,6 +4017,7 @@ def _same_camera_presentation_result(
     """
     diagnostics = dict(common_diagnostics)
     warnings = []
+    has_street_view = req.street_view_context is not None
     try:
         registration = register_generated_image(
             capture.normalized_beauty,
@@ -3987,12 +4036,16 @@ def _same_camera_presentation_result(
             fidelity_policy=req.fidelity_policy,
         )
         diagnostics["provider_raw_instance_source_presence"] = _instance_presence_diagnostics(raw_presence)
-        presentation, exterior_count, exterior_delta = hard_composite_direct_3d(
-            capture.normalized_beauty,
-            registration.image,
-            capture.normalized_proposal_mask,
-        )
-        diagnostics.update(exterior_pixel_count=exterior_count, exterior_max_channel_delta=exterior_delta)
+        if has_street_view:
+            # Copying in the raw exterior would put the tile artifacts back.
+            presentation = registration.image
+        else:
+            presentation, exterior_count, exterior_delta = hard_composite_direct_3d(
+                capture.normalized_beauty,
+                registration.image,
+                capture.normalized_proposal_mask,
+            )
+            diagnostics.update(exterior_pixel_count=exterior_count, exterior_max_channel_delta=exterior_delta)
         protected_coverage = 0.0
         if source_locked_rlasm_ids:
             presentation, protected_coverage = _restore_source_locked_instances(
@@ -4045,7 +4098,7 @@ def _same_camera_presentation_result(
         )
         diagnostics.update(
             view_lock="camera_registered",
-            context_restyled=False,
+            context_restyled=has_street_view,
             provider_first=True,
             provider_spatial_pixels_retained=True,
             returned_safety_strategy=strategy,
@@ -4053,7 +4106,10 @@ def _same_camera_presentation_result(
             source_locked_rlasm_pixel_coverage=protected_coverage,
         )
         warnings.append(
-            "AI finish passed the available image checks. Source context and foreground occlusions "
+            "The AI finish uses Street View to reconstruct existing surroundings. Compare the proposal and camera "
+            "with the clean 3D source and verify the streetscape against the photo."
+            if has_street_view
+            else "AI finish passed the available image checks. Source context and foreground occlusions "
             "outside the visible proposal remain unchanged; review building heights, footprints "
             "and public realm against the clean 3D source. These checks do not certify exact geometry."
         )
@@ -4136,7 +4192,7 @@ class Direct3DRenderService:
         )
         if plate is None:
             raise Direct3DProviderError(
-                "No usable Google Street View image was returned within 20 m. Move the camera or turn off the reference.",
+                "No usable Google Street View image matched this view within 20 m. Move the camera or turn off the reference.",
                 billing_status="unproduced",
             )
         try:
@@ -4194,56 +4250,48 @@ class Direct3DRenderService:
         ]
 
         normalized_width, normalized_height = capture.normalized_beauty.size
-        beauty_png = _png_bytes(capture.normalized_beauty.convert("RGB"))
-        structural_guide_png = _png_bytes(
-            build_structural_edge_guide(
+        has_street_view = req.street_view_context is not None
+        visible_component_summary, _component_labels = _visible_semantic_components(
+            capture.normalized_object_id,
+            req.object_id_manifest,
+        )
+        files: list[tuple[str, tuple[str, bytes, str]]] = []
+        has_visible_proposal = capture.normalized_proposal_mask.getbbox() is not None
+        if has_street_view:
+            files.append(("image[]", await self._load_street_view_context(req, capture)))
+            if has_visible_proposal:
+                # Remove tile pixels from the provider guide. Keep the full viewport
+                # and control bundle for internal geometry checks and recovery.
+                design_guide = Image.new("RGB", capture.normalized_beauty.size, (128, 128, 128))
+                design_guide.paste(capture.normalized_beauty, mask=capture.normalized_proposal_mask)
+                files.append(("image[]", ("direct-3d-authored-design.png", _png_bytes(design_guide), "image/png")))
+        else:
+            beauty_png = _png_bytes(capture.normalized_beauty.convert("RGB"))
+            files.append(("image[]", ("direct-3d-beauty.png", beauty_png, "image/png")))
+            id_controls = (
+                ("direct-3d-class-id.png", capture.normalized_object_id),
+                ("direct-3d-instance-id.png", capture.normalized_instance_id),
+            )
+            for filename, image in id_controls:
+                if image is not None:
+                    files.append(("image[]", (filename, _png_bytes(image), "image/png")))
+            if req.control_bundle_version == 2:
+                geometry_controls = (
+                    ("direct-3d-depth.png", capture.normalized_depth),
+                    ("direct-3d-normal.png", capture.normalized_normal),
+                    ("direct-3d-material-id.png", capture.normalized_material_id),
+                )
+                for filename, image in geometry_controls:
+                    if image is None:
+                        raise Direct3DValidationError(f"Control bundle v2 is missing prepared {filename}")
+                    files.append(("image[]", (filename, _png_bytes(image), "image/png")))
+            structural_guide = build_structural_edge_guide(
                 capture.normalized_beauty,
                 capture.normalized_proposal_mask,
                 capture.normalized_object_id,
                 req.object_id_manifest,
             )
-        )
-        visible_component_summary, _component_labels = _visible_semantic_components(
-            capture.normalized_object_id,
-            req.object_id_manifest,
-        )
-        files: list[tuple[str, tuple[str, bytes, str]]] = [
-            ("image[]", ("direct-3d-beauty.png", beauty_png, "image/png")),
-        ]
-        if capture.normalized_object_id is not None:
-            files.append(
-                (
-                    "image[]",
-                    ("direct-3d-class-id.png", _png_bytes(capture.normalized_object_id), "image/png"),
-                )
-            )
-        if capture.normalized_instance_id is not None:
-            files.append(
-                (
-                    "image[]",
-                    (
-                        "direct-3d-instance-id.png",
-                        _png_bytes(capture.normalized_instance_id),
-                        "image/png",
-                    ),
-                )
-            )
-        if req.control_bundle_version == 2:
-            geometry_controls = (
-                ("direct-3d-depth.png", capture.normalized_depth),
-                ("direct-3d-normal.png", capture.normalized_normal),
-                ("direct-3d-material-id.png", capture.normalized_material_id),
-            )
-            for filename, image in geometry_controls:
-                if image is None:
-                    raise Direct3DValidationError(f"Control bundle v2 is missing prepared {filename}")
-                files.append(("image[]", (filename, _png_bytes(image), "image/png")))
-        files.append(
-            (
-                "image[]",
-                ("direct-3d-structural-edges.png", structural_guide_png, "image/png"),
-            )
-        )
+            files.append(("image[]", ("direct-3d-structural-edges.png", _png_bytes(structural_guide), "image/png")))
         # Authored archetype artwork rides after the metadata passes so the
         # prompt's ARCHETYPE REFERENCES numbering lines up with attachment
         # order. These are design sources the provider applies, not metadata.
@@ -4271,8 +4319,15 @@ class Direct3DRenderService:
                     ("direct-3d-edit-mask.png", edit_mask_png, "image/png"),
                 )
             )
-        prompt = (
-            _authoritative_prompt(
+        if has_street_view:
+            prompt = _street_view_presentation_prompt(
+                req.prompt,
+                style=req.style,
+                has_visible_proposal=has_visible_proposal,
+                server_inventory=visible_inventory,
+            )
+        elif req.presentation_mode == "source_anchored":
+            prompt = _authoritative_prompt(
                 req.prompt,
                 object_id_manifest=req.object_id_manifest,
                 instance_id_manifest=req.instance_id_manifest,
@@ -4281,8 +4336,8 @@ class Direct3DRenderService:
                 archetype_reference_labels=[reference.label for reference in references],
                 control_bundle_version=req.control_bundle_version,
             )
-            if req.presentation_mode == "source_anchored"
-            else _presentation_prompt(
+        else:
+            prompt = _presentation_prompt(
                 req.prompt,
                 presentation_mode=req.presentation_mode,
                 style=req.style,
@@ -4294,22 +4349,18 @@ class Direct3DRenderService:
                 archetype_reference_labels=[reference.label for reference in references],
                 control_bundle_version=req.control_bundle_version,
             )
-        )
         prompt = append_people_action_direction(
             prompt,
             _visible_people_action_direction(server_inventory, visible_ids),
             max_length=30_000,
         )
-        prompt = apply_presentation_selections(prompt, add_people=req.add_people, add_vehicles=req.add_vehicles)
-        if req.street_view_context is not None:
-            files.append(("image[]", await self._load_street_view_context(req, capture)))
-            prompt += (
-                "\nEXISTING STREET REFERENCE: The last image is a photograph from a nearby panorama. "
-                "Use it for the appearance of existing façades, pavement, sidewalk edges and street furniture "
-                "only where they correspond to the captured 3D view. Keep the first image's camera, visibility, "
-                "street layout and every placed design object. Keep changes to materials and lighting. "
-                "Leave objects that are outside the frame, occluded or absent from the capture out of the result."
-            )
+        prompt = apply_presentation_selections(
+            prompt,
+            add_people=req.add_people,
+            add_vehicles=req.add_vehicles,
+            preserve_captured_entourage=not has_street_view,
+            reference_instruction=_STREET_VIEW_REFERENCE_INSTRUCTION if has_street_view else "",
+        )
         if req.model == NANO_BANANA_MODEL:
             from app.services.nano_banana_image import (
                 generate_nano_banana_image,
@@ -4524,7 +4575,7 @@ class Direct3DRenderService:
                 "source_locked_rlasm_pixel_coverage": None,
                 "scene_lower_context_coverage": (capture.scene_lower_context_coverage),
                 "minimum_scene_lower_context_coverage": (0.0 if req.presentation_mode == "scene" else None),
-                "structural_edge_guide_attached": True,
+                "structural_edge_guide_attached": req.street_view_context is None,
                 "finish_fusion": None,
                 "provider_raw_structural_edge_fidelity": None,
                 "macro_design_fidelity": None,
@@ -4541,10 +4592,8 @@ class Direct3DRenderService:
 
             if req.view_mode == "street":
                 # The input was already captured at eye level. Finishing it
-                # must not change cameras or expose hidden facilities. Use
-                # the same registered, masked, source-preserving checks as
-                # any other same-camera image, rather than content sanity
-                # alone. Sparse street evidence safely falls back to source.
+                # keeps the same camera and design checks. A photo can
+                # reconstruct existing context in the registered result.
                 street_result = _same_camera_presentation_result(
                     req,
                     capture,

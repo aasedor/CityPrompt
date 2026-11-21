@@ -32,21 +32,61 @@ describe('student street render', () => {
       models: [{ id: 'gpt-image-2', available: true }],
       street_view_context_available: true,
     });
+    mocks.direct.mockResolvedValue({
+      outcome: 'accepted',
+      sourceImageUrl: '/clean-source.png',
+      warnings: [],
+      render: { imageUrl: '/street-view-finish.png', prompt: 'finish', providerLabel: 'GPT Image' },
+      diagnostics: { street_view_context: { pano_date: '2026-07', offset_m: 5.2 } },
+    });
     const capture = vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} });
     render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} />);
 
     const context = await screen.findByRole('checkbox', { name: 'Use Google Street View context' });
     expect(context).not.toBeChecked();
     fireEvent.click(context);
+    fireEvent.change(screen.getByRole('textbox', { name: /Custom prompt/ }), { target: { value: 'Soft morning light' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Add People' }));
     fireEvent.click(screen.getByRole('button', { name: 'Render' }));
 
     await waitFor(() => expect(mocks.direct).toHaveBeenCalledOnce());
+    expect(capture).toHaveBeenCalledWith({ allowEmptyProposal: true });
     expect(mocks.direct.mock.calls[0][1]).toMatchObject({
       model: 'gpt-image-2',
       viewMode: 'street',
       streetViewContext: { latitude: 51, longitude: -114, heading: 0 },
+      customPrompt: 'Soft morning light',
+      addPeople: true,
+      addVehicles: false,
     });
     expect(mocks.classic).not.toHaveBeenCalled();
+    expect(await screen.findByText('Google Street View photo · 2026-07')).toBeInTheDocument();
+    fireEvent.click(screen.getByAltText('Original 3D view render'));
+    expect(screen.queryByText('Google Street View photo · 2026-07')).not.toBeInTheDocument();
+  });
+
+  it('returns to the ordinary street render after clearing Google Street View context', async () => {
+    mocks.imageModels.mockResolvedValue({
+      default_model: 'gpt-image-2',
+      models: [{ id: 'gpt-image-2', available: true }],
+      street_view_context_available: true,
+    });
+    const capture = vi.fn().mockResolvedValue({ kind: 'model3d', direct3d: {} });
+    render(<StreetViewPanel siteZones={[]} projectId="project-1" globeCapture={capture} />);
+
+    const context = await screen.findByRole('checkbox', { name: 'Use Google Street View context' });
+    fireEvent.click(context);
+    expect(context).toBeChecked();
+    fireEvent.click(context);
+    expect(context).not.toBeChecked();
+    fireEvent.click(screen.getByRole('button', { name: 'Render' }));
+
+    await waitFor(() => expect(mocks.direct).toHaveBeenCalledOnce());
+    expect(capture).toHaveBeenCalledWith({ allowEmptyProposal: false });
+    const options = mocks.direct.mock.calls[0][1];
+    expect(options.viewMode).toBe('street');
+    expect(options).not.toHaveProperty('streetViewContext');
+    expect(options.customPrompt).toContain('Keep all buildings, facilities, paths and streets in their captured positions.');
   });
 
   it.each([

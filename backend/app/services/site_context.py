@@ -15,9 +15,12 @@ import asyncio
 import base64
 import logging
 import math
+import re
 import time
+from dataclasses import dataclass
 
 import httpx
+from pyproj import Geod
 
 from app.core.config import get_settings
 
@@ -25,12 +28,80 @@ logger = logging.getLogger(__name__)
 
 _CACHE: dict[tuple, tuple[float, dict | None]] = {}
 _CACHE_TTL_S = 600
+_STREET_VIEW_URL = "https://maps.googleapis.com/maps/api/streetview"
+_STREET_VIEW_GEOD = Geod(ellps="WGS84")
+_STREET_VIEW_PROBE_DISTANCES_M = (6, 12)
+_STREET_VIEW_MAX_CROSS_VIEW_OFFSET_M = 8
 
 # NOTE: Places/tenant TEXT grounding was removed 2026-06-10 — it forced business
 # names ("Happy Cake", "1bridge Marketing") into residential scenes where they
 # don't belong and confused the model. The Street View PHOTOS still carry real
 # businesses VISUALLY for commercial scenes, so we keep the visual grounding and
 # drop the textual one. (Re-add later behind a commercial-vs-residential heuristic.)
+
+
+@dataclass(frozen=True)
+class _StreetViewPanorama:
+    pano_id: str
+    date: str | None
+    offset_m: float
+
+
+async def _streetview_metadata(client: httpx.AsyncClient, lat: float, lng: float, radius_m: int, key: str) -> dict:
+    try:
+        response = await client.get(
+            f"{_STREET_VIEW_URL}/metadata",
+            params={"location": f"{lat:.8f},{lng:.8f}", "radius": radius_m, "source": "outdoor", "key": key},
+            timeout=5.0,
+        )
+        response.raise_for_status()
+        metadata = response.json()
+    except (httpx.HTTPError, ValueError):
+        return {}
+    return metadata if isinstance(metadata, dict) and metadata.get("status") == "OK" else {}
+
+
+async def _latest_streetview_panorama(
+    client: httpx.AsyncClient, lat: float, lng: float, heading: float, fov: float, max_offset_m: float, key: str
+) -> _StreetViewPanorama | None:
+    # Street View Static returns one nearest panorama per point. Probe two
+    # nearby rings to find other dated coverage without downloading any images.
+    locations = [(lng, lat)]
+    locations.extend(
+        _STREET_VIEW_GEOD.fwd(lng, lat, bearing, distance)[:2]
+        for distance in _STREET_VIEW_PROBE_DISTANCES_M
+        if distance <= max_offset_m
+        for bearing in range(0, 360, 45)
+    )
+    radius_m = math.ceil(max_offset_m)
+    responses = await asyncio.gather(
+        *(_streetview_metadata(client, sample_lat, sample_lng, radius_m, key) for sample_lng, sample_lat in locations)
+    )
+
+    # A panorama can be cropped to any heading, but sideways displacement
+    # changes what it sees. Narrow views allow less displacement.
+    max_cross_view_offset = min(_STREET_VIEW_MAX_CROSS_VIEW_OFFSET_M, max_offset_m * math.tan(math.radians(fov / 2)))
+    candidates: dict[str, _StreetViewPanorama] = {}
+    for metadata in responses:
+        pano_id = metadata.get("pano_id")
+        location = metadata.get("location")
+        if not isinstance(pano_id, str) or not pano_id or pano_id in candidates or not isinstance(location, dict):
+            continue
+        try:
+            bearing, _, offset = _STREET_VIEW_GEOD.inv(lng, lat, float(location["lng"]), float(location["lat"]))
+        except (KeyError, TypeError, ValueError):
+            continue
+        cross_view_offset = offset * abs(math.sin(math.radians(bearing - heading)))
+        if not math.isfinite(offset) or offset > max_offset_m or cross_view_offset > max_cross_view_offset:
+            continue
+        date = metadata.get("date")
+        if not isinstance(date, str) or not re.fullmatch(r"[0-9]{4}(?:-(?:0[1-9]|1[0-2]))?", date):
+            date = None
+        candidates[pano_id] = _StreetViewPanorama(pano_id, date, offset)
+
+    # ISO capture dates sort chronologically. An unknown month ranks before
+    # known months of the same year and an undated panorama ranks last.
+    return max(candidates.values(), key=lambda pano: (pano.date or "", -pano.offset_m), default=None)
 
 
 async def fetch_streetview_plate(
@@ -41,15 +112,9 @@ async def fetch_streetview_plate(
     width: int,
     height: int,
     *,
-    max_offset_m: float | None = None,
+    max_offset_m: float = 20,
 ) -> dict | None:
-    """Fetch ONE real Street View photo aligned to a given camera, for use as the
-    composite background plate in SV-snap photomontage mode.
-
-    Snaps to the nearest pano and returns its true position + the offset from the
-    requested point (the accuracy cost). Returns None when there's no coverage so
-    the caller can fall back to the 3D-tiles capture. Never raises.
-    """
+    """Download one Street View photo from the newest nearby camera match."""
     key = getattr(get_settings(), "google_maps_api_key", "") or ""
     if not key:
         return None
@@ -59,34 +124,16 @@ async def fetch_streetview_plate(
     fov = max(10.0, min(120.0, float(fov)))
     try:
         async with httpx.AsyncClient(timeout=25.0) as client:
-            meta = (
-                await client.get(
-                    "https://maps.googleapis.com/maps/api/streetview/metadata",
-                    params={"location": f"{lat},{lng}", "key": key},
-                )
-            ).json()
-            if meta.get("status") != "OK":
-                logger.info("sv-plate: no coverage at %.5f,%.5f", lat, lng)
-                return None
-            pano = meta["pano_id"]
-            ploc = meta.get("location", {})
-            offset_m = None
-            if ploc.get("lat") is not None and ploc.get("lng") is not None:
-                dlat = math.radians(ploc["lat"] - lat)
-                dlng = math.radians(ploc["lng"] - lng)
-                a = (
-                    math.sin(dlat / 2) ** 2
-                    + math.cos(math.radians(lat)) * math.cos(math.radians(ploc["lat"])) * math.sin(dlng / 2) ** 2
-                )
-                offset_m = 2 * 6_371_000 * math.asin(math.sqrt(min(1.0, a)))
-            if max_offset_m is not None and (offset_m is None or offset_m > max_offset_m):
+            panorama = await _latest_streetview_panorama(client, lat, lng, heading, fov, max_offset_m, key)
+            if panorama is None:
+                logger.info("sv-plate: no camera-matched coverage at %.5f,%.5f", lat, lng)
                 return None
             r = await client.get(
-                "https://maps.googleapis.com/maps/api/streetview",
+                _STREET_VIEW_URL,
                 params={
-                    "pano": pano,
+                    "pano": panorama.pano_id,
                     "size": f"{w}x{h}",
-                    "heading": round(heading),
+                    "heading": heading % 360,
                     "fov": round(fov),
                     "pitch": 0,
                     "return_error_code": "true",
@@ -104,8 +151,8 @@ async def fetch_streetview_plate(
     return {
         "photo_base64": base64.b64encode(r.content).decode(),
         "mime_type": mime_type,
-        "pano_offset_m": round(offset_m, 1) if offset_m is not None else None,
-        "pano_date": meta.get("date"),
+        "pano_offset_m": round(panorama.offset_m, 1),
+        "pano_date": panorama.date,
         "width": w,
         "height": h,
     }
