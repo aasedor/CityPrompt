@@ -47,6 +47,8 @@ export function RecoverImageAttempts({ projectId }: { projectId: string }) {
     finally { if (current === revision.current) setLoading(false); }
   };
   if (!enabled && !error) return null;
+  const photoOriginal = recovered?.response.diagnostics?.street_view_context && recovered.response.provider_image_base64;
+  const aiOriginal = photoOriginal && photoOriginal !== recovered?.response.image_base64 ? png(photoOriginal) : undefined;
   return <details className="border-b border-white/20 bg-slate-900 px-4 py-2 text-white">
     <summary className="min-h-11 cursor-pointer py-3 text-sm font-bold">Recover recent images</summary>
     <p className="text-xs text-white/80">An image keeps its original camera and design even if you edit the project. Checking or opening a saved image uses no image credits.</p>
@@ -64,6 +66,11 @@ export function RecoverImageAttempts({ projectId }: { projectId: string }) {
       <ImageFidelityReview status={imageFidelityStatus(recovered.response.diagnostics)} warnings={recovered.response.warnings} />
       <figure><img src={png(recovered.source_image_base64)} alt="Original 3D design used for this saved image" /><figcaption className="text-xs">Original 3D view at the time of generation</figcaption></figure>
       <figure><img src={png(recovered.response.image_base64)} alt="Recovered image result for comparison with its original design" /><figcaption className="text-xs">Saved result · {recovered.style}</figcaption></figure>
+      {aiOriginal && <figure>
+        <img src={aiOriginal} alt="Saved AI original for review" />
+        <figcaption className="text-xs">AI original · Compare it with the original 3D view</figcaption>
+        <button type="button" onClick={() => downloadDataImage(aiOriginal, `cityprompt-ai-original-${recovered.attempt.id.slice(0, 8)}.png`)} className="mt-1 min-h-11 rounded border border-white/40 px-3 text-sm">Download AI original</button>
+      </figure>}
       <button type="button" onClick={() => downloadDataImage(png(recovered.response.image_base64), `cityprompt-recovered-${recovered.attempt.id.slice(0, 8)}.png`)} className="min-h-11 rounded border border-white/40 px-3 text-sm">Download saved result</button>
       <button type="button" onClick={() => downloadDataImage(png(recovered.source_image_base64), `cityprompt-original-${recovered.attempt.id.slice(0, 8)}.png`)} className="ml-2 min-h-11 rounded border border-white/40 px-3 text-sm">Download original 3D view</button>
     </section>}

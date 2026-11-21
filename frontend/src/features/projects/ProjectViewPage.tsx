@@ -236,7 +236,9 @@ export function ProjectViewPage() {
   const { captureStreetView } = useGlobeAIRender();
   const { flyToStreetLevel, restoreAerialView, saveCameraState } = useGlobeCamera();
 
-  const handleGlobeStreetCapture = useCallback(async (): Promise<StreetCaptureResult | null> => {
+  const handleGlobeStreetCapture = useCallback(async (
+    options: Pick<Direct3DCaptureOptions, 'allowEmptyProposal'> = {},
+  ): Promise<StreetCaptureResult | null> => {
     if (!globeRefs?.canvas || !globeRefs?.camera) return null;
     const pegman = useViewerStore.getState().streetViewPegman;
     if (!pegman?.position) return null;
@@ -256,7 +258,7 @@ export function ProjectViewPage() {
           // Capture from an independent camera at the pegman's exact pose.
           const captureCamera = globeRefs.camera!.clone();
           flyToStreetLevel(lat, lng, pegman.angle, terrainHeight, captureCamera);
-          captureState.bundle = await globeRefs.captureStreetDirect3D!({}, captureCamera);
+          captureState.bundle = await globeRefs.captureStreetDirect3D!(options, captureCamera);
           return captureState.bundle ? rawB64(captureState.bundle.beautyImageBase64) : null;
         }
         : undefined;
