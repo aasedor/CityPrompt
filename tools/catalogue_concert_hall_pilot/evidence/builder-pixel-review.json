@@ -1,11 +1,11 @@
 {
-  "candidate": "concert-timber-acoustic-clay-v007",
-  "model_sha256": "853e3fa868056b1d61d3471ab8561077d42676258d58d2d0dc76156e5a79521c",
+  "candidate": "concert-timber-acoustic-clay-v009",
+  "model_sha256": "3324f4e6c6eb74d1b717d8eb5c909b2005e86923fbaac932e5475c7eddf8e78d",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
-  "independent_approval": "pending",
+  "independent_approval": "pending repeat review; v007 was refused with four P1 (evidence/independent-review-v007.json)",
   "views_inspected": {
-    "v007": [
+    "v009": [
       "boards/phone-construction.png",
       "boards/phone-oblique.png",
       "boards/phone-programme.png",
@@ -26,7 +26,8 @@
       "renders/rear_side.png",
       "renders/right_side.png",
       "renders/roof_garden.png",
-      "renders/top.png"
+      "renders/top.png",
+      "builder close-ups: ribbon from the west and north-west, the south-west corner, main, east and service doors, the stair through the glazing, the shell portal, the lip steps, the front elevation"
     ]
   },
   "iterations": [
@@ -35,13 +36,14 @@
     "v003: shell walls lean in (0.28 m per metre of rise); loop path laid midway between the shells and the podium edge; meadow drifts; ground floor 6.0 m so the glazing is about as tall as the band; acoustic panels and two balcony rings in the hall.",
     "v004: control radii became the walls' feet so the footprint stays on the measured outline; dark cap on the rims; the inferred roof hut replaced by a vestibule in the west shell.",
     "v005: glazed door leaves in frames instead of an opaque block; the lip's outer wall in shell timber; lower flower clumps.",
-    "v006/v007: build report gains doors and auditorium counts; whole top view widened to keep the apron in frame. The GLB bytes are unchanged since v005."
+    "v006/v007: build report gains doors and auditorium counts; whole top view widened to keep the apron in frame. The GLB bytes are unchanged since v005.",
+    "v008/v009, answering the v007 review: every podium ring now shares one list of polar angles that includes each opening's exact edges. F1: fins continue above and below the ribbon window, with slats across it. F2: a closed upper storey runs right round behind the band (slab at 6.4 m, ceiling at 10.1 m, an inner wall 9 m in, cross walls), and the ribbon has jambs at both ends. F3: the curtain wall is cut at both entrances, where glazed leaves of 1.2 m fill the bays under a head and transom light, with stiles at every joint; the service door is recessed 0.15 m in a framed opening; the roof entrance is a portal cut into the foot of the west shell, with jambs, a head, a glazed screen and a lobby with the head of a stair going down. F4: the foyer stair is a solid flight with a sloping soffit and glass balustrades, rising through a well cut in the ceiling and slab to the upper storey, guarded on three sides. P2s: three doors from the foyer into the hall drum (F11), steps and a guard bringing the path up to the lip (F6), a timber-brown stage (F7), domed planting (F8), the guard stands on the coping (F10). v009 splits the door bays into equal leaves."
   ],
   "findings": [
     "Plan follows the roof view: rounded podium 88 by 64.4 m (superellipse, n 3.3); oculus 23.8 by 18.8 m centred 11.4 m east and 1.7 m south of the podium centre; west shell from the north notch round the west and south; east shell from the south-east round the east to the notch; radial notch at the north with the west shell 1.4 m higher.",
     "Oblique: the fitted camera (31 px RMS over 39 traced podium points) shows the podium band, recessed glazing, roof loop, the two rims meeting in a V at the back, the ring under the west shell and the hall through the oculus.",
     "Heights: glazed ground floor 6.0 m, finned band to 11.2 m, roof garden 10.6 m, lip 12.4 m, west shell rim peak 23.6 m, east shell 21.6 m.",
-    "Openings: the curtain wall is set 1.0 m back under the band, with mullions every 4.8 m, a transom at 3.4 m, a sill, and a foyer behind it (cafe tables, counters, columns, a stair and the hall drum). Main doors, five glazed leaves in frames, at the south centre; four more at the east; an opaque back-of-house with a service door at the north-east.",
+    "Openings: the curtain wall is set 1.0 m back under the band, with mullions about every 4.8 m, a transom at 3.4 m, a sill and a foyer behind it. Main doors: six glazed 1.2 m leaves filling the cut bay at the south centre; four at the east; a recessed service door in an opaque back-of-house at the north-east. Three doors lead from the foyer into the hall drum.",
     "Ribbon window in the band on the west end, set in a 0.35 m reveal with sill and head returns and rooms behind it.",
     "Auditorium seen through the oculus: 11 raked tiers with seat strips facing an east stage, choir terraces, two balcony rings and vertical acoustic panels; about 340 stalls seats.",
     "Roof garden: a winding loop midway between the shells and the guard, a south-west walk, spurs to the oculus lip and the west shell entrance, 2,600 low mounds in meadow and green drifts with pale flower clumps."
@@ -50,6 +52,7 @@
     "Gate A: variant_2.png (the street view) is the grey preview of the old LEGO model. A person must rule that the oblique and roof views govern, or supply a street view.",
     "The oblique puts the oculus about 8 m further west than the roof view; the model follows the roof view.",
     "Image heights are weakly constrained: the camera fit changes by under 2 px RMS between an 11 m and a 21 m podium. The catalogue's two 5 m floors were used.",
-    "Interiors, the north and east ground floor, the roof entrance and the hall size are inferred. The hall is only as large as the oculus (about 340 stalls seats)."
+    "Interiors, the north and east ground floor, the roof entrance and the hall size are inferred. The hall is only as large as the oculus (about 340 stalls seats).",
+    "F6 is answered only in part: the shell plan at the front follows the roof view, which shows the sheets reaching 5 to 7 m beyond the lip; steps now bring the path up to the lip."
   ]
 }

@@ -8,19 +8,33 @@ local pilot: not in the catalogue, not runtime-tested and not approved for publi
 
 ## What the model is
 
-- **Podium:** a rounded rectangle 88 m by 64.4 m (a superellipse, exponent 3.3).
+- **Podium:** a rounded rectangle 88 m by 64.4 m (a superellipse, exponent 3.3). Every ring of
+  the podium shares one list of polar angles that includes each opening's exact edges, so the
+  band, the glazing and what lies behind an opening start and stop together.
   - The glazed ground floor runs to 6.0 m, set 1.0 m back under the band, with mullions
-    about every 4.8 m, a transom over the door heads and a foyer behind it.
-  - A band of close bronze fins runs from 6.0 m to the 11.2 m coping, with a ribbon window
-    in a 0.35 m reveal at the west end and rooms behind it.
-- **Doors:** five glazed leaves at the south centre (the main doors), four at the east, and
-  a service door in an opaque back-of-house at the north-east. Thresholds sit 0.13 m
-  above the 20 mm apron.
+    about every 4.8 m, a sill, a transom at 3.4 m and a foyer behind it.
+  - A band of close bronze fins runs from 6.0 m to the 11.2 m coping. At the west end a
+    ribbon window sits in a 0.35 m reveal with jambs, sill and head; the fins break above
+    and below it, and slats cross it.
+  - A closed upper storey runs right round behind the band: slab at 6.4 m, ceiling at
+    10.1 m, an inner wall 9 m in, and cross walls between rooms.
+- **Doors:**
+  - The curtain wall is cut at both entrances. Six glazed 1.2 m leaves fill the main bay at
+    the south centre and four the east bay, under a head and a transom light, with stiles
+    at every joint. Thresholds sit 0.13 m above the 20 mm apron.
+  - A service door is recessed 0.15 m in a framed opening in the opaque back-of-house at
+    the north-east.
+  - Three doors lead from the foyer into the hall drum.
+- **Foyer stair:** a solid flight with a sloping soffit and glass balustrades, 35 risers of
+  0.18 m, rising from the west foyer through a well cut in the ceiling and slab to the upper
+  storey, guarded on three sides.
 - **Roof garden** at 10.6 m:
-  - a glass guard set 1.0 m in from the coping;
-  - a winding path loop midway between the shells and the guard, a south-west walk, and
-    spurs to the oculus lip and to a vestibule in the foot of the west shell;
-  - drifts of low meadow, green and shrub mounds with pale flower clumps.
+  - a glass guard standing on the coping;
+  - a winding path loop midway between the shells and the guard, a south-west walk, a
+    spur to a flight of steps up to the oculus lip, and a spur to the roof entrance;
+  - the roof entrance: a portal cut into the foot of the west shell, with jambs, a head, a
+    glazed screen, and a lobby with the head of a stair going down;
+  - drifts of low domed meadow, green and shrub mounds with pale flower clumps.
 - **Shells:** two spiral sheets clad in bronze battens round an oval oculus 23.8 m by 18.8 m,
   centred 11.4 m east and 1.7 m south of the podium centre.
   - The west sheet rises to 23.6 m and the east to 21.6 m.
@@ -28,11 +42,11 @@ local pilot: not in the catalogue, not runtime-tested and not approved for publi
   - At the north they meet in a radial notch, where the west sheet steps up over the east.
   - The east sheet runs on under the west as a narrow ring on the oculus lip.
 - **Auditorium,** seen through the clear oculus glazing:
-  - 11 raked tiers with seat strips (about 340 stalls seats) facing a stage on the east;
+  - 11 raked tiers with seat strips (about 340 stalls seats) facing a timber stage on the east;
   - choir terraces behind the stage;
   - two balcony rings and vertical acoustic panels.
 - **Apron:** a 6 m paved apron round the podium. The complete model is 100 m by 76.4 m by
-  23.7 m, with about 46,000 triangles in 33 clay roles and no textures.
+  23.7 m, with about 69,000 triangles in 34 clay roles, 4.9 MB, and no textures.
 
 ## Sources and conflicts
 
@@ -66,7 +80,7 @@ Open for a person to rule on:
 | `review.html`, `render.cjs` | Review renders in headless Chromium (three.js, ambient occlusion, sun, fill and shadows) |
 | `boards.py` | Four 1080 by 1920 phone boards: oblique, roof, construction and programme |
 | `verify.py` | 77 deterministic delivery checks; writes `delivery-verification.json` |
-| `test_concert_hall.py` | Generator tests: byte-for-byte rebuild, container, outline, shells, doors, sources and cameras |
+| `test_concert_hall.py` | Generator tests: byte-for-byte rebuild, container, outline, shells, openings on shared ring vertices, the stair and its well, doors, sources and cameras |
 | `candidate.json` | The recorded candidate: hash, bounds, doors, auditorium and review status |
 | `evidence/` | Builder review, delivery verification and independent review records |
 | `integration/` | The unapproved promotion package and the runtime review (every gate NOT TESTED) |
@@ -74,11 +88,11 @@ Open for a person to rule on:
 ## Reproduce
 
 ```bash
-python3 tools/catalogue_concert_hall_pilot/build.py --output artifacts/concert-hall/v007 --version 7
+python3 tools/catalogue_concert_hall_pilot/build.py --output artifacts/concert-hall/v009 --version 9
 python3 -m http.server 8765 --bind 127.0.0.1 &          # from the repository root
-node tools/catalogue_concert_hall_pilot/render.cjs artifacts/concert-hall/v007/concert-timber-acoustic-clay-v007.glb artifacts/concert-hall/v007/renders
-python3 tools/catalogue_concert_hall_pilot/boards.py artifacts/concert-hall/v007
-python3 tools/catalogue_concert_hall_pilot/verify.py artifacts/concert-hall/v007
+node tools/catalogue_concert_hall_pilot/render.cjs artifacts/concert-hall/v009/concert-timber-acoustic-clay-v009.glb artifacts/concert-hall/v009/renders
+python3 tools/catalogue_concert_hall_pilot/boards.py artifacts/concert-hall/v009
+python3 tools/catalogue_concert_hall_pilot/verify.py artifacts/concert-hall/v009
 python3 -m pytest tools/catalogue_concert_hall_pilot
 ```
 

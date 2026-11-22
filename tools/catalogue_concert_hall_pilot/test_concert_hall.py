@@ -4,6 +4,7 @@ import importlib.util
 import json
 import math
 import struct
+from itertools import pairwise
 from pathlib import Path
 
 from shapely.geometry import MultiPoint, Polygon
@@ -75,6 +76,29 @@ def test_the_doors_and_the_auditorium_are_recorded():
     assert all(d['rise_m'] <= .15 for d in doors)
     hall = build.programme()
     assert hall['tiers'] == 11 and hall['stalls_seats_estimate'] > 200
+
+
+def test_every_opening_starts_and_stops_on_a_shared_ring_vertex():
+    angles = build.band_angles()
+    edges = [build.RIBBON[0], build.RIBBON[1], *build.LOADING] + [e for zone in build.door_zones().values() for e in zone]
+    for edge in edges:
+        assert min(abs(((a - edge % 360 + 180) % 360) - 180) for a in angles) < 1e-9, edge
+    widths = {}
+    for kind, (lo, hi) in build.door_zones().items():
+        inside = [build.polar_point(t, build.GLASS_SET) for t in angles if build.in_range(t, lo, hi)]
+        widths[kind] = [math.dist(p, q) for p, q in pairwise(inside)]
+    assert all(1.1 < w < 1.3 for kind in ('main doors', 'east doors') for w in widths[kind]), 'door leaves of about 1.2 m'
+
+
+def test_the_foyer_stair_climbs_through_its_well_to_the_upper_storey():
+    x0, x1, foot_y, head, rise, well = build.stair_geometry()
+    assert rise < .19 and build.STAIR['run'] >= .28
+    assert abs(build.FOYER + rise * build.STAIR['risers'] - build.UPPER) < 1e-9
+    assert well.bounds == (x0, head, x1, head + build.STAIR['well'])
+    headroom_from = foot_y - (build.GF_TOP - .1 - 2.1 - build.FOYER) / rise * build.STAIR['run']
+    assert head + build.STAIR['well'] >= headroom_from, 'two metres of headroom where the stair passes under the ceiling'
+    upper = Polygon(build.podium_ring(0.0)).difference(Polygon(build.podium_ring(build.UPPER_DEPTH)))
+    assert upper.contains(well), 'the well opens into the upper storey'
 
 
 def test_sources_are_locked_and_the_lego_preview_is_excluded():

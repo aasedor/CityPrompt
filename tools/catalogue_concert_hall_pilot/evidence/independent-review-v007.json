@@ -1,0 +1,161 @@
+{
+ "schema": "rlasm-independent-architectural-clay-review-v1",
+ "candidate": "concert-timber-acoustic-clay-v007",
+ "archetype_id": "concert_hall_modern",
+ "variant_id": "concert_timber_acoustic",
+ "variant_index": 2,
+ "model_path": "artifacts/concert-hall/v007/concert-timber-acoustic-clay-v007.glb",
+ "model_sha256": "853e3fa868056b1d61d3471ab8561077d42676258d58d2d0dc76156e5a79521c",
+ "reviewer": "Independent AI reviewer with no builder context. Not a human. Did not open: tools/catalogue_concert_hall_pilot/build.py, verify.py, boards.py, render.cjs or cameras.json; any test file; README.md; any evidence/ or integration/ folder; artifacts/concert-hall/*/build-report.json, prework-manifest.json, delivery-verification.json or builder-pixel-review.json. Read only the neutral loader tools/catalogue_concert_hall_pilot/review.html, to confirm it changes nothing but CLAY_GLASS opacity.",
+ "reviewed_utc": "2026-11-22T04:59:52Z",
+ "method": "RLASM v6.1",
+ "scope": "Holistic architectural-clay review (Gate G) of the exact GLB against the locked oblique (variant_2_angle_60.jpg) and roof (variant_2_angle_90.jpg) references, the builder's 17 renders and 4 phone boards, 40 reviewer renders of the exact GLB from the repository review loader, and direct geometry checks of the GLB. Checks covered components, glazing and door cuts, stair and ceiling coverage, shell wall heights, coplanar overlaps and detached parts. Not covered: runtime placement, keeper (textured) approval, publication.",
+ "holistic_review_performed": true,
+ "decision": "architectural_clay_refused",
+ "architectural_clay_pass": false,
+ "keeper_approval": false,
+ "runtime_approval": false,
+ "publication_approval": false,
+ "counts": {
+  "P0": 0,
+  "P1": 4,
+  "P2": 7
+ },
+ "source_conflict_assessment": "(1) Oculus 8 m further west in the oblique than in the roof view: following the near-orthographic roof view for plan positions agrees with RLASM 6.1 (top view solves plan topology). The reviewer's orthographic top render overlays the roof reference closely (podium outline, shell outline, radial north notch, inner lip spiral, oculus, path loop). The 31 px residual in the oblique fit is acceptable given the mutually inconsistent references. Handling is reasonable. (2) Heights: two 5 m storeys (glazed to 6.0 m, finned band to 11.2 m) reproduce the reference's roughly 1:1 band-to-glazing ratio at the front (crops/podium_front_compare.png), and shell rims of 23.6 m and 21.6 m give a matched-oblique silhouette close to the reference. Reasonable. The one height consequence worth noting is that the shell feet stay 2 to 3 m high across the front (F6, P2). (3) Inferred parts: the opaque north-east back-of-house with service door and the hall sized to the oculus are reasonable, low-visibility inferences. Through the oculus the hall reads as a concert hall, with raked seats, two balcony tiers, timber wall panels and a stage, though the reference suggests the hall extends somewhat beyond the opening. The roof-garden vestibule is a reasonable idea, since the garden needs access, but its execution is not: it is a free-standing box outside the shell with a non-opening door (F3, F5), and the only visible stair does not reach it (F4). variant_2.png: agreed unusable. It shows a different, rectilinear building (multi-storey glazed box flanked by separate curved walls on a plinth, with no roof garden, twin shells or oculus). Excluding it is correct, and the conflict should stay recorded for a human ruling (replace the street view or confirm the exclusion).",
+ "findings": [
+  {
+   "id": "F1",
+   "severity": "P1",
+   "title": "West podium band drops the finned/boarded grammar for about 40 m",
+   "evidence": "Locked oblique (crop crops/ref60_west_band.png) shows vertical boarding continuing over the whole west band, above and below a recessed ribbon window that has its own vertical slats. In the model the fins stop abruptly at both ends of the ribbon zone and the west band is a plain smooth surface with a horizontal recess (builder renders/left_side.png; reviewer r05_west_eye, r02_sw_eye, c04_ribbon_south_end, c04b_ribbon_north_end, c04c_ribbon_mid). This is a whole-elevation break in the podium's identity grammar on a face that the locked oblique shows.",
+   "required_change": "Continue the podium fin/board rhythm across the west band above and below the ribbon window, terminating the fins at the ribbon head and sill with returns, and give the ribbon window its vertical slats or mullions as in the reference."
+  },
+  {
+   "id": "F2",
+   "severity": "P1",
+   "title": "Ribbon window ends expose a hollow upper storey; see-through hole at the south-west corner",
+   "evidence": "The ribbon glass runs y -24.6 to 14.33 but the occupied room behind it (back wall, 6.4 m floor, 10.1 m ceiling) only spans y -22.64 to 12.52. Through each end of the ribbon the viewer sees the olive underside of the roof deck, planting bases and the backs of the far fins (reviewer c04d_ribbon_N_tele, c04e_ribbon_S_tele, c15_ribbon_inside_from_level). At the SW corner the line of sight passes in and out through the curved ribbon and shows sky and ground straight through the building (reviewer c14_sw_slot_tele, r01_south_eye left end of band). The same light slot is visible at the far left of the builder's own renders/front.png and as dark/green patches in renders/left_side.png and reviewer r05_west_eye. Envelope is not closed at this point.",
+   "required_change": "Close the room behind the full length of the ribbon (extend back wall, floor and ceiling and add end walls with returns), or shorten the ribbon to the occupied depth, so that no ray through the ribbon reaches the void above the ceiling or the exterior. Re-render the front, west and SW corner views."
+  },
+  {
+   "id": "F3",
+   "severity": "P1",
+   "title": "Public doors are applied panels over uncut carriers, not openings",
+   "evidence": "Main south entrance: five 2.7 m leaves (x -2.98..2.98) sit 4 to 8 cm outside the curtain wall; full-height glass panes at y -31.2 (z 0.15..6.0) continue uncut behind every leaf, and a full-height curtain-wall mullion at x = 1.2 bisects the fourth leaf (builder renders/glass_close.png and facade_close.png; reviewer c05_main_entrance, c05b_entrance_square; glazing geometry check). In the matched oblique the entrance reads as a black block, whereas the reference shows framed glass doors integrated into the glazing grid (crops/podium_front_compare.png). East entrance: the same construction, with full-height glass behind the leaves and a mullion at y -4.8 through the last leaf (reviewer c13_east_doors). Roof-garden vestibule: the 'door' is a 6 cm panel standing 5 cm proud of a closed solid 4 x 4 x 3.2 m box (12-triangle cuboid) with no cut, reveal or interior (reviewer c03_vestibule, c20_vestibule_above). Violates RLASM section 7 (cut every owner; exterior-to-interior section).",
+   "required_change": "At each entrance cut the curtain wall: remove the glass behind the leaves, let the door frame own the opening, and adjust the mullion module so mullions land on the door jambs rather than crossing a leaf. Cut a real door opening into the vestibule with jamb/head returns and an occupied interior (a stair head or a lit lobby) visible through it."
+  },
+  {
+   "id": "F4",
+   "severity": "P1",
+   "title": "Foyer stair is unsupported and runs into an uncut ceiling, leading nowhere",
+   "evidence": "The only visible vertical circulation in the glazed foyer is 18 free-floating treads (x -30..-24.6, y -8..-5.6) with no stringer, spine or wall. They rise eastward into the 5.9 m ground-floor ceiling, which is not cut. The top two treads (5.87..6.4 m) pass through the ceiling into the void above, about 9 m from the only upper-floor slab (x <= -33.7). Visible through the glazing in builder renders/front.png and facade_close.png and in reviewer c18_stair_top_inside, c18b_stair_from_outside, c04_ribbon_south_end. Violates the stair load-path and connected-circulation rules (RLASM sections 3 and 9).",
+   "required_change": "Give the stair a visible load path (stringer, spine or supporting wall) and land it on an upper floor through a bounded, cut ceiling opening with edge guard. Alternatively remove it if no public upper floor is intended, and show another credible route to the roof-garden vestibule."
+  },
+  {
+   "id": "F5",
+   "severity": "P2",
+   "title": "Roof-garden vestibule reads as a garden shed added against the shell",
+   "evidence": "An inferred element not present in the reference. It is a separate box outside the shell foot, not 'in the foot of the west shell'. Its flat dark lid is clipped through by the leaning shell wall (reviewer c03b_vestibule_side, c20_vestibule_above). It is visible as an add-on in the matched oblique and above the parapet in the south elevation (crops/west_compare.png, r01_south_eye).",
+   "required_change": "Integrate the entrance into the shell foot as a cut portal with reveal, or make it a light glazed pavilion that does not intersect the shell (pairs with F3)."
+  },
+  {
+   "id": "F6",
+   "severity": "P2",
+   "title": "Front of the shell composition is closed by a 2-3 m wall well in front of the oculus; lip gap is a blind alcove",
+   "evidence": "The west and east shell walls along the south stand 2.0 to 3.2 m above the deck (top z 12.6..13.8), 5 to 7 m in front of the oculus ring (z 12.1..12.4). From garden level the ring is hidden. The path enters a narrow covered alcove that ends at the blank 1.5 m oculus curb wall (reviewer c02_lipgap, c07_lipgap_close, c07b_lipgap_above, c16_shell_end_west_lip, c17_east_shell_south_end). The reference brings the shell feet down onto the ring with the path running at its foot (crops/shells_compare.png). Identity still reads correctly at oblique and phone scale.",
+   "required_change": "Optional: lower the shell feet toward the ring at the front, and make the lip-gap terminus a viewing edge onto the oculus rather than a blank wall."
+  },
+  {
+   "id": "F7",
+   "severity": "P2",
+   "title": "Stage reads as a black void through the oculus",
+   "evidence": "CLAY_STAGE is near-black and flat with straight cut edges (reviewer c08_oculus_down, c01b_notch_above, c07b_lipgap_above). This follows the dark stage in the roof view, but the oblique shows a lit timber stage.",
+   "required_change": "Optional: use a dark-timber value with a stage edge or apron so it reads as a platform."
+  },
+  {
+   "id": "F8",
+   "severity": "P2",
+   "title": "Roof planting reads crystalline at close range",
+   "evidence": "Planting and meadow are faceted pyramids (builder lip_contact.png, roof_garden.png; reviewer c02_lipgap, c03_vestibule). Acceptable clay abstraction at oblique and phone scale.",
+   "required_change": "None required; consider lower, rounder clumps."
+  },
+  {
+   "id": "F9",
+   "severity": "P2",
+   "title": "Service door is a flush grey panel without frame or reveal",
+   "evidence": "North-east back-of-house door (2.8 x 4.2 m) is a 12-triangle slab on the opaque wall (reviewer c06_service_door, r03_north_eye). Acceptable for a flush steel door at concept level.",
+   "required_change": "Optional: add frame or reveal."
+  },
+  {
+   "id": "F10",
+   "severity": "P2",
+   "title": "Minor coplanar overlaps",
+   "evidence": "The lower 0.5 m of the glass guard shares the coping's inner vertical face (about 0.29 m2 per long side; reviewer coplanar.py) and may flicker under coarser runtime depth precision. Planting bases are coplanar with the roof deck, which is only visible through the F2 void. Other coplanar pairs found are hidden contact faces.",
+   "required_change": "Offset the guard 1 to 2 cm off the coping face."
+  },
+  {
+   "id": "F11",
+   "severity": "P2",
+   "title": "No visible route from foyer into the hall",
+   "evidence": "Through the glazing, the core drum shows bars and tables but no doors into the hall (reviewer c11_foyer_inside, c10_ground_contact). Interior is inferred.",
+   "required_change": "Optional: show hall doors in the drum facing the foyer."
+  }
+ ],
+ "reviewer_renders": [
+  "artifacts/concert-hall/v007/independent-review/renders/c01_notch_north.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c01b_notch_above.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c02_lipgap.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c03_vestibule.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c03b_vestibule_side.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c03c_vestibule_north.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c04_ribbon_south_end.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c04b_ribbon_north_end.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c04c_ribbon_mid.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c04d_ribbon_N_tele.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c04e_ribbon_S_tele.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c05_main_entrance.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c05b_entrance_square.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c06_service_door.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c07_lipgap_close.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c07b_lipgap_above.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c08_oculus_down.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c08b_oculus_from_ring.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c09_guard_coping.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c09b_guard_from_roof.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c10_ground_contact.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c11_foyer_inside.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c12_soffit.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c13_east_doors.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c14_sw_slot_tele.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c14b_sw_slot_front.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c15_ribbon_inside_from_level.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c16_shell_end_west_lip.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c17_east_shell_south_end.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c18_stair_top_inside.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c18b_stair_from_outside.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c19_hall_balconies.png",
+  "artifacts/concert-hall/v007/independent-review/renders/c20_vestibule_above.png",
+  "artifacts/concert-hall/v007/independent-review/renders/r01_south_eye.png",
+  "artifacts/concert-hall/v007/independent-review/renders/r02_sw_eye.png",
+  "artifacts/concert-hall/v007/independent-review/renders/r03_north_eye.png",
+  "artifacts/concert-hall/v007/independent-review/renders/r04_east_eye.png",
+  "artifacts/concert-hall/v007/independent-review/renders/r05_west_eye.png",
+  "artifacts/concert-hall/v007/independent-review/renders/r06_ne_aerial.png",
+  "artifacts/concert-hall/v007/independent-review/renders/r07_top_ortho.png",
+  "artifacts/concert-hall/v007/independent-review/crops/podium_front_compare.png",
+  "artifacts/concert-hall/v007/independent-review/crops/ref60_entrance.png",
+  "artifacts/concert-hall/v007/independent-review/crops/ref60_oculus.png",
+  "artifacts/concert-hall/v007/independent-review/crops/ref60_shells.png",
+  "artifacts/concert-hall/v007/independent-review/crops/ref60_west_band.png",
+  "artifacts/concert-hall/v007/independent-review/crops/ref90_shells.png",
+  "artifacts/concert-hall/v007/independent-review/crops/shells_compare.png",
+  "artifacts/concert-hall/v007/independent-review/crops/west_compare.png"
+ ],
+ "strengths": [
+  "Plan topology matches the locked roof view closely: rounded podium, two opposing shells with radial north notch, inner lip spiral around the west of the oculus, oculus position, south-east lip gap and garden path loop.",
+  "Shell massing and identity read correctly at oblique and phone scale: leaning outer walls, inward-falling bowls with radial standing seams, dark rim coping, clean closed notch and shell end returns (reviewer c01_notch_north, c01b_notch_above, c17_east_shell_south_end).",
+  "Oculus reveals a legible concert programme: raked seating, two balcony tiers, vertical timber wall panels and stage (reviewer c08_oculus_down, c08b_oculus_from_ring, c19_hall_balconies).",
+  "Podium proportions match the reference (finned band over a recessed glazed ground floor at about 1:1). The foyer is furnished with columns, bars and tables. Ground contact is clean, and the roof guard plus coping give about 1.1 m protection (reviewer c09_guard_coping, c10_ground_contact).",
+  "Delivery hygiene: 0 images, 0 textures, 33 named clay materials; no floating parts found visually; required baseline views, family contact views, fitted match views and four 1080x1920 phone boards are present."
+ ]
+}

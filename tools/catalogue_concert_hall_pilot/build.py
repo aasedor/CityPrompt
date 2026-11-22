@@ -71,7 +71,14 @@ SAG = 1.7                                         # shell section profile: z = l
 ENTRANCE = {'angle': -90.0, 'width': 7.2}          # main doors: south, on the podium's front
 EAST_DOOR = {'angle': -8.0, 'width': 4.8}
 LOADING = (18.0, 52.0)                            # back-of-house: opaque ground floor with a loading door (podium polar angles)
-ROOF_DOOR = 203.0                                  # roof-garden entrance in the foot of the west shell: polar angle about the oculus
+PORTAL = (200.3, 205.3, 3.2, 2.4)                 # roof-garden entrance cut into the west shell's foot: polar angles about the oculus
+                                                  # (on the shell's own section rows), head height and depth to the glazed screen
+ROOF_DOOR = (PORTAL[0] + PORTAL[1]) / 2
+SERVICE_W = 4.8                                   # service door opening in the back-of-house wall
+UPPER_DEPTH, UPPER_CEILING = 9.0, 10.1            # the upper storey: depth in from the band, and its ceiling
+PARTITIONS = (171.0, 201.0)                       # cross walls between the upper rooms seen through the ribbon window (podium polar angles)
+STAIR = {'x': (-39.7, -37.3), 'foot_y': 6.0, 'run': .29, 'risers': 35, 'well': 4.5}   # foyer stair, rising south to the upper storey
+HALL_DOORS = (232.0, 270.0, 308.0)                # doors from the foyer into the hall drum: polar angles about the oculus
 APRON = 6.0
 
 PALETTE = {  # role -> flat colour (sRGB), in node order
@@ -84,6 +91,7 @@ PALETTE = {  # role -> flat colour (sRGB), in node order
     'mullion': {'colour': '#3a3532', 'module': 'curtain wall', 'roughness': .5},
     'door': {'colour': '#1d272d', 'module': 'doors', 'alpha': .62, 'roughness': .25},
     'service': {'colour': '#45423d', 'module': 'doors'},
+    'hall_door': {'colour': '#5b3a24', 'module': 'doors'},
     'floor': {'colour': '#8a8378', 'module': 'floors'},
     'interior': {'colour': '#b8875a', 'module': 'foyer timber'},
     'ceiling': {'colour': '#d9c4a2', 'module': 'foyer ceiling'},
@@ -101,7 +109,7 @@ PALETTE = {  # role -> flat colour (sRGB), in node order
     'lip': {'colour': '#3f342b', 'module': 'oculus lip', 'roughness': .55},
     'hall': {'colour': '#b0703a', 'module': 'auditorium'},
     'seats': {'colour': '#8c3a2a', 'module': 'auditorium'},
-    'stage': {'colour': '#2a2724', 'module': 'auditorium'},
+    'stage': {'colour': '#4a3626', 'module': 'auditorium'},
     'panel': {'colour': '#c98a4b', 'module': 'auditorium'},
     'light': {'colour': '#f6e6c8', 'module': 'interior lights'},
     'glass': {'colour': '#2b2622', 'module': 'ground floor glazing', 'alpha': .52, 'roughness': .2, 'transmission': .3},
@@ -204,111 +212,282 @@ def band_wall(clay, role, ring, z0, z1, skip=None, facing_out=True):
 
 
 # ---- the podium ----------------------------------------------------------------------------------
+def polar_point(t, inset=0.0):
+    """The podium outline (inset as podium_ring) where the ray at polar angle t (degrees) about the origin meets it."""
+    a, b = PODIUM_A - inset, PODIUM_B - inset
+    c, s = math.cos(math.radians(t)), math.sin(math.radians(t))
+    r = (abs(c / a) ** PODIUM_N + abs(s / b) ** PODIUM_N) ** (-1 / PODIUM_N)
+    return r * c, r * s
+
+
+def door_zones():
+    """Polar extents (degrees about the origin) of each ground-floor opening in the glazing line."""
+    zones = {}
+    for kind, d in (('main doors', ENTRANCE), ('east doors', EAST_DOOR)):
+        half = math.degrees(d['width'] / 2 / math.hypot(*polar_point(d['angle'], GLASS_SET)))
+        zones[kind] = ((d['angle'] - half) % 360, (d['angle'] + half) % 360)
+    load = sum(LOADING) / 2
+    half = math.degrees(SERVICE_W / 2 / math.hypot(*polar_point(load, GLASS_SET)))
+    zones['service door'] = (load - half, load + half)
+    return zones
+
+
+def band_angles(step=1.2):
+    """One list of polar angles for every podium ring: the outline's even spacing, plus the exact edge of each
+    opening, so the band, the glazing and everything behind an opening start and stop on the same rays."""
+    zones = door_zones()
+    edges = [RIBBON[0], RIBBON[1], LOADING[0], LOADING[1]] + [e for zone in zones.values() for e in zone]
+    base = [polar_deg(x, y) for x, y in podium_ring(0.0, step)]
+    keep = [a for a in base if all(abs(((a - e + 180) % 360) - 180) > .3 for e in edges)
+            and not any(in_range(a, lo, hi) for lo, hi in zones.values())]
+    leaves = []                                                          # door bays split into equal leaves of about 1.2 m
+    for kind, (lo, hi) in zones.items():
+        if kind != 'service door':
+            span = (hi - lo) % 360
+            count = round(ENTRANCE['width'] / 1.2) if kind == 'main doors' else round(EAST_DOOR['width'] / 1.2)
+            leaves += [(lo + span * k / count) % 360 for k in range(1, count)]
+    return sorted(set(keep + leaves + [e % 360 for e in edges]))
+
+
+def segments(angles):
+    """(i, j, middle angle) for each segment of a closed ring sampled at `angles`."""
+    n = len(angles)
+    for i in range(n):
+        a0, a1 = angles[i], angles[(i + 1) % n] + (360 if i == n - 1 else 0)
+        yield i, (i + 1) % n, ((a0 + a1) / 2) % 360
+
+
+def edge_index(angles, angle):
+    return min(range(len(angles)), key=lambda i: abs(((angles[i] - angle + 180) % 360) - 180))
+
+
+def plan_normal(p, q):
+    dx, dy = q[0] - p[0], q[1] - p[1]
+    length = math.hypot(dx, dy) or 1.0
+    return dy / length, -dx / length
+
+
+def wall(clay, role, p, q, z0, z1, facing):
+    """A vertical quad on the plan segment p-q from z0 to z1; `facing` may be a plan vector."""
+    if z1 - z0 > 1e-4:
+        clay.quad(role, (p[0], p[1], z0), (q[0], q[1], z0), (q[0], q[1], z1), (p[0], p[1], z1), facing=(*facing[:2], 0))
+
+
+def bar(clay, role, p, q, depth, z0, z1, offset=0.0):
+    """A thin horizontal member along the segment p-q, `depth` deep, pushed `offset` outward."""
+    nx, ny = plan_normal(p, q)
+    length = math.hypot(q[0] - p[0], q[1] - p[1])
+    mx, my = (p[0] + q[0]) / 2 + nx * offset, (p[1] + q[1]) / 2 + ny * offset
+    obox(clay, role, mx, my, (q[0] - p[0]) / length, (q[1] - p[1]) / length, length / 2, depth / 2, z0, z1)
+
+
+def post(clay, role, ring, i, half_t, half_d, z0, z1, offset=0.0):
+    """A vertical member at ring point i, `half_t` along the ring and `half_d` across it."""
+    p, q = ring[i - 1], ring[(i + 1) % len(ring)]
+    nx, ny = plan_normal(p, q)
+    x, y = ring[i]
+    obox(clay, role, x + nx * offset, y + ny * offset, -ny, nx, half_t, half_d, z0, z1)
+
+
+def stair_geometry():
+    """The foyer stair's plan numbers: x range, foot and head y, rise, run, and the well cut through ceiling and slab."""
+    x0, x1 = STAIR['x']
+    rise = (UPPER - FOYER) / STAIR['risers']
+    head = STAIR['foot_y'] - STAIR['run'] * (STAIR['risers'] - 1)
+    return x0, x1, STAIR['foot_y'], head, rise, shapely.geometry.box(x0, head, x1, head + STAIR['well'])
+
+
 def podium(clay):
-    outer = podium_ring(0.0)
-    glass = podium_ring(GLASS_SET)
-    inner = podium_ring(.6)
+    angles = band_angles()
+    zones = door_zones()
+
+    def ring(inset):
+        return [polar_point(t, inset) for t in angles]
+
+    def kind(m):
+        found = next((k for k, (lo, hi) in zones.items() if in_range(m, lo, hi)), None)
+        return found or ('loading' if in_range(m, *LOADING) else None)
+
+    outer, glass, recess, back = ring(0.0), ring(GLASS_SET), ring(GLASS_SET + .15), ring(.35)
     site = Polygon(superellipse(PODIUM_A + APRON, PODIUM_B + APRON))
-    foot = Polygon(superellipse(PODIUM_A, PODIUM_B))
+    foot, gfoot = Polygon(outer), Polygon(glass)
     flat_region(clay, 'apron', site.difference(foot), .02)
-    # ground floor: glazing set back under the band, opaque back-of-house to the north-east
-    gfoot = Polygon(glass)
     flat_region(clay, 'floor', gfoot, FOYER)
     flat_region(clay, 'plinth', foot.difference(gfoot), .03)
-
-    def gf_spans(angle, z0, z1):
-        return [] if in_range(angle, *LOADING) else [(z0, z1)]
-    band_wall(clay, 'glass', glass, FOYER, GF_TOP, skip=gf_spans)
-    band_wall(clay, 'cladding', glass, 0.0, GF_TOP, skip=lambda a, z0, z1: [(z0, z1)] if in_range(a, *LOADING) else [])
-    for i, (x, y) in enumerate(glass):                                   # mullions every fourth ring point (about 4.8 m)
-        if i % 4 or in_range(polar_deg(x, y), *LOADING):
-            continue
-        nx, ny = outward(glass, i)
-        obox(clay, 'mullion', x + nx * .04, y + ny * .04, ny, -nx, .035, .09, FOYER, GF_TOP)
-    for d in (ENTRANCE, EAST_DOOR):                                      # door leaves in the curtain wall
-        for i, (x, y) in enumerate(glass):
-            a = polar_deg(x, y)
-            if abs(((a - d['angle'] + 180) % 360) - 180) < math.degrees(d['width'] / 2 / math.hypot(x, y)):
-                nx, ny = outward(glass, i)
-                ux, uy = ny, -nx                                         # glazed leaf in a frame, with a head over it
-                obox(clay, 'door', x + nx * .06, y + ny * .06, ux, uy, .58, .02, FOYER, 2.7)
-                for side in (-1, 1):
-                    obox(clay, 'mullion', x + nx * .06 + side * .6 * ux, y + ny * .06 + side * .6 * uy, ux, uy, .03, .05, FOYER, 2.75)
-                obox(clay, 'mullion', x + nx * .06, y + ny * .06, ux, uy, .63, .05, 2.7, 2.85)
-    open_glass = lambda a, z0, z1: [] if in_range(a, *LOADING) else [(z0, z1)]
-    band_wall(clay, 'mullion', podium_ring(GLASS_SET - .05), TRANSOM - .06, TRANSOM + .06, skip=open_glass)
-    band_wall(clay, 'mullion', podium_ring(GLASS_SET - .05), FOYER, FOYER + .12, skip=open_glass)
-    load_a = sum(LOADING) / 2
-    lx, ly = next((p for p in glass if abs(polar_deg(*p) - load_a) < 1.5), glass[0])
-    nx, ny = lx / math.hypot(lx, ly), ly / math.hypot(lx, ly)
-    obox(clay, 'service', lx + nx * .05, ly + ny * .05, ny, -nx, 2.4, .04, 0.0, 4.2)
-    # the band: soffit, outer wall with a ribbon window, coping and parapet
-    band_soffit = foot.difference(gfoot)
-    flat_region(clay, 'soffit', band_soffit, GF_TOP, up=False)
-
-    def band_spans(angle, z0, z1):
-        return [(z0, RIBBON[2]), (RIBBON[3], z1)] if in_range(angle, RIBBON[0], RIBBON[1]) else [(z0, z1)]
-    band_wall(clay, 'cladding', outer, GF_TOP, COPING, skip=band_spans)
-    ribbon_back = podium_ring(.35)                                       # window glass in a 0.35 m reveal
-    band_wall(clay, 'ribbon', ribbon_back, RIBBON[2], RIBBON[3],
-              skip=lambda a, z0, z1: [(z0, z1)] if in_range(a, RIBBON[0], RIBBON[1]) else [])
-    n = len(outer)
-    for i in range(n):                                                   # reveal returns at sill and head
-        (x0, y0), (x1, y1) = outer[i], outer[(i + 1) % n]
-        if not in_range(polar_deg((x0 + x1) / 2, (y0 + y1) / 2), RIBBON[0], RIBBON[1]):
-            continue
-        (bx0, by0), (bx1, by1) = ribbon_back[i % len(ribbon_back)], ribbon_back[(i + 1) % len(ribbon_back)]
-        for z, up in ((RIBBON[2], 1), (RIBBON[3], -1)):
-            clay.quad('cladding', (x0, y0, z), (x1, y1, z), (bx1, by1, z), (bx0, by0, z), facing=(0, 0, up))
-    flat_region(clay, 'coping', Polygon(outer).difference(Polygon(inner)), COPING)
-    band_wall(clay, 'cladding', inner, ROOF, COPING, facing_out=False)
-    # fins: vertical bronze fins standing proud of the band, none across the ribbon window
+    flat_region(clay, 'soffit', foot.difference(gfoot), GF_TOP, up=False)
+    # ground floor: curtain wall set back under the band; door bays own their openings; opaque back-of-house to the north-east
+    cill = ring(GLASS_SET - .05)
+    for i, j, m in segments(angles):
+        p, q, k = glass[i], glass[j], kind(m)
+        n = plan_normal(p, q)
+        if k == 'loading':
+            wall(clay, 'cladding', p, q, 0.0, GF_TOP, n)
+        elif k == 'service door':                                        # a 4.2 m opening with reveals and a recessed steel door
+            wall(clay, 'cladding', p, q, 4.35, GF_TOP, n)
+            wall(clay, 'service', recess[i], recess[j], 0.0, 4.2, n)
+            clay.quad('cladding', (*p, 4.35), (*q, 4.35), (*recess[j], 4.35), (*recess[i], 4.35), facing=(0, 0, -1))
+            bar(clay, 'mullion', recess[i], recess[j], .1, 4.2, 4.35)
+        elif k in ('main doors', 'east doors'):                          # glazed leaves fill the bay under a head and transom light
+            wall(clay, 'glass', p, q, 2.85, GF_TOP, n)
+            wall(clay, 'door', p, q, FOYER, 2.7, n)
+            bar(clay, 'mullion', p, q, .14, 2.7, 2.85)
+        else:
+            wall(clay, 'glass', p, q, FOYER, GF_TOP, n)
+            bar(clay, 'mullion', cill[i], cill[j], .08, FOYER, FOYER + .12)
+        if k != 'loading' and k != 'service door':
+            bar(clay, 'mullion', cill[i], cill[j], .08, TRANSOM - .06, TRANSOM + .06)
+    for kind_name in ('main doors', 'east doors'):                       # stiles at every leaf joint and both jambs
+        lo, hi = zones[kind_name]
+        for i, t in enumerate(angles):
+            if in_range(t, lo, hi):
+                post(clay, 'mullion', glass, i, .05, .08, FOYER, 2.85)
+    lo, hi = zones['service door']
+    for edge in (lo, hi):                                                # reveals of the service opening
+        i = edge_index(angles, edge)
+        sign = 1 if edge == lo else -1
+        t = math.radians(angles[i])
+        clay.quad('cladding', (*glass[i], 0.0), (*recess[i], 0.0), (*recess[i], 4.35), (*glass[i], 4.35),
+                  facing=(-math.sin(t) * sign, math.cos(t) * sign, 0))
+    run, last = 0.0, 0.0                                                 # curtain-wall mullions about every 4.8 m
+    for i, (x, y) in enumerate(glass):
+        if i:
+            run += math.hypot(x - glass[i - 1][0], y - glass[i - 1][1])
+        t = angles[i]
+        near_opening = any(in_range(t, (lo - 1.5) % 360, (hi + 1.5) % 360) for lo, hi in zones.values()) or in_range(t, *LOADING)
+        if run - last >= 4.8 and not near_opening:
+            post(clay, 'mullion', glass, i, .035, .09, FOYER, GF_TOP, offset=.04)
+            last = run
+    # the band: closed cladding, with the ribbon window cut into it at the west end
+    for i, j, m in segments(angles):
+        p, q = outer[i], outer[j]
+        n = plan_normal(p, q)
+        if in_range(m, RIBBON[0], RIBBON[1]):
+            wall(clay, 'cladding', p, q, GF_TOP, RIBBON[2], n)
+            wall(clay, 'cladding', p, q, RIBBON[3], COPING, n)
+            wall(clay, 'ribbon', back[i], back[j], RIBBON[2], RIBBON[3], n)
+            clay.quad('cladding', (*p, RIBBON[2]), (*q, RIBBON[2]), (*back[j], RIBBON[2]), (*back[i], RIBBON[2]), facing=(0, 0, 1))
+            clay.quad('cladding', (*p, RIBBON[3]), (*q, RIBBON[3]), (*back[j], RIBBON[3]), (*back[i], RIBBON[3]), facing=(0, 0, -1))
+        else:
+            wall(clay, 'cladding', p, q, GF_TOP, COPING, n)
+    for edge, sign in ((RIBBON[0], 1), (RIBBON[1], -1)):                 # jambs at the ribbon's two ends
+        i = edge_index(angles, edge)
+        t = math.radians(angles[i])
+        clay.quad('cladding', (*outer[i], RIBBON[2]), (*back[i], RIBBON[2]), (*back[i], RIBBON[3]), (*outer[i], RIBBON[3]),
+                  facing=(-math.sin(t) * sign, math.cos(t) * sign, 0))
+    parapet = ring(.6)
+    flat_region(clay, 'coping', foot.difference(Polygon(parapet)), COPING)
+    band_wall(clay, 'cladding', parapet, ROOF, COPING, facing_out=False)
+    # fins: vertical bronze fins proud of the band, broken by the ribbon window, with slats across the window itself
     fins = podium_ring(-FIN[2] / 2, step=FIN[0])
     for i, (x, y) in enumerate(fins):
-        if in_range(polar_deg(x, y), RIBBON[0] + .6, RIBBON[1] - .6):
-            continue
+        t = polar_deg(x, y)
         nx, ny = outward(fins, i)
-        obox(clay, 'fins', x, y, ny, -nx, FIN[1] / 2, FIN[2] / 2, GF_TOP, COPING - .02)
-    # guard on the roof garden edge
-    guard = podium_ring(1.0)
-    band_wall(clay, 'guard', guard, ROOF, ROOF + GUARD)
-    band_wall(clay, 'coping', guard, ROOF + GUARD - .04, ROOF + GUARD)
+        if in_range(t, RIBBON[0] + .3, RIBBON[1] - .3):
+            obox(clay, 'fins', x, y, ny, -nx, FIN[1] / 2, FIN[2] / 2, GF_TOP, RIBBON[2])
+            obox(clay, 'fins', x, y, ny, -nx, FIN[1] / 2, FIN[2] / 2, RIBBON[3], COPING - .02)
+            sx, sy = polar_point(t, .15)
+            obox(clay, 'fins', sx, sy, ny, -nx, FIN[1] / 2, .06, RIBBON[2], RIBBON[3])
+        else:
+            obox(clay, 'fins', x, y, ny, -nx, FIN[1] / 2, FIN[2] / 2, GF_TOP, COPING - .02)
+    # glass guard standing on the coping, capped
+    guard = ring(.3)
+    band_wall(clay, 'guard', guard, COPING, ROOF + GUARD - .05)
+    band_wall(clay, 'coping', guard, ROOF + GUARD - .05, ROOF + GUARD)
+    # the upper storey: one closed ring of rooms behind the band, reached by the foyer stair
+    well = stair_geometry()[-1]
+    inner = ring(UPPER_DEPTH)
+    storey = foot.difference(Polygon(inner))
+    flat_region(clay, 'floor', storey.difference(well), UPPER)
+    flat_region(clay, 'ceiling', storey, UPPER_CEILING, up=False)
+    band_wall(clay, 'interior', inner, GF_TOP - .1, ROOF)
+    for t in PARTITIONS:                                                 # cross walls between rooms
+        (ax, ay), (bx, by) = polar_point(t, .35), polar_point(t, UPPER_DEPTH)
+        clay.quad('interior', (ax, ay, UPPER), (bx, by, UPPER), (bx, by, UPPER_CEILING), (ax, ay, UPPER_CEILING),
+                  facing=(-math.sin(math.radians(t)), math.cos(math.radians(t)), 0))
+    wx0, wy0, wx1, wy1 = well.bounds                                     # stair well: its sides between ceiling and slab, guarded above
+    corners = [(wx0, wy0), (wx1, wy0), (wx1, wy1), (wx0, wy1)]
+    for (ax, ay), (bx, by) in pairwise(corners + corners[:1]):
+        if (ay, by) == (wy0, wy0):                                       # the arrival side: the stair's own end closes it
+            continue
+        face = ((ay - by), (bx - ax), 0)
+        clay.quad('interior', (ax, ay, GF_TOP - .1), (bx, by, GF_TOP - .1), (bx, by, UPPER), (ax, ay, UPPER), facing=face)
+        clay.quad('guard', (ax, ay, UPPER), (bx, by, UPPER), (bx, by, UPPER + 1.1), (ax, ay, UPPER + 1.1), facing=face)
+
+
+def foyer_stair(clay):
+    """A solid stair with a sloping soffit and glass balustrades, from the west foyer up through the well to the upper storey."""
+    x0, x1, foot_y, head, rise, _ = stair_geometry()
+    run = STAIR['run']
+    profile = [(foot_y, FOYER)]
+    for k in range(STAIR['risers'] - 1):
+        profile += [(foot_y - run * k, FOYER + rise * (k + 1)), (foot_y - run * (k + 1), FOYER + rise * (k + 1))]
+    profile += [(head, UPPER), (head, UPPER - .5), (foot_y - 2 * run, FOYER)]
+    for x, side in ((x0, -1), (x1, 1)):
+        clay.polygon('floor', [(x, y, z) for y, z in profile], (side, 0, 0))
+    for (ya, za), (yb, zb) in pairwise(profile[:-2]):                    # treads face up, risers face the foot
+        clay.quad('floor', (x0, ya, za), (x1, ya, za), (x1, yb, zb), (x0, yb, zb), facing=(0, 1, 0) if ya == yb else (0, 0, 1))
+    clay.quad('floor', (x0, head, UPPER - .5), (x1, head, UPPER - .5), (x1, head, UPPER), (x0, head, UPPER), facing=(0, -1, 0))
+    clay.quad('floor', (x0, head, UPPER - .5), (x1, head, UPPER - .5), (x1, foot_y - 2 * run, FOYER), (x0, foot_y - 2 * run, FOYER),
+              facing=(0, .3, -1))
+    for x in (x0, x1):                                                   # glass balustrades with a handrail along the pitch line
+        clay.quad('guard', (x, foot_y, FOYER + rise), (x, head, UPPER), (x, head, UPPER + 1.0), (x, foot_y, FOYER + rise + 1.0),
+                  facing=(1 if x == x1 else -1, 0, 0))
+        clay.quad('mullion', (x, foot_y, FOYER + rise + 1.0), (x, head, UPPER + 1.0), (x, head, UPPER + 1.06), (x, foot_y, FOYER + rise + 1.06),
+                  facing=(1 if x == x1 else -1, 0, 0))
 
 
 def interiors(clay):
-    """The foyer seen through the curtain wall, and the rooms behind the ribbon window."""
+    """The foyer seen through the curtain wall: the hall drum with its doors, ceiling, columns, counters, tables and the stair."""
     cx, cy = OCULUS_C
     hall_a, hall_b = 24.0, 18.0
-    ring = [(cx + hall_a * math.cos(t), cy + hall_b * math.sin(t)) for t in np.linspace(0, 2 * math.pi, 96, endpoint=False)]
-    band_wall(clay, 'interior', ring, FOYER, GF_TOP - .1)
+    edges = []
+    for d in HALL_DOORS:                                                 # door edges about the oculus centre
+        half = math.degrees(1.2 / ellipse_r(d, hall_a, hall_b))
+        edges += [d - half, d + half]
+    ts = sorted(set([t for t in np.linspace(0, 360, 96, endpoint=False) if all(abs(t - e) > .8 for e in edges)] + edges))
+
+    def at(t, shrink=0.0):
+        return cx + (hall_a - shrink) * math.cos(math.radians(t)), cy + (hall_b - shrink) * math.sin(math.radians(t))
+
+    def is_door(t):
+        return any(edges[2 * k] - 1e-9 <= t <= edges[2 * k + 1] + 1e-9 for k in range(len(HALL_DOORS)))
+    for t0, t1 in pairwise(ts + [ts[0] + 360]):
+        p, q = at(t0), at(t1)
+        n = plan_normal(p, q)
+        if is_door((t0 + t1) / 2 % 360):
+            wall(clay, 'interior', p, q, 2.75, GF_TOP - .1, n)
+            wall(clay, 'hall_door', at(t0, .3), at(t1, .3), FOYER, 2.6, n)
+            bar(clay, 'mullion', at(t0, .3), at(t1, .3), .08, 2.6, 2.75)
+            clay.quad('interior', (*p, 2.75), (*q, 2.75), (*at(t1, .3), 2.75), (*at(t0, .3), 2.75), facing=(0, 0, -1))
+        else:
+            wall(clay, 'interior', p, q, FOYER, GF_TOP - .1, n)
+    for k, e in enumerate(edges):                                        # door reveals, facing into each opening
+        p, r = at(e), at(e, .3)
+        sign = 1 if k % 2 == 0 else -1
+        clay.quad('interior', (*p, FOYER), (*r, FOYER), (*r, 2.75), (*p, 2.75),
+                  facing=(-math.sin(math.radians(e)) * sign, math.cos(math.radians(e)) * sign, 0))
+    drum = Polygon([at(t) for t in ts])
+    x0, x1, foot_y, head, _, well = stair_geometry()
     glass = Polygon(podium_ring(GLASS_SET + .05))
-    flat_region(clay, 'ceiling', glass.difference(Polygon(ring)), GF_TOP - .1, up=False)
+    ceiling = glass.difference(drum).difference(well)
+    flat_region(clay, 'ceiling', ceiling, GF_TOP - .1, up=False)
+    flat_region(clay, 'light', ceiling.buffer(-2.0), GF_TOP - .12, up=False)
+    stair_zone = shapely.geometry.box(x0 - 1.5, head - 1.5, x1 + 1.5, foot_y + 1.5)
     for t in np.linspace(0, 2 * math.pi, 14, endpoint=False):           # foyer columns
         x, y = cx + (hall_a + 4.2) * math.cos(t), cy + (hall_b + 4.2) * math.sin(t)
-        if glass.buffer(-1.0).contains(Point(x, y)):
+        if glass.buffer(-1.0).contains(Point(x, y)) and not stair_zone.contains(Point(x, y)):
             clay.cylinder('structure', x, y, FOYER, GF_TOP - .1, .28, steps=12)
-    for k, t in enumerate(np.linspace(math.radians(200), math.radians(330), 22)):   # cafe tables along the south foyer
+    for t in np.linspace(math.radians(200), math.radians(330), 22):     # cafe tables along the south foyer
         for row in (0, 1):
-            r = 1.0 + .2 * row
-            x, y = (PODIUM_A - GLASS_SET - 3.2 - 2.0 * row) * math.cos(t) * r ** 0, (PODIUM_B - GLASS_SET - 3.2 - 2.0 * row) * math.sin(t)
-            if not glass.buffer(-1.5).contains(Point(x, y)) or Point(x, y).distance(Point(0, -PODIUM_B)) < 5.5:
+            x, y = (PODIUM_A - GLASS_SET - 3.2 - 2.0 * row) * math.cos(t), (PODIUM_B - GLASS_SET - 3.2 - 2.0 * row) * math.sin(t)
+            if (not glass.buffer(-1.5).contains(Point(x, y)) or Point(x, y).distance(Point(0, -PODIUM_B)) < 5.5
+                    or stair_zone.contains(Point(x, y))):
                 continue
             clay.cylinder('furniture', x, y, FOYER, FOYER + .72, .05, steps=6)
             clay.cylinder('furniture', x, y, FOYER + .72, FOYER + .76, .42, steps=12)
     clay.box('interior', -6.0, -1.5, -22.0, -20.6, FOYER, FOYER + 1.1)    # box office and bar counters
     clay.box('interior', 3.0, 9.0, -22.5, -21.1, FOYER, FOYER + 1.1)
-    for k in range(18):                                                  # grand stair to the upper floor, west foyer
-        z = FOYER + (UPPER - FOYER) * (k + 1) / 18
-        clay.box('floor', -30.0 + k * .3, -29.7 + k * .3, -8.0, -5.6, z - .18, z)
-    flat_region(clay, 'light', glass.difference(Polygon(ring)).buffer(-2.0), GF_TOP - .12, up=False)
-    # upper floor rooms behind the ribbon window: floor, ceiling and a back wall 3 m in
-    room = podium_ring(3.4)
-    span = Polygon(podium_ring(.35)).difference(Polygon(room))
-    sector = Polygon([(0, 0)] + [(80 * math.cos(math.radians(a)), 80 * math.sin(math.radians(a))) for a in np.linspace(RIBBON[0], RIBBON[1], 24)])
-    flat_region(clay, 'floor', span.intersection(sector), UPPER)
-    flat_region(clay, 'ceiling', span.intersection(sector), RIBBON[3] + .6, up=False)
-    band_wall(clay, 'interior', room, UPPER, RIBBON[3] + .6,
-              skip=lambda a, z0, z1: [(z0, z1)] if in_range(a, RIBBON[0], RIBBON[1]) else [])
+    foyer_stair(clay)
 
 
 # ---- shells, lip and auditorium ----------------------------------------------------------------------
@@ -332,7 +511,7 @@ def west_inner(t):
     return lip_r(t) + w, ring_top(t) + RING[3] * w / RING[0]
 
 
-def shell(clay, control, step=2.5, sections=7, inner=None, start=0.0):
+def shell(clay, control, step=2.5, sections=7, inner=None, start=0.0, portal=None):
     """One spiral sheet: sections from its inner edge to the outer rim, an outer wall down to the roof, and end walls."""
     cx, cy = OCULUS_C
     t0, t1 = control[0][0] + start, control[-1][0]
@@ -356,10 +535,20 @@ def shell(clay, control, step=2.5, sections=7, inner=None, start=0.0):
         dx, dy = p[0] - cx, p[1] - cy
         length = math.hypot(dx, dy)
         return (p[0] + dx / length * LEAN * (p[2] - ROOF), p[1] + dy / length * LEAN * (p[2] - ROOF), ROOF)
-    for a, b in pairwise(rows):                                     # outer wall from the rim down to the roof
+    def up_wall(p, h):                                                   # the point h above the roof on the leaning wall line under rim point p
+        f = foot(p)
+        s = h / (p[2] - ROOF)
+        return (f[0] + (p[0] - f[0]) * s, f[1] + (p[1] - f[1]) * s, ROOF + h)
+
+    def in_portal(t):
+        return portal is not None and portal[0] - 1e-6 <= t <= portal[1] + 1e-6
+    for (ta, a), (tb, b) in pairwise(zip(thetas, rows)):                # outer wall from the rim down to the roof
         pa, pb = a[-1], b[-1]
         out = (pa[0] - cx, pa[1] - cy, LEAN * math.hypot(pa[0] - cx, pa[1] - cy) / 10)
-        clay.quad('shellwall', foot(pa), foot(pb), pb, pa, facing=out)
+        if in_portal(ta) and in_portal(tb):
+            clay.quad('shellwall', up_wall(pa, portal[2]), up_wall(pb, portal[2]), pb, pa, facing=out)
+        else:
+            clay.quad('shellwall', foot(pa), foot(pb), pb, pa, facing=out)
     for a, b in pairwise(rows):                                     # a dark cap along the rim
         pa, pb = a[-1], b[-1]
         if pa[2] - ROOF < .6:
@@ -384,12 +573,12 @@ def shell(clay, control, step=2.5, sections=7, inner=None, start=0.0):
                       (q[0] + sx, q[1] + sy, q[2] + lift), (p[0] + sx, p[1] + sy, p[2] + lift), facing=(0, 0, 1))
     for j in range(len(rows) - 1):                                       # battens on the outer wall
         pa = rows[j][-1]
-        fa = foot(pa)
+        fa = up_wall(pa, portal[2]) if portal is not None and portal[0] + 1e-6 < thetas[j] < portal[1] - 1e-6 else foot(pa)
         out = (pa[0] - cx, pa[1] - cy)
         length = math.hypot(*out)
         ox, oy = out[0] / length * .05, out[1] / length * .05
         tx, ty = -oy / .05 * .06, ox / .05 * .06
-        clay.quad('seam', (fa[0] + ox - tx, fa[1] + oy - ty, ROOF), (fa[0] + ox + tx, fa[1] + oy + ty, ROOF),
+        clay.quad('seam', (fa[0] + ox - tx, fa[1] + oy - ty, fa[2]), (fa[0] + ox + tx, fa[1] + oy + ty, fa[2]),
                   (pa[0] + ox + tx, pa[1] + oy + ty, pa[2] - .05), (pa[0] + ox - tx, pa[1] + oy - ty, pa[2] - .05), facing=(out[0], out[1], .3))
     footprint = Polygon([foot(row[-1])[:2] for row in rows] + [(p[0], p[1]) for p in (row[0] for row in reversed(rows))])
     return footprint.buffer(0)
@@ -519,7 +708,7 @@ def roof_garden(clay, shells, stair):
         paths.append(LineString([end, near.coords[0]]).buffer(.8, quad_segs=6))
     # spurs to the viewing ledge at the oculus' south-east and to the roof-garden entrance
     gap_t = math.radians(305)
-    ledge = (cx + (lip_r(305) + .4) * math.cos(gap_t), cy + (lip_r(305) + .4) * math.sin(gap_t))
+    ledge = (cx + (lip_r(305) + 2.2) * math.cos(gap_t), cy + (lip_r(305) + 2.2) * math.sin(gap_t))
     near = loop.interpolate(loop.project(Point(ledge)))
     paths.append(LineString([ledge, near.coords[0]]).buffer(1.0, quad_segs=6))
     sc = stair.centroid
@@ -535,9 +724,17 @@ def roof_garden(clay, shells, stair):
     clear = prep(path.buffer(.5))
 
     def mound(role, x, y, radius, height, sides):
-        ring = [(x + radius * math.cos(2 * math.pi * k / sides), y + radius * math.sin(2 * math.pi * k / sides), ROOF) for k in range(sides)]
+        """A low dome: a base ring on the deck, a shoulder ring turned half a step at 60 % height, and a crown."""
+        base = [(x + radius * math.cos(2 * math.pi * k / sides), y + radius * math.sin(2 * math.pi * k / sides), ROOF + .01)
+                for k in range(sides)]
+        shoulder = [(x + .72 * radius * math.cos(2 * math.pi * (k + .5) / sides), y + .72 * radius * math.sin(2 * math.pi * (k + .5) / sides),
+                     ROOF + .6 * height) for k in range(sides)]
+        crown = (x, y, ROOF + height)
         for k in range(sides):
-            clay.tri(role, ring[k], ring[(k + 1) % sides], (x, y, ROOF + height), facing=(ring[k][0] - x, ring[k][1] - y, 1))
+            a, b, c, d = base[k], base[(k + 1) % sides], shoulder[k], shoulder[(k + 1) % sides]
+            clay.tri(role, a, b, c, facing=(c[0] - x, c[1] - y, .6))
+            clay.tri(role, b, d, c, facing=(b[0] - x, b[1] - y, .6))
+            clay.tri(role, c, d, crown, facing=(c[0] - x, c[1] - y, 2.0))
     placed = {'mounds': 0, 'blooms': 0}
     drifts = [(rng.uniform(-PODIUM_A, PODIUM_A), rng.uniform(-PODIUM_B, PODIUM_B), 'meadow' if rng.random() < .5 else 'planting') for _ in range(40)]
     for _ in range(20000):
@@ -545,13 +742,13 @@ def roof_garden(clay, shells, stair):
         if not keep.contains(Point(x, y)) or clear.contains(Point(x, y)):
             continue
         drift = drifts[min(range(len(drifts)), key=lambda i: (drifts[i][0] - x) ** 2 + (drifts[i][1] - y) ** 2)][2]
-        if placed['mounds'] < 2600:
+        if placed['mounds'] < 1800:
             pick = rng.random()
             role = drift if pick < .7 else 'planting' if pick < .9 else 'shrub'
-            mound(role, x, y, rng.uniform(.45, 1.0), rng.uniform(.25, .6) * (1.6 if role == 'shrub' else 1), 7)
+            mound(role, x, y, rng.uniform(.55, 1.15), rng.uniform(.3, .65) * (1.5 if role == 'shrub' else 1), 6)
             placed['mounds'] += 1
-            if drift == 'meadow' and rng.random() < .45 and placed['blooms'] < 900:
-                mound('blossom', x + rng.uniform(-.6, .6), y + rng.uniform(-.6, .6), rng.uniform(.3, .45), rng.uniform(.45, .65), 6)
+            if drift == 'meadow' and rng.random() < .45 and placed['blooms'] < 650:
+                mound('blossom', x + rng.uniform(-.6, .6), y + rng.uniform(-.6, .6), rng.uniform(.3, .45), rng.uniform(.5, .7), 5)
                 placed['blooms'] += 1
         else:
             break
@@ -559,54 +756,95 @@ def roof_garden(clay, shells, stair):
 
 
 def shell_entrance(clay):
-    """Roof-garden entrance: a vestibule in the foot of the west shell, leading to a lift and stair inside it."""
+    """Roof-garden entrance: a portal cut into the foot of the west shell, a glazed screen, and behind it a lobby
+    with the head of a stair going down. Returns the portal's plan, which the garden paths stop at."""
     cx, cy = OCULUS_C
-    t = math.radians(ROOF_DOOR)
-    r_foot = catmull(SHELL_A, ROOF_DOOR)[0]
-    nx, ny = math.cos(t), math.sin(t)
-    ux, uy = -ny, nx
-    x, y = cx + (r_foot + .2) * nx, cy + (r_foot + .2) * ny
-    obox(clay, 'shellwall', x, y, ux, uy, 2.0, 1.4, ROOF, ROOF + 3.2)
-    obox(clay, 'lip', x + nx * .15, y + ny * .15, ux, uy, 2.2, 1.6, ROOF + 3.2, ROOF + 3.45)
-    obox(clay, 'door', x + nx * 1.42, y + ny * 1.42, ux, uy, 1.3, .03, ROOF, ROOF + 2.7)
-    corners = [(x + su * 2.0 * ux + sv * 1.4 * nx, y + su * 2.0 * uy + sv * 1.4 * ny) for su, sv in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
-    return Polygon(corners).buffer(.3)
+    t0, t1, height, depth = PORTAL
+    ts = [t0, (t0 + t1) / 2, t1]                                         # the west shell's own section rows
+
+    def pc(t, r, z):
+        return (cx + r * math.cos(math.radians(t)), cy + r * math.sin(math.radians(t)), z)
+    feet = {t: catmull(SHELL_A, t)[0] for t in ts}
+    screen = min(feet.values()) - depth
+    lobby, landing, drop = screen - 4.6, screen - 1.6, 1.8
+    for t, sign in ((t0, 1), (t1, -1)):                                  # jambs of the portal, and the lobby's side walls
+        tangent = (-math.sin(math.radians(t)) * sign, math.cos(math.radians(t)) * sign, 0)
+        clay.polygon('shellwall', [pc(t, feet[t], ROOF), pc(t, screen, ROOF), pc(t, screen, ROOF + height),
+                                   pc(t, feet[t] - LEAN * height, ROOF + height)], tangent)
+        clay.quad('interior', pc(t, screen, ROOF - drop - .2), pc(t, lobby, ROOF - drop - .2), pc(t, lobby, ROOF + 3.0),
+                  pc(t, screen, ROOF + 3.0), facing=tangent)
+    for ta, tb in pairwise(ts):
+        clay.quad('shellwall', pc(ta, feet[ta] - LEAN * height, ROOF + height), pc(tb, feet[tb] - LEAN * height, ROOF + height),
+                  pc(tb, screen, ROOF + height), pc(ta, screen, ROOF + height), facing=(0, 0, -1))
+        clay.quad('path', pc(ta, feet[ta], ROOF + .03), pc(tb, feet[tb], ROOF + .03), pc(tb, screen, ROOF + .03), pc(ta, screen, ROOF + .03),
+                  facing=(0, 0, 1))
+        clay.quad('door', pc(ta, screen, ROOF), pc(tb, screen, ROOF), pc(tb, screen, ROOF + 2.7), pc(ta, screen, ROOF + 2.7),
+                  facing=(math.cos(math.radians(ta)), math.sin(math.radians(ta)), 0))
+        clay.quad('glass', pc(ta, screen, ROOF + 2.85), pc(tb, screen, ROOF + 2.85), pc(tb, screen, ROOF + height),
+                  pc(ta, screen, ROOF + height), facing=(math.cos(math.radians(ta)), math.sin(math.radians(ta)), 0))
+        a, b = pc(ta, screen, 0)[:2], pc(tb, screen, 0)[:2]
+        bar(clay, 'mullion', a, b, .12, ROOF + 2.7, ROOF + 2.85)
+        clay.quad('ceiling', pc(ta, screen, ROOF + 3.0), pc(tb, screen, ROOF + 3.0), pc(tb, lobby, ROOF + 3.0), pc(ta, lobby, ROOF + 3.0),
+                  facing=(0, 0, -1))
+        clay.quad('floor', pc(ta, screen, ROOF), pc(tb, screen, ROOF), pc(tb, landing, ROOF), pc(ta, landing, ROOF), facing=(0, 0, 1))
+        clay.quad('interior', pc(ta, lobby, ROOF - drop - .2), pc(tb, lobby, ROOF - drop - .2), pc(tb, lobby, ROOF + 3.0),
+                  pc(ta, lobby, ROOF + 3.0), facing=(math.cos(math.radians(ta)), math.sin(math.radians(ta)), 0))
+        for k in range(10):                                              # the stair head: ten treads going down, away from the door
+            r0, r1, z = landing - .3 * k, landing - .3 * (k + 1), ROOF - drop * (k + 1) / 10
+            clay.quad('floor', pc(ta, r0, z), pc(tb, r0, z), pc(tb, r1, z), pc(ta, r1, z), facing=(0, 0, 1))
+            clay.quad('floor', pc(ta, r0, z + drop / 10), pc(tb, r0, z + drop / 10), pc(tb, r0, z), pc(ta, r0, z),
+                      facing=(math.cos(math.radians(ta)), math.sin(math.radians(ta)), 0))
+        clay.quad('floor', pc(ta, landing - 3.0, ROOF - drop - .2), pc(tb, landing - 3.0, ROOF - drop - .2), pc(tb, lobby, ROOF - drop - .2),
+                  pc(ta, lobby, ROOF - drop - .2), facing=(0, 0, 1))
+    for t in ts:                                                         # frame of the glazed screen
+        x, y, _ = pc(t, screen, 0)
+        obox(clay, 'mullion', x, y, -math.sin(math.radians(t)), math.cos(math.radians(t)), .05, .06, ROOF, ROOF + height)
+    plan = [pc(t, feet[t] + .3, 0)[:2] for t in ts] + [pc(t, screen, 0)[:2] for t in reversed(ts)]
+    return Polygon(plan).buffer(.1)
+
+
+def lip_steps(clay):
+    """A short flight from the roof garden up to the oculus lip in the gap between the shells, with a glass guard at the oculus."""
+    cx, cy = OCULUS_C
+    ts = np.linspace(SHELL_A[-1][0] + .2, SHELL_B[0][0] + 360 - .2, 7)
+    for k in range(1, 6):
+        z = LIP_Z - .3 * k
+        inner = [(cx + (lip_r(t) + .4 * (k - 1)) * math.cos(math.radians(t)), cy + (lip_r(t) + .4 * (k - 1)) * math.sin(math.radians(t))) for t in ts]
+        outer = [(cx + (lip_r(t) + .4 * k) * math.cos(math.radians(t)), cy + (lip_r(t) + .4 * k) * math.sin(math.radians(t))) for t in ts]
+        clay.prism('path', inner + outer[::-1], ROOF, z)
+    edge = [(cx + OCULUS_AB[0] * math.cos(math.radians(t)), cy + OCULUS_AB[1] * math.sin(math.radians(t))) for t in ts]
+    for p, q in pairwise(edge):
+        n = plan_normal(p, q)
+        wall(clay, 'guard', p, q, LIP_Z + .02, LIP_Z + 1.1, n)
+        bar(clay, 'mullion', p, q, .06, LIP_Z + 1.1, LIP_Z + 1.15)
 
 
 def build():
     clay = Clay()
     podium(clay)
     interiors(clay)
-    shells = [shell(clay, SHELL_A, inner=west_inner, start=.3), shell(clay, SHELL_B)]
+    shells = [shell(clay, SHELL_A, inner=west_inner, start=.3, portal=PORTAL), shell(clay, SHELL_B)]
     under_ring(clay)
     oculus_and_hall(clay)
+    lip_steps(clay)
     stair = shell_entrance(clay)
     roof_garden(clay, shells, stair)
     return clay
 
 
 # ---- records -----------------------------------------------------------------------------------------
-def door_point(angle):
-    """Where a podium polar angle meets the ground-floor glazing (authoring frame)."""
-    glass = podium_ring(GLASS_SET)
-    return min(glass, key=lambda p: abs(((polar_deg(*p) - angle + 180) % 360) - 180))
-
-
 def entrances():
-    """Every door, from the model's own numbers. The foyer floor is FOYER above the 0.02 m apron."""
-    doors = []
-    for kind, d in (('main doors', ENTRANCE), ('east doors', EAST_DOOR)):
-        x, y = door_point(d['angle'])
-        doors.append({'kind': kind, 'centre_xy_m': [round(x, 3), round(y, 3)], 'facing_deg': d['angle'], 'leaves': None,
-                      'clear_width_m': d['width'], 'door_height_m': round(2.7 - FOYER, 2), 'threshold_top_m': FOYER, 'rise_m': round(FOYER - .02, 3)})
-    glass = podium_ring(GLASS_SET)
-    for door in doors:
-        angle = ENTRANCE['angle'] if door['kind'] == 'main doors' else EAST_DOOR['angle']
-        door['leaves'] = sum(1 for p in glass if abs(((polar_deg(*p) - angle + 180) % 360) - 180) <
-                             math.degrees((ENTRANCE if door['kind'] == 'main doors' else EAST_DOOR)['width'] / 2 / math.hypot(*p)))
-    x, y = door_point(sum(LOADING) / 2)
-    doors.append({'kind': 'service door', 'centre_xy_m': [round(x, 3), round(y, 3)], 'facing_deg': sum(LOADING) / 2, 'leaves': 1,
-                  'clear_width_m': 4.8, 'door_height_m': 4.2, 'threshold_top_m': 0.0, 'rise_m': 0.0})
+    """Every door, from the same polar zones that cut the openings. The foyer floor is FOYER above the 0.02 m apron."""
+    zones, angles, doors = door_zones(), band_angles(), []
+    for kind, d, height in (('main doors', ENTRANCE, 2.7), ('east doors', EAST_DOOR, 2.7), ('service door', None, 4.2)):
+        lo, hi = zones[kind]
+        centre = d['angle'] if d else (lo + hi) / 2
+        x, y = polar_point(centre, GLASS_SET)
+        leaves = sum(1 for _, _, m in segments(angles) if in_range(m, lo, hi))
+        sill = 0.0 if kind == 'service door' else FOYER
+        doors.append({'kind': kind, 'centre_xy_m': [round(x, 3), round(y, 3)], 'facing_deg': round(centre, 3), 'leaves': 1 if kind == 'service door' else leaves,
+                      'clear_width_m': d['width'] if d else SERVICE_W, 'door_height_m': round(height - sill, 2),
+                      'threshold_top_m': sill, 'rise_m': round(max(sill - .02, 0.0), 3)})
     return doors
 
 
@@ -676,11 +914,12 @@ def prework(candidate):
             'hidden_assumptions': [('The north and east elevations are seen only obliquely or from above; their ground floor continues '
                                     'the glazing, with an opaque back-of-house and a service door at the north-east (inferred).'),
                                    'The oculus is glazed (clear) so the hall is closed; the images show its interior without glass reflections.',
-                                   ('Roof access is a lift and stair inside the west shell, entered from the roof garden through a '
-                                    'vestibule at its south-west foot (inferred; no access is visible in the images).'),
-                                   ('Interiors are schematic: a foyer with cafe tables, counters, a stair and columns round the hall '
-                                    'drum; upper rooms behind the ribbon window; the auditorium, only as large as the oculus, with 11 '
-                                    'raked tiers (about 340 stalls seats), two balcony rings, a stage and choir terraces.'),
+                                   ('Roof access is a stair inside the west shell, entered from the roof garden through a portal cut '
+                                    'into its south-west foot (inferred; no access is visible in the images).'),
+                                   ('Interiors are schematic: a foyer with cafe tables, counters and columns round the hall drum, '
+                                    'with three doors into it; a stair from the west foyer to a closed upper storey of rooms that runs '
+                                    'right round behind the band; the auditorium, only as large as the oculus, with 11 raked tiers '
+                                    '(about 340 stalls seats), two balcony rings, a stage and choir terraces.'),
                                    ('The pier, the stepped terrace to the west, the water, boats, cars and people belong to the site '
                                     'and are not modelled.')]},
         'roof_contract': {'form': ('two spiral sheets about an oval oculus, rising from its lip to high outer rims, with outer walls '

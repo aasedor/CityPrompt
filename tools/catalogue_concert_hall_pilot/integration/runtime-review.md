@@ -11,7 +11,7 @@ No pass is carried over from any other archetype.
 
 - Kind: building
 - Archetype ID and exact variant ID: `concert_hall_modern` / `concert_timber_acoustic` (variant 2, "Timber Acoustic")
-- Model SHA-256 or procedural recipe ID/revision/hash: `853e3fa868056b1d61d3471ab8561077d42676258d58d2d0dc76156e5a79521c`, candidate `concert-timber-acoustic-clay-v007`, 3144356 bytes. Rebuilt byte for byte by `tools/catalogue_concert_hall_pilot/build.py`
+- Model SHA-256 or procedural recipe ID/revision/hash: `3324f4e6c6eb74d1b717d8eb5c909b2005e86923fbaac932e5475c7eddf8e78d`, candidate `concert-timber-acoustic-clay-v009`, 4919448 bytes. Rebuilt byte for byte by `tools/catalogue_concert_hall_pilot/build.py`
 - Runtime source commit and integration-checklist version: not run. Branch based on `deployment-version`; checklist as at that commit
 - Reviewer, date, project URL, viewport/device/input: none. No project was opened
 - Vacant test site, protected reference, disposable test project: none
@@ -27,7 +27,7 @@ No pass is carried over from any other archetype.
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules: two references locked by hash in `prework-manifest.json`; the variant's street view is the old LEGO preview and is excluded (Gate A open for a person). The oblique and roof views disagree on the oculus position by about 8 m; the roof view governs plan positions. The north and east ground floor, the interiors, the roof entrance and the hall size are inferred. No amenity modules
 - Native park seams and raised/cycle access: full-width closed-loop/bend support, local-origin furniture transforms, measured ramp/landing or track-entry height continuity; separate offline contacts from runtime slope walking: N/A: building only; the model contains no such element
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations: N/A: building only; the model contains no such element
-- Asset review status and separate publication/activation status: Independent architectural-clay review pending. That is asset review only. Publication and activation: not authorized
+- Asset review status and separate publication/activation status: v007 was refused by independent review (four P1; evidence/independent-review-v007.json); v009 answers those findings and its repeat review is pending. That is asset review only. Publication and activation: not authorized
 - Model Library storage check, configured bucket and result (building GLBs): NOT RUN. The GLB is not in the model library
 - Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence: NOT RUN
 - Evidence manifest location and hashes; durable shared location for delivery: `tools/catalogue_concert_hall_pilot/evidence/` and `candidate.json`. Renders and boards exist only in the build session's ignored `artifacts/` directory, which is not durable shared storage; `evidence/phone-oblique.jpg` is the one board kept in Git
@@ -227,7 +227,7 @@ recipes and the preview assembly separately. Record material-aware route ray
 checks on the reimported GLB, full-envelope bounds and static/instance budgets.
 These checks cannot prefill runtime terrain, access or edit/recovery passes.
 
-- Focused test commands/results and reused shared-test evidence: `python3 -m pytest tools/catalogue_concert_hall_pilot` passes (9 tests); these are generator tests, not runtime tests
+- Focused test commands/results and reused shared-test evidence: `python3 -m pytest tools/catalogue_concert_hall_pilot` passes (11 tests); these are generator tests, not runtime tests
 - Type-check/lint or relevant backend/compiler checks for source changes: no application source was changed. `ruff check tools/catalogue_concert_hall_pilot` passes
 - Console/network failures and recovery: not run
 - Original fixture preservation and final disposable-project state: no project was created
@@ -241,7 +241,7 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
 - Open failures, untested advertised features, owner and next bounded action: everything above marked NOT TESTED. Next bounded action: a ruling on Gate A by a person, then a local install with `--local-trial` and the student trial in `docs/BUILDING_CATALOGUE_WORKFLOW.md`, on a prepared level plot of at least 104 m by 80 m
 - Runtime integration decision: NOT REVIEWED
-- Asset visual decision (separate): builder pass. Independent architectural-clay review pending.
+- Asset visual decision (separate): builder pass. v007 was refused by independent review (four P1; evidence/independent-review-v007.json); v009 answers those findings and its repeat review is pending.
 - Publication/activation authorization (separate; cite actual authorization): none given
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot

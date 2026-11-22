@@ -1,6 +1,6 @@
 {
   "entry": {
-    "candidate": "concert-timber-acoustic-clay-v007",
+    "candidate": "concert-timber-acoustic-clay-v009",
     "family": "rlasm-clay-concert-hall-timber-acoustic",
     "archetype_id": "concert_hall_modern",
     "archetype_label": "Concert Hall (Modern)",
@@ -44,7 +44,7 @@
       "The north and east ground floor, the interiors, the roof-garden entrance and the hall size (about 340 stalls seats, only as large as the oculus) are inferred.",
       "The foyer floor is 0.13 m above the apron at every glazed door; no ramp or flush threshold is drawn.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_concert_hall_pilot/integration/runtime-review.md.",
-      "Independent architectural-clay review: pending."
+      "Independent review: v007 was refused with four P1 (evidence/independent-review-v007.json); v009 answers them and its repeat review is pending."
     ],
     "picker": {
       "id": "concert_hall_modern_timber_acoustic",
@@ -57,7 +57,7 @@
       "max_size": 600.0
     }
   },
-  "model_file": "concert-timber-acoustic-clay-v007.glb",
+  "model_file": "concert-timber-acoustic-clay-v009.glb",
   "review_file": "independent-review.json",
   "approval": {
     "authorized_by": "",

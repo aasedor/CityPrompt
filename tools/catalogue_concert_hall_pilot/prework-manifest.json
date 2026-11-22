@@ -1,5 +1,5 @@
 {
-  "candidate": "concert-timber-acoustic-clay-v007",
+  "candidate": "concert-timber-acoustic-clay-v009",
   "method": "RLASM v6.1 clay-first",
   "archetype_id": "concert_hall_modern",
   "variant_id": "concert_timber_acoustic",
@@ -57,8 +57,8 @@
     "hidden_assumptions": [
       "The north and east elevations are seen only obliquely or from above; their ground floor continues the glazing, with an opaque back-of-house and a service door at the north-east (inferred).",
       "The oculus is glazed (clear) so the hall is closed; the images show its interior without glass reflections.",
-      "Roof access is a lift and stair inside the west shell, entered from the roof garden through a vestibule at its south-west foot (inferred; no access is visible in the images).",
-      "Interiors are schematic: a foyer with cafe tables, counters, a stair and columns round the hall drum; upper rooms behind the ribbon window; the auditorium, only as large as the oculus, with 11 raked tiers (about 340 stalls seats), two balcony rings, a stage and choir terraces.",
+      "Roof access is a stair inside the west shell, entered from the roof garden through a portal cut into its south-west foot (inferred; no access is visible in the images).",
+      "Interiors are schematic: a foyer with cafe tables, counters and columns round the hall drum, with three doors into it; a stair from the west foyer to a closed upper storey of rooms that runs right round behind the band; the auditorium, only as large as the oculus, with 11 raked tiers (about 340 stalls seats), two balcony rings, a stage and choir terraces.",
       "The pier, the stepped terrace to the west, the water, boats, cars and people belong to the site and are not modelled."
     ]
   },
@@ -79,6 +79,7 @@
       "mullion": "#3a3532",
       "door": "#1d272d",
       "service": "#45423d",
+      "hall_door": "#5b3a24",
       "floor": "#8a8378",
       "interior": "#b8875a",
       "ceiling": "#d9c4a2",
@@ -96,7 +97,7 @@
       "lip": "#3f342b",
       "hall": "#b0703a",
       "seats": "#8c3a2a",
-      "stage": "#2a2724",
+      "stage": "#4a3626",
       "panel": "#c98a4b",
       "light": "#f6e6c8",
       "glass": "#2b2622",

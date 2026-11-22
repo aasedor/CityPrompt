@@ -1,11 +1,11 @@
 {
-  "candidate": "concert-timber-acoustic-clay-v007",
+  "candidate": "concert-timber-acoustic-clay-v009",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/concert-hall/v007 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "853e3fa868056b1d61d3471ab8561077d42676258d58d2d0dc76156e5a79521c",
-  "model_bytes": 3144356,
+  "external_directory": "artifacts/concert-hall/v009 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "3324f4e6c6eb74d1b717d8eb5c909b2005e86923fbaac932e5475c7eddf8e78d",
+  "model_bytes": 4919448,
   "delivered_bounds_gltf_m": [
     [
       -50.0,
@@ -25,21 +25,21 @@
   },
   "storeys": 2,
   "runtime": {
-    "path": "concert-timber-acoustic-clay-v007.glb",
-    "bytes": 3144356,
-    "sha256": "853e3fa868056b1d61d3471ab8561077d42676258d58d2d0dc76156e5a79521c",
-    "meshes": 33,
-    "materials": 33,
+    "path": "concert-timber-acoustic-clay-v009.glb",
+    "bytes": 4919448,
+    "sha256": "3324f4e6c6eb74d1b717d8eb5c909b2005e86923fbaac932e5475c7eddf8e78d",
+    "meshes": 34,
+    "materials": 34,
     "textures": 0,
     "images": 0,
-    "triangles": 45896
+    "triangles": 69141
   },
   "entrances": {
     "main doors": 1,
     "east doors": 1,
     "service door": 1
   },
-  "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them. The roof garden is entered through a vestibule in the foot of the west shell.",
+  "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them from the same zones that cut the openings. The roof garden is entered through a portal in the foot of the west shell.",
   "auditorium": {
     "tiers": 11,
     "balcony_rings": 2,
@@ -52,7 +52,19 @@
     "decision": "builder_pass"
   },
   "independent_review": {
-    "status": "pending"
+    "status": "pending repeat review",
+    "previous": [
+      {
+        "candidate": "concert-timber-acoustic-clay-v007",
+        "decision": "architectural_clay_refused",
+        "counts": {
+          "P0": 0,
+          "P1": 4,
+          "P2": 7
+        },
+        "file": "evidence/independent-review-v007.json"
+      }
+    ]
   },
   "gate_a": "open: variant_2.png is the LEGO preview; a person must rule that the oblique and roof views govern"
 }

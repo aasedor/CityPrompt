@@ -1,6 +1,6 @@
 {
   "status": "PASS_DELIVERY_CHECKS",
-  "candidate": "concert-timber-acoustic-clay-v007",
+  "candidate": "concert-timber-acoustic-clay-v009",
   "checks": {
     "source oblique": true,
     "source top": true,
@@ -80,8 +80,8 @@
     "phone-construction.png": true,
     "phone-programme.png": true
   },
-  "model_sha256": "853e3fa868056b1d61d3471ab8561077d42676258d58d2d0dc76156e5a79521c",
-  "model_bytes": 3144356,
+  "model_sha256": "3324f4e6c6eb74d1b717d8eb5c909b2005e86923fbaac932e5475c7eddf8e78d",
+  "model_bytes": 4919448,
   "delivered_bounds_gltf_m": [
     [
       -50.0,
@@ -94,10 +94,10 @@
       38.2
     ]
   ],
-  "triangles": 45896,
+  "triangles": 69141,
   "script_sha256": {
     "clay_kit.py": "6237cadfb42ecbabc4c849a5305416e8a7657d71387ce2c7baa18bc7b1b71dcd",
-    "build.py": "874aa09a70c27eb9feb31f1be1dc68fecd14a72bde5a8d5fb01e586f81006db0",
+    "build.py": "12bf9b9480c5beb3153424d147f468998b95c6f043dff7a05d6006c1e6f82872",
     "cameras.json": "d19771682be2e6e26b7fa1fd74759fa04d270ca97e41ec0de310545a4a836d4f",
     "review.html": "f2af47dded2aa9d6ffaea6994bf603e3fe193f1216248914177ad6ea9c03f98f",
     "render.cjs": "3a2d156ce438ee6b630db149d6c9163415c345a7e905210a77d5ec8752578eb9"
