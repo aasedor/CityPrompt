@@ -1,0 +1,86 @@
+{
+  "entry": {
+    "candidate": "silo-cluster-clay-v004",
+    "family": "rlasm-clay-silo-cluster",
+    "archetype_id": "machine_aesthetic_heavy_industrial",
+    "archetype_label": "Machine Aesthetic Heavy Industrial",
+    "variant_id": "heavy_silo_cluster",
+    "variant_label": "Silo Cluster",
+    "runtime_enabled": true,
+    "native_floors": 1,
+    "design_dimensions_m": {
+      "width": 94.0,
+      "depth": 38.8,
+      "height": 51.1
+    },
+    "references": [
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/machine_aesthetic_heavy_industrial/variant_2_angle_60.jpg",
+        "bytes": 901014,
+        "sha256": "af657365f805692cad8c558e315ed7e2304db759d581452995cb2eea1f750ccc"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/machine_aesthetic_heavy_industrial/variant_2_angle_90.jpg",
+        "bytes": 908094,
+        "sha256": "98e2d4b3b35e7d9b0998ceff1efec6681c90bc01e41922145a3af5d4ee0ba9a5"
+      }
+    ],
+    "excluded_references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/machine_aesthetic_heavy_industrial/variant_2.png",
+        "bytes": 1605765,
+        "sha256": "5bb665a685eb026f1462d3c6159fd8b1584b6ce9eeace03cb91311581d63580e",
+        "reason": "grey render of the old LEGO model"
+      }
+    ],
+    "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_silo_cluster_pilot.",
+    "limitations": [
+      "Fixed native assembly, 94.0 m by 38.8 m including the yard and bay pads; sixteen silos 9.2 m across, 29 m to their cap tips; the head house ridge at 49.5 m. No resizing and no repetition.",
+      "Gate A is open: the variant's street view (variant_2.png) is a grey render of the old LEGO model. The model follows the oblique and roof views; a person must accept that or supply a street view.",
+      "Heights are proportioned in the oblique; a camera fit was too loose to govern. The roof view leans tall parts north, so plan positions come from the caps and the feet of the shaft and sheds.",
+      "The catalogue suggests an 80 by 50 m footprint; the images show a long cluster about 86 by 25 m, and the images govern.",
+      "The back row's north side, the ends, the shaft's back and all interiors are inferred; the walkways' stairs are not modelled.",
+      "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_silo_cluster_pilot/integration/runtime-review.md.",
+      "Independent architectural-clay review: pending."
+    ],
+    "picker": {
+      "id": "machine_aesthetic_heavy_industrial_silo_cluster",
+      "description": "Two rows of concrete grain silos with an elevator tower, a conveyor gallery over the caps and truck bays.",
+      "group_id": "industry",
+      "reshape_mode": "fixed_native",
+      "reshape_description": "Move and rotate the complete structure. It keeps its authored size.",
+      "width": 100.0,
+      "depth": 45.0,
+      "max_size": 600.0
+    }
+  },
+  "model_file": "silo-cluster-clay-v004.glb",
+  "review_file": "independent-review.json",
+  "approval": {
+    "authorized_by": "",
+    "quote": "",
+    "date": "",
+    "model_sha256": ""
+  },
+  "trial": {
+    "model_sha256": "",
+    "project_url": "",
+    "tested_by": "",
+    "tested_at": "",
+    "evidence": [],
+    "checks": {
+      "catalogue_card": false,
+      "exact_variant": false,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": false,
+      "save_reload": false,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    }
+  },
+  "human_decisions": []
+}

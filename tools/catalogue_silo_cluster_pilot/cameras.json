@@ -1,0 +1,373 @@
+{
+ "frame": "authoring: x along the rows (east), y north, z up, metres; the loading front faces -y; the cluster is centred on the line between the rows",
+ "fitted": "match_oblique is a least-squares pinhole fit of the built model to twelve points of the oblique (six cap tips, the head house corner at eave and foot, both gallery ends and two silo feet; 30 px RMS, most of it the reference's uneven silo spacing in the left group); match_top is orthographic at the roof view scale, 0.0756 m/px, centred on the caps",
+ "views": {
+  "front": {
+   "pos": [
+    0,
+    -260,
+    22
+   ],
+   "target": [
+    0,
+    0,
+    22
+   ],
+   "fov": 25,
+   "shadow": 60,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "front_corner": {
+   "pos": [
+    -75,
+    -90,
+    18
+   ],
+   "target": [
+    0,
+    -4,
+    22
+   ],
+   "fov": 45,
+   "shadow": 60,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "aerial": {
+   "pos": [
+    -110,
+    -120,
+    95
+   ],
+   "target": [
+    0,
+    -4,
+    15
+   ],
+   "fov": 38,
+   "shadow": 60,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "top": {
+   "pos": [
+    0,
+    -6,
+    200
+   ],
+   "target": [
+    0,
+    -6,
+    0
+   ],
+   "up": [
+    0,
+    1,
+    0
+   ],
+   "ortho": 52,
+   "shadow": 60,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "left_side": {
+   "pos": [
+    -250,
+    -6,
+    24
+   ],
+   "target": [
+    0,
+    -6,
+    24
+   ],
+   "fov": 18,
+   "sun": [
+    -0.6,
+    -0.5,
+    0.55
+   ],
+   "shadow": 60,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "right_side": {
+   "pos": [
+    250,
+    -6,
+    24
+   ],
+   "target": [
+    0,
+    -6,
+    24
+   ],
+   "fov": 18,
+   "sun": [
+    0.6,
+    -0.5,
+    0.55
+   ],
+   "shadow": 60,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "rear": {
+   "pos": [
+    0,
+    250,
+    24
+   ],
+   "target": [
+    0,
+    0,
+    24
+   ],
+   "fov": 25,
+   "sun": [
+    0.3,
+    0.7,
+    0.5
+   ],
+   "shadow": 60,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "rear_side": {
+   "pos": [
+    90,
+    100,
+    80
+   ],
+   "target": [
+    0,
+    -4,
+    15
+   ],
+   "fov": 40,
+   "sun": [
+    0.5,
+    0.6,
+    0.55
+   ],
+   "shadow": 60,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "facade_close": {
+   "pos": [
+    -30,
+    -45,
+    10
+   ],
+   "target": [
+    -25,
+    -10,
+    13
+   ],
+   "fov": 50,
+   "shadow": 40,
+   "centre": [
+    -25,
+    -10,
+    13
+   ]
+  },
+  "architecture_close": {
+   "pos": [
+    -25,
+    -45,
+    45
+   ],
+   "target": [
+    0,
+    -8,
+    40
+   ],
+   "fov": 45,
+   "shadow": 40,
+   "centre": [
+    0,
+    -6,
+    40
+   ]
+  },
+  "glass_close": {
+   "pos": [
+    4,
+    -22,
+    16
+   ],
+   "target": [
+    0,
+    -11.7,
+    16
+   ],
+   "fov": 45,
+   "shadow": 30,
+   "centre": [
+    0,
+    -12,
+    16
+   ]
+  },
+  "caps_close": {
+   "pos": [
+    -30,
+    -20,
+    40
+   ],
+   "target": [
+    -22,
+    0,
+    30
+   ],
+   "fov": 55,
+   "shadow": 40,
+   "centre": [
+    -22,
+    0,
+    30
+   ]
+  },
+  "gallery_close": {
+   "pos": [
+    -60,
+    -15,
+    38
+   ],
+   "target": [
+    -43,
+    0,
+    33
+   ],
+   "fov": 45,
+   "shadow": 40,
+   "centre": [
+    -43,
+    0,
+    33
+   ]
+  },
+  "bays_contact": {
+   "pos": [
+    -13.5,
+    -34,
+    4
+   ],
+   "target": [
+    -13.5,
+    -15,
+    3
+   ],
+   "fov": 55,
+   "shadow": 30,
+   "centre": [
+    -13.5,
+    -15,
+    3
+   ]
+  },
+  "base_contact": {
+   "pos": [
+    -48,
+    -22,
+    4
+   ],
+   "target": [
+    -37,
+    -9,
+    3
+   ],
+   "fov": 50,
+   "shadow": 30,
+   "centre": [
+    -37,
+    -9,
+    3
+   ]
+  },
+  "match_oblique": {
+   "pos": [
+    -51.32,
+    -97.87,
+    75.24
+   ],
+   "target": [
+    -12.88,
+    -18.0,
+    28.94
+   ],
+   "fov": 31.38,
+   "w": 1195,
+   "h": 896,
+   "sun": [
+    -0.7,
+    -0.3,
+    0.45
+   ],
+   "shadow": 70,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  },
+  "match_top": {
+   "pos": [
+    -1.13,
+    0.53,
+    200
+   ],
+   "target": [
+    -1.13,
+    0.53,
+    0
+   ],
+   "up": [
+    0,
+    1,
+    0
+   ],
+   "ortho": 45.2,
+   "w": 1195,
+   "h": 896,
+   "sun": [
+    -0.7,
+    -0.3,
+    0.45
+   ],
+   "shadow": 70,
+   "centre": [
+    0,
+    -6,
+    25
+   ]
+  }
+ }
+}

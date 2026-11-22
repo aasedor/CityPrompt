@@ -1,0 +1,140 @@
+{
+  "candidate": "silo-cluster-clay-v004",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "machine_aesthetic_heavy_industrial",
+  "variant_id": "heavy_silo_cluster",
+  "title": "Silo Cluster",
+  "sources": [
+    {
+      "role": "oblique",
+      "repo_path": "frontend/public/archetypes/buildings/machine_aesthetic_heavy_industrial/variant_2_angle_60.jpg",
+      "bytes": 901014,
+      "sha256": "af657365f805692cad8c558e315ed7e2304db759d581452995cb2eea1f750ccc"
+    },
+    {
+      "role": "top",
+      "repo_path": "frontend/public/archetypes/buildings/machine_aesthetic_heavy_industrial/variant_2_angle_90.jpg",
+      "bytes": 908094,
+      "sha256": "98e2d4b3b35e7d9b0998ceff1efec6681c90bc01e41922145a3af5d4ee0ba9a5"
+    }
+  ],
+  "excluded_sources": [
+    {
+      "role": "front",
+      "repo_path": "frontend/public/archetypes/buildings/machine_aesthetic_heavy_industrial/variant_2.png",
+      "bytes": 1605765,
+      "sha256": "5bb665a685eb026f1462d3c6159fd8b1584b6ce9eeace03cb91311581d63580e",
+      "reason": "grey render of the old LEGO model"
+    }
+  ],
+  "gate_a": {
+    "front_oblique_top_coherent": false,
+    "note": "The variant has no usable street view: variant_2.png is a grey render of the old LEGO model. The oblique and roof views agree and are the authority. A person must rule on this before activation, as for the concert hall and the ski-slope plant."
+  },
+  "measurement_contract": {
+    "scale_basis": "No image carries a scale. The back row's eight caps span 1010 px in the roof view; with the front row (1095 px) parted round the shaft, that is set to 76.4 m, matching the catalogue's suggested 80 m length, so the silos are 9.2 m across at a 9.6 m pitch (0.0756 m/px). Heights are proportioned in the oblique: the walls about 2.8 silo diameters (26 m) with 3 m caps, the gallery just over the cap tips, the shaft to 36 m and the head house to a 47 m eave. A pinhole fit to nine points gave 29 m walls and a 47 m eave at 32 px RMS, too loose to govern.",
+    "source_measurements": {
+      "oblique": [
+        "High view from the south-west toward rail yards and sheds.",
+        "Two rows of eight poured-concrete silos with pour lines, ribbed conical caps with ring railings and discharge spouts at their feet.",
+        "A concrete elevator shaft with a column of small windows stands proud of the front row between its two halves; a corrugated head house with a gable roof, a louvre and two ridge ventilators sits on it.",
+        "A corrugated conveyor gallery runs the length of the cluster over the caps on steel frames.",
+        "Walkways along the front row at about mid-height; two loading sheds, each as wide as two silos, with two truck bays each either side of the foot of the shaft, and concrete pads in front."
+      ],
+      "top": [
+        "View from above and a little south of overhead, north up.",
+        "Back row of eight caps 1010 px long; front row 1095 px, parted round the shaft.",
+        "Gallery 1110 px long and 60 px wide along the middle of the cluster; head house 124 px wide, its ridge running north-south, with two ventilators.",
+        "Sheds and pads at the foot of the shaft; tall parts lean north by about 2 px per metre of height."
+      ]
+    },
+    "source_conflicts": [
+      "variant_2.png, the street view, is a grey render of the old LEGO model, not a picture of this building. It is excluded; the oblique and roof views govern. Needs a ruling by a person.",
+      "The roof view is not overhead: tall parts lean north. Plan positions come from features at one height (the caps) and from the feet of the shaft and sheds.",
+      "The catalogue suggests an 80 by 50 m footprint; the images show a long cluster about 86 by 25 m with its yard; the images govern."
+    ],
+    "hidden_assumptions": [
+      "The back row's north side, the ends and the shaft's back are not seen; the back row carries discharge spouts like the front (inferred).",
+      "The walkways are reached from the shaft through doors at their level; their stairs are not modelled.",
+      "The bays are shallow lit-less interiors 5.4 m deep; the plant inside the head house is not modelled.",
+      "Rail tracks, wagons, roads, trucks and neighbouring sheds belong to the site and are not modelled."
+    ]
+  },
+  "roof_contract": {
+    "form": "ribbed conical silo caps with ring railings, a gabled gallery and head house, shed roofs over the bays",
+    "weathering": "every roof closes its volume; the gallery and head house stand on steel frames and the shaft"
+  },
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false,
+    "roles": {
+      "apron": "#a6a39b",
+      "pad": "#bdb9b0",
+      "concrete": "#bab5ab",
+      "pour": "#a29d93",
+      "cap": "#9fa2a1",
+      "rib": "#6c7072",
+      "steel": "#c3c6c7",
+      "corrugation": "#a3a8ab",
+      "roof": "#8f9498",
+      "frame": "#5c6165",
+      "spout": "#7a7f84",
+      "door": "#4b5056",
+      "interior": "#3e3c38",
+      "louvre": "#4f5458",
+      "glass": "#2a2a28"
+    }
+  },
+  "identity_contract": [
+    "two rows of eight concrete silos with ribbed conical caps",
+    "a concrete elevator shaft proud of the front row",
+    "a corrugated head house with ventilators",
+    "a conveyor gallery over the caps on steel frames",
+    "loading sheds with truck bays at the foot of the shaft"
+  ],
+  "programme_contract": {
+    "silos": 16,
+    "truck_bays": 4,
+    "walkways": 2
+  },
+  "contact_contract": {
+    "base_datum_m": 0.0,
+    "ground": "a concrete yard round the cluster with pads in front of the bays; nothing below grade"
+  },
+  "camera_roster": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "caps_close",
+    "gallery_close",
+    "bays_contact",
+    "base_contact",
+    "match_oblique",
+    "match_top"
+  ],
+  "mandatory_review_views": [
+    "front.png",
+    "front_corner.png",
+    "aerial.png",
+    "top.png",
+    "left_side.png",
+    "right_side.png",
+    "rear.png",
+    "rear_side.png",
+    "facade_close.png",
+    "architecture_close.png",
+    "glass_close.png",
+    "caps_close.png",
+    "gallery_close.png",
+    "bays_contact.png",
+    "base_contact.png"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "candidate": "silo-cluster-clay-v004",
+  "model_sha256": "00e97701487e9da1f7c38372b9510ee661e8a38e03f54d0bbae1ab5c764845cf",
+  "reviewer": "builder (the agent session that wrote the generator)",
+  "builder_visual_review": "pass",
+  "independent_approval": "pending",
+  "views_inspected": {
+    "v004": [
+      "boards/phone-construction.png",
+      "boards/phone-oblique.png",
+      "boards/phone-programme.png",
+      "boards/phone-roof.png",
+      "renders/aerial.png",
+      "renders/architecture_close.png",
+      "renders/base_contact.png",
+      "renders/bays_contact.png",
+      "renders/caps_close.png",
+      "renders/facade_close.png",
+      "renders/front.png",
+      "renders/front_corner.png",
+      "renders/gallery_close.png",
+      "renders/glass_close.png",
+      "renders/left_side.png",
+      "renders/match_oblique.png",
+      "renders/match_top.png",
+      "renders/rear.png",
+      "renders/rear_side.png",
+      "renders/right_side.png",
+      "renders/top.png"
+    ]
+  },
+  "iterations": [
+    "v001: plan from the roof view (back row 1010 px for 76.4 m, 0.0756 m/px); the front row parted round the shaft; heights proportioned in the oblique (26 m walls, 3 m caps, gallery 31 to 35 m, shaft to 36 m, head house eave 47 m).",
+    "v002/v003: the oblique camera refitted to the built model (twelve points, 30 px RMS); the loading sheds widened to two silos each, with their bays under those silos, as the oblique shows.",
+    "v004: the walkways lowered to 10 m, as the oblique shows."
+  ],
+  "findings": [
+    "Massing: two rows of eight concrete silos 9.2 m across, the front row parted round a concrete shaft that stands 2.3 m proud of it, a corrugated head house over both rows, a gallery the length of the cluster; the oblique through the fitted camera and the roof view through the orthographic camera agree with this.",
+    "Silos: pour lines every 2.4 m, conical caps with sixteen ribs, an apex hatch and a ring railing on posts; discharge spouts at the outer silos' feet.",
+    "Shaft: a column of six windows in recessed openings with glass and a dark room behind, a door at grade, and a door onto each walkway from its side faces.",
+    "Head house: gable ends and long sides in corrugated steel, a closed underside, a roof with overhangs, a louvre in the front gable, two ridge ventilators, and two posts carrying its north overhang down to the back row caps.",
+    "Gallery: corrugated sides and gable ends, a closed underside, a ridged roof, and steel frames down to the caps at every column with a cross beam and brace.",
+    "Sheds and bays: two sheds, each two silos wide, with two cut bays 3.8 m by 4.6 m opening into 5.4 m deep dark interiors, sloping roofs that stop at the shaft, and concrete pads in front.",
+    "Walkways: decks at 10 m along the front row with a guard rail and mid rail, posts every 1.6 m and brackets back to the silos, ending at doors in the shaft."
+  ],
+  "open_notes": [
+    "Gate A: variant_2.png (the street view) is a grey render of the old LEGO model. A person must rule that the oblique and roof views govern, or supply a street view.",
+    "Heights are proportioned in the oblique; a nine-point camera fit was too loose to govern (32 px RMS).",
+    "The back row's north side, the ends, the shaft's back and all interiors are inferred; the walkways' stairs are not modelled."
+  ]
+}

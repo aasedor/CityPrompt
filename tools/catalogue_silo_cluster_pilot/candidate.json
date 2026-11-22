@@ -1,0 +1,58 @@
+{
+  "candidate": "silo-cluster-clay-v004",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local pilot only",
+  "canonical_promotion_approved": false,
+  "external_directory": "artifacts/silo/v004 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "00e97701487e9da1f7c38372b9510ee661e8a38e03f54d0bbae1ab5c764845cf",
+  "model_bytes": 1253560,
+  "delivered_bounds_gltf_m": [
+    [
+      -47.0,
+      0.0,
+      -13.4
+    ],
+    [
+      47.0,
+      51.1,
+      25.4
+    ]
+  ],
+  "native_dimensions_m": {
+    "width": 94.0,
+    "depth": 38.8,
+    "height": 51.1
+  },
+  "heights_m": {
+    "silo_wall": 26.0,
+    "cap_tip": 29.0,
+    "gallery_ridge": 35.0,
+    "shaft": 36.0,
+    "head_house_eave": 47.0,
+    "head_house_ridge": 49.5
+  },
+  "silos": 16,
+  "runtime": {
+    "path": "silo-cluster-clay-v004.glb",
+    "bytes": 1253560,
+    "sha256": "00e97701487e9da1f7c38372b9510ee661e8a38e03f54d0bbae1ab5c764845cf",
+    "meshes": 15,
+    "materials": 15,
+    "textures": 0,
+    "images": 0,
+    "triangles": 26395
+  },
+  "entrances": {
+    "truck bay": 4,
+    "shaft door": 1
+  },
+  "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them.",
+  "builder_review": {
+    "file": "evidence/builder-pixel-review.json",
+    "decision": "builder_pass"
+  },
+  "independent_review": {
+    "status": "pending"
+  },
+  "gate_a": "open: variant_2.png is a grey render of the old LEGO model; a person must rule that the oblique and roof views govern"
+}
