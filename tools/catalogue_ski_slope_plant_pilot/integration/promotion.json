@@ -44,7 +44,7 @@
       "The catalogue suggests a 160 by 70 m footprint; the images show wings that make the whole 103 m wide, and the images govern.",
       "The west and north faces, the wings' southern end and all interiors are inferred. The plant's process equipment is not modelled.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_ski_slope_plant_pilot/integration/runtime-review.md.",
-      "Independent review: v007 was refused with four P1 (evidence/independent-review-v007.json); v009 answers them and its repeat review is pending."
+      "Independent review: v007 was refused with four P1 (evidence/independent-review-v007.json). v009 passed on 2026-11-22 with zero P0, zero P1 and five P2 (evidence/independent-review-v009.json). Open P2: the stack does not taper and the flue walls cross inside each other's openings; no festoon lights; a 0.2 m see-through slot in the upper terrace between the plant enclosure and the pavilion; holds 3 cm off the panel and flight guards in the stair sides' plane; the plain band under the parapet is wider than in the reference."
     ],
     "picker": {
       "id": "waste_to_energy_plant_ski_slope",

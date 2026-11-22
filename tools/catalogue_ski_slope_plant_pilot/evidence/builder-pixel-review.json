@@ -3,7 +3,7 @@
   "model_sha256": "e3aa7cefa97445b36ab7da2d8b36855f263c15330ec4c203264ee6351b208f11",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
-  "independent_approval": "pending repeat review; v007 was refused with four P1 (evidence/independent-review-v007.json)",
+  "independent_approval": "architectural_clay_pass for v009 (evidence/independent-review-v009.json), after v007 was refused with four P1; not keeper, runtime or publication approval",
   "views_inspected": {
     "v009": [
       "boards/phone-construction.png",

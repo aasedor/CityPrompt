@@ -51,7 +51,23 @@
     "decision": "builder_pass"
   },
   "independent_review": {
-    "status": "pending repeat review",
+    "status": "pass",
+    "decision": "architectural_clay_pass",
+    "file": "evidence/independent-review-v009.json",
+    "sha256": "cf6821a84e3d7bcecf218a101a9ed7673c0b54ec0800461e3b9e3b38e1548aa6",
+    "reviewed_utc": "2026-11-22T16:07:23Z",
+    "counts": {
+      "P0": 0,
+      "P1": 0,
+      "P2": 5
+    },
+    "open_p2": [
+      "N1: The stack has no taper, and the twin flue walls cross inside each other's openings",
+      "N2: Summit festoon lighting is still missing",
+      "N3: A 0.2 m see-through slot in the upper terrace between the plant enclosure and the pavilion",
+      "N4: Small contact and coplanarity details",
+      "N5: The blank band under the parapet is wider than in the reference"
+    ],
     "previous": [
       {
         "candidate": "wte-ski-slope-clay-v007",
@@ -63,7 +79,8 @@
         },
         "file": "evidence/independent-review-v007.json"
       }
-    ]
+    ],
+    "note": "Asset review only. No keeper, runtime or publication approval."
   },
   "gate_a": "open: variant_0.png is a grey render of the old LEGO model; a person must rule that the oblique and roof views govern"
 }

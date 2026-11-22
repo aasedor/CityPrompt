@@ -96,7 +96,14 @@ Git LFS files: `git lfs pull --include="frontend/public/archetypes/buildings/was
 ## Checkpoints
 
 - Builder review: pass (`evidence/builder-pixel-review.json`).
-- Independent architectural-clay review: see `candidate.json`.
+- Independent architectural-clay review: v007 was refused with four P1 findings
+  (`evidence/independent-review-v007.json`). v009 passed on 2026-11-22 with zero P0, zero P1
+  and five P2 (`evidence/independent-review-v009.json`):
+  - the stack does not taper, and the flue walls cross inside each other's openings;
+  - no festoon lights over the upper terrace;
+  - a 0.2 m see-through slot in the upper terrace between the plant enclosure and the pavilion;
+  - the holds stand 3 cm off the panel, and the flight guards share the stair sides' plane;
+  - the plain band under the parapet is wider than in the reference.
 - Gate A: open for a person (the street view is a LEGO render).
 - Runtime integration: NOT TESTED. Publication and activation: not authorized. Only a
   person can activate the model.
