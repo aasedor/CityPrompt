@@ -49,7 +49,7 @@
     "picker": {
       "id": "waste_to_energy_plant_ski_slope",
       "description": "Waste-to-energy plant in aluminium brick with a green ski slope over its roof, a climbing wall and a twin-flue stack.",
-      "group_id": "civic",
+      "group_id": "infrastructure",
       "reshape_mode": "fixed_native",
       "reshape_description": "Move and rotate the complete building. It keeps its authored size.",
       "width": 190.0,
