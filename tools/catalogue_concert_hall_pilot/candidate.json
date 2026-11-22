@@ -52,7 +52,21 @@
     "decision": "builder_pass"
   },
   "independent_review": {
-    "status": "pending repeat review",
+    "status": "pass",
+    "decision": "architectural_clay_pass",
+    "file": "evidence/independent-review-v009.json",
+    "sha256": "335716fd150afa4475b480aaae6e06ada0fffd3e1e677d08850adcad9a249dd6",
+    "reviewed_utc": "2026-11-22T05:26:55Z",
+    "counts": {
+      "P0": 0,
+      "P1": 0,
+      "P2": 3
+    },
+    "open_p2": [
+      "N1: Five band fins above the north-east service door stand 8-18 cm off the cladding",
+      "N2: Roof-entrance lobby stair is a dead-end stub",
+      "N3: Minor coplanar faces at new details"
+    ],
     "previous": [
       {
         "candidate": "concert-timber-acoustic-clay-v007",
@@ -64,7 +78,8 @@
         },
         "file": "evidence/independent-review-v007.json"
       }
-    ]
+    ],
+    "note": "Asset review only. No keeper, runtime or publication approval."
   },
   "gate_a": "open: variant_2.png is the LEGO preview; a person must rule that the oblique and roof views govern"
 }

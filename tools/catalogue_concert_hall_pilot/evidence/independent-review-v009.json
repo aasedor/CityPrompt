@@ -1,0 +1,186 @@
+{
+ "schema": "rlasm-independent-architectural-clay-review-v1",
+ "candidate": "concert-timber-acoustic-clay-v009",
+ "archetype_id": "concert_hall_modern",
+ "variant_id": "concert_timber_acoustic",
+ "variant_index": 2,
+ "model_path": "artifacts/concert-hall/v009/concert-timber-acoustic-clay-v009.glb",
+ "model_sha256": "3324f4e6c6eb74d1b717d8eb5c909b2005e86923fbaac932e5475c7eddf8e78d",
+ "reviewer": "Independent AI reviewer with no builder context. Not a human. Did not open: tools/catalogue_concert_hall_pilot/build.py, verify.py, boards.py, render.cjs or cameras.json; any test file; README.md; any evidence/ or integration/ folder; artifacts/concert-hall/*/build-report.json, prework-manifest.json, delivery-verification.json or builder-pixel-review.json. Read only the neutral loader tools/catalogue_concert_hall_pilot/review.html, confirmed unchanged since the v007 review.",
+ "reviewed_utc": "2026-11-22T05:26:55Z",
+ "method": "RLASM v6.1",
+ "scope": "Repeat holistic architectural-clay review (Gate G) of the exact v009 GLB against the locked oblique (variant_2_angle_60.jpg) and roof (variant_2_angle_90.jpg) references, the builder's 17 renders and 4 phone boards, and 57 reviewer renders of the exact GLB from the repository review loader. These repeat 34 v007 views (the old vestibule and stair views were replaced) and add 23 new views of the portal, lobby, stair well, upper storey, hall doors, lip steps, service door and north-east fins. One further view was discarded because its camera fell inside the closed west shell. Direct GLB checks covered materials and texture count, glazing behind every door leaf, well openings, the roof-edge section, coplanar overlaps, detached parts, and exact fin-to-cladding distances. Not covered: runtime placement, textured keeper approval, publication.",
+ "previous_reviews": [
+  "artifacts/concert-hall/v007/independent-review.json"
+ ],
+ "holistic_review_performed": true,
+ "decision": "architectural_clay_pass",
+ "architectural_clay_pass": true,
+ "keeper_approval": false,
+ "runtime_approval": false,
+ "publication_approval": false,
+ "counts": {
+  "P0": 0,
+  "P1": 0,
+  "P2": 3
+ },
+ "previous_findings_retest": [
+  {
+   "id": "F1",
+   "v007_severity": "P1",
+   "status": "resolved",
+   "evidence": "Fins continue above and below the ribbon window, and vertical slats cross it; the west band now carries the podium grammar (reviewer r05_west_eye, c04c_ribbon_mid, c04d_ribbon_N_tele, c04e_ribbon_S_tele; builder left_side.png)."
+  },
+  {
+   "id": "F2",
+   "v007_severity": "P1",
+   "status": "resolved",
+   "evidence": "A closed upper storey (slab 6.4 m, ceiling 10.1 m, inner wall and cross walls) runs behind the band. The ribbon has jambs at both ends, and the south-west corner no longer shows sky or ground through the building (c14_sw_slot_tele, r01_south_eye, c15_ribbon_inside_from_level, c18e_upper_storey)."
+  },
+  {
+   "id": "F3",
+   "v007_severity": "P1",
+   "status": "resolved",
+   "evidence": "Geometry check: no CLAY_GLASS lies behind any door leaf at z 1.4 m at either entrance; glass remains only above the head. Leaves are 1.2 m with stiles at 1.2 m centres, a head at 2.70-2.85 m and a transom at about 3.4 m, and no full-height mullion crosses a leaf (c05_main_entrance, c05b_entrance_square, c13_east_doors). The service door sits in a framed reveal (c23_ne_service_close). The roof entrance is now a portal cut into the west shell foot, with jambs, a head, a glazed screen and transom, and a lobby behind (c03_portal_front, c03b_portal_side_south, c03d_portal_close, c03e_portal_north, c20_portal_above)."
+  },
+  {
+   "id": "F4",
+   "v007_severity": "P1",
+   "status": "resolved",
+   "evidence": "The stair is a solid flight with a stringer face and sloping underside, and glass balustrades. It rises through a well cut in both the 5.9 m ceiling and the 6.4 m slab (ray tests show both open over y -3.9..0.6), with about 2.5 m headroom at the well edge. It lands in the closed upper storey, where a glass guard closes three sides of the well (c18_stair_foyer, c18b_stair_west_outside, c18c_stair_well_below, c18d_stair_well_above, c18e_upper_storey)."
+  },
+  {
+   "id": "F5",
+   "v007_severity": "P2",
+   "status": "resolved",
+   "evidence": "The shed-like vestibule box has been replaced by the portal in the shell foot; nothing clips the shell."
+  },
+  {
+   "id": "F6",
+   "v007_severity": "P2",
+   "status": "addressed",
+   "evidence": "Steps and a guarded landing now take the path up to the oculus lip in the gap, so the terminus is a viewing edge (c22_lip_steps, c22b_lip_steps_top, c07b_lipgap_above). The front shell feet remain 2-3 m high, following the roof view; accepted."
+  },
+  {
+   "id": "F7",
+   "v007_severity": "P2",
+   "status": "addressed",
+   "evidence": "The stage is now dark timber; it reads near-black where shaded, which is consistent with the dark stage in the roof reference (c08_oculus_down; builder oculus_program.png)."
+  },
+  {
+   "id": "F8",
+   "v007_severity": "P2",
+   "status": "resolved",
+   "evidence": "Planting is domed rather than spiky (c09_guard_coping, c22_lip_steps)."
+  },
+  {
+   "id": "F9",
+   "v007_severity": "P2",
+   "status": "resolved",
+   "evidence": "The service door is recessed with a head and jamb reveal (c23_ne_service_close)."
+  },
+  {
+   "id": "F10",
+   "v007_severity": "P2",
+   "status": "resolved",
+   "evidence": "An edge section at x = 0.3 m shows a 0.6 m parapet with its cap at 11.2 m, a glass guard standing on the cap (11.2-11.65 m) and a rail to 11.7 m, giving 1.1 m above the deck. There is no coplanar guard/coping overlap."
+  },
+  {
+   "id": "F11",
+   "v007_severity": "P2",
+   "status": "resolved",
+   "evidence": "Three recessed doors lead from the foyer into the hall drum (c19b_hall_doors, c11_foyer_inside, r01_south_eye)."
+  }
+ ],
+ "source_conflict_assessment": "Unchanged from v007; the builder's handling is still reasonable. (1) Plan positions follow the near-orthographic roof view rather than the oblique, which places the oculus about 8 m further west. The reviewer's orthographic top render and the builder's match_top still overlay the roof reference closely, and the 31 px residual in the oblique fit remains acceptable. (2) The two 5 m storeys reproduce the reference's roughly 1:1 band-to-glazing ratio; shell rims of about 23.6 m (west) and 21.6 m (east) still give a close matched-oblique silhouette. The new closed upper storey behind the band is a plausible use of the second catalogue floor. (3) The inferred parts are now executed credibly: an opaque north-east back-of-house with a recessed service door, a hall sized to the oculus with three foyer doors, a roof-garden portal in the west shell foot with a glazed lobby, and steps to a guarded viewing landing at the lip. The lobby stair stub is the one inference that reads as incomplete from inside (N2, P2). variant_2.png: still agreed unusable. It shows a different rectilinear building with no roof garden, twin shells or oculus. Excluding it is correct, and the conflict should stay recorded for a human ruling.",
+ "findings": [
+  {
+   "id": "N1",
+   "severity": "P2",
+   "title": "Five band fins above the north-east service door stand 8-18 cm off the cladding",
+   "evidence": "Exact point-to-surface distances from the GLB give 0.115, 0.170, 0.181, 0.149 and 0.078 m for the fins at azimuth 33.0-37.5 deg (centres about (37.7,24.5) to (34.9,26.8), z 6.0-11.2). Neighbouring fins are 0.016-0.019 m off and fins elsewhere are 0.000-0.02 m. Radial casts confirm that the band cladding is smooth through this arc, so the fins, not the wall, are displaced. The offset does not read at review scale (reviewer c24c_ne_fins_above with crops/ne_fins_tops.png, c24d_ne_corner_eye, r03_north_eye, r04_east_eye), so this is recorded as an unsupported-part note rather than a visible defect.",
+   "required_change": "Seat these five fins on the band face like their neighbours (within about 2 cm or embedded), or give them visible brackets."
+  },
+  {
+   "id": "N2",
+   "severity": "P2",
+   "title": "Roof-entrance lobby stair is a dead-end stub",
+   "evidence": "Behind the new portal's glazed screen, the lobby (x -17.9..-12.7, y -15.1..-10.9) holds a flight of ten 0.18 m risers from the 10.6 m landing down to 8.8 m. It stops against the closed shaft wall (walls 8.6-13.6 m, ceiling 13.6 m) and connects to no floor or door (reviewer c21_lobby_inside, c21b_lobby_back; GLB geometry). The builder describes it as only the top of a stair going down. It is visible only from inside the lobby; through the screen the lobby reads as an occupied, closed room (c03_portal_front, c03d_portal_close).",
+   "required_change": "Optional: end the visible flight at a landing with a turn or a door so the stub does not read as a dead end from inside the lobby, or keep it and record it as an abstracted stair head."
+  },
+  {
+   "id": "N3",
+   "severity": "P2",
+   "title": "Minor coplanar faces at new details",
+   "evidence": "The glass balustrade of the foyer stair well shares the vertical slab-edge faces at x = -39.7 and -37.3 (about 0.81 m2 each side, z 5.9-6.4). A north curtain-wall mullion face is flush with its glass (about 0.2 m2, x -12.2..-4.1). No flicker appears in the reviewer renders (c18c_stair_well_below, c18d_stair_well_above). The other coplanar pairs found are hidden contact faces: bases on floors, column tops, fin ends on the ribbon sill and head, the lip-step underside on the deck, and hall-door head undersides.",
+   "required_change": "Offset the well balustrade and that mullion face by 1-2 cm."
+  }
+ ],
+ "reviewer_renders": [
+  "artifacts/concert-hall/v009/independent-review/renders/c01_notch_north.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c01b_notch_above.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c02_lipgap.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c03_portal_front.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c03b_portal_side_south.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c03d_portal_close.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c03e_portal_north.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c04_ribbon_south_end.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c04b_ribbon_north_end.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c04c_ribbon_mid.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c04d_ribbon_N_tele.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c04e_ribbon_S_tele.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c05_main_entrance.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c05b_entrance_square.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c06_service_door.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c07_lipgap_close.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c07b_lipgap_above.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c08_oculus_down.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c08b_oculus_from_ring.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c09_guard_coping.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c09b_guard_from_roof.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c10_ground_contact.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c11_foyer_inside.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c12_soffit.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c13_east_doors.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c14_sw_slot_tele.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c14b_sw_slot_front.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c15_ribbon_inside_from_level.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c16_shell_end_west_lip.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c17_east_shell_south_end.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c18_stair_foyer.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c18b_stair_west_outside.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c18c_stair_well_below.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c18d_stair_well_above.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c18e_upper_storey.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c19_hall_balconies.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c19b_hall_doors.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c19c_hall_door_close.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c20_portal_above.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c21_lobby_inside.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c21b_lobby_back.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c22_lip_steps.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c22b_lip_steps_top.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c23_ne_service_close.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c24_ne_fins_grazing.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c24b_ne_fins_close.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c24c_ne_fins_above.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c24d_ne_corner_eye.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c24e_ne_fins_along_wall.png",
+  "artifacts/concert-hall/v009/independent-review/renders/c24f_ne_fins_along_wall_b.png",
+  "artifacts/concert-hall/v009/independent-review/renders/r01_south_eye.png",
+  "artifacts/concert-hall/v009/independent-review/renders/r02_sw_eye.png",
+  "artifacts/concert-hall/v009/independent-review/renders/r03_north_eye.png",
+  "artifacts/concert-hall/v009/independent-review/renders/r04_east_eye.png",
+  "artifacts/concert-hall/v009/independent-review/renders/r05_west_eye.png",
+  "artifacts/concert-hall/v009/independent-review/renders/r06_ne_aerial.png",
+  "artifacts/concert-hall/v009/independent-review/renders/r07_top_ortho.png",
+  "artifacts/concert-hall/v009/independent-review/crops/ne_fins_tops.png"
+ ],
+ "strengths": [
+  "All four v007 P1 blockers are resolved in pixels and geometry: continuous fin grammar across the west band with a slatted ribbon; a closed upper storey with no see-through; entrances that cut the curtain wall with a proper door, head and transom section; and a supported stair rising through a cut, guarded well.",
+  "The new roof-garden portal is a real cut into the shell foot, with returns, a head, a glazed screen and an occupied lobby, replacing the shed-like box.",
+  "The lip gap now ends at a guarded viewing landing reached by steps, which makes the oculus approach legible from the garden.",
+  "Massing and identity still match both locked references at oblique, top and phone scale: rounded finned podium, two opposing bronze shells with the north notch, inner lip spiral, oculus showing raked seats, balconies, timber panels and stage, and the winding planted path.",
+  "Delivery hygiene: 0 images and 0 textures, 34 named clay materials, 69,141 triangles, a clean roof-edge section (parapet, cap, glass guard, rail) and clean ground contact."
+ ]
+}

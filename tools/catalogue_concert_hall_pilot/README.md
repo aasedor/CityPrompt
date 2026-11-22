@@ -103,6 +103,12 @@ Git LFS files: `git lfs pull --include="frontend/public/archetypes/buildings/con
 ## Checkpoints
 
 - Builder review: pass (`evidence/builder-pixel-review.json`).
-- Independent architectural-clay review: see `candidate.json`.
+- Independent architectural-clay review: v007 was refused with four P1 findings
+  (`evidence/independent-review-v007.json`). v009 passed on 2026-11-22 with zero P0, zero P1
+  and three P2 (`evidence/independent-review-v009.json`):
+  - five fins over the service door stand 8 to 18 cm off the cladding;
+  - the lobby stair behind the roof portal ends at a closed wall;
+  - two minor coplanar faces at the stair well and a north mullion.
+- Gate A: open for a person (the street view is the LEGO preview).
 - Runtime integration: NOT TESTED. Publication and activation: not authorized. Only a
   person can activate the model.

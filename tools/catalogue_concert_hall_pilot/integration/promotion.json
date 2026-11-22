@@ -44,7 +44,7 @@
       "The north and east ground floor, the interiors, the roof-garden entrance and the hall size (about 340 stalls seats, only as large as the oculus) are inferred.",
       "The foyer floor is 0.13 m above the apron at every glazed door; no ramp or flush threshold is drawn.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_concert_hall_pilot/integration/runtime-review.md.",
-      "Independent review: v007 was refused with four P1 (evidence/independent-review-v007.json); v009 answers them and its repeat review is pending."
+      "Independent review: v007 was refused with four P1 (evidence/independent-review-v007.json). v009 passed on 2026-11-22 with zero P0, zero P1 and three P2 (evidence/independent-review-v009.json). Open P2: five fins over the service door stand 8 to 18 cm off the cladding; the lobby stair behind the roof portal ends at a closed wall; two minor coplanar faces at the stair well and a north mullion."
     ],
     "picker": {
       "id": "concert_hall_modern_timber_acoustic",

@@ -27,7 +27,7 @@ No pass is carried over from any other archetype.
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules: two references locked by hash in `prework-manifest.json`; the variant's street view is the old LEGO preview and is excluded (Gate A open for a person). The oblique and roof views disagree on the oculus position by about 8 m; the roof view governs plan positions. The north and east ground floor, the interiors, the roof entrance and the hall size are inferred. No amenity modules
 - Native park seams and raised/cycle access: full-width closed-loop/bend support, local-origin furniture transforms, measured ramp/landing or track-entry height continuity; separate offline contacts from runtime slope walking: N/A: building only; the model contains no such element
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations: N/A: building only; the model contains no such element
-- Asset review status and separate publication/activation status: v007 was refused by independent review (four P1; evidence/independent-review-v007.json); v009 answers those findings and its repeat review is pending. That is asset review only. Publication and activation: not authorized
+- Asset review status and separate publication/activation status: v007 was refused by independent review (four P1; evidence/independent-review-v007.json); v009 passed independent architectural-clay review on 2026-11-22 with zero P0, zero P1 and three P2 (evidence/independent-review-v009.json). That is asset review only. Publication and activation: not authorized
 - Model Library storage check, configured bucket and result (building GLBs): NOT RUN. The GLB is not in the model library
 - Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence: NOT RUN
 - Evidence manifest location and hashes; durable shared location for delivery: `tools/catalogue_concert_hall_pilot/evidence/` and `candidate.json`. Renders and boards exist only in the build session's ignored `artifacts/` directory, which is not durable shared storage; `evidence/phone-oblique.jpg` is the one board kept in Git
@@ -241,7 +241,7 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
 - Open failures, untested advertised features, owner and next bounded action: everything above marked NOT TESTED. Next bounded action: a ruling on Gate A by a person, then a local install with `--local-trial` and the student trial in `docs/BUILDING_CATALOGUE_WORKFLOW.md`, on a prepared level plot of at least 104 m by 80 m
 - Runtime integration decision: NOT REVIEWED
-- Asset visual decision (separate): builder pass. v007 was refused by independent review (four P1; evidence/independent-review-v007.json); v009 answers those findings and its repeat review is pending.
+- Asset visual decision (separate): builder pass. v007 was refused by independent review (four P1; evidence/independent-review-v007.json); v009 passed independent architectural-clay review on 2026-11-22 with zero P0, zero P1 and three P2 (evidence/independent-review-v009.json).
 - Publication/activation authorization (separate; cite actual authorization): none given
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot
