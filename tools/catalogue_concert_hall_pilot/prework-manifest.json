@@ -1,0 +1,160 @@
+{
+  "candidate": "concert-timber-acoustic-clay-v007",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "concert_hall_modern",
+  "variant_id": "concert_timber_acoustic",
+  "title": "Timber Acoustic",
+  "sources": [
+    {
+      "role": "oblique",
+      "repo_path": "frontend/public/archetypes/buildings/concert_hall_modern/variant_2_angle_60.jpg",
+      "bytes": 879732,
+      "sha256": "f0fb40dc1d644f40f9e2c407857859b4113eab77d4f89363faf28393a251228f"
+    },
+    {
+      "role": "top",
+      "repo_path": "frontend/public/archetypes/buildings/concert_hall_modern/variant_2_angle_90.jpg",
+      "bytes": 968282,
+      "sha256": "6fcfb87992c415339ba52126eec3916ea8062726e64754de46989f9f57df0091"
+    }
+  ],
+  "excluded_sources": [
+    {
+      "role": "front",
+      "repo_path": "frontend/public/archetypes/buildings/concert_hall_modern/variant_2.png",
+      "bytes": 1245075,
+      "sha256": "b33e3a3378be36cd197f1b8c74233291e1429367f05fd680fc9452794231cb25",
+      "reason": "grey preview of the old LEGO model"
+    }
+  ],
+  "gate_a": {
+    "front_oblique_top_coherent": false,
+    "note": "The variant has no usable street view: variant_2.png has the same bytes as the old LEGO family preview (hash prefix b33e3a3378be). The oblique and roof views agree and are the authority. A person must rule on this before activation, as for the crescent and the laneway."
+  },
+  "measurement_contract": {
+    "scale_basis": "No image carries a scale. The podium outline in the roof view (888 by 650 px) is set to 88 by 64.4 m, matching the archetype's suggested 90 by 65 m footprint and 1.4:1 aspect. Plan positions are measured in the roof view at 0.0991 m/px. Heights: a pinhole camera fitted to 39 traced podium points in the oblique (31 px RMS) barely changes between an 11 m and a 21 m podium, so the podium takes the catalogue's two 5 m floors (glazed ground floor to 6.0 m, finned band to 11.2 m). The shell rims are set from the same fit, peaking near 23.6 m (west) and 21.6 m (east).",
+    "source_measurements": {
+      "oblique": [
+        "High view from the south over the front plaza toward the water and mountains.",
+        "Rounded podium wrapped in close vertical bronze fins above a glazed ground floor with cafe tables inside; the glazing is about as tall as the band; a horizontal window slot in the band at the west end.",
+        "Planted roof garden with winding pale paths and a thin dark edge.",
+        "Two opposing curved shells clad in bronze battens, their outer walls leaning in: the west shell rises highest at the north-west, the east shell at the north-east; their rims meet in a V at the back.",
+        "Inside the west shell a narrow sloping ring runs round the oculus below its stepped inner edge: the east sheet continuing underneath.",
+        "An oval oculus between them shows the auditorium: timber walls, raked seating, balcony fronts and a stage."
+      ],
+      "top": [
+        "Near-nadir view, north up, the pier to the west and south.",
+        "Podium a rounded rectangle about 888 by 650 px; roof garden with a winding path loop and planting.",
+        "Shells spiral round an oval oculus about 235 by 185 px, centred 114 px east of the podium centre: the west shell wraps west and south, the east shell north-east and east; a radial notch at the north.",
+        "Inside the oculus, seating rows on the west half facing a dark stage on the east."
+      ]
+    },
+    "source_conflicts": [
+      "variant_2.png, the street view, is the grey preview of the old LEGO model, not a picture of this building. It is excluded; the oblique and roof views govern. Needs a ruling by a person.",
+      "The oblique puts the oculus about 3.5 m east of the podium centre, the roof view 11.3 m. The roof view governs plan positions; the oblique governs heights.",
+      "The catalogue text says \"two opposing curved planes in weathered bronze-tone metal with landscaped rooftop terrace\". The images agree; the title \"Timber Acoustic\" refers to the interior and battens."
+    ],
+    "hidden_assumptions": [
+      "The north and east elevations are seen only obliquely or from above; their ground floor continues the glazing, with an opaque back-of-house and a service door at the north-east (inferred).",
+      "The oculus is glazed (clear) so the hall is closed; the images show its interior without glass reflections.",
+      "Roof access is a lift and stair inside the west shell, entered from the roof garden through a vestibule at its south-west foot (inferred; no access is visible in the images).",
+      "Interiors are schematic: a foyer with cafe tables, counters, a stair and columns round the hall drum; upper rooms behind the ribbon window; the auditorium, only as large as the oculus, with 11 raked tiers (about 340 stalls seats), two balcony rings, a stage and choir terraces.",
+      "The pier, the stepped terrace to the west, the water, boats, cars and people belong to the site and are not modelled."
+    ]
+  },
+  "roof_contract": {
+    "form": "two spiral sheets about an oval oculus, rising from its lip to high outer rims, with outer walls leaning in to the roof garden; the east sheet runs on under the west as a ring on the lip, and the west sheet steps up over it at the north notch",
+    "weathering": "each sheet is one closed surface with standing seams; the lip and oculus glazing close the centre"
+  },
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false,
+    "roles": {
+      "apron": "#9c978d",
+      "plinth": "#5f5a52",
+      "cladding": "#4f3a29",
+      "fins": "#9a6a44",
+      "soffit": "#7b5a3e",
+      "coping": "#3a2f26",
+      "mullion": "#3a3532",
+      "door": "#1d272d",
+      "service": "#45423d",
+      "floor": "#8a8378",
+      "interior": "#b8875a",
+      "ceiling": "#d9c4a2",
+      "structure": "#6f6a62",
+      "furniture": "#4a4038",
+      "roofdeck": "#5c6838",
+      "planting": "#6f8a3e",
+      "meadow": "#a89c5c",
+      "shrub": "#4c6a30",
+      "blossom": "#dcd6c4",
+      "path": "#b4ada0",
+      "shell": "#8f6440",
+      "seam": "#6a482d",
+      "shellwall": "#7a5638",
+      "lip": "#3f342b",
+      "hall": "#b0703a",
+      "seats": "#8c3a2a",
+      "stage": "#2a2724",
+      "panel": "#c98a4b",
+      "light": "#f6e6c8",
+      "glass": "#2b2622",
+      "oculus": "#eef2f3",
+      "guard": "#c9d3d6",
+      "ribbon": "#2a2018"
+    }
+  },
+  "identity_contract": [
+    "rounded-rectangle podium, about 1.37:1, wrapped in close vertical bronze fins over a recessed glazed ground floor",
+    "planted roof garden with a winding path loop",
+    "two opposing spiral shells clad in bronze battens",
+    "a stepped notch where the shells meet at the north",
+    "an oval oculus revealing raked seating and a stage"
+  ],
+  "programme_contract": {
+    "auditorium": 1,
+    "foyer": 1,
+    "roof_garden": 1
+  },
+  "contact_contract": {
+    "base_datum_m": 0.0,
+    "ground": "a 6 m plaza apron round the podium; nothing below grade"
+  },
+  "camera_roster": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "oculus_program",
+    "roof_garden",
+    "notch_contact",
+    "lip_contact",
+    "match_oblique",
+    "match_top"
+  ],
+  "mandatory_review_views": [
+    "front.png",
+    "front_corner.png",
+    "aerial.png",
+    "top.png",
+    "left_side.png",
+    "right_side.png",
+    "rear.png",
+    "rear_side.png",
+    "facade_close.png",
+    "architecture_close.png",
+    "glass_close.png",
+    "oculus_program.png",
+    "roof_garden.png",
+    "notch_contact.png",
+    "lip_contact.png"
+  ]
+}

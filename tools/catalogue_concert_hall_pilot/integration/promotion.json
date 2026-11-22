@@ -1,0 +1,86 @@
+{
+  "entry": {
+    "candidate": "concert-timber-acoustic-clay-v007",
+    "family": "rlasm-clay-concert-hall-timber-acoustic",
+    "archetype_id": "concert_hall_modern",
+    "archetype_label": "Concert Hall (Modern)",
+    "variant_id": "concert_timber_acoustic",
+    "variant_label": "Timber Acoustic",
+    "runtime_enabled": true,
+    "native_floors": 2,
+    "design_dimensions_m": {
+      "width": 100.0,
+      "depth": 76.4,
+      "height": 23.7157
+    },
+    "references": [
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/concert_hall_modern/variant_2_angle_60.jpg",
+        "bytes": 879732,
+        "sha256": "f0fb40dc1d644f40f9e2c407857859b4113eab77d4f89363faf28393a251228f"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/concert_hall_modern/variant_2_angle_90.jpg",
+        "bytes": 968282,
+        "sha256": "6fcfb87992c415339ba52126eec3916ea8062726e64754de46989f9f57df0091"
+      }
+    ],
+    "excluded_references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/concert_hall_modern/variant_2.png",
+        "bytes": 1245075,
+        "sha256": "b33e3a3378be36cd197f1b8c74233291e1429367f05fd680fc9452794231cb25",
+        "reason": "grey preview of the old LEGO model"
+      }
+    ],
+    "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_concert_hall_pilot.",
+    "limitations": [
+      "Fixed native assembly, 100.0 m by 76.4 m including the 6 m paved apron; the podium is 88 m by 64.4 m. No resizing and no repetition.",
+      "Gate A is open: the variant's street view (variant_2.png) is the grey preview of the old LEGO model. The model follows the oblique and roof views; a person must accept that or supply a street view.",
+      "The oblique and roof views place the oculus about 8 m apart; the roof view governs plan positions. Heights take the catalogue's two 5 m floors because the oblique barely constrains them.",
+      "The north and east ground floor, the interiors, the roof-garden entrance and the hall size (about 340 stalls seats, only as large as the oculus) are inferred.",
+      "The foyer floor is 0.13 m above the apron at every glazed door; no ramp or flush threshold is drawn.",
+      "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_concert_hall_pilot/integration/runtime-review.md.",
+      "Independent architectural-clay review: pending."
+    ],
+    "picker": {
+      "id": "concert_hall_modern_timber_acoustic",
+      "description": "Concert hall under two bronze spiral shells round a glazed oculus, on a finned podium with a roof garden.",
+      "group_id": "civic",
+      "reshape_mode": "fixed_native",
+      "reshape_description": "Move and rotate the complete building. It keeps its authored size.",
+      "width": 104.0,
+      "depth": 80.0,
+      "max_size": 600.0
+    }
+  },
+  "model_file": "concert-timber-acoustic-clay-v007.glb",
+  "review_file": "independent-review.json",
+  "approval": {
+    "authorized_by": "",
+    "quote": "",
+    "date": "",
+    "model_sha256": ""
+  },
+  "trial": {
+    "model_sha256": "",
+    "project_url": "",
+    "tested_by": "",
+    "tested_at": "",
+    "evidence": [],
+    "checks": {
+      "catalogue_card": false,
+      "exact_variant": false,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": false,
+      "save_reload": false,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    }
+  },
+  "human_decisions": []
+}

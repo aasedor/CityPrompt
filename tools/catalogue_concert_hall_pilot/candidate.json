@@ -1,0 +1,58 @@
+{
+  "candidate": "concert-timber-acoustic-clay-v007",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local pilot only",
+  "canonical_promotion_approved": false,
+  "external_directory": "artifacts/concert-hall/v007 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "853e3fa868056b1d61d3471ab8561077d42676258d58d2d0dc76156e5a79521c",
+  "model_bytes": 3144356,
+  "delivered_bounds_gltf_m": [
+    [
+      -50.0,
+      0.0,
+      -38.2
+    ],
+    [
+      50.0,
+      23.7157,
+      38.2
+    ]
+  ],
+  "native_dimensions_m": {
+    "width": 100.0,
+    "depth": 76.4,
+    "height": 23.7157
+  },
+  "storeys": 2,
+  "runtime": {
+    "path": "concert-timber-acoustic-clay-v007.glb",
+    "bytes": 3144356,
+    "sha256": "853e3fa868056b1d61d3471ab8561077d42676258d58d2d0dc76156e5a79521c",
+    "meshes": 33,
+    "materials": 33,
+    "textures": 0,
+    "images": 0,
+    "triangles": 45896
+  },
+  "entrances": {
+    "main doors": 1,
+    "east doors": 1,
+    "service door": 1
+  },
+  "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them. The roof garden is entered through a vestibule in the foot of the west shell.",
+  "auditorium": {
+    "tiers": 11,
+    "balcony_rings": 2,
+    "stalls_seats_estimate": 336,
+    "stage_floor_m": 2.1,
+    "note": "Schematic: a seat every 0.55 m along 0.45 m strips. Balcony seating is not drawn."
+  },
+  "builder_review": {
+    "file": "evidence/builder-pixel-review.json",
+    "decision": "builder_pass"
+  },
+  "independent_review": {
+    "status": "pending"
+  },
+  "gate_a": "open: variant_2.png is the LEGO preview; a person must rule that the oblique and roof views govern"
+}

@@ -1,0 +1,23 @@
+{
+  "frame": "authoring: x east, y north (the oblique looks north from the south over the front plaza), z up, metres; the podium is centred on the origin",
+  "fitted": "match_oblique is a least-squares pinhole fit to 39 traced podium points (coping, soffit and base outlines, the silhouette extremes and the main doors; RMS 30.7 px) with the podium heights held at 11.2 and 6.0 m; match_top is an orthographic fit to the podium outline in the roof view (888 by 650 px for 88 by 64.4 m)",
+  "views": {
+    "front": {"pos": [0, -300, 13], "target": [0, 0, 13], "fov": 17, "shadow": 62, "centre": [0, 0, 12]},
+    "front_corner": {"pos": [78, -92, 9], "target": [4, 0, 12], "fov": 42, "shadow": 62, "centre": [0, 0, 12]},
+    "aerial": {"pos": [95, -110, 92], "target": [2, 0, 8], "fov": 38, "shadow": 62, "centre": [0, 0, 12]},
+    "top": {"pos": [0, 0, 160], "target": [0, 0, 0], "up": [0, 1, 0], "ortho": 56, "shadow": 62, "centre": [0, 0, 12]},
+    "left_side": {"pos": [-320, 0, 13], "target": [0, 0, 13], "fov": 15, "sun": [-0.6, -0.5, 0.55], "shadow": 62, "centre": [0, 0, 12]},
+    "right_side": {"pos": [320, 0, 13], "target": [0, 0, 13], "fov": 15, "sun": [0.6, -0.5, 0.55], "shadow": 62, "centre": [0, 0, 12]},
+    "rear": {"pos": [0, 300, 13], "target": [0, 0, 13], "fov": 17, "sun": [0.3, 0.7, 0.5], "shadow": 62, "centre": [0, 0, 12]},
+    "rear_side": {"pos": [-95, 105, 80], "target": [2, 0, 8], "fov": 38, "sun": [-0.5, 0.6, 0.55], "shadow": 62, "centre": [0, 0, 12]},
+    "facade_close": {"pos": [6, -62, 3.2], "target": [0, -30, 4.5], "fov": 46, "shadow": 30, "centre": [0, -28, 5]},
+    "architecture_close": {"pos": [-22, -55, 14], "target": [-26, -26, 8], "fov": 44, "shadow": 30, "centre": [-26, -26, 8]},
+    "glass_close": {"pos": [-3, -45, 2.0], "target": [-3, -30, 2.4], "fov": 50, "shadow": 22, "centre": [-3, -30, 3]},
+    "oculus_program": {"pos": [12, -24, 36], "target": [12, -1, 4], "fov": 44, "shadow": 40, "centre": [11, -2, 8]},
+    "roof_garden": {"pos": [-30, -40, 22], "target": [-12, -8, 11], "fov": 50, "shadow": 40, "centre": [-12, -8, 11]},
+    "notch_contact": {"pos": [6, 52, 30], "target": [2, 23, 22], "fov": 42, "sun": [0.3, 0.7, 0.5], "shadow": 30, "centre": [3, 24, 20]},
+    "lip_contact": {"pos": [30, -26, 19], "target": [20, -10, 12], "fov": 44, "shadow": 26, "centre": [20, -10, 12]},
+    "match_oblique": {"pos": [7.75, -173.18, 119.10], "target": [4.70, -89.72, 64.10], "fov": 17.78, "w": 1376, "h": 768, "sun": [0.75, -0.25, 0.35], "shadow": 62, "centre": [0, 0, 12]},
+    "match_top": {"pos": [-1.78, -0.4, 160], "target": [-1.78, -0.4, 0], "up": [0, 1, 0], "ortho": 68.2, "w": 1376, "h": 768, "sun": [-0.5, -0.4, 0.6], "shadow": 62, "centre": [0, 0, 12]}
+  }
+}
