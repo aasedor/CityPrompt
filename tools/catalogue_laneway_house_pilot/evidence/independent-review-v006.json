@@ -7,7 +7,7 @@
   "model_path": "artifacts/laneway-garden-studio/v006/laneway-garden-studio-clay-v006.glb",
   "model_sha256": "e9a767c3c2eddc68031ea7f9400c5abe0d56a0542856ece4b824a46a9cdb24e3",
   "previous_review": "artifacts/laneway-garden-studio/v004/independent-review.json",
-  "reviewer": "Independent AI reviewer (Claude, Anthropic model claude-opus-5-5) with no builder context. Not a human. The generator (build.py), test_laneway.py, verify.py, candidate.json, README.md, evidence/ and integration/ were not opened, and neither were build-report.json or delivery-verification.json.",
+  "reviewer": "Independent AI reviewer with no builder context. Not a human. The generator (build.py), test_laneway.py, verify.py, candidate.json, README.md, evidence/ and integration/ were not opened, and neither were build-report.json or delivery-verification.json.",
   "reviewed_utc": "2026-11-20T05:37:52Z",
   "method": "RLASM v6.1",
   "scope": "Repeat holistic, source-locked Gate G architectural-clay review of the exact v006 GLB for vancouver_laneway_house / laneway_garden_studio (variant 3) against the three locked references. Re-tests every v004 finding, checks each builder-claimed change, and runs a full regression of fidelity, all four sides, the roof weathering graph, openings, supports and contacts, visibility and cameras, from pixels first with GLB measurement as support. The images govern over the catalogue text; per the human ruling the variant is renamed Garage Suite. This review grants no keeper, runtime-activation or publication approval.",
@@ -367,7 +367,7 @@
     },
     {
       "path": "artifacts/laneway-garden-studio/v004/independent-review.json",
-      "sha256": "eccd4e44cd7a83459a847f1cd6ff7d104d7f4787d83444b1d7c5a1afea5f4e4a",
+      "sha256": "43e6c2d9fa7cc3c319cea8d28aa8dae2e74ad4f10bbcab18e7e8cdf3ff3053ef",
       "use": "The reviewer's own previous review; every finding re-tested."
     },
     {

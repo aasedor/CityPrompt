@@ -11,7 +11,7 @@
     "artifacts/laneway-garden-studio/v004/independent-review.json",
     "artifacts/laneway-garden-studio/v006/independent-review.json"
   ],
-  "reviewer": "Independent AI reviewer (Claude, Anthropic model claude-opus-5-5) with no builder context. Not a human. The generator (build.py), test_laneway.py, verify.py, candidate.json, README.md, evidence/ and integration/ were not opened, and neither were build-report.json or delivery-verification.json.",
+  "reviewer": "Independent AI reviewer with no builder context. Not a human. The generator (build.py), test_laneway.py, verify.py, candidate.json, README.md, evidence/ and integration/ were not opened, and neither were build-report.json or delivery-verification.json.",
   "reviewed_utc": "2026-11-20T05:49:27Z",
   "method": "RLASM v6.1",
   "scope": "Repeat holistic, source-locked Gate G architectural-clay review of the exact v007 GLB for vancouver_laneway_house / laneway_garden_studio (variant 3) against the three locked references. It checks both builder-claimed changes, re-tests every open v006 finding, and runs a full regression: a triangle-level diff against v006, pixel diffs of every builder render and board, full-resolution inspection of the matched, whole-building and changed views, and 34 reviewer renders of the exact GLB. The images govern over the catalogue text; per the human ruling the variant is renamed Garage Suite. This review grants no keeper, runtime-activation or publication approval.",
@@ -286,7 +286,7 @@
     },
     {
       "path": "artifacts/laneway-garden-studio/v006/independent-review.json",
-      "sha256": "8ac433ebf5c6edde4ba6bd0b439384ffb7a514e30699d60d72bf8bc18fc3f26c",
+      "sha256": "6a1504d831eaf51515da2af00adc3c9bbe262bebaee473abb0c7cace1313d875",
       "use": "The reviewer's previous review; every finding re-tested."
     },
     {
