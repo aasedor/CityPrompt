@@ -141,7 +141,8 @@ def main():
     hw, yf, yb, _ = build.SHAFT
     checks['the shaft stands clear of every silo'] = all(math.hypot(max(abs(x) - hw, 0), max(yf - y, y - yb, 0)) >= build.R - 1e-9 for x, y in centres)
     checks['the gallery clears every cap tip'] = build.GALLERY[2] > build.CYL + build.CONE
-    checks['the head house stands on the shaft'] = build.HEAD[3] == build.SHAFT[3]
+    checks['the head house stands on the shaft for its whole depth'] = build.HEAD[3] == build.SHAFT[3] and build.HEAD[1] >= build.SHAFT[1] - .5 \
+        and build.HEAD[2] <= build.SHAFT[2] + 1e-9
     for name in WHOLE_VIEWS:
         checks[f'camera margin {name}'] = max(abs(v) for v in view_extent(roster[name])) <= .94
     for name in build.CAMERAS:

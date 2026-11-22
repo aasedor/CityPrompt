@@ -11,7 +11,7 @@ No pass is carried over from any other archetype.
 
 - Kind: building
 - Archetype ID and exact variant ID: `machine_aesthetic_heavy_industrial` / `heavy_silo_cluster` (variant 2, "Silo Cluster")
-- Model SHA-256 or procedural recipe ID/revision/hash: `00e97701487e9da1f7c38372b9510ee661e8a38e03f54d0bbae1ab5c764845cf`, candidate `silo-cluster-clay-v004`, 1253560 bytes. Rebuilt byte for byte by `tools/catalogue_silo_cluster_pilot/build.py`
+- Model SHA-256 or procedural recipe ID/revision/hash: `43691b45018f6bc79987362f29ed5380fa04a1ed8d7da598cafcad58a7dae726`, candidate `silo-cluster-clay-v005`, 1255800 bytes. Rebuilt byte for byte by `tools/catalogue_silo_cluster_pilot/build.py`
 - Runtime source commit and integration-checklist version: not run. Branch based on `deployment-version`; checklist as at that commit
 - Reviewer, date, project URL, viewport/device/input: none. No project was opened
 - Vacant test site, protected reference, disposable test project: none
@@ -27,7 +27,7 @@ No pass is carried over from any other archetype.
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules: two references locked by hash in `prework-manifest.json`; the variant's street view is a grey render of the old LEGO model and is excluded (Gate A open for a person). Heights are proportioned in the oblique. The back row's north side, the ends, the shaft's back and all interiors are inferred. No amenity modules
 - Native park seams and raised/cycle access: full-width closed-loop/bend support, local-origin furniture transforms, measured ramp/landing or track-entry height continuity; separate offline contacts from runtime slope walking: N/A: building only; the model contains no such element
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations: N/A: building only; the model contains no such element
-- Asset review status and separate publication/activation status: Independent architectural-clay review pending. That is asset review only. Publication and activation: not authorized
+- Asset review status and separate publication/activation status: v004 was refused by independent review (three P1; evidence/independent-review-v004.json); v005 answers those findings and its repeat review is pending. That is asset review only. Publication and activation: not authorized
 - Model Library storage check, configured bucket and result (building GLBs): NOT RUN. The GLB is not in the model library
 - Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence: NOT RUN
 - Evidence manifest location and hashes; durable shared location for delivery: `tools/catalogue_silo_cluster_pilot/evidence/` and `candidate.json`. Renders and boards exist only in the build session's ignored `artifacts/` directory, which is not durable shared storage; `evidence/phone-oblique.jpg` is the one board kept in Git
@@ -239,7 +239,7 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
 - Open failures, untested advertised features, owner and next bounded action: everything above marked NOT TESTED. Next bounded action: a ruling on Gate A by a person, then a local install with `--local-trial` and the student trial in `docs/BUILDING_CATALOGUE_WORKFLOW.md`, on a prepared level plot of at least 100 m by 45 m
 - Runtime integration decision: NOT REVIEWED
-- Asset visual decision (separate): builder pass. Independent architectural-clay review pending.
+- Asset visual decision (separate): builder pass. v004 was refused by independent review (three P1; evidence/independent-review-v004.json); v005 answers those findings and its repeat review is pending.
 - Publication/activation authorization (separate; cite actual authorization): none given
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot

@@ -1,6 +1,6 @@
 {
   "status": "PASS_DELIVERY_CHECKS",
-  "candidate": "silo-cluster-clay-v004",
+  "candidate": "silo-cluster-clay-v005",
   "checks": {
     "source oblique": true,
     "source top": true,
@@ -31,7 +31,7 @@
     "sixteen silos, none overlapping": true,
     "the shaft stands clear of every silo": true,
     "the gallery clears every cap tip": true,
-    "the head house stands on the shaft": true,
+    "the head house stands on the shaft for its whole depth": true,
     "camera margin front": true,
     "camera margin front_corner": true,
     "camera margin aerial": true,
@@ -79,8 +79,8 @@
     "phone-construction.png": true,
     "phone-programme.png": true
   },
-  "model_sha256": "00e97701487e9da1f7c38372b9510ee661e8a38e03f54d0bbae1ab5c764845cf",
-  "model_bytes": 1253560,
+  "model_sha256": "43691b45018f6bc79987362f29ed5380fa04a1ed8d7da598cafcad58a7dae726",
+  "model_bytes": 1255800,
   "delivered_bounds_gltf_m": [
     [
       -47.0,
@@ -93,10 +93,10 @@
       25.4
     ]
   ],
-  "triangles": 26395,
+  "triangles": 26433,
   "script_sha256": {
     "clay_kit.py": "6237cadfb42ecbabc4c849a5305416e8a7657d71387ce2c7baa18bc7b1b71dcd",
-    "build.py": "21323089cf9ab21681c5082240b55b9e9617bb090730e1020ff0cb641d357efd",
+    "build.py": "e29f778c764b0632e9eeeae29c485ee8eb92dfc502654208c6fdee1548e2a021",
     "cameras.json": "2594fa74b0c91b50d5141dcd35fca083cc80ce3d3ccd7fdfa9398ae8f1593e74",
     "review.html": "f2af47dded2aa9d6ffaea6994bf603e3fe193f1216248914177ad6ea9c03f98f",
     "render.cjs": "96a3e92927a55826629abab9eac6dd82973ec059c9a2349e471dec5cb07e7ef2"

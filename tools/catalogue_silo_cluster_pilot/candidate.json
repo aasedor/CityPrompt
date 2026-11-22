@@ -1,11 +1,11 @@
 {
-  "candidate": "silo-cluster-clay-v004",
+  "candidate": "silo-cluster-clay-v005",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/silo/v004 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "00e97701487e9da1f7c38372b9510ee661e8a38e03f54d0bbae1ab5c764845cf",
-  "model_bytes": 1253560,
+  "external_directory": "artifacts/silo/v005 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "43691b45018f6bc79987362f29ed5380fa04a1ed8d7da598cafcad58a7dae726",
+  "model_bytes": 1255800,
   "delivered_bounds_gltf_m": [
     [
       -47.0,
@@ -33,14 +33,14 @@
   },
   "silos": 16,
   "runtime": {
-    "path": "silo-cluster-clay-v004.glb",
-    "bytes": 1253560,
-    "sha256": "00e97701487e9da1f7c38372b9510ee661e8a38e03f54d0bbae1ab5c764845cf",
+    "path": "silo-cluster-clay-v005.glb",
+    "bytes": 1255800,
+    "sha256": "43691b45018f6bc79987362f29ed5380fa04a1ed8d7da598cafcad58a7dae726",
     "meshes": 15,
     "materials": 15,
     "textures": 0,
     "images": 0,
-    "triangles": 26395
+    "triangles": 26433
   },
   "entrances": {
     "truck bay": 4,
@@ -52,7 +52,19 @@
     "decision": "builder_pass"
   },
   "independent_review": {
-    "status": "pending"
+    "status": "pending repeat review",
+    "previous": [
+      {
+        "candidate": "silo-cluster-clay-v004",
+        "decision": "architectural_clay_refused",
+        "counts": {
+          "P0": 0,
+          "P1": 3,
+          "P2": 5
+        },
+        "file": "evidence/independent-review-v004.json"
+      }
+    ]
   },
   "gate_a": "open: variant_2.png is a grey render of the old LEGO model; a person must rule that the oblique and roof views govern"
 }

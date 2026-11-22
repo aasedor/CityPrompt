@@ -61,6 +61,7 @@ def test_the_stack_of_parts_is_coherent():
     assert all(math.hypot(max(abs(x) - hw, 0), max(yf - y, y - yb, 0)) >= build.R - 1e-9 for x, y in build.silos())
     assert yf < build.ROW_Y[0] - build.R, 'the shaft stands proud of the front row'
     assert build.WALKWAY[0] < build.CYL and build.SHED[3] < build.WALKWAY[0]
+    assert build.HEAD[1] >= build.SHAFT[1] - .5 and build.HEAD[2] <= build.SHAFT[2], 'the head house sits on the shaft for its whole depth'
 
 
 def test_the_loading_front_has_four_bays_and_a_door():

@@ -53,10 +53,10 @@ FRONT_X = sorted([s * (SHAFT[0] + .3 + R + PITCH * k) for s in (-1, 1) for k in 
 CYL, CONE = 26.0, 3.0                             # silo wall height and cap rise
 POUR = 2.4                                        # pour lines on the silo walls
 GALLERY = (43.0, 2.3, 31.0, 34.4, 35.0)           # conveyor gallery: half-length, half-width, floor, eaves, ridge
-HEAD = (4.7, -12.0, 9.6, 36.0, 47.0, 49.5)        # head house: half-width, front and back y, foot, eaves, ridge
-VENTS = [(-2.4, .5), (2.4, .5)]                   # roof ventilators on the head house
+HEAD = (4.7, -12.0, .2, 36.0, 47.0, 49.5)         # head house, seated on the shaft for its whole depth: half-width, front and back y, foot, eaves, ridge
+VENTS = [(-2.4, -6.0), (2.4, -6.0)]               # roof ventilators on the head house
 SHEDS = [(-22.7, -SHAFT[0]), (SHAFT[0], 22.7)]    # loading sheds either side of the shaft, each under two front silos (x ranges)
-SHED = (-15.4, -9.4, 6.5, 7.6)                    # shed front and back y, eave heights at front and back
+SHED = (-15.4, -9.4, 5.8, 8.0)                    # shed front and back y, eave heights at front and back
 BAYS = [-17.0, -10.0, 10.0, 17.0]                 # truck bay centres, 3.8 m wide and 4.6 m high
 WALKWAY = (10.0, -10.8, -9.6)                     # walkways along the front row: deck height, outer and inner y
 APRON = 4.0
@@ -201,7 +201,7 @@ def shaft(clay):
     holed_wall(clay, 'concrete', (-hw, yf), (1.0, 0.0), (0.0, -1.0), [(0, 0), (2 * hw, 0), (2 * hw, top), (0, top)],
                [(hw + a, hw + b, c, d) for a, b, c, d in windows + door])
     for a, b, c, d in windows:
-        niche(clay, front[0], front[1], front[2], hw + a, hw + b, c, d, .35, 'interior', glass=True)
+        niche(clay, front[0], front[1], front[2], hw + a, hw + b, c, d, 1.2, 'interior', glass=True)
     a, b, c, d = door[0]
     niche(clay, front[0], front[1], front[2], hw + a, hw + b, c, d, .25, 'door')
     for x, n in ((-hw, (-1.0, 0.0)), (hw, (1.0, 0.0))):                    # side faces, with a door onto each walkway
@@ -214,8 +214,16 @@ def shaft(clay):
         niche(clay, origin, u, n, s_door - .5, s_door + .5, WALKWAY[0], WALKWAY[0] + 2.2, .25, 'door')
     wall(clay, 'concrete', (hw, yb), (-hw, yb), 0.0, top, (0, 1))
     z = POUR
-    while z < top - .5:                                                    # pour lines on the shaft's front
-        clay.quad('pour', (-hw, yf - .02, z - .05), (hw, yf - .02, z - .05), (hw, yf - .02, z + .05), (-hw, yf - .02, z + .05), facing=(0, -1, 0))
+    while z < top - .5:                                                    # pour lines on the shaft's front, broken at each opening
+        cuts = sorted((a - .1, b + .1) for a, b, c, d in windows + door if c - .1 <= z <= d + .1)
+        xs, x = [], -hw
+        for a, b in cuts:
+            xs.append((x, a))
+            x = b
+        xs.append((x, hw))
+        for a, b in xs:
+            if b - a > .05:
+                clay.quad('pour', (a, yf - .02, z - .05), (b, yf - .02, z - .05), (b, yf - .02, z + .05), (a, yf - .02, z + .05), facing=(0, -1, 0))
         z += POUR
 
 
@@ -227,8 +235,9 @@ def head_house(clay):
         wall(clay, 'steel', p, q, foot, eave, n)
     flat_region(clay, 'steel', box(-hw, yf, hw, yb), foot, up=False)
     for side in (-1, 1):                                                   # roof slopes with a small overhang
-        clay.quad('roof', (side * (hw + .35), yf - .35, eave - .1), (side * (hw + .35), yb + .35, eave - .1), (0, yb + .35, ridge + .05),
-                  (0, yf - .35, ridge + .05), facing=(side, 0, 2))
+        edge = eave - (ridge - eave) * .35 / hw                            # the roof plane passes through the wall tops
+        clay.quad('roof', (side * (hw + .35), yf - .35, edge), (side * (hw + .35), yb + .35, edge), (0, yb + .35, ridge),
+                  (0, yf - .35, ridge), facing=(side, 0, 2))
     x = -hw + .3
     while x < hw - .1:                                                     # corrugation on the gable ends
         for y, d in ((yf - .03, -1), (yb + .03, 1)):
@@ -240,32 +249,38 @@ def head_house(clay):
         for xx, d in ((hw + .03, 1), (-hw - .03, -1)):
             clay.quad('corrugation', (xx, y - .04, foot + .1), (xx, y + .04, foot + .1), (xx, y + .04, eave - .15), (xx, y - .04, eave - .15), facing=(d, 0, 0))
         y += .5
-    clay.box('louvre', 1.0, 3.4, yf - .12, yf - .02, foot + 1.2, foot + 4.2)   # louvre in the front gable
+    clay.box('louvre', 1.0, 3.4, yf - .02, yf + .2, foot + 1.2, foot + 4.2)    # louvre set into the front gable
     for vx, vy in VENTS:                                                   # ridge ventilators
-        clay.cylinder('steel', vx, vy, ridge - .6, ridge + 1.4, .7, steps=16)
+        seat = eave + (ridge - eave) * (1 - (abs(vx) + .7) / hw) - .1       # down through the roof slope at its low side
+        clay.cylinder('steel', vx, vy, seat, ridge + 1.4, .7, steps=16)
         clay.cylinder('roof', vx, vy, ridge + 1.4, ridge + 1.6, .85, steps=16)
-    for x, y in ((-3.0, 7.0), (3.0, 7.0)):                                 # posts carrying the overhang to the back row caps
-        cx, cy = min(silos(), key=lambda s: math.hypot(s[0] - x, s[1] - y))
-        beam(clay, 'frame', (x, y, cap_height(x, y, cx, cy)), (x, y, foot), .3)
 
 
 def gallery(clay):
+    """The conveyor gallery, in two segments that run into the shaft's side faces."""
     hl, hw, floor, eave, ridge = GALLERY
-    for (p, q), n in ((((-hl, -hw), (hl, -hw)), (0, -1)), (((hl, hw), (-hl, hw)), (0, 1))):
-        wall(clay, 'steel', p, q, floor, eave, n)
-    for x, n in ((-hl, -1), (hl, 1)):
-        clay.polygon('steel', [(x, -hw, floor), (x, hw, floor), (x, hw, eave), (x, 0, ridge), (x, -hw, eave)], (n, 0, 0))
-    flat_region(clay, 'steel', box(-hl, -hw, hl, hw), floor, up=False)
+    sh, yb = SHAFT[0], SHAFT[2]
+
+    def roof_z(y):
+        return eave + (ridge - eave) * (1 - abs(y) / hw)
     for side in (-1, 1):
-        clay.quad('roof', (-hl - .2, side * (hw + .2), eave - .05), (hl + .2, side * (hw + .2), eave - .05), (hl + .2, 0, ridge + .05),
-                  (-hl - .2, 0, ridge + .05), facing=(0, side, 3))
+        x_in, x_out = side * sh, side * hl
+        lo, hi = sorted((x_in, x_out))
+        for (p, q), n in ((((lo, -hw), (hi, -hw)), (0, -1)), (((hi, hw), (lo, hw)), (0, 1))):
+            wall(clay, 'steel', p, q, floor, eave, n)
+        clay.polygon('steel', [(x_out, -hw, floor), (x_out, hw, floor), (x_out, hw, eave), (x_out, 0, ridge), (x_out, -hw, eave)], (side, 0, 0))
+        clay.polygon('steel', [(x_in, yb, floor), (x_in, hw, floor), (x_in, hw, eave), (x_in, yb, roof_z(yb))], (-side, 0, 0))   # beyond the shaft's back
+        flat_region(clay, 'steel', box(lo, -hw, hi, hw), floor, up=False)
+        lo_r, hi_r = (lo - .2, hi) if side < 0 else (lo, hi + .2)
+        for s2 in (-1, 1):
+            edge = eave - (ridge - eave) * .2 / hw
+            clay.quad('roof', (lo_r, s2 * (hw + .2), edge), (hi_r, s2 * (hw + .2), edge), (hi_r, 0, ridge), (lo_r, 0, ridge), facing=(0, s2, 3))
     x = -hl + .25
     while x < hl:
-        for y, d in ((-hw - .03, -1), (hw + .03, 1)):
-            if d < 0 and abs(x) < SHAFT[0] + .1:
-                continue                                                   # inside the shaft
-            clay.quad('corrugation', (x - .04, y, floor + .08), (x + .04, y, floor + .08), (x + .04, y, eave - .1), (x - .04, y, eave - .1),
-                      facing=(0, d, 0))
+        if abs(x) > sh + .1:
+            for y, d in ((-hw - .03, -1), (hw + .03, 1)):
+                clay.quad('corrugation', (x - .04, y, floor + .08), (x + .04, y, floor + .08), (x + .04, y, eave - .1), (x - .04, y, eave - .1),
+                          facing=(0, d, 0))
         x += .5
     for x in sorted(set(BACK_X + FRONT_X)):                                # steel frames from the caps up to the gallery
         if abs(x) < HEAD[0] + .5:
@@ -274,7 +289,7 @@ def gallery(clay):
             cx, cy = min(silos(), key=lambda s: math.hypot(s[0] - x, s[1] - y))
             z0 = cap_height(x, y, cx, cy)
             beam(clay, 'frame', (x, y, z0), (x, y, floor), .22)
-        beam(clay, 'frame', (x, -hw + .2, floor - .3), (x, hw - .2, floor - .3), .18)
+        beam(clay, 'frame', (x, -hw + .2, floor - .11), (x, hw - .2, floor - .11), .18)       # cross beam under the floor
         cx, cy = min(silos(), key=lambda s: math.hypot(s[0] - x, s[1] + hw))
         beam(clay, 'frame', (x, -hw + .2, cap_height(x, -hw + .2, cx, cy) + .2), (x, hw - .2, floor - .35), .12)
 
@@ -287,12 +302,17 @@ def sheds(clay):
         holed_wall(clay, 'steel', (x0, yf), (1.0, 0.0), (0.0, -1.0), [(0, 0), (x1 - x0, 0), (x1 - x0, ef), (0, ef)], holes)
         for a, b, c, d in holes:
             niche(clay, (x0, yf), (1.0, 0.0), (0.0, -1.0), a, b, c, d, 5.4, 'interior')
-            flat_region(clay, 'interior', box(x0 + a, yf, x0 + b, yf + 5.4), .02)
+            mid = x0 + (a + b) / 2                                         # loading spout over the truck's place
+            clay.box('spout', mid - .8, mid + .8, yf + 2.2, yf + 3.8, 3.7, d)
+            clay.box('spout', mid - .3, mid + .3, yf + 2.7, yf + 3.3, 3.0, 3.7)
             flat_region(clay, 'pad', box(x0 + a - .4, yf - 6.0, x0 + b + .4, yf), .04)
         for x in (x0, x1):
-            if abs(abs(x) - SHAFT[0]) < 1e-6:
-                continue
             n = (-1, 0) if x == x0 else (1, 0)
+            if abs(abs(x) - SHAFT[0]) < 1e-6:                              # beside the shaft: close the part in front of it
+                ys = SHAFT[1]
+                zs = ef + (eb - ef) * (ys - yf) / (yb - yf)
+                clay.polygon('steel', [(x, yf, 0.0), (x, ys, 0.0), (x, ys, zs), (x, yf, ef)], (-n[0], 0, 0))
+                continue
             clay.polygon('steel', [(x, yf, 0.0), (x, yb, 0.0), (x, yb, eb), (x, yf, ef)], (*n, 0))
         lo = x0 if abs(abs(x0) - SHAFT[0]) < 1e-6 else x0 - .2                # no overhang into the shaft
         hi = x1 if abs(abs(x1) - SHAFT[0]) < 1e-6 else x1 + .2
@@ -309,7 +329,7 @@ def walkways(clay):
     z, yo, yi = WALKWAY
     for x0, x1 in ((-GALLERY[0] + 1.0, -SHAFT[0]), (SHAFT[0], GALLERY[0] - 1.0)):
         clay.box('frame', x0, x1, yo, yi, z - .15, z)
-        for y in (yo,):                                                    # guard rail on the open side, and at the outer end
+        for y in (yo, yi - .05):                                           # guard rails on both sides, and at the outer end
             clay.box('frame', x0, x1, y, y + .05, z + 1.05, z + 1.1)
             clay.box('frame', x0, x1, y, y + .05, z + .5, z + .54)
         xe = x0 if x0 < 0 else x1

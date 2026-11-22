@@ -1,0 +1,138 @@
+{
+  "schema": "rlasm-independent-architectural-clay-review-v1",
+  "candidate": "silo-cluster-clay-v004",
+  "archetype_id": "machine_aesthetic_heavy_industrial",
+  "variant_id": "heavy_silo_cluster",
+  "variant_index": 2,
+  "model_path": "artifacts/silo/v004/silo-cluster-clay-v004.glb",
+  "model_sha256": "00e97701487e9da1f7c38372b9510ee661e8a38e03f54d0bbae1ab5c764845cf",
+  "model_bytes": 1253560,
+  "reviewer": "Independent AI reviewer with no builder context. Not a human. Did not open: tools/catalogue_silo_cluster_pilot/build.py, verify.py, boards.py, render.cjs, cameras.json, test_silo_cluster.py or any test file, README.md, candidate.json, prework-manifest.json, the evidence/ and integration/ folders; artifacts/silo/*/build-report.json, prework-manifest.json, delivery-verification.json and builder-pixel-review.json. Used only the GLB, the locked references, the builder's 17 renders and 4 phone boards, the shared review page (tools/catalogue_silo_cluster_pilot/review.html) and its own renders and geometry scripts.",
+  "reviewed_utc": "2026-11-22T23:01:42Z",
+  "method": "RLASM v6.1",
+  "scope": "Holistic Gate G architectural-clay review of the exact GLB (sha256 and 1253560 bytes confirmed by the reviewer) against the locked oblique variant_2_angle_60.jpg (sha256 af657365f805692cad8c558e315ed7e2304db759d581452995cb2eea1f750ccc) and roof view variant_2_angle_90.jpg (sha256 98e2d4b3b35e7d9b0998ceff1efec6681c90bc01e41922145a3af5d4ee0ba9a5). Covered: massing and identity, construction plausibility, openings, programme, roof and edge closure, ground contact, floating and intersecting parts, holes, z-fighting, face orientation and close-up quality. Evidence: 17 builder renders and 4 phone boards (1080x1920) at full resolution; 27 reviewer renders from a reimport of the exact GLB in the shared review page; reference crops, blends and gridded comparisons; and a GLB parse (15 material-merged meshes, 26395 triangles, 0 images, 0 textures), with connected components, a contact graph from grade, coplanar and near-coplanar same-facing overlaps, winding against stored normals and open edges. Not covered: runtime integration, keeper status, textured identity, publication. variant_2.png (sha256 5bb665a685eb026f1462d3c6159fd8b1584b6ce9eeace03cb91311581d63580e) was inspected and excluded, as instructed.",
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_refused",
+  "architectural_clay_pass": false,
+  "keeper_approval": false,
+  "runtime_approval": false,
+  "publication_approval": false,
+  "counts": {"P0": 0, "P1": 3, "P2": 5},
+  "source_conflict_assessment": "1 Scale: reasonable. Setting the back row's eight caps to 76.4 m gives 9.2 m bins at a 9.6 m pitch, which is plausible for concrete grain bins. In my blends the silos sit on both locked views within the stated fit tolerance. Parting the front row round the shaft agrees with the roof view; the model's 3.7 m outward stagger is a little more than the roughly 2.3 to 2.8 m overhang of the outer front caps in the roof view, which is acceptable. 2 Heights: reasonable for the silos, caps, gallery and shaft. The 26 m walls and 3 m caps read correctly in the fitted overlay, and 30 px RMS is loose but adequate for the bins. The head house sits about 50 px high and reads too bulky in the same overlay, which supports F1. 3 Roof-view lean: acknowledged but not applied consistently. The head house is 21.6 m deep (22.3 m roof), which neither view supports. In the matched oblique its projected depth-to-width ratio is about 1.14 against about 0.76 in the reference, and in the roof view it spans about 197 px against a 140 px hub-row spacing; both point to roughly 12 to 15 m. The extra depth looks like the leaned roof outline read partly as plan (see F1). 4 Footprint: reasonable. Under RLASM, visible locked pixels override the catalogue's 80 by 50 m prose, so a long cluster of about 86 by 25 m with its yard is the right reading. 5 Inferred parts: mostly reasonable. The plain north elevation with mirrored spouts, the gable-ended gallery and the hollow interiors are acceptable inferences for clay. Leaving out stairs is acceptable because the walkways reach shaft doors at sill height. The steep steel element on the shaft's south face in the oblique looks like an inclined ladder or brace, not clearly a walkway stair, so omitting it is a P2 note. One part of the inferred north side is not acceptable: carrying half the head house over the back row on two posts (F1). variant_2.png: I agree it is unusable as a street-view reference. It is a textured render of an old LEGO model showing one row of five silos, a floating glazed box, an external spiral stair, rust-coloured pipes and a windowed plinth. That topology contradicts both photographs (two rows of eight bins, a concrete shaft with a head house, a gallery over the caps), so it cannot be compatible with the locked oblique and roof views. The model was rightly not failed for lacking a street-view match. The image still needs a person's ruling or a replacement.",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "P1",
+      "title": "Head house too deep and cantilevered 9.4 m beyond the shaft on two posts standing on silo caps, unlike the locked references",
+      "evidence": "Geometry: the head house body spans x ±4.7, y -12.0 to 9.6 and z 36 to 49.5, so it is 21.6 m deep (the roof is 22.3 m). The concrete shaft spans only x ±3.6 and y -11.7 to 0.2, about 11.9 m deep. The northern 9.4 m of the head house, a box about 9.4 by 9.4 by 13.5 m, rests on two 0.3 m posts at (±3, 7, 27.15 to 36). These land on the cone slopes of back-row caps 4 and 5, which is not a plausible bearing for a head house. The gallery runs as one continuous box from x -43 to 43: its southern 2.5 m is buried in the shaft and its northern 2.1 m passes outside the shaft's north face, under the overhang. Source: in variant_2_angle_60 the concrete tower's west face continues under the full depth of the head house, from its NW corner down to where the left gallery segment butts into the tower (refcrops/obl_under_headhouse.png). On the same pixel box of the builder's fitted match_oblique, roughly half the head house's west underside is open air with one thin post (refcrops/match_under_headhouse.png). The projected depth-to-width ratio is about 1.14 in the model against about 0.76 in the reference (refcrops/headhouse_ref_vs_match_grid.png), and the blend shows the model's head house extending up and to the left of the reference (refcrops/blend_oblique.png). In variant_2_angle_90 the head house spans about 1.4 hub-row pitches including lean; in my perspective emulations it spans about 2.7 (renders r22, r23). Both views point to a head house about 12 to 15 m deep, sitting flush on the concrete. Visible in the builder's left_side, right_side, rear, rear_side and aerial views, and in reviewer renders r06, r07, r12, r19, r21 and r27, where it reads as a heavy box on stilts.",
+      "required_change": "Re-proportion the tower and head house to match the locked views. Make the head house about 12 to 15 m deep and seat it on concrete for its full depth: either shorten it to the shaft footprint (keeping the small ledge seen in the oblique), or carry the concrete working house north under its whole plan so the tower's west face continues down to the gallery as in the oblique. Remove the posts that stand on the caps. Let the two gallery segments abut or enter the tower faces instead of passing outside its north face. Re-place the ventilators on the corrected roof, then rerender the fitted oblique, the roof view, both side views, the rear and rear-side views, and a close-up of the head house underside and junction."
+    },
+    {
+      "id": "F2",
+      "severity": "P1",
+      "title": "Both loading sheds are open on the side facing the shaft, exposing hollow shells",
+      "evidence": "Each shed's 30 STEEL triangles make a front wall with two bay tunnels, an outer side wall (x = ±22.7) and a back wall (y = -9.4), but there is no inner side wall at x = ±3.6. The shaft covers that line only for y -11.7 to -9.4. For y -15.4 to -11.7, each shed therefore has an opening about 3.7 m wide and 6.5 to 6.7 m high under the roof edge. It looks straight into the hollow box: the back of the front wall, the outer faces of the bay tunnels and the bare apron. Visible in the builder's mandatory front_corner view (refcrops/builder_front_corner_shedgap.png) and in reviewer renders r01 (from the SE), r02 (from the SW), r03 (dark slots either side of the shaft, seen from the front) and r14.",
+      "required_change": "Close each shed's inner end wall (x = ±3.6, y -15.4 to -11.7, from grade up to the roof soffit), with matching corrugation and fascia. Alternatively model the sheds as closed solids whose bay tunnels are the only openings. Rerender front_corner, the aerial view and both SE and SW shed close-ups."
+    },
+    {
+      "id": "F3",
+      "severity": "P1",
+      "title": "Both roof ventilators float above the head house roof",
+      "evidence": "Each ventilator stack (STEEL, centre (±2.4, 0.5), radius 0.7) starts at z = 48.9, and its cap (ROOF, z 50.9 to 51.1) touches only the stack. The roof plane is z = 49.55 - 0.5248|x|, which gives 48.66 at the stack's inner edge (|x| = 1.7) and 47.92 at its outer edge (|x| = 3.1). The gaps are therefore 0.24 to 0.98 m, and nothing such as a curb or flashing fills them. The contact graph from grade (3 cm tolerance) leaves both stack-and-cap pairs unanchored. Reviewer render r04, from the gable end, shows sky between each stack and the roof slope; r05, from the east, shows each stack's shadow on the roof starting well away from its base.",
+      "required_change": "Extend each stack, or add a curb or flashing, so it passes through the sloped roof plane. This is RLASM's 'chimneys reach supports'. Rerender a roof-level close-up from the gable and from the side."
+    },
+    {
+      "id": "F4",
+      "severity": "P2",
+      "title": "Pour bands run uncut across shaft openings",
+      "evidence": "On the shaft's south face, the CLAY_POUR bands (2 cm proud, 0.1 m tall) cross 4 of the 6 windows: z 19.15 to 19.25, 23.95 to 24.05, 28.75 to 28.85 and 33.55 to 33.65. They also cross the ground door just under its head (z 2.35 to 2.45). Each reads as a strip floating across the opening, in front of the glass (reviewer r13; builder glass_close).",
+      "required_change": "Cut the bands at each opening so every feature has one visual owner. Stop the bands at the jambs, or move the openings between bands."
+    },
+    {
+      "id": "F5",
+      "severity": "P2",
+      "title": "Shaft windows have almost no occupied depth",
+      "evidence": "Each window has a cut wall and steel returns (a 0.35 m reveal), with the glass 0.12 m in and the interior plane only 0.23 m behind the glass, flat at the back of the reveal. There is no room space on any side, above or below (r13). At this scale, on small windows in a concrete elevator shaft, it reads acceptably. It is still below the RLASM opening-section ideal.",
+      "required_change": "Optional for clay: set an interior stair or shaft-room plane about 1 m behind the glass, with returns."
+    },
+    {
+      "id": "F6",
+      "severity": "P2",
+      "title": "Walkways have a railing on the outer edge only",
+      "evidence": "On both 38.4 m walkways (deck z 9.85 to 10, y -10.8 to -9.6) the posts and rails run along y = -10.8 only. The inner edge opens onto the voids between silos, up to about 4.8 m deep and about 10 m high (r26, r14). The reference catwalks show railings on both sides (refcrops/obl_walkway_left_zoom.png). The decks do meet the recessed shaft doors cleanly at sill height (r14), and the brackets reach the silo walls.",
+      "required_change": "Add an inner railing, or toe plates and a rail, along each walkway. Optionally add the inclined steel ladder or brace on the shaft's south face that shows in both locked views."
+    },
+    {
+      "id": "F7",
+      "severity": "P2",
+      "title": "Loading bays have little programme, and their apron and roofs simplify the reference",
+      "evidence": "The four bays are empty 3.8 by 4.6 by 5.4 m tunnels ending in a dark back wall (r15), with no doors, dock, load-out spout or hopper, and no reading of 'vehicle access beneath silos'. A CLAY_INTERIOR floor sits 2 cm above the tunnel's own STEEL floor across about 82 m², a duplicate surface that may z-fight at long range. The model has four flat pads, one per door, where the reference shows one depressed truck ramp per shed and roll-up door frames. Its shed roofs are nearly flat lean-tos (6.45 to 7.6 m) with a straight back edge, where the reference shows steeper corrugated lean-tos cut round the silo bases (refcrops/obl_sheds.png).",
+      "required_change": "Optional for clay: add door frames or part-open roll-up doors, a load-out spout or hopper inside each bay, and one depressed ramp per shed as in the reference. Remove the duplicate bay floor."
+    },
+    {
+      "id": "F8",
+      "severity": "P2",
+      "title": "Minor contact and finish gaps",
+      "evidence": "The head house body has no top face, and its roof plane sits 5 to 8.4 cm above the wall tops and gable rakes; the contact graph leaves it unanchored at 3 cm tolerance, though it is not visible at review range (r25). The frame cross-beams (z 30.61 to 30.79) stop 0.21 m below the gallery floor (z 31.0), so the posts alone carry the gallery and the beams read as hanging below it (refcrops/r09_beam_gap_zoom.png). The corrugation ribs are zero-thickness quads 3 cm off the walls. The head house louvre is a dark panel standing proud of the gable rather than a recessed opening.",
+      "required_change": "Seat the head house roof on its walls, raise the frame beams to bear on the gallery floor, and give the louvre a recessed reveal when the head house is reworked for F1."
+    }
+  ],
+  "reviewer_renders": [
+    "artifacts/silo/v004/independent-review/renders/r01_shed_gap_from_se.png",
+    "artifacts/silo/v004/independent-review/renders/r02_shed_gap_from_sw.png",
+    "artifacts/silo/v004/independent-review/renders/r03_shed_gap_front.png",
+    "artifacts/silo/v004/independent-review/renders/r04_ventilators_gable.png",
+    "artifacts/silo/v004/independent-review/renders/r05_ventilators_east.png",
+    "artifacts/silo/v004/independent-review/renders/r06_headhouse_under_nw.png",
+    "artifacts/silo/v004/independent-review/renders/r07_headhouse_under_west.png",
+    "artifacts/silo/v004/independent-review/renders/r08_cap_close_front_row.png",
+    "artifacts/silo/v004/independent-review/renders/r09_frames_on_caps_between_rows.png",
+    "artifacts/silo/v004/independent-review/renders/r10_gallery_west_end_under.png",
+    "artifacts/silo/v004/independent-review/renders/r11_gallery_meets_shaft_south_east.png",
+    "artifacts/silo/v004/independent-review/renders/r12_headhouse_underside_from_north_low.png",
+    "artifacts/silo/v004/independent-review/renders/r13_shaft_windows_oblique.png",
+    "artifacts/silo/v004/independent-review/renders/r14_walkway_end_at_shaft_west.png",
+    "artifacts/silo/v004/independent-review/renders/r15_shed_bay_interior.png",
+    "artifacts/silo/v004/independent-review/renders/r16_shed_roof_to_silos_above.png",
+    "artifacts/silo/v004/independent-review/renders/r17_spouts_front_ground.png",
+    "artifacts/silo/v004/independent-review/renders/r18_north_side_close.png",
+    "artifacts/silo/v004/independent-review/renders/r19_east_end.png",
+    "artifacts/silo/v004/independent-review/renders/r20_north_ground_contact.png",
+    "artifacts/silo/v004/independent-review/renders/r21_rear_whole_low.png",
+    "artifacts/silo/v004/independent-review/renders/r22_topview_perspective_emulation_a.png",
+    "artifacts/silo/v004/independent-review/renders/r23_topview_perspective_emulation_b.png",
+    "artifacts/silo/v004/independent-review/renders/r24_oblique_like_reference_light.png",
+    "artifacts/silo/v004/independent-review/renders/r25_headhouse_eave_under_close.png",
+    "artifacts/silo/v004/independent-review/renders/r26_walkway_inner_edge_valley.png",
+    "artifacts/silo/v004/independent-review/renders/r27_match_view_head_house_close.png",
+    "artifacts/silo/v004/independent-review/refcrops/headhouse_ref_vs_match_grid.png",
+    "artifacts/silo/v004/independent-review/refcrops/obl_under_headhouse.png",
+    "artifacts/silo/v004/independent-review/refcrops/match_under_headhouse.png",
+    "artifacts/silo/v004/independent-review/refcrops/blend_oblique.png",
+    "artifacts/silo/v004/independent-review/refcrops/blend_top.png",
+    "artifacts/silo/v004/independent-review/refcrops/builder_front_corner_shedgap.png",
+    "artifacts/silo/v004/independent-review/refcrops/r09_beam_gap_zoom.png"
+  ],
+  "reviewer_scripts": [
+    "artifacts/silo/v004/independent-review/scripts/render.cjs",
+    "artifacts/silo/v004/independent-review/scripts/views_a.json",
+    "artifacts/silo/v004/independent-review/scripts/views_b.json",
+    "artifacts/silo/v004/independent-review/scripts/views_c.json",
+    "artifacts/silo/v004/independent-review/scripts/views_d.json",
+    "artifacts/silo/v004/independent-review/scripts/glbload.py",
+    "artifacts/silo/v004/independent-review/scripts/comps.py",
+    "artifacts/silo/v004/independent-review/scripts/coplanar.py",
+    "artifacts/silo/v004/independent-review/scripts/nearplanar.py",
+    "artifacts/silo/v004/independent-review/scripts/floating.py",
+    "artifacts/silo/v004/independent-review/scripts/graph.py"
+  ],
+  "strengths": [
+    "The identity reads at once and matches both locked views. There are two rows of eight cylindrical concrete bins, with the front row parted round a concrete shaft that stands proud of it. A gabled head house with a north-south ridge carries two ventilators. A long corrugated gallery runs over the caps on steel portal frames. Walkways reach shaft doors, two loading sheds of two bays each flank the shaft, and pads, spouts and a yard apron complete the ground.",
+    "The bin, cap and gallery heights fit the fitted oblique well. The bins' height-to-diameter ratio and the gallery's height above the caps are convincing.",
+    "The caps are good up close. They have radial ribs, a hub, perimeter railings with posts and a top rail. The gallery frame posts land with positive contact on the cap eaves (z 26.01) and cone slopes (about 8 cm into the surface).",
+    "The geometry is clean. It has 0 images and 0 textures, winding matches the stored normals with no inverted faces, and all materials are double-sided. The only exact coplanar overlaps are hidden contact faces, so no visible z-fighting was found. Every part except the ventilators, the head house roof and the 3 cm corrugation decals connects to grade through the contact graph.",
+    "The gallery is closed: gable ends, a 0.2 m roof overhang and a closed underside, with the roof meeting the walls within 6 mm. The walkway decks meet recessed shaft doors exactly at sill level, and their brackets reach the silo walls.",
+    "The north elevation and both ends are complete and plausibly inferred. The silos and spouts meet grade all round.",
+    "The builder evidence is complete. It includes the full camera set, matched oblique and roof views, family close-ups and four 1080x1920 phone boards."
+  ]
+}

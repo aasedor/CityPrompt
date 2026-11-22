@@ -15,17 +15,20 @@ publication.
   - The outer silos have discharge spouts at their feet.
   - The front row parts round the elevator shaft, so it runs 7 m longer than the back row.
 - **Elevator shaft:** concrete, 36 m high, standing 2.3 m proud of the front row. It has a
-  column of six windows in recessed openings, a door at grade, and doors onto the walkways.
-- **Head house:** corrugated steel over both rows, eaves at 47 m and ridge at 49.5 m.
-  - It has gable ends, a closed underside, roof overhangs and a louvre in the front gable.
-  - Two ventilators stand on the ridge.
-  - Two posts carry its north overhang down to the back row's caps.
-- **Conveyor gallery:** 86 m long, from 31 to 35 m, over the caps on steel frames at every
-  column, with corrugated sides, gable ends and a closed underside.
+  column of six windows with rooms 1.2 m behind them, a door at grade, and doors onto the
+  walkways.
+- **Head house:** corrugated steel, 12.2 m deep, seated on the shaft for its whole depth and
+  overhanging its sides by 1.1 m, with eaves at 47 m and the ridge at 49.5 m. It has gable ends,
+  a closed underside, roof overhangs, a louvre set into the front gable, and two ventilators that
+  pass down through the roof.
+- **Conveyor gallery:** 86 m long overall, from 31 to 35 m, in two segments that run into the
+  shaft's side faces. It stands over the caps on steel frames at every column and has corrugated
+  sides, gable ends and closed undersides.
 - **Loading front:**
-  - two sheds, each two silos wide, with two truck bays each, 3.8 m by 4.6 m, opening into
-    5.4 m deep interiors, and concrete pads in front;
-  - walkways at 10 m along the front row, with guard and mid rails, ending at the shaft.
+  - two sheds, each two silos wide, closed at both ends, with two truck bays each, 3.8 m by
+    4.6 m, opening into 5.4 m deep interiors with a loading spout over each truck's place, and
+    concrete pads in front;
+  - walkways at 10 m along the front row, with rails on both sides, ending at doors in the shaft.
 - **Size:** a concrete yard round the cluster. The complete model is 94 m by 38.8 m by 51.1 m,
   with about 26,000 triangles in 15 clay roles, 1.3 MB, and no textures.
 
@@ -70,11 +73,11 @@ Open for a person to rule on:
 ## Reproduce
 
 ```bash
-python3 tools/catalogue_silo_cluster_pilot/build.py --output artifacts/silo/v004 --version 4
+python3 tools/catalogue_silo_cluster_pilot/build.py --output artifacts/silo/v005 --version 5
 python3 -m http.server 8765 --bind 127.0.0.1 &          # from the repository root
-node tools/catalogue_silo_cluster_pilot/render.cjs artifacts/silo/v004/silo-cluster-clay-v004.glb artifacts/silo/v004/renders
-python3 tools/catalogue_silo_cluster_pilot/boards.py artifacts/silo/v004
-python3 tools/catalogue_silo_cluster_pilot/verify.py artifacts/silo/v004
+node tools/catalogue_silo_cluster_pilot/render.cjs artifacts/silo/v005/silo-cluster-clay-v005.glb artifacts/silo/v005/renders
+python3 tools/catalogue_silo_cluster_pilot/boards.py artifacts/silo/v005
+python3 tools/catalogue_silo_cluster_pilot/verify.py artifacts/silo/v005
 python3 -m pytest tools/catalogue_silo_cluster_pilot
 ```
 
