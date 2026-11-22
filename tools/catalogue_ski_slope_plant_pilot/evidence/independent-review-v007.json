@@ -1,0 +1,150 @@
+{
+  "schema": "rlasm-independent-architectural-clay-review-v1",
+  "candidate": "wte-ski-slope-clay-v007",
+  "archetype_id": "waste_to_energy_plant",
+  "variant_id": "wte_ski_slope",
+  "variant_index": 0,
+  "model_path": "artifacts/ski-slope/v007/wte-ski-slope-clay-v007.glb",
+  "model_sha256": "de6c4eeff0b1466da0764bc1391ced99077f0ed3166fb3c5504e6902588faf3a",
+  "model_bytes": 4700292,
+  "reviewer": "Independent AI reviewer with no builder context. Not a human. Did not open: tools/catalogue_ski_slope_plant_pilot/build.py, verify.py, boards.py, render.cjs, cameras.json, test_ski_slope_plant.py or any other test file, README.md, candidate.json, prework-manifest.json, the evidence/ and integration/ folders, or any artifacts/ski-slope/*/build-report.json, prework-manifest.json, delivery-verification.json or builder-pixel-review.json. Read only the GLB, the locked references, the builder renders and phone boards, the canonical method files, and review.html (the supplied review renderer).",
+  "reviewed_utc": "2026-11-22T15:49:19Z",
+  "method": "RLASM v6.1",
+  "scope": "Holistic Gate G architectural-clay review of the exact GLB (sha256 verified, 4700292 bytes, 0 images, 0 textures, 30 meshes, 65823 triangles). Checked against the locked oblique (variant_0_angle_60.jpg) and roof view (variant_0_angle_90.jpg); variant_0.png was excluded as instructed. Covers massing and identity, openings, transparency and programme, roof and edge closure, ground contact, floating or intersecting parts, holes, z-fighting, face orientation and close-up quality. Evidence: all 18 builder renders and 4 phone boards at full resolution; 48 reviewer renders of the exact GLB from the supplied review page; Python geometry checks (component inventory, glass/light/reveal pairing, coplanar overlap search, winding against stored normals, outward orientation, support contact, targeted ray casts). This review does not grant keeper, runtime or publication approval.",
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_refused",
+  "architectural_clay_pass": false,
+  "keeper_approval": false,
+  "runtime_approval": false,
+  "publication_approval": false,
+  "counts": {
+    "P0": 0,
+    "P1": 4,
+    "P2": 5
+  },
+  "source_conflict_assessment": "1. Scale and heights: handled reasonably. The block's plan ratio (159/60 = 2.65) matches the roof view (about 2.64). The wing widths (west wide part about 18 m, east about 25 m) and the pier (29 m long, about 5 m deep) agree with the roof view at 0.204 m/px. The single straight parapet from 39.5 m to 80.2 m is consistent with the oblique, and the 29.8 m wing roof gives the right roof-to-parapet step at the low end. 2. Stack: the roof view is the right plan authority. It is near-nadir, and the stack's apparent lean is the expected perspective displacement of a tall object away from the nadir. Taking the base from the paved collar on the west wing roof and standing the stack upright at about 100 m is reasonable. The fitted oblique shows it somewhat further west than the photograph; that difference is recorded, not hidden. 3. Footprint: agreed. The locked pixels override the catalogue's 160 x 70 m prose, and the 103 m width is needed to hold the measured wings. 4. Inferred parts: the west and north faces, the north roller doors, the wings' southern end and the interiors continue the visible grammar plausibly. However, the inferred interior and window scheme is where defects F1 and F2 arise, so the inference is acceptable in principle but not in its current construction. variant_0.png: I agree it is unusable as a reference. It is a grey render of an earlier generated model (checkerboard façade, dark plant box and stack on the summit, a single central climbing panel) that contradicts both photographs and is not catalogue proof of this building. Its exclusion should stand until a person rules on it.",
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "P1",
+      "title": "An uncut inner wall face blocks the slot windows above 39.2 m on both long faces and above 71.06 m on the north face",
+      "evidence": "Geometry: CLAY_CLADDING holds one triangle pair on each long side at y=+/-29.4 spanning x -72.97..72.97, with a horizontal bottom edge at z=39.21 and a top edge on the parapet line. That puts it 0.35 m behind the slot glass (y=+/-29.75) and 0.30 m in front of each window's CLAY_LIGHT occupied plane (y=+/-29.1). So 124 of the 190 long-face slot windows look onto bare grey cladding instead of the occupied layer: 80 fully and 44 partly. That is about 1030 of 1968 m2 of long-face glazing. The north wall's inner face (x=78.9, z 71.06-80.2) does the same to 13 north windows. Pixels: across both long elevations the windows switch from amber to grey along one hard horizontal line at about 39.2 m, and single windows are split half amber, half grey. This shows in the builder's front.png, rear.png, facade_close.png, architecture_close.png, stack_contact.png and climbing_wall.png, and in reviewer r01_east_overall, r03_upper_windows_close, r04_lower_upper_boundary and h02_holes_se_high. In the locked oblique, every slot reads as uniformly lit glazing up to the parapet. This is the method's 'carrier blocks the opening' failure: the wall, returns and glass exist, but the occupied layer is hidden by an opaque owner that was never cut.",
+      "required_change": "Limit the parapet inner face to the zone above the roof surface (turf, gravel and stair line up to the coping), or cut it at every opening. Do the same for the north wall's inner face above the upper terrace. Then confirm in close renders of the east, west and north faces that every slot window shows its occupied plane at every height, and rerender the full camera set."
+    },
+    {
+      "id": "F2",
+      "severity": "P1",
+      "title": "Window niches push through the summit enclosure walls into the upper terrace",
+      "evidence": "13 north-face window niches (glass heads up to 75.7 m) rise as much as 4.64 m above the upper terrace (71.06 m). Each 0.9 m-deep reveal box and its amber CLAY_LIGHT plane sticks 0.3 m past the wall's inner face (x=78.9) into the 2.6 m gap behind the pavilion. Three west-face niches at x 61.9-70.7 stick 0.13-1.24 m above the terrace floor through the inner face at y=29.4; the lowest reads as a dark box lying on the floor against the wall. A fourth at x 39.7-41.1 pokes 0.6 m above the gravel strip but stays hidden by the flight's side wall. Visible in reviewer r19_behind_pavilion_north_wall, r32_upper_terrace_west_strip and r34_summit_overview_from_slope (left edge). These are intersecting parts on a public roof terrace.",
+      "required_change": "Re-schedule the window heads on the north and west faces so that no niche crosses an inner face into an open roof space. Alternatively, build these openings as true through-openings in the summit screen wall, with returns on both faces and no occupied plane. Then verify with terrace-level renders behind and beside the pavilion."
+    },
+    {
+      "id": "F3",
+      "severity": "P1",
+      "title": "The climbing-wall pier is open at the back above the parapet, with hold bases z-fighting through the panel",
+      "evidence": "From x 16.3 to 45.3 the pier rises about 2.5 m above the main parapet coping, up to its sloped cap (65.83 to 73.57 m). Above the parapet it has no face at y=-30. Horizontal rays cast from the slope side at (x,-20,z) for x=20, 30, 40, 44 above the parapet hit nothing until the back of the single-quad CLAY_CLIMB panel at y=-35.3. From the eastern stepped path you look through and over the glass guard into the hollow pier: a grey cavity under the cap. The hold base faces, coplanar with the panel at y=-35.3, show through as flickering coloured squares. Coplanar check: about 480 overlapping hold and panel faces. Visible in reviewer r22_pier_back_from_slope, r36_pier_open_back_close and r37_pier_open_back_above.",
+      "required_change": "Close the pier as a solid volume. Add the back face (or wrap the cladding and coping) from the parapet coping up to the sloped cap along the full 29 m. Keep the hold base faces off the climbing plane, or set them slightly inside a closed volume, so the panel cannot show them from either side."
+    },
+    {
+      "id": "F4",
+      "severity": "P1",
+      "title": "The flights between the summit terraces have no guard beside a drop of up to 4.1 m",
+      "evidence": "The stepped paths (y +/-24.4..28.8) keep climbing from the lower terrace (66.96 m, x=31) to the upper terrace (71.06 m, x=46.9). Their inner sides face the lower terrace with a drop that grows from 0 to 4.1 m. CLAY_GUARD has a 1.1 m panel only along the upper terrace edge (x=46.88, y +/-24.4) and on the outer parapets. There is no guard along either flight's inner edge. Visible in reviewer r09_flight_between_terraces_side, r10_flight_low_angle and r21_west_window_by_flight, and at the left edge of the builder's summit.png. The locked oblique shows glass guards running with the stairs up to the summit terraces. This is not plausible public circulation.",
+      "required_change": "Add glass guards matching the slope guards along the inner edge of both summit flights, from x=31 to 46.9, joined to the upper-terrace edge guard. Prove them in a terrace-level render."
+    },
+    {
+      "id": "F5",
+      "severity": "P2",
+      "title": "A ledge from a corner-radius change at 30.4 m on both north corners",
+      "evidence": "Below 30.4 m the north corners have a 5 m radius; above it, about 6.5 m. This leaves a ledge up to 0.6 m wide, capped with a CLAY_COPING and CLAY_GRAVEL sliver (the gravel sits at 29.81 m inside the 30.4 m rim), and the cladding joints break at the step. The kink shows in the builder's right_side.png and climbing_wall.png, and in reviewer r16_north_corner_ledge_ne, r17_north_corner_ledge_nw and g04_ground_north. Neither locked photograph shows it.",
+      "required_change": "Run one corner radius full height on the main block's north corners, or justify the step from the source pixels and detail it as a deliberate setback."
+    },
+    {
+      "id": "F6",
+      "severity": "P2",
+      "title": "The occupied layer behind the slot windows is very shallow",
+      "evidence": "Every slot window is a 0.9 m reveal box. The glass sits 0.25 m in and a flat amber CLAY_LIGHT panel closes the back, only 0.65 m behind the glass. Only 3 CLAY_INTERIOR components exist, all in the bar. In grazing close-ups (reviewer r02 and r35, builder glass_close.png) the slots read as lit niches rather than room depth. This is acceptable at the scale of an 80 m clay façade but sits at the method's minimum.",
+      "required_change": "Optional: deepen the offset of the occupied plane, or add a floor or ceiling edge inside the reveal, where the slots open onto occupied floors."
+    },
+    {
+      "id": "F7",
+      "severity": "P2",
+      "title": "The stack is simplified to two straight cylinders of unequal height",
+      "evidence": "CLAY_STACK is two interpenetrating constant-section tubes, 100 m (r 3.6) and 97 m (r 3.0). The locked oblique shows a tapering twin-flue shaft with a helical twist and both flues ending at nearly the same level. The stack still reads as a twin-flue stack (reviewer r25_stack_base, r26_stack_top), but its signature taper and twist are missing.",
+      "required_change": "Optional but recommended: taper the shafts, bring the two flue tops to near-equal height, and suggest the twist."
+    },
+    {
+      "id": "F8",
+      "severity": "P2",
+      "title": "Missing secondary summit and site details",
+      "evidence": "The source shows festoon lights over the upper terrace, a dark pavilion roof, and a turf pad at the foot of the climbing wall. The model has no festoon lighting, a light pavilion roof, and no pad. The north roller doors are plain flat panels. Compare builder summit.png and reviewer r34 against variant_0_angle_60.jpg and variant_0_angle_90.jpg.",
+      "required_change": "Optional: add festoon lines between simple posts, darken the pavilion roof, add the turf pad, and give the roller doors slat relief."
+    },
+    {
+      "id": "F9",
+      "severity": "P2",
+      "title": "Small uncapped pits where the wing copings stop short of the main block",
+      "evidence": "At the north end of each wing (x about 47 on the west, about -19.5 on the east) the coping stops 0.6 m short of the main block wall. This leaves an uncapped 0.5 x 0.5 m pit at the top of the wing wall. The end walls themselves are closed (reviewer r28 and r31). The pit shows only from directly above: enclosed background pixels in h01_holes_top_ortho (crops h01_crop_4 and h01_crop_5) and reviewer r29. No other see-through holes were found in the four high oblique background tests (h02-h05).",
+      "required_change": "Carry the wing end copings through to the main block wall."
+    }
+  ],
+  "reviewer_renders": [
+    "artifacts/ski-slope/v007/independent-review/renders/g01_ground_east.png",
+    "artifacts/ski-slope/v007/independent-review/renders/g02_ground_south.png",
+    "artifacts/ski-slope/v007/independent-review/renders/g03_ground_west.png",
+    "artifacts/ski-slope/v007/independent-review/renders/g04_ground_north.png",
+    "artifacts/ski-slope/v007/independent-review/renders/g05_ground_ne_corner.png",
+    "artifacts/ski-slope/v007/independent-review/renders/h01_crop_4.png",
+    "artifacts/ski-slope/v007/independent-review/renders/h01_crop_5.png",
+    "artifacts/ski-slope/v007/independent-review/renders/h01_holes_top_ortho.png",
+    "artifacts/ski-slope/v007/independent-review/renders/h02_holes_se_high.png",
+    "artifacts/ski-slope/v007/independent-review/renders/h03_holes_nw_high.png",
+    "artifacts/ski-slope/v007/independent-review/renders/h04_holes_ne_high.png",
+    "artifacts/ski-slope/v007/independent-review/renders/h05_holes_sw_high.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r01_east_overall.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r02_slot_windows_grazing.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r03_upper_windows_close.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r04_lower_upper_boundary.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r05_visitor_entrance.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r06_north_roller_doors.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r07_low_end_service_doors.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r08_stepped_path_guard.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r09_flight_between_terraces_side.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r10_flight_low_angle.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r11_bar_pavilion_plant.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r12_summit_ne_corner_coping.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r13_summit_nw_corner_coping.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r14_pier_top_and_north_return.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r15_pier_base_contact.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r16_north_corner_ledge_ne.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r17_north_corner_ledge_nw.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r18_gap_under_east_flight.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r19_behind_pavilion_north_wall.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r20_upper_terrace_west_edge.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r21_west_window_by_flight.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r22_pier_back_from_slope.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r23_east_wing_main_junction.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r24_west_wing_narrow_strip.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r25_stack_base.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r26_stack_top.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r27_wing_parapet_corner.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r28_west_wing_north_end_junction.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r29_west_wing_north_end_from_above.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r30_east_wing_north_end_junction.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r31_east_wing_north_end_ground.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r32_upper_terrace_west_strip.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r34_summit_overview_from_slope.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r35_slot_windows_upper_east_grazing.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r36_pier_open_back_close.png",
+    "artifacts/ski-slope/v007/independent-review/renders/r37_pier_open_back_above.png",
+    "artifacts/ski-slope/v007/independent-review/independent-review-defects-board.png"
+  ],
+  "strengths": [
+    "The measured plan and massing are faithful to the locked roof view and oblique: a 60 x 159 m rounded-corner main block, the stepped narrow-to-wide west wing, the south-east wing, the summit zone taking about 30% of the block length, and the climbing pier in the right position and at the right size on the long east face.",
+    "The ski slope is legible and well made: striped turf with a run-out apron at the low end, stepped paths (167 steps at 0.18 m rise and 0.67 m going) with closed sides, gravel margins, a parapet only about 0.3 m above the turf, and glass guards on the parapet and around the low end.",
+    "The summit programme reads clearly: a lower terrace with seating and a 6 m-deep glazed bar with a counter, an upper terrace with a guard at its edge, a nine-bay pavilion with 4.5 m-deep lit bays, a plant enclosure and rooftop units.",
+    "Ground contact is clean all round, with a paving apron. The service doors, north roller doors and visitor entrance are recessed with returns, and the entrance has a canopy and a closed 4 m lobby.",
+    "Clean construction hygiene: no textures or images, no degenerate triangles, winding agrees with the stored normals on every mesh, exterior faces point outward, every hold, furniture piece and planting clump sits on its support, and no see-through holes appear from high oblique views.",
+    "The builder recorded the source conflicts openly and resolved them in the right authority order (roof view for plan, oblique for heights, pixels over prose)."
+  ]
+}

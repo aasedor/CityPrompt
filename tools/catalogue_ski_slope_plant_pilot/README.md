@@ -13,29 +13,31 @@ local pilot: not in the catalogue, not runtime-tested and not approved for publi
   - Its parapet climbs in one straight line from 39.5 m at the low end to the 80.2 m
     summit, as the oblique shows.
   - The long faces carry tall slot windows in staggered columns. Each one is cut through
-    the wall, with reveals, glass, glazing bars and a lit room face behind.
+    the wall, with reveals, glass, glazing bars and a lit room face 1.4 m behind, and stops
+    1.2 m below the walking surface above it.
 - **The roof:**
   - one green turf slope in groomed stripes;
   - a stepped path down each side, with 0.18 m risers, and gravel edge strips;
   - parapets with a glass guard beside the slope.
 - **The summit:**
   - a lower terrace with tables, in front of a glazed bar with a lit interior;
-  - short flights up to the upper terrace, which has a glass guard;
-  - a pavilion with lit glazing and rooftop units, and a plant enclosure.
+  - short flights up to the upper terrace, guarded on their open side, and a glass guard
+    along the upper terrace's front;
+  - a pavilion with lit glazing, a dark roof and rooftop units, and a louvred plant enclosure.
 - **Street front** (the long east face of the roof view, facing -y):
   - a visitor entrance, cut into the wall with framed glazed doors under a transom, a
     canopy and a lit sign;
-  - a climbing wall on a pier standing 5.3 m proud of the face, with 26 large volumes and
-    240 holds in four colours.
-- **Other doors:** two roller doors in the back (north) end; two service doors from the
-  wing roof into the low end.
+  - a climbing wall on a closed pier standing 5.3 m proud of the face, with 26 large volumes
+    and 240 holds in four colours, and a turf pad at its foot.
+- **Other doors:** two slatted roller doors in the back (north) end; two service doors from
+  the wing roof into the low end.
 - **Wings:** green-roofed wings 29.8 m high wrap the south half and run north beside the
   block as a narrow west strip. They have planting, gravel strips, hatches and an upstand,
   with slot windows on their straight walls.
-- **Stack:** twin flues merged into one tapering stack, 100 m high, standing in a gravel ring
-  on the west wing roof.
+- **Stack:** twin tapering flues, the second winding 110 degrees round the first, both 100 m
+  high, standing in a gravel ring on the west wing roof.
 - **Size:** a 4 m apron round the whole. The complete model is 183 m by 111 m by 100 m, with
-  about 66,000 triangles in 30 clay roles, 4.7 MB, and no textures.
+  about 67,000 triangles in 31 clay roles, 4.7 MB, and no textures.
 
 ## Sources and conflicts
 
@@ -79,11 +81,11 @@ Open for a person to rule on:
 ## Reproduce
 
 ```bash
-python3 tools/catalogue_ski_slope_plant_pilot/build.py --output artifacts/ski-slope/v007 --version 7
+python3 tools/catalogue_ski_slope_plant_pilot/build.py --output artifacts/ski-slope/v009 --version 9
 python3 -m http.server 8765 --bind 127.0.0.1 &          # from the repository root
-node tools/catalogue_ski_slope_plant_pilot/render.cjs artifacts/ski-slope/v007/wte-ski-slope-clay-v007.glb artifacts/ski-slope/v007/renders
-python3 tools/catalogue_ski_slope_plant_pilot/boards.py artifacts/ski-slope/v007
-python3 tools/catalogue_ski_slope_plant_pilot/verify.py artifacts/ski-slope/v007
+node tools/catalogue_ski_slope_plant_pilot/render.cjs artifacts/ski-slope/v009/wte-ski-slope-clay-v009.glb artifacts/ski-slope/v009/renders
+python3 tools/catalogue_ski_slope_plant_pilot/boards.py artifacts/ski-slope/v009
+python3 tools/catalogue_ski_slope_plant_pilot/verify.py artifacts/ski-slope/v009
 python3 -m pytest tools/catalogue_ski_slope_plant_pilot
 ```
 

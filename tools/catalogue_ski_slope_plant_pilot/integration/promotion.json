@@ -1,6 +1,6 @@
 {
   "entry": {
-    "candidate": "wte-ski-slope-clay-v007",
+    "candidate": "wte-ski-slope-clay-v009",
     "family": "rlasm-clay-waste-to-energy-ski-slope",
     "archetype_id": "waste_to_energy_plant",
     "archetype_label": "Waste-to-Energy Plant",
@@ -44,7 +44,7 @@
       "The catalogue suggests a 160 by 70 m footprint; the images show wings that make the whole 103 m wide, and the images govern.",
       "The west and north faces, the wings' southern end and all interiors are inferred. The plant's process equipment is not modelled.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_ski_slope_plant_pilot/integration/runtime-review.md.",
-      "Independent architectural-clay review: pending."
+      "Independent review: v007 was refused with four P1 (evidence/independent-review-v007.json); v009 answers them and its repeat review is pending."
     ],
     "picker": {
       "id": "waste_to_energy_plant_ski_slope",
@@ -57,7 +57,7 @@
       "max_size": 600.0
     }
   },
-  "model_file": "wte-ski-slope-clay-v007.glb",
+  "model_file": "wte-ski-slope-clay-v009.glb",
   "review_file": "independent-review.json",
   "approval": {
     "authorized_by": "",

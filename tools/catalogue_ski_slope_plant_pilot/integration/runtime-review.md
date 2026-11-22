@@ -11,7 +11,7 @@ No pass is carried over from any other archetype.
 
 - Kind: building
 - Archetype ID and exact variant ID: `waste_to_energy_plant` / `wte_ski_slope` (variant 0, "Ski Slope WtE")
-- Model SHA-256 or procedural recipe ID/revision/hash: `de6c4eeff0b1466da0764bc1391ced99077f0ed3166fb3c5504e6902588faf3a`, candidate `wte-ski-slope-clay-v007`, 4700292 bytes. Rebuilt byte for byte by `tools/catalogue_ski_slope_plant_pilot/build.py`
+- Model SHA-256 or procedural recipe ID/revision/hash: `e3aa7cefa97445b36ab7da2d8b36855f263c15330ec4c203264ee6351b208f11`, candidate `wte-ski-slope-clay-v009`, 4737704 bytes. Rebuilt byte for byte by `tools/catalogue_ski_slope_plant_pilot/build.py`
 - Runtime source commit and integration-checklist version: not run. Branch based on `deployment-version`; checklist as at that commit
 - Reviewer, date, project URL, viewport/device/input: none. No project was opened
 - Vacant test site, protected reference, disposable test project: none
@@ -27,7 +27,7 @@ No pass is carried over from any other archetype.
 - Reference-image fidelity: exact image hashes, observed amenity cues, borrowed/inferred details, native before/after views and separately exported reusable amenity modules: two references locked by hash in `prework-manifest.json`; the variant's street view is a grey render of the old LEGO model and is excluded (Gate A open for a person). The roof view draws the stack leaning; its base follows the roof view and its height the oblique. The west and north faces, the wings' southern end and all interiors are inferred. No amenity modules
 - Native park seams and raised/cycle access: full-width closed-loop/bend support, local-origin furniture transforms, measured ramp/landing or track-entry height continuity; separate offline contacts from runtime slope walking: N/A: building only; the model contains no such element
 - Street asset handoff: metric band widths, metre-scale paving phase, supported full-width endpoints, native amenity contacts, and flush versus raised boarding/kerb limitations: N/A: building only; the model contains no such element
-- Asset review status and separate publication/activation status: Independent architectural-clay review pending. That is asset review only. Publication and activation: not authorized
+- Asset review status and separate publication/activation status: v007 was refused by independent review (four P1; evidence/independent-review-v007.json); v009 answers those findings and its repeat review is pending. That is asset review only. Publication and activation: not authorized
 - Model Library storage check, configured bucket and result (building GLBs): NOT RUN. The GLB is not in the model library
 - Fresh installation: exact binding/recipe/module seed, byte readback, conflict preservation and disposable DB/bucket evidence: NOT RUN
 - Evidence manifest location and hashes; durable shared location for delivery: `tools/catalogue_ski_slope_plant_pilot/evidence/` and `candidate.json`. Renders and boards exist only in the build session's ignored `artifacts/` directory, which is not durable shared storage; `evidence/phone-oblique.jpg` is the one board kept in Git
@@ -240,7 +240,7 @@ These checks cannot prefill runtime terrain, access or edit/recovery passes.
 - Whole-site graph matches road-only graph; bounded road-ground recovery after new tiles:
 - Open failures, untested advertised features, owner and next bounded action: everything above marked NOT TESTED. Next bounded action: a ruling on Gate A by a person, then a local install with `--local-trial` and the student trial in `docs/BUILDING_CATALOGUE_WORKFLOW.md`, on a prepared level plot of at least 190 m by 115 m
 - Runtime integration decision: NOT REVIEWED
-- Asset visual decision (separate): builder pass. Independent architectural-clay review pending.
+- Asset visual decision (separate): builder pass. v007 was refused by independent review (four P1; evidence/independent-review-v007.json); v009 answers those findings and its repeat review is pending.
 - Publication/activation authorization (separate; cite actual authorization): none given
 
 A passing solver, successful compiler, CLI preflight, or attractive screenshot

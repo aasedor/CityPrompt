@@ -1,5 +1,5 @@
 {
-  "candidate": "wte-ski-slope-clay-v007",
+  "candidate": "wte-ski-slope-clay-v009",
   "method": "RLASM v6.1 clay-first",
   "archetype_id": "waste_to_energy_plant",
   "variant_id": "wte_ski_slope",
@@ -86,6 +86,7 @@
       "furniture": "#4b4540",
       "pavilion": "#d2d3d0",
       "grille": "#3c4045",
+      "roof_dark": "#5d6267",
       "roofgreen": "#6c7b42",
       "planting": "#7a8a46",
       "meadow": "#a39a5f",
