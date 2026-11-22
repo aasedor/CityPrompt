@@ -27,7 +27,10 @@ const BUDGETS = {
   // The 240 approved Calgary/prairie details add 54,324 bytes of packed
   // catalogue metadata. The full map-enabled build is 8,495.4 KiB; reserve
   // 64 KiB for this content addition without changing shell/chunk/route limits.
-  totalJs: 8.25 * 1024 * 1024 + 64 * 1024,
+  // November 2026: native park batches 1-3 and the rail streets add about 41 KiB
+  // of packed registry data. The merged map-enabled build measured 8,522.4 KiB
+  // before park batch 3; reserve 32 KiB more, again without other limit changes.
+  totalJs: 8.25 * 1024 * 1024 + 96 * 1024,
   maxChunkJs: 3.5 * 1024 * 1024,
   // October release: 150.8 KiB application/landing + 37.8 KiB lazy Mapbox CSS.
   // Retain the implemented interface; test-source exclusion saved only 30 bytes.
