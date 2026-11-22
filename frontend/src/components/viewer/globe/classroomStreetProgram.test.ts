@@ -29,11 +29,11 @@ describe('three additional native street programs', () => {
     ]);
     expect(buildings.filter(a => !buildingReleaseIds.has(a.id))).toHaveLength(79 + LOCAL_TOWER_ASSETS.length);
     expect(buildings).toHaveLength(79 + LOCAL_TOWER_ASSETS.length + buildingReleaseIds.size);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space' && a.model.method !== 'fixed_public_realm_v1' && !a.properties.court_only_native)).toHaveLength(48);   // + stormwater pond and park batches 1 to 3
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space' && a.model.method !== 'fixed_public_realm_v1' && !a.properties.court_only_native)).toHaveLength(51);   // + stormwater pond and park batches 1 to 4
     expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.properties.court_only_native).map(a => a.model.variantId).sort()).toEqual([
       'court_only_basketball_v1', 'court_only_beach_volleyball_v1', 'court_only_pickleball_v1', 'court_only_tennis_v1',
     ]);
-    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space')).toHaveLength(55);
+    expect(CATALOGUE_ASSETS.filter(a => a.kind === 'object' && a.zoneType === 'green_space')).toHaveLength(58);
     const fixed = CATALOGUE_ASSETS.filter(a => a.model.method === 'fixed_public_realm_v1');
     expect(fixed).toHaveLength(12);
     expect(fixed.filter(a => a.kind === 'object' && a.zoneType === 'road')).toHaveLength(9);

@@ -21,7 +21,8 @@ const addedPilotIds = ['native-park:student_stormwater_pond_v1--native-v1', 'stu
   'native-park:student_walled_memorial_garden_v1--native-v1', 'native-park:student_community_ball_diamond_v1--native-v1',
   'native-park:student_community_track_field_v1--native-v1', 'native-park:student_village_green_cricket_v1--native-v1',
   'native-park:student_calgary_prairie_plaza_v1--native-v1', 'native-park:student_clover_neighbourhood_park_v1--native-v1',
-  'native-park:student_prairie_sports_complex_v1--native-v1'];
+  'native-park:student_prairie_sports_complex_v1--native-v1', 'native-park:student_creekside_mini_golf_v1--native-v1',
+  'native-park:student_boulder_block_park_v1--native-v1', 'native-park:student_prairie_pollinator_meadow_v1--native-v1'];
 const digest = values => createHash('sha256').update([...values].sort().join('\n')).digest('hex');
 
 // These are the source-roster fingerprints recorded before this additive

@@ -1,0 +1,385 @@
+{
+  "id": "student_creekside_mini_golf_v1",
+  "title": "Creekside Mini Golf",
+  "archetype_id": "mini_golf_course",
+  "dimensions_m": [
+    48.0,
+    40.0
+  ],
+  "programme": "A nine-hole putting course along a meandering rock-lined creek: organic carpet greens with timber edging, tee mats, cups and coloured flags, boulder and log obstacles; a stone-dust path loop crossing the creek on two timber footbridges; a sod-roof starter hut by the entrance; benches, bins, a bike rack and prairie planting with aspen and spruce.",
+  "design_basis": "Original concept after the catalogue mini golf \"Nature Course\" references (variant 3): holes woven along a creek with timber and stone details. No stock windmill, castle or ship set pieces.",
+  "reference_views": "frontend/public/archetypes/openspaces/mini-golf-putting-course/variant_3",
+  "generator": "CityPrompt native park batch builder v1 (minigolf)",
+  "generator_sha256": "e20c7193da9721d9de6767274fe92752313a6cf2b147aa8c6676440b35e799c7",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only; the greens are flat carpet without designed breaks.",
+    "The creek is a shallow decorative channel; water supply, lining and safety are not designed.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0.0,
+        -20.0
+      ],
+      "b": [
+        0.0,
+        -11.5
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -20.5,
+        -11.0
+      ],
+      "b": [
+        -16.23,
+        -11.503
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -16.23,
+        -11.503
+      ],
+      "b": [
+        -13.532,
+        -11.534
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -13.532,
+        -11.534
+      ],
+      "b": [
+        -9.649,
+        -11.184
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -9.649,
+        -11.184
+      ],
+      "b": [
+        -6.863,
+        -10.916
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -6.863,
+        -10.916
+      ],
+      "b": [
+        -4.265,
+        -10.966
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -4.265,
+        -10.966
+      ],
+      "b": [
+        3.191,
+        -11.766
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        3.191,
+        -11.766
+      ],
+      "b": [
+        6.387,
+        -11.886
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        6.387,
+        -11.886
+      ],
+      "b": [
+        12.376,
+        -11.539
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        12.376,
+        -11.539
+      ],
+      "b": [
+        15.562,
+        -11.263
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        15.562,
+        -11.263
+      ],
+      "b": [
+        17.551,
+        -11.063
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        17.551,
+        -11.063
+      ],
+      "b": [
+        19.144,
+        -11.177
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        19.144,
+        -11.177
+      ],
+      "b": [
+        21.0,
+        -11.6
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -20.5,
+        9.4
+      ],
+      "b": [
+        -15.898,
+        8.448
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -15.898,
+        8.448
+      ],
+      "b": [
+        -13.217,
+        8.15
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -13.217,
+        8.15
+      ],
+      "b": [
+        -11.022,
+        8.273
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -11.022,
+        8.273
+      ],
+      "b": [
+        -7.07,
+        8.875
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -7.07,
+        8.875
+      ],
+      "b": [
+        -4.772,
+        8.902
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -4.772,
+        8.902
+      ],
+      "b": [
+        -0.699,
+        8.449
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -0.699,
+        8.449
+      ],
+      "b": [
+        1.699,
+        8.468
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        1.699,
+        8.468
+      ],
+      "b": [
+        5.481,
+        8.82
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        5.481,
+        8.82
+      ],
+      "b": [
+        7.578,
+        8.755
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        7.578,
+        8.755
+      ],
+      "b": [
+        12.541,
+        8.157
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        12.541,
+        8.157
+      ],
+      "b": [
+        14.539,
+        8.188
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        14.539,
+        8.188
+      ],
+      "b": [
+        17.509,
+        8.592
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        17.509,
+        8.592
+      ],
+      "b": [
+        18.905,
+        8.527
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        18.905,
+        8.527
+      ],
+      "b": [
+        21.0,
+        8.0
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -12.0,
+        -11.5
+      ],
+      "b": [
+        -12.0,
+        8.0
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        14.0,
+        -11.5
+      ],
+      "b": [
+        14.0,
+        8.0
+      ],
+      "width": 1.6
+    }
+  ],
+  "entrance": {
+    "x": 0.0,
+    "y": -20.0,
+    "widthM": 1.8,
+    "arrivalY": -17.0
+  },
+  "walk_surface_materials": [
+    "grass",
+    "gravel",
+    "deck"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 6493464,
+    "sha256": "c989175c73f3cb0d1c554ba672694ee4e9785e7fedf1ae418e1c695a04fb6179"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -24.0,
+      -20.0,
+      -0.12
+    ],
+    [
+      24.0,
+      20.0,
+      9.3486
+    ]
+  ],
+  "triangles": 549862,
+  "mesh_instances": 457,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on grass, gravel, deck. Never stretch the assembly to fit.",
+  "card": {
+    "group": "play_sport",
+    "description": "A nine-hole mini golf course along a rock-lined creek, with carpet greens, timber footbridges and a sod-roof starter hut. Prepared level ground."
+  }
+}

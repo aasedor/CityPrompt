@@ -16,7 +16,7 @@ const result = (variant: string, code: string) => matchPark(park(variant), zone(
 
 describe('park land-use screening', () => {
   it('preserves every reviewed native and flexible layout while adding the exact released parks', () => {
-    expect(ZONING_CATALOGUE_PARKS).toHaveLength(55);
+    expect(ZONING_CATALOGUE_PARKS).toHaveLength(58);
     const courts = ZONING_CATALOGUE_PARKS.filter(asset => asset.properties.court_only_native);
     expect(courts.map(asset => asset.model.variantId).sort()).toEqual([
       'court_only_basketball_v1', 'court_only_beach_volleyball_v1', 'court_only_pickleball_v1', 'court_only_tennis_v1',
@@ -27,7 +27,7 @@ describe('park land-use screening', () => {
       expect(matchPark(court, zone('S-SPR'))).toMatchObject({ status: 'review', program: undefined, uses: [] });
     }
     const reviewed = ZONING_CATALOGUE_PARKS.filter(asset => !releaseParkIds.includes(asset.id) && !asset.properties.court_only_native);
-    expect(reviewed).toHaveLength(48);
+    expect(reviewed).toHaveLength(51);
     expect(Object.keys(PARK_PROGRAMS).sort()).toEqual(reviewed.map(a => a.id).sort());
     for (const asset of reviewed) {
       expect(PARK_PROGRAMS[asset.id]).toMatchObject({ variantId: asset.model.variantId, revision: asset.model.revision });
@@ -67,12 +67,12 @@ describe('park land-use screening', () => {
   });
   it('distinguishes the new informal gardens from active sports facilities using the cited uses', () => {
     for (const variant of ['student_prairie_picnic_grove_v1', 'student_sensory_wellness_garden_v1', 'student_calgary_prairie_plaza_v1',
-      'student_clover_neighbourhood_park_v1']) {
+      'student_clover_neighbourhood_park_v1', 'student_prairie_pollinator_meadow_v1']) {
       expect(result(variant, 'R-CG')).toMatchObject({ status: 'permitted', uses: [{ use: 'Park', definition: '249' }] });
     }
     for (const variant of ['student_neighbourhood_sports_green_v1', 'student_bicycle_pump_track_park_v1', 'student_urban_skate_plaza_v1',
       'student_community_ball_diamond_v1', 'student_community_track_field_v1', 'student_village_green_cricket_v1',
-      'student_prairie_sports_complex_v1']) {
+      'student_prairie_sports_complex_v1', 'student_creekside_mini_golf_v1', 'student_boulder_block_park_v1']) {
       expect(result(variant, 'S-SPR')).toMatchObject({ status: 'permitted', uses: [{ use: 'Outdoor Recreation Area', definition: '248' }] });
       expect(result(variant, 'S-R').status).toBe('discretionary');
       expect(result(variant, 'R-CG').status).toBe('outside');

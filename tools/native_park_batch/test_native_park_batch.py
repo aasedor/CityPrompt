@@ -19,7 +19,8 @@ spec.loader.exec_module(verify)
 
 PACKAGES = {'skate': 'prairie-bowl-skate-v006', 'fitness': 'parkour-yard-v004', 'memorial': 'walled-memorial-v004',
             'baseball': 'community-diamond-v005', 'track': 'community-track-v005', 'cricket': 'village-cricket-v003',
-            'plaza': 'prairie-wind-plaza-v006', 'neighbourhood': 'clover-neighbourhood-v005', 'complex': 'prairie-sports-complex-v003'}
+            'plaza': 'prairie-wind-plaza-v006', 'neighbourhood': 'clover-neighbourhood-v005', 'complex': 'prairie-sports-complex-v003',
+            'minigolf': 'creekside-mini-golf-v007', 'bouldering': 'boulder-block-park-v004', 'meadow': 'prairie-pollinator-meadow-v004'}
 # The skate park was registered before the shared kit grew for the other two parks. Its assembly
 # still rebuilds byte for byte, but its recipe keeps the source hash of the kit it was built with:
 # rewriting it would change the registered recipe hash and content revision.

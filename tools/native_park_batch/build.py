@@ -21,7 +21,8 @@ import parkkit as kit  # noqa: E402
 
 PARKS = {'skate': 'skate_park', 'fitness': 'fitness_circuit', 'memorial': 'memorial_garden',
          'baseball': 'baseball_diamond', 'track': 'running_track', 'cricket': 'cricket_ground',
-         'plaza': 'prairie_plaza', 'neighbourhood': 'neighbourhood_park', 'complex': 'sports_complex'}
+         'plaza': 'prairie_plaza', 'neighbourhood': 'neighbourhood_park', 'complex': 'sports_complex',
+         'minigolf': 'mini_golf', 'bouldering': 'bouldering_park', 'meadow': 'pollinator_meadow'}
 
 
 def load(park):

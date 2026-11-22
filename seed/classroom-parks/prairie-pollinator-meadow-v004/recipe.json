@@ -1,0 +1,791 @@
+{
+  "id": "student_prairie_pollinator_meadow_v1",
+  "title": "Prairie Pollinator Meadow",
+  "archetype_id": "pollinator_meadow",
+  "dimensions_m": [
+    48.0,
+    36.0
+  ],
+  "programme": "A native wildflower meadow: drifts of wild bergamot, blanketflower, goldenrod, fireweed, wild blue flax, prairie crocus, prairie smoke, pasture sage, cinquefoil and wild rose among rough fescue, blue grama, feather reed grass and june grass, with massed low blooms in drifts; a winding stone-dust walk to a gathering circle with benches; a mown grass loop; three bee hotels facing the morning sun; four interpretive lecterns; saskatoon, chokecherry and aspen at the edges.",
+  "design_basis": "Original concept after the catalogue pollinator meadow \"Wildflower Walk\" references (variant 1). Species are prairie natives from the shared plant library; the mix is a teaching value, not a planting plan.",
+  "reference_views": "frontend/public/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_1",
+  "generator": "CityPrompt native park batch builder v1 (meadow)",
+  "generator_sha256": "2d3a63821708e561780cdc35c00780e4be1e6cd03bec215fdcf20598bbb47868",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only; soil preparation, seeding rates and establishment care are not designed.",
+    "Meadows change through the seasons; the model shows midsummer bloom. Lectern panels are blank.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0.0,
+        -18.5
+      ],
+      "b": [
+        -0.045,
+        -16.303
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -0.045,
+        -16.303
+      ],
+      "b": [
+        -0.417,
+        -15.272
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -0.417,
+        -15.272
+      ],
+      "b": [
+        -1.28,
+        -13.928
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -1.28,
+        -13.928
+      ],
+      "b": [
+        -2.94,
+        -12.06
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -2.94,
+        -12.06
+      ],
+      "b": [
+        -3.703,
+        -11.139
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -3.703,
+        -11.139
+      ],
+      "b": [
+        -4.111,
+        -10.23
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -4.111,
+        -10.23
+      ],
+      "b": [
+        -4.195,
+        -9.339
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -4.195,
+        -9.339
+      ],
+      "b": [
+        -3.966,
+        -8.371
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -3.966,
+        -8.371
+      ],
+      "b": [
+        -3.432,
+        -7.413
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -3.432,
+        -7.413
+      ],
+      "b": [
+        -2.29,
+        -6.157
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -2.29,
+        -6.157
+      ],
+      "b": [
+        -0.326,
+        -4.457
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -0.326,
+        -4.457
+      ],
+      "b": [
+        0.531,
+        -3.354
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        0.531,
+        -3.354
+      ],
+      "b": [
+        0.98,
+        -2.355
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        0.98,
+        -2.355
+      ],
+      "b": [
+        1.118,
+        -1.368
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        1.118,
+        -1.368
+      ],
+      "b": [
+        0.942,
+        -0.388
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        0.942,
+        -0.388
+      ],
+      "b": [
+        0.46,
+        0.596
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        0.46,
+        0.596
+      ],
+      "b": [
+        -0.486,
+        1.757
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -0.486,
+        1.757
+      ],
+      "b": [
+        -1.58,
+        3.184
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -1.58,
+        3.184
+      ],
+      "b": [
+        -2.162,
+        4.343
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -2.162,
+        4.343
+      ],
+      "b": [
+        -2.356,
+        5.218
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -2.356,
+        5.218
+      ],
+      "b": [
+        -2.29,
+        6.011
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -2.29,
+        6.011
+      ],
+      "b": [
+        -1.957,
+        6.733
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -1.957,
+        6.733
+      ],
+      "b": [
+        0.0,
+        9.0
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        17.0,
+        -0.5
+      ],
+      "b": [
+        16.841,
+        0.989
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        16.841,
+        0.989
+      ],
+      "b": [
+        16.388,
+        2.417
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        16.388,
+        2.417
+      ],
+      "b": [
+        15.627,
+        3.822
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        15.627,
+        3.822
+      ],
+      "b": [
+        14.575,
+        5.154
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        14.575,
+        5.154
+      ],
+      "b": [
+        13.179,
+        6.439
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        13.179,
+        6.439
+      ],
+      "b": [
+        11.449,
+        7.625
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        11.449,
+        7.625
+      ],
+      "b": [
+        9.399,
+        8.665
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        9.399,
+        8.665
+      ],
+      "b": [
+        7.046,
+        9.504
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        7.046,
+        9.504
+      ],
+      "b": [
+        4.419,
+        10.121
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        4.419,
+        10.121
+      ],
+      "b": [
+        1.639,
+        10.443
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        1.639,
+        10.443
+      ],
+      "b": [
+        -1.159,
+        10.473
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -1.159,
+        10.473
+      ],
+      "b": [
+        -3.944,
+        10.194
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -3.944,
+        10.194
+      ],
+      "b": [
+        -6.488,
+        9.667
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -6.488,
+        9.667
+      ],
+      "b": [
+        -8.86,
+        8.881
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -8.86,
+        8.881
+      ],
+      "b": [
+        -11.032,
+        7.864
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -11.032,
+        7.864
+      ],
+      "b": [
+        -12.802,
+        6.737
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -12.802,
+        6.737
+      ],
+      "b": [
+        -14.242,
+        5.5
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -14.242,
+        5.5
+      ],
+      "b": [
+        -15.352,
+        4.215
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -15.352,
+        4.215
+      ],
+      "b": [
+        -16.184,
+        2.852
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -16.184,
+        2.852
+      ],
+      "b": [
+        -16.722,
+        1.455
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -16.722,
+        1.455
+      ],
+      "b": [
+        -16.971,
+        0.08
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -16.971,
+        0.08
+      ],
+      "b": [
+        -16.949,
+        -1.317
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -16.949,
+        -1.317
+      ],
+      "b": [
+        -16.625,
+        -2.779
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -16.625,
+        -2.779
+      ],
+      "b": [
+        -16.03,
+        -4.153
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -16.03,
+        -4.153
+      ],
+      "b": [
+        -15.148,
+        -5.485
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -15.148,
+        -5.485
+      ],
+      "b": [
+        -13.924,
+        -6.802
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -13.924,
+        -6.802
+      ],
+      "b": [
+        -12.277,
+        -8.101
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -12.277,
+        -8.101
+      ],
+      "b": [
+        -10.38,
+        -9.211
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -10.38,
+        -9.211
+      ],
+      "b": [
+        -8.169,
+        -10.141
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -8.169,
+        -10.141
+      ],
+      "b": [
+        -5.674,
+        -10.865
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -5.674,
+        -10.865
+      ],
+      "b": [
+        -3.113,
+        -11.31
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -3.113,
+        -11.31
+      ],
+      "b": [
+        -0.221,
+        -11.495
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        -0.221,
+        -11.495
+      ],
+      "b": [
+        2.475,
+        -11.379
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        2.475,
+        -11.379
+      ],
+      "b": [
+        5.242,
+        -10.96
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        5.242,
+        -10.96
+      ],
+      "b": [
+        7.657,
+        -10.318
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        7.657,
+        -10.318
+      ],
+      "b": [
+        9.979,
+        -9.398
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        9.979,
+        -9.398
+      ],
+      "b": [
+        11.995,
+        -8.294
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        11.995,
+        -8.294
+      ],
+      "b": [
+        13.596,
+        -7.098
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        13.596,
+        -7.098
+      ],
+      "b": [
+        14.866,
+        -5.826
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        14.866,
+        -5.826
+      ],
+      "b": [
+        15.858,
+        -4.449
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        15.858,
+        -4.449
+      ],
+      "b": [
+        16.543,
+        -3.007
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        16.543,
+        -3.007
+      ],
+      "b": [
+        16.912,
+        -1.557
+      ],
+      "width": 1.3
+    },
+    {
+      "a": [
+        16.912,
+        -1.557
+      ],
+      "b": [
+        17.0,
+        -0.5
+      ],
+      "width": 1.3
+    }
+  ],
+  "entrance": {
+    "x": 0.0,
+    "y": -18.0,
+    "widthM": 1.8,
+    "arrivalY": -15.0
+  },
+  "walk_surface_materials": [
+    "gravel",
+    "grass"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 7857924,
+    "sha256": "d157f0792eb8499deb484d55d5fbe7e415301bed875fe7915c5b036f0d8f6f65"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -24.0,
+      -18.0,
+      -0.0021
+    ],
+    [
+      24.0,
+      18.0,
+      8.1095
+    ]
+  ],
+  "triangles": 778485,
+  "mesh_instances": 588,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on gravel, grass. Never stretch the assembly to fit.",
+  "card": {
+    "group": "nature",
+    "description": "A native wildflower meadow with a winding walk, a mown loop, bee hotels and interpretive lecterns. Prepared level ground."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "c989175c73f3cb0d1c554ba672694ee4e9785e7fedf1ae418e1c695a04fb6179",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 48 x 40 m footprint",
+    "recipe bounds match the GLB",
+    "below grade only inside the declared sunken areas",
+    "nothing taller than 20 m",
+    "822 material-aware route rays on deck, grass, gravel",
+    "448 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "nine cups with flagsticks, each on its own green",
+    "the creek is one water plane 0.12 m below grade"
+  ],
+  "failures": [],
+  "triangles_rendered": 549862,
+  "mesh_instances": 457,
+  "runtime_tested": false
+}

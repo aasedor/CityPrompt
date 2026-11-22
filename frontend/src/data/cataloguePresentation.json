@@ -2873,5 +2873,45 @@
       "fieldhouse",
       "athletic park"
     ]
+  },
+  "native-park:student_creekside_mini_golf_v1--native-v1": {
+    "label": "Creekside Mini Golf",
+    "description": "A nine-hole mini golf course woven along a rock-lined creek, with organic carpet greens, timber footbridges and a sod-roof starter hut.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "mini golf",
+      "putting course",
+      "creek",
+      "family",
+      "play"
+    ]
+  },
+  "native-park:student_boulder_block_park_v1--native-v1": {
+    "label": "Boulder Block Park",
+    "description": "A chain of angular concrete bouldering blocks and a children’s block, dotted with coloured holds in a black rubber fall zone, with a timber seat edge.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "bouldering",
+      "climbing",
+      "fitness",
+      "youth",
+      "play"
+    ]
+  },
+  "native-park:student_prairie_pollinator_meadow_v1--native-v1": {
+    "label": "Prairie Pollinator Meadow",
+    "description": "A native wildflower meadow of prairie flowers and grasses, with a winding walk, a mown loop, bee hotels and interpretive lecterns.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "pollinator",
+      "meadow",
+      "wildflowers",
+      "native plants",
+      "bees",
+      "prairie"
+    ]
   }
 }

@@ -8771,6 +8771,118 @@
       "designEvidence": "Two soccer pitches and two ball diamonds round a central plaza and fieldhouse, with bleachers and field lights.",
       "referenceReviewed": true,
       "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_creekside_mini_golf_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Miniature golf is a long-standing leisure attraction; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare mini golf run as a seasonal attraction in a city park with courses on private commercial sites.",
+      "internationalContext": "Newer courses often use natural materials, water and planting instead of novelty set pieces.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_creekside_mini_golf_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "mini_golf_course",
+      "variantId": "student_creekside_mini_golf_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "6c42838d5da4766390a9844049be150ae74d26af9a7d1e3b498163daa64b28d3",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "play_sport",
+      "styleIds": [
+        "recreation",
+        "naturalistic"
+      ],
+      "planningIds": [
+        "place",
+        "child"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "Nine organic carpet greens along a rock-lined creek, with timber footbridges and a sod-roof starter hut.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_boulder_block_park_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Public outdoor bouldering is a recent park amenity; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare free public bouldering in parks with climbing in commercial gyms, and who each one serves.",
+      "internationalContext": "Cities increasingly add bouldering blocks to parks and plazas as free, unsupervised sport.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_boulder_block_park_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "climbing_bouldering_wall",
+      "variantId": "student_boulder_block_park_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "6f49865ba091d9a6f31ee44e12943d1f67cca5a3c2f90b431b6f0ece64113eae",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "play_sport",
+      "styleIds": [
+        "recreation",
+        "contemporary_landscape"
+      ],
+      "planningIds": [
+        "active",
+        "place"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "Angular cast and panel bouldering blocks with coloured holds in a rubber fall zone, with a timber seat edge.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_prairie_pollinator_meadow_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Pollinator meadows reflect recent ecological planting practice; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare native prairie meadows that replace mown turf in Calgary parks with ornamental flower beds.",
+      "internationalContext": "Cities plant pollinator meadows and corridors to support bees, butterflies and other insects.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_prairie_pollinator_meadow_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "pollinator_meadow",
+      "variantId": "student_prairie_pollinator_meadow_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "cc9c8fcde6faa8f9b7f3c4a25b2d40d910c847046c625843833c21e1bc67bc5d",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "gardens",
+      "styleIds": [
+        "naturalistic",
+        "ecological_landscape"
+      ],
+      "planningIds": [
+        "ecology",
+        "landscape",
+        "place"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "Drifts of native prairie flowers and grasses with a winding walk, a mown loop, bee hotels and lecterns.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
     }
   }
 }

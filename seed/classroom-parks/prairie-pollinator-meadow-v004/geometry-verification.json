@@ -1,0 +1,25 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "d157f0792eb8499deb484d55d5fbe7e415301bed875fe7915c5b036f0d8f6f65",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 48 x 36 m footprint",
+    "recipe bounds match the GLB",
+    "nothing below grade",
+    "nothing taller than 20 m",
+    "801 material-aware route rays on grass, gravel",
+    "583 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "9 native flowering species in the beds",
+    "every bee hotel faces between east and south",
+    "every interpretive lectern stands beside the main walk"
+  ],
+  "failures": [],
+  "triangles_rendered": 778485,
+  "mesh_instances": 588,
+  "runtime_tested": false
+}

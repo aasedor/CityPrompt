@@ -223,5 +223,8 @@
   "native-park:student_village_green_cricket_v1--native-v1": "/archetypes/openspaces/cricket-ground/variant_0.png",
   "native-park:student_calgary_prairie_plaza_v1--native-v1": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_2.png",
   "native-park:student_clover_neighbourhood_park_v1--native-v1": "/archetypes/openspaces/neighborhood-park/variant_0.png",
-  "native-park:student_prairie_sports_complex_v1--native-v1": "/archetypes/openspaces/sports-field-complex/variant_0.png"
+  "native-park:student_prairie_sports_complex_v1--native-v1": "/archetypes/openspaces/sports-field-complex/variant_0.png",
+  "native-park:student_creekside_mini_golf_v1--native-v1": "/archetypes/openspaces/mini-golf-putting-course/variant_3.png",
+  "native-park:student_boulder_block_park_v1--native-v1": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_0.png",
+  "native-park:student_prairie_pollinator_meadow_v1--native-v1": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_1.png"
 }

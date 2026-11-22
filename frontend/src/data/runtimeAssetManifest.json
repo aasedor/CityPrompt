@@ -686,10 +686,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4282,
+    "explicitReferenceCount": 4288,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 6066,
-    "requiredLogicalBytes": 13251385146,
+    "requiredFileCount": 6072,
+    "requiredLogicalBytes": 13273920786,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -14078,6 +14078,7 @@
       "url": "/archetypes/openspaces/mini-golf-putting-course/variant_3.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1628421,
@@ -14628,6 +14629,7 @@
       "url": "/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1270987,
@@ -14980,6 +14982,7 @@
       "url": "/archetypes/openspaces/pollinator-meadow-wildflower-garden/variant_1.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1469353,
@@ -25454,7 +25457,8 @@
       "sources": [
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 6239808
+      "logicalBytes": 6239808,
+      "lfsOid": "0af3427d166369a11dd1584cb7543992ebc0123b8d1f0699c6b88999d09a4f87"
     },
     {
       "url": "/native-park-assets/0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8.glb",
@@ -25501,7 +25505,8 @@
         "src/data/classroomExpansion.json",
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 1217777
+      "logicalBytes": 1217777,
+      "lfsOid": "231011286dfcc964e662f2e4d30713fd3c5563f5571d1e1aaaae02773adb5f5c"
     },
     {
       "url": "/native-park-assets/2333fa81b824f1851a8730f0b96bc3ec2334717b56aa4869e753936450fc5504.glb",
@@ -25718,7 +25723,8 @@
         "src/data/classroomExpansion.json",
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 1584547
+      "logicalBytes": 1584547,
+      "lfsOid": "7143f78d2759187ae19c87cf9ede8499962b24287d432bb697e93e0bfc931fe6"
     },
     {
       "url": "/native-park-assets/75fa2fcf105f678bdafbe3d72c348f73e3ca0a892ee563fb871439a51a1b00f5.glb",
@@ -25745,6 +25751,14 @@
       ],
       "logicalBytes": 1288898,
       "lfsOid": "8755c197c586fef875d47f52528fb1e9901e8a18a7a4c918ec0dbe651c097506"
+    },
+    {
+      "url": "/native-park-assets/877c904330878935f318be6b2830b68cca0905c2253c6cb545cb5119991dcc72.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1804964
     },
     {
       "url": "/native-park-assets/8e89485ba931a223f7ae334db5018bce1958f8c6f669a8d525e50d141ab0e30a.glb",
@@ -25792,7 +25806,8 @@
       "sources": [
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 8743796
+      "logicalBytes": 8743796,
+      "lfsOid": "a320a1aa781522dc4264cce884920eda79c263c6c8a52848fabfab4d5ecc63ad"
     },
     {
       "url": "/native-park-assets/a3c219f333b46938d85499e0b2b41e0ed77a108d2d2996084225b0ced3c55fdd.glb",
@@ -25855,7 +25870,8 @@
       "sources": [
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 10260144
+      "logicalBytes": 10260144,
+      "lfsOid": "b61324564012769e401dcf5a38b591202790591703f8f0b92c7fb123ee8f04f3"
     },
     {
       "url": "/native-park-assets/b8264e62966be8443a2eb2184d502f13851e607f947faf2e9a67121ec3ab75e1.png",
@@ -25926,6 +25942,13 @@
       "lfsOid": "c94401f7b526e450c194f5ce46fb9976486aca83256fb30e192cc9802b3bd9fd"
     },
     {
+      "url": "/native-park-assets/c989175c73f3cb0d1c554ba672694ee4e9785e7fedf1ae418e1c695a04fb6179.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 6493464
+    },
+    {
       "url": "/native-park-assets/c99516036b3f990387b91311d34786b3d65b0899c177a00c75e8df684a0de63e.glb",
       "sources": [
         "src/data/nativeParks.json"
@@ -25940,6 +25963,13 @@
       ],
       "logicalBytes": 2344324,
       "lfsOid": "ce8d1198b654d8bb8ba3e050d3a540fd48077fe5d635b39377de58fff3f06220"
+    },
+    {
+      "url": "/native-park-assets/d157f0792eb8499deb484d55d5fbe7e415301bed875fe7915c5b036f0d8f6f65.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 7857924
     },
     {
       "url": "/native-park-assets/d164bee7af12da298a0e507122bd080143a73346dd0521955715e41a6063515e.glb",
@@ -25958,12 +25988,27 @@
       "lfsOid": "d4c6735bf653130f28ce81c87fcf228e31410e992b28a6ae8bf0b9263afbd477"
     },
     {
+      "url": "/native-park-assets/d57eb057cad35ac0ab448c5f1fb102041b298fa83941b788732ade94db96a88c.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1137727
+    },
+    {
       "url": "/native-park-assets/d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6.glb",
       "sources": [
         "src/data/nativeParks.json"
       ],
       "logicalBytes": 4507764,
       "lfsOid": "d8b77d0d4d75c4e166d3ca34499ed50b94b045e4fd80cf3be71fb90d2c3812d6"
+    },
+    {
+      "url": "/native-park-assets/d9434bae810de52030aba1ffee5039a5e126ffd395d57bb4563cd7775ee333b5.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 3808596
     },
     {
       "url": "/native-park-assets/da289955236460873f401b7c8f4db85c5101a3670a8c56efe14176946cc7d1e2.glb",
@@ -25996,7 +26041,8 @@
         "src/data/classroomExpansion.json",
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 1468638
+      "logicalBytes": 1468638,
+      "lfsOid": "e618a54393b8cae82132a8c1da36c63ae4ecffa11ad093dbe113f8ec7389d3a0"
     },
     {
       "url": "/native-park-assets/ea80cb09b3effdec7a7c041d46dd4adf94998cf081751a80f243be1674d78338.glb",
@@ -26053,6 +26099,14 @@
       ],
       "logicalBytes": 1331414,
       "lfsOid": "fd97634afc1783e77f0941d40c07f5f6cfef509073b5a17d5eb082f3cb9e3945"
+    },
+    {
+      "url": "/native-park-assets/fdcbbcae40b6876737714bb8d5a067ee84c9c135ae63608837eee4fbd22577bf.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1432965
     },
     {
       "url": "/park-kits/baseball-youth-pinwheel/baseball-backstop.glb",

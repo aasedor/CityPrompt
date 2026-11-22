@@ -919,6 +919,43 @@
   "runtime_status": "NOT TESTED",
   "completed": false
 }
+,
+{
+  "domain": "park",
+  "title": "Creekside Mini Golf",
+  "archetype_id": "mini_golf_course",
+  "variant_id": "student_creekside_mini_golf_v1",
+  "version": "creekside-mini-golf-v007",
+  "placement_id": "native-park:student_creekside_mini_golf_v1--native-v1",
+  "sha256": "c989175c73f3cb0d1c554ba672694ee4e9785e7fedf1ae418e1c695a04fb6179",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+},
+{
+  "domain": "park",
+  "title": "Boulder Block Park",
+  "archetype_id": "climbing_bouldering_wall",
+  "variant_id": "student_boulder_block_park_v1",
+  "version": "boulder-block-park-v004",
+  "placement_id": "native-park:student_boulder_block_park_v1--native-v1",
+  "sha256": "d9434bae810de52030aba1ffee5039a5e126ffd395d57bb4563cd7775ee333b5",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+},
+{
+  "domain": "park",
+  "title": "Prairie Pollinator Meadow",
+  "archetype_id": "pollinator_meadow",
+  "variant_id": "student_prairie_pollinator_meadow_v1",
+  "version": "prairie-pollinator-meadow-v004",
+  "placement_id": "native-park:student_prairie_pollinator_meadow_v1--native-v1",
+  "sha256": "d157f0792eb8499deb484d55d5fbe7e415301bed875fe7915c5b036f0d8f6f65",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+}
 ],
   "assets": [
     {
@@ -3570,6 +3607,103 @@
     "green_space_archetype_id": "sports_field_complex",
     "green_space_selected_variant_id": "student_prairie_sports_complex_v1",
     "green_space_native_layout_id": "student_prairie_sports_complex_v1--native-v1",
+    "pick_place_automatic_3d": true
+  }
+}
+,
+{
+  "id": "native-park:student_creekside_mini_golf_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Creekside Mini Golf",
+  "description": "A nine-hole mini golf course along a rock-lined creek, with carpet greens, timber footbridges and a sod-roof starter hut. Prepared level ground.",
+  "thumbnail": "/native-park-assets/fdcbbcae40b6876737714bb8d5a067ee84c9c135ae63608837eee4fbd22577bf.png",
+  "calgaryGuide": {
+    "groupId": "play_sport",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 48.0,
+  "depth": 40.0,
+  "minWidth": 48.0,
+  "minDepth": 40.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_creekside_mini_golf_v1",
+    "revision": "6c42838d5da4766390a9844049be150ae74d26af9a7d1e3b498163daa64b28d3",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "mini_golf_course",
+    "green_space_selected_variant_id": "student_creekside_mini_golf_v1",
+    "green_space_native_layout_id": "student_creekside_mini_golf_v1--native-v1",
+    "pick_place_automatic_3d": true
+  }
+},
+{
+  "id": "native-park:student_boulder_block_park_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Boulder Block Park",
+  "description": "Angular concrete bouldering blocks with coloured holds in a black rubber fall zone, with a timber seat edge and prairie planting. Prepared level ground.",
+  "thumbnail": "/native-park-assets/d57eb057cad35ac0ab448c5f1fb102041b298fa83941b788732ade94db96a88c.png",
+  "calgaryGuide": {
+    "groupId": "play_sport",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 40.0,
+  "depth": 32.0,
+  "minWidth": 40.0,
+  "minDepth": 32.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_boulder_block_park_v1",
+    "revision": "6f49865ba091d9a6f31ee44e12943d1f67cca5a3c2f90b431b6f0ece64113eae",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "climbing_bouldering_wall",
+    "green_space_selected_variant_id": "student_boulder_block_park_v1",
+    "green_space_native_layout_id": "student_boulder_block_park_v1--native-v1",
+    "pick_place_automatic_3d": true
+  }
+},
+{
+  "id": "native-park:student_prairie_pollinator_meadow_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Prairie Pollinator Meadow",
+  "description": "A native wildflower meadow with a winding walk, a mown loop, bee hotels and interpretive lecterns. Prepared level ground.",
+  "thumbnail": "/native-park-assets/877c904330878935f318be6b2830b68cca0905c2253c6cb545cb5119991dcc72.png",
+  "calgaryGuide": {
+    "groupId": "nature",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 48.0,
+  "depth": 36.0,
+  "minWidth": 48.0,
+  "minDepth": 36.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_prairie_pollinator_meadow_v1",
+    "revision": "cc9c8fcde6faa8f9b7f3c4a25b2d40d910c847046c625843833c21e1bc67bc5d",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "pollinator_meadow",
+    "green_space_selected_variant_id": "student_prairie_pollinator_meadow_v1",
+    "green_space_native_layout_id": "student_prairie_pollinator_meadow_v1--native-v1",
     "pick_place_automatic_3d": true
   }
 }

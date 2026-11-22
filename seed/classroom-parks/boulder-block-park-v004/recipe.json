@@ -1,0 +1,704 @@
+{
+  "id": "student_boulder_block_park_v1",
+  "title": "Boulder Block Park",
+  "archetype_id": "climbing_bouldering_wall",
+  "dimensions_m": [
+    40.0,
+    32.0
+  ],
+  "programme": "A chain of three joined, angular concrete bouldering blocks (3.2 to 3.6 m) and a 2.0 m children's block with leaning and overhanging walls and coloured holds, set in one continuous black rubber fall zone at least 2.5 m wide; a timber seat edge for spectators; banded paving, benches, a drinking fountain, a gear box, bike racks, lights, prairie beds and aspens.",
+  "design_basis": "Original concept after the catalogue bouldering \"Faceted Boulders\" references (variant 0). Heights, fall zones and holds are teaching values, not a climbing-wall design.",
+  "reference_views": "frontend/public/archetypes/openspaces/outdoor-climbing-bouldering-wall/variant_0",
+  "generator": "CityPrompt native park batch builder v1 (bouldering)",
+  "generator_sha256": "f2fd51ba3f282d8668c66f557aff00bcf5f62df32266795b5349ba4dd0a739a7",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only.",
+    "Block structure, hold layout, route grades and fall surfacing depth follow the manufacturer and the applicable climbing-wall and play standards (for example EN 12572-2), not this model.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0.0,
+        -16.0
+      ],
+      "b": [
+        0.0,
+        -11.485
+      ],
+      "width": 2.4
+    },
+    {
+      "a": [
+        -14.614,
+        0.463
+      ],
+      "b": [
+        -14.488,
+        1.653
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -14.488,
+        1.653
+      ],
+      "b": [
+        -13.761,
+        4.871
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -13.761,
+        4.871
+      ],
+      "b": [
+        -13.22,
+        5.938
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -13.22,
+        5.938
+      ],
+      "b": [
+        -12.429,
+        6.836
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -12.429,
+        6.836
+      ],
+      "b": [
+        -11.435,
+        7.502
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -11.435,
+        7.502
+      ],
+      "b": [
+        -10.306,
+        7.899
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -10.306,
+        7.899
+      ],
+      "b": [
+        -8.515,
+        8.065
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -8.515,
+        8.065
+      ],
+      "b": [
+        -7.425,
+        8.767
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -7.425,
+        8.767
+      ],
+      "b": [
+        -4.651,
+        10.146
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -4.651,
+        10.146
+      ],
+      "b": [
+        -3.48,
+        10.39
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -3.48,
+        10.39
+      ],
+      "b": [
+        -2.285,
+        10.333
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -2.285,
+        10.333
+      ],
+      "b": [
+        0.002,
+        9.609
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        0.002,
+        9.609
+      ],
+      "b": [
+        1.418,
+        9.135
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        1.418,
+        9.135
+      ],
+      "b": [
+        3.814,
+        9.029
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        3.814,
+        9.029
+      ],
+      "b": [
+        4.958,
+        8.677
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        4.958,
+        8.677
+      ],
+      "b": [
+        5.976,
+        8.047
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        5.976,
+        8.047
+      ],
+      "b": [
+        6.873,
+        7.11
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        6.873,
+        7.11
+      ],
+      "b": [
+        8.802,
+        4.686
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        8.802,
+        4.686
+      ],
+      "b": [
+        9.286,
+        3.592
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.286,
+        3.592
+      ],
+      "b": [
+        9.478,
+        2.411
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.478,
+        2.411
+      ],
+      "b": [
+        9.367,
+        1.219
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.367,
+        1.219
+      ],
+      "b": [
+        9.125,
+        0.458
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.125,
+        0.458
+      ],
+      "b": [
+        10.375,
+        -0.114
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        10.375,
+        -0.114
+      ],
+      "b": [
+        12.251,
+        -1.26
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        12.251,
+        -1.26
+      ],
+      "b": [
+        13.091,
+        -2.112
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        13.091,
+        -2.112
+      ],
+      "b": [
+        13.69,
+        -3.148
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        13.69,
+        -3.148
+      ],
+      "b": [
+        14.008,
+        -4.302
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        14.008,
+        -4.302
+      ],
+      "b": [
+        14.022,
+        -5.498
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        14.022,
+        -5.498
+      ],
+      "b": [
+        13.691,
+        -6.856
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        13.691,
+        -6.856
+      ],
+      "b": [
+        13.086,
+        -8.655
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        13.086,
+        -8.655
+      ],
+      "b": [
+        12.438,
+        -9.661
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        12.438,
+        -9.661
+      ],
+      "b": [
+        11.559,
+        -10.473
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        11.559,
+        -10.473
+      ],
+      "b": [
+        10.059,
+        -11.269
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        10.059,
+        -11.269
+      ],
+      "b": [
+        8.591,
+        -11.899
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        8.591,
+        -11.899
+      ],
+      "b": [
+        7.409,
+        -12.083
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        7.409,
+        -12.083
+      ],
+      "b": [
+        6.218,
+        -11.961
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        6.218,
+        -11.961
+      ],
+      "b": [
+        5.096,
+        -11.544
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        5.096,
+        -11.544
+      ],
+      "b": [
+        4.118,
+        -10.855
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        4.118,
+        -10.855
+      ],
+      "b": [
+        2.306,
+        -8.857
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        2.306,
+        -8.857
+      ],
+      "b": [
+        1.743,
+        -7.8
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        1.743,
+        -7.8
+      ],
+      "b": [
+        1.463,
+        -6.637
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        1.463,
+        -6.637
+      ],
+      "b": [
+        1.45,
+        -5.438
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        1.45,
+        -5.438
+      ],
+      "b": [
+        0.091,
+        -5.453
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        0.091,
+        -5.453
+      ],
+      "b": [
+        -1.072,
+        -5.173
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -1.072,
+        -5.173
+      ],
+      "b": [
+        -2.126,
+        -4.606
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -2.126,
+        -4.606
+      ],
+      "b": [
+        -2.517,
+        -4.311
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -2.517,
+        -4.311
+      ],
+      "b": [
+        -3.477,
+        -5.025
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -3.477,
+        -5.025
+      ],
+      "b": [
+        -5.051,
+        -5.661
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -5.051,
+        -5.661
+      ],
+      "b": [
+        -7.513,
+        -6.49
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -7.513,
+        -6.49
+      ],
+      "b": [
+        -8.707,
+        -6.575
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -8.707,
+        -6.575
+      ],
+      "b": [
+        -9.884,
+        -6.36
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.884,
+        -6.36
+      ],
+      "b": [
+        -10.968,
+        -5.852
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -10.968,
+        -5.852
+      ],
+      "b": [
+        -11.888,
+        -5.087
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -11.888,
+        -5.087
+      ],
+      "b": [
+        -12.643,
+        -4.032
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -12.643,
+        -4.032
+      ],
+      "b": [
+        -14.247,
+        -1.266
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -14.247,
+        -1.266
+      ],
+      "b": [
+        -14.567,
+        -0.112
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -14.567,
+        -0.112
+      ],
+      "b": [
+        -14.614,
+        0.463
+      ],
+      "width": 1.4
+    }
+  ],
+  "entrance": {
+    "x": 0.0,
+    "y": -16.0,
+    "widthM": 3.0,
+    "arrivalY": -13.0
+  },
+  "walk_surface_materials": [
+    "paving",
+    "rubber",
+    "grass"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 3808596,
+    "sha256": "d9434bae810de52030aba1ffee5039a5e126ffd395d57bb4563cd7775ee333b5"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -20.0,
+      -16.0,
+      -0.0022
+    ],
+    [
+      20.0,
+      16.0,
+      9.8473
+    ]
+  ],
+  "triangles": 262643,
+  "mesh_instances": 148,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, rubber, grass. Never stretch the assembly to fit.",
+  "card": {
+    "group": "play_sport",
+    "description": "Angular concrete bouldering blocks with coloured holds in a black rubber fall zone, with a timber seat edge and prairie planting. Prepared level ground."
+  }
+}
