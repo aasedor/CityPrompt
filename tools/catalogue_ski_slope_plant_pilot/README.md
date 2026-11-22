@@ -23,7 +23,8 @@ local pilot: not in the catalogue, not runtime-tested and not approved for publi
   - a lower terrace with tables, in front of a glazed bar with a lit interior;
   - short flights up to the upper terrace, guarded on their open side, and a glass guard
     along the upper terrace's front;
-  - a pavilion with lit glazing, a dark roof and rooftop units, and a louvred plant enclosure.
+  - a pavilion with lit glazing, a dark roof and rooftop units, a louvred plant enclosure
+    against it, and festoon lights on eight posts.
 - **Street front** (the long east face of the roof view, facing -y):
   - a visitor entrance, cut into the wall with framed glazed doors under a transom, a
     canopy and a lit sign;
@@ -34,8 +35,8 @@ local pilot: not in the catalogue, not runtime-tested and not approved for publi
 - **Wings:** green-roofed wings 29.8 m high wrap the south half and run north beside the
   block as a narrow west strip. They have planting, gravel strips, hatches and an upstand,
   with slot windows on their straight walls.
-- **Stack:** twin tapering flues, the second winding 110 degrees round the first, both 100 m
-  high, standing in a gravel ring on the west wing roof.
+- **Stack:** twin tapering flues, the second winding 110 degrees round the first, joined in one
+  top collar at 100 m with a single opening, standing in a gravel ring on the west wing roof.
 - **Size:** a 4 m apron round the whole. The complete model is 183 m by 111 m by 100 m, with
   about 67,000 triangles in 31 clay roles, 4.7 MB, and no textures.
 
@@ -81,11 +82,11 @@ Open for a person to rule on:
 ## Reproduce
 
 ```bash
-python3 tools/catalogue_ski_slope_plant_pilot/build.py --output artifacts/ski-slope/v009 --version 9
+python3 tools/catalogue_ski_slope_plant_pilot/build.py --output artifacts/ski-slope/v010 --version 10
 python3 -m http.server 8765 --bind 127.0.0.1 &          # from the repository root
-node tools/catalogue_ski_slope_plant_pilot/render.cjs artifacts/ski-slope/v009/wte-ski-slope-clay-v009.glb artifacts/ski-slope/v009/renders
-python3 tools/catalogue_ski_slope_plant_pilot/boards.py artifacts/ski-slope/v009
-python3 tools/catalogue_ski_slope_plant_pilot/verify.py artifacts/ski-slope/v009
+node tools/catalogue_ski_slope_plant_pilot/render.cjs artifacts/ski-slope/v010/wte-ski-slope-clay-v010.glb artifacts/ski-slope/v010/renders
+python3 tools/catalogue_ski_slope_plant_pilot/boards.py artifacts/ski-slope/v010
+python3 tools/catalogue_ski_slope_plant_pilot/verify.py artifacts/ski-slope/v010
 python3 -m pytest tools/catalogue_ski_slope_plant_pilot
 ```
 
@@ -96,14 +97,13 @@ Git LFS files: `git lfs pull --include="frontend/public/archetypes/buildings/was
 ## Checkpoints
 
 - Builder review: pass (`evidence/builder-pixel-review.json`).
-- Independent architectural-clay review: v007 was refused with four P1 findings
-  (`evidence/independent-review-v007.json`). v009 passed on 2026-11-22 with zero P0, zero P1
-  and five P2 (`evidence/independent-review-v009.json`):
-  - the stack does not taper, and the flue walls cross inside each other's openings;
-  - no festoon lights over the upper terrace;
-  - a 0.2 m see-through slot in the upper terrace between the plant enclosure and the pavilion;
-  - the holds stand 3 cm off the panel, and the flight guards share the stair sides' plane;
-  - the plain band under the parapet is wider than in the reference.
+- Independent architectural-clay review:
+  - v007 was refused with four P1 findings (`evidence/independent-review-v007.json`);
+  - v009 passed with five P2 (`evidence/independent-review-v009.json`);
+  - v010 answers those five and passed on 2026-11-22 with zero P0, zero P1 and three P2
+    (`evidence/independent-review-v010.json`): the festoon lines are flat ribbons without lamps;
+    some hidden contact faces share a plane; and a one-pixel edge crack shows where the
+    wing-roof gravel meets the main wall in high oblique views.
 - Gate A: open for a person (the street view is a LEGO render).
 - Runtime integration: NOT TESTED. Publication and activation: not authorized. Only a
   person can activate the model.

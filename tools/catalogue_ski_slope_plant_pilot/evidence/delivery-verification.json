@@ -1,6 +1,6 @@
 {
   "status": "PASS_DELIVERY_CHECKS",
-  "candidate": "wte-ski-slope-clay-v009",
+  "candidate": "wte-ski-slope-clay-v010",
   "checks": {
     "source oblique": true,
     "source top": true,
@@ -81,8 +81,8 @@
     "phone-construction.png": true,
     "phone-programme.png": true
   },
-  "model_sha256": "e3aa7cefa97445b36ab7da2d8b36855f263c15330ec4c203264ee6351b208f11",
-  "model_bytes": 4737704,
+  "model_sha256": "a1398ea088f1120fc0207044562592a8725c0ead68fa2dd787a39b032e38af83",
+  "model_bytes": 4702036,
   "delivered_bounds_gltf_m": [
     [
       -99.5,
@@ -95,10 +95,10 @@
       59.3
     ]
   ],
-  "triangles": 67432,
+  "triangles": 66915,
   "script_sha256": {
     "clay_kit.py": "6237cadfb42ecbabc4c849a5305416e8a7657d71387ce2c7baa18bc7b1b71dcd",
-    "build.py": "1ad3df103fd3166dae864f2daabb24bfda2320d16018a99cde085e46193f0f36",
+    "build.py": "1168cdfefd2491282b8fe714c20ce70a147456d9750cf1e0e23151a3ec1865e5",
     "cameras.json": "bbce3f581abe532ea897396cadea27916db174aefc4f0f1f7e6640ef12d104c3",
     "review.html": "f2af47dded2aa9d6ffaea6994bf603e3fe193f1216248914177ad6ea9c03f98f",
     "render.cjs": "1d1f673fecfc789ba2b9aa6510ddabaeab5acb9ef5a3e878a7300c5cf13af189"

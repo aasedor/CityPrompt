@@ -1,11 +1,11 @@
 {
-  "candidate": "wte-ski-slope-clay-v009",
+  "candidate": "wte-ski-slope-clay-v010",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/ski-slope/v009 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "e3aa7cefa97445b36ab7da2d8b36855f263c15330ec4c203264ee6351b208f11",
-  "model_bytes": 4737704,
+  "external_directory": "artifacts/ski-slope/v010 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "a1398ea088f1120fc0207044562592a8725c0ead68fa2dd787a39b032e38af83",
+  "model_bytes": 4702036,
   "delivered_bounds_gltf_m": [
     [
       -99.5,
@@ -32,14 +32,14 @@
     "stack": 100.0
   },
   "runtime": {
-    "path": "wte-ski-slope-clay-v009.glb",
-    "bytes": 4737704,
-    "sha256": "e3aa7cefa97445b36ab7da2d8b36855f263c15330ec4c203264ee6351b208f11",
+    "path": "wte-ski-slope-clay-v010.glb",
+    "bytes": 4702036,
+    "sha256": "a1398ea088f1120fc0207044562592a8725c0ead68fa2dd787a39b032e38af83",
     "meshes": 31,
     "materials": 31,
     "textures": 0,
     "images": 0,
-    "triangles": 67432
+    "triangles": 66915
   },
   "entrances": {
     "visitor entrance": 1,
@@ -53,20 +53,18 @@
   "independent_review": {
     "status": "pass",
     "decision": "architectural_clay_pass",
-    "file": "evidence/independent-review-v009.json",
-    "sha256": "cf6821a84e3d7bcecf218a101a9ed7673c0b54ec0800461e3b9e3b38e1548aa6",
-    "reviewed_utc": "2026-11-22T16:07:23Z",
+    "file": "evidence/independent-review-v010.json",
+    "sha256": "c19eb572a6bbb08e6f58bf24db01ee2e062a980c29d2d89f78b0a8bab40cc7e8",
+    "reviewed_utc": "2026-11-22T22:27:47Z",
     "counts": {
       "P0": 0,
       "P1": 0,
-      "P2": 5
+      "P2": 3
     },
     "open_p2": [
-      "N1: The stack has no taper, and the twin flue walls cross inside each other's openings",
-      "N2: Summit festoon lighting is still missing",
-      "N3: A 0.2 m see-through slot in the upper terrace between the plant enclosure and the pavilion",
-      "N4: Small contact and coplanarity details",
-      "N5: The blank band under the parapet is wider than in the reference"
+      "V1: The festoon lines are flat ribbons without lamps",
+      "V2: Hidden coplanar contact faces",
+      "V3: A one-pixel edge crack along the junction of the wing roof and the main wall"
     ],
     "previous": [
       {
@@ -78,6 +76,17 @@
           "P2": 5
         },
         "file": "evidence/independent-review-v007.json"
+      },
+      {
+        "candidate": "wte-ski-slope-clay-v009",
+        "decision": "architectural_clay_pass",
+        "counts": {
+          "P0": 0,
+          "P1": 0,
+          "P2": 5
+        },
+        "file": "evidence/independent-review-v009.json",
+        "note": "v010 answers its five P2 notes"
       }
     ],
     "note": "Asset review only. No keeper, runtime or publication approval."

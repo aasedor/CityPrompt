@@ -68,7 +68,8 @@ SERVICE = [(-15.6, -11.8), (-6.4, -2.6)]          # service doors from the wing 
 WINGS = [(-47.7, -95.5, -HALF_W, -.6), (-47.7, -95.5, 55.3, -HALF_L), (HALF_W, -95.5, 55.3, -19.0),   # x0, y0, x1, y1
          (-41.8, -.6, -HALF_W, 47.3)]          # the west wing narrows to a strip running north beside the block
 WING_CORNER = 5.0
-STACK = ((-38.2, -46.5), 100.0, (3.6, 2.8), (1.9, 1.1), 100.0, (3.0, 2.2))  # main flue centre, top, radii; second flue offset, top, radii
+STACK = ((-38.2, -46.5), 100.0, (4.6, 2.8), (1.9, 1.1), 100.0, (3.8, 2.2))  # main flue centre, top, radii; second flue offset, top, radii
+COLLAR = 1.5                                      # the stack's top collar, which unites the two flues
 TWIST = 110.0                                     # the second flue winds this far round the first, in degrees, base to top
 SLOT = (1.4, 3.7, 1.6)                            # slot windows: width, column spacing, gap between stacked slots
 COURSE = 1.25                                     # aluminium brick courses
@@ -283,7 +284,7 @@ def slot_columns(u_range, base, top, skip=(), seed=0, limit=None):
     k = seed
     while u <= u_range[1]:
         if not any(a - width <= u <= b + width for a, b in skip):
-            z_lo, z_hi = base(u) + (8.0 if base(u) < 1 else 2.0), top(u) - (4.5 if base(u) < 1 else 2.2)
+            z_lo, z_hi = base(u) + (8.0 if base(u) < 1 else 2.0), top(u) - 2.2
             if limit is not None:
                 z_hi = min(z_hi, limit(u))
             z = z_lo + (k * 2.3) % 4.0
@@ -380,7 +381,7 @@ def pier(clay):
         y, z = rng.uniform(y0 + 2, y1 - 2), rng.uniform(1.5, top(y0) - 4)
         size = rng.uniform(1.0, 2.6)
         sides = int(rng.integers(3, 6))
-        ring = [(x1 + .03, y + size * math.cos(2 * math.pi * k / sides + .4), z + size * 1.3 * math.sin(2 * math.pi * k / sides + .4)) for k in range(sides)]
+        ring = [(x1 - .01, y + size * math.cos(2 * math.pi * k / sides + .4), z + size * 1.3 * math.sin(2 * math.pi * k / sides + .4)) for k in range(sides)]
         apex = (x1 + size * .35, y, z)
         role = 'hold_blue' if rng.random() < .55 else 'hold_yellow'
         for a, b in pairwise(ring + ring[:1]):
@@ -388,7 +389,7 @@ def pier(clay):
     for _ in range(240):                                                   # holds
         y, z = rng.uniform(y0 + .6, y1 - .6), rng.uniform(.4, top(y0) - 1.0)
         s = rng.uniform(.15, .35)
-        clay.box(colours[int(rng.integers(0, 4))], x1 + .03, x1 + .03 + s * .8, y - s, y + s, z - s, z + s)
+        clay.box(colours[int(rng.integers(0, 4))], x1 - .01, x1 - .01 + s * .8, y - s, y + s, z - s, z + s)
 
 
 # ---- the roof: turf, stepped paths, terraces and summit --------------------------------------------
@@ -432,7 +433,7 @@ def roof(clay):
         xa, xb = sorted((side * TURF_X, side * STAIR_X))
         xa, xb = sorted((side * TURF_X, side * INNER))                     # summit flights run to the parapet; guarded on the open side
         stair_flight(clay, xa, xb, TERRACE_Y[0], TERRACE_Y[1], Z_LOWER, Z_UPPER, floor=Z_LOWER, sides=(side * TURF_X,))
-        x = side * TURF_X
+        x = side * (TURF_X - .02)                                          # the guard stands just off the flight's side
         clay.quad('guard', (x, TERRACE_Y[0], Z_LOWER), (x, TERRACE_Y[1], Z_UPPER), (x, TERRACE_Y[1], Z_UPPER + GUARD),
                   (x, TERRACE_Y[0], Z_LOWER + GUARD), facing=(-side, 0, 0))
         clay.quad('mullion', (x, TERRACE_Y[0], Z_LOWER + GUARD), (x, TERRACE_Y[1], Z_UPPER + GUARD), (x, TERRACE_Y[1], Z_UPPER + GUARD + .05),
@@ -501,15 +502,12 @@ def roof(clay):
     for cx in (x0 + 8, x0 + 14):
         clay.box('grille', cx, cx + 2.6, y0 + 4, y0 + 6.4, Z_UPPER + h, Z_UPPER + h + 1.5)
     px0, px1, py0, py1, ph = PLANT
-    clay.box('grille', px0 + .2, px1, py0, py1, Z_UPPER, Z_UPPER + ph)
+    clay.box('grille', px0, px1, py0, py1, Z_UPPER, Z_UPPER + ph)            # against the pavilion's wall
     x = px0 + .6
     while x < px1 - .2:                                                    # louvres on the plant enclosure's south face
         clay.box('pavilion', x - .04, x + .04, py0 - .12, py0, Z_UPPER + .2, Z_UPPER + ph - .2)
         x += .45
-    y = py0 + .5
-    while y < py1 - .2:                                                    # and on its west face
-        clay.box('pavilion', px0 + .08, px0 + .2, y - .04, y + .04, Z_UPPER + .2, Z_UPPER + ph - .2)
-        y += .45
+    festoons(clay)
     rng = np.random.default_rng(77)
     for _ in range(14):
         x, y = rng.uniform(-20, 16), rng.uniform(yf + 2, y0 - 2)
@@ -517,6 +515,25 @@ def roof(clay):
     for _ in range(9):
         x, y = rng.uniform(-20, 20), rng.uniform(TERRACE_Y[0] + 2, yf - 2)
         clay.cylinder('furniture', x, y, Z_LOWER, Z_LOWER + .75, .45, steps=10)
+
+
+def festoons(clay):
+    """Festoon lights on posts over the upper terrace: rows along each line of posts and a zigzag between them."""
+    xs, ys = (-24.0, -8.0, 8.0, 24.0), (TERRACE_Y[1] + 2.6, PAVILION[2] - 1.0)
+    height = 3.6
+    for x in xs:
+        for y in ys:
+            clay.cylinder('mullion', x, y, Z_UPPER, Z_UPPER + height, .06, steps=6)
+    spans = [((xs[i], y), (xs[i + 1], y)) for y in ys for i in range(len(xs) - 1)]
+    spans += [((xs[i], ys[i % 2]), (xs[i + 1], ys[(i + 1) % 2])) for i in range(len(xs) - 1)]
+    for (ax, ay), (bx, by) in spans:
+        pts = []
+        for k in range(11):
+            t = k / 10
+            pts.append((ax + (bx - ax) * t, ay + (by - ay) * t, Z_UPPER + height - .1 - .7 * 4 * t * (1 - t)))
+        for p, q in pairwise(pts):
+            clay.quad('light', (p[0], p[1], p[2] - .03), (q[0], q[1], q[2] - .03), (q[0], q[1], q[2] + .03), (p[0], p[1], p[2] + .03),
+                      facing=(*plan_normal(p, q), 0))
 
 
 def _top(p):
@@ -607,22 +624,27 @@ def mound(clay, role, x, y, radius, height, sides, z0):
 
 
 def stack(clay):
-    """Twin flues merged into one tapering stack, the second winding round the first, rising from the west wing roof."""
+    """Twin tapering flues, the second winding round the first, rising from the west wing roof into one top collar."""
     (cx, cy), top, (r0, r1), (dx, dy), _, (q0, q1) = STACK
     steps = 14
+    shaft = top - COLLAR
     for twist, (a, b) in ((False, (r0, r1)), (True, (q0, q1))):
         rings = []
         for k in range(steps + 1):
             f = k / steps
-            z, r = HP + (top - HP) * f, a + (b - a) * f
+            z, r = HP + (shaft - HP) * f, a + (b - a) * (HP + (shaft - HP) * f - HP) / (top - HP)
             ang = math.radians(TWIST * f) if twist else 0.0
             ox, oy = (dx * math.cos(ang) - dy * math.sin(ang), dx * math.sin(ang) + dy * math.cos(ang)) if twist else (0.0, 0.0)
             rings.append([(cx + ox + r * math.cos(2 * math.pi * j / 28), cy + oy + r * math.sin(2 * math.pi * j / 28), z) for j in range(28)])
         clay.loft('stack', rings, caps=(False, False), smooth=40)
     ang = math.radians(TWIST)
     tx, ty = cx + dx * math.cos(ang) - dy * math.sin(ang), cy + dx * math.sin(ang) + dy * math.cos(ang)
-    outer = Point(cx, cy).buffer(r1, quad_segs=7).union(Point(tx, ty).buffer(q1, quad_segs=7))
-    flues = Point(cx, cy).buffer(r1 - .35, quad_segs=7).union(Point(tx, ty).buffer(q1 - .35, quad_segs=7))
+    outer = orient(Point(cx, cy).buffer(r1 + .2, quad_segs=7).union(Point(tx, ty).buffer(q1 + .2, quad_segs=7)), 1.0)
+    flues = orient(Point(cx, cy).buffer(r1 - .35, quad_segs=7).union(Point(tx, ty).buffer(q1 - .35, quad_segs=7)), 1.0)
+    clay.prism('stack', list(outer.exterior.coords)[:-1], shaft, top, caps=(False, False))
+    clay.prism('flue', list(flues.exterior.coords)[:-1], top - .6, top, caps=(False, False))
+    flat_region(clay, 'stack', outer.difference(Point(cx, cy).buffer(r1 - .02, quad_segs=7).union(Point(tx, ty).buffer(q1 - .02, quad_segs=7))),
+                shaft, up=False)
     flat_region(clay, 'stack', outer.difference(flues), top)
     flat_region(clay, 'flue', flues, top - .6)
 

@@ -1,11 +1,11 @@
 {
-  "candidate": "wte-ski-slope-clay-v009",
-  "model_sha256": "e3aa7cefa97445b36ab7da2d8b36855f263c15330ec4c203264ee6351b208f11",
+  "candidate": "wte-ski-slope-clay-v010",
+  "model_sha256": "a1398ea088f1120fc0207044562592a8725c0ead68fa2dd787a39b032e38af83",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
-  "independent_approval": "architectural_clay_pass for v009 (evidence/independent-review-v009.json), after v007 was refused with four P1; not keeper, runtime or publication approval",
+  "independent_approval": "architectural_clay_pass for v010 (evidence/independent-review-v010.json); v007 was refused with four P1, v009 passed with five P2; not keeper, runtime or publication approval",
   "views_inspected": {
-    "v009": [
+    "v010": [
       "boards/phone-construction.png",
       "boards/phone-oblique.png",
       "boards/phone-programme.png",
@@ -28,7 +28,7 @@
       "renders/stack_contact.png",
       "renders/summit.png",
       "renders/top.png",
-      "builder close-ups: the long front, the summit flights and their guard, the back of the pier, the north corner, the north face, the stack, slots at a grazing angle, a wing junction, the roller doors"
+      "builder close-ups: the terrace overhead at the plant enclosure, the festoons, the stack top and whole, the east face north end, the summit flight guard"
     ]
   },
   "iterations": [
@@ -37,7 +37,8 @@
     "v003: slot windows on walls standing on the wing roof start 2 m above it, as in the oblique near the low end.",
     "v004/v005: the twin flues pulled together into one stack; slot rooms 0.9 m deep so their light shows at an angle; the corner view widened.",
     "v006/v007: the west wing narrows to a strip running north beside the block, as the roof view shows, and is planted.",
-    "v008/v009, answering the v007 review: F1 the parapet's inside faces are drawn in 1 m pieces from the walking surface at each point, so no panel stands behind the slot windows; F2 slot windows stop 1.2 m below the walking surface above them (terraces included), checked on every reveal, glass and room vertex; F3 the pier is closed behind above the parapet and its holds stand 3 cm off the panel; F4 the summit flights run to the parapet and carry a glass guard and rail on their open side, joined to the upper terrace guard. P2s: the north corners keep the block's own radius down to the ground (F5); slot rooms 1.4 m deep (F6); the second flue winds 110 degrees round the first and both stand 100 m (F7); a dark pavilion roof, a turf pad at the foot of the climbing wall, slatted roller doors and louvres on the plant enclosure (F8); the wing coping runs right up to the block (F9). Festoon lights are not modelled."
+    "v008/v009, answering the v007 review: F1 the parapet's inside faces are drawn in 1 m pieces from the walking surface at each point, so no panel stands behind the slot windows; F2 slot windows stop 1.2 m below the walking surface above them (terraces included), checked on every reveal, glass and room vertex; F3 the pier is closed behind above the parapet and its holds stand 3 cm off the panel; F4 the summit flights run to the parapet and carry a glass guard and rail on their open side, joined to the upper terrace guard. P2s: the north corners keep the block's own radius down to the ground (F5); slot rooms 1.4 m deep (F6); the second flue winds 110 degrees round the first and both stand 100 m (F7); a dark pavilion roof, a turf pad at the foot of the climbing wall, slatted roller doors and louvres on the plant enclosure (F8); the wing coping runs right up to the block (F9). Festoon lights are not modelled.",
+    "v010, answering the v009 P2 notes: the plant enclosure stands against the pavilion wall, closing the 0.2 m slot (N3); holds and volumes sit 1 cm into the panel and the flight guards stand 2 cm off the stair sides (N4); the flues taper from 4.6 and 3.8 m to 2.8 and 2.2 m and meet in one 1.5 m collar with one merged opening (N1); slot windows run to 2.2 m below the parapet where the roof allows (N5); festoon lights on eight posts over the upper terrace (N2)."
   ],
   "findings": [
     "Massing: the oblique through the fitted camera matches the block, its sloped parapet, the rounded low end on the wing roof, the pier and the summit; the roof view through the orthographic camera matches the block outline, the turf and paths, the summit, the pier and the wings.",
