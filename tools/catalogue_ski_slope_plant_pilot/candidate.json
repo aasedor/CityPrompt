@@ -1,0 +1,57 @@
+{
+  "candidate": "wte-ski-slope-clay-v007",
+  "method": "RLASM 6.1",
+  "scope": "architectural clay; local pilot only",
+  "canonical_promotion_approved": false,
+  "external_directory": "artifacts/ski-slope/v007 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "de6c4eeff0b1466da0764bc1391ced99077f0ed3166fb3c5504e6902588faf3a",
+  "model_bytes": 4700292,
+  "delivered_bounds_gltf_m": [
+    [
+      -99.5,
+      0.0,
+      -51.7
+    ],
+    [
+      83.5,
+      100.0,
+      59.3
+    ]
+  ],
+  "native_dimensions_m": {
+    "width": 183.0,
+    "depth": 111.0,
+    "height": 100.0
+  },
+  "heights_m": {
+    "summit_parapet": 80.2,
+    "low_end_parapet": 39.5,
+    "wing_roof": 29.8,
+    "lower_terrace": 66.956,
+    "upper_terrace": 71.056,
+    "stack": 100.0
+  },
+  "runtime": {
+    "path": "wte-ski-slope-clay-v007.glb",
+    "bytes": 4700292,
+    "sha256": "de6c4eeff0b1466da0764bc1391ced99077f0ed3166fb3c5504e6902588faf3a",
+    "meshes": 30,
+    "materials": 30,
+    "textures": 0,
+    "images": 0,
+    "triangles": 65823
+  },
+  "entrances": {
+    "visitor entrance": 1,
+    "loading door": 2
+  },
+  "entrance_note": "Every door is listed with its position in the build report; entrances() in build.py recomputes them. Two service doors lead from the wing roof into the low end.",
+  "builder_review": {
+    "file": "evidence/builder-pixel-review.json",
+    "decision": "builder_pass"
+  },
+  "independent_review": {
+    "status": "pending"
+  },
+  "gate_a": "open: variant_0.png is a grey render of the old LEGO model; a person must rule that the oblique and roof views govern"
+}

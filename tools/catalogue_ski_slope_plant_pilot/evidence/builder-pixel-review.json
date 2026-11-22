@@ -1,0 +1,54 @@
+{
+  "candidate": "wte-ski-slope-clay-v007",
+  "model_sha256": "de6c4eeff0b1466da0764bc1391ced99077f0ed3166fb3c5504e6902588faf3a",
+  "reviewer": "builder (the agent session that wrote the generator)",
+  "builder_visual_review": "pass",
+  "independent_approval": "pending",
+  "views_inspected": {
+    "v007": [
+      "boards/phone-construction.png",
+      "boards/phone-oblique.png",
+      "boards/phone-programme.png",
+      "boards/phone-roof.png",
+      "renders/aerial.png",
+      "renders/architecture_close.png",
+      "renders/climbing_wall.png",
+      "renders/facade_close.png",
+      "renders/front.png",
+      "renders/front_corner.png",
+      "renders/glass_close.png",
+      "renders/left_side.png",
+      "renders/low_end_contact.png",
+      "renders/match_oblique.png",
+      "renders/match_top.png",
+      "renders/rear.png",
+      "renders/rear_side.png",
+      "renders/right_side.png",
+      "renders/slope.png",
+      "renders/stack_contact.png",
+      "renders/summit.png",
+      "renders/top.png"
+    ]
+  },
+  "iterations": [
+    "v001: plan from the roof view (60 by 159 m at 0.204 m/px); heights from a camera fitted to eight points of the block in the oblique (8.2 px RMS): summit parapet 80.2 m, low end 39.5 m, wing roof 29.8 m. One straight parapet line from the low end to the summit, as the fit shows.",
+    "v002: rings forced counter-clockwise so the wing walls face out; slot windows on the wings' straight runs; terrace flights closed down to the terrace; the side strips' step between the terraces closed; the wing walls meet the block without a gap; groomed turf stripes.",
+    "v003: slot windows on walls standing on the wing roof start 2 m above it, as in the oblique near the low end.",
+    "v004/v005: the twin flues pulled together into one stack; slot rooms 0.9 m deep so their light shows at an angle; the corner view widened.",
+    "v006/v007: the west wing narrows to a strip running north beside the block, as the roof view shows, and is planted."
+  ],
+  "findings": [
+    "Massing: the oblique through the fitted camera matches the block, its sloped parapet, the rounded low end on the wing roof, the pier and the summit; the roof view through the orthographic camera matches the block outline, the turf and paths, the summit, the pier and the wings.",
+    "Openings: every slot window is cut through the wall, with reveals on four sides, glass 0.25 m in, glazing bars about every 2.6 m and a lit room face 0.9 m behind. The visitor entrance is a cut opening with framed glazed doors under a transom, a canopy and a lit sign; two roller doors in the north face and two service doors from the wing roof into the low end are recessed.",
+    "Roof: the turf, two stepped paths of 0.18 m risers, gravel edge strips, parapets with a glass guard beside the slope, a lower terrace with tables, a glazed bar with a lit interior under the upper terrace, short flights between the terraces, the upper terrace with a glass guard, a pavilion with lit glazing and rooftop units, and a plant enclosure. The roof is closed everywhere.",
+    "Climbing wall: the pier stands 5.3 m proud of the street front, its top following the parapet 2.5 m above it, with 26 large volumes and 240 holds in four colours.",
+    "Wings: 29.8 m high, green roofs with planting mounds, gravel strips along the block and round the stack, hatches, an upstand and coping; aluminium brick walls with course lines and slot windows.",
+    "Stack: twin flues merged, tapering, 100 m and 97 m, with dark flue openings, standing in a gravel ring on the west wing roof."
+  ],
+  "open_notes": [
+    "Gate A: variant_0.png (the street view) is a grey render of the old LEGO model. A person must rule that the oblique and roof views govern, or supply a street view.",
+    "The roof view draws the stack leaning; the oblique shows it upright further east. The model uses the roof view's base position and the oblique's height.",
+    "The catalogue's suggested 160 by 70 m footprint does not hold the wings; the whole is 103 m wide.",
+    "The west and north faces, the wings' southern end, and all interiors are inferred."
+  ]
+}

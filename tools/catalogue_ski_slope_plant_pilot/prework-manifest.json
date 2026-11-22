@@ -1,0 +1,159 @@
+{
+  "candidate": "wte-ski-slope-clay-v007",
+  "method": "RLASM v6.1 clay-first",
+  "archetype_id": "waste_to_energy_plant",
+  "variant_id": "wte_ski_slope",
+  "title": "Ski Slope WtE",
+  "sources": [
+    {
+      "role": "oblique",
+      "repo_path": "frontend/public/archetypes/buildings/waste_to_energy_plant/variant_0_angle_60.jpg",
+      "bytes": 821500,
+      "sha256": "e38a05544af556bbd76891a78ef21c865d955039a0cab0b8c3253709dbe225ab"
+    },
+    {
+      "role": "top",
+      "repo_path": "frontend/public/archetypes/buildings/waste_to_energy_plant/variant_0_angle_90.jpg",
+      "bytes": 784225,
+      "sha256": "bf306556df51d63961c11777b100fbb0bd9347fde0796c8ea1ae574a4df21faf"
+    }
+  ],
+  "excluded_sources": [
+    {
+      "role": "front",
+      "repo_path": "frontend/public/archetypes/buildings/waste_to_energy_plant/variant_0.png",
+      "bytes": 1265959,
+      "sha256": "ecef4b4013ab8d50a585f6d37b77f786eac1bf1d93e7e27410cf40b7b4a03b4a",
+      "reason": "grey render of the old LEGO model"
+    }
+  ],
+  "gate_a": {
+    "front_oblique_top_coherent": false,
+    "note": "The variant has no usable street view: variant_0.png is a grey render of the old LEGO model. The oblique and roof views agree and are the authority. A person must rule on this before activation, as for the concert hall, the crescent and the laneway."
+  },
+  "measurement_contract": {
+    "scale_basis": "No image carries a scale. The main block in the roof view (294 by 780 px) is set to 60 by 159 m (0.204 m/px), matching the catalogue's suggested 160 m length. Heights come from a pinhole camera fitted to eight points of the block in the oblique (8.2 px RMS) with the plan held fixed: summit parapet 80.2 m, low-end parapet 39.5 m, wing roof 29.8 m. A wing roof below 20 m fits clearly worse (12.5 px RMS at 20 m, 26 px at 5 m). The east parapet is one straight line from the low end to the summit.",
+    "source_measurements": {
+      "oblique": [
+        "High view from the south-east over the wings toward the harbour.",
+        "Long block in light aluminium bricks; its whole roof is one green turf slope rising north, with a stepped path and a glass guard down each side and a rounded low end.",
+        "East face: tall slot windows glowing warm in staggered columns, and a climbing wall with large blue and yellow volumes on a pier standing proud of the face.",
+        "Summit: a lower terrace with tables in front of a glazed bar, an upper terrace with a glass guard, a pavilion and plant behind; the side walls rise to the summit corner.",
+        "Lower green-roofed wings in aluminium brick in front of and beside the low end; a tall twin-flue stack to the west."
+      ],
+      "top": [
+        "Near-nadir view, north up.",
+        "Main block 294 by 780 px with rounded corners; turf 234 px wide between two stepped paths.",
+        "Summit at the north: an upper terrace with string lights, a pavilion 210 px wide and a plant enclosure; a lower terrace with tables; short flights at each side between them.",
+        "A pier 26 by 140 px on the east face 230 to 372 px from the top.",
+        "Green-roofed wings west and south-east of the block, with hatches; the west wing narrows to a strip 58 px wide that runs north to 220 px from the top; the stack in the west wing."
+      ]
+    },
+    "source_conflicts": [
+      "variant_0.png, the street view, is a grey render of the old LEGO model, not a picture of this building. It is excluded; the oblique and roof views govern. Needs a ruling by a person.",
+      "The roof view draws the stack leaning, its flue about 30 m north-west of its base; the oblique shows it upright and further east. The base position from the roof view governs; the height, about 100 m, comes from the oblique camera.",
+      "The catalogue suggests a 160 by 70 m footprint. The images show the 60 by 159 m block with wings that make the whole 103 m wide; the images govern."
+    ],
+    "hidden_assumptions": [
+      "The west and north faces are not seen; they carry the same slot windows, and the north face two roller doors for the plant's deliveries (inferred).",
+      "The wings' southern end lies outside both images; they are drawn ending 16 m south of the block.",
+      "Interiors are schematic: each slot window has a lit room face 0.9 m behind its outer face; the bar and pavilion have shallow lit interiors; the plant itself is not modelled.",
+      "The harbour, ships, cranes, neighbouring sheds, roads, vehicles and people belong to the site and are not modelled."
+    ]
+  },
+  "roof_contract": {
+    "form": "one straight turf slope from the low end to the summit terraces, stepped paths beside it, a parapet with a glass guard; terraces, pavilion and plant at the summit",
+    "weathering": "the slope, paths, terraces and parapets close the roof completely"
+  },
+  "material_contract": {
+    "profile": "texture-free source-palette architectural clay",
+    "generic_texture_fallback": false,
+    "roles": {
+      "apron": "#a8a59c",
+      "cladding": "#b7babd",
+      "joint": "#8d9195",
+      "coping": "#e4e4df",
+      "reveal": "#7a7e83",
+      "mullion": "#55595e",
+      "light": "#f0c26a",
+      "interior": "#c8a87c",
+      "door": "#4a4f55",
+      "turf": "#3d8a2b",
+      "turf_light": "#48962f",
+      "stair": "#9fa3a6",
+      "gravel": "#a49f94",
+      "terrace": "#c9c4b8",
+      "furniture": "#4b4540",
+      "pavilion": "#d2d3d0",
+      "grille": "#3c4045",
+      "roofgreen": "#6c7b42",
+      "planting": "#7a8a46",
+      "meadow": "#a39a5f",
+      "blossom": "#dcd6c4",
+      "climb": "#d9d7cf",
+      "hold_blue": "#2f6fc4",
+      "hold_red": "#c8402e",
+      "hold_yellow": "#e3c234",
+      "hold_green": "#3f9a4a",
+      "stack": "#cbccc8",
+      "flue": "#2c2b29",
+      "glass": "#2a2620",
+      "guard": "#d0dade"
+    }
+  },
+  "identity_contract": [
+    "a long aluminium-brick block whose whole roof is one green ski slope with stepped paths",
+    "tall warm slot windows in staggered columns",
+    "a climbing wall on a pier of the east face",
+    "terraced summit with bar and pavilion",
+    "lower green-roofed wings and a tall twin-flue stack"
+  ],
+  "programme_contract": {
+    "ski_slope": 1,
+    "summit_terraces": 2,
+    "climbing_wall": 1,
+    "visitor_entrance": 1
+  },
+  "contact_contract": {
+    "base_datum_m": 0.0,
+    "ground": "a 4 m apron round the whole footprint; nothing below grade"
+  },
+  "camera_roster": [
+    "front",
+    "front_corner",
+    "aerial",
+    "top",
+    "left_side",
+    "right_side",
+    "rear",
+    "rear_side",
+    "facade_close",
+    "architecture_close",
+    "glass_close",
+    "climbing_wall",
+    "summit",
+    "slope",
+    "low_end_contact",
+    "stack_contact",
+    "match_oblique",
+    "match_top"
+  ],
+  "mandatory_review_views": [
+    "front.png",
+    "front_corner.png",
+    "aerial.png",
+    "top.png",
+    "left_side.png",
+    "right_side.png",
+    "rear.png",
+    "rear_side.png",
+    "facade_close.png",
+    "architecture_close.png",
+    "glass_close.png",
+    "climbing_wall.png",
+    "summit.png",
+    "slope.png",
+    "low_end_contact.png",
+    "stack_contact.png"
+  ]
+}

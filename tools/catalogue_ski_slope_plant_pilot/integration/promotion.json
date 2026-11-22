@@ -1,0 +1,86 @@
+{
+  "entry": {
+    "candidate": "wte-ski-slope-clay-v007",
+    "family": "rlasm-clay-waste-to-energy-ski-slope",
+    "archetype_id": "waste_to_energy_plant",
+    "archetype_label": "Waste-to-Energy Plant",
+    "variant_id": "wte_ski_slope",
+    "variant_label": "Ski Slope WtE",
+    "runtime_enabled": true,
+    "native_floors": 10,
+    "design_dimensions_m": {
+      "width": 183.0,
+      "depth": 111.0,
+      "height": 100.0
+    },
+    "references": [
+      {
+        "role": "oblique",
+        "repo_path": "frontend/public/archetypes/buildings/waste_to_energy_plant/variant_0_angle_60.jpg",
+        "bytes": 821500,
+        "sha256": "e38a05544af556bbd76891a78ef21c865d955039a0cab0b8c3253709dbe225ab"
+      },
+      {
+        "role": "top",
+        "repo_path": "frontend/public/archetypes/buildings/waste_to_energy_plant/variant_0_angle_90.jpg",
+        "bytes": 784225,
+        "sha256": "bf306556df51d63961c11777b100fbb0bd9347fde0796c8ea1ae574a4df21faf"
+      }
+    ],
+    "excluded_references": [
+      {
+        "role": "front",
+        "repo_path": "frontend/public/archetypes/buildings/waste_to_energy_plant/variant_0.png",
+        "bytes": 1265959,
+        "sha256": "ecef4b4013ab8d50a585f6d37b77f786eac1bf1d93e7e27410cf40b7b4a03b4a",
+        "reason": "grey render of the old LEGO model"
+      }
+    ],
+    "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_ski_slope_plant_pilot.",
+    "limitations": [
+      "Fixed native assembly, 183.0 m by 111.0 m including a 4 m apron; the main block is 60 m by 159 m and the stack 100 m high. No resizing and no repetition.",
+      "Gate A is open: the variant's street view (variant_0.png) is a grey render of the old LEGO model. The model follows the oblique and roof views; a person must accept that or supply a street view.",
+      "Heights come from a camera fitted to the oblique: summit parapet 80.2 m, low end 39.5 m, wing roof 29.8 m. The roof view draws the stack leaning; its base position comes from the roof view and its height from the oblique.",
+      "The catalogue suggests a 160 by 70 m footprint; the images show wings that make the whole 103 m wide, and the images govern.",
+      "The west and north faces, the wings' southern end and all interiors are inferred. The plant's process equipment is not modelled.",
+      "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_ski_slope_plant_pilot/integration/runtime-review.md.",
+      "Independent architectural-clay review: pending."
+    ],
+    "picker": {
+      "id": "waste_to_energy_plant_ski_slope",
+      "description": "Waste-to-energy plant in aluminium brick with a green ski slope over its roof, a climbing wall and a twin-flue stack.",
+      "group_id": "civic",
+      "reshape_mode": "fixed_native",
+      "reshape_description": "Move and rotate the complete building. It keeps its authored size.",
+      "width": 190.0,
+      "depth": 115.0,
+      "max_size": 600.0
+    }
+  },
+  "model_file": "wte-ski-slope-clay-v007.glb",
+  "review_file": "independent-review.json",
+  "approval": {
+    "authorized_by": "",
+    "quote": "",
+    "date": "",
+    "model_sha256": ""
+  },
+  "trial": {
+    "model_sha256": "",
+    "project_url": "",
+    "tested_by": "",
+    "tested_at": "",
+    "evidence": [],
+    "checks": {
+      "catalogue_card": false,
+      "exact_variant": false,
+      "ground_contact": false,
+      "small_and_large_plot": false,
+      "rotation": false,
+      "save_reload": false,
+      "close_and_occluded_capture": false,
+      "no_console_errors": false
+    }
+  },
+  "human_decisions": []
+}
