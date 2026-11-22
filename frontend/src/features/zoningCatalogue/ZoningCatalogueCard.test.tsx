@@ -56,8 +56,8 @@ describe('zoning catalogue panel', () => {
   });
   it('opens park districts on the park list with cited use definitions and an explicit height scope', () => {
     render(<CatalogueMatches zone={zone('S-SPR')} />);
-    expect(screen.getByRole('button', { name: 'Parks (52)' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('heading', { name: 'Permitted use candidates (38)' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Parks (55)' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('heading', { name: 'Permitted use candidates (41)' })).toBeInTheDocument();
     const review = screen.getByText(/^More information needed/).closest('details')!;
     fireEvent.click(within(review).getByText(/^More information needed/));
     expect(within(review).getByRole('heading', { name: 'Basketball court only' })).toBeInTheDocument();
@@ -68,10 +68,10 @@ describe('zoning catalogue panel', () => {
   });
   it('updates park permission lists on rezoning and keeps buildings separately selectable', () => {
     const { rerender } = render(<CatalogueMatches zone={zone('R-CG')} />);
-    fireEvent.click(screen.getByRole('button', { name: 'Parks (52)' }));
-    expect(screen.getByRole('heading', { name: 'Permitted use candidates (28)' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Parks (55)' }));
+    expect(screen.getByRole('heading', { name: 'Permitted use candidates (30)' })).toBeInTheDocument();
     rerender(<CatalogueMatches zone={zone('S-R')} />);
-    expect(screen.getByRole('heading', { name: 'Discretionary use candidates (11)' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Discretionary use candidates (12)' })).toBeInTheDocument();
     const discretionary = screen.getByRole('region', { name: 'Discretionary use candidates' });
     expect(within(discretionary).getByRole('heading', { name: 'Basketball park' })).toBeInTheDocument();
     expect(within(discretionary).getByRole('heading', { name: 'Terraced performance lawn' })).toBeInTheDocument();

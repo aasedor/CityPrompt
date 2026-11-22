@@ -1,0 +1,671 @@
+{
+  "id": "student_clover_neighbourhood_park_v1",
+  "title": "Clover Neighbourhood Park",
+  "archetype_id": "neighborhood_park",
+  "dimensions_m": [
+    84.0,
+    68.0
+  ],
+  "programme": "An open oval lawn for informal play with two small goals, ringed by a stone-dust walk with benches; a playground on wood-fibre surfacing with two timber towers, a bridge, a slide, a climbing net, swings, boulders and log steppers; a timber picnic shelter with tables; a nature-play corner of boulders and fallen logs; a split-rail fence and wildflower meadow along the south edge; lights, bins, a bike rack and scattered green ash, bur oak, linden, spruce and aspen.",
+  "design_basis": "Original concept after the catalogue neighborhood park \"Rustic Community Park\" references (variant 0): a central lawn ringed by a path with play and gathering lobes. Equipment sizes are teaching values, not a certified play design.",
+  "reference_views": "frontend/public/archetypes/openspaces/neighborhood-park/variant_0",
+  "generator": "CityPrompt native park batch builder v1 (neighbourhood)",
+  "generator_sha256": "7c5d9bf46cdac142dd7a6f74ce96c82fd4391171678d4fc4ed1ac545e2edcac9",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only; drainage and irrigation are not designed.",
+    "Play equipment, fall zones and surfacing depths are indicative; real playgrounds follow CSA Z614 and the manufacturer.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        4.0,
+        -34.0
+      ],
+      "b": [
+        4.0,
+        -12.5
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        22.398,
+        2.931
+      ],
+      "b": [
+        22.245,
+        1.24
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        22.245,
+        1.24
+      ],
+      "b": [
+        21.81,
+        -0.503
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        21.81,
+        -0.503
+      ],
+      "b": [
+        21.118,
+        -2.163
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        21.118,
+        -2.163
+      ],
+      "b": [
+        20.07,
+        -3.865
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        20.07,
+        -3.865
+      ],
+      "b": [
+        18.794,
+        -5.402
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        18.794,
+        -5.402
+      ],
+      "b": [
+        17.108,
+        -6.963
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        17.108,
+        -6.963
+      ],
+      "b": [
+        15.073,
+        -8.411
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        15.073,
+        -8.411
+      ],
+      "b": [
+        12.792,
+        -9.655
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        12.792,
+        -9.655
+      ],
+      "b": [
+        10.203,
+        -10.716
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        10.203,
+        -10.716
+      ],
+      "b": [
+        7.422,
+        -11.532
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        7.422,
+        -11.532
+      ],
+      "b": [
+        4.475,
+        -12.089
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        4.475,
+        -12.089
+      ],
+      "b": [
+        1.389,
+        -12.37
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        1.389,
+        -12.37
+      ],
+      "b": [
+        -1.71,
+        -12.351
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -1.71,
+        -12.351
+      ],
+      "b": [
+        -4.694,
+        -12.055
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -4.694,
+        -12.055
+      ],
+      "b": [
+        -7.636,
+        -11.478
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -7.636,
+        -11.478
+      ],
+      "b": [
+        -10.505,
+        -10.609
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -10.505,
+        -10.609
+      ],
+      "b": [
+        -12.991,
+        -9.559
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -12.991,
+        -9.559
+      ],
+      "b": [
+        -15.175,
+        -8.346
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -15.175,
+        -8.346
+      ],
+      "b": [
+        -17.124,
+        -6.95
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -17.124,
+        -6.95
+      ],
+      "b": [
+        -18.808,
+        -5.386
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -18.808,
+        -5.386
+      ],
+      "b": [
+        -20.082,
+        -3.847
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -20.082,
+        -3.847
+      ],
+      "b": [
+        -21.127,
+        -2.144
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -21.127,
+        -2.144
+      ],
+      "b": [
+        -21.817,
+        -0.484
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -21.817,
+        -0.484
+      ],
+      "b": [
+        -22.249,
+        1.261
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -22.249,
+        1.261
+      ],
+      "b": [
+        -22.398,
+        2.952
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -22.398,
+        2.952
+      ],
+      "b": [
+        -22.263,
+        4.645
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -22.263,
+        4.645
+      ],
+      "b": [
+        -21.848,
+        6.393
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -21.848,
+        6.393
+      ],
+      "b": [
+        -21.169,
+        8.059
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -21.169,
+        8.059
+      ],
+      "b": [
+        -20.192,
+        9.686
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -20.192,
+        9.686
+      ],
+      "b": [
+        -18.873,
+        11.317
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -18.873,
+        11.317
+      ],
+      "b": [
+        -17.276,
+        12.826
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -17.276,
+        12.826
+      ],
+      "b": [
+        -15.426,
+        14.19
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -15.426,
+        14.19
+      ],
+      "b": [
+        -13.258,
+        15.432
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -13.258,
+        15.432
+      ],
+      "b": [
+        -10.784,
+        16.51
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -10.784,
+        16.51
+      ],
+      "b": [
+        -8.117,
+        17.358
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -8.117,
+        17.358
+      ],
+      "b": [
+        -5.183,
+        17.979
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -5.183,
+        17.979
+      ],
+      "b": [
+        -2.004,
+        18.332
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -2.004,
+        18.332
+      ],
+      "b": [
+        1.094,
+        18.376
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        1.094,
+        18.376
+      ],
+      "b": [
+        4.183,
+        18.13
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        4.183,
+        18.13
+      ],
+      "b": [
+        7.135,
+        17.604
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        7.135,
+        17.604
+      ],
+      "b": [
+        9.925,
+        16.816
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        9.925,
+        16.816
+      ],
+      "b": [
+        12.435,
+        15.825
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        12.435,
+        15.825
+      ],
+      "b": [
+        14.737,
+        14.62
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        14.737,
+        14.62
+      ],
+      "b": [
+        16.723,
+        13.275
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        16.723,
+        13.275
+      ],
+      "b": [
+        18.455,
+        11.763
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        18.455,
+        11.763
+      ],
+      "b": [
+        19.897,
+        10.104
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        19.897,
+        10.104
+      ],
+      "b": [
+        20.924,
+        8.508
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        20.924,
+        8.508
+      ],
+      "b": [
+        21.712,
+        6.782
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        21.712,
+        6.782
+      ],
+      "b": [
+        22.201,
+        5.052
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        22.201,
+        5.052
+      ],
+      "b": [
+        22.384,
+        3.364
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        22.384,
+        3.364
+      ],
+      "b": [
+        22.398,
+        2.931
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -14.0,
+        11.5
+      ],
+      "b": [
+        -21.0,
+        12.5
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        -13.0,
+        -7.0
+      ],
+      "b": [
+        -21.0,
+        -13.0
+      ],
+      "width": 1.6
+    },
+    {
+      "a": [
+        15.6,
+        -7.2
+      ],
+      "b": [
+        21.4,
+        -8.0
+      ],
+      "width": 1.6
+    }
+  ],
+  "entrance": {
+    "x": 4.0,
+    "y": -34.0,
+    "widthM": 2.4,
+    "arrivalY": -31.0
+  },
+  "walk_surface_materials": [
+    "grass",
+    "gravel",
+    "paving"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 8743796,
+    "sha256": "a320a1aa781522dc4264cce884920eda79c263c6c8a52848fabfab4d5ecc63ad"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -42.0,
+      -34.0,
+      -0.0176
+    ],
+    [
+      42.0,
+      34.0,
+      13.1072
+    ]
+  ],
+  "triangles": 656108,
+  "mesh_instances": 378,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on grass, gravel, paving. Never stretch the assembly to fit.",
+  "card": {
+    "group": "neighbourhood",
+    "description": "A neighbourhood park with an open play lawn, a ring walk, a timber playground, a picnic shelter, a nature-play corner and shade trees. Prepared level ground."
+  }
+}

@@ -686,10 +686,10 @@
     "src/utils/zoneIdentity.ts"
   ],
   "coverage": {
-    "explicitReferenceCount": 4276,
+    "explicitReferenceCount": 4282,
     "dynamicCollectionCount": 7,
-    "requiredFileCount": 6060,
-    "requiredLogicalBytes": 13221870436,
+    "requiredFileCount": 6066,
+    "requiredLogicalBytes": 13251385146,
     "missingReferenceCount": 0
   },
   "explicitReferences": [
@@ -11764,6 +11764,7 @@
       "url": "/archetypes/openspaces/calgary-prairie-urban-plaza/variant_2.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1453934,
@@ -14366,6 +14367,7 @@
       "url": "/archetypes/openspaces/neighborhood-park/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/classroomStarter.json",
         "src/data/neighborhoodParkV0StickerKit.json",
         "src/data/openSpaceArchetypes.json",
@@ -15781,6 +15783,7 @@
       "url": "/archetypes/openspaces/sports-field-complex/variant_0.png",
       "sources": [
         "src/data/archetypeReferenceAvailability.json",
+        "src/data/catalogueHeroImages.json",
         "src/data/openSpaceArchetypes.json"
       ],
       "logicalBytes": 1313384
@@ -25447,6 +25450,13 @@
       "lfsOid": "08fab3e99c6b68540868ea7a17050348b1167d78600c114ab01c491aed271a9a"
     },
     {
+      "url": "/native-park-assets/0af3427d166369a11dd1584cb7543992ebc0123b8d1f0699c6b88999d09a4f87.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 6239808
+    },
+    {
       "url": "/native-park-assets/0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8.glb",
       "sources": [
         "src/data/nativeParks.json"
@@ -25484,6 +25494,14 @@
       ],
       "logicalBytes": 2999560,
       "lfsOid": "1e240ac4b5f96f1e1d115c6d5cc681e68bdc29b37a924b6680ca917ab4855f12"
+    },
+    {
+      "url": "/native-park-assets/231011286dfcc964e662f2e4d30713fd3c5563f5571d1e1aaaae02773adb5f5c.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1217777
     },
     {
       "url": "/native-park-assets/2333fa81b824f1851a8730f0b96bc3ec2334717b56aa4869e753936450fc5504.glb",
@@ -25695,6 +25713,14 @@
       "lfsOid": "6e91cf1c1429a773244db0fac3f8dd984bd39e794f8c42d4bf01e3fe7663ea87"
     },
     {
+      "url": "/native-park-assets/7143f78d2759187ae19c87cf9ede8499962b24287d432bb697e93e0bfc931fe6.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1584547
+    },
+    {
       "url": "/native-park-assets/75fa2fcf105f678bdafbe3d72c348f73e3ca0a892ee563fb871439a51a1b00f5.glb",
       "sources": [
         "src/data/nativeParks.json"
@@ -25762,6 +25788,13 @@
       "lfsOid": "9f883c823d0677b74a516a0758857e17551f27eb45b64ac4a0959bb7377ac593"
     },
     {
+      "url": "/native-park-assets/a320a1aa781522dc4264cce884920eda79c263c6c8a52848fabfab4d5ecc63ad.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 8743796
+    },
+    {
       "url": "/native-park-assets/a3c219f333b46938d85499e0b2b41e0ed77a108d2d2996084225b0ced3c55fdd.glb",
       "sources": [
         "src/data/nativeParks.json"
@@ -25816,6 +25849,13 @@
       ],
       "logicalBytes": 4056296,
       "lfsOid": "b4280c800244f05b035aea3a01ed954ec87740001b91130792f01a0bb19316b3"
+    },
+    {
+      "url": "/native-park-assets/b61324564012769e401dcf5a38b591202790591703f8f0b92c7fb123ee8f04f3.glb",
+      "sources": [
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 10260144
     },
     {
       "url": "/native-park-assets/b8264e62966be8443a2eb2184d502f13851e607f947faf2e9a67121ec3ab75e1.png",
@@ -25949,6 +25989,14 @@
       ],
       "logicalBytes": 6612740,
       "lfsOid": "de904793cef32f06eca7e786563864d192bdf011a537553d794b15c9506cd20e"
+    },
+    {
+      "url": "/native-park-assets/e618a54393b8cae82132a8c1da36c63ae4ecffa11ad093dbe113f8ec7389d3a0.png",
+      "sources": [
+        "src/data/classroomExpansion.json",
+        "src/data/nativeParks.json"
+      ],
+      "logicalBytes": 1468638
     },
     {
       "url": "/native-park-assets/ea80cb09b3effdec7a7c041d46dd4adf94998cf081751a80f243be1674d78338.glb",

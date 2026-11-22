@@ -1,0 +1,25 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "0af3427d166369a11dd1584cb7543992ebc0123b8d1f0699c6b88999d09a4f87",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 64 x 52 m footprint",
+    "recipe bounds match the GLB",
+    "below grade only inside the declared sunken areas",
+    "nothing taller than 20 m",
+    "1155 material-aware route rays on grass, paving",
+    "472 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "the reflecting pool is one water plane 0.1 m below the coping",
+    "the sails stay above 2.4 m over the circle and ring walk",
+    "the wind screen leaves a clear view opening from 0.9 to 2.2 m high"
+  ],
+  "failures": [],
+  "triangles_rendered": 771638,
+  "mesh_instances": 481,
+  "runtime_tested": false
+}

@@ -882,6 +882,43 @@
   "runtime_status": "NOT TESTED",
   "completed": false
 }
+,
+{
+  "domain": "park",
+  "title": "Prairie Wind Plaza",
+  "archetype_id": "calgary_prairie_plaza",
+  "variant_id": "student_calgary_prairie_plaza_v1",
+  "version": "prairie-wind-plaza-v006",
+  "placement_id": "native-park:student_calgary_prairie_plaza_v1--native-v1",
+  "sha256": "0af3427d166369a11dd1584cb7543992ebc0123b8d1f0699c6b88999d09a4f87",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+},
+{
+  "domain": "park",
+  "title": "Clover Neighbourhood Park",
+  "archetype_id": "neighborhood_park",
+  "variant_id": "student_clover_neighbourhood_park_v1",
+  "version": "clover-neighbourhood-v005",
+  "placement_id": "native-park:student_clover_neighbourhood_park_v1--native-v1",
+  "sha256": "a320a1aa781522dc4264cce884920eda79c263c6c8a52848fabfab4d5ecc63ad",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+},
+{
+  "domain": "park",
+  "title": "Prairie Sports Complex",
+  "archetype_id": "sports_field_complex",
+  "variant_id": "student_prairie_sports_complex_v1",
+  "version": "prairie-sports-complex-v003",
+  "placement_id": "native-park:student_prairie_sports_complex_v1--native-v1",
+  "sha256": "b61324564012769e401dcf5a38b591202790591703f8f0b92c7fb123ee8f04f3",
+  "asset_review": "agent_native_visual_and_geometry_pass",
+  "runtime_status": "NOT TESTED",
+  "completed": false
+}
 ],
   "assets": [
     {
@@ -3436,6 +3473,103 @@
     "green_space_archetype_id": "cricket_pitch_oval",
     "green_space_selected_variant_id": "student_village_green_cricket_v1",
     "green_space_native_layout_id": "student_village_green_cricket_v1--native-v1",
+    "pick_place_automatic_3d": true
+  }
+}
+,
+{
+  "id": "native-park:student_calgary_prairie_plaza_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Prairie Wind Plaza",
+  "description": "A civic plaza with a sandstone wind-rose circle, prairie grass crescents, shade sails, a reflecting pool, market stalls and a wind screen framing the mountain view. Prepared level ground.",
+  "thumbnail": "/native-park-assets/e618a54393b8cae82132a8c1da36c63ae4ecffa11ad093dbe113f8ec7389d3a0.png",
+  "calgaryGuide": {
+    "groupId": "plazas",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 64.0,
+  "depth": 52.0,
+  "minWidth": 64.0,
+  "minDepth": 52.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_calgary_prairie_plaza_v1",
+    "revision": "861efd8d38862f7a7a355a092fc46108c38b487b8dd8806575de5fd152902c68",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "calgary_prairie_plaza",
+    "green_space_selected_variant_id": "student_calgary_prairie_plaza_v1",
+    "green_space_native_layout_id": "student_calgary_prairie_plaza_v1--native-v1",
+    "pick_place_automatic_3d": true
+  }
+},
+{
+  "id": "native-park:student_clover_neighbourhood_park_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Clover Neighbourhood Park",
+  "description": "A neighbourhood park with an open play lawn, a ring walk, a timber playground, a picnic shelter, a nature-play corner and shade trees. Prepared level ground.",
+  "thumbnail": "/native-park-assets/7143f78d2759187ae19c87cf9ede8499962b24287d432bb697e93e0bfc931fe6.png",
+  "calgaryGuide": {
+    "groupId": "neighbourhood",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 84.0,
+  "depth": 68.0,
+  "minWidth": 84.0,
+  "minDepth": 68.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_clover_neighbourhood_park_v1",
+    "revision": "dc11eee4590c01a53235b6fb88a7b36f5c464ec8cd83b0000966b25d0db08342",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "neighborhood_park",
+    "green_space_selected_variant_id": "student_clover_neighbourhood_park_v1",
+    "green_space_native_layout_id": "student_clover_neighbourhood_park_v1--native-v1",
+    "pick_place_automatic_3d": true
+  }
+},
+{
+  "id": "native-park:student_prairie_sports_complex_v1--native-v1",
+  "kind": "object",
+  "definitionVersion": 2,
+  "readiness": "pilot",
+  "label": "Prairie Sports Complex",
+  "description": "Two soccer pitches and two ball diamonds round a central plaza and fieldhouse, with bleachers, field lights and a promenade. Prepared level ground.",
+  "thumbnail": "/native-park-assets/231011286dfcc964e662f2e4d30713fd3c5563f5571d1e1aaaae02773adb5f5c.png",
+  "calgaryGuide": {
+    "groupId": "play_sport",
+    "basis": "park_function"
+  },
+  "zoneType": "green_space",
+  "reshapeMode": "authored_footprint",
+  "width": 216.0,
+  "depth": 168.0,
+  "minWidth": 216.0,
+  "minDepth": 168.0,
+  "maxSize": 250,
+  "model": {
+    "variantId": "student_prairie_sports_complex_v1",
+    "revision": "6a65f770eec529b05bb6ff652cc1a7c58709430bc2b70e57b2b20532d4f2b46e",
+    "method": "native_park_v2"
+  },
+  "reshapeDescription": "The complete garden keeps its proportions when the surrounding parcel changes.",
+  "properties": {
+    "green_space_archetype_id": "sports_field_complex",
+    "green_space_selected_variant_id": "student_prairie_sports_complex_v1",
+    "green_space_native_layout_id": "student_prairie_sports_complex_v1--native-v1",
     "pick_place_automatic_3d": true
   }
 }

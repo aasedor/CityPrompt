@@ -2833,5 +2833,45 @@
       "pavilion",
       "sight screens"
     ]
+  },
+  "native-park:student_calgary_prairie_plaza_v1--native-v1": {
+    "label": "Prairie Wind Plaza",
+    "description": "A civic plaza with a sandstone wind-rose circle, prairie grass crescents, shade sails, a reflecting pool, market stalls and a wind screen framing the view west.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "plaza",
+      "prairie",
+      "calgary",
+      "market",
+      "shade sails",
+      "reflecting pool"
+    ]
+  },
+  "native-park:student_clover_neighbourhood_park_v1--native-v1": {
+    "label": "Clover Neighbourhood Park",
+    "description": "A neighbourhood park with an open play lawn ringed by a stone-dust walk, a timber playground, a picnic shelter, a nature-play corner and shade trees.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "neighbourhood park",
+      "playground",
+      "picnic shelter",
+      "open lawn",
+      "nature play"
+    ]
+  },
+  "native-park:student_prairie_sports_complex_v1--native-v1": {
+    "label": "Prairie Sports Complex",
+    "description": "Two soccer pitches and two ball diamonds round a central plaza and fieldhouse, with bleachers, field lights and a promenade.",
+    "styleIds": [],
+    "searchTags": [
+      "park_plaza",
+      "sports complex",
+      "soccer",
+      "baseball",
+      "fieldhouse",
+      "athletic park"
+    ]
   }
 }

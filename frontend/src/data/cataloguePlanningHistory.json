@@ -8659,6 +8659,118 @@
       "designEvidence": "A fenced village cricket ground with a square, sight screens and a timber-framed pavilion among shade trees.",
       "referenceReviewed": true,
       "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_calgary_prairie_plaza_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Prairie plazas pair civic paving with native grassland planting; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare Calgary plazas that shelter people from wind and frame mountain views with open downtown squares.",
+      "internationalContext": "Contemporary plazas increasingly use native planting and flexible market space instead of formal lawns and fountains.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_calgary_prairie_plaza_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "calgary_prairie_plaza",
+      "variantId": "student_calgary_prairie_plaza_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "861efd8d38862f7a7a355a092fc46108c38b487b8dd8806575de5fd152902c68",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "plazas",
+      "styleIds": [
+        "contemporary_landscape",
+        "naturalistic"
+      ],
+      "planningIds": [
+        "place",
+        "complete"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "A sandstone wind-rose circle in prairie grass crescents, with shade sails, a reflecting pool, market stalls and a wind screen.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_clover_neighbourhood_park_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "A lawn, playground and shelter within walking distance is a long-standing neighbourhood park type; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare how Calgary neighbourhood parks combine an open field, a playground and a shelter within a short walk of homes.",
+      "internationalContext": "Neighbourhood parks balance open lawns for free play with equipped play and shaded places to gather.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_clover_neighbourhood_park_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "neighborhood_park",
+      "variantId": "student_clover_neighbourhood_park_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "dc11eee4590c01a53235b6fb88a7b36f5c464ec8cd83b0000966b25d0db08342",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "neighbourhood",
+      "styleIds": [
+        "recreation",
+        "naturalistic"
+      ],
+      "planningIds": [
+        "place",
+        "child",
+        "complete_neighbourhoods"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "An oval play lawn ringed by a walk, with a timber playground, a picnic shelter, a nature-play corner and shade trees.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
+    },
+    "native-park:student_prairie_sports_complex_v1--native-v1": {
+      "eraIds": [
+        "context_dependent"
+      ],
+      "designPeriod": "Landscape tradition/component; one era is not established",
+      "eraRationale": "Multi-field complexes gather sports facilities for leagues and tournaments; this layout follows the catalogue images, not a dated design.",
+      "canadianContext": "Compare district athletic parks, where pitches and diamonds share lights and a fieldhouse, with fields spread through neighbourhoods.",
+      "internationalContext": "Sports complexes range from edge-of-town tournament sites to compact urban hubs near transit.",
+      "sourceIds": [
+        "picturesque",
+        "place",
+        "cnu",
+        "complete"
+      ],
+      "placementId": "native-park:student_prairie_sports_complex_v1--native-v1",
+      "domain": "park_plaza",
+      "archetypeId": "sports_field_complex",
+      "variantId": "student_prairie_sports_complex_v1",
+      "modelMethod": "native_park_v2",
+      "modelRevision": "6a65f770eec529b05bb6ff652cc1a7c58709430bc2b70e57b2b20532d4f2b46e",
+      "status": "classified",
+      "profileId": "landscape",
+      "formId": "play_sport",
+      "styleIds": [
+        "recreation"
+      ],
+      "planningIds": [
+        "active",
+        "place",
+        "child"
+      ],
+      "constructionYear": null,
+      "dateBasis": "approximate_design_association",
+      "designEvidence": "Two soccer pitches and two ball diamonds round a central plaza and fieldhouse, with bleachers and field lights.",
+      "referenceReviewed": true,
+      "priorStyleConfidence": "Medium"
     }
   }
 }

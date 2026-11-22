@@ -539,5 +539,56 @@
     "conditions": [
       "Confirm public access, operator and the pavilion’s uses. The pavilion, fences, access, servicing and site conditions require separate review."
     ]
+  },
+  "native-park:student_calgary_prairie_plaza_v1--native-v1": {
+    "variantId": "student_calgary_prairie_plaza_v1",
+    "revision": "861efd8d38862f7a7a355a092fc46108c38b487b8dd8806575de5fd152902c68",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Public plaza for gathering and seasonal markets; the market stalls are treated as temporary market use, not permanent retail.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Prairie Wind Plaza exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_3_2026-11-22.md. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator and any market permits. Market stalls, shade structures, the wind screen and the reflecting pool require separate review."
+    ]
+  },
+  "native-park:student_clover_neighbourhood_park_v1--native-v1": {
+    "variantId": "student_clover_neighbourhood_park_v1",
+    "revision": "dc11eee4590c01a53235b6fb88a7b36f5c464ec8cd83b0000966b25d0db08342",
+    "components": [
+      [
+        "Park"
+      ]
+    ],
+    "assumption": "Neighbourhood park for informal play, picnics and children’s play; no organised sports facility assumed.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Clover Neighbourhood Park exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_3_2026-11-22.md. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access and operator. The playground, shelter, fencing, access and site conditions require separate review."
+    ]
+  },
+  "native-park:student_prairie_sports_complex_v1--native-v1": {
+    "variantId": "student_prairie_sports_complex_v1",
+    "revision": "6a65f770eec529b05bb6ff652cc1a7c58709430bc2b70e57b2b20532d4f2b46e",
+    "components": [
+      [
+        "Outdoor Recreation Area"
+      ]
+    ],
+    "assumption": "Outdoor sports fields for league and community play; the fieldhouse is treated as accessory washrooms, storage and concession, not a recreation centre.",
+    "classification": {
+      "basis": "teaching",
+      "evidence": "Prairie Sports Complex exact native layout in nativeParks.json; build notes in docs/PARK_BATCH_3_2026-11-22.md. Educational operating programme; existing cited Park (s.249) or Outdoor Recreation Area (s.248) rules supply the district screening."
+    },
+    "conditions": [
+      "Confirm public access, operator, field lighting and hours of play. The fieldhouse, lights, fences, parking, access and servicing require separate review."
+    ]
   }
 }

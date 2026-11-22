@@ -1,0 +1,24 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "a320a1aa781522dc4264cce884920eda79c263c6c8a52848fabfab4d5ecc63ad",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 84 x 68 m footprint",
+    "recipe bounds match the GLB",
+    "nothing below grade",
+    "nothing taller than 20 m",
+    "1047 material-aware route rays on grass, gravel, paving",
+    "370 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "every tower stands at least 1.8 m inside the play surfacing",
+    "the open lawn holds only the two small goals"
+  ],
+  "failures": [],
+  "triangles_rendered": 656108,
+  "mesh_instances": 378,
+  "runtime_tested": false
+}

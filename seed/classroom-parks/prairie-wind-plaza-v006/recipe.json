@@ -1,0 +1,550 @@
+{
+  "id": "student_calgary_prairie_plaza_v1",
+  "title": "Prairie Wind Plaza",
+  "archetype_id": "calgary_prairie_plaza",
+  "dimensions_m": [
+    64.0,
+    52.0
+  ],
+  "programme": "A sandstone gathering circle inlaid with a granite wind rose, a paved ring walk, crescents of rough fescue, feather reed grass, blue grama and prairie flowers with glacial-erratic boulders for seats, three white shade sails, a long reflecting pool with plinth benches, a market strip of five timber stalls, a slotted weathering-steel wind screen framing the view west, lights, bike racks and aspen groves.",
+  "design_basis": "Original concept after the catalogue Calgary prairie plaza references (variant 2): circular gathering space, shade sails, reflecting pool and prairie planting. The reference's four-colour circle is not reproduced; the centre is a neutral wind rose.",
+  "reference_views": "frontend/public/archetypes/openspaces/calgary-prairie-urban-plaza/variant_2",
+  "generator": "CityPrompt native park batch builder v1 (plaza)",
+  "generator_sha256": "b9e3425cdc882cdfd1067f68c5e16e9d7dc449347897e3112c7cb4eb5eb8890d",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only; drainage, pool water treatment and winter operation are not designed.",
+    "Shade sails, the wind screen and market stalls are indicative structures that need engineering review.",
+    "The wind rose is decorative and points to grid north, not a surveyed true north.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0.0,
+        -26.0
+      ],
+      "b": [
+        0.0,
+        -10.8
+      ],
+      "width": 3.0
+    },
+    {
+      "a": [
+        9.8,
+        -1.0
+      ],
+      "b": [
+        9.652,
+        -2.691
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.652,
+        -2.691
+      ],
+      "b": [
+        9.215,
+        -4.332
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.215,
+        -4.332
+      ],
+      "b": [
+        8.502,
+        -5.873
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        8.502,
+        -5.873
+      ],
+      "b": [
+        7.533,
+        -7.267
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        7.533,
+        -7.267
+      ],
+      "b": [
+        6.338,
+        -8.473
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        6.338,
+        -8.473
+      ],
+      "b": [
+        4.953,
+        -9.455
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        4.953,
+        -9.455
+      ],
+      "b": [
+        3.42,
+        -10.183
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        3.42,
+        -10.183
+      ],
+      "b": [
+        1.783,
+        -10.635
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        1.783,
+        -10.635
+      ],
+      "b": [
+        0.093,
+        -10.798
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        0.093,
+        -10.798
+      ],
+      "b": [
+        -1.6,
+        -10.668
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -1.6,
+        -10.668
+      ],
+      "b": [
+        -3.244,
+        -10.246
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -3.244,
+        -10.246
+      ],
+      "b": [
+        -4.791,
+        -9.547
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -4.791,
+        -9.547
+      ],
+      "b": [
+        -6.195,
+        -8.593
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -6.195,
+        -8.593
+      ],
+      "b": [
+        -7.413,
+        -7.409
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -7.413,
+        -7.409
+      ],
+      "b": [
+        -8.407,
+        -6.033
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -8.407,
+        -6.033
+      ],
+      "b": [
+        -9.15,
+        -4.507
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.15,
+        -4.507
+      ],
+      "b": [
+        -9.618,
+        -2.875
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.618,
+        -2.875
+      ],
+      "b": [
+        -9.797,
+        -1.186
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.797,
+        -1.186
+      ],
+      "b": [
+        -9.682,
+        0.508
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.682,
+        0.508
+      ],
+      "b": [
+        -9.278,
+        2.157
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -9.278,
+        2.157
+      ],
+      "b": [
+        -8.593,
+        3.71
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -8.593,
+        3.71
+      ],
+      "b": [
+        -7.651,
+        5.122
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -7.651,
+        5.122
+      ],
+      "b": [
+        -6.479,
+        6.352
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -6.479,
+        6.352
+      ],
+      "b": [
+        -5.113,
+        7.359
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -5.113,
+        7.359
+      ],
+      "b": [
+        -3.593,
+        8.116
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -3.593,
+        8.116
+      ],
+      "b": [
+        -1.966,
+        8.6
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -1.966,
+        8.6
+      ],
+      "b": [
+        -0.279,
+        8.795
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        -0.279,
+        8.795
+      ],
+      "b": [
+        1.416,
+        8.696
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        1.416,
+        8.696
+      ],
+      "b": [
+        3.068,
+        8.306
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        3.068,
+        8.306
+      ],
+      "b": [
+        4.629,
+        7.638
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        4.629,
+        7.638
+      ],
+      "b": [
+        6.05,
+        6.708
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        6.05,
+        6.708
+      ],
+      "b": [
+        7.289,
+        5.548
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        7.289,
+        5.548
+      ],
+      "b": [
+        8.311,
+        4.192
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        8.311,
+        4.192
+      ],
+      "b": [
+        9.082,
+        2.68
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.082,
+        2.68
+      ],
+      "b": [
+        9.58,
+        1.057
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.58,
+        1.057
+      ],
+      "b": [
+        9.792,
+        -0.628
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        9.792,
+        -0.628
+      ],
+      "b": [
+        9.8,
+        -1.0
+      ],
+      "width": 1.4
+    },
+    {
+      "a": [
+        0.0,
+        8.8
+      ],
+      "b": [
+        0.0,
+        10.4
+      ],
+      "width": 3.0
+    },
+    {
+      "a": [
+        -14.0,
+        10.4
+      ],
+      "b": [
+        14.0,
+        10.4
+      ],
+      "width": 1.2
+    },
+    {
+      "a": [
+        9.8,
+        -1.0
+      ],
+      "b": [
+        20.0,
+        -1.0
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        20.0,
+        -1.0
+      ],
+      "b": [
+        20.0,
+        14.0
+      ],
+      "width": 2.0
+    },
+    {
+      "a": [
+        -9.8,
+        -1.0
+      ],
+      "b": [
+        -25.4,
+        -1.0
+      ],
+      "width": 3.0
+    },
+    {
+      "a": [
+        -25.4,
+        -16.0
+      ],
+      "b": [
+        -25.4,
+        16.0
+      ],
+      "width": 1.6
+    }
+  ],
+  "entrance": {
+    "x": 0.0,
+    "y": -26.0,
+    "widthM": 4.0,
+    "arrivalY": -23.0
+  },
+  "walk_surface_materials": [
+    "paving",
+    "grass"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 6239808,
+    "sha256": "0af3427d166369a11dd1584cb7543992ebc0123b8d1f0699c6b88999d09a4f87"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -32.0,
+      -26.0,
+      -0.12
+    ],
+    [
+      32.0,
+      26.0,
+      11.585
+    ]
+  ],
+  "triangles": 771638,
+  "mesh_instances": 481,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, grass. Never stretch the assembly to fit.",
+  "card": {
+    "group": "plazas",
+    "description": "A civic plaza with a sandstone wind-rose circle, prairie grass crescents, shade sails, a reflecting pool, market stalls and a wind screen framing the mountain view. Prepared level ground."
+  }
+}

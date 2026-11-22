@@ -1,0 +1,25 @@
+{
+  "status": "PASS_OFFLINE_GEOMETRY",
+  "model_sha256": "b61324564012769e401dcf5a38b591202790591703f8f0b92c7fb123ee8f04f3",
+  "checks": [
+    "delivered byte hashes",
+    "self-contained GLB buffers",
+    "no textures or images",
+    "walk surface materials present",
+    "finite metric bounds",
+    "inside the 216 x 168 m footprint",
+    "recipe bounds match the GLB",
+    "nothing below grade",
+    "nothing taller than 20 m",
+    "1977 material-aware route rays on grass, gravel, paving",
+    "294 planted instances clear of every route",
+    "the entrance is walkable at the site edge",
+    "both diamonds: outfield fences at 61 m on the foul lines and in centre field, second base at 60 ft",
+    "both pitches marked at 90 x 60 m",
+    "nothing stands on either pitch but its goals"
+  ],
+  "failures": [],
+  "triangles_rendered": 661411,
+  "mesh_instances": 304,
+  "runtime_tested": false
+}

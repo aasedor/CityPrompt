@@ -1,0 +1,101 @@
+{
+  "id": "student_prairie_sports_complex_v1",
+  "title": "Prairie Sports Complex",
+  "archetype_id": "sports_field_complex",
+  "dimensions_m": [
+    216.0,
+    168.0
+  ],
+  "programme": "Two 90 x 60 m soccer pitches with full markings, goals, bleachers and field lights; two Little League diamonds with backstops, dugouts, bleachers, lights and scoreboards, their home plates turned toward a central plaza and fieldhouse with a concession window and washrooms; an east-west promenade between the fields; an entrance spine with bike racks; prairie beds and groves of green ash, bur oak, spruce and aspen.",
+  "design_basis": "Original concept after the catalogue sports field complex \"Multi-Field Complex\" references (variant 0). Pitch and diamond sizes are teaching values, not a sports facility design.",
+  "reference_views": "frontend/public/archetypes/openspaces/sports-field-complex/variant_0",
+  "generator": "CityPrompt native park batch builder v1 (complex)",
+  "generator_sha256": "9666ca0cc001eff7df878d7bf224573620890167de78908993e7c62571e94ae6",
+  "terrain_policy": "prepared_level",
+  "native_scale_only": true,
+  "limitations": [
+    "Prepared level ground only; field drainage, irrigation and turf construction are not designed.",
+    "Pitches are 90 x 60 m, the smallest adult size; diamonds use Little League dimensions.",
+    "The fieldhouse is a closed massing; its interior, services and parking are not designed.",
+    "Lights, fences and bleachers are indicative; the scoreboards are blank.",
+    "The complete assembly stays rigid when its parcel changes; use a larger parcel to rotate it."
+  ],
+  "clear_routes": [
+    {
+      "a": [
+        0.0,
+        -84.0
+      ],
+      "b": [
+        0.0,
+        -7.01
+      ],
+      "width": 3.0
+    },
+    {
+      "a": [
+        -102.0,
+        -7.01
+      ],
+      "b": [
+        102.0,
+        -7.01
+      ],
+      "width": 3.0
+    },
+    {
+      "a": [
+        0.0,
+        -7.01
+      ],
+      "b": [
+        0.0,
+        41.0
+      ],
+      "width": 3.0
+    }
+  ],
+  "entrance": {
+    "x": 0.0,
+    "y": -84.0,
+    "widthM": 4.0,
+    "arrivalY": -81.0
+  },
+  "walk_surface_materials": [
+    "paving",
+    "grass",
+    "gravel"
+  ],
+  "tree_wells": [],
+  "placements": [],
+  "surface_regions": [],
+  "surface_priority": "Assembly owns its ground: every surface inside the site is one tiled assembly.",
+  "assembly": {
+    "path": "assembly-preview.glb",
+    "bytes": 10260144,
+    "sha256": "b61324564012769e401dcf5a38b591202790591703f8f0b92c7fb123ee8f04f3"
+  },
+  "modules": {},
+  "bounds_m": [
+    [
+      -108.0,
+      -84.0,
+      -0.0358
+    ],
+    [
+      108.0,
+      84.0,
+      19.5
+    ]
+  ],
+  "triangles": 661411,
+  "mesh_instances": 304,
+  "render_source": "reimported GLB",
+  "runtime_approved": false,
+  "axes": "X east/across; Y north/along; Z up; metres (GLB standard Y-up conversion)",
+  "runtime_contract": "Native assembly at true size on prepared level ground. Walk on paving, grass, gravel. Never stretch the assembly to fit.",
+  "card": {
+    "group": "play_sport",
+    "description": "Two soccer pitches and two ball diamonds round a central plaza and fieldhouse, with bleachers, field lights and a promenade. Prepared level ground."
+  }
+}
