@@ -113,7 +113,8 @@ export function catalogueSizeLabel(asset: CatalogueAsset | undefined): string {
   const value = catalogueAssetSize(asset);
   if (value === undefined || !asset) return 'Size not catalogued';
   if (asset.kind === 'street') return `${number.format(value)} m corridor width`;
-  return `Default plot ${number.format(asset.width)} × ${number.format(asset.depth)} m · ${number.format(value)} m²`;
+  const label = asset.referenceLotAreaM2 != null ? 'Placement box' : 'Default plot';
+  return `${label} ${number.format(asset.width)} × ${number.format(asset.depth)} m · ${number.format(value)} m²`;
 }
 
 export function choiceMatchesFacets(choice: CanonicalChoice, { styleId, sizeId, planningId, eraId }: CatalogueFacets): boolean {

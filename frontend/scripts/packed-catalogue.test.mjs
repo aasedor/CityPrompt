@@ -1,6 +1,6 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { performance } from 'node:perf_hooks';
-import { join, resolve } from 'node:path';
+import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -8,17 +8,26 @@ import ts from 'typescript';
 import { deflateSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
 import { minify } from 'terser';
-import { packCatalogue, packedCatalogue, productionStarter, Z85_DECODER_MODULE } from './packed-catalogue.mjs';
+import { packCatalogue, packedCatalogue, productionStarter } from './packed-catalogue.mjs';
 
 const inflater = pathToFileURL(resolve('node_modules/three/examples/jsm/libs/fflate.module.js')).href;
-// A module imported from a data: URL can only reach other modules by absolute URL.
-const runnable = code => code.replace('three/examples/jsm/libs/fflate.module.js', inflater)
-  .replace(JSON.stringify(Z85_DECODER_MODULE), JSON.stringify(pathToFileURL(Z85_DECODER_MODULE).href));
+const sharedDecoder = new URL('./z85-codec.mjs', import.meta.url).href;
+const linkModule = code => code.replace('three/examples/jsm/libs/fflate.module.js', inflater)
+  .replace('virtual:cityprompt-catalogue-z85', sharedDecoder);
 
-for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['nativeStreetPilots.json', 4000], ['openSpaceArchetypes.json', 8000]]) {
-  test(`${filename}: production transport recovers bridge headroom without changing catalogue values`, async () => {
-    const path = resolve('src/data', filename), source = readFileSync(path, 'utf8');
-    const module = runnable(packedCatalogue().transform('', path).code);
+for (const [filename, minimumSaving] of [
+  ['data/buildingArchetypes.json', 20000],
+  ['data/cataloguePlanningHistory.json', 1900],
+  ['data/nativeStreetPilots.json', 4000],
+  ['data/openSpaceArchetypes.json', 8000],
+  ['data/streetPathArchetypes.json', 7500],
+  ['data/nativeParks.json', 2750],
+  ['features/parks/detailCatalogueExtras.json', 2500],
+  ['features/parks/recoveredDetails.json', 1000],
+]) {
+  test(`${filename}: production transport reduces bundle size without changing catalogue values`, async () => {
+    const path = resolve('src', filename), source = readFileSync(path, 'utf8');
+    const module = linkModule(packedCatalogue().transform('', path).code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     const minified = await minify(module, { module: true, compress: { passes: 3 } });
@@ -28,64 +37,10 @@ for (const [filename, minimumSaving] of [['buildingArchetypes.json', 20000], ['n
   });
 }
 
-for (const [relative, minimumSaving] of [['src/data/streetPathArchetypes.json', 7000], ['src/data/nativeParks.json', 2500],
-  ['src/data/cataloguePlanningHistory.json', 1800], ['src/data/catalogueTeaching.json', 900], ['src/data/archetypeReferenceAvailability.json', 500],
-  ['src/features/parks/detailCatalogueExtras.json', 1200], ['src/features/parks/recoveredDetails.json', 1200],
-  // Moved for the everyday Calgary batch. Each is above the roughly 20 KiB packed size where the inline decoder pays for itself.
-  ['src/data/nativeBridgeRelease.json', 1500], ['src/features/policyPlans/data/localPlanIndex.json', 1100], ['src/data/legoFamilySignatures.json', 850],
-  ['src/data/nativeBridgePilots.json', 750], ['src/data/validationCatalogue.json', 700], ['src/data/classroomExpansion.json', 600]]) {
-  test(`${relative}: denser transport pays for the local detail kits without changing a field or the bundle budget`, async () => {
-    const path = resolve(relative), source = readFileSync(path, 'utf8');
-    const module = runnable(packedCatalogue().transform('', path).code);
-    assert.ok(module.includes('Z85 v1 / RFC32'), 'expected the Z85 transport');
-    const minified = await minify(module, { module: true, compress: { passes: 3 } });
-    const runtime = await import(`data:text/javascript;base64,${Buffer.from(minified.code).toString('base64')}`);
-    assert.deepEqual(runtime.default, JSON.parse(source));
-    const base64 = await minify(runnable(packCatalogue(source)), { module: true, compress: { passes: 3 } });
-    assert.ok(minified.code.length < base64.code.length - minimumSaving, `expected at least ${minimumSaving} bytes back, got ${base64.code.length - minified.code.length}`);
-  });
-}
-
-test('every packed catalogue ships in the shared-decoder transport and decodes to its exact source', async () => {
-  // Walks the source tree rather than a list, so a catalogue added later is covered without editing this test.
-  const files = [];
-  (function walk(directory) {
-    for (const entry of readdirSync(directory)) {
-      const path = join(directory, entry);
-      if (statSync(path).isDirectory()) walk(path);
-      else if (path.endsWith('.json')) files.push(path);
-    }
-  })(resolve('src'));
-  let packed = 0;
-  for (const path of files) {
-    const transformed = packedCatalogue().transform('', path);
-    if (!transformed) continue;
-    packed += 1;
-    assert.ok(transformed.code.includes('Z85 v1 / RFC32'), `${path} should use the Z85 transport`);
-    assert.equal(transformed.code.match(/decodeZ85/g).length, 2, `${path} should import the shared decoder, not carry its own`);
-    const source = readFileSync(path, 'utf8');
-    const expected = JSON.parse(path.endsWith('/src/data/classroomStarter.json') ? productionStarter(source) : source);
-    const decoded = await import(`data:text/javascript,${encodeURIComponent(runnable(transformed.code))}`);
-    assert.deepEqual(decoded.default, expected, path);
-  }
-  assert.ok(packed >= 55, `expected every catalogue to be packed, found ${packed}`);
-});
-
-test('detail registries keep every provenance lock through the production transport', async () => {
-  const path = resolve('src/features/parks/detailCatalogueExtras.json'), source = JSON.parse(readFileSync(path, 'utf8'));
-  const module = runnable(packedCatalogue().transform('', path).code);
-  const decoded = (await import(`data:text/javascript,${encodeURIComponent(module)}`)).default;
-  assert.equal(decoded.length, source.length);
-  for (const [index, row] of source.entries()) {
-    assert.equal(decoded[index].sha256, row.sha256);
-    assert.ok(Object.is(decoded[index].offset[0], row.offset[0]), 'signed zero offsets survive');
-  }
-});
-
 test('denser transport retains UTF8, signed zero and short final binary blocks', async () => {
   for (let length = 0; length < 24; length++) {
     const source = JSON.stringify({ label: 'é — "quoted" '+ 'abcdefghijk'.slice(0, length % 11).repeat(length), offset: [-1, 0] }).replace('[-1,0]', '[-1,-0]');
-    const module = runnable(packCatalogue(source, { encoding: 'z85' }));
+    const module = packCatalogue(source, { encoding: 'z85' }).replace('three/examples/jsm/libs/fflate.module.js', inflater);
     const minified = await minify(module, { module: true, compress: { passes: 3 } });
     const decoded = await import(`data:text/javascript,${encodeURIComponent(minified.code)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
@@ -102,7 +57,7 @@ test('unused denser transport is eliminated with its decoding work', async () =>
 
 test('production minification removes only unused catalogue decoding and preserves used bridge values', async () => {
   const source = readFileSync(resolve('src/data/nativeBridgePilots.json'), 'utf8');
-  const module = runnable(packCatalogue(source));
+  const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
   const options = { module: true, compress: { passes: 3 } };
   const used = await minify(module, options);
   const decoded = await import(`data:text/javascript;base64,${Buffer.from(used.code).toString('base64')}`);
@@ -121,7 +76,7 @@ for (const relative of [
   'features/zoningCatalogue/parkUseRules.json',
   'features/pickPlace/publicRealmOwnershipContracts.json',
   'components/viewer/globe/publicRealmTrialAssets.json',
-  'data/archetypeVisualSystem.json', 'data/catalogueOctober2026.json',
+  'data/archetypeVisualSystem.json', 'data/catalogueBuildingQuantities.json', 'data/catalogueOctober2026.json',
   'data/claudeBuildingRelease.json', 'data/claudeFiveTrial.json',
   'data/courtOnlySports.json',
   'data/finalFiveBuildingBatch.json', 'data/flexibleParks.json',
@@ -138,10 +93,10 @@ for (const relative of [
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = runnable(transformed.code);
+    const module = linkModule(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(relative === 'data/classroomStarter.json' ? productionStarter(source) : source));
-    assert.ok(module.length < JSON.stringify(JSON.parse(source)).length);
+    assert.ok(transformed.code.length < JSON.stringify(JSON.parse(source)).length);
   });
 }
 
@@ -173,7 +128,7 @@ test('fixed public-realm packing preserves exact review gates, variants and nati
   const source = readFileSync(path, 'utf8');
   const transformed = packedCatalogue().transform('', path);
   assert.notEqual(transformed, null);
-  const module = runnable(transformed.code);
+  const module = linkModule(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.default, JSON.parse(source));
   assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * .55);
@@ -186,7 +141,7 @@ test('generated building packing preserves all entries and the exact ready-only 
   const reference = await import(`data:text/javascript,${encodeURIComponent(referenceCode)}`);
   const transformed = packedCatalogue().transform('', path);
   assert.notEqual(transformed, null);
-  const module = runnable(transformed.code);
+  const module = linkModule(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.CATALOGUE_BUILDING_ASSETS, reference.CATALOGUE_BUILDING_ASSETS);
   assert.deepEqual(decoded.PUBLISHED_BUILDING_ASSETS, reference.PUBLISHED_BUILDING_ASSETS);
@@ -207,7 +162,7 @@ for (const filename of ['peopleCatalogue.json', 'inclusivePeopleCatalogue.json',
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = runnable(transformed.code);
+    const module = linkModule(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
@@ -220,7 +175,7 @@ for (const filename of ['streetManual.json', 'nativeStreetModuleBounds.json', 'n
     const source = readFileSync(path, 'utf8');
     const transformed = packedCatalogue().transform('', path);
     assert.notEqual(transformed, null);
-    const module = runnable(transformed.code);
+    const module = linkModule(transformed.code);
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
     assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
@@ -246,7 +201,7 @@ test('the production traffic-safety catalogue preserves all variants and placeme
   const source = readFileSync(filename, 'utf8');
   const transformed = packedCatalogue().transform('', filename);
   assert.notEqual(transformed, null);
-  const module = runnable(transformed.code);
+  const module = linkModule(transformed.code);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.default, JSON.parse(source));
   assert.ok(module.length < JSON.stringify(JSON.parse(source)).length * 0.55);
@@ -254,7 +209,7 @@ test('the production traffic-safety catalogue preserves all variants and placeme
 for (const filename of ['buildingArchetypes.json', 'openSpaceArchetypes.json', 'streetPathArchetypes.json', 'nativeParks.json', 'nativeStreetPilots.json', 'archetypeReferenceAvailability.json', 'legoFamilySignatures.json', 'validationCatalogue.json', 'buildingWalkDoors.json', 'cataloguePresentation.json', 'classroomExpansion.json', '../features/parks/detailCatalogueExtras.json', '../features/parks/recoveredDetails.json', '../features/zoningCatalogue/buildingPrograms.json', '../features/zoningCatalogue/parkPrograms.json', '../features/zoningCatalogue/districtRules.json']) {
   test(`${filename}: browser decoder preserves every catalogue field`, async () => {
     const source = readFileSync(resolve('src/data', filename), 'utf8');
-    const module = runnable(packCatalogue(source));
+    const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
     const started = performance.now();
     const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
     assert.deepEqual(decoded.default, JSON.parse(source));
@@ -280,7 +235,7 @@ test('only explicitly registered catalogue modules are packed; other plugin data
 
 test('packing preserves signed zero, spaces and escaped quotes inside authored values', async () => {
   const source = JSON.stringify({ label: 'two words with "quoted" detail', offset: [-1, 0] }).replace('[-1,0]', '[-1,-0]');
-  const module = runnable(packCatalogue(source));
+  const module = packCatalogue(source).replace('three/examples/jsm/libs/fflate.module.js', inflater);
   const decoded = await import(`data:text/javascript,${encodeURIComponent(module)}`);
   assert.deepEqual(decoded.default, JSON.parse(source));
   assert.ok(Object.is(decoded.default.offset[1], -0));

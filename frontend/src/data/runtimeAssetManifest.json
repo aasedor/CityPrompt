@@ -291,6 +291,7 @@
     "src/data/buildingPlacementEdges.json",
     "src/data/buildingWalkDoors.json",
     "src/data/canalRoutePolicy.json",
+    "src/data/catalogueBuildingQuantities.json",
     "src/data/catalogueHeroImages.json",
     "src/data/catalogueOctober2026.json",
     "src/data/cataloguePlanningHistory.json",
@@ -25442,7 +25443,8 @@
       "sources": [
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 11411116
+      "logicalBytes": 11411116,
+      "lfsOid": "08fab3e99c6b68540868ea7a17050348b1167d78600c114ab01c491aed271a9a"
     },
     {
       "url": "/native-park-assets/0c9ec7226f1fc1aeaf204fa618e5880b9534fa21b88bd8be080a8574b4b03ab8.glb",
@@ -25515,7 +25517,8 @@
         "src/data/classroomExpansion.json",
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 996528
+      "logicalBytes": 996528,
+      "lfsOid": "2964e74fac14fd6755eb6bad1151b324e68e50ae496cee4390b98b61f1ba0cd1"
     },
     {
       "url": "/native-park-assets/2dcc2e80b3f52fec890be2d410eb25e30025113eb3fef18e477d5870c38b7c73.glb",
@@ -25562,7 +25565,8 @@
       "sources": [
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 9010032
+      "logicalBytes": 9010032,
+      "lfsOid": "3819fe8dada57fcfabc096a5b24badeac38bd42895ddcb119c28fe439f56de65"
     },
     {
       "url": "/native-park-assets/3933e3b09b9b2dd00567d63b9b26af04e3449d5efa6ad209a28e4178cd0eef28.glb",
@@ -25729,7 +25733,8 @@
       "sources": [
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 10649608
+      "logicalBytes": 10649608,
+      "lfsOid": "983a00d5aa8a812714df19aaa0cdb36cf6688ec9ab4b91b4a0b57da9e286c6f5"
     },
     {
       "url": "/native-park-assets/985726fcef5a5964c0038088ceff65b21072e07456844d07994d509ff8493d5e.glb",
@@ -25770,7 +25775,8 @@
         "src/data/classroomExpansion.json",
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 1111229
+      "logicalBytes": 1111229,
+      "lfsOid": "ab01a0c48470fc4615a8a78e17a2b8e6091042c300af0bd610dcb61ce6a8bebb"
     },
     {
       "url": "/native-park-assets/ac659213d630db8ccd43ac979b925ed10ad91580fd5ddc3377c276e0be7e97ae.glb",
@@ -25933,7 +25939,8 @@
         "src/data/classroomExpansion.json",
         "src/data/nativeParks.json"
       ],
-      "logicalBytes": 1358931
+      "logicalBytes": 1358931,
+      "lfsOid": "de2750ea0b4c35009f6073354107dae6568eb5248da69de62db18818dcb33e47"
     },
     {
       "url": "/native-park-assets/de904793cef32f06eca7e786563864d192bdf011a537553d794b15c9506cd20e.glb",

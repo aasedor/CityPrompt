@@ -251,6 +251,7 @@ import {
   applyStreetCameraProjection,
   applyStreetRoutePose,
   geographicStreetUp,
+  getGlobeFogArgs,
   restoreStreetCameraProjection,
 } from './streetRenderProfile';
 import { inspectStreetRenderReadiness } from './streetRenderReadiness';
@@ -1881,6 +1882,11 @@ export function GlobeSitePlannerMap({
   // GLBs, PBR materials, public realm and vegetation, while Google Tiles stay
   // visible outside the existing project-boundary replacement mask.
   const [streetRenderProfileActive, setStreetRenderProfileActive] = useState(false);
+  const [streetImageCaptures, setStreetImageCaptures] = useState(0);
+  const fogArgs = getGlobeFogArgs({
+    streetRenderProfileActive,
+    streetImageCaptureActive: streetImageCaptures > 0,
+  });
   // Whether the scene holds authored 3D building models (compiled community,
   // LEGO stacks, or placed GLBs) — decides whether a street capture shows the
   // design itself ('model3d') or only existing context + overlays ('context3d').
@@ -3706,6 +3712,7 @@ export function GlobeSitePlannerMap({
     const previousFadeDuration = fadePlugin?.fadeDuration ?? null;
     let previousProjection: ReturnType<typeof applyStreetCameraProjection> = null;
     try {
+      setStreetImageCaptures(count => count + 1);
       if (referenceOverlayGroup.current) referenceOverlayGroup.current.visible = false;
       setStreetCapturePegmanHidden(true);
       setCaptureOverlaysHidden(true);
@@ -3730,6 +3737,7 @@ export function GlobeSitePlannerMap({
       });
       return await fn(kind);
     } finally {
+      setStreetImageCaptures(count => count - 1);
       setStreetCapturePegmanHidden(false);
       setCaptureOverlaysHidden(false);
       setStreetRenderProfileActive(false);
@@ -4768,14 +4776,7 @@ export function GlobeSitePlannerMap({
             />
           </>
         )}
-        {/* Street mode uses a near architectural atmosphere; globe mode keeps
-            the existing horizon-scale fog. */}
-        <fog
-          attach="fog"
-          args={streetRenderProfileActive
-            ? ['#cfdae4', 180, 900]
-            : ['#b8c8d8', 8000, 80000]}
-        />
+        {fogArgs && <fog attach="fog" args={fogArgs} />}
         {/* IBL for placed GLB models (PBR materials only) — tiles and zone
             overlays are unlit basic materials, so they're unaffected. */}
         {hasPlaceableModels && (

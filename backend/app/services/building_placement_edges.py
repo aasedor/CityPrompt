@@ -100,9 +100,17 @@ def building_contact_geometry(zone, geometry):
     left = -native_width / 2 if row["left"] == "abut" else -max(width, native_width) / 2
     right = native_width / 2 if row["right"] == "abut" else max(width, native_width) / 2
     front, rear = -native_depth / 2, max(depth, native_depth) / 2
+    outline = row.get("outlineM")
+    if outline and (
+        p.get("building_geometry_basis") != "placement_plot"
+        or width + 0.01 < native_width
+        or depth + 0.01 < native_depth
+        or (abs(width - depth) > 0.01 and (width - depth) * (native_width - native_depth) < 0)
+    ):
+        return geometry
     return Polygon(
         [
             (center[0] + (x * c - y * s) / east, center[1] + (x * s + y * c) / 111320)
-            for x, y in ((left, front), (right, front), (right, rear), (left, rear))
+            for x, y in outline or ((left, front), (right, front), (right, rear), (left, rear))
         ]
     )

@@ -32,14 +32,18 @@ it.each(Object.entries(contracts))('fits %s to its retained full architectural e
   expect(picked?.kind==='object' ? picked.width : undefined).toBe(asset.width);
 });
 
-it('does not change older families, imports or the held Mews source',()=>{
+it('preserves full native dimensions and the original reference lot when tightening registered models',()=>{
   for(const raw of CATALOGUE_BUILDING_ASSETS.filter(a=>!(a.model.revision! in contracts))) {
     const registered=CATALOGUE_ASSETS.find(a=>a.id===raw.id);
-    if(registered?.kind==='object' && !registered.footprintProgram) {
-      expect(registered.width).toBe(raw.width);expect(registered.depth).toBe(raw.depth);
+    if(registered?.kind==='object' && registered.referenceLotAreaM2 != null) {
+      expect(registered.referenceLotAreaM2).toBe(raw.width * raw.depth);
+      expect(registered.nativeDimensions).toEqual(raw.nativeDimensions);
+      expect(registered.width).toBeLessThanOrEqual(raw.width);
+      expect(registered.depth).toBeLessThanOrEqual(raw.depth);
+      expect(registered.width).toBeGreaterThanOrEqual(raw.nativeDimensions![0]);
+      expect(registered.depth).toBeGreaterThanOrEqual(raw.nativeDimensions![1]);
     }
   }
-  expect(placeAsset('claude_trial_mews_coach_house').width).toBe(32);
 });
 
 it('fits an explicit new model selection without moving its centre or changing its angle',()=>{

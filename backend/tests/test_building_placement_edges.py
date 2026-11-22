@@ -34,6 +34,13 @@ def test_packaged_manifest_matches_browser_policy():
     assert json.loads(MANIFEST.read_text()) == json.loads(frontend.read_text())
 
 
+def test_crescent_outline_requires_the_authored_plot_axes():
+    crescent = zone(
+        "london_crescent_terrace_bath_stone", width=130, depth=150, building_geometry_basis="placement_plot"
+    )
+    assert building_contact_geometry(crescent, crescent.geometry) is crescent.geometry
+
+
 @pytest.mark.parametrize("angle", [0, 37, 90, 180])
 def test_padded_plots_may_overlap_but_native_buildings_may_not(angle):
     width = building_edge_contracts()["validation_cast_iron_italianate"]["nativeWidthM"]

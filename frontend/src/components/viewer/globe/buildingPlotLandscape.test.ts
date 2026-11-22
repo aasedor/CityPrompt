@@ -20,13 +20,23 @@ const zone = (id: string, width: number, depth: number, properties = {}, degrees
 });
 const boundary: SiteZone = { ...zone('site', 500, 500, { community_3d_mask_existing_tiles: true, terrain_elevation_m: 1000 }), zone_type: 'site_boundary', is_active_boundary: true };
 const home = buildings.find(a => a.id === 'validation_reference_charcoal_gable_fourplex_v1')!;
-const homeZone = (width = home.width, depth = home.depth, degrees = 0) => zone('home', width, depth, placementProperties(home), degrees);
+const legacyPlotProperties = (asset: PlaceAsset) => {
+  const properties = placementProperties(asset);
+  delete properties.building_plot_landscaping;
+  return properties;
+};
+const homeZone = (width = home.width, depth = home.depth, degrees = 0) => zone('home', width, depth, legacyPlotProperties(home), degrees);
 
 describe('shared building plot landscaping', () => {
-  it('covers every current building choice without changing its model, plot or persisted properties', () => {
+  it('leaves the site surface visible under a new catalogue office placement', () => {
+    const office = buildings.find(asset => asset.id === 'clay_brick_timber_two_storey_office')!;
+    const placed = zone('office', office.width, office.depth, placementProperties(office));
+    expect(buildingPlotLandscapes([boundary, placed], 0)).toEqual([]);
+  });
+  it('preserves plot landscaping for existing catalogue placements', () => {
     expect(buildings.length).toBeGreaterThanOrEqual(32);
     for (const asset of buildings) {
-      const placed = zone(asset.id, asset.width, asset.depth, placementProperties(asset));
+      const placed = zone(asset.id, asset.width, asset.depth, legacyPlotProperties(asset));
       const before = JSON.stringify(placed);
       const plans = buildingPlotLandscapes([boundary, placed], 0);
       expect(plans, asset.label).toHaveLength(1);

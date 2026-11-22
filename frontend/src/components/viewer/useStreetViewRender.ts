@@ -1175,9 +1175,8 @@ export function buildStreetViewPrompt(
     `deeper blue overhead.`,
   );
   lines.push(
-    `Optical Effect: Enforce atmospheric perspective. Background structures must appear ` +
-    `desaturated, hazy, and blue-tinted compared to the crisp foreground and midground. ` +
-    `Distant buildings are visibly smaller due to perspective foreshortening.`,
+    `Optical Effect: Keep distant building outlines and facade details readable. ` +
+    `Use perspective foreshortening to convey distance.`,
   );
 
   // ─── GROUND PLANE (archetype-enriched) ───
@@ -1273,8 +1272,7 @@ export function buildStreetViewPrompt(
   } else {
     lines.push(
       `STYLE: Photorealistic architectural visualization photograph. Sunny day, warm golden hour lighting. ` +
-      `Sharp material detail on close elements, atmospheric haze on distant ones. 50mm lens, f/8 aperture, ` +
-      `deep focus. 8K resolution.`,
+      `50mm lens, f/8 aperture, deep focus. 8K resolution.`,
     );
     lines.push(
       `SCENE CONDITIONS: Include the fictional human figures described in ENTOURAGE. ` +
@@ -1606,8 +1604,6 @@ export function generateClayRender(
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const scene = new THREE.Scene();
-  // Sky-like fog for atmospheric perspective (distant objects fade)
-  scene.fog = new THREE.Fog(0xc8dce8, 80, 350);
 
   // --- Camera at eye level, facing the heading direction ---
   const camera = new THREE.PerspectiveCamera(60, CLAY_WIDTH / CLAY_HEIGHT, 0.5, 500);
@@ -2250,7 +2246,7 @@ export async function generateStreetView(
         '1. Preserve the EXACT spatial layout, proportions, and occlusion shown in the massing model. ' +
         '2. Replace each colored volume with photorealistic materials matching its zone description. ' +
         '3. Render ONLY the structures shown in the massing model as listed in the NUMERICAL INVENTORY. ' +
-        '4. Apply atmospheric perspective: distant objects appear hazier and more desaturated. ' +
+        '4. Keep separate background buildings visually distinct. ' +
         '5. Maintain camera height (1.7m) and viewing angle exactly.';
     }
     const archetypeAnchorNoun = guideKind === 'model3d'

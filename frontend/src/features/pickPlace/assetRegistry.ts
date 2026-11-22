@@ -9,7 +9,7 @@ import parkadeFamilyTrial from '@/data/parkadeFamilyTrial.json';
 import october from '@/data/catalogueOctober2026.json';
 import { CATALOGUE_BUILDING_ASSETS } from './publishedBuildingAssets';
 import buildingOnlyContracts from '@/features/legoAssembly/buildingOnlyContracts.json';
-import { withBuildingOnlyFootprint } from './buildingOnlyFootprint';
+import { withBuildingOnlyFootprint, withCompactBuildingPlacement } from './buildingOnlyFootprint';
 import flexibleParks from '@/data/flexibleParks.json';
 import type { SiteZoneProperties } from '@/types';
 import streetCatalogue from '@/data/streetPathArchetypes.json';
@@ -54,6 +54,8 @@ export interface PlaceAsset extends AssetRecord {
   maxWidth?: number;
   maxDepth?: number;
   nativeDimensions?: [number, number, number];
+  /** Land area used for catalogue FAR when the placement box fits the model closely. */
+  referenceLotAreaM2?: number;
   /** An exact fixed GLB owns the visible building and has no modular family. */
   standaloneNative?: boolean;
   /** The authored base needs a cleared, level site. */
@@ -385,7 +387,7 @@ export const CATALOGUE_ASSETS: CatalogueAsset[] = [...LEGACY_VALIDATION_ASSETS, 
     width:layout.occupiedWidthM,depth:layout.occupiedDepthM,minWidth:layout.occupiedWidthM,minDepth:layout.occupiedDepthM,
     properties:{...properties,green_space_native_layout_id:layout.id,pick_place_automatic_3d:true}};
 }).concat(MODULAR_BRIDGE_ASSETS, LOCAL_TEACHING_BUILDINGS, COURT_ONLY_SPORT_ASSETS, FLEXIBLE_PARK_ASSETS, PUBLIC_REALM_RELEASE_SAVED_ASSETS, LOCAL_CLAUDE_SAVED_ASSETS.filter(asset =>
-  !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id))).map(reviewedAssetClassification);
+  !CLAUDE_BUILDING_RELEASE_ASSETS.some(release => release.id === asset.id))).map(reviewedAssetClassification).map(withCompactBuildingPlacement);
 /** Pilot visibility preserves the existing local trial; it is not release approval. */
 export function isPlaceable(asset: CatalogueAsset): boolean {
   return asset.readiness === 'pilot' || asset.readiness === 'ready';

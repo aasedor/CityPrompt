@@ -85,6 +85,9 @@ export function buildingPlotLandscapes(zones: SiteZone[], terrainHeight: number,
   const linkedBuildings = new Map(buildings.map(building => [building.id, building]));
   return physical.flatMap(zone => {
     if (resolveCommunity3DKind(zone) !== 'building') return [];
+    const landscapePlot = zone.properties?.building_plot_landscaping !== false;
+    const authoredGround = reviewBuildingLandscapeContract(zone);
+    if (!landscapePlot && !authoredGround) return [];
     const height = resolvePreparedSiteTerrainForZone(zone, zones, terrainHeight);
     if (height === null) return [];
     const origin: Pair = [zone.coordinates.reduce((s, p) => s + p[0], 0) / zone.coordinates.length,
@@ -100,11 +103,10 @@ export function buildingPlotLandscapes(zones: SiteZone[], terrainHeight: number,
       if (!surface.length) return [];
       const style = buildingGardenStyle(zone);
       const result: BuildingPlotLandscape = { zoneId: zone.id, style, design: buildingLandscapeNotes(zone),
-        drawSurface: !recipe, origin, height, surface, beds: [], shrubs: [] };
-      const authoredGround = reviewBuildingLandscapeContract(zone);
+        drawSurface: landscapePlot && !recipe, origin, height, surface, beds: [], shrubs: [] };
       if (authoredGround) {
         const placement = reviewBuildingLandscapePlacement(zone, linkedBuildings.get(zone.building_id ?? ''));
-        if (!placement) return [result];
+        if (!placement) return landscapePlot ? [result] : [];
         const rotate = (x: number, z: number): Pair => {
           const point = new Vector3(x, 0, z).applyMatrix4(placement.matrix);
           return [point.x, point.y];
