@@ -280,6 +280,70 @@ def test_unknown_repeat_family_needs_backend_support(package):
         prepare(root, path)
 
 
+RULING = {
+    "decision": "The oblique and roof views govern; the street view shows an older model, not this building.",
+    "authorized_by": "human_user",
+    "quote": "Fixture ruling only",
+    "date": "2026-11-23",
+}
+
+
+def _exclude_street_view(path, ruling=RULING):
+    spec = read(path)
+    entry = spec["entry"]
+    front = next(r for r in entry["references"] if r["role"] == "front")
+    entry["references"] = [r for r in entry["references"] if r["role"] != "front"]
+    entry["excluded_references"] = [{**front, "reason": "render of an older model", "ruling": copy.deepcopy(ruling)}]
+    path.write_text(encoded(spec))
+    return spec
+
+
+def test_ruled_street_view_exclusion_publishes_with_the_oblique_as_thumbnail(package):
+    from tools.catalogue_promotion import picker_assets
+    from tools.rlasm_clay_library import clay_seed_rows
+
+    root, path = package
+    spec = _exclude_street_view(path)
+    prepare(root, path, apply=True)
+    payload = check(root)
+    existing, published = payload["entries"]
+    assert published["excluded_references"][0]["ruling"] == RULING
+    oblique = next(r for r in spec["entry"]["references"] if r["role"] == "oblique")
+    front = next(r for r in existing["references"] if r["role"] == "front")
+    expected = [ref["repo_path"].removeprefix("frontend/public") for ref in (front, oblique)]
+    assert [asset["thumbnail"] for asset in picker_assets(payload)] == expected
+    assert [row["thumbnail_url"] for row in clay_seed_rows(payload)] == expected
+
+
+@pytest.mark.parametrize("failure, message", [
+    ("no_ruling", "recorded human ruling"),
+    ("not_a_person", "recorded human ruling"),
+    ("empty_quote", "recorded human ruling"),
+    ("no_exclusion", "not exactly front/oblique/top"),
+    ("changed_street_view", "Reference hash mismatch"),
+])
+def test_street_view_exclusion_needs_a_human_ruling_on_the_exact_image(package, failure, message):
+    root, path = package
+    ruling = copy.deepcopy(RULING)
+    if failure == "no_ruling":
+        ruling = None
+    if failure == "not_a_person":
+        ruling["authorized_by"] = "builder"
+    if failure == "empty_quote":
+        ruling["quote"] = " "
+    spec = _exclude_street_view(path, ruling)
+    if failure == "no_exclusion":
+        del spec["entry"]["excluded_references"]
+    if failure == "changed_street_view":
+        spec["entry"]["excluded_references"][0]["sha256"] = "0" * 64
+    path.write_text(encoded(spec))
+    before = (root / LIBRARY).read_bytes()
+    with pytest.raises(ValueError, match=message):
+        prepare(root, path, apply=True)
+    assert (root / LIBRARY).read_bytes() == before
+    assert not (root / LIBRARY.parent / "models/test-new-v001.glb").exists()
+
+
 def test_failed_write_restores_manifest_and_removes_only_new_deliveries(package, monkeypatch):
     root, path = package
     before = (root / LIBRARY).read_bytes()

@@ -21,7 +21,7 @@ import tempfile
 import time
 from typing import Callable, TypeVar
 
-from tools.rlasm_clay_library import REPO_ROOT, _glb_counts, _validate_payload
+from tools.rlasm_clay_library import REPO_ROOT, _glb_counts, _validate_payload, thumbnail_reference
 
 LIBRARY = Path("seed/model-library/rlasm-architectural-clay/library.json")
 PICKER = Path("frontend/src/features/pickPlace/publishedBuildingAssets.ts")
@@ -159,9 +159,7 @@ def picker_assets(payload: dict) -> list[dict]:
                 "readiness": "pilot" if entry.get("local_trial_only") else "ready",
                 "label": entry["variant_label"],
                 "description": p["description"],
-                "thumbnail": next(r["repo_path"] for r in entry["references"] if r["role"] == "front").removeprefix(
-                    "frontend/public"
-                ),
+                "thumbnail": thumbnail_reference(entry)["repo_path"].removeprefix("frontend/public"),
                 "model": {"variantId": entry["variant_id"], "revision": entry["candidate"], "method": "RLASM 6.1"},
                 "calgaryGuide": {"groupId": p["group_id"], "basis": "form_reference"},
                 "zoneType": "building",

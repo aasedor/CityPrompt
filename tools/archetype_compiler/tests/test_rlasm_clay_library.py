@@ -8,7 +8,7 @@ import uuid
 import pytest
 import trimesh
 
-from tools.rlasm_clay_library import _validate_payload, clay_seed_objects, clay_seed_rows, load_library
+from tools.rlasm_clay_library import _validate_payload, clay_seed_objects, clay_seed_rows, load_library, thumbnail_reference
 
 
 @pytest.fixture(scope="module")
@@ -31,7 +31,7 @@ def test_ten_activated_variants_keep_source_hashes_and_native_geometry(source_li
         assert uuid.UUID(row["id"]).version == 5
         assert item.source.parent == clay_root / "models"
         assert row["is_public"] is True
-        assert row["thumbnail_url"] == next(ref["repo_path"] for ref in entry["references"] if ref["role"] == "front").removeprefix("frontend/public")
+        assert row["thumbnail_url"] == thumbnail_reference(entry)["repo_path"].removeprefix("frontend/public")
         assert all((root / ref["repo_path"]).is_file() for ref in entry["references"])
         assert row["metadata"]["rlasm"]["keeper_approved"] is False
         assert row["metadata"]["rlasm"]["design_dimensions_m"] == entry["design_dimensions_m"]

@@ -31,6 +31,23 @@ the SHA-256 hashes of the exact front, oblique and top references. Preserve its 
 copies the review into Git and checks its hash against the delivered model.
 These fields record a real independent review; they are not a substitute for it.
 
+**A street view that does not show the building.** Some variants' front image is a
+render of an older model rather than the building in the oblique and top views. Only
+a person can rule that it is excluded. Record the ruling on the excluded image in the
+package entry, and keep the oblique and top in `references`:
+
+```json
+"excluded_references": [{
+  "role": "front", "repo_path": "frontend/public/archetypes/buildings/<parent>/variant_N.png",
+  "bytes": 0, "sha256": "<exact hash>", "reason": "render of the old LEGO model",
+  "ruling": {"decision": "...", "authorized_by": "human_user", "quote": "<the person's words>", "date": "YYYY-MM-DD"}
+}]
+```
+
+The importer then accepts oblique and top references only, still checks the excluded
+image's bytes and hash (a replaced image needs a new ruling), and uses the oblique as
+the picker and library thumbnail. Without that ruling, a missing front is refused.
+
 ## 2. Make a promotion package
 
 From the repository root:

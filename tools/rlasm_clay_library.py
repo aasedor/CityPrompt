@@ -25,6 +25,10 @@ SEED_OWNER_ID = "651daf60-b797-4f95-b1e7-6364d6dc0665"
 SCHEMA = "cityprompt.rlasm-architectural-clay-library@1"
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 REQUIRED_SOURCE_ROLES = {"front", "oblique", "top"}
+# A variant whose street view does not show the building (for example a render
+# of an older model) may drop it only on a recorded human ruling; the oblique
+# then stands in as the card thumbnail.
+RULED_EXCLUSION_SOURCE_ROLES = {"oblique", "top"}
 
 
 @dataclass(frozen=True)
@@ -81,6 +85,53 @@ def _validate_hash(value: Any, label: str) -> str:
     if not SHA256_RE.fullmatch(digest):
         raise ValueError(f"Invalid SHA-256 for {label}")
     return digest
+
+
+def _validate_source_file(reference: dict[str, Any], candidate: str, repo_root: Path) -> None:
+    repo_path = PurePosixPath(str(reference.get("repo_path") or ""))
+    if (
+        repo_path.is_absolute()
+        or ".." in repo_path.parts
+        or repo_path.parts[:4]
+        != ("frontend", "public", "archetypes", "buildings")
+    ):
+        raise ValueError(f"Non-authoritative source path for {candidate}: {repo_path}")
+    source = repo_root.joinpath(*repo_path.parts)
+    if not source.is_file():
+        raise FileNotFoundError(source)
+    if source.stat().st_size != int(reference.get("bytes") or -1):
+        raise ValueError(f"Reference byte count mismatch: {source}")
+    expected_hash = _validate_hash(reference.get("sha256"), str(source))
+    if _sha256(source) != expected_hash:
+        raise ValueError(f"Reference hash mismatch: {source}")
+
+
+def _validate_street_view_exclusion(entry: dict[str, Any], candidate: str, repo_root: Path) -> None:
+    """Accept a missing front reference only when a person ruled that exact image out."""
+    excluded = entry.get("excluded_references")
+    fronts = [
+        item for item in (excluded if isinstance(excluded, list) else [])
+        if isinstance(item, dict) and item.get("role") == "front"
+    ]
+    if len(fronts) != 1:
+        raise ValueError(f"Reference roles are not exactly front/oblique/top for {candidate}")
+    ruling = fronts[0].get("ruling")
+    ruling = ruling if isinstance(ruling, dict) else {}
+    if ruling.get("authorized_by") != "human_user" or not all(
+        str(ruling.get(key) or "").strip() for key in ("decision", "quote", "date")
+    ):
+        raise ValueError(f"Excluding the street view needs a recorded human ruling for {candidate}")
+    # The ruling covers these exact bytes; a replaced street view must be re-ruled.
+    _validate_source_file(fronts[0], candidate, repo_root)
+
+
+def thumbnail_reference(entry: dict[str, Any]) -> dict[str, Any]:
+    """The catalogue image shown on cards: the street view, or the oblique where a person ruled it out."""
+    for role in ("front", "oblique"):
+        for reference in entry["references"]:
+            if reference.get("role") == role:
+                return reference
+    raise ValueError(f"No card thumbnail reference for {entry.get('candidate')}")
 
 
 def _validate_payload(payload: dict[str, Any], *, clay_root: Path = CLAY_ROOT, repo_root: Path = REPO_ROOT) -> None:
@@ -187,25 +238,13 @@ def _validate_payload(payload: dict[str, Any], *, clay_root: Path = CLAY_ROOT, r
         references = entry.get("references")
         if not isinstance(references, list):
             raise ValueError(f"Missing references for {candidate}")
-        if {str(item.get("role") or "") for item in references} != REQUIRED_SOURCE_ROLES:
+        roles = {str(item.get("role") or "") for item in references}
+        if roles == RULED_EXCLUSION_SOURCE_ROLES:
+            _validate_street_view_exclusion(entry, candidate, repo_root)
+        elif roles != REQUIRED_SOURCE_ROLES:
             raise ValueError(f"Reference roles are not exactly front/oblique/top for {candidate}")
         for reference in references:
-            repo_path = PurePosixPath(str(reference.get("repo_path") or ""))
-            if (
-                repo_path.is_absolute()
-                or ".." in repo_path.parts
-                or repo_path.parts[:4]
-                != ("frontend", "public", "archetypes", "buildings")
-            ):
-                raise ValueError(f"Non-authoritative source path for {candidate}: {repo_path}")
-            source = repo_root.joinpath(*repo_path.parts)
-            if not source.is_file():
-                raise FileNotFoundError(source)
-            if source.stat().st_size != int(reference.get("bytes") or -1):
-                raise ValueError(f"Reference byte count mismatch: {source}")
-            expected_hash = _validate_hash(reference.get("sha256"), str(source))
-            if _sha256(source) != expected_hash:
-                raise ValueError(f"Reference hash mismatch: {source}")
+            _validate_source_file(reference, candidate, repo_root)
 
         review = entry.get("review") or {}
         if "PASS" not in str(review.get("status") or "").upper():
@@ -237,11 +276,10 @@ def clay_seed_objects(payload: dict[str, Any], *, clay_root: Path = CLAY_ROOT) -
 
 
 def _thumbnail_url(entry: dict[str, Any]) -> str:
-    front = next(reference for reference in entry["references"] if reference["role"] == "front")
-    repo_path = str(front["repo_path"])
+    repo_path = str(thumbnail_reference(entry)["repo_path"])
     prefix = "frontend/public"
     if not repo_path.startswith(prefix):
-        raise ValueError(f"Unexpected front-reference path: {repo_path}")
+        raise ValueError(f"Unexpected thumbnail reference path: {repo_path}")
     return repo_path[len(prefix) :]
 
 
