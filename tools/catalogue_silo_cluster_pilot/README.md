@@ -19,7 +19,7 @@ publication.
   walkways.
 - **Head house:** corrugated steel, 12.2 m deep, seated on the shaft for its whole depth and
   overhanging its sides by 1.1 m, with eaves at 47 m and the ridge at 49.5 m. It has gable ends,
-  a closed underside, roof overhangs, a louvre set into the front gable, and two ventilators that
+  a closed underside, roof overhangs, a louvre panel 2 cm proud of the front gable, and two ventilators that
   pass down through the roof.
 - **Conveyor gallery:** 86 m long overall, from 31 to 35 m, in two segments that run into the
   shaft's side faces. It stands over the caps on steel frames at every column and has corrugated
@@ -88,7 +88,13 @@ files: `git lfs pull --include="frontend/public/archetypes/buildings/machine_aes
 ## Checkpoints
 
 - Builder review: pass (`evidence/builder-pixel-review.json`).
-- Independent architectural-clay review: see `candidate.json`.
+- Independent architectural-clay review:
+  - v004 was refused with three P1 findings (`evidence/independent-review-v004.json`);
+  - v006 answers them and passed on 2026-11-23 with zero P0, zero P1 and five P2
+    (`evidence/independent-review-v006.json`): the walkways' inner rails have no posts; the
+    head house louvre is a panel 2 cm proud of an uncut gable; the bay pads are flat, with no
+    ramps or doors; four walkway brackets dip up to 0.22 m into the shed roofs; and the
+    inclined steel member on the shaft's south face is not modelled.
 - Gate A: open for a person (the street view is a LEGO render).
 - Runtime integration: NOT TESTED. Publication and activation: not authorized. Only a
   person can activate the model.

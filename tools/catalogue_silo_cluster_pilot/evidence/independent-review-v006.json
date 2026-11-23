@@ -1,0 +1,218 @@
+{
+  "schema": "rlasm-independent-architectural-clay-review-v1",
+  "candidate": "silo-cluster-clay-v006",
+  "archetype_id": "machine_aesthetic_heavy_industrial",
+  "variant_id": "heavy_silo_cluster",
+  "variant_index": 2,
+  "model_path": "artifacts/silo/v006/silo-cluster-clay-v006.glb",
+  "model_sha256": "6aca47ab9da5f66943d62592c93171e5e1e8a30dcfd77ec5a7dfc2f6c1507a19",
+  "model_bytes": 1255800,
+  "reviewer": "Independent AI reviewer with no builder context. Not a human. Did not open: tools/catalogue_silo_cluster_pilot/build.py, verify.py, boards.py, render.cjs, cameras.json, test_silo_cluster.py or any test file, README.md, candidate.json, prework-manifest.json, the evidence/ and integration/ folders; artifacts/silo/*/build-report.json, prework-manifest.json, delivery-verification.json and builder-pixel-review.json (v004, v005 and v006). Used only the GLBs, the locked references, the builder's renders and phone boards, the shared review page tools/catalogue_silo_cluster_pilot/review.html (sha256 f2af47dd…f98f, unchanged since the v004 review) and its own renders and geometry scripts. The builder's change notes were treated as claims and checked against the geometry and pixels.",
+  "reviewed_utc": "2026-11-23T04:03:38Z",
+  "method": "RLASM v6.1",
+  "previous_reviews": [
+    {
+      "candidate": "silo-cluster-clay-v004",
+      "path": "artifacts/silo/v004/independent-review.json",
+      "sha256": "8a44ceae774a117e4287311f9afb50ce0015e05a36491ec7ad33003dcbaf0087",
+      "decision": "architectural_clay_refused",
+      "counts": {
+        "P0": 0,
+        "P1": 3,
+        "P2": 5
+      }
+    }
+  ],
+  "interim_note": "silo-cluster-clay-v005 (sha256 43691b45…e726) was reviewed in part before the coordinator replaced it with v006. No record was written for it. The partial review found one new defect: both new shed inner end walls faced into the sheds. The shared review page's ambient-occlusion pass culled them, leaving a ghost of the bay hopper and tunnel on the wall (v005/independent-review/renders/n15 against n15b with AO off). A ray-escape orientation test flagged exactly those 4 triangles. The reviewer's v005 renders are kept under artifacts/silo/v005/independent-review/.",
+  "scope": "Repeat holistic Gate G architectural-clay review of the exact v006 GLB (sha256 and 1255800 bytes confirmed by the reviewer) against the locked oblique variant_2_angle_60.jpg (sha256 af657365…0ccc) and roof view variant_2_angle_90.jpg (sha256 98e2d4b3…a5). Every v004 finding was re-tested, and the reviewer's full v004 view set was re-run on v006 (27 views, with the ventilator cameras moved to the new roof), plus 23 new views of the head house from all sides and below, the gallery at the shaft, the sheds beside the shaft, the ventilators, the bays, the walkway rails and the bracket and roof junctions. Geometry checks: a mesh-by-mesh diff against v005 (only the 4 shed end-wall triangles changed: same vertices, winding and normals flipped); a ray-escape face-orientation test on 1844 faces over 1 m²; winding against stored normals; coplanar and near-coplanar overlaps; and a contact graph from grade, with containment checks for parts it cannot resolve. Blends and gridded crops compare the builder's v006 fitted match renders with both references. The 17 builder renders and 4 phone boards (1080x1920) were checked against v005 pixel by pixel; they differ only by render noise and the board version label. Not covered: runtime integration, keeper status, textured identity, publication. variant_2.png (sha256 5bb665a6…580e) stays excluded, as instructed.",
+  "holistic_review_performed": true,
+  "decision": "architectural_clay_pass",
+  "architectural_clay_pass": true,
+  "keeper_approval": false,
+  "runtime_approval": false,
+  "publication_approval": false,
+  "counts": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 5
+  },
+  "source_conflict_assessment": "1 Scale: reasonable and unchanged. The 9.2 m bins at a 9.6 m pitch sit on both locked views in the v006 blends. 2 Heights: reasonable. With the head house re-proportioned, the tower and head house outlines now coincide with the reference oblique within the fitted camera's tolerance (refcrops/blend_oblique.png). 3 Roof-view lean: now handled consistently. The head house is 12.2 m deep and sits on the shaft; in the roof-view blend its roof, including the northward lean, and both ventilators coincide with the reference's (refcrops/blend_top.png). Its projected depth-to-width ratio in the fitted oblique is about 0.76 against about 0.80 in the reference, down from 1.14 in v004 (refcrops/headhouse_ref_vs_match_grid.png). 4 Footprint: reasonable. Under RLASM the visible long cluster of about 86 by 25 m overrides the catalogue's 80 by 50 m prose. 5 Inferred parts: reasonable. The plain north side, the ends, the gallery's closed ends where it passes behind the shaft, the shaft rooms and the bay interiors are plausible clay inferences. The inclined steel member on the shaft's south face is still not modelled (P2, R5). variant_2.png: I still agree it is unusable as a street-view reference. It shows an old LEGO model whose topology (one row of five silos, a floating glazed box, a spiral stair) contradicts both photographs. It still needs a person's ruling or a replacement; the model was rightly not failed for lacking a street-view match.",
+  "previous_findings_status": [
+    {
+      "id": "F1",
+      "v004_severity": "P1",
+      "status": "resolved",
+      "evidence": "The head house body spans x ±4.7, y -12.0 to 0.2 and z 36 to 49.5, so it is 12.2 m deep, against the shaft's x ±3.6, y -11.7 to 0.2 and top at z 36. It sits on the shaft for its whole depth, overhanging 1.1 m east and west and 0.3 m south, flush on the north. No frame member rises above z 31.0, so the posts on the caps are gone. The gallery is now two segments, x -43 to -3.6 and 3.6 to 43, that run into the shaft's side faces. Where they pass behind the shaft (y 0.2 to 2.3), each is closed by an outward-facing end wall up to the roof line. The ventilators are on the new roof at y = -6. Both reference blends now coincide (see source_conflict_assessment). Renders: n01, n02, n03, n04, n12, n13, n14, r06, r07, r12, r19, r21, r27, n17, n18."
+    },
+    {
+      "id": "F2",
+      "v004_severity": "P1",
+      "status": "resolved",
+      "evidence": "Each shed now has an inner end wall at x = ±3.6, y -15.4 to -11.7, from grade to the roof underside (z 5.8 at the front, 7.16 at the shaft). It meets the shaft's corner at y = -11.7. In v006 these walls face outward, toward the recess in front of the shaft. The ray-escape orientation test flags 0 of 1844 faces (v005 flagged exactly these 4), and winding matches the stored normals everywhere. Face-on renders n15 and n16 and obliques r01, r02 and r03 show clean closed walls with no ambient-occlusion ghost."
+    },
+    {
+      "id": "F3",
+      "v004_severity": "P1",
+      "status": "resolved",
+      "evidence": "The stacks now start at z 47.75. The roof plane under each stack's footprint lies 0.10 to 0.84 m above the stack bottom, so both stacks pass through the roof slope. Renders r04 (gable), r05 (east) and n10 (close) show no gap. My contact graph still lists the stacks as unanchored only because it measures distance to surfaces, not penetration."
+    },
+    {
+      "id": "F4",
+      "v004_severity": "P2",
+      "status": "resolved",
+      "evidence": "The south-face pour bands that met the windows and the ground door are now split, 12 pieces stopping at the jambs; none crosses any of the 7 openings (glass_close, r13)."
+    },
+    {
+      "id": "F5",
+      "v004_severity": "P2",
+      "status": "resolved",
+      "evidence": "The interior planes are at y = -10.5, 1.08 m behind the glass (y = -11.58), with steel returns lining the full 1.2 m reveal (glass_close, r13)."
+    },
+    {
+      "id": "F6",
+      "v004_severity": "P2",
+      "status": "partly resolved, see R1",
+      "evidence": "Inner top and mid rails were added, but they have no posts."
+    },
+    {
+      "id": "F7",
+      "v004_severity": "P2",
+      "status": "partly resolved, see R3",
+      "evidence": "Each of the 4 bays now has a hopper (1.6 x 1.6 x 0.9 m) and spout (0.6 x 0.6 x 0.7 m) hanging from its ceiling (bays_contact, n11, r15). The duplicate bay floors are gone: the interior mesh now holds only the 4 bay back walls and 6 window rooms. The shed roofs rise from 5.75 to 8.0 m over 6.4 m, about 19 degrees where v004 had about 10. The pads are still flat, and there are no doors or ramps."
+    },
+    {
+      "id": "F8",
+      "v004_severity": "P2",
+      "status": "partly resolved, see R2",
+      "evidence": "The head house roof now meets its walls: the eave at z 46.996 sits on the 47.0 wall top, and the ridge at 49.5 matches the gable apex; the roof is anchored in the contact graph. The frame cross beams (z 30.80 to 30.98) bear on the gallery floor at 31.0. All 14 braces have both ends embedded in posts; my surface-distance graph lists them as unanchored only because they are embedded. The louvre is not set into the gable (R2)."
+    }
+  ],
+  "findings": [
+    {
+      "id": "R1",
+      "severity": "P2",
+      "title": "The walkways' new inner rails have no posts",
+      "evidence": "On each walkway the inner top rail (z 11.05 to 11.1) and mid rail (z 10.5 to 10.54) run 38.4 m along y -9.65 to -9.6, but all 50 posts are on the outer edge (y = -10.8). The inner rails touch only the shaft face and, for the top rail, the end rail at x = ±42, so the mid rail is in effect a 38 m cantilever. This shows in close views n05, n06 and n19, and is barely visible at whole-building and phone-board scale.",
+      "required_change": "Add inner posts at the outer rail's 1.6 m pitch, or posts or brackets fixed to the silo walls, and tie the mid rail into the end rail."
+    },
+    {
+      "id": "R2",
+      "severity": "P2",
+      "title": "The head house louvre is still a panel on the gable, not an opening",
+      "evidence": "The louvre box spans y -12.02 to -11.8, so its face stands 2 cm proud of the uncut gable (y = -12.0), and five wall ribs at y = -12.03 run across it. It reads as a dark plate with bars (n07). The builder's note says it is set into the gable; the geometry shows it is not.",
+      "required_change": "Cut the gable, recess the louvre about 0.1 to 0.2 m with returns, and stop the wall ribs at its frame."
+    },
+    {
+      "id": "R3",
+      "severity": "P2",
+      "title": "The loading yard is still simplified against the reference",
+      "evidence": "There are four flat 0.04 m pads, one per door, where the reference shows one depressed truck ramp per shed, and the bay openings have no door frames or roll-up doors (bays_contact, r15). The builder records this as a known limitation.",
+      "required_change": "Optional for clay: one depressed ramp per shed and door frames or part-open roll-up doors."
+    },
+    {
+      "id": "R4",
+      "severity": "P2",
+      "title": "Walkway brackets above the sheds dip into the steepened shed roofs",
+      "evidence": "The four brackets above the sheds (x ±8.5 and ±18.1) reach z 7.79 at y -9.67 to -9.31, while the raised shed roof there is at 7.91 to 8.0, so up to 0.22 m of each bracket foot is inside the roof. At review range they read as landing at the roof and silo junction (n21).",
+      "required_change": "Shorten the four brackets so they land on the silo wall above the shed roof, or give them a flashed base on the roof."
+    },
+    {
+      "id": "R5",
+      "severity": "P2",
+      "title": "The inclined steel member on the shaft's south face is not modelled",
+      "evidence": "Both locked views show a pair of inclined steel members on the shaft's south face beside the east shed (artifacts/silo/v004/independent-review/refcrops/obl_stair_zoom.png), probably a ladder or brace. The model omits it, so the shaft face is plain there.",
+      "required_change": "Optional: add the inclined member as simple steel sections, seated on grade and fixed to the shaft."
+    }
+  ],
+  "reviewer_renders": [
+    "artifacts/silo/v006/independent-review/renders/n01_headhouse_from_north_low.png",
+    "artifacts/silo/v006/independent-review/renders/n02_headhouse_underside_west_overhang.png",
+    "artifacts/silo/v006/independent-review/renders/n03_gallery_end_wall_behind_shaft_nw.png",
+    "artifacts/silo/v006/independent-review/renders/n04_gallery_end_wall_behind_shaft_ne.png",
+    "artifacts/silo/v006/independent-review/renders/n05_walkway_from_above_west.png",
+    "artifacts/silo/v006/independent-review/renders/n06_walkway_side_grazing.png",
+    "artifacts/silo/v006/independent-review/renders/n07_louvre_close.png",
+    "artifacts/silo/v006/independent-review/renders/n08_shed_inner_end_close_se.png",
+    "artifacts/silo/v006/independent-review/renders/n09_shed_front_eave_under.png",
+    "artifacts/silo/v006/independent-review/renders/n10_ventilator_roof_penetration.png",
+    "artifacts/silo/v006/independent-review/renders/n11_bay_spout_interior_oblique.png",
+    "artifacts/silo/v006/independent-review/renders/n12_headhouse_from_west.png",
+    "artifacts/silo/v006/independent-review/renders/n13_headhouse_from_east_low.png",
+    "artifacts/silo/v006/independent-review/renders/n14_gallery_shaft_junction_west_low.png",
+    "artifacts/silo/v006/independent-review/renders/n15_shed_inner_end_faceon_west.png",
+    "artifacts/silo/v006/independent-review/renders/n15b_shed_inner_end_faceon_west_noAO.png",
+    "artifacts/silo/v006/independent-review/renders/n16_shed_inner_end_faceon_east.png",
+    "artifacts/silo/v006/independent-review/renders/n17_whole_front_corner_se.png",
+    "artifacts/silo/v006/independent-review/renders/n18_rear_side_nw.png",
+    "artifacts/silo/v006/independent-review/renders/n19_inner_rail_close.png",
+    "artifacts/silo/v006/independent-review/renders/n20_head_house_south_gable_full.png",
+    "artifacts/silo/v006/independent-review/renders/n21_bracket_over_shed_roof.png",
+    "artifacts/silo/v006/independent-review/renders/n22_ventilators_gable_ao_off.png",
+    "artifacts/silo/v006/independent-review/renders/r01_shed_gap_from_se.png",
+    "artifacts/silo/v006/independent-review/renders/r02_shed_gap_from_sw.png",
+    "artifacts/silo/v006/independent-review/renders/r03_shed_gap_front.png",
+    "artifacts/silo/v006/independent-review/renders/r04_ventilators_gable.png",
+    "artifacts/silo/v006/independent-review/renders/r05_ventilators_east.png",
+    "artifacts/silo/v006/independent-review/renders/r06_headhouse_under_nw.png",
+    "artifacts/silo/v006/independent-review/renders/r07_headhouse_under_west.png",
+    "artifacts/silo/v006/independent-review/renders/r08_cap_close_front_row.png",
+    "artifacts/silo/v006/independent-review/renders/r09_frames_on_caps_between_rows.png",
+    "artifacts/silo/v006/independent-review/renders/r10_gallery_west_end_under.png",
+    "artifacts/silo/v006/independent-review/renders/r11_gallery_meets_shaft_south_east.png",
+    "artifacts/silo/v006/independent-review/renders/r12_headhouse_underside_from_north_low.png",
+    "artifacts/silo/v006/independent-review/renders/r13_shaft_windows_oblique.png",
+    "artifacts/silo/v006/independent-review/renders/r14_walkway_end_at_shaft_west.png",
+    "artifacts/silo/v006/independent-review/renders/r15_shed_bay_interior.png",
+    "artifacts/silo/v006/independent-review/renders/r16_shed_roof_to_silos_above.png",
+    "artifacts/silo/v006/independent-review/renders/r17_spouts_front_ground.png",
+    "artifacts/silo/v006/independent-review/renders/r18_north_side_close.png",
+    "artifacts/silo/v006/independent-review/renders/r19_east_end.png",
+    "artifacts/silo/v006/independent-review/renders/r20_north_ground_contact.png",
+    "artifacts/silo/v006/independent-review/renders/r21_rear_whole_low.png",
+    "artifacts/silo/v006/independent-review/renders/r22_topview_perspective_emulation_a.png",
+    "artifacts/silo/v006/independent-review/renders/r23_topview_perspective_emulation_b.png",
+    "artifacts/silo/v006/independent-review/renders/r24_oblique_like_reference_light.png",
+    "artifacts/silo/v006/independent-review/renders/r25_headhouse_eave_under_close.png",
+    "artifacts/silo/v006/independent-review/renders/r26_walkway_inner_edge_valley.png",
+    "artifacts/silo/v006/independent-review/renders/r27_match_view_head_house_close.png",
+    "artifacts/silo/v006/independent-review/refcrops/blend_oblique.png",
+    "artifacts/silo/v006/independent-review/refcrops/blend_top.png",
+    "artifacts/silo/v006/independent-review/refcrops/headhouse_ref_vs_match_grid.png",
+    "artifacts/silo/v006/independent-review/refcrops/match_under_headhouse.png"
+  ],
+  "reviewer_scripts": [
+    "artifacts/silo/v006/independent-review/scripts/comps.py",
+    "artifacts/silo/v006/independent-review/scripts/coplanar.py",
+    "artifacts/silo/v006/independent-review/scripts/floating.py",
+    "artifacts/silo/v006/independent-review/scripts/glbload.py",
+    "artifacts/silo/v006/independent-review/scripts/graph.py",
+    "artifacts/silo/v006/independent-review/scripts/nearplanar.py",
+    "artifacts/silo/v006/independent-review/scripts/orient.py",
+    "artifacts/silo/v006/independent-review/scripts/render.cjs",
+    "artifacts/silo/v006/independent-review/scripts/views_e.json",
+    "artifacts/silo/v006/independent-review/scripts/views_f.json",
+    "artifacts/silo/v006/independent-review/scripts/views_new.json",
+    "artifacts/silo/v006/independent-review/scripts/views_repeat.json",
+    "artifacts/silo/v006/independent-review/scripts/views_v006.json",
+    "artifacts/silo/v006/independent-review/scripts/write_review.py"
+  ],
+  "geometry_checks": {
+    "images": 0,
+    "textures": 0,
+    "meshes": 15,
+    "triangles": 26433,
+    "diff_vs_v005": "Only CLAY_STEEL changed: 4 triangles of the two shed inner end walls, with the same vertices and flipped winding and normals.",
+    "orientation_ray_escape": "0 of 1844 faces over 1 m² flagged (v005: 4).",
+    "winding_vs_stored_normals": "consistent in all 15 meshes",
+    "coplanar_overlaps": "Hidden contact faces only: cap seams, spout joints, ventilator cap and stack, frame and gallery floor, walkway deck joints, and hopper tops against the bay ceilings (opposite-facing, hidden). No visible z-fighting found.",
+    "near_coplanar_same_facing": "Pour bands 2 cm proud of the concrete and corrugation ribs 3 cm off the steel (intended relief), and the louvre 2 cm proud of the gable (R2).",
+    "contact_graph": "Every part except the corrugation decals (3 cm relief) reaches grade. The ventilator stacks and the 14 frame braces show as unanchored only because the test measures distance to surfaces. Direct checks show the stacks pass 0.10 to 0.84 m through the roof and every brace end is embedded in a post."
+  },
+  "strengths": [
+    "The tower and head house now match both locked views: a 12.2 m deep corrugated head house seated on the concrete shaft with a small overhang, two ventilators on its ridge line, and the gallery segments butting into the tower faces, all coinciding with the references in the fitted blends.",
+    "The identity reads at once in every whole view: two rows of eight ribbed, railed bins, the shaft proud of the front row, the gallery on portal frames, walkways to shaft doors, and two closed two-bay loading sheds with loading spouts.",
+    "Construction closure is clean. The sheds and gallery ends are closed and face outward, the head house roof sits on its walls, the ventilators and braces are seated, and no inverted faces, visible z-fighting or floating parts remain.",
+    "The shaft openings now read correctly: windows with steel returns lining a 1.2 m reveal and rooms behind, and pour bands stopping at the jambs.",
+    "The builder evidence is complete and current: all 17 renders and 4 phone boards were rerendered for v006, and the boards carry its hash."
+  ]
+}

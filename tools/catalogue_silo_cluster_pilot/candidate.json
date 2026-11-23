@@ -52,7 +52,25 @@
     "decision": "builder_pass"
   },
   "independent_review": {
-    "status": "pending repeat review",
+    "status": "pass",
+    "decision": "architectural_clay_pass",
+    "candidate": "silo-cluster-clay-v006",
+    "file": "evidence/independent-review-v006.json",
+    "sha256": "fea5cb13ac34e3c2969ff19c76cb9ad8b59206018e2ae07d23384fc74f6bb9b2",
+    "reviewed_utc": "2026-11-23T04:03:38Z",
+    "counts": {
+      "P0": 0,
+      "P1": 0,
+      "P2": 5
+    },
+    "open_p2": [
+      "R1: The walkways' new inner rails have no posts",
+      "R2: The head house louvre is still a panel on the gable, not an opening",
+      "R3: The loading yard is still simplified against the reference",
+      "R4: Walkway brackets above the sheds dip into the steepened shed roofs",
+      "R5: The inclined steel member on the shaft's south face is not modelled"
+    ],
+    "scope": "architectural clay only; not keeper, runtime or publication approval",
     "previous": [
       {
         "candidate": "silo-cluster-clay-v004",

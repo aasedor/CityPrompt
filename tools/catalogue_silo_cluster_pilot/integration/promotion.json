@@ -44,7 +44,7 @@
       "The catalogue suggests an 80 by 50 m footprint; the images show a long cluster about 86 by 25 m, and the images govern.",
       "The back row's north side, the ends, the shaft's back and all interiors are inferred; the walkways' stairs are not modelled.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_silo_cluster_pilot/integration/runtime-review.md.",
-      "Independent review: v004 was refused with three P1 (evidence/independent-review-v004.json); v006 answers them and its repeat review is pending."
+      "Independent review: v004 was refused with three P1 (evidence/independent-review-v004.json); v006 answers them and passed on 2026-11-23 with zero P0, zero P1 and five P2 (evidence/independent-review-v006.json). Open P2: the walkways' inner rails have no posts; the head house louvre is a panel 2 cm proud of an uncut gable; the bay pads are flat, with no ramps or doors; four walkway brackets dip up to 0.22 m into the shed roofs; and the inclined steel member on the shaft's south face is not modelled."
     ],
     "picker": {
       "id": "machine_aesthetic_heavy_industrial_silo_cluster",

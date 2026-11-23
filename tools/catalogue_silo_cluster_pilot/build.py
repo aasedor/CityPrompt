@@ -249,7 +249,7 @@ def head_house(clay):
         for xx, d in ((hw + .03, 1), (-hw - .03, -1)):
             clay.quad('corrugation', (xx, y - .04, foot + .1), (xx, y + .04, foot + .1), (xx, y + .04, eave - .15), (xx, y - .04, eave - .15), facing=(d, 0, 0))
         y += .5
-    clay.box('louvre', 1.0, 3.4, yf - .02, yf + .2, foot + 1.2, foot + 4.2)    # louvre set into the front gable
+    clay.box('louvre', 1.0, 3.4, yf - .02, yf + .2, foot + 1.2, foot + 4.2)    # louvre panel on the front gable, 2 cm proud
     for vx, vy in VENTS:                                                   # ridge ventilators
         seat = eave + (ridge - eave) * (1 - (abs(vx) + .7) / hw) - .1       # down through the roof slope at its low side
         clay.cylinder('steel', vx, vy, seat, ridge + 1.4, .7, steps=16)

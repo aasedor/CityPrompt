@@ -96,7 +96,7 @@
   "triangles": 26433,
   "script_sha256": {
     "clay_kit.py": "6237cadfb42ecbabc4c849a5305416e8a7657d71387ce2c7baa18bc7b1b71dcd",
-    "build.py": "b61fc4adc7129da625913d96ba03d330980d046de1c8dd9d596a976a3c3a0f6b",
+    "build.py": "72935e6afd3e4fc61c828a470c10c4c037640721e0b0cc89cd7a87e3ff05fa3c",
     "cameras.json": "2594fa74b0c91b50d5141dcd35fca083cc80ce3d3ccd7fdfa9398ae8f1593e74",
     "review.html": "f2af47dded2aa9d6ffaea6994bf603e3fe193f1216248914177ad6ea9c03f98f",
     "render.cjs": "96a3e92927a55826629abab9eac6dd82973ec059c9a2349e471dec5cb07e7ef2"
