@@ -98,5 +98,9 @@ files: `git lfs pull --include="frontend/public/archetypes/buildings/machine_aes
     inclined steel member on the shaft's south face is not modelled.
 - Gate A: accepted by a person on 2026-11-23. The oblique and roof views govern; the LEGO street view
   stays excluded.
+- Install: a dry run of `prepare` (trial only, no writes) accepts the ruled-out street view but
+  stops at the review record, which lacks `unresolved_p0`, `unresolved_p1` and an
+  `inspected_files` list naming the reference hashes (`docs/BUILDING_CATALOGUE_WORKFLOW.md`).
+  A conformant review record is needed before a trial install.
 - Runtime integration: NOT TESTED. Publication and activation: not authorized. Only a
   person can activate the model.

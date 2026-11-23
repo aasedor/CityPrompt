@@ -33,7 +33,13 @@
         "repo_path": "frontend/public/archetypes/buildings/concert_hall_modern/variant_2.png",
         "bytes": 1245075,
         "sha256": "b33e3a3378be36cd197f1b8c74233291e1429367f05fd680fc9452794231cb25",
-        "reason": "grey preview of the old LEGO model"
+        "reason": "grey preview of the old LEGO model",
+        "ruling": {
+          "decision": "Gate A for concert_hall_modern / concert_timber_acoustic: the oblique (variant_2_angle_60.jpg) and the roof view (variant_2_angle_90.jpg) govern. The street view (variant_2.png, sha256 b33e3a3378be...) is the grey preview of the old LEGO model, not this building; it stays excluded and no replacement street view is required.",
+          "authorized_by": "human_user",
+          "quote": "Make the Gate A ruling for the concert hall, the ski-slope plant and the silo cluster. I accept.",
+          "date": "2026-11-23"
+        }
       }
     ],
     "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_concert_hall_pilot.",

@@ -33,7 +33,13 @@
         "repo_path": "frontend/public/archetypes/buildings/waste_to_energy_plant/variant_0.png",
         "bytes": 1265959,
         "sha256": "ecef4b4013ab8d50a585f6d37b77f786eac1bf1d93e7e27410cf40b7b4a03b4a",
-        "reason": "grey render of the old LEGO model"
+        "reason": "grey render of the old LEGO model",
+        "ruling": {
+          "decision": "Gate A for waste_to_energy_plant / wte_ski_slope: the oblique (variant_0_angle_60.jpg) and the roof view (variant_0_angle_90.jpg) govern. The street view (variant_0.png, sha256 ecef4b4013ab...) is a grey render of the old LEGO model, not this building; it stays excluded and no replacement street view is required.",
+          "authorized_by": "human_user",
+          "quote": "Make the Gate A ruling for the concert hall, the ski-slope plant and the silo cluster. I accept.",
+          "date": "2026-11-23"
+        }
       }
     ],
     "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_ski_slope_plant_pilot.",

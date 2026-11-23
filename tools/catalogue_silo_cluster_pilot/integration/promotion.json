@@ -33,7 +33,13 @@
         "repo_path": "frontend/public/archetypes/buildings/machine_aesthetic_heavy_industrial/variant_2.png",
         "bytes": 1605765,
         "sha256": "5bb665a685eb026f1462d3c6159fd8b1584b6ce9eeace03cb91311581d63580e",
-        "reason": "grey render of the old LEGO model"
+        "reason": "grey render of the old LEGO model",
+        "ruling": {
+          "decision": "Gate A for machine_aesthetic_heavy_industrial / heavy_silo_cluster: the oblique (variant_2_angle_60.jpg) and the roof view (variant_2_angle_90.jpg) govern. The street view (variant_2.png, sha256 5bb665a685eb...) is a grey render of the old LEGO model, not this building; it stays excluded and no replacement street view is required.",
+          "authorized_by": "human_user",
+          "quote": "Make the Gate A ruling for the concert hall, the ski-slope plant and the silo cluster. I accept.",
+          "date": "2026-11-23"
+        }
       }
     ],
     "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_silo_cluster_pilot.",
