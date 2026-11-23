@@ -1,11 +1,11 @@
 {
-  "candidate": "silo-cluster-clay-v005",
-  "model_sha256": "43691b45018f6bc79987362f29ed5380fa04a1ed8d7da598cafcad58a7dae726",
+  "candidate": "silo-cluster-clay-v006",
+  "model_sha256": "6aca47ab9da5f66943d62592c93171e5e1e8a30dcfd77ec5a7dfc2f6c1507a19",
   "reviewer": "builder (the agent session that wrote the generator)",
   "builder_visual_review": "pass",
   "independent_approval": "pending repeat review; v004 was refused with three P1 (evidence/independent-review-v004.json)",
   "views_inspected": {
-    "v005": [
+    "v006": [
       "boards/phone-construction.png",
       "boards/phone-oblique.png",
       "boards/phone-programme.png",
@@ -34,7 +34,8 @@
     "v001: plan from the roof view (back row 1010 px for 76.4 m, 0.0756 m/px); the front row parted round the shaft; heights proportioned in the oblique (26 m walls, 3 m caps, gallery 31 to 35 m, shaft to 36 m, head house eave 47 m).",
     "v002/v003: the oblique camera refitted to the built model (twelve points, 30 px RMS); the loading sheds widened to two silos each, with their bays under those silos, as the oblique shows.",
     "v004: the walkways lowered to 10 m, as the oblique shows.",
-    "v005, answering the v004 review: F1 the head house is 12.2 m deep and sits on the shaft for its whole depth, its posts gone, and the gallery runs in two segments into the shaft's side faces, closed where they pass behind it; F2 each shed's inner end is closed in front of the shaft; F3 the ventilators pass down through the roof slope. P2s: pour lines broken at the shaft's openings and rooms 1.2 m behind its windows; rails on both sides of the walkways; a loading spout in each bay, no doubled floor, steeper shed roofs; the head house roof plane passes through the wall tops, the gallery frames' cross beams meet the floor, and the louvre is set into the gable."
+    "v005, answering the v004 review: F1 the head house is 12.2 m deep and sits on the shaft for its whole depth, its posts gone, and the gallery runs in two segments into the shaft's side faces, closed where they pass behind it; F2 each shed's inner end is closed in front of the shaft; F3 the ventilators pass down through the roof slope. P2s: pour lines broken at the shaft's openings and rooms 1.2 m behind its windows; rails on both sides of the walkways; a loading spout in each bay, no doubled floor, steeper shed roofs; the head house roof plane passes through the wall tops, the gallery frames' cross beams meet the floor, and the louvre is set into the gable.",
+    "v006: the sheds' new inner end walls faced into the sheds; they now face the recess in front of the shaft (checked on all four triangles). Nothing else changed."
   ],
   "findings": [
     "Massing: two rows of eight concrete silos 9.2 m across, the front row parted round a concrete shaft that stands 2.3 m proud of it, a corrugated head house over both rows, a gallery the length of the cluster; the oblique through the fitted camera and the roof view through the orthographic camera agree with this.",

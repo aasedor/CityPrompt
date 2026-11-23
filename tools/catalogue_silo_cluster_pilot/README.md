@@ -73,11 +73,11 @@ Open for a person to rule on:
 ## Reproduce
 
 ```bash
-python3 tools/catalogue_silo_cluster_pilot/build.py --output artifacts/silo/v005 --version 5
+python3 tools/catalogue_silo_cluster_pilot/build.py --output artifacts/silo/v006 --version 6
 python3 -m http.server 8765 --bind 127.0.0.1 &          # from the repository root
-node tools/catalogue_silo_cluster_pilot/render.cjs artifacts/silo/v005/silo-cluster-clay-v005.glb artifacts/silo/v005/renders
-python3 tools/catalogue_silo_cluster_pilot/boards.py artifacts/silo/v005
-python3 tools/catalogue_silo_cluster_pilot/verify.py artifacts/silo/v005
+node tools/catalogue_silo_cluster_pilot/render.cjs artifacts/silo/v006/silo-cluster-clay-v006.glb artifacts/silo/v006/renders
+python3 tools/catalogue_silo_cluster_pilot/boards.py artifacts/silo/v006
+python3 tools/catalogue_silo_cluster_pilot/verify.py artifacts/silo/v006
 python3 -m pytest tools/catalogue_silo_cluster_pilot
 ```
 

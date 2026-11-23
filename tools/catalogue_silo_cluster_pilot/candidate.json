@@ -1,10 +1,10 @@
 {
-  "candidate": "silo-cluster-clay-v005",
+  "candidate": "silo-cluster-clay-v006",
   "method": "RLASM 6.1",
   "scope": "architectural clay; local pilot only",
   "canonical_promotion_approved": false,
-  "external_directory": "artifacts/silo/v005 (ignored by Git; rebuild with build.py)",
-  "model_sha256": "43691b45018f6bc79987362f29ed5380fa04a1ed8d7da598cafcad58a7dae726",
+  "external_directory": "artifacts/silo/v006 (ignored by Git; rebuild with build.py)",
+  "model_sha256": "6aca47ab9da5f66943d62592c93171e5e1e8a30dcfd77ec5a7dfc2f6c1507a19",
   "model_bytes": 1255800,
   "delivered_bounds_gltf_m": [
     [
@@ -33,9 +33,9 @@
   },
   "silos": 16,
   "runtime": {
-    "path": "silo-cluster-clay-v005.glb",
+    "path": "silo-cluster-clay-v006.glb",
     "bytes": 1255800,
-    "sha256": "43691b45018f6bc79987362f29ed5380fa04a1ed8d7da598cafcad58a7dae726",
+    "sha256": "6aca47ab9da5f66943d62592c93171e5e1e8a30dcfd77ec5a7dfc2f6c1507a19",
     "meshes": 15,
     "materials": 15,
     "textures": 0,

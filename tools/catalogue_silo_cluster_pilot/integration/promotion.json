@@ -1,6 +1,6 @@
 {
   "entry": {
-    "candidate": "silo-cluster-clay-v005",
+    "candidate": "silo-cluster-clay-v006",
     "family": "rlasm-clay-silo-cluster",
     "archetype_id": "machine_aesthetic_heavy_industrial",
     "archetype_label": "Machine Aesthetic Heavy Industrial",
@@ -44,7 +44,7 @@
       "The catalogue suggests an 80 by 50 m footprint; the images show a long cluster about 86 by 25 m, and the images govern.",
       "The back row's north side, the ends, the shaft's back and all interiors are inferred; the walkways' stairs are not modelled.",
       "Terrain fit, entrance routing and every runtime gate are untested; see tools/catalogue_silo_cluster_pilot/integration/runtime-review.md.",
-      "Independent review: v004 was refused with three P1 (evidence/independent-review-v004.json); v005 answers them and its repeat review is pending."
+      "Independent review: v004 was refused with three P1 (evidence/independent-review-v004.json); v006 answers them and its repeat review is pending."
     ],
     "picker": {
       "id": "machine_aesthetic_heavy_industrial_silo_cluster",
@@ -57,7 +57,7 @@
       "max_size": 600.0
     }
   },
-  "model_file": "silo-cluster-clay-v005.glb",
+  "model_file": "silo-cluster-clay-v006.glb",
   "review_file": "independent-review.json",
   "approval": {
     "authorized_by": "",

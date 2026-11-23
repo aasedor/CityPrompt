@@ -308,10 +308,10 @@ def sheds(clay):
             flat_region(clay, 'pad', box(x0 + a - .4, yf - 6.0, x0 + b + .4, yf), .04)
         for x in (x0, x1):
             n = (-1, 0) if x == x0 else (1, 0)
-            if abs(abs(x) - SHAFT[0]) < 1e-6:                              # beside the shaft: close the part in front of it
+            if abs(abs(x) - SHAFT[0]) < 1e-6:                              # beside the shaft: close the part in front of it, facing the recess
                 ys = SHAFT[1]
                 zs = ef + (eb - ef) * (ys - yf) / (yb - yf)
-                clay.polygon('steel', [(x, yf, 0.0), (x, ys, 0.0), (x, ys, zs), (x, yf, ef)], (-n[0], 0, 0))
+                clay.polygon('steel', [(x, yf, 0.0), (x, ys, 0.0), (x, ys, zs), (x, yf, ef)], (*n, 0))
                 continue
             clay.polygon('steel', [(x, yf, 0.0), (x, yb, 0.0), (x, yb, eb), (x, yf, ef)], (*n, 0))
         lo = x0 if abs(abs(x0) - SHAFT[0]) < 1e-6 else x0 - .2                # no overhang into the shaft
