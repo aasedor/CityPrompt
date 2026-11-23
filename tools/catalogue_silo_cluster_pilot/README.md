@@ -40,18 +40,19 @@ publication.
 | Roof | `variant_2_angle_90.jpg` | Plan positions, at 0.0756 m/px |
 | Street (excluded) | `variant_2.png` | A grey render of the old LEGO model, not this building |
 
+Gate A was ruled on 2026-11-23: variant 2 has no usable street view, and a person accepted that the
+oblique and roof views govern (`integration/promotion.json`, `human_decisions`).
+
 Open for a person to rule on:
 
-1. **Gate A.** Variant 2 has no usable street view. The model follows the oblique and roof
-   views. A person must accept that, or supply a street view, before activation.
-2. **Heights.** These are proportioned in the oblique. A nine-point camera fit gave similar
+1. **Heights.** These are proportioned in the oblique. A nine-point camera fit gave similar
    values but was too loose to govern (32 px RMS). The fitted match camera has 30 px RMS, most of
    it from the reference's uneven silo spacing in the left group.
-3. **The roof view** is not overhead: tall parts lean north by about 2 px per metre. Plan
+2. **The roof view** is not overhead: tall parts lean north by about 2 px per metre. Plan
    positions come from the caps and from the feet of the shaft and sheds.
-4. **Footprint.** The catalogue suggests 80 by 50 m; the images show a long cluster about 86 by
+3. **Footprint.** The catalogue suggests 80 by 50 m; the images show a long cluster about 86 by
    25 m, and the images govern.
-5. **Inferred parts.** The back row's north side, the ends, the shaft's back and all interiors
+4. **Inferred parts.** The back row's north side, the ends, the shaft's back and all interiors
    are inferred. The walkways' stairs are not modelled.
 
 `prework-manifest.json` records the locks, measurements, conflicts and assumptions.
@@ -95,6 +96,7 @@ files: `git lfs pull --include="frontend/public/archetypes/buildings/machine_aes
     head house louvre is a panel 2 cm proud of an uncut gable; the bay pads are flat, with no
     ramps or doors; four walkway brackets dip up to 0.22 m into the shed roofs; and the
     inclined steel member on the shaft's south face is not modelled.
-- Gate A: open for a person (the street view is a LEGO render).
+- Gate A: accepted by a person on 2026-11-23. The oblique and roof views govern; the LEGO street view
+  stays excluded.
 - Runtime integration: NOT TESTED. Publication and activation: not authorized. Only a
   person can activate the model.

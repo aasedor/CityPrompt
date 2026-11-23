@@ -56,17 +56,18 @@ local pilot: not in the catalogue, not runtime-tested and not approved for publi
 | Roof | `variant_2_angle_90.jpg` | Plan positions, at 0.0991 m/px |
 | Street (excluded) | `variant_2.png` | The grey preview of the old LEGO model, not this building |
 
+Gate A was ruled on 2026-11-23: variant 2 has no usable street view, and a person accepted that the
+oblique and roof views govern (`integration/promotion.json`, `human_decisions`).
+
 Open for a person to rule on:
 
-1. **Gate A.** Variant 2 has no usable street view. The model follows the oblique and roof
-   views. A person must accept that, or supply a street view, before activation.
-2. **The oculus position.** The oblique puts the oculus about 3.5 m east of the podium
+1. **The oculus position.** The oblique puts the oculus about 3.5 m east of the podium
    centre and the roof view 11.3 m. The roof view governs plan positions; the oblique
    governs heights.
-3. **Heights.** A pinhole camera fitted to 39 traced podium points in the oblique fits about
+2. **Heights.** A pinhole camera fitted to 39 traced podium points in the oblique fits about
    equally well (31 px RMS) for an 11 m or a 21 m podium. The podium therefore takes the
    catalogue's two 5 m floors.
-4. **Inferred parts.** The interiors, the north and east ground floor, the roof-garden
+3. **Inferred parts.** The interiors, the north and east ground floor, the roof-garden
    entrance and the hall's size are inferred. The hall is only as large as the oculus.
 
 `prework-manifest.json` records the locks, measurements, conflicts and assumptions.
@@ -109,6 +110,7 @@ Git LFS files: `git lfs pull --include="frontend/public/archetypes/buildings/con
   - five fins over the service door stand 8 to 18 cm off the cladding;
   - the lobby stair behind the roof portal ends at a closed wall;
   - two minor coplanar faces at the stair well and a north mullion.
-- Gate A: open for a person (the street view is the LEGO preview).
+- Gate A: accepted by a person on 2026-11-23. The oblique and roof views govern; the LEGO street view
+  stays excluded.
 - Runtime integration: NOT TESTED. Publication and activation: not authorized. Only a
   person can activate the model.

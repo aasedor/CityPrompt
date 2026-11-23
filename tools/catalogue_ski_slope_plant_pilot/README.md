@@ -48,19 +48,20 @@ local pilot: not in the catalogue, not runtime-tested and not approved for publi
 | Roof | `variant_0_angle_90.jpg` | Plan positions, at 0.204 m/px |
 | Street (excluded) | `variant_0.png` | A grey render of the old LEGO model, not this building |
 
+Gate A was ruled on 2026-11-23: variant 0 has no usable street view, and a person accepted that the
+oblique and roof views govern (`integration/promotion.json`, `human_decisions`).
+
 Open for a person to rule on:
 
-1. **Gate A.** Variant 0 has no usable street view. The model follows the oblique and roof
-   views. A person must accept that, or supply a street view, before activation.
-2. **Heights.** A pinhole camera fitted to eight points of the block in the oblique (8.2 px
+1. **Heights.** A pinhole camera fitted to eight points of the block in the oblique (8.2 px
    RMS), with the plan held fixed, gives the summit, low-end and wing-roof heights. A wing
    roof below 20 m fits clearly worse.
-3. **The stack.** The roof view draws it leaning, with its flue about 30 m north-west of its
+2. **The stack.** The roof view draws it leaning, with its flue about 30 m north-west of its
    base; the oblique shows it upright and further east. Its base follows the roof view and
    its height the oblique.
-4. **Footprint.** The catalogue suggests 160 by 70 m. The images show wings that make the
+3. **Footprint.** The catalogue suggests 160 by 70 m. The images show wings that make the
    whole 103 m wide; the images govern.
-5. **Inferred parts.** The west and north faces, the wings' southern end and all interiors
+4. **Inferred parts.** The west and north faces, the wings' southern end and all interiors
    are inferred.
 
 `prework-manifest.json` records the locks, measurements, conflicts and assumptions.
@@ -104,6 +105,7 @@ Git LFS files: `git lfs pull --include="frontend/public/archetypes/buildings/was
     (`evidence/independent-review-v010.json`): the festoon lines are flat ribbons without lamps;
     some hidden contact faces share a plane; and a one-pixel edge crack shows where the
     wing-roof gravel meets the main wall in high oblique views.
-- Gate A: open for a person (the street view is a LEGO render).
+- Gate A: accepted by a person on 2026-11-23. The oblique and roof views govern; the LEGO street view
+  stays excluded.
 - Runtime integration: NOT TESTED. Publication and activation: not authorized. Only a
   person can activate the model.

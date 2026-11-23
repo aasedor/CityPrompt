@@ -39,7 +39,7 @@
     "external_evidence": "Not yet in durable storage. Renders and boards were made in the build session and can be regenerated from tools/catalogue_concert_hall_pilot.",
     "limitations": [
       "Fixed native assembly, 100.0 m by 76.4 m including the 6 m paved apron; the podium is 88 m by 64.4 m. No resizing and no repetition.",
-      "Gate A is open: the variant's street view (variant_2.png) is the grey preview of the old LEGO model. The model follows the oblique and roof views; a person must accept that or supply a street view.",
+      "Gate A accepted by a person on 2026-11-23: the variant's street view (variant_2.png) is the grey preview of the old LEGO model and stays excluded; the oblique and roof views govern.",
       "The oblique and roof views place the oculus about 8 m apart; the roof view governs plan positions. Heights take the catalogue's two 5 m floors because the oblique barely constrains them.",
       "The north and east ground floor, the interiors, the roof-garden entrance and the hall size (about 340 stalls seats, only as large as the oculus) are inferred.",
       "The foyer floor is 0.13 m above the apron at every glazed door; no ramp or flush threshold is drawn.",
@@ -82,5 +82,15 @@
       "no_console_errors": false
     }
   },
-  "human_decisions": []
+  "human_decisions": [
+    {
+      "decision": "Gate A for concert_hall_modern / concert_timber_acoustic: the oblique (variant_2_angle_60.jpg) and the roof view (variant_2_angle_90.jpg) govern. The street view (variant_2.png, sha256 b33e3a3378be...) is the grey preview of the old LEGO model, not this building; it stays excluded and no replacement street view is required.",
+      "answers": "README \"Sources and conflicts\" Gate A item; prework-manifest.json gate_a (front_oblique_top_coherent false); builder-pixel-review.json Gate A note",
+      "authorized_by": "human_user",
+      "quote": "Make the Gate A ruling for the concert hall, the ski-slope plant and the silo cluster. I accept.",
+      "context": "Reply to the builder recommending that the oblique and roof views be accepted as governing for all three buildings, since each street view shows the old LEGO model rather than the new building.",
+      "date": "2026-11-23",
+      "grants": "This settles the source question only. It is not keeper approval, runtime activation or publication."
+    }
+  ]
 }

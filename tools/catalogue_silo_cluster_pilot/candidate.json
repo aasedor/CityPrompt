@@ -84,5 +84,5 @@
       }
     ]
   },
-  "gate_a": "open: variant_2.png is a grey render of the old LEGO model; a person must rule that the oblique and roof views govern"
+  "gate_a": "accepted by a person on 2026-11-23: variant_2.png is a grey render of the old LEGO model and stays excluded; the oblique and roof views govern (integration/promotion.json, human_decisions)"
 }
